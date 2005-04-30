@@ -34,6 +34,7 @@ namespace MaddenEditor.Domain
 		{
 			type = tableType;
 			this.name = name;
+			recordList = new List<TableRecordModel>();
 		}
 
 		public string Name
@@ -44,14 +45,30 @@ namespace MaddenEditor.Domain
 			}
 		}
 
+		public List<string> GetStringFieldList(string fieldName)
+		{
+			List<string> result = new List<string>();
+
+			foreach(TableRecordModel record in recordList)
+			{
+				result.Add(record.GetStringField(fieldName));
+			}
+
+			return result;
+		}
+
 		public TableRecordModel CreateRecord(int recno)
 		{
+			TableRecordModel newRecord = null;
+
 			switch (type)
 			{
 				case MaddenTable.CITY_TABLE:
-					return new CityRecord(recno);
+					newRecord = new CityRecord(recno);
+					break;
 				case MaddenTable.COACH_TABLE:
-					return new CoachRecord(recno);
+					newRecord = new CoachRecord(recno);
+					break;
 				case MaddenTable.CPSE_TABLE:
 					return null;
 				case MaddenTable.CTMP_TABLE:
@@ -59,20 +76,29 @@ namespace MaddenEditor.Domain
 				case MaddenTable.CTMU_TABLE:
 					return null;
 				case MaddenTable.DEPTH_CHART_TABLE:
-					return new DepthChartRecord(recno);
+					newRecord = new DepthChartRecord(recno);
+					break;
 				case MaddenTable.INJURY_TABLE:
-					return new InjuryRecord(recno);
+					newRecord = new InjuryRecord(recno);
+					break;
 				case MaddenTable.PLAYER_TABLE:
-					return new PlayerRecord(recno);
+					newRecord = new PlayerRecord(recno);
+					break;
 				case MaddenTable.STADIUM_TABLE:
-					return new StadiumTable(recno);
+					newRecord = new StadiumTable(recno);
+					break;
 				case MaddenTable.TEAM_TABLE:
-					return new TeamRecord(recno);
+					newRecord = new TeamRecord(recno);
+					break;
 				case MaddenTable.UNIFORM_TABLE:
-					return new UniformRecord(recno);
+					newRecord = new UniformRecord(recno);
+					break;
 			}
 
-			return null;
+			//Add the new record to our list of records
+			recordList.Add(newRecord);
+
+			return newRecord;
 		}
 	}
 }
