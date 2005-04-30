@@ -26,10 +26,90 @@ namespace MaddenEditor.Domain
 {
 	public class PlayerRecord : TableRecordModel
 	{
+		public const string FIRST_NAME = "PFNA";
+		public const string LAST_NAME = "PLNA";
+		public const string POSITION_ID = "PPOS";
+
+		public const string TEAM_ID = "TGID";
+		public const string PLAYER_ID = "PGID";
+		public const string COLLEGE_ID = "PCOL";
+
 		public PlayerRecord(int record)
 			: base(record)
 		{
 
+		}
+
+		public string FirstName
+		{
+			get
+			{
+				return stringFields[FIRST_NAME];
+			}
+			set
+			{
+				stringFields[FIRST_NAME] = value;
+			}
+		}
+
+		public string LastName
+		{
+			get
+			{
+				return stringFields[LAST_NAME];
+			}
+			set
+			{
+				stringFields[LAST_NAME] = value;
+			}
+		}
+
+		public int PositionId
+		{
+			get
+			{
+				return intFields[POSITION_ID];
+			}
+			set
+			{
+				intFields[POSITION_ID] = value;
+			}
+		}
+
+		public int TeamId
+		{
+			get
+			{
+				return intFields[TEAM_ID];
+			}
+			set
+			{
+				intFields[TEAM_ID] = value;
+			}
+		}
+
+		public int PlayerId
+		{
+			get
+			{
+				return intFields[PLAYER_ID];
+			}
+			set
+			{
+				intFields[PLAYER_ID] = value;
+			}
+		}
+
+		public int CollegeId
+		{
+			get
+			{
+				return intFields[COLLEGE_ID];
+			}
+			set
+			{
+				intFields[COLLEGE_ID] = value;
+			}
 		}
 	}
 }

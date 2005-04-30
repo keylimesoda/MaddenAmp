@@ -57,6 +57,16 @@ namespace MaddenEditor.Domain
 			return result;
 		}
 
+		public TableRecordModel GetRecord(int index)
+		{
+			return recordList[index];
+		}
+
+		public List<TableRecordModel> GetRecords()
+		{
+			return recordList;
+		}
+
 		public TableRecordModel CreateRecord(int recno)
 		{
 			TableRecordModel newRecord = null;

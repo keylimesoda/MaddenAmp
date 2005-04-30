@@ -34,6 +34,7 @@ namespace MaddenEditor.Forms
     {
 		private RosterModel model = null;
 		private string fileToLoad;
+		private int playerRecNo = 0;
 
         public MainForm()
         {
@@ -128,15 +129,37 @@ namespace MaddenEditor.Forms
 
 		private void InitialiseData()
 		{
-			foreach(string teamname in model.GetTeamNames())
+			foreach(TeamRecordCompact team in model.GetTeamNames())
 			{
-				teamComboBox.Items.Add(teamname);
-				filterTeamComboBox.Items.Add(teamname);
+				teamComboBox.Items.Add(team);
+				filterTeamComboBox.Items.Add(team);
 
 				teamComboBox.Text = teamComboBox.Items[0].ToString();
 				filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
 			}
-			
+
+			foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
+			{
+				positionComboBox.Items.Add(pos);
+			}
+
+			LoadPlayerInfo(0);
+		}
+
+		private void LoadPlayerInfo(int recno)
+		{
+			PlayerRecord rec = model.GetPlayerRecord(recno);
+
+			firstNameTextBox.Text = rec.FirstName;
+			lastNameTextBox.Text = rec.LastName;
+			foreach (TeamRecordCompact recordCompact in teamComboBox.Items)
+			{
+				if (rec.TeamId == recordCompact.id)
+				{
+					teamComboBox.Text = recordCompact.name;
+				}
+			}
+			positionComboBox.Text = positionComboBox.Items[rec.PositionId].ToString();
 		}
 
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -164,6 +187,20 @@ namespace MaddenEditor.Forms
 		private void rosterFileLoaderThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			toolStripProgressBar.Value = e.ProgressPercentage;
+		}
+
+		private void rightButton_Click(object sender, EventArgs e)
+		{
+			playerRecNo++;
+			LoadPlayerInfo(playerRecNo);
+		}
+
+		private void leftButton_Click(object sender, EventArgs e)
+		{
+			playerRecNo--;
+			if (playerRecNo < 0)
+				playerRecNo = 0;
+			LoadPlayerInfo(playerRecNo);
 		}
 
     }

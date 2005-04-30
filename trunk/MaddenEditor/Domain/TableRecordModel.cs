@@ -69,5 +69,7 @@ namespace MaddenEditor.Domain
 		{
 			return stringFields[fieldName];
 		}
+
+		
 	}
 }
