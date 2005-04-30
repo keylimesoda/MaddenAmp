@@ -8,8 +8,8 @@ namespace MaddenEditor.Db
 
     struct TdbFieldProperties
     {
-        String Name;
-        int Size;
-        TdbFieldType FieldType;
+        public String Name;
+        public int Size;
+        public TdbFieldType FieldType;
     }
 }

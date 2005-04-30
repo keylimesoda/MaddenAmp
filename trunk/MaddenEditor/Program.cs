@@ -25,6 +25,16 @@ namespace MaddenEditor
                 int count = TDB.TDBDatabaseGetTableCount(dbIndex);
 
                 Console.WriteLine("test.ros has {0} tables in it", count);
+
+                for (int i = 0; i < count; i++)
+                {
+                    TdbTableProperties tableProps = new TdbTableProperties();
+
+					tableProps.Name = new string((char)0, 5);
+                    TDB.TDBTableGetProperties(dbIndex, i, ref tableProps);
+
+                    Console.WriteLine("Table name = {0}", tableProps.Name);
+                }
             }
             catch (DllNotFoundException e)
             {
