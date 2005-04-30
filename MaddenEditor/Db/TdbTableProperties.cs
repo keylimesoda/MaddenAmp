@@ -6,17 +6,17 @@ namespace MaddenEditor.Db
 {
     struct TdbTableProperties
     {
-        String Name;
-        int FieldCount;
-        int Capacity;
-        int RecordCount;
-        int DeletedCount;
-        int NextDeletedRecord;
-        bool Flag0;
-        bool Flag1;
-        bool Flag2;
-        bool Flag3;
-        bool NonAllocated;
+        public String Name;
+        public int FieldCount;
+        public int Capacity;
+        public int RecordCount;
+        public int DeletedCount;
+        public int NextDeletedRecord;
+        public bool Flag0;
+        public bool Flag1;
+        public bool Flag2;
+        public bool Flag3;
+        public bool NonAllocated;
     }
 
 }
