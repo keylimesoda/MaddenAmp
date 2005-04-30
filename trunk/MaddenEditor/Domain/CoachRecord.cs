@@ -20,25 +20,16 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Text;
 
-using MaddenEditor.Forms;
-using MaddenEditor.Db;
-
-namespace MaddenEditor
+namespace MaddenEditor.Domain
 {
-    static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.Run(new MainForm());
+	public class CoachRecord : TableRecordModel
+	{
+		public CoachRecord(int record)
+			: base(record)
+		{
 
-            Console.WriteLine("Exiting...");
-        }
-    }
+		}
+	}
 }

@@ -20,25 +20,49 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Text;
 
-using MaddenEditor.Forms;
-using MaddenEditor.Db;
-
-namespace MaddenEditor
+namespace MaddenEditor.Domain
 {
-    static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.Run(new MainForm());
+	/// <summary>
+	/// A Table Model supports adding fields to the model
+	/// </summary>
+	public class TableRecordModel
+	{
+		protected int recordNumber = -1;
+		protected Dictionary<string, int> intFields = null;
+		protected Dictionary<string, string> stringFields = null;				
 
-            Console.WriteLine("Exiting...");
-        }
-    }
+		public TableRecordModel(int recordNumber)
+		{
+			this.recordNumber = recordNumber;
+			intFields = new Dictionary<string, int>();
+			stringFields = new Dictionary<string, string>();
+		}
+
+		public void SetField(string fieldName, string val)
+		{
+			if (stringFields.ContainsKey(fieldName))
+			{
+				stringFields[fieldName] = val;
+			}
+			else
+			{
+				stringFields.Add(fieldName, val);
+			}
+			
+		}
+
+		public void SetField(string fieldName, int val)
+		{
+			if (intFields.ContainsKey(fieldName))
+			{
+				intFields[fieldName] = val;
+			}
+			else
+			{
+				intFields.Add(fieldName, val);
+			}
+		}
+	}
 }
