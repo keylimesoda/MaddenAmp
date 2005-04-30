@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using MaddenEditor.Db;
+using MaddenEditor.Forms;
 
 namespace MaddenEditor.Domain
 {
@@ -54,10 +55,13 @@ namespace MaddenEditor.Domain
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private int tableCount = 0;
 		private string fileName = "";
+		private MainForm view = null;
 		private Dictionary<MaddenTable, TableModel> tableModels = null;
+		private List<string> teamNameList = null;
 
-		public RosterModel(string filename)
+		public RosterModel(string filename, MainForm form)
 		{
+			view = form;
 			this.fileName = filename;
 
 			//Try and open the file
@@ -88,6 +92,11 @@ namespace MaddenEditor.Domain
 			}
 		}
 
+		public TableModel GetTable(MaddenTable tableType)
+		{
+			return tableModels[tableType];
+		}
+
 		private bool ProcessFile()
 		{
 			bool result = true;
@@ -95,6 +104,15 @@ namespace MaddenEditor.Domain
 			{
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
 				Console.WriteLine("Table count in {0} = {1}", fileName, tableCount);
+
+				for (int j = 0; j < tableCount; j++)
+				{
+					TdbTableProperties tableProps = new TdbTableProperties();
+					tableProps.Name = new string((char)0, 5);
+					TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
+
+					Console.WriteLine("File Contains Table: {0}", tableProps.Name);
+				}
 			}
 			catch (DllNotFoundException e)
 			{
@@ -117,32 +135,36 @@ namespace MaddenEditor.Domain
 
 		private bool ProcessTable(MaddenTable tableType)
 		{
+			//Reset the progress bar
+			view.updateProgress(0);
 
 			//Get the table properties
-			TdbTableProperties teamTable = new TdbTableProperties();
-			teamTable.Name = new string((char)0, 5);
-			TDB.TDBTableGetProperties(dbIndex, (int)tableType, ref teamTable);
+			TdbTableProperties tableProps = new TdbTableProperties();
+			tableProps.Name = new string((char)0, 5);
+			TDB.TDBTableGetProperties(dbIndex, (int)tableType, ref tableProps);
 
-			TableModel table = new TableModel(tableType, teamTable.Name);
+			TableModel table = new TableModel(tableType, tableProps.Name);
 			Console.WriteLine("Processing Table: " + table.Name);
 
 			//For each field for this table, find the name and add it to a collection
 			//so we can get each of these for each record
 			List<TdbFieldProperties> fieldList = new List<TdbFieldProperties>();
-			for (int i=0; i < teamTable.FieldCount; i++)
+			for (int i = 0; i < tableProps.FieldCount; i++)
 			{
 				TdbFieldProperties fieldProps = new TdbFieldProperties();
 				fieldProps.Name = new string((char)0, 5);
-				TDB.TDBFieldGetProperties(dbIndex, teamTable.Name, i, ref fieldProps);
+				TDB.TDBFieldGetProperties(dbIndex, tableProps.Name, i, ref fieldProps);
 				//Add this field to the list
 				fieldList.Add(fieldProps);
 			}
 
 			int recordsFound = 0;
 			int index = 0;
-			while (recordsFound != teamTable.RecordCount)
+			float currentProgress = 0.0f;
+			float progressInterval = (1.0f / (float)tableProps.RecordCount) * 100.0f;
+			while (recordsFound != tableProps.RecordCount)
 			{
-				bool deleted = TDB.TDBTableRecordDeleted(dbIndex, teamTable.Name, index);
+				bool deleted = TDB.TDBTableRecordDeleted(dbIndex, tableProps.Name, index);
 
 				if (deleted)
 				{
@@ -167,7 +189,7 @@ namespace MaddenEditor.Domain
 								string val = new string((char)0, (fieldProps.Size / 8)+1);
 								try
 								{
-									TDB.TDBFieldGetValueAsString(dbIndex, teamTable.Name, fieldProps.Name, recordsFound, ref val);
+									TDB.TDBFieldGetValueAsString(dbIndex, tableProps.Name, fieldProps.Name, recordsFound, ref val);
 								}
 								catch (Exception err)
 								{
@@ -177,12 +199,12 @@ namespace MaddenEditor.Domain
 								break;
 							case TdbFieldType.tdbUInt:
 								int intval;
-								intval = TDB.TDBFieldGetValueAsInteger(dbIndex, teamTable.Name, fieldProps.Name, recordsFound);
+								intval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
 								record.SetField(fieldProps.Name, intval);
 								break;
 							case TdbFieldType.tdbSInt:
 								int shortval;
-								shortval = TDB.TDBFieldGetValueAsInteger(dbIndex, teamTable.Name, fieldProps.Name, recordsFound);
+								shortval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
 								record.SetField(fieldProps.Name, shortval);
 								break;
 							default:
@@ -194,10 +216,14 @@ namespace MaddenEditor.Domain
 
 				index++;
 				recordsFound++;
+
+				currentProgress += progressInterval;
+				view.updateProgress((int)currentProgress);
 			}
 
 			tableModels.Add(tableType, table);
 			Console.WriteLine("Finished processing Table: " + table.Name);
+			view.updateProgress(100);
 			return true;
 		}
 
@@ -211,6 +237,16 @@ namespace MaddenEditor.Domain
 			{
 				Console.WriteLine(e.ToString());
 			}
+		}
+
+		public List<string> GetTeamNames()
+		{
+			if (teamNameList == null)
+			{
+				teamNameList = tableModels[MaddenTable.TEAM_TABLE].GetStringFieldList("TDNA");
+			}
+
+			return teamNameList;
 		}
 	}
 }

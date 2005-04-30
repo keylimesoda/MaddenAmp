@@ -31,7 +31,7 @@ namespace MaddenEditor.Domain
 	{
 		protected int recordNumber = -1;
 		protected Dictionary<string, int> intFields = null;
-		protected Dictionary<string, string> stringFields = null;				
+		protected Dictionary<string, string> stringFields = null;
 
 		public TableRecordModel(int recordNumber)
 		{
@@ -50,7 +50,7 @@ namespace MaddenEditor.Domain
 			{
 				stringFields.Add(fieldName, val);
 			}
-			
+
 		}
 
 		public void SetField(string fieldName, int val)
@@ -63,6 +63,11 @@ namespace MaddenEditor.Domain
 			{
 				intFields.Add(fieldName, val);
 			}
+		}
+
+		public string GetStringField(string fieldName)
+		{
+			return stringFields[fieldName];
 		}
 	}
 }

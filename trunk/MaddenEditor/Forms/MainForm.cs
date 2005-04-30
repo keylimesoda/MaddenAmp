@@ -33,13 +33,16 @@ namespace MaddenEditor.Forms
     public partial class MainForm : Form
     {
 		private RosterModel model = null;
+		private string fileToLoad;
 
         public MainForm()
         {
             InitializeComponent();
 
-			//tabControl.Visible = false;
+			tabControl.Visible = false;
 			searchToolStripMenuItem.Visible = false;
+			statusStrip.Visible = false;
+
         }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -78,21 +81,29 @@ namespace MaddenEditor.Forms
 
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.DefaultExt = "ros";
-			dialog.Filter = "Madden Roster files (*.ros)|*.ros";
+			dialog.Filter = "Madden Roster files (*.ros)|*.ros|Madden Franchise files (*.fra)|*.fra";
 			dialog.Multiselect = false;
 			dialog.ShowDialog();
 			if (dialog.FileNames.Length > 0)
 			{
 				foreach (string filename in dialog.FileNames)
 				{
+					if (filename.Contains("fra"))
+					{
+						MessageBox.Show("This version currently does not support loading of Franchise files", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						return;
+					}
+
+					fileToLoad = filename;
 					// Insert code here to process the files.
 					try
 					{
-						Cursor.Current = Cursors.WaitCursor;
+						statusStrip.Visible = true;
+						this.Refresh();
 
-						model = new RosterModel(filename);
-
-						Cursor.Current = Cursors.Default;
+						rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
+						rosterFileLoaderThread.RunWorkerAsync();
+						
 						break;
 						//Now the model is opened.
 
@@ -103,6 +114,56 @@ namespace MaddenEditor.Forms
 					}
 				}
 			}
+		}
+
+		void rosterFileLoaderThread_DoWork(object sender, DoWorkEventArgs e)
+		{
+			model = new RosterModel(fileToLoad, this);
+		}
+
+		public void updateProgress(int percentage)
+		{
+			rosterFileLoaderThread.ReportProgress(percentage);
+		}
+
+		private void InitialiseData()
+		{
+			foreach(string teamname in model.GetTeamNames())
+			{
+				teamComboBox.Items.Add(teamname);
+				filterTeamComboBox.Items.Add(teamname);
+
+				teamComboBox.Text = teamComboBox.Items[0].ToString();
+				filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
+			}
+			
+		}
+
+		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void rosterFileLoaderThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			try
+			{
+				InitialiseData();
+			}
+			catch (Exception err)
+			{
+				Console.WriteLine(err.ToString());
+			}
+
+			tabControl.Visible = true;
+			searchToolStripMenuItem.Visible = true;
+			statusStrip.Visible = false;
+			toolStripProgressBar.Value = 0;
+		}
+
+		private void rosterFileLoaderThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			toolStripProgressBar.Value = e.ProgressPercentage;
 		}
 
     }
