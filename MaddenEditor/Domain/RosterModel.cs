@@ -48,6 +48,31 @@ namespace MaddenEditor.Domain
 		TEAM_TABLE = 10
 	}
 
+	public enum MaddenPositions
+	{
+		QB = 0,
+		HB,
+		FB,
+		WR,
+		TE,
+		LT,
+		LG,
+		C,
+		RG,
+		RT,
+		LE,
+		RE,
+		DT,
+		LOLB,
+		MLB,
+		ROLB,
+		CB,
+		FS,
+		SS,
+		K,
+		P
+	}
+
 	public class RosterModel
 	{
 		private bool dirty = false;
@@ -57,7 +82,7 @@ namespace MaddenEditor.Domain
 		private string fileName = "";
 		private MainForm view = null;
 		private Dictionary<MaddenTable, TableModel> tableModels = null;
-		private List<string> teamNameList = null;
+		private List<TeamRecordCompact> teamNameList = null;
 
 		public RosterModel(string filename, MainForm form)
 		{
@@ -239,14 +264,28 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		public List<string> GetTeamNames()
+		public List<TeamRecordCompact> GetTeamNames()
 		{
 			if (teamNameList == null)
 			{
-				teamNameList = tableModels[MaddenTable.TEAM_TABLE].GetStringFieldList("TDNA");
+				teamNameList = new List<TeamRecordCompact>();
+
+				List<TableRecordModel> records = tableModels[MaddenTable.TEAM_TABLE].GetRecords();
+
+				foreach (TableRecordModel record in records)
+				{
+					TeamRecord teamRecord = (TeamRecord)record;
+					teamNameList.Add(teamRecord.GetCompactRecord());
+				}
+
 			}
 
 			return teamNameList;
+		}
+
+		public PlayerRecord GetPlayerRecord(int recno)
+		{
+			return (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(recno);
 		}
 	}
 }
