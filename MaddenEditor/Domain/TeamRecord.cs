@@ -32,7 +32,8 @@ namespace MaddenEditor.Domain
 		public const string TEAM_STATE = "TSNA";
 		public const string TEAM_ID = "TGID";
 
-		public TeamRecord(int record) : base(record)
+		public TeamRecord(int record, RosterModel rosterModel)
+			: base(record, rosterModel)
 		{
 
 		}

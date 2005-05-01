@@ -32,7 +32,7 @@ namespace MaddenEditor.Domain
 		public const string TEAM_ID = "TGID";
 		public const string INJURY_RSV = "INIR";
 
-		public InjuryRecord(int record)	: base(record)
+		public InjuryRecord(int record, RosterModel rosterModel)	: base(record, rosterModel)
 		{
 
 		}
