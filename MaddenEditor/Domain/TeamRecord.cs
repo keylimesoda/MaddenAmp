@@ -24,19 +24,6 @@ using System.Text;
 
 namespace MaddenEditor.Domain
 {
-	/// <summary>
-	/// We use this compact version to add to combo boxes etc..
-	/// </summary>
-	public class TeamRecordCompact
-	{
-		public int id;
-		public string name;
-
-		public override string ToString()
-		{
-			return name;
-		}
-	}
 
 	public class TeamRecord : TableRecordModel
 	{
@@ -45,23 +32,9 @@ namespace MaddenEditor.Domain
 		public const string TEAM_STATE = "TSNA";
 		public const string TEAM_ID = "TGID";
 
-		private TeamRecordCompact compact = null;
-
 		public TeamRecord(int record) : base(record)
 		{
 
-		}
-
-		public TeamRecordCompact GetCompactRecord()
-		{
-			if (compact == null)
-			{
-				compact = new TeamRecordCompact();
-				compact.id = this.TeamId;
-				compact.name = this.LastName;
-			}
-
-			return compact;
 		}
 
 		public string Name

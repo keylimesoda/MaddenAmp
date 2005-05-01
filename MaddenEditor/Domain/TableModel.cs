@@ -67,6 +67,14 @@ namespace MaddenEditor.Domain
 			return recordList;
 		}
 
+		public int RecordCount
+		{
+			get
+			{
+				return recordList.Count;
+			}
+		}
+
 		public TableRecordModel CreateRecord(int recno)
 		{
 			TableRecordModel newRecord = null;

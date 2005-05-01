@@ -34,7 +34,6 @@ namespace MaddenEditor.Forms
     {
 		private RosterModel model = null;
 		private string fileToLoad;
-		private int playerRecNo = 0;
 
         public MainForm()
         {
@@ -129,37 +128,30 @@ namespace MaddenEditor.Forms
 
 		private void InitialiseData()
 		{
-			foreach(TeamRecordCompact team in model.GetTeamNames())
+			foreach(string teamname in model.GetTeamNames())
 			{
-				teamComboBox.Items.Add(team);
-				filterTeamComboBox.Items.Add(team);
-
-				teamComboBox.Text = teamComboBox.Items[0].ToString();
-				filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
+				teamComboBox.Items.Add(teamname);
+				filterTeamComboBox.Items.Add(teamname);
 			}
 
 			foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
 			{
 				positionComboBox.Items.Add(pos);
+				filterPositionComboBox.Items.Add(pos);
 			}
 
-			LoadPlayerInfo(0);
+			filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
+			filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
+
+			LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
-		private void LoadPlayerInfo(int recno)
+		private void LoadPlayerInfo(PlayerRecord record)
 		{
-			PlayerRecord rec = model.GetPlayerRecord(recno);
-
-			firstNameTextBox.Text = rec.FirstName;
-			lastNameTextBox.Text = rec.LastName;
-			foreach (TeamRecordCompact recordCompact in teamComboBox.Items)
-			{
-				if (rec.TeamId == recordCompact.id)
-				{
-					teamComboBox.Text = recordCompact.name;
-				}
-			}
-			positionComboBox.Text = positionComboBox.Items[rec.PositionId].ToString();
+			firstNameTextBox.Text = record.FirstName;
+			lastNameTextBox.Text = record.LastName;
+			teamComboBox.Text = model.GetTeamNameFromTeamId(record.TeamId);
+			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 		}
 
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -191,16 +183,40 @@ namespace MaddenEditor.Forms
 
 		private void rightButton_Click(object sender, EventArgs e)
 		{
-			playerRecNo++;
-			LoadPlayerInfo(playerRecNo);
+			LoadPlayerInfo(model.GetNextPlayerRecord());
 		}
 
 		private void leftButton_Click(object sender, EventArgs e)
 		{
-			playerRecNo--;
-			if (playerRecNo < 0)
-				playerRecNo = 0;
-			LoadPlayerInfo(playerRecNo);
+			LoadPlayerInfo(model.GetPreviousPlayerRecord());
+		}
+
+		private void teamCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (teamCheckBox.Checked)
+			{
+				model.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
+			}
+			else
+			{
+				model.RemoveTeamFilter();
+			}
+
+			LoadPlayerInfo(model.CurrentPlayerRecord);
+		}
+
+		private void positionCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (positionCheckBox.Checked)
+			{
+				model.SetPositionFilter(filterPositionComboBox.SelectedIndex);
+			}
+			else
+			{
+				model.RemovePositionFilter();
+			}
+
+			LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
     }
