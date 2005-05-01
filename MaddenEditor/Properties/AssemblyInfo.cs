@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MaddenEditor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Madden Editor 2005")]
+[assembly: AssemblyDescription("Thankyou for using this editor.\r\n\r\nReport bugs to bugs@tributech.com.au\r\n\r\nThis program is licenced under the LGPL.\r\nSource is available via subversion at\r\n\r\nhttp://gommo.homelinux.net/svn/repos/maddeneditor/trunk")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Maptek Pty Ltd")]
-[assembly: AssemblyProduct("MaddenEditor")]
-[assembly: AssemblyCopyright("Copyright © Maptek Pty Ltd 2005")]
+[assembly: AssemblyCompany("Tributech")]
+[assembly: AssemblyProduct("Madden Editor 2005")]
+[assembly: AssemblyCopyright("Copyright © Tributech 2005")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.5.0.0")]
+[assembly: AssemblyFileVersion("0.5.0.0")]

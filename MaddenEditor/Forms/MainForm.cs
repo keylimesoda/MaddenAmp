@@ -63,7 +63,7 @@ namespace MaddenEditor.Forms
 
 				if (result == DialogResult.Yes)
 				{
-
+					model.Save();
 				}
 				else
 				{
@@ -152,10 +152,14 @@ namespace MaddenEditor.Forms
 
 		private void LoadPlayerInfo(PlayerRecord record)
 		{
+			isInitialising = true;
+
 			firstNameTextBox.Text = record.FirstName;
 			lastNameTextBox.Text = record.LastName;
 			teamComboBox.Text = model.GetTeamNameFromTeamId(record.TeamId);
 			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
+			//collegeComboBox.Text = collegeComboBox.Items[record.CollegeId + 4].ToString();
+			Console.WriteLine("number of colleges = " + collegeComboBox.Items.Count);
 
 			playerAge.Value = record.Age;
 			playerJerseyNumber.Value = record.JerseyNumber;
@@ -189,11 +193,45 @@ namespace MaddenEditor.Forms
 			playerMorale.Value = record.Morale;
 			playerImportance.Value = record.Importance;
 			playerNFLIcon.Checked = record.NFLIcon;
+			playerProBowl.Checked = record.ProBowl;
 			playerExperiencePoints.Value = record.XPPoints;
+			playerContractLength.Value = record.ContractLength;
+			playerContractYearsLeft.Value = record.ContractYearsLeft;
+			playerSigningBonus.Value = (decimal)(record.SigningBonus/100.0);
+
+			//Set player Appearance
+			playerBodyWeight.Value = record.BodyWeight;
+			playerBodyMuscle.Value = record.BodyMuscle;
+			playerBodyFat.Value = record.BodyFat;
+			playerEquipmentShoes.Value = record.EquipmentShoes;
+			playerEquipmentPadHeight.Value = record.EquipmentPadHeight;
+			playerEquipmentPadWidth.Value = record.EquipmentPadWidth;
+			playerEquipmentPadShelf.Value = record.EquipmentPadShelf;
+			playerEquipmentFlakJacket.Value = record.EquipmentFlakJacket;
+			playerArmsMuscle.Value = record.ArmsMuscle;
+			playerArmsFat.Value = record.ArmsFat;
+			playerLegsThighMuscle.Value = record.LegsThighMuscle;
+			playerLegsThighFat.Value = record.LegsThighFat;
+			playerLegsCalfMuscle.Value = record.LegsCalfMuscle;
+			playerLegsCalfFat.Value = record.LegsCalfFat;
+			playerRearRearFat.Value = record.RearRearFat;
+			playerRearShape.Value = record.RearShape;
+
+			isInitialising = false;
 		}
 
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			CheckSave();
+
+			//Now clean up ready for reloading
+			teamComboBox.Items.Clear();
+			filterPositionComboBox.Items.Clear();
+			positionComboBox.Items.Clear();
+			filterTeamComboBox.Items.Clear();
+
+			tabControl.Visible = false;
+			searchToolStripMenuItem.Visible = false;
 
 		}
 
@@ -268,6 +306,19 @@ namespace MaddenEditor.Forms
 
 			Application.Exit();
 		}
+		
+		public bool Dirty
+		{
+			set
+			{
+				saveToolStripMenuItem.Enabled = value;
+			}
+		}
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			model.Save();
+		}
 
 		private void playerSpeed_ValueChanged(object sender, EventArgs e)
 		{
@@ -285,13 +336,412 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		public bool Dirty
+		private void lastNameTextBox_Leave(object sender, EventArgs e)
 		{
-			set
+			if (!isInitialising)
 			{
-				saveToolStripMenuItem.Enabled = value;
+				model.CurrentPlayerRecord.LastName = lastNameTextBox.Text;
 			}
 		}
+
+		private void playerAge_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Age = (int)playerAge.Value;
+			}
+		}
+
+		private void teamComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.TeamId = model.GetTeamIdFromTeamName(teamComboBox.Text);
+			}
+		}
+
+		private void playerJerseyNumber_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.JerseyNumber = (int)playerJerseyNumber.Value;
+			}
+		}
+
+		private void playerDominantHand_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.DominantHand = playerDominantHand.Checked;
+			}
+		}
+
+		private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.PositionId = (int)positionComboBox.SelectedIndex;
+			}
+		}
+
+		private void playerYearsPro_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.YearsPro = (int)playerYearsPro.Value;
+			}
+		}
+
+		private void playerOverall_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Overall = (int)playerOverall.Value;
+			}
+		}
+
+		private void playerStrength_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Strength = (int)playerStrength.Value;
+			}
+		}
+
+		private void playerAwareness_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Awareness = (int)playerAwareness.Value;
+			}
+		}
+
+		private void playerAgility_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Agility = (int)playerAgility.Value;
+			}
+		}
+
+		private void playerAcceleration_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Acceleration = (int)playerAcceleration.Value;
+			}
+		}
+
+		private void playerCatching_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Catching = (int)playerCatching.Value;
+			}
+		}
+
+		private void playerCarrying_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Carrying = (int)playerCarrying.Value;
+			}
+		}
+
+		private void playerJumping_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Jumping = (int)playerJumping.Value;
+			}
+		}
+
+		private void playerBreakTackle_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.BreakTackle = (int)playerBreakTackle.Value;
+			}
+		}
+
+		private void playerTackle_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Tackle = (int)playerTackle.Value;
+			}
+		}
+
+		private void playerThrowPower_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ThrowPower = (int)playerThrowPower.Value;
+			}
+		}
+
+		private void playerThrowAccuracy_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ThrowAccuracy = (int)playerThrowAccuracy.Value;
+			}
+		}
+
+		private void playerPassBlocking_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.PassBlocking = (int)playerPassBlocking.Value;
+			}
+		}
+
+		private void playerRunBlocking_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RunBlocking = (int)playerRunBlocking.Value;
+			}
+		}
+
+		private void playerKickPower_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.KickPower = (int)playerKickPower.Value;
+			}
+		}
+
+		private void playerKickAccuracy_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.KickAccuracy = (int)playerKickAccuracy.Value;
+			}
+		}
+
+		private void playerKickReturn_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.KickReturn = (int)playerKickReturn.Value;
+			}
+		}
+
+		private void playerStamina_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Stamina = (int)playerStamina.Value;
+			}
+		}
+
+		private void playerInjury_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Injury = (int)playerInjury.Value;
+			}
+		}
+
+		private void playerToughness_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Toughness = (int)playerToughness.Value;
+			}
+		}
+
+		private void playerWeight_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Weight = (int)playerWeight.Value - 160;
+			}
+		}
+
+		private void playerHeightComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Height = (int)playerHeightComboBox.SelectedIndex + 65;
+			}
+		}
+
+		private void playerNFLIcon_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.NFLIcon = playerNFLIcon.Checked;
+			}
+		}
+
+		private void playerExperiencePoints_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.XPPoints = (int)playerExperiencePoints.Value;
+			}
+		}
+
+		private void playerImportance_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Importance = (int)playerImportance.Value;
+			}
+		}
+
+		private void playerMorale_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Morale = (int)playerMorale.Value;
+			}
+		}
+
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			AboutBox form = new AboutBox();
+			form.Show(this);
+		}
+
+		private void playerBodyOverall_ValueChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void playerBodyWeight_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.BodyWeight = (int)playerBodyWeight.Value;
+			}
+		}
+
+		private void playerBodyMuscle_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.BodyMuscle = (int)playerBodyMuscle.Value;
+			}
+		}
+
+		private void playerBodyFat_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.BodyFat = (int)playerBodyFat.Value;
+			}
+		}
+
+		private void playerEquipmentShoes_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.EquipmentShoes = (int)playerEquipmentShoes.Value;
+			}
+		}
+
+		private void playerEquipmentPadHeight_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.EquipmentPadHeight = (int)playerEquipmentPadHeight.Value;
+			}
+		}
+
+		private void playerEquipmentPadWidth_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.EquipmentPadWidth = (int)playerEquipmentPadWidth.Value;
+			}
+		}
+
+		private void playerEquipmentPadShelf_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.EquipmentPadShelf = (int)playerEquipmentPadShelf.Value;
+			}
+		}
+
+		private void playerEquipmentFlakJacket_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.EquipmentFlakJacket = (int)playerEquipmentFlakJacket.Value;
+			}
+		}
+
+		private void playerArmsMuscle_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ArmsMuscle = (int)playerArmsMuscle.Value;
+			}
+		}
+
+		private void playerArmsFat_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ArmsFat = (int)playerArmsFat.Value;
+			}
+		}
+
+		private void playerLegsThighMuscle_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LegsThighMuscle = (int)playerLegsThighMuscle.Value;
+			}
+		}
+
+		private void playerLegsThighFat_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LegsThighFat = (int)playerLegsThighFat.Value;
+			}
+		}
+
+		private void playerLegsCalfMuscle_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LegsCalfMuscle = (int)playerLegsCalfMuscle.Value;
+			}
+		}
+
+		private void playerLegsCalfFat_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LegsCalfFat = (int)playerLegsCalfFat.Value;
+			}
+		}
+
+		private void playerRearRearFat_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RearRearFat = (int)playerRearRearFat.Value;
+			}
+		}
+
+		private void playerRearShape_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RearShape = (int)playerRearShape.Value;
+			}
+		}
+
+
+	
+
 
     }
 }

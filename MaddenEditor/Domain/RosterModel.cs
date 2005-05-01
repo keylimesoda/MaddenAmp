@@ -296,6 +296,43 @@ namespace MaddenEditor.Domain
 				return "UNKNOWNTEAM";
 		}
 
+		public int GetTeamIdFromTeamName(string teamName)
+		{
+			if (teamNameList.ContainsValue(teamName))
+			{
+				//Theres got to be a better way to do this
+				int i = 0;
+				foreach (string team in teamNameList.Values)
+				{
+					if (team.Equals(teamName))
+					{
+						break;
+					}
+					i++;
+				}
+
+				//Now if we iterate through teamName list Key list to 'i' then
+				//we have the Team id
+				int j = 0;
+				int id = 0;
+				foreach (int key in teamNameList.Keys)
+				{
+					if (j == i)
+					{
+						id = key;
+						break;
+					}
+					j++;
+				}
+
+				return id;
+			}
+			else
+			{
+				throw new ApplicationException("Error getting TeamID for team name " + teamName);
+			}
+		}
+
 		public PlayerRecord GetPlayerRecord(int recno)
 		{
 			return (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(recno);
@@ -399,6 +436,49 @@ namespace MaddenEditor.Domain
 		public void RemovePositionFilter()
 		{
 			currentPositionFilter = -1;
+		}
+
+		public void Save()
+		{
+			//To save we have to go through every record in our models and
+			//save the dirty ones
+			
+			//At the moment we are only saving the player table
+			TableModel table = tableModels[MaddenTable.PLAYER_TABLE];
+
+			List<TableRecordModel> listRecords = table.GetRecords();
+
+			foreach (TableRecordModel record in listRecords)
+			{
+				if (record.Dirty)
+				{
+					string[] keyArray = null;
+					int[] valueArray = null;
+					string[] stringValueArray = null;
+
+					record.GetChangedIntFields(ref keyArray, ref valueArray);
+
+					for (int i = 0; i < keyArray.Length; i++)
+					{
+						TDB.TDBFieldSetValueAsInteger(dbIndex, table.Name, keyArray[i], record.RecNo, valueArray[i]);
+					}
+
+					keyArray = null;
+
+					record.GetChangedStringFields(ref keyArray, ref stringValueArray);
+
+					for (int i = 0; i < keyArray.Length; i++)
+					{
+						TDB.TDBFieldSetValueAsString(dbIndex, table.Name, keyArray[i], record.RecNo, stringValueArray[i]);
+					}
+
+					record.DiscardBackups();
+				}
+			}
+
+			TDB.TDBSave(dbIndex);
+
+			this.Dirty = false;
 		}
 	}
 }

@@ -66,6 +66,27 @@ namespace MaddenEditor.Domain
 		public const string IMPORTANCE = "PIMP";
 		public const string XP_POINTS = "PSXP";
 		public const string NFL_ICON = "PICN";
+		public const string PRO_BOWL = "PFPB";
+		public const string CONTRACT_LENGTH = "PCON";
+		public const string CONTRACT_YRS_LEFT = "PCYL";
+		public const string SIGNING_BONUS = "PSBO";
+
+		public const string BODY_WEIGHT = "PMTS";
+		public const string BODY_MUSCLE = "PUTS";
+		public const string BODY_FAT = "PFTS";
+		public const string EQP_SHOES = "PLSS";
+		public const string EQP_PAD_HEIGHT = "PTSS";
+		public const string EQP_PAD_WIDTH = "PWSS";
+		public const string EQP_PAD_SHELF = "PCHS";
+		public const string EQP_FLAK_JACKET = "PQTS";
+		public const string ARMS_MUSCLE = "PMAS";
+		public const string ARMS_FAT = "PFAS";
+		public const string LEGS_THIGH_MUSCLE = "PMHS";
+		public const string LEGS_THIGH_FAT = "PFHS";
+		public const string LEGS_CALF_MUSCLE = "PMCS";
+		public const string LEGS_CALF_FAT = "PFCS";
+		public const string REAR_REAR_FAR = "PMGS";
+		public const string REAR_SHAPE = "PQGS";
 
 		public PlayerRecord(int record, RosterModel rosterModel)
 			: base(record, rosterModel)
@@ -189,7 +210,19 @@ namespace MaddenEditor.Domain
 			}
 			set
 			{
-				SetFieldWithBackup(NFL_ICON, Int32.Parse(value.ToString()));
+				SetFieldWithBackup(NFL_ICON, Convert.ToInt32(value));
+			}
+		}
+
+		public bool ProBowl
+		{
+			get
+			{
+				return (intFields[PRO_BOWL] == 1);
+			}
+			set
+			{
+				SetFieldWithBackup(PRO_BOWL, Convert.ToInt32(value));
 			}
 		}
 
@@ -201,7 +234,7 @@ namespace MaddenEditor.Domain
 			}
 			set
 			{
-				SetFieldWithBackup(DOMINANT_HAND, Int32.Parse(value.ToString()));
+				SetFieldWithBackup(DOMINANT_HAND, Convert.ToInt32(value));
 			}
 		}
 
@@ -514,6 +547,234 @@ namespace MaddenEditor.Domain
 			set
 			{
 				SetFieldWithBackup(HEIGHT, value);
+			}
+		}
+
+		public int BodyWeight
+		{
+			get
+			{
+				return intFields[BODY_WEIGHT];
+			}
+			set
+			{
+				SetFieldWithBackup(BODY_WEIGHT, value);
+			}
+		}
+
+		public int BodyMuscle
+		{
+			get
+			{
+				return intFields[BODY_MUSCLE];
+			}
+			set
+			{
+				SetFieldWithBackup(BODY_MUSCLE, value);
+			}
+		}
+
+		public int BodyFat
+		{
+			get
+			{
+				return intFields[BODY_FAT];
+			}
+			set
+			{
+				SetFieldWithBackup(BODY_FAT, value);
+			}
+		}
+
+		public int EquipmentShoes
+		{
+			get
+			{
+				return intFields[EQP_SHOES];
+			}
+			set
+			{
+				SetFieldWithBackup(EQP_SHOES, value);
+			}
+		}
+
+		public int EquipmentPadHeight
+		{
+			get
+			{
+				return intFields[EQP_PAD_HEIGHT];
+			}
+			set
+			{
+				SetFieldWithBackup(EQP_PAD_HEIGHT, value);
+			}
+		}
+
+		public int EquipmentPadWidth
+		{
+			get
+			{
+				return intFields[EQP_PAD_WIDTH];
+			}
+			set
+			{
+				SetFieldWithBackup(EQP_PAD_WIDTH, value);
+			}
+		}
+
+		public int EquipmentPadShelf
+		{
+			get
+			{
+				return intFields[EQP_PAD_SHELF];
+			}
+			set
+			{
+				SetFieldWithBackup(EQP_PAD_SHELF, value);
+			}
+		}
+
+		public int EquipmentFlakJacket
+		{
+			get
+			{
+				return intFields[EQP_FLAK_JACKET];
+			}
+			set
+			{
+				SetFieldWithBackup(EQP_FLAK_JACKET, value);
+			}
+		}
+
+		public int ArmsMuscle
+		{
+			get
+			{
+				return intFields[ARMS_MUSCLE];
+			}
+			set
+			{
+				SetFieldWithBackup(ARMS_MUSCLE, value);
+			}
+		}
+
+		public int ArmsFat
+		{
+			get
+			{
+				return intFields[ARMS_FAT];
+			}
+			set
+			{
+				SetFieldWithBackup(ARMS_FAT, value);
+			}
+		}
+
+		public int LegsThighMuscle
+		{
+			get
+			{
+				return intFields[LEGS_THIGH_MUSCLE];
+			}
+			set
+			{
+				SetFieldWithBackup(LEGS_THIGH_MUSCLE, value);
+			}
+		}
+
+		public int LegsThighFat
+		{
+			get
+			{
+				return intFields[LEGS_THIGH_FAT];
+			}
+			set
+			{
+				SetFieldWithBackup(LEGS_THIGH_FAT, value);
+			}
+		}
+
+		public int LegsCalfMuscle
+		{
+			get
+			{
+				return intFields[LEGS_CALF_MUSCLE];
+			}
+			set
+			{
+				SetFieldWithBackup(LEGS_CALF_MUSCLE, value);
+			}
+		}
+
+		public int LegsCalfFat
+		{
+			get
+			{
+				return intFields[LEGS_CALF_FAT];
+			}
+			set
+			{
+				SetFieldWithBackup(LEGS_CALF_FAT, value);
+			}
+		}
+
+		public int RearRearFat
+		{
+			get
+			{
+				return intFields[REAR_REAR_FAR];
+			}
+			set
+			{
+				SetFieldWithBackup(REAR_REAR_FAR, value);
+			}
+		}
+
+		public int RearShape
+		{
+			get
+			{
+				return intFields[REAR_SHAPE];
+			}
+			set
+			{
+				SetFieldWithBackup(REAR_SHAPE, value);
+			}
+		}
+
+		public int ContractLength
+		{
+			get
+			{
+				return intFields[CONTRACT_LENGTH];
+			}
+			set
+			{
+				SetFieldWithBackup(CONTRACT_LENGTH, value);
+			}
+		}
+
+		public int ContractYearsLeft
+		{
+			get
+			{
+				return intFields[CONTRACT_YRS_LEFT];
+			}
+			set
+			{
+				SetFieldWithBackup(CONTRACT_YRS_LEFT, value);
+			}
+		}
+
+		public int SigningBonus
+		{
+			get
+			{
+				return intFields[SIGNING_BONUS];
+			}
+			set
+			{
+				SetFieldWithBackup(SIGNING_BONUS, value);
 			}
 		}
 	}
