@@ -118,6 +118,12 @@ namespace MaddenEditor.Domain
 			{
 				return dirty;
 			}
+			set
+			{
+				dirty = value;
+				//Set the form into dirty view
+				view.Dirty = value;
+			}
 		}
 
 		public TableModel GetTable(MaddenTable tableType)
@@ -171,7 +177,7 @@ namespace MaddenEditor.Domain
 			tableProps.Name = new string((char)0, 5);
 			TDB.TDBTableGetProperties(dbIndex, (int)tableType, ref tableProps);
 
-			TableModel table = new TableModel(tableType, tableProps.Name);
+			TableModel table = new TableModel(tableType, tableProps.Name, this);
 			Console.WriteLine("Processing Table: " + table.Name);
 
 			//For each field for this table, find the name and add it to a collection

@@ -26,8 +26,8 @@ namespace MaddenEditor.Domain
 {
 	public class DepthChartRecord : TableRecordModel
 	{
-		public DepthChartRecord(int record)
-			: base(record)
+		public DepthChartRecord(int record, RosterModel rosterModel)
+			: base(record, rosterModel)
 		{
 
 		}

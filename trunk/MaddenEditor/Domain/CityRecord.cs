@@ -26,8 +26,8 @@ namespace MaddenEditor.Domain
 {
 	public class CityRecord : TableRecordModel
 	{
-		public CityRecord(int record)
-			: base(record)
+		public CityRecord(int record, RosterModel rosterModel)
+			: base(record, rosterModel)
 		{
 
 		}

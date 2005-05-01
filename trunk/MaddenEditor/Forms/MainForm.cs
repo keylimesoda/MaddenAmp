@@ -34,15 +34,18 @@ namespace MaddenEditor.Forms
     {
 		private RosterModel model = null;
 		private string fileToLoad;
+		private bool isInitialising = false;
 
         public MainForm()
         {
+			isInitialising = true;
             InitializeComponent();
-
+			
 			tabControl.Visible = false;
 			searchToolStripMenuItem.Visible = false;
 			statusStrip.Visible = false;
 
+			isInitialising = false;
         }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -98,8 +101,9 @@ namespace MaddenEditor.Forms
 					// Insert code here to process the files.
 					try
 					{
+						this.Cursor = Cursors.WaitCursor;
+
 						statusStrip.Visible = true;
-						this.Refresh();
 
 						rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 						rosterFileLoaderThread.RunWorkerAsync();
@@ -152,6 +156,40 @@ namespace MaddenEditor.Forms
 			lastNameTextBox.Text = record.LastName;
 			teamComboBox.Text = model.GetTeamNameFromTeamId(record.TeamId);
 			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
+
+			playerAge.Value = record.Age;
+			playerJerseyNumber.Value = record.JerseyNumber;
+			playerYearsPro.Value = record.YearsPro;
+			playerWeight.Value = record.Weight + 160;
+			playerHeightComboBox.SelectedIndex = record.Height - 65;
+			playerOverall.Value = record.Overall;
+			playerDominantHand.Checked = record.DominantHand;
+			
+			playerSpeed.Value = record.Speed;
+			playerStrength.Value = record.Strength;
+			playerAwareness.Value = record.Awareness;
+			playerAgility.Value = record.Agility;
+			playerAcceleration.Value = record.Acceleration;
+			playerCatching.Value = record.Catching;
+			playerCarrying.Value = record.Carrying;
+			playerJumping.Value = record.Jumping;
+			playerBreakTackle.Value = record.BreakTackle;
+			playerTackle.Value = record.Tackle;
+			playerThrowPower.Value = record.ThrowPower;
+			playerThrowAccuracy.Value = record.ThrowAccuracy;
+			playerPassBlocking.Value = record.PassBlocking;
+			playerRunBlocking.Value = record.RunBlocking;
+			playerKickPower.Value = record.KickPower;
+			playerKickAccuracy.Value = record.KickAccuracy;
+			playerKickReturn.Value = record.KickReturn;
+			playerStamina.Value = record.Stamina;
+			playerInjury.Value = record.Injury;
+			playerToughness.Value = record.Toughness;
+
+			playerMorale.Value = record.Morale;
+			playerImportance.Value = record.Importance;
+			playerNFLIcon.Checked = record.NFLIcon;
+			playerExperiencePoints.Value = record.XPPoints;
 		}
 
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,6 +199,8 @@ namespace MaddenEditor.Forms
 
 		private void rosterFileLoaderThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			isInitialising = true;
+
 			try
 			{
 				InitialiseData();
@@ -174,6 +214,9 @@ namespace MaddenEditor.Forms
 			searchToolStripMenuItem.Visible = true;
 			statusStrip.Visible = false;
 			toolStripProgressBar.Value = 0;
+			this.Cursor = Cursors.Default;
+
+			isInitialising = false;
 		}
 
 		private void rosterFileLoaderThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -217,6 +260,37 @@ namespace MaddenEditor.Forms
 			}
 
 			LoadPlayerInfo(model.CurrentPlayerRecord);
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			CheckSave();
+
+			Application.Exit();
+		}
+
+		private void playerSpeed_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Speed = (int)playerSpeed.Value;
+			}
+		}
+
+		private void firstNameTextBox_Leave(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.FirstName = firstNameTextBox.Text;
+			}
+		}
+
+		public bool Dirty
+		{
+			set
+			{
+				saveToolStripMenuItem.Enabled = value;
+			}
 		}
 
     }

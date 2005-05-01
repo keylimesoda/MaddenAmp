@@ -29,9 +29,11 @@ namespace MaddenEditor.Domain
 		protected List<TableRecordModel> recordList = null;
 		protected MaddenTable type;
 		protected String name;
+		protected RosterModel parentModel = null;
 
-		public TableModel(MaddenTable tableType, string name)
+		public TableModel(MaddenTable tableType, string name, RosterModel rosterModel)
 		{
+			parentModel = rosterModel;
 			type = tableType;
 			this.name = name;
 			recordList = new List<TableRecordModel>();
@@ -82,10 +84,10 @@ namespace MaddenEditor.Domain
 			switch (type)
 			{
 				case MaddenTable.CITY_TABLE:
-					newRecord = new CityRecord(recno);
+					newRecord = new CityRecord(recno, parentModel);
 					break;
 				case MaddenTable.COACH_TABLE:
-					newRecord = new CoachRecord(recno);
+					newRecord = new CoachRecord(recno, parentModel);
 					break;
 				case MaddenTable.CPSE_TABLE:
 					return null;
@@ -94,22 +96,22 @@ namespace MaddenEditor.Domain
 				case MaddenTable.CTMU_TABLE:
 					return null;
 				case MaddenTable.DEPTH_CHART_TABLE:
-					newRecord = new DepthChartRecord(recno);
+					newRecord = new DepthChartRecord(recno, parentModel);
 					break;
 				case MaddenTable.INJURY_TABLE:
-					newRecord = new InjuryRecord(recno);
+					newRecord = new InjuryRecord(recno, parentModel);
 					break;
 				case MaddenTable.PLAYER_TABLE:
-					newRecord = new PlayerRecord(recno);
+					newRecord = new PlayerRecord(recno, parentModel);
 					break;
 				case MaddenTable.STADIUM_TABLE:
-					newRecord = new StadiumTable(recno);
+					newRecord = new StadiumTable(recno, parentModel);
 					break;
 				case MaddenTable.TEAM_TABLE:
-					newRecord = new TeamRecord(recno);
+					newRecord = new TeamRecord(recno, parentModel);
 					break;
 				case MaddenTable.UNIFORM_TABLE:
-					newRecord = new UniformRecord(recno);
+					newRecord = new UniformRecord(recno, parentModel);
 					break;
 			}
 

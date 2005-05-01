@@ -29,15 +29,36 @@ namespace MaddenEditor.Domain
 	/// </summary>
 	public class TableRecordModel
 	{
+		protected bool dirty = false;
 		protected int recordNumber = -1;
 		protected Dictionary<string, int> intFields = null;
 		protected Dictionary<string, string> stringFields = null;
 
-		public TableRecordModel(int recordNumber)
+		protected Dictionary<string, int> backupIntFields = null;
+		protected Dictionary<string, string> backupStringFields = null;
+
+		protected RosterModel parentModel = null;
+
+		public TableRecordModel(int recordNumber, RosterModel rosterModel)
 		{
+			parentModel = rosterModel;
 			this.recordNumber = recordNumber;
 			intFields = new Dictionary<string, int>();
 			stringFields = new Dictionary<string, string>();
+			backupIntFields = new Dictionary<string, int>();
+			backupStringFields = new Dictionary<string, string>();
+		}
+
+		public bool Dirty
+		{
+			get
+			{
+				return dirty;
+			}
+			set
+			{
+				dirty = value;
+			}
 		}
 
 		public void SetField(string fieldName, string val)
@@ -70,6 +91,39 @@ namespace MaddenEditor.Domain
 			return stringFields[fieldName];
 		}
 
+		protected void SetFieldWithBackup(string fieldName, string val)
+		{
+			//Mark this record as dirty as well as the Full Roster Model
+			parentModel.Dirty = true;
+			this.dirty = true;
+
+			//If the string backup dictionary already contains a key for
+			//this fieldName, then don't back up
+			if (!backupStringFields.ContainsKey(fieldName))
+			{
+				//Backup original value
+				backupStringFields.Add(fieldName, stringFields[fieldName]);
+			}
+
+			stringFields[fieldName] = val;
+		}
+
+		protected void SetFieldWithBackup(string fieldName, int val)
+		{
+			//Mark this record as dirty as well as the Full Roster Model
+			parentModel.Dirty = true;
+			this.dirty = true;
+
+			//If the int backup dictionary already contains a key for
+			//this fieldName, then don't back up
+			if (!backupIntFields.ContainsKey(fieldName))
+			{
+				//Backup original value
+				backupIntFields.Add(fieldName, intFields[fieldName]);
+			}
+
+			intFields[fieldName] = val;
+		}
 		
 	}
 }

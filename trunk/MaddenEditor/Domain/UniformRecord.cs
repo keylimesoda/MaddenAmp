@@ -26,8 +26,8 @@ namespace MaddenEditor.Domain
 {
 	public class UniformRecord : TableRecordModel
 	{
-		public UniformRecord(int record)
-			: base(record)
+		public UniformRecord(int record, RosterModel rosterModel)
+			: base(record, rosterModel)
 		{
 
 		}
