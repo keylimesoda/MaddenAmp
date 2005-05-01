@@ -26,6 +26,12 @@ namespace MaddenEditor.Domain
 {
 	public class InjuryRecord : TableRecordModel
 	{
+		public const string INJURY_LENGTH = "INJL";
+		public const string INJURY_TYPE = "INJT";
+		public const string PLAYER_ID = "PGID";
+		public const string TEAM_ID = "TGID";
+		public const string INJURY_RSV = "INIR";
+
 		public InjuryRecord(int record)	: base(record)
 		{
 

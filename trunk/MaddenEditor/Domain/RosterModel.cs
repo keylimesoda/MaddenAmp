@@ -82,7 +82,10 @@ namespace MaddenEditor.Domain
 		private string fileName = "";
 		private MainForm view = null;
 		private Dictionary<MaddenTable, TableModel> tableModels = null;
-		private List<TeamRecordCompact> teamNameList = null;
+		private Dictionary<int, string> teamNameList = null;
+		private int currentPlayerIndex = 0;
+		private string currentTeamFilter = null;
+		private int currentPositionFilter = -1;
 
 		public RosterModel(string filename, MainForm form)
 		{
@@ -264,28 +267,132 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		public List<TeamRecordCompact> GetTeamNames()
+		public ICollection<string> GetTeamNames()
 		{
 			if (teamNameList == null)
 			{
-				teamNameList = new List<TeamRecordCompact>();
-
-				List<TableRecordModel> records = tableModels[MaddenTable.TEAM_TABLE].GetRecords();
-
-				foreach (TableRecordModel record in records)
+				teamNameList = new Dictionary<int, string>();
+				foreach (TableRecordModel record in tableModels[MaddenTable.TEAM_TABLE].GetRecords())
 				{
 					TeamRecord teamRecord = (TeamRecord)record;
-					teamNameList.Add(teamRecord.GetCompactRecord());
+					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
 				}
-
 			}
 
-			return teamNameList;
+			return teamNameList.Values;
+		}
+
+		public string GetTeamNameFromTeamId(int teamid)
+		{
+			if (teamNameList.ContainsKey(teamid))
+				return teamNameList[teamid];
+			else
+				return "UNKNOWNTEAM";
 		}
 
 		public PlayerRecord GetPlayerRecord(int recno)
 		{
 			return (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(recno);
+		}
+
+		public PlayerRecord CurrentPlayerRecord
+		{
+			get
+			{
+				return (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+			}
+		}
+
+		public PlayerRecord GetNextPlayerRecord()
+		{
+			PlayerRecord record = null;
+
+			while (true)
+			{
+				currentPlayerIndex++;
+				if (currentPlayerIndex >= tableModels[MaddenTable.PLAYER_TABLE].RecordCount)
+				{
+					currentPlayerIndex = 0;
+				}
+
+				record = (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+
+				if (currentTeamFilter != null)
+				{
+					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
+					{
+						continue;
+					}
+				}
+				if (currentPositionFilter != -1)
+				{
+					if (record.PositionId != currentPositionFilter)
+					{
+						continue;
+					}
+				}
+	
+				//Found one
+				break;
+			}
+
+			return record;
+		}
+
+		public PlayerRecord GetPreviousPlayerRecord()
+		{
+			PlayerRecord record = null;
+
+			while (true)
+			{
+				currentPlayerIndex--;
+				if (currentPlayerIndex < 0)
+				{
+					currentPlayerIndex = tableModels[MaddenTable.PLAYER_TABLE].RecordCount - 1;
+				}
+
+				record = (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+
+				if (currentTeamFilter != null)
+				{
+					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
+					{
+						continue;
+					}
+				}
+				if (currentPositionFilter != -1)
+				{
+					if (record.PositionId != currentPositionFilter)
+					{
+						continue;
+					}
+				}
+
+				//Found one
+				break;
+			}
+
+			return record;
+		}
+
+		public void SetTeamFilter(string teamname)
+		{
+			currentTeamFilter = teamname;
+		}
+
+		public void RemoveTeamFilter()
+		{
+			currentTeamFilter = null;
+		}
+
+		public void SetPositionFilter(int index)
+		{
+			currentPositionFilter = index;
+		}
+
+		public void RemovePositionFilter()
+		{
+			currentPositionFilter = -1;
 		}
 	}
 }

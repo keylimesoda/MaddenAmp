@@ -439,11 +439,13 @@ namespace MaddenEditor.Forms
 			// 
 			this.filterPositionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.filterPositionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.filterPositionComboBox.FormattingEnabled = true;
 			this.filterPositionComboBox.Location = new System.Drawing.Point(73, 39);
 			this.filterPositionComboBox.Name = "filterPositionComboBox";
 			this.filterPositionComboBox.Size = new System.Drawing.Size(153, 21);
 			this.filterPositionComboBox.TabIndex = 5;
+			this.filterPositionComboBox.SelectedIndexChanged += new System.EventHandler(this.positionCheckBox_CheckedChanged);
 			// 
 			// filterTeamComboBox
 			// 
@@ -455,6 +457,7 @@ namespace MaddenEditor.Forms
 			this.filterTeamComboBox.Name = "filterTeamComboBox";
 			this.filterTeamComboBox.Size = new System.Drawing.Size(153, 21);
 			this.filterTeamComboBox.TabIndex = 4;
+			this.filterTeamComboBox.SelectedIndexChanged += new System.EventHandler(this.teamCheckBox_CheckedChanged);
 			// 
 			// teamCheckBox
 			// 
@@ -465,6 +468,7 @@ namespace MaddenEditor.Forms
 			this.teamCheckBox.Size = new System.Drawing.Size(49, 17);
 			this.teamCheckBox.TabIndex = 3;
 			this.teamCheckBox.Text = "Team";
+			this.teamCheckBox.CheckedChanged += new System.EventHandler(this.teamCheckBox_CheckedChanged);
 			// 
 			// positionCheckBox
 			// 
@@ -475,6 +479,7 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox.Size = new System.Drawing.Size(59, 17);
 			this.positionCheckBox.TabIndex = 1;
 			this.positionCheckBox.Text = "Position";
+			this.positionCheckBox.CheckedChanged += new System.EventHandler(this.positionCheckBox_CheckedChanged);
 			// 
 			// tabControl1
 			// 
