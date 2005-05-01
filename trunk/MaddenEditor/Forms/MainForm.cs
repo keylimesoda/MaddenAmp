@@ -189,6 +189,7 @@ namespace MaddenEditor.Forms
 			playerStamina.Value = record.Stamina;
 			playerInjury.Value = record.Injury;
 			playerToughness.Value = record.Toughness;
+			playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
 
 			playerMorale.Value = record.Morale;
 			playerImportance.Value = record.Importance;
@@ -217,6 +218,10 @@ namespace MaddenEditor.Forms
 			playerRearRearFat.Value = record.RearRearFat;
 			playerRearShape.Value = record.RearShape;
 
+			//playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
+			playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
+			playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
+			playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
 			isInitialising = false;
 		}
 
@@ -738,6 +743,48 @@ namespace MaddenEditor.Forms
 				model.CurrentPlayerRecord.RearShape = (int)playerRearShape.Value;
 			}
 		}
+
+		private void playerContractLength_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ContractLength = (int)playerContractLength.Value;
+			}
+		}
+
+		private void playerContractYearsLeft_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ContractYearsLeft = (int)playerContractYearsLeft.Value;
+			}
+		}
+
+		private void playerProBowl_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ProBowl = playerProBowl.Checked;
+			}
+		}
+
+		private void playerSigningBonus_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.SigningBonus = (int)(playerSigningBonus.Value * 100);
+			}
+		}
+
+		private void playerThrowingStyle_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.ThrowingStyle = playerThrowingStyle.SelectedIndex;
+			}
+		}
+
+		
 
 
 	

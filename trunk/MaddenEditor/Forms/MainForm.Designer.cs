@@ -71,6 +71,13 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.playerRatingPage = new System.Windows.Forms.TabPage();
+			this.label70 = new System.Windows.Forms.Label();
+			this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
+			this.label69 = new System.Windows.Forms.Label();
+			this.label68 = new System.Windows.Forms.Label();
+			this.playerContractYearsLeft = new System.Windows.Forms.NumericUpDown();
+			this.playerContractLength = new System.Windows.Forms.NumericUpDown();
+			this.playerProBowl = new System.Windows.Forms.CheckBox();
 			this.calculateOverallButton = new System.Windows.Forms.Button();
 			this.playerOverall = new System.Windows.Forms.NumericUpDown();
 			this.label37 = new System.Windows.Forms.Label();
@@ -122,6 +129,8 @@ namespace MaddenEditor.Forms
 			this.playerSpeed = new System.Windows.Forms.NumericUpDown();
 			this.label11 = new System.Windows.Forms.Label();
 			this.playerAppearancePage = new System.Windows.Forms.TabPage();
+			this.label71 = new System.Windows.Forms.Label();
+			this.playerThrowingStyle = new System.Windows.Forms.ComboBox();
 			this.label67 = new System.Windows.Forms.Label();
 			this.label66 = new System.Windows.Forms.Label();
 			this.playerRightTatooCombo = new System.Windows.Forms.ComboBox();
@@ -185,18 +194,16 @@ namespace MaddenEditor.Forms
 			this.label38 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.playerInjuryPage = new System.Windows.Forms.TabPage();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.label73 = new System.Windows.Forms.Label();
+			this.playerFaceMaskCombo = new System.Windows.Forms.ComboBox();
+			this.label72 = new System.Windows.Forms.Label();
+			this.playerHelmetStyleCombo = new System.Windows.Forms.ComboBox();
 			this.teamPage = new System.Windows.Forms.TabPage();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
-			this.playerProBowl = new System.Windows.Forms.CheckBox();
-			this.playerContractLength = new System.Windows.Forms.NumericUpDown();
-			this.playerContractYearsLeft = new System.Windows.Forms.NumericUpDown();
-			this.label68 = new System.Windows.Forms.Label();
-			this.label69 = new System.Windows.Forms.Label();
-			this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
-			this.label70 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -210,6 +217,9 @@ namespace MaddenEditor.Forms
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.playerRatingPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).BeginInit();
@@ -257,10 +267,9 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyMuscle)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyWeight)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).BeginInit();
+			this.playerInjuryPage.SuspendLayout();
+			this.groupBox2.SuspendLayout();
 			this.statusStrip.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -1021,6 +1030,83 @@ namespace MaddenEditor.Forms
 			this.playerRatingPage.TabIndex = 0;
 			this.playerRatingPage.Text = "Player Ratings";
 			// 
+			// label70
+			// 
+			this.label70.AutoSize = true;
+			this.label70.Location = new System.Drawing.Point(370, 133);
+			this.label70.Name = "label70";
+			this.label70.Size = new System.Drawing.Size(71, 13);
+			this.label70.TabIndex = 63;
+			this.label70.Text = "Signing Bonus";
+			// 
+			// playerSigningBonus
+			// 
+			this.playerSigningBonus.DecimalPlaces = 2;
+			this.playerSigningBonus.Location = new System.Drawing.Point(447, 126);
+			this.playerSigningBonus.Maximum = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            131072});
+			this.playerSigningBonus.Name = "playerSigningBonus";
+			this.playerSigningBonus.Size = new System.Drawing.Size(74, 20);
+			this.playerSigningBonus.TabIndex = 62;
+			this.playerSigningBonus.ValueChanged += new System.EventHandler(this.playerSigningBonus_ValueChanged);
+			// 
+			// label69
+			// 
+			this.label69.AutoSize = true;
+			this.label69.Location = new System.Drawing.Point(366, 95);
+			this.label69.Name = "label69";
+			this.label69.Size = new System.Drawing.Size(94, 13);
+			this.label69.TabIndex = 61;
+			this.label69.Text = "Contract Years Left";
+			// 
+			// label68
+			// 
+			this.label68.AutoSize = true;
+			this.label68.Location = new System.Drawing.Point(381, 56);
+			this.label68.Name = "label68";
+			this.label68.Size = new System.Drawing.Size(79, 13);
+			this.label68.TabIndex = 60;
+			this.label68.Text = "Contract Length";
+			// 
+			// playerContractYearsLeft
+			// 
+			this.playerContractYearsLeft.Location = new System.Drawing.Point(466, 88);
+			this.playerContractYearsLeft.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+			this.playerContractYearsLeft.Name = "playerContractYearsLeft";
+			this.playerContractYearsLeft.Size = new System.Drawing.Size(55, 20);
+			this.playerContractYearsLeft.TabIndex = 59;
+			this.playerContractYearsLeft.ValueChanged += new System.EventHandler(this.playerContractYearsLeft_ValueChanged);
+			// 
+			// playerContractLength
+			// 
+			this.playerContractLength.Location = new System.Drawing.Point(466, 49);
+			this.playerContractLength.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+			this.playerContractLength.Name = "playerContractLength";
+			this.playerContractLength.Size = new System.Drawing.Size(55, 20);
+			this.playerContractLength.TabIndex = 58;
+			this.playerContractLength.ValueChanged += new System.EventHandler(this.playerContractLength_ValueChanged);
+			// 
+			// playerProBowl
+			// 
+			this.playerProBowl.AutoSize = true;
+			this.playerProBowl.Location = new System.Drawing.Point(455, 263);
+			this.playerProBowl.Name = "playerProBowl";
+			this.playerProBowl.Size = new System.Drawing.Size(61, 17);
+			this.playerProBowl.TabIndex = 57;
+			this.playerProBowl.Text = "ProBowl";
+			this.playerProBowl.CheckedChanged += new System.EventHandler(this.playerProBowl_CheckedChanged);
+			// 
 			// calculateOverallButton
 			// 
 			this.calculateOverallButton.Enabled = false;
@@ -1561,6 +1647,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerAppearancePage
 			// 
+			this.playerAppearancePage.Controls.Add(this.label71);
+			this.playerAppearancePage.Controls.Add(this.playerThrowingStyle);
 			this.playerAppearancePage.Controls.Add(this.label67);
 			this.playerAppearancePage.Controls.Add(this.label66);
 			this.playerAppearancePage.Controls.Add(this.playerRightTatooCombo);
@@ -1629,6 +1717,28 @@ namespace MaddenEditor.Forms
 			this.playerAppearancePage.Size = new System.Drawing.Size(536, 461);
 			this.playerAppearancePage.TabIndex = 1;
 			this.playerAppearancePage.Text = "Appearance";
+			// 
+			// label71
+			// 
+			this.label71.AutoSize = true;
+			this.label71.Location = new System.Drawing.Point(292, 389);
+			this.label71.Name = "label71";
+			this.label71.Size = new System.Drawing.Size(73, 13);
+			this.label71.TabIndex = 74;
+			this.label71.Text = "Throwing Style";
+			// 
+			// playerThrowingStyle
+			// 
+			this.playerThrowingStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerThrowingStyle.FormattingEnabled = true;
+			this.playerThrowingStyle.Items.AddRange(new object[] {
+            "Over",
+            "Side"});
+			this.playerThrowingStyle.Location = new System.Drawing.Point(371, 381);
+			this.playerThrowingStyle.Name = "playerThrowingStyle";
+			this.playerThrowingStyle.Size = new System.Drawing.Size(105, 21);
+			this.playerThrowingStyle.TabIndex = 73;
+			this.playerThrowingStyle.SelectedIndexChanged += new System.EventHandler(this.playerThrowingStyle_SelectedIndexChanged);
 			// 
 			// label67
 			// 
@@ -2269,11 +2379,83 @@ namespace MaddenEditor.Forms
 			// 
 			// playerInjuryPage
 			// 
+			this.playerInjuryPage.Controls.Add(this.groupBox2);
 			this.playerInjuryPage.Location = new System.Drawing.Point(4, 22);
 			this.playerInjuryPage.Name = "playerInjuryPage";
 			this.playerInjuryPage.Size = new System.Drawing.Size(536, 461);
 			this.playerInjuryPage.TabIndex = 2;
 			this.playerInjuryPage.Text = "Equipment/Injury";
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox2.Controls.Add(this.label73);
+			this.groupBox2.Controls.Add(this.playerFaceMaskCombo);
+			this.groupBox2.Controls.Add(this.label72);
+			this.groupBox2.Controls.Add(this.playerHelmetStyleCombo);
+			this.groupBox2.Location = new System.Drawing.Point(4, 5);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(529, 178);
+			this.groupBox2.TabIndex = 0;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Equipment";
+			// 
+			// label73
+			// 
+			this.label73.AutoSize = true;
+			this.label73.Location = new System.Drawing.Point(12, 63);
+			this.label73.Name = "label73";
+			this.label73.Size = new System.Drawing.Size(56, 13);
+			this.label73.TabIndex = 3;
+			this.label73.Text = "Face Mask";
+			// 
+			// playerFaceMaskCombo
+			// 
+			this.playerFaceMaskCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerFaceMaskCombo.FormattingEnabled = true;
+			this.playerFaceMaskCombo.Items.AddRange(new object[] {
+            "2-Bar",
+            "3-Bar",
+            "Half Cage",
+            "Full Cage",
+            "1-Bar",
+            "2-Bar-thin",
+            "3-Bar-QB",
+            "2-Bar-RB",
+            "3 Bar RB",
+            "RB Robots",
+            "RB Bull",
+            "RevoG2B",
+            "RevoG3BDU",
+            "RevoG2EG"});
+			this.playerFaceMaskCombo.Location = new System.Drawing.Point(74, 55);
+			this.playerFaceMaskCombo.Name = "playerFaceMaskCombo";
+			this.playerFaceMaskCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerFaceMaskCombo.TabIndex = 2;
+			// 
+			// label72
+			// 
+			this.label72.AutoSize = true;
+			this.label72.Location = new System.Drawing.Point(6, 26);
+			this.label72.Name = "label72";
+			this.label72.Size = new System.Drawing.Size(62, 13);
+			this.label72.TabIndex = 1;
+			this.label72.Text = "Helmet Style";
+			// 
+			// playerHelmetStyleCombo
+			// 
+			this.playerHelmetStyleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerHelmetStyleCombo.FormattingEnabled = true;
+			this.playerHelmetStyleCombo.Items.AddRange(new object[] {
+            "Style 1",
+            "Style 2",
+            "Style 3",
+            "Revolution"});
+			this.playerHelmetStyleCombo.Location = new System.Drawing.Point(74, 19);
+			this.playerHelmetStyleCombo.Name = "playerHelmetStyleCombo";
+			this.playerHelmetStyleCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerHelmetStyleCombo.TabIndex = 0;
 			// 
 			// teamPage
 			// 
@@ -2315,79 +2497,6 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
 			// 
-			// playerProBowl
-			// 
-			this.playerProBowl.AutoSize = true;
-			this.playerProBowl.Location = new System.Drawing.Point(455, 263);
-			this.playerProBowl.Name = "playerProBowl";
-			this.playerProBowl.Size = new System.Drawing.Size(61, 17);
-			this.playerProBowl.TabIndex = 57;
-			this.playerProBowl.Text = "ProBowl";
-			// 
-			// playerContractLength
-			// 
-			this.playerContractLength.Location = new System.Drawing.Point(466, 49);
-			this.playerContractLength.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-			this.playerContractLength.Name = "playerContractLength";
-			this.playerContractLength.Size = new System.Drawing.Size(55, 20);
-			this.playerContractLength.TabIndex = 58;
-			// 
-			// playerContractYearsLeft
-			// 
-			this.playerContractYearsLeft.Location = new System.Drawing.Point(466, 88);
-			this.playerContractYearsLeft.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-			this.playerContractYearsLeft.Name = "playerContractYearsLeft";
-			this.playerContractYearsLeft.Size = new System.Drawing.Size(55, 20);
-			this.playerContractYearsLeft.TabIndex = 59;
-			// 
-			// label68
-			// 
-			this.label68.AutoSize = true;
-			this.label68.Location = new System.Drawing.Point(381, 56);
-			this.label68.Name = "label68";
-			this.label68.Size = new System.Drawing.Size(79, 13);
-			this.label68.TabIndex = 60;
-			this.label68.Text = "Contract Length";
-			// 
-			// label69
-			// 
-			this.label69.AutoSize = true;
-			this.label69.Location = new System.Drawing.Point(366, 95);
-			this.label69.Name = "label69";
-			this.label69.Size = new System.Drawing.Size(94, 13);
-			this.label69.TabIndex = 61;
-			this.label69.Text = "Contract Years Left";
-			// 
-			// playerSigningBonus
-			// 
-			this.playerSigningBonus.DecimalPlaces = 2;
-			this.playerSigningBonus.Location = new System.Drawing.Point(447, 126);
-			this.playerSigningBonus.Maximum = new decimal(new int[] {
-            8192,
-            0,
-            0,
-            131072});
-			this.playerSigningBonus.Name = "playerSigningBonus";
-			this.playerSigningBonus.Size = new System.Drawing.Size(74, 20);
-			this.playerSigningBonus.TabIndex = 62;
-			// 
-			// label70
-			// 
-			this.label70.AutoSize = true;
-			this.label70.Location = new System.Drawing.Point(370, 133);
-			this.label70.Name = "label70";
-			this.label70.Size = new System.Drawing.Size(71, 13);
-			this.label70.TabIndex = 63;
-			this.label70.Text = "Signing Bonus";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2419,6 +2528,9 @@ namespace MaddenEditor.Forms
 			this.tabControl1.ResumeLayout(false);
 			this.playerRatingPage.ResumeLayout(false);
 			this.playerRatingPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).EndInit();
@@ -2467,10 +2579,10 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyMuscle)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyWeight)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).EndInit();
+			this.playerInjuryPage.ResumeLayout(false);
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.statusStrip.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -2646,5 +2758,12 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown playerContractLength;
 		private System.Windows.Forms.Label label70;
 		private System.Windows.Forms.NumericUpDown playerSigningBonus;
+		private System.Windows.Forms.Label label71;
+		private System.Windows.Forms.ComboBox playerThrowingStyle;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.ComboBox playerHelmetStyleCombo;
+		private System.Windows.Forms.Label label72;
+		private System.Windows.Forms.ComboBox playerFaceMaskCombo;
+		private System.Windows.Forms.Label label73;
     }
 }

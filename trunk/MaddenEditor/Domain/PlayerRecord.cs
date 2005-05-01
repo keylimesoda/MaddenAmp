@@ -61,6 +61,7 @@ namespace MaddenEditor.Domain
 		public const string STAMINA = "PSTA";
 		public const string INJURY = "PINJ";
 		public const string TOUGHNESS = "PTGH";
+		public const string THROWING_STYLE = "PSTY";
 
 		public const string MORALE = "PMOR";
 		public const string IMPORTANCE = "PIMP";
@@ -87,6 +88,11 @@ namespace MaddenEditor.Domain
 		public const string LEGS_CALF_FAT = "PFCS";
 		public const string REAR_REAR_FAR = "PMGS";
 		public const string REAR_SHAPE = "PQGS";
+				
+		public const string HAIR_COLOR = "PHCL";
+
+		public const string HELMET_STYLE = "PHLM";
+		public const string FACE_MASK = "PFMK";
 
 		public PlayerRecord(int record, RosterModel rosterModel)
 			: base(record, rosterModel)
@@ -775,6 +781,66 @@ namespace MaddenEditor.Domain
 			set
 			{
 				SetFieldWithBackup(SIGNING_BONUS, value);
+			}
+		}
+
+		/*public int SkinType
+		{
+			get
+			{
+				return intFields[SKIN_COLOR];
+			}
+			set
+			{
+				SetFieldWithBackup(SKIN_COLOR, value);
+			}
+		}*/
+
+		public int ThrowingStyle
+		{
+			get
+			{
+				return intFields[THROWING_STYLE];
+			}
+			set
+			{
+				SetFieldWithBackup(THROWING_STYLE, value);
+			}
+		}
+
+		public int HairColor
+		{
+			get
+			{
+				return intFields[HAIR_COLOR];
+			}
+			set
+			{
+				SetFieldWithBackup(HAIR_COLOR, value);
+			}
+		}
+
+		public int HelmetStyle
+		{
+			get
+			{
+				return intFields[HELMET_STYLE];
+			}
+			set
+			{
+				SetFieldWithBackup(HELMET_STYLE, value);
+			}
+		}
+
+		public int FaceMask
+		{
+			get
+			{
+				return intFields[FACE_MASK];
+			}
+			set
+			{
+				SetFieldWithBackup(FACE_MASK, value);
 			}
 		}
 	}
