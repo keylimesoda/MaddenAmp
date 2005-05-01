@@ -39,9 +39,11 @@ namespace MaddenEditor.Forms
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
 			this.playerSplitContainer = new System.Windows.Forms.SplitContainer();
+			this.playerDominantHand = new System.Windows.Forms.CheckBox();
 			this.playerYearsPro = new System.Windows.Forms.NumericUpDown();
 			this.playerJerseyNumber = new System.Windows.Forms.NumericUpDown();
 			this.positionComboBox = new System.Windows.Forms.ComboBox();
@@ -69,32 +71,26 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.playerRatingPage = new System.Windows.Forms.TabPage();
-			this.playerAppearancePage = new System.Windows.Forms.TabPage();
-			this.teamPage = new System.Windows.Forms.TabPage();
-			this.statusStrip = new System.Windows.Forms.StatusStrip();
-			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
-			this.label11 = new System.Windows.Forms.Label();
-			this.playerSpeed = new System.Windows.Forms.NumericUpDown();
-			this.label12 = new System.Windows.Forms.Label();
-			this.label13 = new System.Windows.Forms.Label();
-			this.label14 = new System.Windows.Forms.Label();
-			this.label15 = new System.Windows.Forms.Label();
-			this.label16 = new System.Windows.Forms.Label();
-			this.label17 = new System.Windows.Forms.Label();
-			this.label18 = new System.Windows.Forms.Label();
-			this.label19 = new System.Windows.Forms.Label();
-			this.label20 = new System.Windows.Forms.Label();
-			this.playerStrength = new System.Windows.Forms.NumericUpDown();
-			this.playerAwareness = new System.Windows.Forms.NumericUpDown();
-			this.playerAgility = new System.Windows.Forms.NumericUpDown();
-			this.playerJumping = new System.Windows.Forms.NumericUpDown();
-			this.playerCarrying = new System.Windows.Forms.NumericUpDown();
-			this.playerCatching = new System.Windows.Forms.NumericUpDown();
-			this.playerAcceleration = new System.Windows.Forms.NumericUpDown();
-			this.playerTackle = new System.Windows.Forms.NumericUpDown();
-			this.playerBreakTackle = new System.Windows.Forms.NumericUpDown();
+			this.calculateOverallButton = new System.Windows.Forms.Button();
+			this.playerOverall = new System.Windows.Forms.NumericUpDown();
+			this.label37 = new System.Windows.Forms.Label();
+			this.label35 = new System.Windows.Forms.Label();
+			this.playerExperiencePoints = new System.Windows.Forms.NumericUpDown();
+			this.playerNFLIcon = new System.Windows.Forms.CheckBox();
+			this.playerMorale = new System.Windows.Forms.NumericUpDown();
+			this.playerImportance = new System.Windows.Forms.NumericUpDown();
+			this.label34 = new System.Windows.Forms.Label();
+			this.label33 = new System.Windows.Forms.Label();
+			this.label30 = new System.Windows.Forms.Label();
+			this.label29 = new System.Windows.Forms.Label();
+			this.label28 = new System.Windows.Forms.Label();
+			this.label27 = new System.Windows.Forms.Label();
+			this.label26 = new System.Windows.Forms.Label();
+			this.label25 = new System.Windows.Forms.Label();
+			this.label24 = new System.Windows.Forms.Label();
+			this.label23 = new System.Windows.Forms.Label();
+			this.label22 = new System.Windows.Forms.Label();
+			this.label21 = new System.Windows.Forms.Label();
 			this.playerToughness = new System.Windows.Forms.NumericUpDown();
 			this.playerInjury = new System.Windows.Forms.NumericUpDown();
 			this.playerStamina = new System.Windows.Forms.NumericUpDown();
@@ -105,33 +101,102 @@ namespace MaddenEditor.Forms
 			this.playerPassBlocking = new System.Windows.Forms.NumericUpDown();
 			this.playerThrowAccuracy = new System.Windows.Forms.NumericUpDown();
 			this.playerThrowPower = new System.Windows.Forms.NumericUpDown();
-			this.label21 = new System.Windows.Forms.Label();
-			this.label22 = new System.Windows.Forms.Label();
-			this.label23 = new System.Windows.Forms.Label();
-			this.label24 = new System.Windows.Forms.Label();
-			this.label25 = new System.Windows.Forms.Label();
-			this.label26 = new System.Windows.Forms.Label();
-			this.label27 = new System.Windows.Forms.Label();
-			this.label28 = new System.Windows.Forms.Label();
-			this.label29 = new System.Windows.Forms.Label();
-			this.label30 = new System.Windows.Forms.Label();
-			this.label31 = new System.Windows.Forms.Label();
-			this.label32 = new System.Windows.Forms.Label();
-			this.playerHeightComboBox = new System.Windows.Forms.ComboBox();
-			this.label33 = new System.Windows.Forms.Label();
-			this.label34 = new System.Windows.Forms.Label();
-			this.playerImportance = new System.Windows.Forms.NumericUpDown();
-			this.playerMorale = new System.Windows.Forms.NumericUpDown();
-			this.playerNFLIcon = new System.Windows.Forms.CheckBox();
-			this.playerExperiencePoints = new System.Windows.Forms.NumericUpDown();
-			this.label35 = new System.Windows.Forms.Label();
-			this.playerWeight = new System.Windows.Forms.NumericUpDown();
+			this.playerTackle = new System.Windows.Forms.NumericUpDown();
+			this.playerBreakTackle = new System.Windows.Forms.NumericUpDown();
+			this.playerJumping = new System.Windows.Forms.NumericUpDown();
+			this.playerCarrying = new System.Windows.Forms.NumericUpDown();
+			this.playerCatching = new System.Windows.Forms.NumericUpDown();
+			this.playerAcceleration = new System.Windows.Forms.NumericUpDown();
+			this.playerAgility = new System.Windows.Forms.NumericUpDown();
+			this.playerAwareness = new System.Windows.Forms.NumericUpDown();
+			this.playerStrength = new System.Windows.Forms.NumericUpDown();
+			this.label20 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label16 = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
+			this.label14 = new System.Windows.Forms.Label();
+			this.label13 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
+			this.playerSpeed = new System.Windows.Forms.NumericUpDown();
+			this.label11 = new System.Windows.Forms.Label();
+			this.playerAppearancePage = new System.Windows.Forms.TabPage();
+			this.label67 = new System.Windows.Forms.Label();
+			this.label66 = new System.Windows.Forms.Label();
+			this.playerRightTatooCombo = new System.Windows.Forms.ComboBox();
+			this.playerLeftTatooCombo = new System.Windows.Forms.ComboBox();
+			this.label65 = new System.Windows.Forms.Label();
+			this.playerFaceShape = new System.Windows.Forms.NumericUpDown();
+			this.label64 = new System.Windows.Forms.Label();
+			this.playerFace = new System.Windows.Forms.NumericUpDown();
+			this.label63 = new System.Windows.Forms.Label();
+			this.playerHairStyleCombo = new System.Windows.Forms.ComboBox();
+			this.playerSkinColorCombo = new System.Windows.Forms.ComboBox();
+			this.label62 = new System.Windows.Forms.Label();
+			this.playerHairColorCombo = new System.Windows.Forms.ComboBox();
+			this.label61 = new System.Windows.Forms.Label();
 			this.label36 = new System.Windows.Forms.Label();
+			this.playerWeight = new System.Windows.Forms.NumericUpDown();
+			this.playerHeightComboBox = new System.Windows.Forms.ComboBox();
+			this.label32 = new System.Windows.Forms.Label();
+			this.label31 = new System.Windows.Forms.Label();
+			this.label60 = new System.Windows.Forms.Label();
+			this.label59 = new System.Windows.Forms.Label();
+			this.label58 = new System.Windows.Forms.Label();
+			this.label57 = new System.Windows.Forms.Label();
+			this.label56 = new System.Windows.Forms.Label();
+			this.label55 = new System.Windows.Forms.Label();
+			this.label54 = new System.Windows.Forms.Label();
+			this.playerRearShape = new System.Windows.Forms.NumericUpDown();
+			this.playerRearRearFat = new System.Windows.Forms.NumericUpDown();
+			this.playerRearMuscle = new System.Windows.Forms.NumericUpDown();
+			this.playerLegsCalfFat = new System.Windows.Forms.NumericUpDown();
+			this.playerLegsCalfMuscle = new System.Windows.Forms.NumericUpDown();
+			this.playerLegsThighFat = new System.Windows.Forms.NumericUpDown();
+			this.playerLegsThighMuscle = new System.Windows.Forms.NumericUpDown();
+			this.label53 = new System.Windows.Forms.Label();
+			this.label52 = new System.Windows.Forms.Label();
+			this.playerArmsFat = new System.Windows.Forms.NumericUpDown();
+			this.playerArmsMuscle = new System.Windows.Forms.NumericUpDown();
+			this.label51 = new System.Windows.Forms.Label();
+			this.label50 = new System.Windows.Forms.Label();
+			this.playerEquipmentFlakJacket = new System.Windows.Forms.NumericUpDown();
+			this.label49 = new System.Windows.Forms.Label();
+			this.label48 = new System.Windows.Forms.Label();
+			this.label47 = new System.Windows.Forms.Label();
+			this.label46 = new System.Windows.Forms.Label();
+			this.label45 = new System.Windows.Forms.Label();
+			this.label44 = new System.Windows.Forms.Label();
+			this.label43 = new System.Windows.Forms.Label();
+			this.playerEquipmentPadShelf = new System.Windows.Forms.NumericUpDown();
+			this.playerEquipmentPadWidth = new System.Windows.Forms.NumericUpDown();
+			this.playerEquipmentPadHeight = new System.Windows.Forms.NumericUpDown();
+			this.playerEquipmentThighPads = new System.Windows.Forms.NumericUpDown();
+			this.playerEquipmentShoes = new System.Windows.Forms.NumericUpDown();
+			this.playerBodyFat = new System.Windows.Forms.NumericUpDown();
+			this.playerBodyMuscle = new System.Windows.Forms.NumericUpDown();
+			this.playerBodyWeight = new System.Windows.Forms.NumericUpDown();
+			this.playerBodyOverall = new System.Windows.Forms.NumericUpDown();
+			this.label42 = new System.Windows.Forms.Label();
+			this.label41 = new System.Windows.Forms.Label();
+			this.label40 = new System.Windows.Forms.Label();
+			this.label39 = new System.Windows.Forms.Label();
+			this.label38 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
 			this.playerInjuryPage = new System.Windows.Forms.TabPage();
-			this.label37 = new System.Windows.Forms.Label();
-			this.playerOverall = new System.Windows.Forms.NumericUpDown();
-			this.calculateOverallButton = new System.Windows.Forms.Button();
-			this.playerDominantHand = new System.Windows.Forms.CheckBox();
+			this.teamPage = new System.Windows.Forms.TabPage();
+			this.statusStrip = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
+			this.playerProBowl = new System.Windows.Forms.CheckBox();
+			this.playerContractLength = new System.Windows.Forms.NumericUpDown();
+			this.playerContractYearsLeft = new System.Windows.Forms.NumericUpDown();
+			this.label68 = new System.Windows.Forms.Label();
+			this.label69 = new System.Windows.Forms.Label();
+			this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
+			this.label70 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -145,17 +210,10 @@ namespace MaddenEditor.Forms
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.playerRatingPage.SuspendLayout();
-			this.statusStrip.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.playerSpeed)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerStrength)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerAwareness)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerAgility)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerJumping)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerCarrying)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerCatching)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerAcceleration)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerTackle)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerBreakTackle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerImportance)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerToughness)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerInjury)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerStamina)).BeginInit();
@@ -166,11 +224,43 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerPassBlocking)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerThrowAccuracy)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerThrowPower)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerImportance)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerTackle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBreakTackle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerJumping)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerCarrying)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerCatching)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerAcceleration)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerAgility)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerAwareness)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerStrength)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerSpeed)).BeginInit();
+			this.playerAppearancePage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerFaceShape)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerFace)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerWeight)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerRearShape)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerRearRearFat)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerRearMuscle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsCalfFat)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsCalfMuscle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsThighFat)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsThighMuscle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerArmsFat)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerArmsMuscle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentFlakJacket)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentPadShelf)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentPadWidth)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentPadHeight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentThighPads)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentShoes)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyFat)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyMuscle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyWeight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).BeginInit();
+			this.statusStrip.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -218,6 +308,7 @@ namespace MaddenEditor.Forms
 			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.Text = "&Save";
+			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -236,8 +327,16 @@ namespace MaddenEditor.Forms
 			// 
 			// helpToolStripMenuItem
 			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Text = "&Help";
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Text = "About ...";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// tabControl
 			// 
@@ -297,12 +396,23 @@ namespace MaddenEditor.Forms
 			this.playerSplitContainer.TabIndex = 0;
 			this.playerSplitContainer.Text = "splitContainer1";
 			// 
+			// playerDominantHand
+			// 
+			this.playerDominantHand.AutoSize = true;
+			this.playerDominantHand.Location = new System.Drawing.Point(124, 346);
+			this.playerDominantHand.Name = "playerDominantHand";
+			this.playerDominantHand.Size = new System.Drawing.Size(81, 17);
+			this.playerDominantHand.TabIndex = 8;
+			this.playerDominantHand.Text = "Left Handed";
+			this.playerDominantHand.CheckedChanged += new System.EventHandler(this.playerDominantHand_CheckedChanged);
+			// 
 			// playerYearsPro
 			// 
 			this.playerYearsPro.Location = new System.Drawing.Point(63, 370);
 			this.playerYearsPro.Name = "playerYearsPro";
 			this.playerYearsPro.Size = new System.Drawing.Size(51, 20);
 			this.playerYearsPro.TabIndex = 7;
+			this.playerYearsPro.ValueChanged += new System.EventHandler(this.playerYearsPro_ValueChanged);
 			// 
 			// playerJerseyNumber
 			// 
@@ -315,6 +425,7 @@ namespace MaddenEditor.Forms
 			this.playerJerseyNumber.Name = "playerJerseyNumber";
 			this.playerJerseyNumber.Size = new System.Drawing.Size(51, 20);
 			this.playerJerseyNumber.TabIndex = 6;
+			this.playerJerseyNumber.ValueChanged += new System.EventHandler(this.playerJerseyNumber_ValueChanged);
 			// 
 			// positionComboBox
 			// 
@@ -326,6 +437,7 @@ namespace MaddenEditor.Forms
 			this.positionComboBox.Name = "positionComboBox";
 			this.positionComboBox.Size = new System.Drawing.Size(163, 21);
 			this.positionComboBox.TabIndex = 5;
+			this.positionComboBox.SelectedIndexChanged += new System.EventHandler(this.positionComboBox_SelectedIndexChanged);
 			// 
 			// teamComboBox
 			// 
@@ -337,6 +449,7 @@ namespace MaddenEditor.Forms
 			this.teamComboBox.Name = "teamComboBox";
 			this.teamComboBox.Size = new System.Drawing.Size(163, 21);
 			this.teamComboBox.TabIndex = 4;
+			this.teamComboBox.SelectedIndexChanged += new System.EventHandler(this.teamComboBox_SelectedIndexChanged);
 			// 
 			// label9
 			// 
@@ -378,7 +491,286 @@ namespace MaddenEditor.Forms
 			// 
 			this.collegeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.collegeComboBox.Enabled = false;
 			this.collegeComboBox.FormattingEnabled = true;
+			this.collegeComboBox.Items.AddRange(new object[] {
+            "Abilene Chr",
+            "Airforce",
+            "Akron",
+            "Alabama",
+            "Alabama A&M",
+            "Alabama St",
+            "Alcorn St",
+            "Appalach St",
+            "Arizona ",
+            "Arizona St",
+            "Arkansas",
+            "Arkansas P.B.",
+            "Arkansas St",
+            "Army",
+            "Auburn",
+            "Austin Peay",
+            "BYU",
+            "Ball State",
+            "Baylor",
+            "Beth Cookman",
+            "Boise State",
+            "Boston Coll",
+            "Bowl. Green",
+            "Brown",
+            "Bucknell",
+            "Buffalo",
+            "Butler",
+            "Cal Poly SLO",
+            "Cal-Nrth ridge",
+            "Cal-Sacrmnto",
+            "California",
+            "Canisuis",
+            "Cent Conn St",
+            "Central MI",
+            "Central St Ohio",
+            "Central St (OK)",
+            "Charleston S",
+            "Cincinatti",
+            "Citadel",
+            "Clemson",
+            "Clinch Valley",
+            "Colgate",
+            "Colorado",
+            "Colorado St",
+            "Columbia",
+            "Casnell",
+            "Culver-Stockton",
+            "Dartmouth",
+            "Davidson",
+            "Dayton",
+            "Delaware",
+            "Delaware St",
+            "Drake",
+            "Duke",
+            "Duquesne",
+            "E.Carolina",
+            "E.Illinois",
+            "E.Kentucky",
+            "E.Tenn St",
+            "East. Mich",
+            "Easter Wash",
+            "Elon College",
+            "Emperia State",
+            "Fairfield",
+            "Florida",
+            "Florida A&M",
+            "Florida State",
+            "Fordham",
+            "Fresno State",
+            "Furmon",
+            "Ga. Southern",
+            "Georgetown",
+            "Georgia",
+            "Georgia Tech",
+            "Grambling St",
+            "Grand Valley St",
+            "Hampton",
+            "Harvard",
+            "Hastings College",
+            "Hawaii",
+            "Henderson St",
+            "Hofstra",
+            "Holy Cross",
+            "Houston",
+            "Huward",
+            "Idaho",
+            "Idaho State",
+            "Illinois",
+            "Illinois St",
+            "Indiana ",
+            "Indiana St",
+            "Indiana (Penn.)",
+            "Iona",
+            "Iowa",
+            "Iowa State",
+            "J.Madison",
+            "Jackson St",
+            "Jacksonv.St",
+            "John Carroll",
+            "Kansas",
+            "Kansas State",
+            "Kent State",
+            "Kentucky",
+            "Kutztown",
+            "LA.Tech",
+            "LSV",
+            "La Salle",
+            "Lambuth",
+            "Lehigh",
+            "Liberty",
+            "Louisville",
+            "M.Valley St",
+            "Maine",
+            "Marist",
+            "Marshall",
+            "Maryland",
+            "Massachusetts",
+            "McNeese St",
+            "Memphis",
+            "Miami",
+            "Miami Univ",
+            "Michigan",
+            "Michigan St",
+            "Mid tenn St",
+            "Mid Western St",
+            "Minnesota",
+            "Miss. State",
+            "Missouri",
+            "Monmouth",
+            "Montana",
+            "Montana State",
+            "Morehead St",
+            "Morehouse",
+            "Morgan St",
+            "Morris Brown",
+            "Mt S Antonio",
+            "Murray State",
+            "N\'western St",
+            "N.Alabama",
+            "N.Arizona",
+            "N.Car A&T",
+            "N.Carolina",
+            "N.Colorado",
+            "N.Illinois",
+            "N.C.State",
+            "N/A",
+            "NC Central",
+            "NW Oklahoma St",
+            "Navy",
+            "Nebr-Omaha",
+            "Nebraska",
+            "Nevada",
+            "New Hampshire",
+            "New Mex St",
+            "New Mexico",
+            "Nicholls St",
+            "No College",
+            "Norfolk State",
+            "North Dakota",
+            "North Texas",
+            "Northeastern",
+            "Northern Iowa",
+            "North Western",
+            "Notre Dame",
+            "Ohio",
+            "Ohio State",
+            "Oklahoma",
+            "Oklahoma St",
+            "Ole Miss",
+            "Oregon",
+            "Oregon State",
+            "P.View A&M",
+            "Penn",
+            "Penn State",
+            "Pittburgh St.",
+            "Pittburgh",
+            "Prtland St.",
+            "Princeton",
+            "Purdue",
+            "Rhode Island",
+            "Rice",
+            "Richmond",
+            "Robert Morris",
+            "Rowan",
+            "Rutgers",
+            "S.Carolina",
+            "S.Dakota St",
+            "S.Illinois",
+            "S.C.State",
+            "S.D.State",
+            "S.F.Austin",
+            "SE Missouri",
+            "SE Missouri St",
+            "SMU",
+            "SUNY Albany",
+            "SW Miss St",
+            "SW Texas St.",
+            "Sacred Heart",
+            "Saginaw Valley",
+            "Sam Houston",
+            "Samford",
+            "San Jose St",
+            "Savannah St",
+            "Shippensburgh",
+            "Siena",
+            "Simon Fraser",
+            "Sonoma St",
+            "Southern",
+            "Southern Miss",
+            "Southern Utah",
+            "St.Francis",
+            "St.Johns",
+            "St.Mary\'s",
+            "St.Peters",
+            "Stanford",
+            "Stony Brook",
+            "Syracuse",
+            "T A&M K\'ville",
+            "TCU",
+            "Temple",
+            "Tenn-Chat",
+            "Tenn-Martin",
+            "Tenn Tech",
+            "Tennessee",
+            "Tennessee St.",
+            "Texas",
+            "Texas A&M",
+            "Texas South",
+            "Texas Tech",
+            "Toledo",
+            "Towson State",
+            "Troy State",
+            "Tulane",
+            "Tulsa",
+            "Tuskagee",
+            "UAB",
+            "UCF",
+            "UCLA",
+            "U Conn",
+            "UL Lafayette",
+            "UL Monroe",
+            "UNLV",
+            "USC",
+            "USF",
+            "UTEP",
+            "UW Lacrosse",
+            "UW Stevens Pt",
+            "Utah",
+            "Utah State",
+            "VML",
+            "Valdosta St",
+            "Valparaiso",
+            "Vanderbilt",
+            "Villanova",
+            "Virginia",
+            "Virginia Tech",
+            "W.Carolina",
+            "W.Illinois",
+            "W.Kentucky",
+            "W.Michigan",
+            "W.Texas A&M",
+            "Wagner",
+            "Wake Forest",
+            "Walla Walla",
+            "Wash St.",
+            "Washington",
+            "Wayne State",
+            "Weber State",
+            "West Virginia",
+            "Westminster",
+            "Will & Mary",
+            "Winston Salem",
+            "Wisconsin",
+            "Wofford",
+            "Wyoming",
+            "Yale",
+            "Youngstown St"});
 			this.collegeComboBox.Location = new System.Drawing.Point(63, 263);
 			this.collegeComboBox.Name = "collegeComboBox";
 			this.collegeComboBox.Size = new System.Drawing.Size(163, 21);
@@ -408,6 +800,7 @@ namespace MaddenEditor.Forms
 			this.playerAge.Name = "playerAge";
 			this.playerAge.Size = new System.Drawing.Size(51, 20);
 			this.playerAge.TabIndex = 2;
+			this.playerAge.ValueChanged += new System.EventHandler(this.playerAge_ValueChanged);
 			// 
 			// lastNameTextBox
 			// 
@@ -418,6 +811,7 @@ namespace MaddenEditor.Forms
 			this.lastNameTextBox.Name = "lastNameTextBox";
 			this.lastNameTextBox.Size = new System.Drawing.Size(163, 20);
 			this.lastNameTextBox.TabIndex = 1;
+			this.lastNameTextBox.Leave += new System.EventHandler(this.lastNameTextBox_Leave);
 			// 
 			// label3
 			// 
@@ -563,11 +957,16 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRatingPage
 			// 
+			this.playerRatingPage.Controls.Add(this.label70);
+			this.playerRatingPage.Controls.Add(this.playerSigningBonus);
+			this.playerRatingPage.Controls.Add(this.label69);
+			this.playerRatingPage.Controls.Add(this.label68);
+			this.playerRatingPage.Controls.Add(this.playerContractYearsLeft);
+			this.playerRatingPage.Controls.Add(this.playerContractLength);
+			this.playerRatingPage.Controls.Add(this.playerProBowl);
 			this.playerRatingPage.Controls.Add(this.calculateOverallButton);
 			this.playerRatingPage.Controls.Add(this.playerOverall);
 			this.playerRatingPage.Controls.Add(this.label37);
-			this.playerRatingPage.Controls.Add(this.label36);
-			this.playerRatingPage.Controls.Add(this.playerWeight);
 			this.playerRatingPage.Controls.Add(this.label35);
 			this.playerRatingPage.Controls.Add(this.playerExperiencePoints);
 			this.playerRatingPage.Controls.Add(this.playerNFLIcon);
@@ -575,9 +974,6 @@ namespace MaddenEditor.Forms
 			this.playerRatingPage.Controls.Add(this.playerImportance);
 			this.playerRatingPage.Controls.Add(this.label34);
 			this.playerRatingPage.Controls.Add(this.label33);
-			this.playerRatingPage.Controls.Add(this.playerHeightComboBox);
-			this.playerRatingPage.Controls.Add(this.label32);
-			this.playerRatingPage.Controls.Add(this.label31);
 			this.playerRatingPage.Controls.Add(this.label30);
 			this.playerRatingPage.Controls.Add(this.label29);
 			this.playerRatingPage.Controls.Add(this.label28);
@@ -625,14 +1021,1259 @@ namespace MaddenEditor.Forms
 			this.playerRatingPage.TabIndex = 0;
 			this.playerRatingPage.Text = "Player Ratings";
 			// 
+			// calculateOverallButton
+			// 
+			this.calculateOverallButton.Enabled = false;
+			this.calculateOverallButton.Location = new System.Drawing.Point(151, 10);
+			this.calculateOverallButton.Name = "calculateOverallButton";
+			this.calculateOverallButton.Size = new System.Drawing.Size(80, 21);
+			this.calculateOverallButton.TabIndex = 56;
+			this.calculateOverallButton.Text = "Calculate";
+			// 
+			// playerOverall
+			// 
+			this.playerOverall.Location = new System.Drawing.Point(90, 10);
+			this.playerOverall.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerOverall.Name = "playerOverall";
+			this.playerOverall.Size = new System.Drawing.Size(55, 20);
+			this.playerOverall.TabIndex = 0;
+			this.playerOverall.ValueChanged += new System.EventHandler(this.playerOverall_ValueChanged);
+			// 
+			// label37
+			// 
+			this.label37.AutoSize = true;
+			this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label37.Location = new System.Drawing.Point(19, 15);
+			this.label37.Name = "label37";
+			this.label37.Size = new System.Drawing.Size(65, 15);
+			this.label37.TabIndex = 54;
+			this.label37.Text = "OVERALL";
+			// 
+			// label35
+			// 
+			this.label35.AutoSize = true;
+			this.label35.Location = new System.Drawing.Point(392, 328);
+			this.label35.Name = "label35";
+			this.label35.Size = new System.Drawing.Size(49, 13);
+			this.label35.TabIndex = 51;
+			this.label35.Text = "XP Points";
+			// 
+			// playerExperiencePoints
+			// 
+			this.playerExperiencePoints.Location = new System.Drawing.Point(447, 321);
+			this.playerExperiencePoints.Maximum = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            0});
+			this.playerExperiencePoints.Name = "playerExperiencePoints";
+			this.playerExperiencePoints.Size = new System.Drawing.Size(74, 20);
+			this.playerExperiencePoints.TabIndex = 50;
+			this.playerExperiencePoints.ValueChanged += new System.EventHandler(this.playerExperiencePoints_ValueChanged);
+			// 
+			// playerNFLIcon
+			// 
+			this.playerNFLIcon.AutoSize = true;
+			this.playerNFLIcon.Location = new System.Drawing.Point(455, 286);
+			this.playerNFLIcon.Name = "playerNFLIcon";
+			this.playerNFLIcon.Size = new System.Drawing.Size(66, 17);
+			this.playerNFLIcon.TabIndex = 49;
+			this.playerNFLIcon.Text = "NFL Icon";
+			this.playerNFLIcon.CheckedChanged += new System.EventHandler(this.playerNFLIcon_CheckedChanged);
+			// 
+			// playerMorale
+			// 
+			this.playerMorale.Location = new System.Drawing.Point(466, 400);
+			this.playerMorale.Name = "playerMorale";
+			this.playerMorale.Size = new System.Drawing.Size(55, 20);
+			this.playerMorale.TabIndex = 47;
+			this.playerMorale.ValueChanged += new System.EventHandler(this.playerMorale_ValueChanged);
+			// 
+			// playerImportance
+			// 
+			this.playerImportance.Location = new System.Drawing.Point(466, 361);
+			this.playerImportance.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerImportance.Name = "playerImportance";
+			this.playerImportance.Size = new System.Drawing.Size(55, 20);
+			this.playerImportance.TabIndex = 46;
+			this.playerImportance.ValueChanged += new System.EventHandler(this.playerImportance_ValueChanged);
+			// 
+			// label34
+			// 
+			this.label34.AutoSize = true;
+			this.label34.Location = new System.Drawing.Point(425, 407);
+			this.label34.Name = "label34";
+			this.label34.Size = new System.Drawing.Size(35, 13);
+			this.label34.TabIndex = 45;
+			this.label34.Text = "Morale";
+			// 
+			// label33
+			// 
+			this.label33.AutoSize = true;
+			this.label33.Location = new System.Drawing.Point(404, 368);
+			this.label33.Name = "label33";
+			this.label33.Size = new System.Drawing.Size(56, 13);
+			this.label33.TabIndex = 44;
+			this.label33.Text = "Importance";
+			// 
+			// label30
+			// 
+			this.label30.AutoSize = true;
+			this.label30.Location = new System.Drawing.Point(232, 407);
+			this.label30.Name = "label30";
+			this.label30.Size = new System.Drawing.Size(56, 13);
+			this.label30.TabIndex = 39;
+			this.label30.Text = "Toughness";
+			// 
+			// label29
+			// 
+			this.label29.AutoSize = true;
+			this.label29.Location = new System.Drawing.Point(260, 368);
+			this.label29.Name = "label29";
+			this.label29.Size = new System.Drawing.Size(28, 13);
+			this.label29.TabIndex = 38;
+			this.label29.Text = "Injury";
+			// 
+			// label28
+			// 
+			this.label28.AutoSize = true;
+			this.label28.Location = new System.Drawing.Point(247, 329);
+			this.label28.Name = "label28";
+			this.label28.Size = new System.Drawing.Size(41, 13);
+			this.label28.TabIndex = 37;
+			this.label28.Text = "Stamina";
+			// 
+			// label27
+			// 
+			this.label27.AutoSize = true;
+			this.label27.Location = new System.Drawing.Point(229, 290);
+			this.label27.Name = "label27";
+			this.label27.Size = new System.Drawing.Size(59, 13);
+			this.label27.TabIndex = 36;
+			this.label27.Text = "Kick Return";
+			// 
+			// label26
+			// 
+			this.label26.AutoSize = true;
+			this.label26.Location = new System.Drawing.Point(216, 251);
+			this.label26.Name = "label26";
+			this.label26.Size = new System.Drawing.Size(72, 13);
+			this.label26.TabIndex = 35;
+			this.label26.Text = "Kick Accuracy";
+			// 
+			// label25
+			// 
+			this.label25.AutoSize = true;
+			this.label25.Location = new System.Drawing.Point(231, 211);
+			this.label25.Name = "label25";
+			this.label25.Size = new System.Drawing.Size(57, 13);
+			this.label25.TabIndex = 34;
+			this.label25.Text = "Kick Power";
+			// 
+			// label24
+			// 
+			this.label24.AutoSize = true;
+			this.label24.Location = new System.Drawing.Point(222, 173);
+			this.label24.Name = "label24";
+			this.label24.Size = new System.Drawing.Size(67, 13);
+			this.label24.TabIndex = 33;
+			this.label24.Text = "Run Blocking";
+			// 
+			// label23
+			// 
+			this.label23.AutoSize = true;
+			this.label23.Location = new System.Drawing.Point(218, 133);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(70, 13);
+			this.label23.TabIndex = 32;
+			this.label23.Text = "Pass Blocking";
+			// 
+			// label22
+			// 
+			this.label22.AutoSize = true;
+			this.label22.Location = new System.Drawing.Point(207, 95);
+			this.label22.Name = "label22";
+			this.label22.Size = new System.Drawing.Size(81, 13);
+			this.label22.TabIndex = 31;
+			this.label22.Text = "Throw Accuracy";
+			// 
+			// label21
+			// 
+			this.label21.AutoSize = true;
+			this.label21.Location = new System.Drawing.Point(222, 56);
+			this.label21.Name = "label21";
+			this.label21.Size = new System.Drawing.Size(66, 13);
+			this.label21.TabIndex = 30;
+			this.label21.Text = "Throw Power";
+			// 
+			// playerToughness
+			// 
+			this.playerToughness.Location = new System.Drawing.Point(294, 400);
+			this.playerToughness.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerToughness.Name = "playerToughness";
+			this.playerToughness.Size = new System.Drawing.Size(55, 20);
+			this.playerToughness.TabIndex = 20;
+			this.playerToughness.ValueChanged += new System.EventHandler(this.playerToughness_ValueChanged);
+			// 
+			// playerInjury
+			// 
+			this.playerInjury.Location = new System.Drawing.Point(294, 361);
+			this.playerInjury.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerInjury.Name = "playerInjury";
+			this.playerInjury.Size = new System.Drawing.Size(55, 20);
+			this.playerInjury.TabIndex = 19;
+			this.playerInjury.ValueChanged += new System.EventHandler(this.playerInjury_ValueChanged);
+			// 
+			// playerStamina
+			// 
+			this.playerStamina.Location = new System.Drawing.Point(294, 322);
+			this.playerStamina.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerStamina.Name = "playerStamina";
+			this.playerStamina.Size = new System.Drawing.Size(55, 20);
+			this.playerStamina.TabIndex = 18;
+			this.playerStamina.ValueChanged += new System.EventHandler(this.playerStamina_ValueChanged);
+			// 
+			// playerKickReturn
+			// 
+			this.playerKickReturn.Location = new System.Drawing.Point(294, 283);
+			this.playerKickReturn.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerKickReturn.Name = "playerKickReturn";
+			this.playerKickReturn.Size = new System.Drawing.Size(55, 20);
+			this.playerKickReturn.TabIndex = 17;
+			this.playerKickReturn.ValueChanged += new System.EventHandler(this.playerKickReturn_ValueChanged);
+			// 
+			// playerKickAccuracy
+			// 
+			this.playerKickAccuracy.Location = new System.Drawing.Point(294, 244);
+			this.playerKickAccuracy.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerKickAccuracy.Name = "playerKickAccuracy";
+			this.playerKickAccuracy.Size = new System.Drawing.Size(55, 20);
+			this.playerKickAccuracy.TabIndex = 16;
+			this.playerKickAccuracy.ValueChanged += new System.EventHandler(this.playerKickAccuracy_ValueChanged);
+			// 
+			// playerKickPower
+			// 
+			this.playerKickPower.Location = new System.Drawing.Point(294, 205);
+			this.playerKickPower.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerKickPower.Name = "playerKickPower";
+			this.playerKickPower.Size = new System.Drawing.Size(55, 20);
+			this.playerKickPower.TabIndex = 15;
+			this.playerKickPower.ValueChanged += new System.EventHandler(this.playerKickPower_ValueChanged);
+			// 
+			// playerRunBlocking
+			// 
+			this.playerRunBlocking.Location = new System.Drawing.Point(294, 166);
+			this.playerRunBlocking.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerRunBlocking.Name = "playerRunBlocking";
+			this.playerRunBlocking.Size = new System.Drawing.Size(55, 20);
+			this.playerRunBlocking.TabIndex = 14;
+			this.playerRunBlocking.ValueChanged += new System.EventHandler(this.playerRunBlocking_ValueChanged);
+			// 
+			// playerPassBlocking
+			// 
+			this.playerPassBlocking.Location = new System.Drawing.Point(294, 127);
+			this.playerPassBlocking.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerPassBlocking.Name = "playerPassBlocking";
+			this.playerPassBlocking.Size = new System.Drawing.Size(55, 20);
+			this.playerPassBlocking.TabIndex = 13;
+			this.playerPassBlocking.ValueChanged += new System.EventHandler(this.playerPassBlocking_ValueChanged);
+			// 
+			// playerThrowAccuracy
+			// 
+			this.playerThrowAccuracy.Location = new System.Drawing.Point(294, 88);
+			this.playerThrowAccuracy.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerThrowAccuracy.Name = "playerThrowAccuracy";
+			this.playerThrowAccuracy.Size = new System.Drawing.Size(55, 20);
+			this.playerThrowAccuracy.TabIndex = 12;
+			this.playerThrowAccuracy.ValueChanged += new System.EventHandler(this.playerThrowAccuracy_ValueChanged);
+			// 
+			// playerThrowPower
+			// 
+			this.playerThrowPower.Location = new System.Drawing.Point(294, 49);
+			this.playerThrowPower.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerThrowPower.Name = "playerThrowPower";
+			this.playerThrowPower.Size = new System.Drawing.Size(55, 20);
+			this.playerThrowPower.TabIndex = 11;
+			this.playerThrowPower.ValueChanged += new System.EventHandler(this.playerThrowPower_ValueChanged);
+			// 
+			// playerTackle
+			// 
+			this.playerTackle.Location = new System.Drawing.Point(90, 400);
+			this.playerTackle.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerTackle.Name = "playerTackle";
+			this.playerTackle.Size = new System.Drawing.Size(55, 20);
+			this.playerTackle.TabIndex = 10;
+			this.playerTackle.ValueChanged += new System.EventHandler(this.playerTackle_ValueChanged);
+			// 
+			// playerBreakTackle
+			// 
+			this.playerBreakTackle.Location = new System.Drawing.Point(90, 361);
+			this.playerBreakTackle.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerBreakTackle.Name = "playerBreakTackle";
+			this.playerBreakTackle.Size = new System.Drawing.Size(55, 20);
+			this.playerBreakTackle.TabIndex = 9;
+			this.playerBreakTackle.ValueChanged += new System.EventHandler(this.playerBreakTackle_ValueChanged);
+			// 
+			// playerJumping
+			// 
+			this.playerJumping.Location = new System.Drawing.Point(90, 322);
+			this.playerJumping.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerJumping.Name = "playerJumping";
+			this.playerJumping.Size = new System.Drawing.Size(55, 20);
+			this.playerJumping.TabIndex = 8;
+			this.playerJumping.ValueChanged += new System.EventHandler(this.playerJumping_ValueChanged);
+			// 
+			// playerCarrying
+			// 
+			this.playerCarrying.Location = new System.Drawing.Point(90, 283);
+			this.playerCarrying.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerCarrying.Name = "playerCarrying";
+			this.playerCarrying.Size = new System.Drawing.Size(55, 20);
+			this.playerCarrying.TabIndex = 7;
+			this.playerCarrying.ValueChanged += new System.EventHandler(this.playerCarrying_ValueChanged);
+			// 
+			// playerCatching
+			// 
+			this.playerCatching.Location = new System.Drawing.Point(90, 244);
+			this.playerCatching.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerCatching.Name = "playerCatching";
+			this.playerCatching.Size = new System.Drawing.Size(55, 20);
+			this.playerCatching.TabIndex = 6;
+			this.playerCatching.ValueChanged += new System.EventHandler(this.playerCatching_ValueChanged);
+			// 
+			// playerAcceleration
+			// 
+			this.playerAcceleration.Location = new System.Drawing.Point(90, 205);
+			this.playerAcceleration.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerAcceleration.Name = "playerAcceleration";
+			this.playerAcceleration.Size = new System.Drawing.Size(55, 20);
+			this.playerAcceleration.TabIndex = 5;
+			this.playerAcceleration.ValueChanged += new System.EventHandler(this.playerAcceleration_ValueChanged);
+			// 
+			// playerAgility
+			// 
+			this.playerAgility.Location = new System.Drawing.Point(90, 166);
+			this.playerAgility.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerAgility.Name = "playerAgility";
+			this.playerAgility.Size = new System.Drawing.Size(55, 20);
+			this.playerAgility.TabIndex = 4;
+			this.playerAgility.ValueChanged += new System.EventHandler(this.playerAgility_ValueChanged);
+			// 
+			// playerAwareness
+			// 
+			this.playerAwareness.Location = new System.Drawing.Point(90, 127);
+			this.playerAwareness.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerAwareness.Name = "playerAwareness";
+			this.playerAwareness.Size = new System.Drawing.Size(55, 20);
+			this.playerAwareness.TabIndex = 3;
+			this.playerAwareness.ValueChanged += new System.EventHandler(this.playerAwareness_ValueChanged);
+			// 
+			// playerStrength
+			// 
+			this.playerStrength.Location = new System.Drawing.Point(90, 88);
+			this.playerStrength.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.playerStrength.Name = "playerStrength";
+			this.playerStrength.Size = new System.Drawing.Size(55, 20);
+			this.playerStrength.TabIndex = 2;
+			this.playerStrength.ValueChanged += new System.EventHandler(this.playerStrength_ValueChanged);
+			// 
+			// label20
+			// 
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(49, 407);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(36, 13);
+			this.label20.TabIndex = 10;
+			this.label20.Text = "Tackle";
+			// 
+			// label19
+			// 
+			this.label19.AutoSize = true;
+			this.label19.Location = new System.Drawing.Point(17, 368);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(67, 13);
+			this.label19.TabIndex = 9;
+			this.label19.Text = "Break Tackle";
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(22, 213);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(62, 13);
+			this.label18.TabIndex = 8;
+			this.label18.Text = "Acceleration";
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(39, 251);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(45, 13);
+			this.label17.TabIndex = 7;
+			this.label17.Text = "Catching";
+			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(43, 292);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(41, 13);
+			this.label16.TabIndex = 6;
+			this.label16.Text = "Carrying";
+			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(43, 329);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(42, 13);
+			this.label15.TabIndex = 5;
+			this.label15.Text = "Jumping";
+			// 
+			// label14
+			// 
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(54, 173);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(30, 13);
+			this.label14.TabIndex = 4;
+			this.label14.Text = "Agility";
+			// 
+			// label13
+			// 
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(29, 134);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(55, 13);
+			this.label13.TabIndex = 3;
+			this.label13.Text = "Awareness";
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(41, 95);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(43, 13);
+			this.label12.TabIndex = 2;
+			this.label12.Text = "Strength";
+			// 
+			// playerSpeed
+			// 
+			this.playerSpeed.Location = new System.Drawing.Point(90, 49);
+			this.playerSpeed.Name = "playerSpeed";
+			this.playerSpeed.Size = new System.Drawing.Size(55, 20);
+			this.playerSpeed.TabIndex = 1;
+			this.playerSpeed.ValueChanged += new System.EventHandler(this.playerSpeed_ValueChanged);
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(50, 56);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(34, 13);
+			this.label11.TabIndex = 0;
+			this.label11.Text = "Speed";
+			// 
 			// playerAppearancePage
 			// 
+			this.playerAppearancePage.Controls.Add(this.label67);
+			this.playerAppearancePage.Controls.Add(this.label66);
+			this.playerAppearancePage.Controls.Add(this.playerRightTatooCombo);
+			this.playerAppearancePage.Controls.Add(this.playerLeftTatooCombo);
+			this.playerAppearancePage.Controls.Add(this.label65);
+			this.playerAppearancePage.Controls.Add(this.playerFaceShape);
+			this.playerAppearancePage.Controls.Add(this.label64);
+			this.playerAppearancePage.Controls.Add(this.playerFace);
+			this.playerAppearancePage.Controls.Add(this.label63);
+			this.playerAppearancePage.Controls.Add(this.playerHairStyleCombo);
+			this.playerAppearancePage.Controls.Add(this.playerSkinColorCombo);
+			this.playerAppearancePage.Controls.Add(this.label62);
+			this.playerAppearancePage.Controls.Add(this.playerHairColorCombo);
+			this.playerAppearancePage.Controls.Add(this.label61);
+			this.playerAppearancePage.Controls.Add(this.label36);
+			this.playerAppearancePage.Controls.Add(this.playerWeight);
+			this.playerAppearancePage.Controls.Add(this.playerHeightComboBox);
+			this.playerAppearancePage.Controls.Add(this.label32);
+			this.playerAppearancePage.Controls.Add(this.label31);
+			this.playerAppearancePage.Controls.Add(this.label60);
+			this.playerAppearancePage.Controls.Add(this.label59);
+			this.playerAppearancePage.Controls.Add(this.label58);
+			this.playerAppearancePage.Controls.Add(this.label57);
+			this.playerAppearancePage.Controls.Add(this.label56);
+			this.playerAppearancePage.Controls.Add(this.label55);
+			this.playerAppearancePage.Controls.Add(this.label54);
+			this.playerAppearancePage.Controls.Add(this.playerRearShape);
+			this.playerAppearancePage.Controls.Add(this.playerRearRearFat);
+			this.playerAppearancePage.Controls.Add(this.playerRearMuscle);
+			this.playerAppearancePage.Controls.Add(this.playerLegsCalfFat);
+			this.playerAppearancePage.Controls.Add(this.playerLegsCalfMuscle);
+			this.playerAppearancePage.Controls.Add(this.playerLegsThighFat);
+			this.playerAppearancePage.Controls.Add(this.playerLegsThighMuscle);
+			this.playerAppearancePage.Controls.Add(this.label53);
+			this.playerAppearancePage.Controls.Add(this.label52);
+			this.playerAppearancePage.Controls.Add(this.playerArmsFat);
+			this.playerAppearancePage.Controls.Add(this.playerArmsMuscle);
+			this.playerAppearancePage.Controls.Add(this.label51);
+			this.playerAppearancePage.Controls.Add(this.label50);
+			this.playerAppearancePage.Controls.Add(this.playerEquipmentFlakJacket);
+			this.playerAppearancePage.Controls.Add(this.label49);
+			this.playerAppearancePage.Controls.Add(this.label48);
+			this.playerAppearancePage.Controls.Add(this.label47);
+			this.playerAppearancePage.Controls.Add(this.label46);
+			this.playerAppearancePage.Controls.Add(this.label45);
+			this.playerAppearancePage.Controls.Add(this.label44);
+			this.playerAppearancePage.Controls.Add(this.label43);
+			this.playerAppearancePage.Controls.Add(this.playerEquipmentPadShelf);
+			this.playerAppearancePage.Controls.Add(this.playerEquipmentPadWidth);
+			this.playerAppearancePage.Controls.Add(this.playerEquipmentPadHeight);
+			this.playerAppearancePage.Controls.Add(this.playerEquipmentThighPads);
+			this.playerAppearancePage.Controls.Add(this.playerEquipmentShoes);
+			this.playerAppearancePage.Controls.Add(this.playerBodyFat);
+			this.playerAppearancePage.Controls.Add(this.playerBodyMuscle);
+			this.playerAppearancePage.Controls.Add(this.playerBodyWeight);
+			this.playerAppearancePage.Controls.Add(this.playerBodyOverall);
+			this.playerAppearancePage.Controls.Add(this.label42);
+			this.playerAppearancePage.Controls.Add(this.label41);
+			this.playerAppearancePage.Controls.Add(this.label40);
+			this.playerAppearancePage.Controls.Add(this.label39);
+			this.playerAppearancePage.Controls.Add(this.label38);
+			this.playerAppearancePage.Controls.Add(this.label10);
 			this.playerAppearancePage.Location = new System.Drawing.Point(4, 22);
 			this.playerAppearancePage.Name = "playerAppearancePage";
 			this.playerAppearancePage.Padding = new System.Windows.Forms.Padding(3);
 			this.playerAppearancePage.Size = new System.Drawing.Size(536, 461);
 			this.playerAppearancePage.TabIndex = 1;
 			this.playerAppearancePage.Text = "Appearance";
+			// 
+			// label67
+			// 
+			this.label67.AutoSize = true;
+			this.label67.Location = new System.Drawing.Point(306, 350);
+			this.label67.Name = "label67";
+			this.label67.Size = new System.Drawing.Size(59, 13);
+			this.label67.TabIndex = 72;
+			this.label67.Text = "Right Tatoo";
+			// 
+			// label66
+			// 
+			this.label66.AutoSize = true;
+			this.label66.Location = new System.Drawing.Point(313, 313);
+			this.label66.Name = "label66";
+			this.label66.Size = new System.Drawing.Size(52, 13);
+			this.label66.TabIndex = 71;
+			this.label66.Text = "Left Tatoo";
+			// 
+			// playerRightTatooCombo
+			// 
+			this.playerRightTatooCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerRightTatooCombo.FormattingEnabled = true;
+			this.playerRightTatooCombo.Items.AddRange(new object[] {
+            "None",
+            "Patch 1",
+            "Patch 2",
+            "Patch 3",
+            "Patch 4",
+            "Patch 5",
+            "Patch 6",
+            "Band 1",
+            "Band 2",
+            "Band 3",
+            "Band 4",
+            "Band 5",
+            "Band 6"});
+			this.playerRightTatooCombo.Location = new System.Drawing.Point(371, 342);
+			this.playerRightTatooCombo.Name = "playerRightTatooCombo";
+			this.playerRightTatooCombo.Size = new System.Drawing.Size(105, 21);
+			this.playerRightTatooCombo.TabIndex = 70;
+			// 
+			// playerLeftTatooCombo
+			// 
+			this.playerLeftTatooCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerLeftTatooCombo.FormattingEnabled = true;
+			this.playerLeftTatooCombo.Items.AddRange(new object[] {
+            "None",
+            "Patch 1",
+            "Patch 2",
+            "Patch 3",
+            "Patch 4",
+            "Patch 5",
+            "Patch 6",
+            "Band 1",
+            "Band 2",
+            "Band 3",
+            "Band 4",
+            "Band 5",
+            "Band 6"});
+			this.playerLeftTatooCombo.Location = new System.Drawing.Point(371, 305);
+			this.playerLeftTatooCombo.Name = "playerLeftTatooCombo";
+			this.playerLeftTatooCombo.Size = new System.Drawing.Size(105, 21);
+			this.playerLeftTatooCombo.TabIndex = 69;
+			// 
+			// label65
+			// 
+			this.label65.AutoSize = true;
+			this.label65.Location = new System.Drawing.Point(304, 274);
+			this.label65.Name = "label65";
+			this.label65.Size = new System.Drawing.Size(61, 13);
+			this.label65.TabIndex = 68;
+			this.label65.Text = "Face Shape";
+			// 
+			// playerFaceShape
+			// 
+			this.playerFaceShape.Location = new System.Drawing.Point(371, 267);
+			this.playerFaceShape.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+			this.playerFaceShape.Name = "playerFaceShape";
+			this.playerFaceShape.Size = new System.Drawing.Size(83, 20);
+			this.playerFaceShape.TabIndex = 67;
+			// 
+			// label64
+			// 
+			this.label64.AutoSize = true;
+			this.label64.Location = new System.Drawing.Point(338, 239);
+			this.label64.Name = "label64";
+			this.label64.Size = new System.Drawing.Size(27, 13);
+			this.label64.TabIndex = 66;
+			this.label64.Text = "Face";
+			// 
+			// playerFace
+			// 
+			this.playerFace.Location = new System.Drawing.Point(371, 232);
+			this.playerFace.Maximum = new decimal(new int[] {
+            111,
+            0,
+            0,
+            0});
+			this.playerFace.Name = "playerFace";
+			this.playerFace.Size = new System.Drawing.Size(83, 20);
+			this.playerFace.TabIndex = 65;
+			// 
+			// label63
+			// 
+			this.label63.AutoSize = true;
+			this.label63.Location = new System.Drawing.Point(317, 201);
+			this.label63.Name = "label63";
+			this.label63.Size = new System.Drawing.Size(48, 13);
+			this.label63.TabIndex = 64;
+			this.label63.Text = "Hair Style";
+			// 
+			// playerHairStyleCombo
+			// 
+			this.playerHairStyleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerHairStyleCombo.FormattingEnabled = true;
+			this.playerHairStyleCombo.Items.AddRange(new object[] {
+            "Bald",
+            "Bald(2)",
+            "Balding",
+            "Balding(2)",
+            "Fade",
+            "Fade(2)",
+            "Buzzcut",
+            "Buzzcut(2)",
+            "Close Crop",
+            "Afro",
+            "Flat top",
+            "Corn Rows",
+            "Curly",
+            "Dreadlocks",
+            "Mullet"});
+			this.playerHairStyleCombo.Location = new System.Drawing.Point(371, 193);
+			this.playerHairStyleCombo.Name = "playerHairStyleCombo";
+			this.playerHairStyleCombo.Size = new System.Drawing.Size(105, 21);
+			this.playerHairStyleCombo.TabIndex = 63;
+			// 
+			// playerSkinColorCombo
+			// 
+			this.playerSkinColorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerSkinColorCombo.FormattingEnabled = true;
+			this.playerSkinColorCombo.Items.AddRange(new object[] {
+            "Light",
+            "Medium",
+            "Dark"});
+			this.playerSkinColorCombo.Location = new System.Drawing.Point(371, 115);
+			this.playerSkinColorCombo.Name = "playerSkinColorCombo";
+			this.playerSkinColorCombo.Size = new System.Drawing.Size(105, 21);
+			this.playerSkinColorCombo.TabIndex = 62;
+			// 
+			// label62
+			// 
+			this.label62.AutoSize = true;
+			this.label62.Location = new System.Drawing.Point(316, 161);
+			this.label62.Name = "label62";
+			this.label62.Size = new System.Drawing.Size(49, 13);
+			this.label62.TabIndex = 61;
+			this.label62.Text = "Hair Color";
+			// 
+			// playerHairColorCombo
+			// 
+			this.playerHairColorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerHairColorCombo.FormattingEnabled = true;
+			this.playerHairColorCombo.Items.AddRange(new object[] {
+            "Black",
+            "Blonde",
+            "Brown",
+            "Red",
+            "Light Brown",
+            "Gray"});
+			this.playerHairColorCombo.Location = new System.Drawing.Point(371, 153);
+			this.playerHairColorCombo.Name = "playerHairColorCombo";
+			this.playerHairColorCombo.Size = new System.Drawing.Size(105, 21);
+			this.playerHairColorCombo.TabIndex = 60;
+			// 
+			// label61
+			// 
+			this.label61.AutoSize = true;
+			this.label61.Location = new System.Drawing.Point(314, 123);
+			this.label61.Name = "label61";
+			this.label61.Size = new System.Drawing.Size(51, 13);
+			this.label61.TabIndex = 59;
+			this.label61.Text = "Skin Color";
+			// 
+			// label36
+			// 
+			this.label36.AutoSize = true;
+			this.label36.Location = new System.Drawing.Point(460, 49);
+			this.label36.Name = "label36";
+			this.label36.Size = new System.Drawing.Size(16, 13);
+			this.label36.TabIndex = 58;
+			this.label36.Text = "lbs";
+			// 
+			// playerWeight
+			// 
+			this.playerWeight.Location = new System.Drawing.Point(371, 42);
+			this.playerWeight.Maximum = new decimal(new int[] {
+            415,
+            0,
+            0,
+            0});
+			this.playerWeight.Minimum = new decimal(new int[] {
+            160,
+            0,
+            0,
+            0});
+			this.playerWeight.Name = "playerWeight";
+			this.playerWeight.Size = new System.Drawing.Size(83, 20);
+			this.playerWeight.TabIndex = 57;
+			this.playerWeight.Value = new decimal(new int[] {
+            160,
+            0,
+            0,
+            0});
+			// 
+			// playerHeightComboBox
+			// 
+			this.playerHeightComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerHeightComboBox.FormattingEnabled = true;
+			this.playerHeightComboBox.Items.AddRange(new object[] {
+            "5\' 5\"",
+            "5\' 6\"",
+            "5\' 7\"",
+            "5\' 8\"",
+            "5\' 9\"",
+            "5\' 10\"",
+            "5\' 11\"",
+            "6\' 0\"",
+            "6\' 1\"",
+            "6\' 2\"",
+            "6\' 3\"",
+            "6\' 4\"",
+            "6\' 5\"",
+            "6\' 6\"",
+            "6\' 7\"",
+            "6\' 8\"",
+            "6\' 9\"",
+            "6\' 10\"",
+            "6\' 11\"",
+            "7\' 0\""});
+			this.playerHeightComboBox.Location = new System.Drawing.Point(371, 78);
+			this.playerHeightComboBox.Name = "playerHeightComboBox";
+			this.playerHeightComboBox.Size = new System.Drawing.Size(105, 21);
+			this.playerHeightComboBox.TabIndex = 56;
+			// 
+			// label32
+			// 
+			this.label32.AutoSize = true;
+			this.label32.Location = new System.Drawing.Point(331, 86);
+			this.label32.Name = "label32";
+			this.label32.Size = new System.Drawing.Size(34, 13);
+			this.label32.TabIndex = 55;
+			this.label32.Text = "Height";
+			// 
+			// label31
+			// 
+			this.label31.AutoSize = true;
+			this.label31.Location = new System.Drawing.Point(331, 49);
+			this.label31.Name = "label31";
+			this.label31.Size = new System.Drawing.Size(37, 13);
+			this.label31.TabIndex = 54;
+			this.label31.Text = "Weight";
+			// 
+			// label60
+			// 
+			this.label60.AutoSize = true;
+			this.label60.Location = new System.Drawing.Point(168, 429);
+			this.label60.Name = "label60";
+			this.label60.Size = new System.Drawing.Size(34, 13);
+			this.label60.TabIndex = 42;
+			this.label60.Text = "Shape";
+			// 
+			// label59
+			// 
+			this.label59.AutoSize = true;
+			this.label59.Location = new System.Drawing.Point(158, 389);
+			this.label59.Name = "label59";
+			this.label59.Size = new System.Drawing.Size(44, 13);
+			this.label59.TabIndex = 41;
+			this.label59.Text = "Rear Fat";
+			// 
+			// label58
+			// 
+			this.label58.AutoSize = true;
+			this.label58.Location = new System.Drawing.Point(165, 353);
+			this.label58.Name = "label58";
+			this.label58.Size = new System.Drawing.Size(37, 13);
+			this.label58.TabIndex = 40;
+			this.label58.Text = "Muscle";
+			// 
+			// label57
+			// 
+			this.label57.AutoSize = true;
+			this.label57.Location = new System.Drawing.Point(163, 274);
+			this.label57.Name = "label57";
+			this.label57.Size = new System.Drawing.Size(39, 13);
+			this.label57.TabIndex = 39;
+			this.label57.Text = "Calf Fat";
+			// 
+			// label56
+			// 
+			this.label56.AutoSize = true;
+			this.label56.Location = new System.Drawing.Point(144, 236);
+			this.label56.Name = "label56";
+			this.label56.Size = new System.Drawing.Size(58, 13);
+			this.label56.TabIndex = 38;
+			this.label56.Text = "Calf Muscle";
+			// 
+			// label55
+			// 
+			this.label55.AutoSize = true;
+			this.label55.Location = new System.Drawing.Point(154, 196);
+			this.label55.Name = "label55";
+			this.label55.Size = new System.Drawing.Size(48, 13);
+			this.label55.TabIndex = 37;
+			this.label55.Text = "Thigh Fat";
+			// 
+			// label54
+			// 
+			this.label54.AutoSize = true;
+			this.label54.Location = new System.Drawing.Point(135, 159);
+			this.label54.Name = "label54";
+			this.label54.Size = new System.Drawing.Size(67, 13);
+			this.label54.TabIndex = 36;
+			this.label54.Text = "Thigh Muscle";
+			// 
+			// playerRearShape
+			// 
+			this.playerRearShape.Location = new System.Drawing.Point(208, 422);
+			this.playerRearShape.Name = "playerRearShape";
+			this.playerRearShape.Size = new System.Drawing.Size(58, 20);
+			this.playerRearShape.TabIndex = 35;
+			this.playerRearShape.ValueChanged += new System.EventHandler(this.playerRearShape_ValueChanged);
+			// 
+			// playerRearRearFat
+			// 
+			this.playerRearRearFat.Location = new System.Drawing.Point(208, 384);
+			this.playerRearRearFat.Name = "playerRearRearFat";
+			this.playerRearRearFat.Size = new System.Drawing.Size(58, 20);
+			this.playerRearRearFat.TabIndex = 34;
+			this.playerRearRearFat.ValueChanged += new System.EventHandler(this.playerRearRearFat_ValueChanged);
+			// 
+			// playerRearMuscle
+			// 
+			this.playerRearMuscle.Location = new System.Drawing.Point(208, 346);
+			this.playerRearMuscle.Name = "playerRearMuscle";
+			this.playerRearMuscle.Size = new System.Drawing.Size(58, 20);
+			this.playerRearMuscle.TabIndex = 33;
+			// 
+			// playerLegsCalfFat
+			// 
+			this.playerLegsCalfFat.Location = new System.Drawing.Point(208, 267);
+			this.playerLegsCalfFat.Name = "playerLegsCalfFat";
+			this.playerLegsCalfFat.Size = new System.Drawing.Size(58, 20);
+			this.playerLegsCalfFat.TabIndex = 32;
+			this.playerLegsCalfFat.ValueChanged += new System.EventHandler(this.playerLegsCalfFat_ValueChanged);
+			// 
+			// playerLegsCalfMuscle
+			// 
+			this.playerLegsCalfMuscle.Location = new System.Drawing.Point(208, 229);
+			this.playerLegsCalfMuscle.Name = "playerLegsCalfMuscle";
+			this.playerLegsCalfMuscle.Size = new System.Drawing.Size(58, 20);
+			this.playerLegsCalfMuscle.TabIndex = 31;
+			this.playerLegsCalfMuscle.ValueChanged += new System.EventHandler(this.playerLegsCalfMuscle_ValueChanged);
+			// 
+			// playerLegsThighFat
+			// 
+			this.playerLegsThighFat.Location = new System.Drawing.Point(208, 191);
+			this.playerLegsThighFat.Name = "playerLegsThighFat";
+			this.playerLegsThighFat.Size = new System.Drawing.Size(58, 20);
+			this.playerLegsThighFat.TabIndex = 30;
+			this.playerLegsThighFat.ValueChanged += new System.EventHandler(this.playerLegsThighFat_ValueChanged);
+			// 
+			// playerLegsThighMuscle
+			// 
+			this.playerLegsThighMuscle.Location = new System.Drawing.Point(208, 153);
+			this.playerLegsThighMuscle.Name = "playerLegsThighMuscle";
+			this.playerLegsThighMuscle.Size = new System.Drawing.Size(58, 20);
+			this.playerLegsThighMuscle.TabIndex = 29;
+			this.playerLegsThighMuscle.ValueChanged += new System.EventHandler(this.playerLegsThighMuscle_ValueChanged);
+			// 
+			// label53
+			// 
+			this.label53.AutoSize = true;
+			this.label53.Location = new System.Drawing.Point(184, 88);
+			this.label53.Name = "label53";
+			this.label53.Size = new System.Drawing.Size(18, 13);
+			this.label53.TabIndex = 28;
+			this.label53.Text = "Fat";
+			// 
+			// label52
+			// 
+			this.label52.AutoSize = true;
+			this.label52.Location = new System.Drawing.Point(165, 49);
+			this.label52.Name = "label52";
+			this.label52.Size = new System.Drawing.Size(37, 13);
+			this.label52.TabIndex = 27;
+			this.label52.Text = "Muscle";
+			// 
+			// playerArmsFat
+			// 
+			this.playerArmsFat.Location = new System.Drawing.Point(208, 81);
+			this.playerArmsFat.Name = "playerArmsFat";
+			this.playerArmsFat.Size = new System.Drawing.Size(58, 20);
+			this.playerArmsFat.TabIndex = 26;
+			this.playerArmsFat.ValueChanged += new System.EventHandler(this.playerArmsFat_ValueChanged);
+			// 
+			// playerArmsMuscle
+			// 
+			this.playerArmsMuscle.Location = new System.Drawing.Point(208, 42);
+			this.playerArmsMuscle.Name = "playerArmsMuscle";
+			this.playerArmsMuscle.Size = new System.Drawing.Size(58, 20);
+			this.playerArmsMuscle.TabIndex = 25;
+			this.playerArmsMuscle.ValueChanged += new System.EventHandler(this.playerArmsMuscle_ValueChanged);
+			// 
+			// label51
+			// 
+			this.label51.AutoSize = true;
+			this.label51.Location = new System.Drawing.Point(2, 429);
+			this.label51.Name = "label51";
+			this.label51.Size = new System.Drawing.Size(58, 13);
+			this.label51.TabIndex = 24;
+			this.label51.Text = "Flak Jacket";
+			// 
+			// label50
+			// 
+			this.label50.AutoSize = true;
+			this.label50.Location = new System.Drawing.Point(11, 391);
+			this.label50.Name = "label50";
+			this.label50.Size = new System.Drawing.Size(49, 13);
+			this.label50.TabIndex = 23;
+			this.label50.Text = "Pad Shelf";
+			// 
+			// playerEquipmentFlakJacket
+			// 
+			this.playerEquipmentFlakJacket.Location = new System.Drawing.Point(66, 422);
+			this.playerEquipmentFlakJacket.Name = "playerEquipmentFlakJacket";
+			this.playerEquipmentFlakJacket.Size = new System.Drawing.Size(58, 20);
+			this.playerEquipmentFlakJacket.TabIndex = 22;
+			this.playerEquipmentFlakJacket.ValueChanged += new System.EventHandler(this.playerEquipmentFlakJacket_ValueChanged);
+			// 
+			// label49
+			// 
+			this.label49.AutoSize = true;
+			this.label49.Location = new System.Drawing.Point(7, 353);
+			this.label49.Name = "label49";
+			this.label49.Size = new System.Drawing.Size(53, 13);
+			this.label49.TabIndex = 21;
+			this.label49.Text = "Pad Width";
+			// 
+			// label48
+			// 
+			this.label48.AutoSize = true;
+			this.label48.Location = new System.Drawing.Point(4, 315);
+			this.label48.Name = "label48";
+			this.label48.Size = new System.Drawing.Size(56, 13);
+			this.label48.TabIndex = 20;
+			this.label48.Text = "Pad Height";
+			// 
+			// label47
+			// 
+			this.label47.AutoSize = true;
+			this.label47.Location = new System.Drawing.Point(3, 277);
+			this.label47.Name = "label47";
+			this.label47.Size = new System.Drawing.Size(57, 13);
+			this.label47.TabIndex = 19;
+			this.label47.Text = "Thigh Pads";
+			// 
+			// label46
+			// 
+			this.label46.AutoSize = true;
+			this.label46.Location = new System.Drawing.Point(27, 239);
+			this.label46.Name = "label46";
+			this.label46.Size = new System.Drawing.Size(33, 13);
+			this.label46.TabIndex = 18;
+			this.label46.Text = "Shoes";
+			// 
+			// label45
+			// 
+			this.label45.AutoSize = true;
+			this.label45.Location = new System.Drawing.Point(42, 166);
+			this.label45.Name = "label45";
+			this.label45.Size = new System.Drawing.Size(18, 13);
+			this.label45.TabIndex = 17;
+			this.label45.Text = "Fat";
+			// 
+			// label44
+			// 
+			this.label44.AutoSize = true;
+			this.label44.Location = new System.Drawing.Point(23, 127);
+			this.label44.Name = "label44";
+			this.label44.Size = new System.Drawing.Size(37, 13);
+			this.label44.TabIndex = 16;
+			this.label44.Text = "Muscle";
+			// 
+			// label43
+			// 
+			this.label43.AutoSize = true;
+			this.label43.Location = new System.Drawing.Point(23, 88);
+			this.label43.Name = "label43";
+			this.label43.Size = new System.Drawing.Size(37, 13);
+			this.label43.TabIndex = 15;
+			this.label43.Text = "Weight";
+			// 
+			// playerEquipmentPadShelf
+			// 
+			this.playerEquipmentPadShelf.Location = new System.Drawing.Point(66, 384);
+			this.playerEquipmentPadShelf.Name = "playerEquipmentPadShelf";
+			this.playerEquipmentPadShelf.Size = new System.Drawing.Size(58, 20);
+			this.playerEquipmentPadShelf.TabIndex = 14;
+			this.playerEquipmentPadShelf.ValueChanged += new System.EventHandler(this.playerEquipmentPadShelf_ValueChanged);
+			// 
+			// playerEquipmentPadWidth
+			// 
+			this.playerEquipmentPadWidth.Location = new System.Drawing.Point(66, 346);
+			this.playerEquipmentPadWidth.Name = "playerEquipmentPadWidth";
+			this.playerEquipmentPadWidth.Size = new System.Drawing.Size(58, 20);
+			this.playerEquipmentPadWidth.TabIndex = 13;
+			this.playerEquipmentPadWidth.ValueChanged += new System.EventHandler(this.playerEquipmentPadWidth_ValueChanged);
+			// 
+			// playerEquipmentPadHeight
+			// 
+			this.playerEquipmentPadHeight.Location = new System.Drawing.Point(66, 308);
+			this.playerEquipmentPadHeight.Name = "playerEquipmentPadHeight";
+			this.playerEquipmentPadHeight.Size = new System.Drawing.Size(58, 20);
+			this.playerEquipmentPadHeight.TabIndex = 12;
+			this.playerEquipmentPadHeight.ValueChanged += new System.EventHandler(this.playerEquipmentPadHeight_ValueChanged);
+			// 
+			// playerEquipmentThighPads
+			// 
+			this.playerEquipmentThighPads.Location = new System.Drawing.Point(66, 270);
+			this.playerEquipmentThighPads.Name = "playerEquipmentThighPads";
+			this.playerEquipmentThighPads.Size = new System.Drawing.Size(58, 20);
+			this.playerEquipmentThighPads.TabIndex = 11;
+			// 
+			// playerEquipmentShoes
+			// 
+			this.playerEquipmentShoes.Location = new System.Drawing.Point(66, 232);
+			this.playerEquipmentShoes.Name = "playerEquipmentShoes";
+			this.playerEquipmentShoes.Size = new System.Drawing.Size(58, 20);
+			this.playerEquipmentShoes.TabIndex = 10;
+			this.playerEquipmentShoes.ValueChanged += new System.EventHandler(this.playerEquipmentShoes_ValueChanged);
+			// 
+			// playerBodyFat
+			// 
+			this.playerBodyFat.Location = new System.Drawing.Point(66, 159);
+			this.playerBodyFat.Name = "playerBodyFat";
+			this.playerBodyFat.Size = new System.Drawing.Size(58, 20);
+			this.playerBodyFat.TabIndex = 9;
+			this.playerBodyFat.ValueChanged += new System.EventHandler(this.playerBodyFat_ValueChanged);
+			// 
+			// playerBodyMuscle
+			// 
+			this.playerBodyMuscle.Location = new System.Drawing.Point(66, 120);
+			this.playerBodyMuscle.Name = "playerBodyMuscle";
+			this.playerBodyMuscle.Size = new System.Drawing.Size(58, 20);
+			this.playerBodyMuscle.TabIndex = 8;
+			this.playerBodyMuscle.ValueChanged += new System.EventHandler(this.playerBodyMuscle_ValueChanged);
+			// 
+			// playerBodyWeight
+			// 
+			this.playerBodyWeight.Location = new System.Drawing.Point(66, 81);
+			this.playerBodyWeight.Name = "playerBodyWeight";
+			this.playerBodyWeight.Size = new System.Drawing.Size(58, 20);
+			this.playerBodyWeight.TabIndex = 7;
+			this.playerBodyWeight.ValueChanged += new System.EventHandler(this.playerBodyWeight_ValueChanged);
+			// 
+			// playerBodyOverall
+			// 
+			this.playerBodyOverall.Location = new System.Drawing.Point(66, 42);
+			this.playerBodyOverall.Name = "playerBodyOverall";
+			this.playerBodyOverall.Size = new System.Drawing.Size(58, 20);
+			this.playerBodyOverall.TabIndex = 6;
+			this.playerBodyOverall.ValueChanged += new System.EventHandler(this.playerBodyOverall_ValueChanged);
+			// 
+			// label42
+			// 
+			this.label42.AutoSize = true;
+			this.label42.Location = new System.Drawing.Point(24, 49);
+			this.label42.Name = "label42";
+			this.label42.Size = new System.Drawing.Size(36, 13);
+			this.label42.TabIndex = 5;
+			this.label42.Text = "Overall";
+			// 
+			// label41
+			// 
+			this.label41.AutoSize = true;
+			this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label41.Location = new System.Drawing.Point(195, 308);
+			this.label41.Name = "label41";
+			this.label41.Size = new System.Drawing.Size(38, 16);
+			this.label41.TabIndex = 4;
+			this.label41.Text = "Rear";
+			// 
+			// label40
+			// 
+			this.label40.AutoSize = true;
+			this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label40.Location = new System.Drawing.Point(196, 118);
+			this.label40.Name = "label40";
+			this.label40.Size = new System.Drawing.Size(38, 16);
+			this.label40.TabIndex = 3;
+			this.label40.Text = "Legs";
+			// 
+			// label39
+			// 
+			this.label39.AutoSize = true;
+			this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label39.Location = new System.Drawing.Point(195, 14);
+			this.label39.Name = "label39";
+			this.label39.Size = new System.Drawing.Size(39, 16);
+			this.label39.TabIndex = 2;
+			this.label39.Text = "Arms";
+			// 
+			// label38
+			// 
+			this.label38.AutoSize = true;
+			this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label38.Location = new System.Drawing.Point(50, 198);
+			this.label38.Name = "label38";
+			this.label38.Size = new System.Drawing.Size(77, 16);
+			this.label38.TabIndex = 1;
+			this.label38.Text = "Equipment";
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label10.Location = new System.Drawing.Point(50, 14);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(40, 16);
+			this.label10.TabIndex = 0;
+			this.label10.Text = "Body";
+			// 
+			// playerInjuryPage
+			// 
+			this.playerInjuryPage.Location = new System.Drawing.Point(4, 22);
+			this.playerInjuryPage.Name = "playerInjuryPage";
+			this.playerInjuryPage.Size = new System.Drawing.Size(536, 461);
+			this.playerInjuryPage.TabIndex = 2;
+			this.playerInjuryPage.Text = "Equipment/Injury";
 			// 
 			// teamPage
 			// 
@@ -674,625 +2315,84 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
 			// 
-			// label11
+			// playerProBowl
 			// 
-			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(50, 56);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(34, 13);
-			this.label11.TabIndex = 0;
-			this.label11.Text = "Speed";
+			this.playerProBowl.AutoSize = true;
+			this.playerProBowl.Location = new System.Drawing.Point(455, 263);
+			this.playerProBowl.Name = "playerProBowl";
+			this.playerProBowl.Size = new System.Drawing.Size(61, 17);
+			this.playerProBowl.TabIndex = 57;
+			this.playerProBowl.Text = "ProBowl";
 			// 
-			// playerSpeed
+			// playerContractLength
 			// 
-			this.playerSpeed.Location = new System.Drawing.Point(90, 49);
-			this.playerSpeed.Maximum = new decimal(new int[] {
-            99,
+			this.playerContractLength.Location = new System.Drawing.Point(466, 49);
+			this.playerContractLength.Maximum = new decimal(new int[] {
+            7,
             0,
             0,
             0});
-			this.playerSpeed.Name = "playerSpeed";
-			this.playerSpeed.Size = new System.Drawing.Size(55, 20);
-			this.playerSpeed.TabIndex = 1;
-			this.playerSpeed.ValueChanged += new System.EventHandler(this.playerSpeed_ValueChanged);
+			this.playerContractLength.Name = "playerContractLength";
+			this.playerContractLength.Size = new System.Drawing.Size(55, 20);
+			this.playerContractLength.TabIndex = 58;
 			// 
-			// label12
+			// playerContractYearsLeft
 			// 
-			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(41, 95);
-			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(43, 13);
-			this.label12.TabIndex = 2;
-			this.label12.Text = "Strength";
-			// 
-			// label13
-			// 
-			this.label13.AutoSize = true;
-			this.label13.Location = new System.Drawing.Point(29, 134);
-			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(55, 13);
-			this.label13.TabIndex = 3;
-			this.label13.Text = "Awareness";
-			// 
-			// label14
-			// 
-			this.label14.AutoSize = true;
-			this.label14.Location = new System.Drawing.Point(54, 173);
-			this.label14.Name = "label14";
-			this.label14.Size = new System.Drawing.Size(30, 13);
-			this.label14.TabIndex = 4;
-			this.label14.Text = "Agility";
-			// 
-			// label15
-			// 
-			this.label15.AutoSize = true;
-			this.label15.Location = new System.Drawing.Point(43, 329);
-			this.label15.Name = "label15";
-			this.label15.Size = new System.Drawing.Size(42, 13);
-			this.label15.TabIndex = 5;
-			this.label15.Text = "Jumping";
-			// 
-			// label16
-			// 
-			this.label16.AutoSize = true;
-			this.label16.Location = new System.Drawing.Point(43, 292);
-			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(41, 13);
-			this.label16.TabIndex = 6;
-			this.label16.Text = "Carrying";
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(39, 251);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(45, 13);
-			this.label17.TabIndex = 7;
-			this.label17.Text = "Catching";
-			// 
-			// label18
-			// 
-			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(22, 213);
-			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(62, 13);
-			this.label18.TabIndex = 8;
-			this.label18.Text = "Acceleration";
-			// 
-			// label19
-			// 
-			this.label19.AutoSize = true;
-			this.label19.Location = new System.Drawing.Point(17, 368);
-			this.label19.Name = "label19";
-			this.label19.Size = new System.Drawing.Size(67, 13);
-			this.label19.TabIndex = 9;
-			this.label19.Text = "Break Tackle";
-			// 
-			// label20
-			// 
-			this.label20.AutoSize = true;
-			this.label20.Location = new System.Drawing.Point(49, 407);
-			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(36, 13);
-			this.label20.TabIndex = 10;
-			this.label20.Text = "Tackle";
-			// 
-			// playerStrength
-			// 
-			this.playerStrength.Location = new System.Drawing.Point(90, 88);
-			this.playerStrength.Maximum = new decimal(new int[] {
-            99,
+			this.playerContractYearsLeft.Location = new System.Drawing.Point(466, 88);
+			this.playerContractYearsLeft.Maximum = new decimal(new int[] {
+            7,
             0,
             0,
             0});
-			this.playerStrength.Name = "playerStrength";
-			this.playerStrength.Size = new System.Drawing.Size(55, 20);
-			this.playerStrength.TabIndex = 2;
-			// 
-			// playerAwareness
-			// 
-			this.playerAwareness.Location = new System.Drawing.Point(90, 127);
-			this.playerAwareness.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerAwareness.Name = "playerAwareness";
-			this.playerAwareness.Size = new System.Drawing.Size(55, 20);
-			this.playerAwareness.TabIndex = 3;
-			// 
-			// playerAgility
-			// 
-			this.playerAgility.Location = new System.Drawing.Point(90, 166);
-			this.playerAgility.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerAgility.Name = "playerAgility";
-			this.playerAgility.Size = new System.Drawing.Size(55, 20);
-			this.playerAgility.TabIndex = 4;
-			// 
-			// playerJumping
-			// 
-			this.playerJumping.Location = new System.Drawing.Point(90, 322);
-			this.playerJumping.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerJumping.Name = "playerJumping";
-			this.playerJumping.Size = new System.Drawing.Size(55, 20);
-			this.playerJumping.TabIndex = 8;
-			// 
-			// playerCarrying
-			// 
-			this.playerCarrying.Location = new System.Drawing.Point(90, 283);
-			this.playerCarrying.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerCarrying.Name = "playerCarrying";
-			this.playerCarrying.Size = new System.Drawing.Size(55, 20);
-			this.playerCarrying.TabIndex = 7;
-			// 
-			// playerCatching
-			// 
-			this.playerCatching.Location = new System.Drawing.Point(90, 244);
-			this.playerCatching.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerCatching.Name = "playerCatching";
-			this.playerCatching.Size = new System.Drawing.Size(55, 20);
-			this.playerCatching.TabIndex = 6;
-			// 
-			// playerAcceleration
-			// 
-			this.playerAcceleration.Location = new System.Drawing.Point(90, 205);
-			this.playerAcceleration.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerAcceleration.Name = "playerAcceleration";
-			this.playerAcceleration.Size = new System.Drawing.Size(55, 20);
-			this.playerAcceleration.TabIndex = 5;
-			// 
-			// playerTackle
-			// 
-			this.playerTackle.Location = new System.Drawing.Point(90, 400);
-			this.playerTackle.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerTackle.Name = "playerTackle";
-			this.playerTackle.Size = new System.Drawing.Size(55, 20);
-			this.playerTackle.TabIndex = 10;
-			// 
-			// playerBreakTackle
-			// 
-			this.playerBreakTackle.Location = new System.Drawing.Point(90, 361);
-			this.playerBreakTackle.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerBreakTackle.Name = "playerBreakTackle";
-			this.playerBreakTackle.Size = new System.Drawing.Size(55, 20);
-			this.playerBreakTackle.TabIndex = 9;
-			// 
-			// playerToughness
-			// 
-			this.playerToughness.Location = new System.Drawing.Point(294, 400);
-			this.playerToughness.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerToughness.Name = "playerToughness";
-			this.playerToughness.Size = new System.Drawing.Size(55, 20);
-			this.playerToughness.TabIndex = 20;
-			// 
-			// playerInjury
-			// 
-			this.playerInjury.Location = new System.Drawing.Point(294, 361);
-			this.playerInjury.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerInjury.Name = "playerInjury";
-			this.playerInjury.Size = new System.Drawing.Size(55, 20);
-			this.playerInjury.TabIndex = 19;
-			// 
-			// playerStamina
-			// 
-			this.playerStamina.Location = new System.Drawing.Point(294, 322);
-			this.playerStamina.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerStamina.Name = "playerStamina";
-			this.playerStamina.Size = new System.Drawing.Size(55, 20);
-			this.playerStamina.TabIndex = 18;
-			// 
-			// playerKickReturn
-			// 
-			this.playerKickReturn.Location = new System.Drawing.Point(294, 283);
-			this.playerKickReturn.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerKickReturn.Name = "playerKickReturn";
-			this.playerKickReturn.Size = new System.Drawing.Size(55, 20);
-			this.playerKickReturn.TabIndex = 17;
-			// 
-			// playerKickAccuracy
-			// 
-			this.playerKickAccuracy.Location = new System.Drawing.Point(294, 244);
-			this.playerKickAccuracy.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerKickAccuracy.Name = "playerKickAccuracy";
-			this.playerKickAccuracy.Size = new System.Drawing.Size(55, 20);
-			this.playerKickAccuracy.TabIndex = 16;
-			// 
-			// playerKickPower
-			// 
-			this.playerKickPower.Location = new System.Drawing.Point(294, 205);
-			this.playerKickPower.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerKickPower.Name = "playerKickPower";
-			this.playerKickPower.Size = new System.Drawing.Size(55, 20);
-			this.playerKickPower.TabIndex = 15;
-			// 
-			// playerRunBlocking
-			// 
-			this.playerRunBlocking.Location = new System.Drawing.Point(294, 166);
-			this.playerRunBlocking.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerRunBlocking.Name = "playerRunBlocking";
-			this.playerRunBlocking.Size = new System.Drawing.Size(55, 20);
-			this.playerRunBlocking.TabIndex = 14;
-			// 
-			// playerPassBlocking
-			// 
-			this.playerPassBlocking.Location = new System.Drawing.Point(294, 127);
-			this.playerPassBlocking.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerPassBlocking.Name = "playerPassBlocking";
-			this.playerPassBlocking.Size = new System.Drawing.Size(55, 20);
-			this.playerPassBlocking.TabIndex = 13;
-			// 
-			// playerThrowAccuracy
-			// 
-			this.playerThrowAccuracy.Location = new System.Drawing.Point(294, 88);
-			this.playerThrowAccuracy.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerThrowAccuracy.Name = "playerThrowAccuracy";
-			this.playerThrowAccuracy.Size = new System.Drawing.Size(55, 20);
-			this.playerThrowAccuracy.TabIndex = 12;
-			// 
-			// playerThrowPower
-			// 
-			this.playerThrowPower.Location = new System.Drawing.Point(294, 49);
-			this.playerThrowPower.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerThrowPower.Name = "playerThrowPower";
-			this.playerThrowPower.Size = new System.Drawing.Size(55, 20);
-			this.playerThrowPower.TabIndex = 11;
-			// 
-			// label21
-			// 
-			this.label21.AutoSize = true;
-			this.label21.Location = new System.Drawing.Point(222, 56);
-			this.label21.Name = "label21";
-			this.label21.Size = new System.Drawing.Size(66, 13);
-			this.label21.TabIndex = 30;
-			this.label21.Text = "Throw Power";
-			// 
-			// label22
-			// 
-			this.label22.AutoSize = true;
-			this.label22.Location = new System.Drawing.Point(207, 95);
-			this.label22.Name = "label22";
-			this.label22.Size = new System.Drawing.Size(81, 13);
-			this.label22.TabIndex = 31;
-			this.label22.Text = "Throw Accuracy";
-			// 
-			// label23
-			// 
-			this.label23.AutoSize = true;
-			this.label23.Location = new System.Drawing.Point(218, 133);
-			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(70, 13);
-			this.label23.TabIndex = 32;
-			this.label23.Text = "Pass Blocking";
-			// 
-			// label24
-			// 
-			this.label24.AutoSize = true;
-			this.label24.Location = new System.Drawing.Point(222, 173);
-			this.label24.Name = "label24";
-			this.label24.Size = new System.Drawing.Size(67, 13);
-			this.label24.TabIndex = 33;
-			this.label24.Text = "Run Blocking";
-			// 
-			// label25
-			// 
-			this.label25.AutoSize = true;
-			this.label25.Location = new System.Drawing.Point(231, 211);
-			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(57, 13);
-			this.label25.TabIndex = 34;
-			this.label25.Text = "Kick Power";
-			// 
-			// label26
-			// 
-			this.label26.AutoSize = true;
-			this.label26.Location = new System.Drawing.Point(216, 251);
-			this.label26.Name = "label26";
-			this.label26.Size = new System.Drawing.Size(72, 13);
-			this.label26.TabIndex = 35;
-			this.label26.Text = "Kick Accuracy";
-			// 
-			// label27
-			// 
-			this.label27.AutoSize = true;
-			this.label27.Location = new System.Drawing.Point(229, 290);
-			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(59, 13);
-			this.label27.TabIndex = 36;
-			this.label27.Text = "Kick Return";
-			// 
-			// label28
-			// 
-			this.label28.AutoSize = true;
-			this.label28.Location = new System.Drawing.Point(247, 329);
-			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(41, 13);
-			this.label28.TabIndex = 37;
-			this.label28.Text = "Stamina";
-			// 
-			// label29
-			// 
-			this.label29.AutoSize = true;
-			this.label29.Location = new System.Drawing.Point(260, 368);
-			this.label29.Name = "label29";
-			this.label29.Size = new System.Drawing.Size(28, 13);
-			this.label29.TabIndex = 38;
-			this.label29.Text = "Injury";
-			// 
-			// label30
-			// 
-			this.label30.AutoSize = true;
-			this.label30.Location = new System.Drawing.Point(232, 407);
-			this.label30.Name = "label30";
-			this.label30.Size = new System.Drawing.Size(56, 13);
-			this.label30.TabIndex = 39;
-			this.label30.Text = "Toughness";
-			// 
-			// label31
-			// 
-			this.label31.AutoSize = true;
-			this.label31.Location = new System.Drawing.Point(376, 56);
-			this.label31.Name = "label31";
-			this.label31.Size = new System.Drawing.Size(37, 13);
-			this.label31.TabIndex = 41;
-			this.label31.Text = "Weight";
-			// 
-			// label32
-			// 
-			this.label32.AutoSize = true;
-			this.label32.Location = new System.Drawing.Point(376, 93);
-			this.label32.Name = "label32";
-			this.label32.Size = new System.Drawing.Size(34, 13);
-			this.label32.TabIndex = 42;
-			this.label32.Text = "Height";
-			// 
-			// playerHeightComboBox
-			// 
-			this.playerHeightComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.playerHeightComboBox.FormattingEnabled = true;
-			this.playerHeightComboBox.Items.AddRange(new object[] {
-            "5\' 5\"",
-            "5\' 6\"",
-            "5\' 7\"",
-            "5\' 8\"",
-            "5\' 9\"",
-            "5\' 10\"",
-            "5\' 11\"",
-            "6\' 0\"",
-            "6\' 1\"",
-            "6\' 2\"",
-            "6\' 3\"",
-            "6\' 4\"",
-            "6\' 5\"",
-            "6\' 6\"",
-            "6\' 7\"",
-            "6\' 8\"",
-            "6\' 9\"",
-            "6\' 10\"",
-            "6\' 11\"",
-            "7\' 0\""});
-			this.playerHeightComboBox.Location = new System.Drawing.Point(416, 85);
-			this.playerHeightComboBox.Name = "playerHeightComboBox";
-			this.playerHeightComboBox.Size = new System.Drawing.Size(105, 21);
-			this.playerHeightComboBox.TabIndex = 43;
-			// 
-			// label33
-			// 
-			this.label33.AutoSize = true;
-			this.label33.Location = new System.Drawing.Point(404, 368);
-			this.label33.Name = "label33";
-			this.label33.Size = new System.Drawing.Size(56, 13);
-			this.label33.TabIndex = 44;
-			this.label33.Text = "Importance";
-			// 
-			// label34
-			// 
-			this.label34.AutoSize = true;
-			this.label34.Location = new System.Drawing.Point(425, 407);
-			this.label34.Name = "label34";
-			this.label34.Size = new System.Drawing.Size(35, 13);
-			this.label34.TabIndex = 45;
-			this.label34.Text = "Morale";
-			// 
-			// playerImportance
-			// 
-			this.playerImportance.Location = new System.Drawing.Point(466, 361);
-			this.playerImportance.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerImportance.Name = "playerImportance";
-			this.playerImportance.Size = new System.Drawing.Size(55, 20);
-			this.playerImportance.TabIndex = 46;
-			// 
-			// playerMorale
-			// 
-			this.playerMorale.Location = new System.Drawing.Point(466, 400);
-			this.playerMorale.Name = "playerMorale";
-			this.playerMorale.Size = new System.Drawing.Size(55, 20);
-			this.playerMorale.TabIndex = 47;
-			// 
-			// playerNFLIcon
-			// 
-			this.playerNFLIcon.AutoSize = true;
-			this.playerNFLIcon.Location = new System.Drawing.Point(455, 299);
-			this.playerNFLIcon.Name = "playerNFLIcon";
-			this.playerNFLIcon.Size = new System.Drawing.Size(66, 17);
-			this.playerNFLIcon.TabIndex = 49;
-			this.playerNFLIcon.Text = "NFL Icon";
-			// 
-			// playerExperiencePoints
-			// 
-			this.playerExperiencePoints.Location = new System.Drawing.Point(447, 329);
-			this.playerExperiencePoints.Maximum = new decimal(new int[] {
+			this.playerContractYearsLeft.Name = "playerContractYearsLeft";
+			this.playerContractYearsLeft.Size = new System.Drawing.Size(55, 20);
+			this.playerContractYearsLeft.TabIndex = 59;
+			// 
+			// label68
+			// 
+			this.label68.AutoSize = true;
+			this.label68.Location = new System.Drawing.Point(381, 56);
+			this.label68.Name = "label68";
+			this.label68.Size = new System.Drawing.Size(79, 13);
+			this.label68.TabIndex = 60;
+			this.label68.Text = "Contract Length";
+			// 
+			// label69
+			// 
+			this.label69.AutoSize = true;
+			this.label69.Location = new System.Drawing.Point(366, 95);
+			this.label69.Name = "label69";
+			this.label69.Size = new System.Drawing.Size(94, 13);
+			this.label69.TabIndex = 61;
+			this.label69.Text = "Contract Years Left";
+			// 
+			// playerSigningBonus
+			// 
+			this.playerSigningBonus.DecimalPlaces = 2;
+			this.playerSigningBonus.Location = new System.Drawing.Point(447, 126);
+			this.playerSigningBonus.Maximum = new decimal(new int[] {
             8192,
             0,
             0,
-            0});
-			this.playerExperiencePoints.Name = "playerExperiencePoints";
-			this.playerExperiencePoints.Size = new System.Drawing.Size(74, 20);
-			this.playerExperiencePoints.TabIndex = 50;
+            131072});
+			this.playerSigningBonus.Name = "playerSigningBonus";
+			this.playerSigningBonus.Size = new System.Drawing.Size(74, 20);
+			this.playerSigningBonus.TabIndex = 62;
 			// 
-			// label35
+			// label70
 			// 
-			this.label35.AutoSize = true;
-			this.label35.Location = new System.Drawing.Point(392, 336);
-			this.label35.Name = "label35";
-			this.label35.Size = new System.Drawing.Size(49, 13);
-			this.label35.TabIndex = 51;
-			this.label35.Text = "XP Points";
-			// 
-			// playerWeight
-			// 
-			this.playerWeight.Location = new System.Drawing.Point(416, 49);
-			this.playerWeight.Maximum = new decimal(new int[] {
-            415,
-            0,
-            0,
-            0});
-			this.playerWeight.Minimum = new decimal(new int[] {
-            160,
-            0,
-            0,
-            0});
-			this.playerWeight.Name = "playerWeight";
-			this.playerWeight.Size = new System.Drawing.Size(83, 20);
-			this.playerWeight.TabIndex = 52;
-			this.playerWeight.Value = new decimal(new int[] {
-            160,
-            0,
-            0,
-            0});
-			// 
-			// label36
-			// 
-			this.label36.AutoSize = true;
-			this.label36.Location = new System.Drawing.Point(505, 56);
-			this.label36.Name = "label36";
-			this.label36.Size = new System.Drawing.Size(16, 13);
-			this.label36.TabIndex = 53;
-			this.label36.Text = "lbs";
-			// 
-			// playerInjuryPage
-			// 
-			this.playerInjuryPage.Location = new System.Drawing.Point(4, 22);
-			this.playerInjuryPage.Name = "playerInjuryPage";
-			this.playerInjuryPage.Size = new System.Drawing.Size(536, 461);
-			this.playerInjuryPage.TabIndex = 2;
-			this.playerInjuryPage.Text = "Injury";
-			// 
-			// label37
-			// 
-			this.label37.AutoSize = true;
-			this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label37.Location = new System.Drawing.Point(19, 15);
-			this.label37.Name = "label37";
-			this.label37.Size = new System.Drawing.Size(65, 15);
-			this.label37.TabIndex = 54;
-			this.label37.Text = "OVERALL";
-			// 
-			// playerOverall
-			// 
-			this.playerOverall.Location = new System.Drawing.Point(90, 10);
-			this.playerOverall.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.playerOverall.Name = "playerOverall";
-			this.playerOverall.Size = new System.Drawing.Size(55, 20);
-			this.playerOverall.TabIndex = 0;
-			// 
-			// calculateOverallButton
-			// 
-			this.calculateOverallButton.Enabled = false;
-			this.calculateOverallButton.Location = new System.Drawing.Point(151, 10);
-			this.calculateOverallButton.Name = "calculateOverallButton";
-			this.calculateOverallButton.Size = new System.Drawing.Size(59, 21);
-			this.calculateOverallButton.TabIndex = 56;
-			this.calculateOverallButton.Text = "Calc";
-			// 
-			// playerDominantHand
-			// 
-			this.playerDominantHand.AutoSize = true;
-			this.playerDominantHand.Location = new System.Drawing.Point(124, 346);
-			this.playerDominantHand.Name = "playerDominantHand";
-			this.playerDominantHand.Size = new System.Drawing.Size(81, 17);
-			this.playerDominantHand.TabIndex = 8;
-			this.playerDominantHand.Text = "Left Handed";
+			this.label70.AutoSize = true;
+			this.label70.Location = new System.Drawing.Point(370, 133);
+			this.label70.Name = "label70";
+			this.label70.Size = new System.Drawing.Size(71, 13);
+			this.label70.TabIndex = 63;
+			this.label70.Text = "Signing Bonus";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
 			this.ClientSize = new System.Drawing.Size(792, 566);
 			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.statusStrip);
@@ -1319,17 +2419,10 @@ namespace MaddenEditor.Forms
 			this.tabControl1.ResumeLayout(false);
 			this.playerRatingPage.ResumeLayout(false);
 			this.playerRatingPage.PerformLayout();
-			this.statusStrip.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.playerSpeed)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerStrength)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerAwareness)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerAgility)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerJumping)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerCarrying)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerCatching)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerAcceleration)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerTackle)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerBreakTackle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerImportance)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerToughness)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerInjury)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerStamina)).EndInit();
@@ -1340,11 +2433,44 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerPassBlocking)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerThrowAccuracy)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerThrowPower)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerImportance)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerTackle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBreakTackle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerJumping)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerCarrying)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerCatching)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerAcceleration)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerAgility)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerAwareness)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerStrength)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerSpeed)).EndInit();
+			this.playerAppearancePage.ResumeLayout(false);
+			this.playerAppearancePage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerFaceShape)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerFace)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerWeight)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerRearShape)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerRearRearFat)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerRearMuscle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsCalfFat)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsCalfMuscle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsThighFat)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerLegsThighMuscle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerArmsFat)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerArmsMuscle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentFlakJacket)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentPadShelf)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentPadWidth)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentPadHeight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentThighPads)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerEquipmentShoes)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyFat)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyMuscle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyWeight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).EndInit();
+			this.statusStrip.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1438,9 +2564,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label27;
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.ComboBox playerHeightComboBox;
-		private System.Windows.Forms.Label label32;
-		private System.Windows.Forms.Label label31;
 		private System.Windows.Forms.Label label34;
 		private System.Windows.Forms.Label label33;
 		private System.Windows.Forms.NumericUpDown playerMorale;
@@ -1448,12 +2571,80 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.CheckBox playerNFLIcon;
 		private System.Windows.Forms.NumericUpDown playerExperiencePoints;
 		private System.Windows.Forms.Label label35;
-		private System.Windows.Forms.Label label36;
-		private System.Windows.Forms.NumericUpDown playerWeight;
 		private System.Windows.Forms.TabPage playerInjuryPage;
 		private System.Windows.Forms.Button calculateOverallButton;
 		private System.Windows.Forms.NumericUpDown playerOverall;
 		private System.Windows.Forms.Label label37;
 		private System.Windows.Forms.CheckBox playerDominantHand;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.NumericUpDown playerEquipmentPadShelf;
+		private System.Windows.Forms.NumericUpDown playerEquipmentPadWidth;
+		private System.Windows.Forms.NumericUpDown playerEquipmentPadHeight;
+		private System.Windows.Forms.NumericUpDown playerEquipmentThighPads;
+		private System.Windows.Forms.NumericUpDown playerEquipmentShoes;
+		private System.Windows.Forms.NumericUpDown playerBodyFat;
+		private System.Windows.Forms.NumericUpDown playerBodyMuscle;
+		private System.Windows.Forms.NumericUpDown playerBodyWeight;
+		private System.Windows.Forms.NumericUpDown playerBodyOverall;
+		private System.Windows.Forms.Label label42;
+		private System.Windows.Forms.Label label41;
+		private System.Windows.Forms.Label label40;
+		private System.Windows.Forms.Label label39;
+		private System.Windows.Forms.Label label38;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label51;
+		private System.Windows.Forms.Label label50;
+		private System.Windows.Forms.NumericUpDown playerEquipmentFlakJacket;
+		private System.Windows.Forms.Label label49;
+		private System.Windows.Forms.Label label48;
+		private System.Windows.Forms.Label label47;
+		private System.Windows.Forms.Label label46;
+		private System.Windows.Forms.Label label45;
+		private System.Windows.Forms.Label label44;
+		private System.Windows.Forms.Label label43;
+		private System.Windows.Forms.Label label56;
+		private System.Windows.Forms.Label label55;
+		private System.Windows.Forms.Label label54;
+		private System.Windows.Forms.NumericUpDown playerRearShape;
+		private System.Windows.Forms.NumericUpDown playerRearRearFat;
+		private System.Windows.Forms.NumericUpDown playerRearMuscle;
+		private System.Windows.Forms.NumericUpDown playerLegsCalfFat;
+		private System.Windows.Forms.NumericUpDown playerLegsCalfMuscle;
+		private System.Windows.Forms.NumericUpDown playerLegsThighFat;
+		private System.Windows.Forms.NumericUpDown playerLegsThighMuscle;
+		private System.Windows.Forms.Label label53;
+		private System.Windows.Forms.Label label52;
+		private System.Windows.Forms.NumericUpDown playerArmsFat;
+		private System.Windows.Forms.NumericUpDown playerArmsMuscle;
+		private System.Windows.Forms.Label label60;
+		private System.Windows.Forms.Label label59;
+		private System.Windows.Forms.Label label58;
+		private System.Windows.Forms.Label label57;
+		private System.Windows.Forms.Label label36;
+		private System.Windows.Forms.NumericUpDown playerWeight;
+		private System.Windows.Forms.ComboBox playerHeightComboBox;
+		private System.Windows.Forms.Label label32;
+		private System.Windows.Forms.Label label31;
+		private System.Windows.Forms.ComboBox playerHairColorCombo;
+		private System.Windows.Forms.Label label61;
+		private System.Windows.Forms.ComboBox playerLeftTatooCombo;
+		private System.Windows.Forms.Label label65;
+		private System.Windows.Forms.NumericUpDown playerFaceShape;
+		private System.Windows.Forms.Label label64;
+		private System.Windows.Forms.NumericUpDown playerFace;
+		private System.Windows.Forms.Label label63;
+		private System.Windows.Forms.ComboBox playerHairStyleCombo;
+		private System.Windows.Forms.ComboBox playerSkinColorCombo;
+		private System.Windows.Forms.Label label62;
+		private System.Windows.Forms.Label label67;
+		private System.Windows.Forms.Label label66;
+		private System.Windows.Forms.ComboBox playerRightTatooCombo;
+		private System.Windows.Forms.CheckBox playerProBowl;
+		private System.Windows.Forms.Label label69;
+		private System.Windows.Forms.Label label68;
+		private System.Windows.Forms.NumericUpDown playerContractYearsLeft;
+		private System.Windows.Forms.NumericUpDown playerContractLength;
+		private System.Windows.Forms.Label label70;
+		private System.Windows.Forms.NumericUpDown playerSigningBonus;
     }
 }

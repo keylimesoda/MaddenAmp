@@ -49,6 +49,14 @@ namespace MaddenEditor.Domain
 			backupStringFields = new Dictionary<string, string>();
 		}
 
+		public int RecNo
+		{
+			get
+			{
+				return recordNumber;
+			}
+		}
+
 		public bool Dirty
 		{
 			get
@@ -93,6 +101,11 @@ namespace MaddenEditor.Domain
 
 		protected void SetFieldWithBackup(string fieldName, string val)
 		{
+			//Exit early if the new value is the same
+			if (stringFields[fieldName].Equals(val))
+			{
+				return;
+			}
 			//Mark this record as dirty as well as the Full Roster Model
 			parentModel.Dirty = true;
 			this.dirty = true;
@@ -110,6 +123,12 @@ namespace MaddenEditor.Domain
 
 		protected void SetFieldWithBackup(string fieldName, int val)
 		{
+			//Exit early if the new value is the same
+			if (intFields[fieldName] == val)
+			{
+				return;
+			}
+
 			//Mark this record as dirty as well as the Full Roster Model
 			parentModel.Dirty = true;
 			this.dirty = true;
@@ -124,6 +143,42 @@ namespace MaddenEditor.Domain
 
 			intFields[fieldName] = val;
 		}
-		
+
+		public void GetChangedIntFields(ref string[] keyArray, ref int[] valueArray)
+		{
+			keyArray = new string[backupIntFields.Count];
+			valueArray = new int[backupIntFields.Count];
+
+			int i = 0;
+			foreach (string key in backupIntFields.Keys)
+			{
+				keyArray[i] = key;
+				valueArray[i] = intFields[key];
+				i++;
+			}
+
+		}
+
+		public void GetChangedStringFields(ref string[] keyArray, ref string[] valueArray)
+		{
+			keyArray = new string[backupStringFields.Count];
+			valueArray = new string[backupStringFields.Count];
+
+			int i = 0;
+			foreach (string key in backupStringFields.Keys)
+			{
+				keyArray[i] = key;
+				valueArray[i] = stringFields[key];
+				i++;
+			}
+		}
+
+		public void DiscardBackups()
+		{
+			backupStringFields.Clear();
+			backupIntFields.Clear();
+
+			Dirty = false;
+		}
 	}
 }
