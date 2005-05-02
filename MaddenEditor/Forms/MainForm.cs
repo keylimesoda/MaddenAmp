@@ -94,12 +94,6 @@ namespace MaddenEditor.Forms
 			{
 				foreach (string filename in dialog.FileNames)
 				{
-					if (filename.Contains("fra"))
-					{
-						MessageBox.Show("This version currently does not support loading of Franchise files", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return;
-					}
-
 					fileToLoad = filename;
 					// Insert code here to process the files.
 					try
@@ -162,7 +156,7 @@ namespace MaddenEditor.Forms
 			lastNameTextBox.Text = record.LastName;
 			teamComboBox.Text = model.GetTeamNameFromTeamId(record.TeamId);
 			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
-			//collegeComboBox.Text = collegeComboBox.Items[record.CollegeId + 4].ToString();
+			collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
 
 			playerAge.Value = record.Age;
 			playerJerseyNumber.Value = record.JerseyNumber;
@@ -814,6 +808,14 @@ namespace MaddenEditor.Forms
 			{
 				//Found a new player to switch to
 				LoadPlayerInfo(searchForm.SelectedPlayer);
+			}
+		}
+
+		private void collegeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.CollegeId = collegeComboBox.SelectedIndex;
 			}
 		}
 
