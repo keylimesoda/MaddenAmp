@@ -1,0 +1,153 @@
+//Calculate tempOverallfor Specified Player Position using derived formulas
+//Quarterback
+tempOverall= (((double)throwpower - 50) / 10) * 4.9;
+tempOverall+= (((double)throwacc - 50) / 10) * 5.8;
+tempOverall+= (((double)BreakTackle - 50) / 10) * 0.8;
+tempOverall+= (((double)Agility - 50) / 10) * 0.8;
+tempOverall+= (((double)Awareness - 50) / 10) * 4.0;
+tempOverall+= (((double)Speed - 50) / 10) * 2.0;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 28,1);
+
+//Running Back
+tempOverall= (((double)PassBlocking - 50) / 10) * 0.33;
+tempOverall+= (((double)BreakTackle - 50) / 10) * 3.3;
+tempOverall+= (((double)Carrying - 50) / 10) * 2.0;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.8;
+tempOverall+= (((double)Agility - 50) / 10) * 2.8;
+tempOverall+= (((double)Awareness - 50) / 10) * 2.0;
+tempOverall+= (((double)Strength - 50) / 10) * 0.6;
+tempOverall+= (((double)Speed - 50) / 10) * 3.3;
+tempOverall+= (((double)Catching - 50) / 10) * 1.4;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 27,1);
+
+//Full Back
+tempOverall= (((double)PassBlocking - 50) / 10) * 1.0;
+tempOverall+= (((double)RunBlocking - 50) / 10) * 7.2;
+tempOverall+= (((double)BreakTackle - 50) / 10) * 1.8;
+tempOverall+= (((double)Carrying - 50) / 10) * 1.8;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.8;
+tempOverall+= (((double)Agility - 50) / 10) * 1.0;
+tempOverall+= (((double)Awareness - 50) / 10) * 2.8;
+tempOverall+= (((double)Strength - 50) / 10) * 1.8;
+tempOverall+= (((double)Speed - 50) / 10) * 1.8;
+tempOverall+= (((double)Catching - 50) / 10) * 5.2;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 39,1);
+
+//Wide Receiver
+tempOverall= (((double)BreakTackle - 50) / 10) * 0.8;
+tempOverall+= (((double)Acceleration - 50) / 10) * 2.3;
+tempOverall+= (((double)Agility - 50) / 10) * 2.3;
+tempOverall+= (((double)Awareness - 50) / 10) * 2.3;
+tempOverall+= (((double)Strength - 50) / 10) * 0.8;
+tempOverall+= (((double)Speed - 50) / 10) * 2.3;
+tempOverall+= (((double)Catching - 50) / 10) * 4.75;
+tempOverall+= (((double)Jumping - 50) / 10) * 1.4;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 26,1);
+
+//Tight End
+tempOverall= (((double)Speed - 50) / 10) * 2.65;
+tempOverall+= (((double)Strength - 50) / 10) * 2.65;
+tempOverall+= (((double)Awareness - 50) / 10) * 2.65;
+tempOverall+= (((double)Agility - 50) / 10) * 1.25;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.25;
+tempOverall+= (((double)Catching - 50) / 10) * 5.4;
+tempOverall+= (((double)BreakTackle - 50) / 10) * 1.2;
+tempOverall+= (((double)PassBlocking - 50) / 10) * 1.2;
+tempOverall+= (((double)RunBlocking - 50) / 10) * 5.4;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 35,1);
+
+//Left-Right Tackle
+tempOverall= (((double)Speed - 50) / 10) * 0.8;
+tempOverall+= (((double)Strength - 50) / 10) * 3.3;
+tempOverall+= (((double)Awareness - 50) / 10) * 3.3;
+tempOverall+= (((double)Agility - 50) / 10) * 0.8;
+tempOverall+= (((double)Acceleration - 50) / 10) * 0.8;
+tempOverall+= (((double)PassBlocking - 50) / 10) * 4.75;
+tempOverall+= (((double)RunBlocking - 50) / 10) * 3.75;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 26,1);
+
+//Left-Right Guard / Center
+tempOverall= (((double)Speed - 50) / 10) * 1.7;
+tempOverall+= (((double)Strength - 50) / 10) * 3.25;
+tempOverall+= (((double)Awareness - 50) / 10) * 3.25;
+tempOverall+= (((double)Agility - 50) / 10) * 0.8;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.7;
+tempOverall+= (((double)PassBlocking - 50) / 10) * 3.25;
+tempOverall+= (((double)RunBlocking - 50) / 10) * 4.8;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 28,1);
+
+//Left-Right End
+tempOverall= (((double)Speed - 50) / 10) * 3.75;
+tempOverall+= (((double)Strength - 50) / 10) * 3.75;
+tempOverall+= (((double)Awareness - 50) / 10) * 1.75;
+tempOverall+= (((double)Agility - 50) / 10) * 1.75;
+tempOverall+= (((double)Acceleration - 50) / 10) * 3.8;
+tempOverall+= (((double)tackle - 50) / 10) * 5.5;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 30,1);
+
+
+//Defensive Tackle
+tempOverall= (((double)Speed - 50) / 10) * 1.8;
+tempOverall+= (((double)Strength - 50) / 10) * 5.5;
+tempOverall+= (((double)Awareness - 50) / 10) * 3.8;
+tempOverall+= (((double)Agility - 50) / 10) * 1;
+tempOverall+= (((double)Acceleration - 50) / 10) * 2.8;
+tempOverall+= (((double)tackle - 50) / 10) * 4.55;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 29,1);
+
+
+//Left-Right Outside Linebacker
+tempOverall= (((double)Speed - 50) / 10) * 3.75;
+tempOverall+= (((double)Strength - 50) / 10) * 2.4;
+tempOverall+= (((double)Awareness - 50) / 10) * 3.6;
+tempOverall+= (((double)Agility - 50) / 10) * 2.4;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.3;
+tempOverall+= (((double)Catching - 50) / 10) * 1.3;
+tempOverall+= (((double)tackle - 50) / 10) * 4.8;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 29,1);
+
+
+//Middle Linebacker
+tempOverall= (((double)Speed - 50) / 10) * 0.75;
+tempOverall+= (((double)Strength - 50) / 10) * 3.4;
+tempOverall+= (((double)Awareness - 50) / 10) * 5.2;
+tempOverall+= (((double)Agility - 50) / 10) * 1.65;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.75;
+tempOverall+= (((double)tackle - 50) / 10) * 5.2;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 27,1);
+
+
+//Cornerback
+tempOverall= (((double)Speed - 50) / 10) * 3.85;
+tempOverall+= (((double)Strength - 50) / 10) * 0.9;
+tempOverall+= (((double)Awareness - 50) / 10) * 3.85;
+tempOverall+= (((double)Agility - 50) / 10) * 1.55;
+tempOverall+= (((double)Acceleration - 50) / 10) * 2.35;
+tempOverall+= (((double)Catching - 50) / 10) * 3;
+tempOverall+= (((double)Jumping - 50) / 10) * 1.55;
+tempOverall+= (((double)tackle - 50) / 10) * 1.55;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 28,1);
+
+
+//Free Safety
+tempOverall= (((double)Speed - 50) / 10) * 3.0;
+tempOverall+= (((double)Strength - 50) / 10) * 0.9;
+tempOverall+= (((double)Awareness - 50) / 10) * 4.85;
+tempOverall+= (((double)Agility - 50) / 10) * 1.5;
+tempOverall+= (((double)Acceleration - 50) / 10) * 2.5;
+tempOverall+= (((double)Catching - 50) / 10) * 3.0;
+tempOverall+= (((double)Jumping - 50) / 10) * 1.5;
+tempOverall+= (((double)tackle - 50) / 10) * 2.5;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 30,1);
+
+
+//Strong Safety
+tempOverall= (((double)Speed - 50) / 10) * 3.2;
+tempOverall+= (((double)Strength - 50) / 10) * 1.7;
+tempOverall+= (((double)Awareness - 50) / 10) * 4.75;
+tempOverall+= (((double)Agility - 50) / 10) * 1.7;
+tempOverall+= (((double)Acceleration - 50) / 10) * 1.7;
+tempOverall+= (((double)Catching - 50) / 10) * 3.2;
+tempOverall+= (((double)Jumping - 50) / 10) * 0.9;
+tempOverall+= (((double)tackle - 50) / 10) * 3.2;
+tempOverall= (int)Math.Round(Convert.ToInt32(tempOverall) + 30,1);

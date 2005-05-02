@@ -145,6 +145,12 @@ namespace MaddenEditor.Forms
 			filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
 			filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
 
+			//Load The Injury Box with 256 Injuries??
+			for (int i=0; i < 256; i++)
+			{
+				playerInjuryCombo.Items.Add(i.ToString());
+			}
+
 			LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
@@ -154,12 +160,29 @@ namespace MaddenEditor.Forms
 
 			firstNameTextBox.Text = record.FirstName;
 			lastNameTextBox.Text = record.LastName;
-			teamComboBox.Text = model.GetTeamNameFromTeamId(record.TeamId);
+			string team = model.GetTeamNameFromTeamId(record.TeamId);
+			if (team == null)
+			{
+				teamComboBox.Enabled = false;
+			}
+			else
+			{
+				teamComboBox.Text = team;
+			}
+			
 			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 			collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
 
 			playerAge.Value = record.Age;
-			playerJerseyNumber.Value = record.JerseyNumber;
+			if (record.JerseyNumber > 99)
+			{
+				//Must be a draft class, disable jersey number editing
+				playerJerseyNumber.Enabled = false;
+			}
+			else
+			{
+				playerJerseyNumber.Value = record.JerseyNumber;
+			}
 			playerYearsPro.Value = record.YearsPro;
 			playerWeight.Value = record.Weight + 160;
 			playerHeightComboBox.SelectedIndex = record.Height - 65;
@@ -195,7 +218,7 @@ namespace MaddenEditor.Forms
 			playerExperiencePoints.Value = record.XPPoints;
 			playerContractLength.Value = record.ContractLength;
 			playerContractYearsLeft.Value = record.ContractYearsLeft;
-			playerSigningBonus.Value = (decimal)(record.SigningBonus/100.0);
+			playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
 			playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
 
 			//Set player Appearance
@@ -220,6 +243,32 @@ namespace MaddenEditor.Forms
 			playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
 			playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
 			playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
+
+			//Load Injury information
+			InjuryRecord injury = model.GetPlayersInjuryRecord(record.PlayerId);
+
+			if (injury == null)
+			{
+				playerInjuryCombo.Enabled = false;
+				playerInjuryLength.Enabled = false;
+				playerRemoveInjuryButton.Enabled = false;
+				playerInjuryReserve.Enabled = false;
+				playerAddInjuryButton.Enabled = true;
+			}
+			else
+			{
+				playerInjuryCombo.Enabled = true;
+				playerInjuryLength.Enabled = true;
+				playerRemoveInjuryButton.Enabled = true;
+				playerInjuryReserve.Enabled = true;
+				playerAddInjuryButton.Enabled = false;
+
+				playerInjuryCombo.Text = playerInjuryCombo.Items[injury.InjuryType].ToString();
+				playerInjuryLength.Value = injury.InjuryLength;
+				playerInjuryReserve.Checked = injury.InjuryReserve;
+
+			}
+
 			isInitialising = false;
 		}
 
@@ -285,6 +334,7 @@ namespace MaddenEditor.Forms
 			if (teamCheckBox.Checked)
 			{
 				model.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
+				filterDraftClassCheckBox.Checked = false;
 			}
 			else
 			{
@@ -817,6 +867,37 @@ namespace MaddenEditor.Forms
 			{
 				model.CurrentPlayerRecord.CollegeId = collegeComboBox.SelectedIndex;
 			}
+		}
+
+		private void filterDraftClassCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (filterDraftClassCheckBox.Checked)
+			{
+				model.SetDraftClassFilter(true);
+				//Make sure team isn't set
+				teamCheckBox.Checked = false;
+			}
+			else
+			{
+				model.SetDraftClassFilter(false);
+			}
+		}
+
+		private void calculateOverallButton_Click(object sender, EventArgs e)
+		{
+			model.CurrentPlayerRecord.CalculateOverallRating();
+			//Reload the overall rating
+			playerOverall.Value = model.CurrentPlayerRecord.Overall;
+		}
+
+		private void playerAddInjuryButton_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void playerRemoveInjuryButton_Click(object sender, EventArgs e)
+		{
+
 		}
 
 		

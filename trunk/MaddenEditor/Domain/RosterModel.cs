@@ -83,15 +83,18 @@ namespace MaddenEditor.Domain
 
 		private bool dirty = false;
 		private int dbIndex = -1;
-		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private int tableCount = 0;
 		private string fileName = "";
 		private MainForm view = null;
 		private Dictionary<string, TableModel> tableModels = null;
 		private Dictionary<int, string> teamNameList = null;
 		private int currentPlayerIndex = 0;
+		/** The current Team Filter */
 		private string currentTeamFilter = null;
+		/** The current position filter */
 		private int currentPositionFilter = -1;
+		/** If we are currently filtering for draft class */
+		private bool currentDraftClassFilter = false;
 		private Dictionary<string, int> tableOrder = null;
 
 		public RosterModel(string filename, MainForm form)
@@ -315,7 +318,7 @@ namespace MaddenEditor.Domain
 			if (teamNameList.ContainsKey(teamid))
 				return teamNameList[teamid];
 			else
-				return "UNKNOWNTEAM";
+				return null;
 		}
 
 		public int GetTeamIdFromTeamName(string teamName)
@@ -396,6 +399,13 @@ namespace MaddenEditor.Domain
 						continue;
 					}
 				}
+				if (currentDraftClassFilter)
+				{
+					if (record.YearsPro != 0)
+					{
+						continue;
+					}
+				}
 	
 				//Found one
 				break;
@@ -432,12 +442,24 @@ namespace MaddenEditor.Domain
 						continue;
 					}
 				}
+				if (currentDraftClassFilter)
+				{
+					if (record.YearsPro != 0)
+					{
+						continue;
+					}
+				}
 
 				//Found one
 				break;
 			}
 
 			return record;
+		}
+
+		public void SetDraftClassFilter(bool use)
+		{
+			currentDraftClassFilter = use;
 		}
 
 		public void SetTeamFilter(string teamname)
@@ -447,6 +469,7 @@ namespace MaddenEditor.Domain
 
 		public void RemoveTeamFilter()
 		{
+			Console.WriteLine("Removing Team filter");
 			currentTeamFilter = null;
 		}
 
@@ -528,6 +551,19 @@ namespace MaddenEditor.Domain
 				}
 			}
 			return results;
+		}
+
+		public InjuryRecord GetPlayersInjuryRecord(int playerId)
+		{
+			foreach (TableRecordModel record in tableModels[INJURY_TABLE].GetRecords())
+			{
+				InjuryRecord injuryRecord = (InjuryRecord)record;
+				if (playerId == injuryRecord.PlayerId)
+				{
+					return injuryRecord;
+				}
+			}
+			return null;
 		}
 	}
 }

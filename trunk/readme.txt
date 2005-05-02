@@ -1,7 +1,7 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.5.1
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.0
 
                                   2nd May 2005
 
@@ -40,6 +40,13 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
+* (NEW) Added Draft Class Filter for easy editing of draft classes
+
+* (NEW) Supports loading franchise files
+
+* (NEW) Added support to estimate OVR rating by hitting calculate
+        (From files by ReMiNiScE @ football-freaks.com)
+
 * Currently supports editing of most player attributes from a Madden 2005 
   roster file. Attributes that are not supported yet are either grayed out
   or are just not existent in the editor
@@ -51,10 +58,6 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. KNOWN ISSUES
 ===============
-
-* Currently doesnt load up franchise files. This is deliberate. This program 
-  has only began being written on the 29th of April 2005 so is still very
-  young
 
 * Tabbing between settings doesnt work correctly
 
