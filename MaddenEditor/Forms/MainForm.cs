@@ -15,7 +15,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net             colin.goudie@gmail.com
+ * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * 
+ * colin.goudie@gmail.com
  * 
  *****************************************************************************/
 using System;
@@ -200,6 +202,7 @@ namespace MaddenEditor.Forms
 			playerContractLength.Value = record.ContractLength;
 			playerContractYearsLeft.Value = record.ContractYearsLeft;
 			playerSigningBonus.Value = (decimal)(record.SigningBonus/100.0);
+			playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
 
 			//Set player Appearance
 			playerBodyWeight.Value = record.BodyWeight;
@@ -782,6 +785,14 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+		private void playerTotalSalary_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.TotalSalary = (int)(playerTotalSalary.Value * 100);
+			}
+		}
+
 		private void playerThrowingStyle_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!isInitialising)
@@ -805,6 +816,8 @@ namespace MaddenEditor.Forms
 				LoadPlayerInfo(searchForm.SelectedPlayer);
 			}
 		}
+
+		
 
     }
 }

@@ -72,6 +72,8 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.playerRatingPage = new System.Windows.Forms.TabPage();
+			this.label74 = new System.Windows.Forms.Label();
+			this.playerTotalSalary = new System.Windows.Forms.NumericUpDown();
 			this.label70 = new System.Windows.Forms.Label();
 			this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
 			this.label69 = new System.Windows.Forms.Label();
@@ -205,6 +207,7 @@ namespace MaddenEditor.Forms
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
+			this.label75 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -218,6 +221,7 @@ namespace MaddenEditor.Forms
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.playerRatingPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
@@ -270,6 +274,7 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).BeginInit();
 			this.playerInjuryPage.SuspendLayout();
 			this.groupBox2.SuspendLayout();
+			this.teamPage.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -924,7 +929,7 @@ namespace MaddenEditor.Forms
 			this.filterPositionComboBox.Location = new System.Drawing.Point(73, 39);
 			this.filterPositionComboBox.Name = "filterPositionComboBox";
 			this.filterPositionComboBox.Size = new System.Drawing.Size(153, 21);
-			this.filterPositionComboBox.TabIndex = 5;
+			this.filterPositionComboBox.TabIndex = 3;
 			this.filterPositionComboBox.SelectedIndexChanged += new System.EventHandler(this.positionCheckBox_CheckedChanged);
 			// 
 			// filterTeamComboBox
@@ -936,7 +941,7 @@ namespace MaddenEditor.Forms
 			this.filterTeamComboBox.Location = new System.Drawing.Point(73, 16);
 			this.filterTeamComboBox.Name = "filterTeamComboBox";
 			this.filterTeamComboBox.Size = new System.Drawing.Size(153, 21);
-			this.filterTeamComboBox.TabIndex = 4;
+			this.filterTeamComboBox.TabIndex = 1;
 			this.filterTeamComboBox.SelectedIndexChanged += new System.EventHandler(this.teamCheckBox_CheckedChanged);
 			// 
 			// teamCheckBox
@@ -946,7 +951,7 @@ namespace MaddenEditor.Forms
 			this.teamCheckBox.Location = new System.Drawing.Point(7, 20);
 			this.teamCheckBox.Name = "teamCheckBox";
 			this.teamCheckBox.Size = new System.Drawing.Size(49, 17);
-			this.teamCheckBox.TabIndex = 3;
+			this.teamCheckBox.TabIndex = 0;
 			this.teamCheckBox.Text = "Team";
 			this.teamCheckBox.CheckedChanged += new System.EventHandler(this.teamCheckBox_CheckedChanged);
 			// 
@@ -957,7 +962,7 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox.Location = new System.Drawing.Point(7, 43);
 			this.positionCheckBox.Name = "positionCheckBox";
 			this.positionCheckBox.Size = new System.Drawing.Size(59, 17);
-			this.positionCheckBox.TabIndex = 1;
+			this.positionCheckBox.TabIndex = 2;
 			this.positionCheckBox.Text = "Position";
 			this.positionCheckBox.CheckedChanged += new System.EventHandler(this.positionCheckBox_CheckedChanged);
 			// 
@@ -975,6 +980,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRatingPage
 			// 
+			this.playerRatingPage.Controls.Add(this.label74);
+			this.playerRatingPage.Controls.Add(this.playerTotalSalary);
 			this.playerRatingPage.Controls.Add(this.label70);
 			this.playerRatingPage.Controls.Add(this.playerSigningBonus);
 			this.playerRatingPage.Controls.Add(this.label69);
@@ -1039,6 +1046,29 @@ namespace MaddenEditor.Forms
 			this.playerRatingPage.TabIndex = 0;
 			this.playerRatingPage.Text = "Player Ratings";
 			// 
+			// label74
+			// 
+			this.label74.AutoSize = true;
+			this.label74.Location = new System.Drawing.Point(382, 166);
+			this.label74.Name = "label74";
+			this.label74.Size = new System.Drawing.Size(59, 13);
+			this.label74.TabIndex = 65;
+			this.label74.Text = "Total Salary";
+			// 
+			// playerTotalSalary
+			// 
+			this.playerTotalSalary.DecimalPlaces = 2;
+			this.playerTotalSalary.Location = new System.Drawing.Point(447, 159);
+			this.playerTotalSalary.Maximum = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            131072});
+			this.playerTotalSalary.Name = "playerTotalSalary";
+			this.playerTotalSalary.Size = new System.Drawing.Size(74, 20);
+			this.playerTotalSalary.TabIndex = 24;
+			this.playerTotalSalary.ValueChanged += new System.EventHandler(this.playerTotalSalary_ValueChanged);
+			// 
 			// label70
 			// 
 			this.label70.AutoSize = true;
@@ -1059,7 +1089,7 @@ namespace MaddenEditor.Forms
             131072});
 			this.playerSigningBonus.Name = "playerSigningBonus";
 			this.playerSigningBonus.Size = new System.Drawing.Size(74, 20);
-			this.playerSigningBonus.TabIndex = 62;
+			this.playerSigningBonus.TabIndex = 23;
 			this.playerSigningBonus.ValueChanged += new System.EventHandler(this.playerSigningBonus_ValueChanged);
 			// 
 			// label69
@@ -1090,7 +1120,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerContractYearsLeft.Name = "playerContractYearsLeft";
 			this.playerContractYearsLeft.Size = new System.Drawing.Size(55, 20);
-			this.playerContractYearsLeft.TabIndex = 59;
+			this.playerContractYearsLeft.TabIndex = 22;
 			this.playerContractYearsLeft.ValueChanged += new System.EventHandler(this.playerContractYearsLeft_ValueChanged);
 			// 
 			// playerContractLength
@@ -1103,7 +1133,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerContractLength.Name = "playerContractLength";
 			this.playerContractLength.Size = new System.Drawing.Size(55, 20);
-			this.playerContractLength.TabIndex = 58;
+			this.playerContractLength.TabIndex = 21;
 			this.playerContractLength.ValueChanged += new System.EventHandler(this.playerContractLength_ValueChanged);
 			// 
 			// playerProBowl
@@ -1112,7 +1142,7 @@ namespace MaddenEditor.Forms
 			this.playerProBowl.Location = new System.Drawing.Point(455, 263);
 			this.playerProBowl.Name = "playerProBowl";
 			this.playerProBowl.Size = new System.Drawing.Size(61, 17);
-			this.playerProBowl.TabIndex = 57;
+			this.playerProBowl.TabIndex = 25;
 			this.playerProBowl.Text = "ProBowl";
 			this.playerProBowl.CheckedChanged += new System.EventHandler(this.playerProBowl_CheckedChanged);
 			// 
@@ -1167,7 +1197,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerExperiencePoints.Name = "playerExperiencePoints";
 			this.playerExperiencePoints.Size = new System.Drawing.Size(74, 20);
-			this.playerExperiencePoints.TabIndex = 50;
+			this.playerExperiencePoints.TabIndex = 27;
 			this.playerExperiencePoints.ValueChanged += new System.EventHandler(this.playerExperiencePoints_ValueChanged);
 			// 
 			// playerNFLIcon
@@ -1176,7 +1206,7 @@ namespace MaddenEditor.Forms
 			this.playerNFLIcon.Location = new System.Drawing.Point(455, 286);
 			this.playerNFLIcon.Name = "playerNFLIcon";
 			this.playerNFLIcon.Size = new System.Drawing.Size(66, 17);
-			this.playerNFLIcon.TabIndex = 49;
+			this.playerNFLIcon.TabIndex = 26;
 			this.playerNFLIcon.Text = "NFL Icon";
 			this.playerNFLIcon.CheckedChanged += new System.EventHandler(this.playerNFLIcon_CheckedChanged);
 			// 
@@ -1185,7 +1215,7 @@ namespace MaddenEditor.Forms
 			this.playerMorale.Location = new System.Drawing.Point(466, 400);
 			this.playerMorale.Name = "playerMorale";
 			this.playerMorale.Size = new System.Drawing.Size(55, 20);
-			this.playerMorale.TabIndex = 47;
+			this.playerMorale.TabIndex = 29;
 			this.playerMorale.ValueChanged += new System.EventHandler(this.playerMorale_ValueChanged);
 			// 
 			// playerImportance
@@ -1198,7 +1228,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerImportance.Name = "playerImportance";
 			this.playerImportance.Size = new System.Drawing.Size(55, 20);
-			this.playerImportance.TabIndex = 46;
+			this.playerImportance.TabIndex = 28;
 			this.playerImportance.ValueChanged += new System.EventHandler(this.playerImportance_ValueChanged);
 			// 
 			// label34
@@ -1733,7 +1763,7 @@ namespace MaddenEditor.Forms
 			this.label71.Location = new System.Drawing.Point(292, 389);
 			this.label71.Name = "label71";
 			this.label71.Size = new System.Drawing.Size(73, 13);
-			this.label71.TabIndex = 74;
+			this.label71.TabIndex = 63;
 			this.label71.Text = "Throwing Style";
 			// 
 			// playerThrowingStyle
@@ -1746,7 +1776,7 @@ namespace MaddenEditor.Forms
 			this.playerThrowingStyle.Location = new System.Drawing.Point(371, 381);
 			this.playerThrowingStyle.Name = "playerThrowingStyle";
 			this.playerThrowingStyle.Size = new System.Drawing.Size(105, 21);
-			this.playerThrowingStyle.TabIndex = 73;
+			this.playerThrowingStyle.TabIndex = 0;
 			this.playerThrowingStyle.SelectedIndexChanged += new System.EventHandler(this.playerThrowingStyle_SelectedIndexChanged);
 			// 
 			// label67
@@ -1755,7 +1785,7 @@ namespace MaddenEditor.Forms
 			this.label67.Location = new System.Drawing.Point(306, 350);
 			this.label67.Name = "label67";
 			this.label67.Size = new System.Drawing.Size(59, 13);
-			this.label67.TabIndex = 72;
+			this.label67.TabIndex = 61;
 			this.label67.Text = "Right Tatoo";
 			// 
 			// label66
@@ -1764,12 +1794,13 @@ namespace MaddenEditor.Forms
 			this.label66.Location = new System.Drawing.Point(313, 313);
 			this.label66.Name = "label66";
 			this.label66.Size = new System.Drawing.Size(52, 13);
-			this.label66.TabIndex = 71;
+			this.label66.TabIndex = 59;
 			this.label66.Text = "Left Tatoo";
 			// 
 			// playerRightTatooCombo
 			// 
 			this.playerRightTatooCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerRightTatooCombo.Enabled = false;
 			this.playerRightTatooCombo.FormattingEnabled = true;
 			this.playerRightTatooCombo.Items.AddRange(new object[] {
             "None",
@@ -1788,11 +1819,12 @@ namespace MaddenEditor.Forms
 			this.playerRightTatooCombo.Location = new System.Drawing.Point(371, 342);
 			this.playerRightTatooCombo.Name = "playerRightTatooCombo";
 			this.playerRightTatooCombo.Size = new System.Drawing.Size(105, 21);
-			this.playerRightTatooCombo.TabIndex = 70;
+			this.playerRightTatooCombo.TabIndex = 62;
 			// 
 			// playerLeftTatooCombo
 			// 
 			this.playerLeftTatooCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerLeftTatooCombo.Enabled = false;
 			this.playerLeftTatooCombo.FormattingEnabled = true;
 			this.playerLeftTatooCombo.Items.AddRange(new object[] {
             "None",
@@ -1811,7 +1843,7 @@ namespace MaddenEditor.Forms
 			this.playerLeftTatooCombo.Location = new System.Drawing.Point(371, 305);
 			this.playerLeftTatooCombo.Name = "playerLeftTatooCombo";
 			this.playerLeftTatooCombo.Size = new System.Drawing.Size(105, 21);
-			this.playerLeftTatooCombo.TabIndex = 69;
+			this.playerLeftTatooCombo.TabIndex = 60;
 			// 
 			// label65
 			// 
@@ -1819,11 +1851,12 @@ namespace MaddenEditor.Forms
 			this.label65.Location = new System.Drawing.Point(304, 274);
 			this.label65.Name = "label65";
 			this.label65.Size = new System.Drawing.Size(61, 13);
-			this.label65.TabIndex = 68;
+			this.label65.TabIndex = 57;
 			this.label65.Text = "Face Shape";
 			// 
 			// playerFaceShape
 			// 
+			this.playerFaceShape.Enabled = false;
 			this.playerFaceShape.Location = new System.Drawing.Point(371, 267);
 			this.playerFaceShape.Maximum = new decimal(new int[] {
             20,
@@ -1832,7 +1865,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerFaceShape.Name = "playerFaceShape";
 			this.playerFaceShape.Size = new System.Drawing.Size(83, 20);
-			this.playerFaceShape.TabIndex = 67;
+			this.playerFaceShape.TabIndex = 58;
 			// 
 			// label64
 			// 
@@ -1840,11 +1873,12 @@ namespace MaddenEditor.Forms
 			this.label64.Location = new System.Drawing.Point(338, 239);
 			this.label64.Name = "label64";
 			this.label64.Size = new System.Drawing.Size(27, 13);
-			this.label64.TabIndex = 66;
+			this.label64.TabIndex = 55;
 			this.label64.Text = "Face";
 			// 
 			// playerFace
 			// 
+			this.playerFace.Enabled = false;
 			this.playerFace.Location = new System.Drawing.Point(371, 232);
 			this.playerFace.Maximum = new decimal(new int[] {
             111,
@@ -1853,7 +1887,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerFace.Name = "playerFace";
 			this.playerFace.Size = new System.Drawing.Size(83, 20);
-			this.playerFace.TabIndex = 65;
+			this.playerFace.TabIndex = 56;
 			// 
 			// label63
 			// 
@@ -1861,12 +1895,13 @@ namespace MaddenEditor.Forms
 			this.label63.Location = new System.Drawing.Point(317, 201);
 			this.label63.Name = "label63";
 			this.label63.Size = new System.Drawing.Size(48, 13);
-			this.label63.TabIndex = 64;
+			this.label63.TabIndex = 53;
 			this.label63.Text = "Hair Style";
 			// 
 			// playerHairStyleCombo
 			// 
 			this.playerHairStyleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerHairStyleCombo.Enabled = false;
 			this.playerHairStyleCombo.FormattingEnabled = true;
 			this.playerHairStyleCombo.Items.AddRange(new object[] {
             "Bald",
@@ -1887,11 +1922,12 @@ namespace MaddenEditor.Forms
 			this.playerHairStyleCombo.Location = new System.Drawing.Point(371, 193);
 			this.playerHairStyleCombo.Name = "playerHairStyleCombo";
 			this.playerHairStyleCombo.Size = new System.Drawing.Size(105, 21);
-			this.playerHairStyleCombo.TabIndex = 63;
+			this.playerHairStyleCombo.TabIndex = 54;
 			// 
 			// playerSkinColorCombo
 			// 
 			this.playerSkinColorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.playerSkinColorCombo.Enabled = false;
 			this.playerSkinColorCombo.FormattingEnabled = true;
 			this.playerSkinColorCombo.Items.AddRange(new object[] {
             "Light",
@@ -1900,7 +1936,7 @@ namespace MaddenEditor.Forms
 			this.playerSkinColorCombo.Location = new System.Drawing.Point(371, 115);
 			this.playerSkinColorCombo.Name = "playerSkinColorCombo";
 			this.playerSkinColorCombo.Size = new System.Drawing.Size(105, 21);
-			this.playerSkinColorCombo.TabIndex = 62;
+			this.playerSkinColorCombo.TabIndex = 50;
 			// 
 			// label62
 			// 
@@ -1908,7 +1944,7 @@ namespace MaddenEditor.Forms
 			this.label62.Location = new System.Drawing.Point(316, 161);
 			this.label62.Name = "label62";
 			this.label62.Size = new System.Drawing.Size(49, 13);
-			this.label62.TabIndex = 61;
+			this.label62.TabIndex = 51;
 			this.label62.Text = "Hair Color";
 			// 
 			// playerHairColorCombo
@@ -1925,7 +1961,7 @@ namespace MaddenEditor.Forms
 			this.playerHairColorCombo.Location = new System.Drawing.Point(371, 153);
 			this.playerHairColorCombo.Name = "playerHairColorCombo";
 			this.playerHairColorCombo.Size = new System.Drawing.Size(105, 21);
-			this.playerHairColorCombo.TabIndex = 60;
+			this.playerHairColorCombo.TabIndex = 52;
 			// 
 			// label61
 			// 
@@ -1933,7 +1969,7 @@ namespace MaddenEditor.Forms
 			this.label61.Location = new System.Drawing.Point(314, 123);
 			this.label61.Name = "label61";
 			this.label61.Size = new System.Drawing.Size(51, 13);
-			this.label61.TabIndex = 59;
+			this.label61.TabIndex = 49;
 			this.label61.Text = "Skin Color";
 			// 
 			// label36
@@ -1942,7 +1978,7 @@ namespace MaddenEditor.Forms
 			this.label36.Location = new System.Drawing.Point(460, 49);
 			this.label36.Name = "label36";
 			this.label36.Size = new System.Drawing.Size(16, 13);
-			this.label36.TabIndex = 58;
+			this.label36.TabIndex = 46;
 			this.label36.Text = "lbs";
 			// 
 			// playerWeight
@@ -1960,7 +1996,7 @@ namespace MaddenEditor.Forms
             0});
 			this.playerWeight.Name = "playerWeight";
 			this.playerWeight.Size = new System.Drawing.Size(83, 20);
-			this.playerWeight.TabIndex = 57;
+			this.playerWeight.TabIndex = 45;
 			this.playerWeight.Value = new decimal(new int[] {
             160,
             0,
@@ -1995,7 +2031,7 @@ namespace MaddenEditor.Forms
 			this.playerHeightComboBox.Location = new System.Drawing.Point(371, 78);
 			this.playerHeightComboBox.Name = "playerHeightComboBox";
 			this.playerHeightComboBox.Size = new System.Drawing.Size(105, 21);
-			this.playerHeightComboBox.TabIndex = 56;
+			this.playerHeightComboBox.TabIndex = 48;
 			// 
 			// label32
 			// 
@@ -2003,7 +2039,7 @@ namespace MaddenEditor.Forms
 			this.label32.Location = new System.Drawing.Point(331, 86);
 			this.label32.Name = "label32";
 			this.label32.Size = new System.Drawing.Size(34, 13);
-			this.label32.TabIndex = 55;
+			this.label32.TabIndex = 47;
 			this.label32.Text = "Height";
 			// 
 			// label31
@@ -2012,7 +2048,7 @@ namespace MaddenEditor.Forms
 			this.label31.Location = new System.Drawing.Point(331, 49);
 			this.label31.Name = "label31";
 			this.label31.Size = new System.Drawing.Size(37, 13);
-			this.label31.TabIndex = 54;
+			this.label31.TabIndex = 44;
 			this.label31.Text = "Weight";
 			// 
 			// label60
@@ -2021,7 +2057,7 @@ namespace MaddenEditor.Forms
 			this.label60.Location = new System.Drawing.Point(168, 429);
 			this.label60.Name = "label60";
 			this.label60.Size = new System.Drawing.Size(34, 13);
-			this.label60.TabIndex = 42;
+			this.label60.TabIndex = 41;
 			this.label60.Text = "Shape";
 			// 
 			// label59
@@ -2030,7 +2066,7 @@ namespace MaddenEditor.Forms
 			this.label59.Location = new System.Drawing.Point(158, 389);
 			this.label59.Name = "label59";
 			this.label59.Size = new System.Drawing.Size(44, 13);
-			this.label59.TabIndex = 41;
+			this.label59.TabIndex = 39;
 			this.label59.Text = "Rear Fat";
 			// 
 			// label58
@@ -2039,7 +2075,7 @@ namespace MaddenEditor.Forms
 			this.label58.Location = new System.Drawing.Point(165, 353);
 			this.label58.Name = "label58";
 			this.label58.Size = new System.Drawing.Size(37, 13);
-			this.label58.TabIndex = 40;
+			this.label58.TabIndex = 33;
 			this.label58.Text = "Muscle";
 			// 
 			// label57
@@ -2048,7 +2084,7 @@ namespace MaddenEditor.Forms
 			this.label57.Location = new System.Drawing.Point(163, 274);
 			this.label57.Name = "label57";
 			this.label57.Size = new System.Drawing.Size(39, 13);
-			this.label57.TabIndex = 39;
+			this.label57.TabIndex = 31;
 			this.label57.Text = "Calf Fat";
 			// 
 			// label56
@@ -2057,7 +2093,7 @@ namespace MaddenEditor.Forms
 			this.label56.Location = new System.Drawing.Point(144, 236);
 			this.label56.Name = "label56";
 			this.label56.Size = new System.Drawing.Size(58, 13);
-			this.label56.TabIndex = 38;
+			this.label56.TabIndex = 28;
 			this.label56.Text = "Calf Muscle";
 			// 
 			// label55
@@ -2066,7 +2102,7 @@ namespace MaddenEditor.Forms
 			this.label55.Location = new System.Drawing.Point(154, 196);
 			this.label55.Name = "label55";
 			this.label55.Size = new System.Drawing.Size(48, 13);
-			this.label55.TabIndex = 37;
+			this.label55.TabIndex = 26;
 			this.label55.Text = "Thigh Fat";
 			// 
 			// label54
@@ -2075,7 +2111,7 @@ namespace MaddenEditor.Forms
 			this.label54.Location = new System.Drawing.Point(135, 159);
 			this.label54.Name = "label54";
 			this.label54.Size = new System.Drawing.Size(67, 13);
-			this.label54.TabIndex = 36;
+			this.label54.TabIndex = 24;
 			this.label54.Text = "Thigh Muscle";
 			// 
 			// playerRearShape
@@ -2083,7 +2119,7 @@ namespace MaddenEditor.Forms
 			this.playerRearShape.Location = new System.Drawing.Point(208, 422);
 			this.playerRearShape.Name = "playerRearShape";
 			this.playerRearShape.Size = new System.Drawing.Size(58, 20);
-			this.playerRearShape.TabIndex = 35;
+			this.playerRearShape.TabIndex = 42;
 			this.playerRearShape.ValueChanged += new System.EventHandler(this.playerRearShape_ValueChanged);
 			// 
 			// playerRearRearFat
@@ -2091,22 +2127,23 @@ namespace MaddenEditor.Forms
 			this.playerRearRearFat.Location = new System.Drawing.Point(208, 384);
 			this.playerRearRearFat.Name = "playerRearRearFat";
 			this.playerRearRearFat.Size = new System.Drawing.Size(58, 20);
-			this.playerRearRearFat.TabIndex = 34;
+			this.playerRearRearFat.TabIndex = 40;
 			this.playerRearRearFat.ValueChanged += new System.EventHandler(this.playerRearRearFat_ValueChanged);
 			// 
 			// playerRearMuscle
 			// 
+			this.playerRearMuscle.Enabled = false;
 			this.playerRearMuscle.Location = new System.Drawing.Point(208, 346);
 			this.playerRearMuscle.Name = "playerRearMuscle";
 			this.playerRearMuscle.Size = new System.Drawing.Size(58, 20);
-			this.playerRearMuscle.TabIndex = 33;
+			this.playerRearMuscle.TabIndex = 34;
 			// 
 			// playerLegsCalfFat
 			// 
 			this.playerLegsCalfFat.Location = new System.Drawing.Point(208, 267);
 			this.playerLegsCalfFat.Name = "playerLegsCalfFat";
 			this.playerLegsCalfFat.Size = new System.Drawing.Size(58, 20);
-			this.playerLegsCalfFat.TabIndex = 32;
+			this.playerLegsCalfFat.TabIndex = 43;
 			this.playerLegsCalfFat.ValueChanged += new System.EventHandler(this.playerLegsCalfFat_ValueChanged);
 			// 
 			// playerLegsCalfMuscle
@@ -2114,7 +2151,7 @@ namespace MaddenEditor.Forms
 			this.playerLegsCalfMuscle.Location = new System.Drawing.Point(208, 229);
 			this.playerLegsCalfMuscle.Name = "playerLegsCalfMuscle";
 			this.playerLegsCalfMuscle.Size = new System.Drawing.Size(58, 20);
-			this.playerLegsCalfMuscle.TabIndex = 31;
+			this.playerLegsCalfMuscle.TabIndex = 29;
 			this.playerLegsCalfMuscle.ValueChanged += new System.EventHandler(this.playerLegsCalfMuscle_ValueChanged);
 			// 
 			// playerLegsThighFat
@@ -2122,7 +2159,7 @@ namespace MaddenEditor.Forms
 			this.playerLegsThighFat.Location = new System.Drawing.Point(208, 191);
 			this.playerLegsThighFat.Name = "playerLegsThighFat";
 			this.playerLegsThighFat.Size = new System.Drawing.Size(58, 20);
-			this.playerLegsThighFat.TabIndex = 30;
+			this.playerLegsThighFat.TabIndex = 27;
 			this.playerLegsThighFat.ValueChanged += new System.EventHandler(this.playerLegsThighFat_ValueChanged);
 			// 
 			// playerLegsThighMuscle
@@ -2130,7 +2167,7 @@ namespace MaddenEditor.Forms
 			this.playerLegsThighMuscle.Location = new System.Drawing.Point(208, 153);
 			this.playerLegsThighMuscle.Name = "playerLegsThighMuscle";
 			this.playerLegsThighMuscle.Size = new System.Drawing.Size(58, 20);
-			this.playerLegsThighMuscle.TabIndex = 29;
+			this.playerLegsThighMuscle.TabIndex = 25;
 			this.playerLegsThighMuscle.ValueChanged += new System.EventHandler(this.playerLegsThighMuscle_ValueChanged);
 			// 
 			// label53
@@ -2139,7 +2176,7 @@ namespace MaddenEditor.Forms
 			this.label53.Location = new System.Drawing.Point(184, 88);
 			this.label53.Name = "label53";
 			this.label53.Size = new System.Drawing.Size(18, 13);
-			this.label53.TabIndex = 28;
+			this.label53.TabIndex = 21;
 			this.label53.Text = "Fat";
 			// 
 			// label52
@@ -2148,7 +2185,7 @@ namespace MaddenEditor.Forms
 			this.label52.Location = new System.Drawing.Point(165, 49);
 			this.label52.Name = "label52";
 			this.label52.Size = new System.Drawing.Size(37, 13);
-			this.label52.TabIndex = 27;
+			this.label52.TabIndex = 19;
 			this.label52.Text = "Muscle";
 			// 
 			// playerArmsFat
@@ -2156,7 +2193,7 @@ namespace MaddenEditor.Forms
 			this.playerArmsFat.Location = new System.Drawing.Point(208, 81);
 			this.playerArmsFat.Name = "playerArmsFat";
 			this.playerArmsFat.Size = new System.Drawing.Size(58, 20);
-			this.playerArmsFat.TabIndex = 26;
+			this.playerArmsFat.TabIndex = 22;
 			this.playerArmsFat.ValueChanged += new System.EventHandler(this.playerArmsFat_ValueChanged);
 			// 
 			// playerArmsMuscle
@@ -2164,7 +2201,7 @@ namespace MaddenEditor.Forms
 			this.playerArmsMuscle.Location = new System.Drawing.Point(208, 42);
 			this.playerArmsMuscle.Name = "playerArmsMuscle";
 			this.playerArmsMuscle.Size = new System.Drawing.Size(58, 20);
-			this.playerArmsMuscle.TabIndex = 25;
+			this.playerArmsMuscle.TabIndex = 20;
 			this.playerArmsMuscle.ValueChanged += new System.EventHandler(this.playerArmsMuscle_ValueChanged);
 			// 
 			// label51
@@ -2173,7 +2210,7 @@ namespace MaddenEditor.Forms
 			this.label51.Location = new System.Drawing.Point(2, 429);
 			this.label51.Name = "label51";
 			this.label51.Size = new System.Drawing.Size(58, 13);
-			this.label51.TabIndex = 24;
+			this.label51.TabIndex = 37;
 			this.label51.Text = "Flak Jacket";
 			// 
 			// label50
@@ -2182,7 +2219,7 @@ namespace MaddenEditor.Forms
 			this.label50.Location = new System.Drawing.Point(11, 391);
 			this.label50.Name = "label50";
 			this.label50.Size = new System.Drawing.Size(49, 13);
-			this.label50.TabIndex = 23;
+			this.label50.TabIndex = 35;
 			this.label50.Text = "Pad Shelf";
 			// 
 			// playerEquipmentFlakJacket
@@ -2190,7 +2227,7 @@ namespace MaddenEditor.Forms
 			this.playerEquipmentFlakJacket.Location = new System.Drawing.Point(66, 422);
 			this.playerEquipmentFlakJacket.Name = "playerEquipmentFlakJacket";
 			this.playerEquipmentFlakJacket.Size = new System.Drawing.Size(58, 20);
-			this.playerEquipmentFlakJacket.TabIndex = 22;
+			this.playerEquipmentFlakJacket.TabIndex = 38;
 			this.playerEquipmentFlakJacket.ValueChanged += new System.EventHandler(this.playerEquipmentFlakJacket_ValueChanged);
 			// 
 			// label49
@@ -2199,7 +2236,7 @@ namespace MaddenEditor.Forms
 			this.label49.Location = new System.Drawing.Point(7, 353);
 			this.label49.Name = "label49";
 			this.label49.Size = new System.Drawing.Size(53, 13);
-			this.label49.TabIndex = 21;
+			this.label49.TabIndex = 16;
 			this.label49.Text = "Pad Width";
 			// 
 			// label48
@@ -2208,7 +2245,7 @@ namespace MaddenEditor.Forms
 			this.label48.Location = new System.Drawing.Point(4, 315);
 			this.label48.Name = "label48";
 			this.label48.Size = new System.Drawing.Size(56, 13);
-			this.label48.TabIndex = 20;
+			this.label48.TabIndex = 14;
 			this.label48.Text = "Pad Height";
 			// 
 			// label47
@@ -2217,7 +2254,7 @@ namespace MaddenEditor.Forms
 			this.label47.Location = new System.Drawing.Point(3, 277);
 			this.label47.Name = "label47";
 			this.label47.Size = new System.Drawing.Size(57, 13);
-			this.label47.TabIndex = 19;
+			this.label47.TabIndex = 12;
 			this.label47.Text = "Thigh Pads";
 			// 
 			// label46
@@ -2226,7 +2263,7 @@ namespace MaddenEditor.Forms
 			this.label46.Location = new System.Drawing.Point(27, 239);
 			this.label46.Name = "label46";
 			this.label46.Size = new System.Drawing.Size(33, 13);
-			this.label46.TabIndex = 18;
+			this.label46.TabIndex = 10;
 			this.label46.Text = "Shoes";
 			// 
 			// label45
@@ -2235,7 +2272,7 @@ namespace MaddenEditor.Forms
 			this.label45.Location = new System.Drawing.Point(42, 166);
 			this.label45.Name = "label45";
 			this.label45.Size = new System.Drawing.Size(18, 13);
-			this.label45.TabIndex = 17;
+			this.label45.TabIndex = 7;
 			this.label45.Text = "Fat";
 			// 
 			// label44
@@ -2244,7 +2281,7 @@ namespace MaddenEditor.Forms
 			this.label44.Location = new System.Drawing.Point(23, 127);
 			this.label44.Name = "label44";
 			this.label44.Size = new System.Drawing.Size(37, 13);
-			this.label44.TabIndex = 16;
+			this.label44.TabIndex = 5;
 			this.label44.Text = "Muscle";
 			// 
 			// label43
@@ -2253,7 +2290,7 @@ namespace MaddenEditor.Forms
 			this.label43.Location = new System.Drawing.Point(23, 88);
 			this.label43.Name = "label43";
 			this.label43.Size = new System.Drawing.Size(37, 13);
-			this.label43.TabIndex = 15;
+			this.label43.TabIndex = 3;
 			this.label43.Text = "Weight";
 			// 
 			// playerEquipmentPadShelf
@@ -2261,7 +2298,7 @@ namespace MaddenEditor.Forms
 			this.playerEquipmentPadShelf.Location = new System.Drawing.Point(66, 384);
 			this.playerEquipmentPadShelf.Name = "playerEquipmentPadShelf";
 			this.playerEquipmentPadShelf.Size = new System.Drawing.Size(58, 20);
-			this.playerEquipmentPadShelf.TabIndex = 14;
+			this.playerEquipmentPadShelf.TabIndex = 36;
 			this.playerEquipmentPadShelf.ValueChanged += new System.EventHandler(this.playerEquipmentPadShelf_ValueChanged);
 			// 
 			// playerEquipmentPadWidth
@@ -2269,7 +2306,7 @@ namespace MaddenEditor.Forms
 			this.playerEquipmentPadWidth.Location = new System.Drawing.Point(66, 346);
 			this.playerEquipmentPadWidth.Name = "playerEquipmentPadWidth";
 			this.playerEquipmentPadWidth.Size = new System.Drawing.Size(58, 20);
-			this.playerEquipmentPadWidth.TabIndex = 13;
+			this.playerEquipmentPadWidth.TabIndex = 17;
 			this.playerEquipmentPadWidth.ValueChanged += new System.EventHandler(this.playerEquipmentPadWidth_ValueChanged);
 			// 
 			// playerEquipmentPadHeight
@@ -2277,22 +2314,23 @@ namespace MaddenEditor.Forms
 			this.playerEquipmentPadHeight.Location = new System.Drawing.Point(66, 308);
 			this.playerEquipmentPadHeight.Name = "playerEquipmentPadHeight";
 			this.playerEquipmentPadHeight.Size = new System.Drawing.Size(58, 20);
-			this.playerEquipmentPadHeight.TabIndex = 12;
+			this.playerEquipmentPadHeight.TabIndex = 15;
 			this.playerEquipmentPadHeight.ValueChanged += new System.EventHandler(this.playerEquipmentPadHeight_ValueChanged);
 			// 
 			// playerEquipmentThighPads
 			// 
+			this.playerEquipmentThighPads.Enabled = false;
 			this.playerEquipmentThighPads.Location = new System.Drawing.Point(66, 270);
 			this.playerEquipmentThighPads.Name = "playerEquipmentThighPads";
 			this.playerEquipmentThighPads.Size = new System.Drawing.Size(58, 20);
-			this.playerEquipmentThighPads.TabIndex = 11;
+			this.playerEquipmentThighPads.TabIndex = 13;
 			// 
 			// playerEquipmentShoes
 			// 
 			this.playerEquipmentShoes.Location = new System.Drawing.Point(66, 232);
 			this.playerEquipmentShoes.Name = "playerEquipmentShoes";
 			this.playerEquipmentShoes.Size = new System.Drawing.Size(58, 20);
-			this.playerEquipmentShoes.TabIndex = 10;
+			this.playerEquipmentShoes.TabIndex = 11;
 			this.playerEquipmentShoes.ValueChanged += new System.EventHandler(this.playerEquipmentShoes_ValueChanged);
 			// 
 			// playerBodyFat
@@ -2300,7 +2338,7 @@ namespace MaddenEditor.Forms
 			this.playerBodyFat.Location = new System.Drawing.Point(66, 159);
 			this.playerBodyFat.Name = "playerBodyFat";
 			this.playerBodyFat.Size = new System.Drawing.Size(58, 20);
-			this.playerBodyFat.TabIndex = 9;
+			this.playerBodyFat.TabIndex = 8;
 			this.playerBodyFat.ValueChanged += new System.EventHandler(this.playerBodyFat_ValueChanged);
 			// 
 			// playerBodyMuscle
@@ -2308,7 +2346,7 @@ namespace MaddenEditor.Forms
 			this.playerBodyMuscle.Location = new System.Drawing.Point(66, 120);
 			this.playerBodyMuscle.Name = "playerBodyMuscle";
 			this.playerBodyMuscle.Size = new System.Drawing.Size(58, 20);
-			this.playerBodyMuscle.TabIndex = 8;
+			this.playerBodyMuscle.TabIndex = 6;
 			this.playerBodyMuscle.ValueChanged += new System.EventHandler(this.playerBodyMuscle_ValueChanged);
 			// 
 			// playerBodyWeight
@@ -2316,15 +2354,16 @@ namespace MaddenEditor.Forms
 			this.playerBodyWeight.Location = new System.Drawing.Point(66, 81);
 			this.playerBodyWeight.Name = "playerBodyWeight";
 			this.playerBodyWeight.Size = new System.Drawing.Size(58, 20);
-			this.playerBodyWeight.TabIndex = 7;
+			this.playerBodyWeight.TabIndex = 4;
 			this.playerBodyWeight.ValueChanged += new System.EventHandler(this.playerBodyWeight_ValueChanged);
 			// 
 			// playerBodyOverall
 			// 
+			this.playerBodyOverall.Enabled = false;
 			this.playerBodyOverall.Location = new System.Drawing.Point(66, 42);
 			this.playerBodyOverall.Name = "playerBodyOverall";
 			this.playerBodyOverall.Size = new System.Drawing.Size(58, 20);
-			this.playerBodyOverall.TabIndex = 6;
+			this.playerBodyOverall.TabIndex = 2;
 			this.playerBodyOverall.ValueChanged += new System.EventHandler(this.playerBodyOverall_ValueChanged);
 			// 
 			// label42
@@ -2333,7 +2372,7 @@ namespace MaddenEditor.Forms
 			this.label42.Location = new System.Drawing.Point(24, 49);
 			this.label42.Name = "label42";
 			this.label42.Size = new System.Drawing.Size(36, 13);
-			this.label42.TabIndex = 5;
+			this.label42.TabIndex = 1;
 			this.label42.Text = "Overall";
 			// 
 			// label41
@@ -2343,7 +2382,7 @@ namespace MaddenEditor.Forms
 			this.label41.Location = new System.Drawing.Point(195, 308);
 			this.label41.Name = "label41";
 			this.label41.Size = new System.Drawing.Size(38, 16);
-			this.label41.TabIndex = 4;
+			this.label41.TabIndex = 32;
 			this.label41.Text = "Rear";
 			// 
 			// label40
@@ -2353,7 +2392,7 @@ namespace MaddenEditor.Forms
 			this.label40.Location = new System.Drawing.Point(196, 118);
 			this.label40.Name = "label40";
 			this.label40.Size = new System.Drawing.Size(38, 16);
-			this.label40.TabIndex = 3;
+			this.label40.TabIndex = 23;
 			this.label40.Text = "Legs";
 			// 
 			// label39
@@ -2363,7 +2402,7 @@ namespace MaddenEditor.Forms
 			this.label39.Location = new System.Drawing.Point(195, 14);
 			this.label39.Name = "label39";
 			this.label39.Size = new System.Drawing.Size(39, 16);
-			this.label39.TabIndex = 2;
+			this.label39.TabIndex = 18;
 			this.label39.Text = "Arms";
 			// 
 			// label38
@@ -2373,7 +2412,7 @@ namespace MaddenEditor.Forms
 			this.label38.Location = new System.Drawing.Point(50, 198);
 			this.label38.Name = "label38";
 			this.label38.Size = new System.Drawing.Size(77, 16);
-			this.label38.TabIndex = 1;
+			this.label38.TabIndex = 9;
 			this.label38.Text = "Equipment";
 			// 
 			// label10
@@ -2468,6 +2507,7 @@ namespace MaddenEditor.Forms
 			// 
 			// teamPage
 			// 
+			this.teamPage.Controls.Add(this.label75);
 			this.teamPage.Location = new System.Drawing.Point(4, 22);
 			this.teamPage.Name = "teamPage";
 			this.teamPage.Padding = new System.Windows.Forms.Padding(3);
@@ -2506,6 +2546,15 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
 			// 
+			// label75
+			// 
+			this.label75.AutoSize = true;
+			this.label75.Location = new System.Drawing.Point(25, 16);
+			this.label75.Name = "label75";
+			this.label75.Size = new System.Drawing.Size(117, 13);
+			this.label75.TabIndex = 0;
+			this.label75.Text = "Nothing to See Here yet";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2537,6 +2586,7 @@ namespace MaddenEditor.Forms
 			this.tabControl1.ResumeLayout(false);
 			this.playerRatingPage.ResumeLayout(false);
 			this.playerRatingPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
@@ -2591,6 +2641,8 @@ namespace MaddenEditor.Forms
 			this.playerInjuryPage.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			this.teamPage.ResumeLayout(false);
+			this.teamPage.PerformLayout();
 			this.statusStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -2775,5 +2827,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ComboBox playerFaceMaskCombo;
 		private System.Windows.Forms.Label label73;
 		private System.Windows.Forms.ToolStripMenuItem searchforPlayerToolStripMenuItem;
+		private System.Windows.Forms.Label label74;
+		private System.Windows.Forms.NumericUpDown playerTotalSalary;
+		private System.Windows.Forms.Label label75;
     }
 }

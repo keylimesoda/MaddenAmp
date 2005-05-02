@@ -56,6 +56,8 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
   has only began being written on the 29th of April 2005 so is still very
   young
 
+* Tabbing between settings doesnt work correctly
+
 * Probably more issues that are not listed here
 
   NOTE: Please, if you get a crash, email the details of the crash (Found in 
@@ -74,10 +76,21 @@ http://tortoisesvn.tigris.org
 You can retrieve the latest source at
 http://gommo.homelinux.net/svn/repos/maddeneditor/trunk
 
+(Note: If the checkout is slow be patient, I'm only on a 1500/256 ADSL connection 
+ and I'm in Australia, so its probably coming from the other side of the world)
+
 You will need to contact colin@tributech.com.au to get access rights to check
 code back in, but anyone is free to get the source code.
 
 You can also browse the repository at the above address too.
+
+This source has only been in development for a few days now so I've been very 
+busy just getting things to work. As a result, lots of comments have been
+missed :( . Sorry, I will endevour to clean up the code a bit when I get the
+full player attribute editing going.
+
+Also, I'll probably start up a bugzilla project for reporting of bugs etc.. if
+theres enough reason too.
 
 The setup file is generated with NSIS (nsis.sourceforge.net)
 

@@ -15,7 +15,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net             colin.goudie@gmail.com
+ * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * 
+ * colin.goudie@gmail.com
  * 
  *****************************************************************************/
 using System;
@@ -71,6 +73,7 @@ namespace MaddenEditor.Domain
 		public const string CONTRACT_LENGTH = "PCON";
 		public const string CONTRACT_YRS_LEFT = "PCYL";
 		public const string SIGNING_BONUS = "PSBO";
+		public const string TOTAL_SALARY = "PTSA";
 
 		public const string BODY_WEIGHT = "PMTS";
 		public const string BODY_MUSCLE = "PUTS";
@@ -781,6 +784,18 @@ namespace MaddenEditor.Domain
 			set
 			{
 				SetFieldWithBackup(SIGNING_BONUS, value);
+			}
+		}
+
+		public int TotalSalary
+		{
+			get
+			{
+				return intFields[TOTAL_SALARY];
+			}
+			set
+			{
+				SetFieldWithBackup(TOTAL_SALARY, value);
 			}
 		}
 
