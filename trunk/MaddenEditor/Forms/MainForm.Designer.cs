@@ -38,6 +38,7 @@ namespace MaddenEditor.Forms
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.searchforPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
@@ -331,8 +332,16 @@ namespace MaddenEditor.Forms
 			// 
 			// searchToolStripMenuItem
 			// 
+			this.searchToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchforPlayerToolStripMenuItem});
 			this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
 			this.searchToolStripMenuItem.Text = "Search";
+			// 
+			// searchforPlayerToolStripMenuItem
+			// 
+			this.searchforPlayerToolStripMenuItem.Name = "searchforPlayerToolStripMenuItem";
+			this.searchforPlayerToolStripMenuItem.Text = "Search for Player ...";
+			this.searchforPlayerToolStripMenuItem.Click += new System.EventHandler(this.searchforPlayerToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -2765,5 +2774,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label72;
 		private System.Windows.Forms.ComboBox playerFaceMaskCombo;
 		private System.Windows.Forms.Label label73;
+		private System.Windows.Forms.ToolStripMenuItem searchforPlayerToolStripMenuItem;
     }
 }
