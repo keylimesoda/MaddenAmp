@@ -203,11 +203,11 @@ namespace MaddenEditor.Forms
 			this.label72 = new System.Windows.Forms.Label();
 			this.playerHelmetStyleCombo = new System.Windows.Forms.ComboBox();
 			this.teamPage = new System.Windows.Forms.TabPage();
+			this.label75 = new System.Windows.Forms.Label();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
-			this.label75 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -1060,7 +1060,7 @@ namespace MaddenEditor.Forms
 			this.playerTotalSalary.DecimalPlaces = 2;
 			this.playerTotalSalary.Location = new System.Drawing.Point(447, 159);
 			this.playerTotalSalary.Maximum = new decimal(new int[] {
-            8192,
+            65536,
             0,
             0,
             131072});
@@ -2515,6 +2515,15 @@ namespace MaddenEditor.Forms
 			this.teamPage.TabIndex = 1;
 			this.teamPage.Text = "Team Editor";
 			// 
+			// label75
+			// 
+			this.label75.AutoSize = true;
+			this.label75.Location = new System.Drawing.Point(25, 16);
+			this.label75.Name = "label75";
+			this.label75.Size = new System.Drawing.Size(117, 13);
+			this.label75.TabIndex = 0;
+			this.label75.Text = "Nothing to See Here yet";
+			// 
 			// statusStrip
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2545,15 +2554,6 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.WorkerReportsProgress = true;
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
-			// 
-			// label75
-			// 
-			this.label75.AutoSize = true;
-			this.label75.Location = new System.Drawing.Point(25, 16);
-			this.label75.Name = "label75";
-			this.label75.Size = new System.Drawing.Size(117, 13);
-			this.label75.TabIndex = 0;
-			this.label75.Text = "Nothing to See Here yet";
 			// 
 			// MainForm
 			// 
