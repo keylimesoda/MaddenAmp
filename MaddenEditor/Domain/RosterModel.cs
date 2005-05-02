@@ -480,5 +480,32 @@ namespace MaddenEditor.Domain
 
 			this.Dirty = false;
 		}
+
+		public Dictionary<string, PlayerRecord> SearchForPlayers(String[] names)
+		{
+			Console.WriteLine("Starting search for " + names.ToString());
+			//This is not going to be efficient.
+			Dictionary<String, PlayerRecord> results = new Dictionary<String, PlayerRecord>();
+
+			foreach (TableRecordModel record in tableModels[MaddenTable.PLAYER_TABLE].GetRecords())
+			{
+				String firstname = record.GetStringField(PlayerRecord.FIRST_NAME);
+				String lastname = record.GetStringField(PlayerRecord.LAST_NAME);
+
+				String firstnameLower = firstname.ToLower();
+				String lastnameLower = lastname.ToLower();
+
+				foreach (String searchterm in names)
+				{
+					if ((firstnameLower.IndexOf(searchterm) != -1) || (lastnameLower.IndexOf(searchterm) != -1))
+					{
+						//We have a match
+						results.Add(lastname + ", " + firstname + "   (" + GetTeamNameFromTeamId(record.GetIntField(PlayerRecord.TEAM_ID)) + ")", (PlayerRecord)record);
+						break;
+					}
+				}
+			}
+			return results;
+		}
 	}
 }

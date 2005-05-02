@@ -99,6 +99,11 @@ namespace MaddenEditor.Domain
 			return stringFields[fieldName];
 		}
 
+		public int GetIntField(string fieldName)
+		{
+			return intFields[fieldName];
+		}
+
 		protected void SetFieldWithBackup(string fieldName, string val)
 		{
 			//Exit early if the new value is the same

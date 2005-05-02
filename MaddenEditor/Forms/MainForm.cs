@@ -35,6 +35,7 @@ namespace MaddenEditor.Forms
 		private RosterModel model = null;
 		private string fileToLoad;
 		private bool isInitialising = false;
+		private SearchForm searchForm = null;
 
         public MainForm()
         {
@@ -103,6 +104,7 @@ namespace MaddenEditor.Forms
 					{
 						this.Cursor = Cursors.WaitCursor;
 
+						CleanUI();
 						statusStrip.Visible = true;
 
 						rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
@@ -159,7 +161,6 @@ namespace MaddenEditor.Forms
 			teamComboBox.Text = model.GetTeamNameFromTeamId(record.TeamId);
 			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 			//collegeComboBox.Text = collegeComboBox.Items[record.CollegeId + 4].ToString();
-			Console.WriteLine("number of colleges = " + collegeComboBox.Items.Count);
 
 			playerAge.Value = record.Age;
 			playerJerseyNumber.Value = record.JerseyNumber;
@@ -229,7 +230,13 @@ namespace MaddenEditor.Forms
 		{
 			CheckSave();
 
+			CleanUI();			
+		}
+
+		private void CleanUI()
+		{
 			//Now clean up ready for reloading
+			searchForm = null;
 			teamComboBox.Items.Clear();
 			filterPositionComboBox.Items.Clear();
 			positionComboBox.Items.Clear();
@@ -237,7 +244,6 @@ namespace MaddenEditor.Forms
 
 			tabControl.Visible = false;
 			searchToolStripMenuItem.Visible = false;
-
 		}
 
 		private void rosterFileLoaderThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -608,7 +614,7 @@ namespace MaddenEditor.Forms
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AboutBox form = new AboutBox();
-			form.Show(this);
+			form.ShowDialog(this);
 		}
 
 		private void playerBodyOverall_ValueChanged(object sender, EventArgs e)
@@ -784,11 +790,21 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		
+		private void searchforPlayerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (searchForm == null)
+			{
+				searchForm = new SearchForm(model);
+			}
 
+			searchForm.ShowDialog(this);
 
-	
-
+			if (searchForm.DialogResult == DialogResult.OK)
+			{
+				//Found a new player to switch to
+				LoadPlayerInfo(searchForm.SelectedPlayer);
+			}
+		}
 
     }
 }
