@@ -87,7 +87,7 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		public bool InjuryReserver
+		public bool InjuryReserve
 		{
 			get
 			{

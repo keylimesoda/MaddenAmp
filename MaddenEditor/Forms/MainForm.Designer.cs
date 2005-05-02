@@ -64,6 +64,7 @@ namespace MaddenEditor.Forms
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.firstNameTextBox = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.filterDraftClassCheckBox = new System.Windows.Forms.CheckBox();
 			this.leftButton = new System.Windows.Forms.Button();
 			this.rightButton = new System.Windows.Forms.Button();
 			this.filterPositionComboBox = new System.Windows.Forms.ComboBox();
@@ -208,6 +209,15 @@ namespace MaddenEditor.Forms
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.playerInjuryReserve = new System.Windows.Forms.CheckBox();
+			this.label76 = new System.Windows.Forms.Label();
+			this.playerInjuryCombo = new System.Windows.Forms.ComboBox();
+			this.label77 = new System.Windows.Forms.Label();
+			this.playerInjuryLength = new System.Windows.Forms.NumericUpDown();
+			this.label78 = new System.Windows.Forms.Label();
+			this.playerAddInjuryButton = new System.Windows.Forms.Button();
+			this.playerRemoveInjuryButton = new System.Windows.Forms.Button();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -276,6 +286,8 @@ namespace MaddenEditor.Forms
 			this.groupBox2.SuspendLayout();
 			this.teamPage.SuspendLayout();
 			this.statusStrip.SuspendLayout();
+			this.groupBox3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -422,7 +434,7 @@ namespace MaddenEditor.Forms
 			// playerDominantHand
 			// 
 			this.playerDominantHand.AutoSize = true;
-			this.playerDominantHand.Location = new System.Drawing.Point(124, 346);
+			this.playerDominantHand.Location = new System.Drawing.Point(124, 307);
 			this.playerDominantHand.Name = "playerDominantHand";
 			this.playerDominantHand.Size = new System.Drawing.Size(81, 17);
 			this.playerDominantHand.TabIndex = 8;
@@ -431,7 +443,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerYearsPro
 			// 
-			this.playerYearsPro.Location = new System.Drawing.Point(63, 370);
+			this.playerYearsPro.Location = new System.Drawing.Point(63, 331);
 			this.playerYearsPro.Name = "playerYearsPro";
 			this.playerYearsPro.Size = new System.Drawing.Size(51, 20);
 			this.playerYearsPro.TabIndex = 7;
@@ -439,7 +451,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerJerseyNumber
 			// 
-			this.playerJerseyNumber.Location = new System.Drawing.Point(63, 344);
+			this.playerJerseyNumber.Location = new System.Drawing.Point(63, 305);
 			this.playerJerseyNumber.Maximum = new decimal(new int[] {
             99,
             0,
@@ -456,7 +468,7 @@ namespace MaddenEditor.Forms
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.positionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.positionComboBox.FormattingEnabled = true;
-			this.positionComboBox.Location = new System.Drawing.Point(63, 317);
+			this.positionComboBox.Location = new System.Drawing.Point(63, 278);
 			this.positionComboBox.Name = "positionComboBox";
 			this.positionComboBox.Size = new System.Drawing.Size(163, 21);
 			this.positionComboBox.TabIndex = 5;
@@ -468,7 +480,7 @@ namespace MaddenEditor.Forms
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.teamComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.teamComboBox.FormattingEnabled = true;
-			this.teamComboBox.Location = new System.Drawing.Point(63, 290);
+			this.teamComboBox.Location = new System.Drawing.Point(63, 251);
 			this.teamComboBox.Name = "teamComboBox";
 			this.teamComboBox.Size = new System.Drawing.Size(163, 21);
 			this.teamComboBox.TabIndex = 4;
@@ -477,7 +489,7 @@ namespace MaddenEditor.Forms
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(8, 372);
+			this.label9.Location = new System.Drawing.Point(8, 333);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(51, 13);
 			this.label9.TabIndex = 14;
@@ -486,7 +498,7 @@ namespace MaddenEditor.Forms
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(16, 347);
+			this.label8.Location = new System.Drawing.Point(16, 308);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(43, 13);
 			this.label8.TabIndex = 13;
@@ -495,7 +507,7 @@ namespace MaddenEditor.Forms
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(19, 320);
+			this.label7.Location = new System.Drawing.Point(19, 281);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(40, 13);
 			this.label7.TabIndex = 12;
@@ -504,7 +516,7 @@ namespace MaddenEditor.Forms
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(27, 293);
+			this.label6.Location = new System.Drawing.Point(27, 254);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(30, 13);
 			this.label6.TabIndex = 11;
@@ -793,7 +805,7 @@ namespace MaddenEditor.Forms
             "Saginaw Valley    ",
             "Central St.(OK)   ",
             "Emporia State     "});
-			this.collegeComboBox.Location = new System.Drawing.Point(63, 263);
+			this.collegeComboBox.Location = new System.Drawing.Point(63, 224);
 			this.collegeComboBox.Name = "collegeComboBox";
 			this.collegeComboBox.Size = new System.Drawing.Size(163, 21);
 			this.collegeComboBox.TabIndex = 3;
@@ -802,7 +814,7 @@ namespace MaddenEditor.Forms
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(19, 266);
+			this.label5.Location = new System.Drawing.Point(19, 227);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(38, 13);
 			this.label5.TabIndex = 9;
@@ -811,7 +823,7 @@ namespace MaddenEditor.Forms
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(34, 237);
+			this.label4.Location = new System.Drawing.Point(34, 198);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(22, 13);
 			this.label4.TabIndex = 8;
@@ -819,7 +831,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerAge
 			// 
-			this.playerAge.Location = new System.Drawing.Point(63, 237);
+			this.playerAge.Location = new System.Drawing.Point(63, 198);
 			this.playerAge.Name = "playerAge";
 			this.playerAge.Size = new System.Drawing.Size(51, 20);
 			this.playerAge.TabIndex = 2;
@@ -829,7 +841,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.lastNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.lastNameTextBox.Location = new System.Drawing.Point(63, 211);
+			this.lastNameTextBox.Location = new System.Drawing.Point(63, 172);
 			this.lastNameTextBox.MaxLength = 13;
 			this.lastNameTextBox.Name = "lastNameTextBox";
 			this.lastNameTextBox.Size = new System.Drawing.Size(163, 20);
@@ -839,7 +851,7 @@ namespace MaddenEditor.Forms
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 213);
+			this.label3.Location = new System.Drawing.Point(3, 174);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(54, 13);
 			this.label3.TabIndex = 4;
@@ -858,7 +870,7 @@ namespace MaddenEditor.Forms
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(3, 188);
+			this.label1.Location = new System.Drawing.Point(3, 149);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(53, 13);
 			this.label1.TabIndex = 1;
@@ -867,9 +879,9 @@ namespace MaddenEditor.Forms
 			// pictureBox1
 			// 
 			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox1.Location = new System.Drawing.Point(44, 27);
+			this.pictureBox1.Location = new System.Drawing.Point(63, 27);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(127, 152);
+			this.pictureBox1.Size = new System.Drawing.Size(89, 115);
 			this.pictureBox1.TabIndex = 3;
 			this.pictureBox1.TabStop = false;
 			// 
@@ -877,7 +889,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.firstNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.firstNameTextBox.Location = new System.Drawing.Point(63, 185);
+			this.firstNameTextBox.Location = new System.Drawing.Point(63, 146);
 			this.firstNameTextBox.MaxLength = 11;
 			this.firstNameTextBox.Name = "firstNameTextBox";
 			this.firstNameTextBox.Size = new System.Drawing.Size(163, 20);
@@ -886,6 +898,7 @@ namespace MaddenEditor.Forms
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.filterDraftClassCheckBox);
 			this.groupBox1.Controls.Add(this.leftButton);
 			this.groupBox1.Controls.Add(this.rightButton);
 			this.groupBox1.Controls.Add(this.filterPositionComboBox);
@@ -893,17 +906,27 @@ namespace MaddenEditor.Forms
 			this.groupBox1.Controls.Add(this.teamCheckBox);
 			this.groupBox1.Controls.Add(this.positionCheckBox);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.groupBox1.Location = new System.Drawing.Point(0, 390);
+			this.groupBox1.Location = new System.Drawing.Point(0, 358);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(230, 97);
+			this.groupBox1.Size = new System.Drawing.Size(230, 129);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Player Filter";
 			// 
+			// filterDraftClassCheckBox
+			// 
+			this.filterDraftClassCheckBox.AutoSize = true;
+			this.filterDraftClassCheckBox.Location = new System.Drawing.Point(7, 67);
+			this.filterDraftClassCheckBox.Name = "filterDraftClassCheckBox";
+			this.filterDraftClassCheckBox.Size = new System.Drawing.Size(73, 17);
+			this.filterDraftClassCheckBox.TabIndex = 8;
+			this.filterDraftClassCheckBox.Text = "Draft Class";
+			this.filterDraftClassCheckBox.CheckedChanged += new System.EventHandler(this.filterDraftClassCheckBox_CheckedChanged);
+			// 
 			// leftButton
 			// 
 			this.leftButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.leftButton.Location = new System.Drawing.Point(1, 66);
+			this.leftButton.Location = new System.Drawing.Point(1, 98);
 			this.leftButton.Name = "leftButton";
 			this.leftButton.Size = new System.Drawing.Size(75, 26);
 			this.leftButton.TabIndex = 7;
@@ -913,7 +936,7 @@ namespace MaddenEditor.Forms
 			// rightButton
 			// 
 			this.rightButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.rightButton.Location = new System.Drawing.Point(152, 66);
+			this.rightButton.Location = new System.Drawing.Point(152, 98);
 			this.rightButton.Name = "rightButton";
 			this.rightButton.Size = new System.Drawing.Size(75, 26);
 			this.rightButton.TabIndex = 6;
@@ -1148,12 +1171,12 @@ namespace MaddenEditor.Forms
 			// 
 			// calculateOverallButton
 			// 
-			this.calculateOverallButton.Enabled = false;
 			this.calculateOverallButton.Location = new System.Drawing.Point(151, 10);
 			this.calculateOverallButton.Name = "calculateOverallButton";
 			this.calculateOverallButton.Size = new System.Drawing.Size(80, 21);
 			this.calculateOverallButton.TabIndex = 56;
 			this.calculateOverallButton.Text = "Calculate";
+			this.calculateOverallButton.Click += new System.EventHandler(this.calculateOverallButton_Click);
 			// 
 			// playerOverall
 			// 
@@ -2328,6 +2351,11 @@ namespace MaddenEditor.Forms
 			// playerEquipmentShoes
 			// 
 			this.playerEquipmentShoes.Location = new System.Drawing.Point(66, 232);
+			this.playerEquipmentShoes.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
 			this.playerEquipmentShoes.Name = "playerEquipmentShoes";
 			this.playerEquipmentShoes.Size = new System.Drawing.Size(58, 20);
 			this.playerEquipmentShoes.TabIndex = 11;
@@ -2427,6 +2455,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerInjuryPage
 			// 
+			this.playerInjuryPage.Controls.Add(this.groupBox3);
 			this.playerInjuryPage.Controls.Add(this.groupBox2);
 			this.playerInjuryPage.Location = new System.Drawing.Point(4, 22);
 			this.playerInjuryPage.Name = "playerInjuryPage";
@@ -2444,7 +2473,7 @@ namespace MaddenEditor.Forms
 			this.groupBox2.Controls.Add(this.playerHelmetStyleCombo);
 			this.groupBox2.Location = new System.Drawing.Point(4, 5);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(529, 178);
+			this.groupBox2.Size = new System.Drawing.Size(529, 300);
 			this.groupBox2.TabIndex = 0;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Equipment";
@@ -2555,6 +2584,99 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
 			// 
+			// groupBox3
+			// 
+			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.playerRemoveInjuryButton);
+			this.groupBox3.Controls.Add(this.playerAddInjuryButton);
+			this.groupBox3.Controls.Add(this.label78);
+			this.groupBox3.Controls.Add(this.playerInjuryLength);
+			this.groupBox3.Controls.Add(this.label77);
+			this.groupBox3.Controls.Add(this.playerInjuryCombo);
+			this.groupBox3.Controls.Add(this.label76);
+			this.groupBox3.Controls.Add(this.playerInjuryReserve);
+			this.groupBox3.Location = new System.Drawing.Point(4, 311);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(531, 139);
+			this.groupBox3.TabIndex = 1;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Injury";
+			// 
+			// playerInjuryReserve
+			// 
+			this.playerInjuryReserve.AutoSize = true;
+			this.playerInjuryReserve.Location = new System.Drawing.Point(182, 22);
+			this.playerInjuryReserve.Name = "playerInjuryReserve";
+			this.playerInjuryReserve.Size = new System.Drawing.Size(97, 17);
+			this.playerInjuryReserve.TabIndex = 0;
+			this.playerInjuryReserve.Text = "Injured Reserve";
+			// 
+			// label76
+			// 
+			this.label76.AutoSize = true;
+			this.label76.Location = new System.Drawing.Point(12, 28);
+			this.label76.Name = "label76";
+			this.label76.Size = new System.Drawing.Size(28, 13);
+			this.label76.TabIndex = 1;
+			this.label76.Text = "Injury";
+			// 
+			// playerInjuryCombo
+			// 
+			this.playerInjuryCombo.FormattingEnabled = true;
+			this.playerInjuryCombo.Location = new System.Drawing.Point(46, 20);
+			this.playerInjuryCombo.Name = "playerInjuryCombo";
+			this.playerInjuryCombo.Size = new System.Drawing.Size(121, 21);
+			this.playerInjuryCombo.TabIndex = 2;
+			// 
+			// label77
+			// 
+			this.label77.AutoSize = true;
+			this.label77.Location = new System.Drawing.Point(5, 56);
+			this.label77.Name = "label77";
+			this.label77.Size = new System.Drawing.Size(36, 13);
+			this.label77.TabIndex = 3;
+			this.label77.Text = "Length";
+			// 
+			// playerInjuryLength
+			// 
+			this.playerInjuryLength.Location = new System.Drawing.Point(47, 49);
+			this.playerInjuryLength.Maximum = new decimal(new int[] {
+            365,
+            0,
+            0,
+            0});
+			this.playerInjuryLength.Name = "playerInjuryLength";
+			this.playerInjuryLength.Size = new System.Drawing.Size(83, 20);
+			this.playerInjuryLength.TabIndex = 4;
+			// 
+			// label78
+			// 
+			this.label78.AutoSize = true;
+			this.label78.Location = new System.Drawing.Point(136, 56);
+			this.label78.Name = "label78";
+			this.label78.Size = new System.Drawing.Size(25, 13);
+			this.label78.TabIndex = 5;
+			this.label78.Text = "days";
+			// 
+			// playerAddInjuryButton
+			// 
+			this.playerAddInjuryButton.Location = new System.Drawing.Point(46, 86);
+			this.playerAddInjuryButton.Name = "playerAddInjuryButton";
+			this.playerAddInjuryButton.Size = new System.Drawing.Size(75, 23);
+			this.playerAddInjuryButton.TabIndex = 6;
+			this.playerAddInjuryButton.Text = "Add";
+			this.playerAddInjuryButton.Click += new System.EventHandler(this.playerAddInjuryButton_Click);
+			// 
+			// playerRemoveInjuryButton
+			// 
+			this.playerRemoveInjuryButton.Location = new System.Drawing.Point(137, 86);
+			this.playerRemoveInjuryButton.Name = "playerRemoveInjuryButton";
+			this.playerRemoveInjuryButton.Size = new System.Drawing.Size(75, 23);
+			this.playerRemoveInjuryButton.TabIndex = 7;
+			this.playerRemoveInjuryButton.Text = "Remove";
+			this.playerRemoveInjuryButton.Click += new System.EventHandler(this.playerRemoveInjuryButton_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2644,6 +2766,9 @@ namespace MaddenEditor.Forms
 			this.teamPage.ResumeLayout(false);
 			this.teamPage.PerformLayout();
 			this.statusStrip.ResumeLayout(false);
+			this.groupBox3.ResumeLayout(false);
+			this.groupBox3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -2830,5 +2955,15 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label74;
 		private System.Windows.Forms.NumericUpDown playerTotalSalary;
 		private System.Windows.Forms.Label label75;
+		private System.Windows.Forms.CheckBox filterDraftClassCheckBox;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.CheckBox playerInjuryReserve;
+		private System.Windows.Forms.ComboBox playerInjuryCombo;
+		private System.Windows.Forms.Label label76;
+		private System.Windows.Forms.Button playerRemoveInjuryButton;
+		private System.Windows.Forms.Button playerAddInjuryButton;
+		private System.Windows.Forms.Label label78;
+		private System.Windows.Forms.NumericUpDown playerInjuryLength;
+		private System.Windows.Forms.Label label77;
     }
 }

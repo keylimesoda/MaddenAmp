@@ -563,7 +563,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[BODY_WEIGHT];
+				return (intFields[BODY_WEIGHT] < 100 ? intFields[BODY_WEIGHT] : 99);
 			}
 			set
 			{
@@ -575,7 +575,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[BODY_MUSCLE];
+				return (intFields[BODY_MUSCLE] < 100 ? intFields[BODY_MUSCLE] : 99);
 			}
 			set
 			{
@@ -587,7 +587,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[BODY_FAT];
+				return (intFields[BODY_FAT] < 100 ? intFields[BODY_FAT] : 99);
 			}
 			set
 			{
@@ -599,7 +599,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[EQP_SHOES];
+				return (intFields[EQP_SHOES] < 100 ? intFields[EQP_SHOES] : 99);
 			}
 			set
 			{
@@ -611,7 +611,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[EQP_PAD_HEIGHT];
+				return (intFields[EQP_PAD_HEIGHT] < 100 ? intFields[EQP_PAD_HEIGHT] : 99);
 			}
 			set
 			{
@@ -623,7 +623,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[EQP_PAD_WIDTH];
+				return (intFields[EQP_PAD_WIDTH] < 100 ? intFields[EQP_PAD_WIDTH] : 99);
 			}
 			set
 			{
@@ -635,7 +635,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[EQP_PAD_SHELF];
+				return (intFields[EQP_PAD_SHELF] < 100 ? intFields[EQP_PAD_SHELF] : 99);
 			}
 			set
 			{
@@ -647,7 +647,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[EQP_FLAK_JACKET];
+				return (intFields[EQP_FLAK_JACKET] < 100 ? intFields[EQP_FLAK_JACKET] : 99);
 			}
 			set
 			{
@@ -659,7 +659,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[ARMS_MUSCLE];
+				return (intFields[ARMS_MUSCLE] < 100 ? intFields[ARMS_MUSCLE] : 99);
 			}
 			set
 			{
@@ -671,7 +671,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[ARMS_FAT];
+				return (intFields[ARMS_FAT] < 100 ? intFields[ARMS_FAT] : 99);
 			}
 			set
 			{
@@ -683,7 +683,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[LEGS_THIGH_MUSCLE];
+				return (intFields[LEGS_THIGH_MUSCLE] < 100 ? intFields[LEGS_THIGH_MUSCLE] : 99);
 			}
 			set
 			{
@@ -695,7 +695,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[LEGS_THIGH_FAT];
+				return (intFields[LEGS_THIGH_FAT] < 100 ? intFields[LEGS_THIGH_FAT] : 99);
 			}
 			set
 			{
@@ -707,7 +707,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[LEGS_CALF_MUSCLE];
+				return (intFields[LEGS_CALF_MUSCLE] < 100 ? intFields[LEGS_CALF_MUSCLE] : 99);
 			}
 			set
 			{
@@ -719,7 +719,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[LEGS_CALF_FAT];
+				return (intFields[LEGS_CALF_FAT] < 100 ? intFields[LEGS_CALF_FAT] : 99);
 			}
 			set
 			{
@@ -731,7 +731,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[REAR_REAR_FAR];
+				return (intFields[REAR_REAR_FAR] < 100 ? intFields[REAR_REAR_FAR] : 99);
 			}
 			set
 			{
@@ -743,7 +743,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[REAR_SHAPE];
+				return (intFields[REAR_SHAPE] < 100 ? intFields[REAR_SHAPE] : 99);
 			}
 			set
 			{
@@ -857,6 +857,171 @@ namespace MaddenEditor.Domain
 			{
 				SetFieldWithBackup(FACE_MASK, value);
 			}
+		}
+
+		public void CalculateOverallRating()
+		{
+			double tempOverall = 0;
+
+			switch (PositionId)
+			{
+				case (int)MaddenPositions.QB:
+					tempOverall = (((double)ThrowPower - 50) / 10) * 4.9;
+					tempOverall += (((double)ThrowAccuracy - 50) / 10) * 5.8;
+					tempOverall += (((double)BreakTackle - 50) / 10) * 0.8;
+					tempOverall += (((double)Agility - 50) / 10) * 0.8;
+					tempOverall += (((double)Awareness - 50) / 10) * 4.0;
+					tempOverall += (((double)Speed - 50) / 10) * 2.0;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
+					break;
+				case (int)MaddenPositions.HB:
+					tempOverall = (((double)PassBlocking - 50) / 10) * 0.33;
+					tempOverall += (((double)BreakTackle - 50) / 10) * 3.3;
+					tempOverall += (((double)Carrying - 50) / 10) * 2.0;
+					tempOverall += (((double)Acceleration - 50) / 10) * 1.8;
+					tempOverall += (((double)Agility - 50) / 10) * 2.8;
+					tempOverall += (((double)Awareness - 50) / 10) * 2.0;
+					tempOverall += (((double)Strength - 50) / 10) * 0.6;
+					tempOverall += (((double)Speed - 50) / 10) * 3.3;
+					tempOverall += (((double)Catching - 50) / 10) * 1.4;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 27,1);
+					break;
+				case (int)MaddenPositions.FB:
+					tempOverall= (((double)PassBlocking - 50) / 10) * 1.0;
+					tempOverall+= (((double)RunBlocking - 50) / 10) * 7.2;
+					tempOverall+= (((double)BreakTackle - 50) / 10) * 1.8;
+					tempOverall+= (((double)Carrying - 50) / 10) * 1.8;
+					tempOverall+= (((double)Acceleration - 50) / 10) * 1.8;
+					tempOverall+= (((double)Agility - 50) / 10) * 1.0;
+					tempOverall+= (((double)Awareness - 50) / 10) * 2.8;
+					tempOverall+= (((double)Strength - 50) / 10) * 1.8;
+					tempOverall+= (((double)Speed - 50) / 10) * 1.8;
+					tempOverall+= (((double)Catching - 50) / 10) * 5.2;
+					tempOverall= (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 39,1);
+					break;
+				case (int)MaddenPositions.WR:
+					tempOverall = (((double)BreakTackle - 50) / 10) * 0.8;
+					tempOverall += (((double)Acceleration - 50) / 10) * 2.3;
+					tempOverall += (((double)Agility - 50) / 10) * 2.3;
+					tempOverall += (((double)Awareness - 50) / 10) * 2.3;
+					tempOverall += (((double)Strength - 50) / 10) * 0.8;
+					tempOverall += (((double)Speed - 50) / 10) * 2.3;
+					tempOverall += (((double)Catching - 50) / 10) * 4.75;
+					tempOverall += (((double)Jumping - 50) / 10) * 1.4;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 26, 1);
+					break;
+				case (int)MaddenPositions.TE:
+					tempOverall = (((double)Speed - 50) / 10) * 2.65;
+					tempOverall += (((double)Strength - 50) / 10) * 2.65;
+					tempOverall += (((double)Awareness - 50) / 10) * 2.65;
+					tempOverall += (((double)Agility - 50) / 10) * 1.25;
+					tempOverall += (((double)Acceleration - 50) / 10) * 1.25;
+					tempOverall += (((double)Catching - 50) / 10) * 5.4;
+					tempOverall += (((double)BreakTackle - 50) / 10) * 1.2;
+					tempOverall += (((double)PassBlocking - 50) / 10) * 1.2;
+					tempOverall += (((double)RunBlocking - 50) / 10) * 5.4;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 35, 1);
+					break;
+				case (int)MaddenPositions.LT:
+				case (int)MaddenPositions.RT:
+					tempOverall = (((double)Speed - 50) / 10) * 0.8;
+					tempOverall += (((double)Strength - 50) / 10) * 3.3;
+					tempOverall += (((double)Awareness - 50) / 10) * 3.3;
+					tempOverall += (((double)Agility - 50) / 10) * 0.8;
+					tempOverall += (((double)Acceleration - 50) / 10) * 0.8;
+					tempOverall += (((double)PassBlocking - 50) / 10) * 4.75;
+					tempOverall += (((double)RunBlocking - 50) / 10) * 3.75;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 26, 1);
+					break;
+				case (int)MaddenPositions.LG:
+				case (int)MaddenPositions.RG:
+				case (int)MaddenPositions.C:
+					tempOverall = (((double)Speed - 50) / 10) * 1.7;
+					tempOverall += (((double)Strength - 50) / 10) * 3.25;
+					tempOverall += (((double)Awareness - 50) / 10) * 3.25;
+					tempOverall += (((double)Agility - 50) / 10) * 0.8;
+					tempOverall += (((double)Acceleration - 50) / 10) * 1.7;
+					tempOverall += (((double)PassBlocking - 50) / 10) * 3.25;
+					tempOverall += (((double)RunBlocking - 50) / 10) * 4.8;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
+					break;
+				case (int)MaddenPositions.LE:
+				case (int)MaddenPositions.RE:
+					tempOverall = (((double)Speed - 50) / 10) * 3.75;
+					tempOverall += (((double)Strength - 50) / 10) * 3.75;
+					tempOverall += (((double)Awareness - 50) / 10) * 1.75;
+					tempOverall += (((double)Agility - 50) / 10) * 1.75;
+					tempOverall += (((double)Acceleration - 50) / 10) * 3.8;
+					tempOverall += (((double)Tackle - 50) / 10) * 5.5;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
+					break;
+				case (int)MaddenPositions.DT:
+					tempOverall = (((double)Speed - 50) / 10) * 1.8;
+					tempOverall += (((double)Strength - 50) / 10) * 5.5;
+					tempOverall += (((double)Awareness - 50) / 10) * 3.8;
+					tempOverall += (((double)Agility - 50) / 10) * 1;
+					tempOverall += (((double)Acceleration - 50) / 10) * 2.8;
+					tempOverall += (((double)Tackle - 50) / 10) * 4.55;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 29, 1);
+					break;
+				case (int)MaddenPositions.LOLB:
+				case (int)MaddenPositions.ROLB:
+					tempOverall = (((double)Speed - 50) / 10) * 3.75;
+					tempOverall += (((double)Strength - 50) / 10) * 2.4;
+					tempOverall += (((double)Awareness - 50) / 10) * 3.6;
+					tempOverall += (((double)Agility - 50) / 10) * 2.4;
+					tempOverall += (((double)Acceleration - 50) / 10) * 1.3;
+					tempOverall += (((double)Catching - 50) / 10) * 1.3;
+					tempOverall += (((double)Tackle - 50) / 10) * 4.8;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 29, 1);
+					break;
+				case (int)MaddenPositions.MLB:
+					tempOverall = (((double)Speed - 50) / 10) * 0.75;
+					tempOverall += (((double)Strength - 50) / 10) * 3.4;
+					tempOverall += (((double)Awareness - 50) / 10) * 5.2;
+					tempOverall += (((double)Agility - 50) / 10) * 1.65;
+					tempOverall += (((double)Acceleration - 50) / 10) * 1.75;
+					tempOverall += (((double)Tackle - 50) / 10) * 5.2;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 27, 1);
+					break;
+				case (int)MaddenPositions.CB:
+					tempOverall = (((double)Speed - 50) / 10) * 3.85;
+					tempOverall += (((double)Strength - 50) / 10) * 0.9;
+					tempOverall += (((double)Awareness - 50) / 10) * 3.85;
+					tempOverall += (((double)Agility - 50) / 10) * 1.55;
+					tempOverall += (((double)Acceleration - 50) / 10) * 2.35;
+					tempOverall += (((double)Catching - 50) / 10) * 3;
+					tempOverall += (((double)Jumping - 50) / 10) * 1.55;
+					tempOverall += (((double)Tackle - 50) / 10) * 1.55;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
+					break;
+				case (int)MaddenPositions.FS:
+					tempOverall = (((double)Speed - 50) / 10) * 3.0;
+					tempOverall += (((double)Strength - 50) / 10) * 0.9;
+					tempOverall += (((double)Awareness - 50) / 10) * 4.85;
+					tempOverall += (((double)Agility - 50) / 10) * 1.5;
+					tempOverall += (((double)Acceleration - 50) / 10) * 2.5;
+					tempOverall += (((double)Catching - 50) / 10) * 3.0;
+					tempOverall += (((double)Jumping - 50) / 10) * 1.5;
+					tempOverall += (((double)Tackle - 50) / 10) * 2.5;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
+					break;
+				case (int)MaddenPositions.SS:
+					tempOverall = (((double)Speed - 50) / 10) * 3.2;
+					tempOverall += (((double)Strength - 50) / 10) * 1.7;
+					tempOverall += (((double)Awareness - 50) / 10) * 4.75;
+					tempOverall += (((double)Agility - 50) / 10) * 1.7;
+					tempOverall += (((double)Acceleration - 50) / 10) * 1.7;
+					tempOverall += (((double)Catching - 50) / 10) * 3.2;
+					tempOverall += (((double)Jumping - 50) / 10) * 0.9;
+					tempOverall += (((double)Tackle - 50) / 10) * 3.2;
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
+					break;
+
+
+			}
+
+			Overall = (tempOverall < 100 ? (int)tempOverall : 99);
 		}
 	}
 }
