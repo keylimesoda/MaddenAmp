@@ -35,7 +35,7 @@ namespace MaddenEditor.Domain
 		FranchiseFile 
 	}
 
-	public enum MaddenTable
+	/*public enum MaddenTable
 	{
 		CITY_TABLE = 0,
 		CPSE_TABLE = 1,
@@ -48,7 +48,7 @@ namespace MaddenEditor.Domain
 		STADIUM_TABLE = 8,
 		UNIFORM_TABLE = 9,
 		TEAM_TABLE = 10
-	}
+	}*/
 
 	public enum MaddenPositions
 	{
@@ -77,17 +77,22 @@ namespace MaddenEditor.Domain
 
 	public class RosterModel
 	{
+		public const string PLAYER_TABLE = "PLAY";
+		public const string TEAM_TABLE = "TEAM";
+		public const string INJURY_TABLE = "INJY";
+
 		private bool dirty = false;
 		private int dbIndex = -1;
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private int tableCount = 0;
 		private string fileName = "";
 		private MainForm view = null;
-		private Dictionary<MaddenTable, TableModel> tableModels = null;
+		private Dictionary<string, TableModel> tableModels = null;
 		private Dictionary<int, string> teamNameList = null;
 		private int currentPlayerIndex = 0;
 		private string currentTeamFilter = null;
 		private int currentPositionFilter = -1;
+		private Dictionary<string, int> tableOrder = null;
 
 		public RosterModel(string filename, MainForm form)
 		{
@@ -105,7 +110,14 @@ namespace MaddenEditor.Domain
 				throw new ApplicationException("Can't open file: " + e.ToString());
 			}
 
-			tableModels = new Dictionary<MaddenTable, TableModel>();
+			tableModels = new Dictionary<string, TableModel>();
+			tableOrder = new Dictionary<string, int>();
+
+			//Initialise the tableOrder with the Table names we want to 
+			//Process
+			tableOrder.Add(TEAM_TABLE, -1);
+			tableOrder.Add(PLAYER_TABLE, -1);
+			tableOrder.Add(INJURY_TABLE, -1);
 
 			//Process the file
 			if (!ProcessFile())
@@ -128,9 +140,9 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		public TableModel GetTable(MaddenTable tableType)
+		public TableModel GetTable(string tableName)
 		{
-			return tableModels[tableType];
+			return tableModels[tableName];
 		}
 
 		private bool ProcessFile()
@@ -148,6 +160,13 @@ namespace MaddenEditor.Domain
 					TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
 
 					Console.WriteLine("File Contains Table: {0}", tableProps.Name);
+
+					//If we found a table we want to process, then store its
+					//order number in our tableOrder Hashmap
+					if (tableOrder.ContainsKey(tableProps.Name))
+					{
+						tableOrder[tableProps.Name] = j;
+					}
 				}
 			}
 			catch (DllNotFoundException e)
@@ -155,21 +174,22 @@ namespace MaddenEditor.Domain
 				Console.WriteLine(e.ToString());
 			}
 
-			if (tableCount != Enum.GetValues(typeof(MaddenTable)).Length)
+			foreach (int tableNumber in tableOrder.Values)
 			{
-				Console.WriteLine("Something is wrong, we don't have enough tables");
-				return false;
-			}
-
-			foreach (MaddenTable madtab in Enum.GetValues(typeof(MaddenTable)))
-			{
-				result &= ProcessTable(madtab);
+				if (tableNumber == -1)
+				{
+					//Something is wrong, we expected to have found a table
+					//for this table but we didnt find one, so die
+					result = false;
+					break;
+				}
+				result &= ProcessTable(tableNumber);
 			}
 
 			return result;
 		}
 
-		private bool ProcessTable(MaddenTable tableType)
+		private bool ProcessTable(int tableNumber)
 		{
 			//Reset the progress bar
 			view.updateProgress(0);
@@ -177,9 +197,9 @@ namespace MaddenEditor.Domain
 			//Get the table properties
 			TdbTableProperties tableProps = new TdbTableProperties();
 			tableProps.Name = new string((char)0, 5);
-			TDB.TDBTableGetProperties(dbIndex, (int)tableType, ref tableProps);
+			TDB.TDBTableGetProperties(dbIndex, tableNumber, ref tableProps);
 
-			TableModel table = new TableModel(tableType, tableProps.Name, this);
+			TableModel table = new TableModel(tableProps.Name, this);
 			Console.WriteLine("Processing Table: " + table.Name);
 
 			//For each field for this table, find the name and add it to a collection
@@ -257,7 +277,7 @@ namespace MaddenEditor.Domain
 				view.updateProgress((int)currentProgress);
 			}
 
-			tableModels.Add(tableType, table);
+			tableModels.Add(table.Name, table);
 			Console.WriteLine("Finished processing Table: " + table.Name);
 			view.updateProgress(100);
 			return true;
@@ -280,7 +300,7 @@ namespace MaddenEditor.Domain
 			if (teamNameList == null)
 			{
 				teamNameList = new Dictionary<int, string>();
-				foreach (TableRecordModel record in tableModels[MaddenTable.TEAM_TABLE].GetRecords())
+				foreach (TableRecordModel record in tableModels[TEAM_TABLE].GetRecords())
 				{
 					TeamRecord teamRecord = (TeamRecord)record;
 					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
@@ -337,14 +357,14 @@ namespace MaddenEditor.Domain
 
 		public PlayerRecord GetPlayerRecord(int recno)
 		{
-			return (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(recno);
+			return (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(recno);
 		}
 
 		public PlayerRecord CurrentPlayerRecord
 		{
 			get
 			{
-				return (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+				return (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
 			}
 		}
 
@@ -355,12 +375,12 @@ namespace MaddenEditor.Domain
 			while (true)
 			{
 				currentPlayerIndex++;
-				if (currentPlayerIndex >= tableModels[MaddenTable.PLAYER_TABLE].RecordCount)
+				if (currentPlayerIndex >= tableModels[PLAYER_TABLE].RecordCount)
 				{
 					currentPlayerIndex = 0;
 				}
 
-				record = (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+				record = (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
 
 				if (currentTeamFilter != null)
 				{
@@ -393,10 +413,10 @@ namespace MaddenEditor.Domain
 				currentPlayerIndex--;
 				if (currentPlayerIndex < 0)
 				{
-					currentPlayerIndex = tableModels[MaddenTable.PLAYER_TABLE].RecordCount - 1;
+					currentPlayerIndex = tableModels[PLAYER_TABLE].RecordCount - 1;
 				}
 
-				record = (PlayerRecord)tableModels[MaddenTable.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+				record = (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
 
 				if (currentTeamFilter != null)
 				{
@@ -446,7 +466,7 @@ namespace MaddenEditor.Domain
 			//save the dirty ones
 			
 			//At the moment we are only saving the player table
-			TableModel table = tableModels[MaddenTable.PLAYER_TABLE];
+			TableModel table = tableModels[PLAYER_TABLE];
 
 			List<TableRecordModel> listRecords = table.GetRecords();
 
@@ -489,7 +509,7 @@ namespace MaddenEditor.Domain
 			//This is not going to be efficient.
 			Dictionary<String, PlayerRecord> results = new Dictionary<String, PlayerRecord>();
 
-			foreach (TableRecordModel record in tableModels[MaddenTable.PLAYER_TABLE].GetRecords())
+			foreach (TableRecordModel record in tableModels[PLAYER_TABLE].GetRecords())
 			{
 				String firstname = record.GetStringField(PlayerRecord.FIRST_NAME);
 				String lastname = record.GetStringField(PlayerRecord.LAST_NAME);

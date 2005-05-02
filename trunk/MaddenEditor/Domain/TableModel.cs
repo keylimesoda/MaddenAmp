@@ -29,14 +29,12 @@ namespace MaddenEditor.Domain
 	public class TableModel
 	{
 		protected List<TableRecordModel> recordList = null;
-		protected MaddenTable type;
 		protected String name;
 		protected RosterModel parentModel = null;
 
-		public TableModel(MaddenTable tableType, string name, RosterModel rosterModel)
+		public TableModel(string name, RosterModel rosterModel)
 		{
 			parentModel = rosterModel;
-			type = tableType;
 			this.name = name;
 			recordList = new List<TableRecordModel>();
 		}
@@ -83,38 +81,38 @@ namespace MaddenEditor.Domain
 		{
 			TableRecordModel newRecord = null;
 
-			switch (type)
+			switch (name)
 			{
-				case MaddenTable.CITY_TABLE:
-					newRecord = new CityRecord(recno, parentModel);
-					break;
-				case MaddenTable.COACH_TABLE:
-					newRecord = new CoachRecord(recno, parentModel);
-					break;
-				case MaddenTable.CPSE_TABLE:
-					return null;
-				case MaddenTable.CTMP_TABLE:
-					return null;
-				case MaddenTable.CTMU_TABLE:
-					return null;
-				case MaddenTable.DEPTH_CHART_TABLE:
-					newRecord = new DepthChartRecord(recno, parentModel);
-					break;
-				case MaddenTable.INJURY_TABLE:
+				//case RosterModel.CITY_TABLE:
+				//	newRecord = new CityRecord(recno, parentModel);
+				//	break;
+				//case MaddenTable.COACH_TABLE:
+				//	newRecord = new CoachRecord(recno, parentModel);
+				//	break;
+				//case MaddenTable.CPSE_TABLE:
+				//	return null;
+				//case MaddenTable.CTMP_TABLE:
+				//	return null;
+				//case MaddenTable.CTMU_TABLE:
+				//	return null;
+				//case MaddenTable.DEPTH_CHART_TABLE:
+				//	newRecord = new DepthChartRecord(recno, parentModel);
+				//	break;
+				case RosterModel.INJURY_TABLE:
 					newRecord = new InjuryRecord(recno, parentModel);
 					break;
-				case MaddenTable.PLAYER_TABLE:
+				case RosterModel.PLAYER_TABLE:
 					newRecord = new PlayerRecord(recno, parentModel);
 					break;
-				case MaddenTable.STADIUM_TABLE:
-					newRecord = new StadiumTable(recno, parentModel);
-					break;
-				case MaddenTable.TEAM_TABLE:
+				//case MaddenTable.STADIUM_TABLE:
+				//	newRecord = new StadiumTable(recno, parentModel);
+				//	break;
+				case RosterModel.TEAM_TABLE:
 					newRecord = new TeamRecord(recno, parentModel);
 					break;
-				case MaddenTable.UNIFORM_TABLE:
-					newRecord = new UniformRecord(recno, parentModel);
-					break;
+				//case MaddenTable.UNIFORM_TABLE:
+				//	newRecord = new UniformRecord(recno, parentModel);
+				//	break;
 			}
 
 			//Add the new record to our list of records
