@@ -87,7 +87,7 @@ namespace MaddenEditor.Forms
 
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.DefaultExt = "ros";
-			dialog.Filter = "Madden Roster files (*.ros)|*.ros|Madden Franchise files (*.fra)|*.fra";
+			dialog.Filter = "Madden files (*.ros;*.fra)|*.ros;*.fra";
 			dialog.Multiselect = false;
 			dialog.ShowDialog();
 			if (dialog.FileNames.Length > 0)
@@ -222,6 +222,7 @@ namespace MaddenEditor.Forms
 			playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
 
 			//Set player Appearance
+			playerFaceShape.Value = record.FaceShape;
 			playerBodyWeight.Value = record.BodyWeight;
 			playerBodyMuscle.Value = record.BodyMuscle;
 			playerBodyFat.Value = record.BodyFat;
@@ -240,7 +241,8 @@ namespace MaddenEditor.Forms
 			playerRearShape.Value = record.RearShape;
 
 			//Load Player equipment
-			//playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
+			playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
+			playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
 			playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
 			playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
 			playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
@@ -248,6 +250,18 @@ namespace MaddenEditor.Forms
 			playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
 			playerVisorCombo.Text = playerVisorCombo.Items[record.Visor].ToString();
 			playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();
+			playerLeftElbowCombo.Text = playerLeftElbowCombo.Items[record.LeftElbow].ToString();
+			playerRightElbowCombo.Text = playerRightElbowCombo.Items[record.RightElbow].ToString();
+			playerLeftWristCombo.Text = playerLeftWristCombo.Items[record.LeftWrist].ToString();
+			playerRightWristCombo.Text = playerRightWristCombo.Items[record.RightWrist].ToString();
+			playerLeftHandCombo.Text = playerLeftHandCombo.Items[record.LeftHand].ToString();
+			playerRightHandCombo.Text = playerRightHandCombo.Items[record.RightHand].ToString();
+			playerSleevesCombo.Text = playerSleevesCombo.Items[record.Sleeves].ToString();
+			playerLeftKneeCombo.Text = playerLeftKneeCombo.Items[record.LeftKnee].ToString();
+			playerRightKneeCombo.Text = playerRightKneeCombo.Items[record.RightKnee].ToString();
+			playerLeftAnkleCombo.Text = playerLeftAnkleCombo.Items[record.LeftAnkle%4].ToString();
+			playerRightAnkleCombo.Text = playerRightAnkleCombo.Items[record.RightAnkle%4].ToString();
+			playerNasalStripCombo.Text = playerNasalStripCombo.Items[record.NasalStrip].ToString();
 
 			//Load Injury information
 			InjuryRecord injury = model.GetPlayersInjuryRecord(record.PlayerId);
@@ -255,10 +269,13 @@ namespace MaddenEditor.Forms
 			if (injury == null)
 			{
 				playerInjuryCombo.Enabled = false;
+				playerInjuryCombo.Text = "";
 				playerInjuryLength.Enabled = false;
+				playerInjuryLength.Value = 0;
 				playerRemoveInjuryButton.Enabled = false;
 				playerInjuryReserve.Enabled = false;
 				playerAddInjuryButton.Enabled = true;
+				
 			}
 			else
 			{
@@ -1027,11 +1044,7 @@ namespace MaddenEditor.Forms
 			// This method will run on a thread other than the UI thread.
 			// Be sure not to manipulate any Windows Forms controls created
 			// on the UI thread from this method.
-			while (true)
-			{
-				System.Threading.Thread.Sleep(1000);
-				testerWorkerThread.ReportProgress(0);
-			}
+
 		}
 
 		private void testerWorkerThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1040,9 +1053,127 @@ namespace MaddenEditor.Forms
 			LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
+		private void playerLeftElbowCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LeftElbow = playerLeftElbowCombo.SelectedIndex;
+			}
+		}
 
+		private void playerRightElbowCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RightElbow = playerRightElbowCombo.SelectedIndex;
+			}
+		}
 
-		
+		private void playerLeftWristCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LeftWrist = playerLeftWristCombo.SelectedIndex;
+			}
+		}
+
+		private void playerRightWristCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RightWrist = playerRightWristCombo.SelectedIndex;
+			}
+		}
+
+		private void playerLeftHandCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LeftHand = playerLeftHandCombo.SelectedIndex;
+			}
+		}
+
+		private void playerRightHandCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RightHand = playerRightHandCombo.SelectedIndex;
+			}
+		}
+
+		private void playerSleevesCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Sleeves = playerSleevesCombo.SelectedIndex;
+			}
+		}
+
+		private void playerLeftKneeCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LeftKnee = playerLeftKneeCombo.SelectedIndex;
+			}
+		}
+
+		private void playerRightKneeCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RightKnee = playerRightKneeCombo.SelectedIndex;
+			}
+		}
+
+		private void playerLeftAnkleCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.LeftAnkle = playerLeftAnkleCombo.SelectedIndex;
+			}
+		}
+
+		private void playerRightAnkleCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.RightAnkle = playerRightAnkleCombo.SelectedIndex;
+			}
+		}
+
+		private void playerNasalStripCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.NasalStrip = playerNasalStripCombo.SelectedIndex;
+			}
+		}
+
+		private void playerSkinColorCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.SkinType = playerSkinColorCombo.SelectedIndex;
+			}
+		}
+
+		private void playerFaceShape_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.FaceShape = (int)playerFaceShape.Value;
+			}
+		}
+
+		private void playerHairStyleCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.HairStyle = playerHairStyleCombo.SelectedIndex;
+			}
+		}
+
+	
 
     }
 }

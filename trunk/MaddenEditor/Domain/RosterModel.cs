@@ -538,14 +538,19 @@ namespace MaddenEditor.Domain
 				String firstnameLower = firstname.ToLower();
 				String lastnameLower = lastname.ToLower();
 
+				bool gotmatch = true;
 				foreach (String searchterm in names)
 				{
-					if ((firstnameLower.IndexOf(searchterm) != -1) || (lastnameLower.IndexOf(searchterm) != -1))
+					if ((firstnameLower.IndexOf(searchterm) == -1) && (lastnameLower.IndexOf(searchterm) == -1))
 					{
-						//We have a match
-						results.Add(lastname + ", " + firstname + "   (" + GetTeamNameFromTeamId(record.GetIntField(PlayerRecord.TEAM_ID)) + ")", (PlayerRecord)record);
+						//We don't have a match
+						gotmatch = false;
 						break;
 					}
+				}
+				if (gotmatch)
+				{
+					results.Add(lastname + ", " + firstname + "   (" + GetTeamNameFromTeamId(record.GetIntField(PlayerRecord.TEAM_ID)) + ")", (PlayerRecord)record);
 				}
 			}
 			return results;

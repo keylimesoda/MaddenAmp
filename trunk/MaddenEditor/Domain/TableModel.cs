@@ -188,8 +188,11 @@ namespace MaddenEditor.Domain
 					//First check to see if this record is going to be deleted
 					if (record.Deleted)
 					{
+						Console.Write("About to mark for deletion record " + record.RecNo);
 						//Mark record for deletion in DB
-						TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, true);
+
+						TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, false);
+						//TDB.TDBTableRecordRemove(dbIndex, name, record.RecNo);
 						continue;
 					}
 
@@ -217,6 +220,7 @@ namespace MaddenEditor.Domain
 				}
 			}
 
+			TDB.TDBDatabaseCompact(dbIndex);
 			TDB.TDBSave(dbIndex);
 		}
 	}

@@ -1,13 +1,13 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.5.9
 
-                                  2nd May 2005
+                                   4th May 2005
 
-                                   readme.txt
+                                    readme.txt
 
-                                ----------------
+                                  ----------------
 
    Contents
    --------
@@ -40,6 +40,10 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
+* (NEW) Delete function
+
+* (NEW) Adding/removing of injuries (Injuries not yet described)
+
 * (NEW) Added Draft Class Filter for easy editing of draft classes
 
 * (NEW) Supports loading franchise files
@@ -47,11 +51,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 * (NEW) Added support to estimate OVR rating by hitting calculate
         (From files by ReMiNiScE @ football-freaks.com)
 
-* Currently supports editing of most player attributes from a Madden 2005 
-  roster file. Attributes that are not supported yet are either grayed out
-  or are just not existent in the editor
+* (NEW) Nearly all player attributes (bar 5) are now editable
 
-* Search function to find specific players
+* Fast Search function to find specific players
 
 * Filter functions to narrow browsing down making it easy to move through
   players on teams/positions
@@ -100,13 +102,13 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 6. FUTURE PLANS
 ===============
 
+* Create Player function almost complete 
+
 * Complete all attribute editing of players
 
+* Add Team and Coach editing
+
 * Add player picture from DAT files to Player screen
-
-* Add Team editing
-
-* Add support for franchise editing
 
 * Provide a better crash exception handling box with email functionality
 
