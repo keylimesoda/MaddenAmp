@@ -998,12 +998,46 @@ namespace MaddenEditor.Forms
 		{
 			PlayerRecord newRecord = model.CreateNewPlayerRecord();
 
+			//Add the player to free agents
+			newRecord.TeamId = RosterModel.FREE_AGENT_TEAM_ID;
 			//Need to set unique PLAYER ID
 
 			//Most variables start off at zero but some can't like height and weight so set them
 			newRecord.Height = 75;
 			
 			LoadPlayerInfo(newRecord);
+		}
+
+		private void testButton_Click(object sender, EventArgs e)
+		{
+			if (testerWorkerThread.IsBusy)
+			{
+				testerWorkerThread.CancelAsync();
+				
+			}
+			else
+			{
+				testerWorkerThread.DoWork += new DoWorkEventHandler(testerWorkerThread_DoWork);
+				testerWorkerThread.RunWorkerAsync();
+			}
+		}
+
+		private void testerWorkerThread_DoWork(object sender, DoWorkEventArgs e)
+		{
+			// This method will run on a thread other than the UI thread.
+			// Be sure not to manipulate any Windows Forms controls created
+			// on the UI thread from this method.
+			while (true)
+			{
+				System.Threading.Thread.Sleep(1000);
+				testerWorkerThread.ReportProgress(0);
+			}
+		}
+
+		private void testerWorkerThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			model.GetNextPlayerRecord();
+			LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
 

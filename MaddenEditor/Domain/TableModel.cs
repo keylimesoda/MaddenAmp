@@ -35,6 +35,7 @@ namespace MaddenEditor.Domain
 		protected RosterModel parentModel = null;
 		List<TdbFieldProperties> fieldList = null;
 		protected int dbIndex = -1;
+		protected string primaryKeyField = null;
 
 		public TableModel(string name, RosterModel rosterModel, int dbIndex)
 		{
@@ -42,6 +43,11 @@ namespace MaddenEditor.Domain
 			parentModel = rosterModel;
 			this.name = name;
 			recordList = new List<TableRecordModel>();
+		}
+
+		public void SetPrimaryKeyField(string key)
+		{
+			primaryKeyField = key;
 		}
 
 		public void SetFieldList(List<TdbFieldProperties> list)
@@ -110,15 +116,15 @@ namespace MaddenEditor.Domain
 					case TdbFieldType.tdbString:
 
 						string val = "Unassigned";
-						result.SetField(fieldProps.Name, val);
+						result.RegisterField(fieldProps.Name, val);
 						break;
 					case TdbFieldType.tdbUInt:
 						UInt32 intval = 0;
-						result.SetField(fieldProps.Name, (int)intval);
+						result.RegisterField(fieldProps.Name, (int)intval);
 						break;
 					case TdbFieldType.tdbSInt:
 						Int32 signedval = 0;
-						result.SetField(fieldProps.Name, signedval);
+						result.RegisterField(fieldProps.Name, signedval);
 						break;
 					default:
 						Console.WriteLine("NOT SUPPORTED YET!!!");

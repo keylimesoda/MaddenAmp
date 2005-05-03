@@ -252,6 +252,8 @@ namespace MaddenEditor.Forms
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
+			this.testButton = new System.Windows.Forms.Button();
+			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -436,6 +438,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerSplitContainer.Panel1
 			// 
+			this.playerSplitContainer.Panel1.Controls.Add(this.testButton);
 			this.playerSplitContainer.Panel1.Controls.Add(this.deletePlayerButton);
 			this.playerSplitContainer.Panel1.Controls.Add(this.createPlayerButton);
 			this.playerSplitContainer.Panel1.Controls.Add(this.playerDominantHand);
@@ -3029,7 +3032,8 @@ namespace MaddenEditor.Forms
 			this.playerNeckRollCombo.Items.AddRange(new object[] {
             "None",
             "Normal",
-            "Extended"});
+            "Extended",
+            "Other"});
 			this.playerNeckRollCombo.Location = new System.Drawing.Point(121, 205);
 			this.playerNeckRollCombo.Name = "playerNeckRollCombo";
 			this.playerNeckRollCombo.Size = new System.Drawing.Size(92, 21);
@@ -3244,6 +3248,22 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.WorkerReportsProgress = true;
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
+			// 
+			// testButton
+			// 
+			this.testButton.Location = new System.Drawing.Point(137, 105);
+			this.testButton.Name = "testButton";
+			this.testButton.Size = new System.Drawing.Size(75, 23);
+			this.testButton.TabIndex = 36;
+			this.testButton.Text = "Test";
+			this.testButton.Click += new System.EventHandler(this.testButton_Click);
+			// 
+			// testerWorkerThread
+			// 
+			this.testerWorkerThread.WorkerReportsProgress = true;
+			this.testerWorkerThread.WorkerSupportsCancellation = true;
+			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
+			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
 			// 
 			// MainForm
 			// 
@@ -3566,5 +3586,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label79;
 		private System.Windows.Forms.Button deletePlayerButton;
 		private System.Windows.Forms.Button createPlayerButton;
+		private System.Windows.Forms.Button testButton;
+		private System.ComponentModel.BackgroundWorker testerWorkerThread;
     }
 }
