@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace MaddenEditor.Domain
 {
@@ -80,29 +81,19 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		public void SetField(string fieldName, string val)
+		public void RegisterField(string fieldName, string val)
 		{
-			if (stringFields.ContainsKey(fieldName))
-			{
-				stringFields[fieldName] = val;
-			}
-			else
-			{
-				stringFields.Add(fieldName, val);
-			}
-
+			Debug.Assert(!stringFields.ContainsKey(fieldName), "Only use RegisterField to register the field and init value\r\nuse SetField to set values");
+			
+			stringFields.Add(fieldName, val);
 		}
 
-		public void SetField(string fieldName, int val)
+		public void RegisterField(string fieldName, int val)
 		{
-			if (intFields.ContainsKey(fieldName))
-			{
-				intFields[fieldName] = val;
-			}
-			else
-			{
-				intFields.Add(fieldName, val);
-			}
+			Debug.Assert(!intFields.ContainsKey(fieldName), "Only use RegisterField to register the field and init value\r\nuse SetField to set values");
+
+			intFields.Add(fieldName, val);
+			
 		}
 
 		public string GetStringField(string fieldName)

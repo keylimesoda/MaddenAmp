@@ -77,6 +77,7 @@ namespace MaddenEditor.Domain
 
 	public class RosterModel
 	{
+		public const int FREE_AGENT_TEAM_ID = 1009;
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
@@ -257,17 +258,17 @@ namespace MaddenEditor.Domain
 								{
 									Console.WriteLine(err.ToString());
 								}
-								record.SetField(fieldProps.Name, val);
+								record.RegisterField(fieldProps.Name, val);
 								break;
 							case TdbFieldType.tdbUInt:
 								UInt32 intval;
 								intval = (UInt32)TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
-								record.SetField(fieldProps.Name, (int)intval);
+								record.RegisterField(fieldProps.Name, (int)intval);
 								break;
 							case TdbFieldType.tdbSInt:
 								Int32 signedval;
 								signedval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
-								record.SetField(fieldProps.Name, signedval);
+								record.RegisterField(fieldProps.Name, signedval);
 								break;
 							default:
 								Console.WriteLine("NOT SUPPORTED YET!!!");
