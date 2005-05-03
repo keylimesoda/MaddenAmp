@@ -202,7 +202,7 @@ namespace MaddenEditor.Domain
 			tableProps.Name = new string((char)0, 5);
 			TDB.TDBTableGetProperties(dbIndex, tableNumber, ref tableProps);
 
-			TableModel table = new TableModel(tableProps.Name, this);
+			TableModel table = new TableModel(tableProps.Name, this, dbIndex);
 			Console.WriteLine("Processing Table: " + table.Name);
 
 			//For each field for this table, find the name and add it to a collection
@@ -216,6 +216,8 @@ namespace MaddenEditor.Domain
 				//Add this field to the list
 				fieldList.Add(fieldProps);
 			}
+			//Add the field list to the tablemodel
+			table.SetFieldList(fieldList);
 
 			int recordsFound = 0;
 			int index = 0;
@@ -232,7 +234,7 @@ namespace MaddenEditor.Domain
 					continue;
 				}
 
-				TableRecordModel record = table.CreateRecord(recordsFound);
+				TableRecordModel record = table.ConstructRecordModel(recordsFound);
 
 				if (record != null)
 				{
@@ -257,14 +259,14 @@ namespace MaddenEditor.Domain
 								record.SetField(fieldProps.Name, val);
 								break;
 							case TdbFieldType.tdbUInt:
-								int intval;
-								intval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
-								record.SetField(fieldProps.Name, intval);
+								UInt32 intval;
+								intval = (UInt32)TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
+								record.SetField(fieldProps.Name, (int)intval);
 								break;
 							case TdbFieldType.tdbSInt:
-								int shortval;
-								shortval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
-								record.SetField(fieldProps.Name, shortval);
+								Int32 signedval;
+								signedval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
+								record.SetField(fieldProps.Name, signedval);
 								break;
 							default:
 								Console.WriteLine("NOT SUPPORTED YET!!!");
@@ -385,6 +387,12 @@ namespace MaddenEditor.Domain
 
 				record = (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
 
+				//If this record is marked for deletion then skip it
+				if (record.Deleted)
+				{
+					continue;
+				}
+
 				if (currentTeamFilter != null)
 				{
 					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
@@ -427,6 +435,12 @@ namespace MaddenEditor.Domain
 				}
 
 				record = (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
+
+				//If this record is marked for deletion then skip it
+				if (record.Deleted)
+				{
+					continue;
+				}
 
 				if (currentTeamFilter != null)
 				{
@@ -489,39 +503,8 @@ namespace MaddenEditor.Domain
 			//save the dirty ones
 			
 			//At the moment we are only saving the player table
-			TableModel table = tableModels[PLAYER_TABLE];
-
-			List<TableRecordModel> listRecords = table.GetRecords();
-
-			foreach (TableRecordModel record in listRecords)
-			{
-				if (record.Dirty)
-				{
-					string[] keyArray = null;
-					int[] valueArray = null;
-					string[] stringValueArray = null;
-
-					record.GetChangedIntFields(ref keyArray, ref valueArray);
-
-					for (int i = 0; i < keyArray.Length; i++)
-					{
-						TDB.TDBFieldSetValueAsInteger(dbIndex, table.Name, keyArray[i], record.RecNo, valueArray[i]);
-					}
-
-					keyArray = null;
-
-					record.GetChangedStringFields(ref keyArray, ref stringValueArray);
-
-					for (int i = 0; i < keyArray.Length; i++)
-					{
-						TDB.TDBFieldSetValueAsString(dbIndex, table.Name, keyArray[i], record.RecNo, stringValueArray[i]);
-					}
-
-					record.DiscardBackups();
-				}
-			}
-
-			TDB.TDBSave(dbIndex);
+			tableModels[PLAYER_TABLE].Save();
+			tableModels[INJURY_TABLE].Save();
 
 			this.Dirty = false;
 		}
@@ -557,6 +540,11 @@ namespace MaddenEditor.Domain
 		{
 			foreach (TableRecordModel record in tableModels[INJURY_TABLE].GetRecords())
 			{
+				if (record.Deleted)
+				{
+					continue;
+				}
+
 				InjuryRecord injuryRecord = (InjuryRecord)record;
 				if (playerId == injuryRecord.PlayerId)
 				{
@@ -564,6 +552,11 @@ namespace MaddenEditor.Domain
 				}
 			}
 			return null;
+		}
+
+		public InjuryRecord CreateNewInjuryRecord()
+		{
+			return (InjuryRecord)tableModels[INJURY_TABLE].CreateNewRecord();
 		}
 	}
 }

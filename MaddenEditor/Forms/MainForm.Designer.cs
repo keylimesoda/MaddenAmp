@@ -198,6 +198,15 @@ namespace MaddenEditor.Forms
 			this.label38 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.playerInjuryPage = new System.Windows.Forms.TabPage();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.playerRemoveInjuryButton = new System.Windows.Forms.Button();
+			this.playerAddInjuryButton = new System.Windows.Forms.Button();
+			this.label78 = new System.Windows.Forms.Label();
+			this.playerInjuryLength = new System.Windows.Forms.NumericUpDown();
+			this.label77 = new System.Windows.Forms.Label();
+			this.playerInjuryCombo = new System.Windows.Forms.ComboBox();
+			this.label76 = new System.Windows.Forms.Label();
+			this.playerInjuryReserve = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.label73 = new System.Windows.Forms.Label();
 			this.playerFaceMaskCombo = new System.Windows.Forms.ComboBox();
@@ -209,15 +218,6 @@ namespace MaddenEditor.Forms
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.playerInjuryReserve = new System.Windows.Forms.CheckBox();
-			this.label76 = new System.Windows.Forms.Label();
-			this.playerInjuryCombo = new System.Windows.Forms.ComboBox();
-			this.label77 = new System.Windows.Forms.Label();
-			this.playerInjuryLength = new System.Windows.Forms.NumericUpDown();
-			this.label78 = new System.Windows.Forms.Label();
-			this.playerAddInjuryButton = new System.Windows.Forms.Button();
-			this.playerRemoveInjuryButton = new System.Windows.Forms.Button();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -283,11 +283,11 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyWeight)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).BeginInit();
 			this.playerInjuryPage.SuspendLayout();
+			this.groupBox3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).BeginInit();
 			this.groupBox2.SuspendLayout();
 			this.teamPage.SuspendLayout();
 			this.statusStrip.SuspendLayout();
-			this.groupBox3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -2463,6 +2463,102 @@ namespace MaddenEditor.Forms
 			this.playerInjuryPage.TabIndex = 2;
 			this.playerInjuryPage.Text = "Equipment/Injury";
 			// 
+			// groupBox3
+			// 
+			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.playerRemoveInjuryButton);
+			this.groupBox3.Controls.Add(this.playerAddInjuryButton);
+			this.groupBox3.Controls.Add(this.label78);
+			this.groupBox3.Controls.Add(this.playerInjuryLength);
+			this.groupBox3.Controls.Add(this.label77);
+			this.groupBox3.Controls.Add(this.playerInjuryCombo);
+			this.groupBox3.Controls.Add(this.label76);
+			this.groupBox3.Controls.Add(this.playerInjuryReserve);
+			this.groupBox3.Location = new System.Drawing.Point(4, 311);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(531, 139);
+			this.groupBox3.TabIndex = 1;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Injury";
+			// 
+			// playerRemoveInjuryButton
+			// 
+			this.playerRemoveInjuryButton.Location = new System.Drawing.Point(137, 86);
+			this.playerRemoveInjuryButton.Name = "playerRemoveInjuryButton";
+			this.playerRemoveInjuryButton.Size = new System.Drawing.Size(75, 23);
+			this.playerRemoveInjuryButton.TabIndex = 7;
+			this.playerRemoveInjuryButton.Text = "Remove";
+			this.playerRemoveInjuryButton.Click += new System.EventHandler(this.playerRemoveInjuryButton_Click);
+			// 
+			// playerAddInjuryButton
+			// 
+			this.playerAddInjuryButton.Location = new System.Drawing.Point(46, 86);
+			this.playerAddInjuryButton.Name = "playerAddInjuryButton";
+			this.playerAddInjuryButton.Size = new System.Drawing.Size(75, 23);
+			this.playerAddInjuryButton.TabIndex = 6;
+			this.playerAddInjuryButton.Text = "Add";
+			this.playerAddInjuryButton.Click += new System.EventHandler(this.playerAddInjuryButton_Click);
+			// 
+			// label78
+			// 
+			this.label78.AutoSize = true;
+			this.label78.Location = new System.Drawing.Point(136, 56);
+			this.label78.Name = "label78";
+			this.label78.Size = new System.Drawing.Size(25, 13);
+			this.label78.TabIndex = 5;
+			this.label78.Text = "days";
+			// 
+			// playerInjuryLength
+			// 
+			this.playerInjuryLength.Location = new System.Drawing.Point(47, 49);
+			this.playerInjuryLength.Maximum = new decimal(new int[] {
+            365,
+            0,
+            0,
+            0});
+			this.playerInjuryLength.Name = "playerInjuryLength";
+			this.playerInjuryLength.Size = new System.Drawing.Size(83, 20);
+			this.playerInjuryLength.TabIndex = 4;
+			this.playerInjuryLength.ValueChanged += new System.EventHandler(this.playerInjuryLength_ValueChanged);
+			// 
+			// label77
+			// 
+			this.label77.AutoSize = true;
+			this.label77.Location = new System.Drawing.Point(5, 56);
+			this.label77.Name = "label77";
+			this.label77.Size = new System.Drawing.Size(36, 13);
+			this.label77.TabIndex = 3;
+			this.label77.Text = "Length";
+			// 
+			// playerInjuryCombo
+			// 
+			this.playerInjuryCombo.FormattingEnabled = true;
+			this.playerInjuryCombo.Location = new System.Drawing.Point(46, 20);
+			this.playerInjuryCombo.Name = "playerInjuryCombo";
+			this.playerInjuryCombo.Size = new System.Drawing.Size(121, 21);
+			this.playerInjuryCombo.TabIndex = 2;
+			this.playerInjuryCombo.SelectedIndexChanged += new System.EventHandler(this.playerInjuryCombo_SelectedIndexChanged);
+			// 
+			// label76
+			// 
+			this.label76.AutoSize = true;
+			this.label76.Location = new System.Drawing.Point(12, 28);
+			this.label76.Name = "label76";
+			this.label76.Size = new System.Drawing.Size(28, 13);
+			this.label76.TabIndex = 1;
+			this.label76.Text = "Injury";
+			// 
+			// playerInjuryReserve
+			// 
+			this.playerInjuryReserve.AutoSize = true;
+			this.playerInjuryReserve.Location = new System.Drawing.Point(182, 22);
+			this.playerInjuryReserve.Name = "playerInjuryReserve";
+			this.playerInjuryReserve.Size = new System.Drawing.Size(97, 17);
+			this.playerInjuryReserve.TabIndex = 0;
+			this.playerInjuryReserve.Text = "Injured Reserve";
+			this.playerInjuryReserve.CheckedChanged += new System.EventHandler(this.playerInjuryReserve_CheckedChanged);
+			// 
 			// groupBox2
 			// 
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -2584,104 +2680,10 @@ namespace MaddenEditor.Forms
 			this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
 			// 
-			// groupBox3
-			// 
-			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox3.Controls.Add(this.playerRemoveInjuryButton);
-			this.groupBox3.Controls.Add(this.playerAddInjuryButton);
-			this.groupBox3.Controls.Add(this.label78);
-			this.groupBox3.Controls.Add(this.playerInjuryLength);
-			this.groupBox3.Controls.Add(this.label77);
-			this.groupBox3.Controls.Add(this.playerInjuryCombo);
-			this.groupBox3.Controls.Add(this.label76);
-			this.groupBox3.Controls.Add(this.playerInjuryReserve);
-			this.groupBox3.Location = new System.Drawing.Point(4, 311);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(531, 139);
-			this.groupBox3.TabIndex = 1;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Injury";
-			// 
-			// playerInjuryReserve
-			// 
-			this.playerInjuryReserve.AutoSize = true;
-			this.playerInjuryReserve.Location = new System.Drawing.Point(182, 22);
-			this.playerInjuryReserve.Name = "playerInjuryReserve";
-			this.playerInjuryReserve.Size = new System.Drawing.Size(97, 17);
-			this.playerInjuryReserve.TabIndex = 0;
-			this.playerInjuryReserve.Text = "Injured Reserve";
-			// 
-			// label76
-			// 
-			this.label76.AutoSize = true;
-			this.label76.Location = new System.Drawing.Point(12, 28);
-			this.label76.Name = "label76";
-			this.label76.Size = new System.Drawing.Size(28, 13);
-			this.label76.TabIndex = 1;
-			this.label76.Text = "Injury";
-			// 
-			// playerInjuryCombo
-			// 
-			this.playerInjuryCombo.FormattingEnabled = true;
-			this.playerInjuryCombo.Location = new System.Drawing.Point(46, 20);
-			this.playerInjuryCombo.Name = "playerInjuryCombo";
-			this.playerInjuryCombo.Size = new System.Drawing.Size(121, 21);
-			this.playerInjuryCombo.TabIndex = 2;
-			// 
-			// label77
-			// 
-			this.label77.AutoSize = true;
-			this.label77.Location = new System.Drawing.Point(5, 56);
-			this.label77.Name = "label77";
-			this.label77.Size = new System.Drawing.Size(36, 13);
-			this.label77.TabIndex = 3;
-			this.label77.Text = "Length";
-			// 
-			// playerInjuryLength
-			// 
-			this.playerInjuryLength.Location = new System.Drawing.Point(47, 49);
-			this.playerInjuryLength.Maximum = new decimal(new int[] {
-            365,
-            0,
-            0,
-            0});
-			this.playerInjuryLength.Name = "playerInjuryLength";
-			this.playerInjuryLength.Size = new System.Drawing.Size(83, 20);
-			this.playerInjuryLength.TabIndex = 4;
-			// 
-			// label78
-			// 
-			this.label78.AutoSize = true;
-			this.label78.Location = new System.Drawing.Point(136, 56);
-			this.label78.Name = "label78";
-			this.label78.Size = new System.Drawing.Size(25, 13);
-			this.label78.TabIndex = 5;
-			this.label78.Text = "days";
-			// 
-			// playerAddInjuryButton
-			// 
-			this.playerAddInjuryButton.Location = new System.Drawing.Point(46, 86);
-			this.playerAddInjuryButton.Name = "playerAddInjuryButton";
-			this.playerAddInjuryButton.Size = new System.Drawing.Size(75, 23);
-			this.playerAddInjuryButton.TabIndex = 6;
-			this.playerAddInjuryButton.Text = "Add";
-			this.playerAddInjuryButton.Click += new System.EventHandler(this.playerAddInjuryButton_Click);
-			// 
-			// playerRemoveInjuryButton
-			// 
-			this.playerRemoveInjuryButton.Location = new System.Drawing.Point(137, 86);
-			this.playerRemoveInjuryButton.Name = "playerRemoveInjuryButton";
-			this.playerRemoveInjuryButton.Size = new System.Drawing.Size(75, 23);
-			this.playerRemoveInjuryButton.TabIndex = 7;
-			this.playerRemoveInjuryButton.Text = "Remove";
-			this.playerRemoveInjuryButton.Click += new System.EventHandler(this.playerRemoveInjuryButton_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
 			this.ClientSize = new System.Drawing.Size(792, 566);
 			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.statusStrip);
@@ -2761,14 +2763,14 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyWeight)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerBodyOverall)).EndInit();
 			this.playerInjuryPage.ResumeLayout(false);
+			this.groupBox3.ResumeLayout(false);
+			this.groupBox3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).EndInit();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.teamPage.ResumeLayout(false);
 			this.teamPage.PerformLayout();
 			this.statusStrip.ResumeLayout(false);
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
