@@ -91,12 +91,34 @@ namespace MaddenEditor.Domain
 		public const string LEGS_CALF_FAT = "PFCS";
 		public const string REAR_REAR_FAR = "PMGS";
 		public const string REAR_SHAPE = "PQGS";
-				
+
+		public const string SKIN_COLOR = "PCPH";
+		public const string FACE_SHAPE = "PFGE";
 		public const string HAIR_COLOR = "PHCL";
+		public const string HAIR_STYLE = "PHED";
 		public const string EYE_PAINT = "PEYE";
 		public const string NECK_ROLL = "PNEK";
 		public const string VISOR = "PVIS";
 		public const string MOUTHPIECE = "PMPC";
+		public const string LEFT_HAND_A = "PLHA";
+		public const string LEFT_HAND_B = "TLHA";
+		public const string RIGHT_HAND_A = "PRHA";
+		public const string RIGHT_HAND_B = "TRHA";
+		public const string LEFT_ANKLE = "PLSH";
+		public const string RIGHT_ANKLE = "PRSH";
+		public const string LEFT_KNEE = "PLTH";
+		public const string RIGHT_KNEE = "PRTH";
+		public const string LEFT_ELBOW_A = "PLEL";
+		public const string LEFT_ELBOW_B = "TLEL";
+		public const string RIGHT_ELBOW_A = "PREL";
+		public const string RIGHT_ELBOW_B = "TREL";
+		public const string SLEEVES_A = "PGSL";
+		public const string SLEEVES_B = "PTSL";
+		public const string LEFT_WRIST_A = "PLWR";
+		public const string LEFT_WRIST_B = "TLWR";
+		public const string RIGHT_WRIST_A = "PRWR";
+		public const string RIGHT_WRIST_B = "TRWR";
+		public const string NASAL_STRIP = "PBRE";
 
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
@@ -803,7 +825,7 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		/*public int SkinType
+		public int SkinType
 		{
 			get
 			{
@@ -813,7 +835,19 @@ namespace MaddenEditor.Domain
 			{
 				SetFieldWithBackup(SKIN_COLOR, value);
 			}
-		}*/
+		}
+
+		public int FaceShape
+		{
+			get
+			{
+				return (intFields[ARMS_FAT] < 21 ? intFields[ARMS_FAT] : 20);
+			}
+			set
+			{
+				SetFieldWithBackup(FACE_SHAPE, value);
+			}
+		}
 
 		public int EyePaint
 		{
@@ -851,6 +885,18 @@ namespace MaddenEditor.Domain
 			}
 		}
 
+		public int HairStyle
+		{
+			get
+			{
+				return intFields[HAIR_STYLE];
+			}
+			set
+			{
+				SetFieldWithBackup(HAIR_STYLE, value);
+			}
+		}
+
 		public int HelmetStyle
 		{
 			get
@@ -879,7 +925,7 @@ namespace MaddenEditor.Domain
 		{
 			get
 			{
-				return intFields[NECK_ROLL];
+				return (intFields[NECK_ROLL] < 3 ? intFields[NECK_ROLL] : 2);
 			}
 			set
 			{
@@ -908,6 +954,157 @@ namespace MaddenEditor.Domain
 			set
 			{
 				SetFieldWithBackup(MOUTHPIECE, value);
+			}
+		}
+
+		public int LeftHand
+		{
+			get
+			{
+				return intFields[LEFT_HAND_A];
+			}
+			set
+			{
+				SetFieldWithBackup(LEFT_HAND_A, value);
+				SetFieldWithBackup(LEFT_HAND_B, value);
+			}
+		}
+
+		public int RightHand
+		{
+			get
+			{
+				return intFields[RIGHT_HAND_A];
+			}
+			set
+			{
+				SetFieldWithBackup(RIGHT_HAND_A, value);
+				SetFieldWithBackup(RIGHT_HAND_B, value);
+			}
+		}
+
+		public int LeftAnkle
+		{
+			get
+			{
+				return intFields[LEFT_ANKLE];
+			}
+			set
+			{
+				SetFieldWithBackup(LEFT_ANKLE, value);
+			}
+		}
+
+		public int RightAnkle
+		{
+			get
+			{
+				return intFields[RIGHT_ANKLE];
+			}
+			set
+			{
+				SetFieldWithBackup(RIGHT_ANKLE, value);
+			}
+		}
+
+		public int LeftKnee
+		{
+			get
+			{
+				return intFields[LEFT_KNEE];
+			}
+			set
+			{
+				SetFieldWithBackup(LEFT_KNEE, value);
+			}
+		}
+
+		public int RightKnee
+		{
+			get
+			{
+				return intFields[RIGHT_KNEE];
+			}
+			set
+			{
+				SetFieldWithBackup(RIGHT_KNEE, value);
+			}
+		}
+
+		public int LeftElbow
+		{
+			get
+			{
+				return intFields[LEFT_ELBOW_A];
+			}
+			set
+			{
+				SetFieldWithBackup(LEFT_ELBOW_A, value);
+				SetFieldWithBackup(LEFT_ELBOW_B, value);
+			}
+		}
+
+		public int RightElbow
+		{
+			get
+			{
+				return intFields[RIGHT_ELBOW_A];
+			}
+			set
+			{
+				SetFieldWithBackup(RIGHT_ELBOW_A, value);
+				SetFieldWithBackup(RIGHT_ELBOW_B, value);
+			}
+		}
+
+		public int Sleeves
+		{
+			get
+			{
+				return intFields[SLEEVES_A];
+			}
+			set
+			{
+				SetFieldWithBackup(SLEEVES_A, value);
+				SetFieldWithBackup(SLEEVES_B, value);
+			}
+		}
+
+		public int LeftWrist
+		{
+			get
+			{
+				return intFields[LEFT_WRIST_A];
+			}
+			set
+			{
+				SetFieldWithBackup(LEFT_WRIST_A, value);
+				SetFieldWithBackup(LEFT_WRIST_B, value);
+			}
+		}
+
+		public int RightWrist
+		{
+			get
+			{
+				return intFields[RIGHT_WRIST_A];
+			}
+			set
+			{
+				SetFieldWithBackup(RIGHT_WRIST_A, value);
+				SetFieldWithBackup(RIGHT_WRIST_B, value);
+			}
+		}
+
+		public int NasalStrip
+		{
+			get
+			{
+				return intFields[NASAL_STRIP];
+			}
+			set
+			{
+				SetFieldWithBackup(NASAL_STRIP, value);
 			}
 		}
 
