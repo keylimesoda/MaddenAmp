@@ -161,7 +161,7 @@ namespace MaddenEditor.Forms
 			firstNameTextBox.Text = record.FirstName;
 			lastNameTextBox.Text = record.LastName;
 			string team = model.GetTeamNameFromTeamId(record.TeamId);
-			if (team == null)
+			if (team.Equals(RosterModel.UNKNOWN_TEAM_NAME))
 			{
 				teamComboBox.Enabled = false;
 			}
@@ -239,10 +239,15 @@ namespace MaddenEditor.Forms
 			playerRearRearFat.Value = record.RearRearFat;
 			playerRearShape.Value = record.RearShape;
 
+			//Load Player equipment
 			//playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
 			playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
 			playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
 			playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
+			playerEyePaintCombo.Text = playerEyePaintCombo.Items[record.EyePaint].ToString();
+			playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
+			playerVisorCombo.Text = playerVisorCombo.Items[record.Visor].ToString();
+			playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();
 
 			//Load Injury information
 			InjuryRecord injury = model.GetPlayersInjuryRecord(record.PlayerId);
@@ -337,13 +342,14 @@ namespace MaddenEditor.Forms
 			{
 				model.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
 				filterDraftClassCheckBox.Checked = false;
+				//Generate a move next so it will filter
+				model.GetNextPlayerRecord();
+				LoadPlayerInfo(model.CurrentPlayerRecord);
 			}
 			else
 			{
 				model.RemoveTeamFilter();
 			}
-
-			//LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
 		private void positionCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -351,13 +357,14 @@ namespace MaddenEditor.Forms
 			if (positionCheckBox.Checked)
 			{
 				model.SetPositionFilter(filterPositionComboBox.SelectedIndex);
+				//Generate a move next so it will filter
+				model.GetNextPlayerRecord();
+				LoadPlayerInfo(model.CurrentPlayerRecord);
 			}
 			else
 			{
 				model.RemovePositionFilter();
 			}
-
-			//LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -878,6 +885,9 @@ namespace MaddenEditor.Forms
 				model.SetDraftClassFilter(true);
 				//Make sure team isn't set
 				teamCheckBox.Checked = false;
+				//Generate a move next so it will filter
+				model.GetNextPlayerRecord();
+				LoadPlayerInfo(model.CurrentPlayerRecord);
 			}
 			else
 			{
@@ -891,7 +901,9 @@ namespace MaddenEditor.Forms
 			//Reload the overall rating
 			playerOverall.Value = model.CurrentPlayerRecord.Overall;
 		}
-
+		
+#region InjuryEditingFunctions
+		
 		private void playerAddInjuryButton_Click(object sender, EventArgs e)
 		{
 			InjuryRecord injRec = model.CreateNewInjuryRecord();
@@ -936,6 +948,65 @@ namespace MaddenEditor.Forms
 				model.GetPlayersInjuryRecord(model.CurrentPlayerRecord.PlayerId).InjuryLength = (int)playerInjuryLength.Value;
 			}
 		}
+
+#endregion
+
+		private void playerEyePaintCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.EyePaint = playerEyePaintCombo.SelectedIndex;
+			}
+		}
+
+		private void playerNeckRollCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.NeckRoll = playerNeckRollCombo.SelectedIndex;
+			}
+		}
+
+		private void playerVisorCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.Visor = playerVisorCombo.SelectedIndex;
+			}
+		}
+
+		private void playerMouthPieceCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CurrentPlayerRecord.MouthPiece = playerMouthPieceCombo.SelectedIndex;
+			}
+		}
+
+		private void deletePlayerButton_Click(object sender, EventArgs e)
+		{
+			DialogResult result = MessageBox.Show("Are you sure you want to delete this player?\r\n\r\nAlthough this player will disappear from the editor\r\nchanges will not take effect until you save.", "About to Delete " + model.CurrentPlayerRecord.FirstName + " " + model.CurrentPlayerRecord.LastName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			if (result == DialogResult.Yes)
+			{
+				//Mark this record for deletion
+				model.CurrentPlayerRecord.SetDeleteFlag(true);
+				LoadPlayerInfo(model.GetNextPlayerRecord());
+			}
+		}
+
+		private void createPlayerButton_Click(object sender, EventArgs e)
+		{
+			PlayerRecord newRecord = model.CreateNewPlayerRecord();
+
+			//Need to set unique PLAYER ID
+
+			//Most variables start off at zero but some can't like height and weight so set them
+			newRecord.Height = 75;
+			
+			LoadPlayerInfo(newRecord);
+		}
+
+
 
 		
 

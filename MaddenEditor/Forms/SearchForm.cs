@@ -96,5 +96,6 @@ namespace MaddenEditor.Forms
 			this.DialogResult = DialogResult.OK;
 			
 		}
+
 	}
 }
