@@ -77,6 +77,7 @@ namespace MaddenEditor.Domain
 
 	public class RosterModel
 	{
+		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
 		public const string INJURY_TABLE = "INJY";
@@ -320,7 +321,7 @@ namespace MaddenEditor.Domain
 			if (teamNameList.ContainsKey(teamid))
 				return teamNameList[teamid];
 			else
-				return null;
+				return UNKNOWN_TEAM_NAME;
 		}
 
 		public int GetTeamIdFromTeamName(string teamName)
@@ -371,6 +372,19 @@ namespace MaddenEditor.Domain
 			{
 				return (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
 			}
+			/*set
+			{
+				int i=0;
+				foreach (TableRecordModel rec in tableModels[PLAYER_TABLE].GetRecords())
+				{
+					if (rec == value)
+					{
+						currentPlayerIndex = i;
+						break;
+					}
+					i++;
+				}
+			}*/
 		}
 
 		public PlayerRecord GetNextPlayerRecord()
@@ -557,6 +571,11 @@ namespace MaddenEditor.Domain
 		public InjuryRecord CreateNewInjuryRecord()
 		{
 			return (InjuryRecord)tableModels[INJURY_TABLE].CreateNewRecord();
+		}
+
+		public PlayerRecord CreateNewPlayerRecord()
+		{
+			return (PlayerRecord)tableModels[PLAYER_TABLE].CreateNewRecord();
 		}
 	}
 }

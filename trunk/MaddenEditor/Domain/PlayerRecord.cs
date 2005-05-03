@@ -93,6 +93,10 @@ namespace MaddenEditor.Domain
 		public const string REAR_SHAPE = "PQGS";
 				
 		public const string HAIR_COLOR = "PHCL";
+		public const string EYE_PAINT = "PEYE";
+		public const string NECK_ROLL = "PNEK";
+		public const string VISOR = "PVIS";
+		public const string MOUTHPIECE = "PMPC";
 
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
@@ -811,6 +815,18 @@ namespace MaddenEditor.Domain
 			}
 		}*/
 
+		public int EyePaint
+		{
+			get
+			{
+				return intFields[EYE_PAINT];
+			}
+			set
+			{
+				SetFieldWithBackup(EYE_PAINT, value);
+			}
+		}
+
 		public int ThrowingStyle
 		{
 			get
@@ -856,6 +872,42 @@ namespace MaddenEditor.Domain
 			set
 			{
 				SetFieldWithBackup(FACE_MASK, value);
+			}
+		}
+
+		public int NeckRoll
+		{
+			get
+			{
+				return intFields[NECK_ROLL];
+			}
+			set
+			{
+				SetFieldWithBackup(NECK_ROLL, value);
+			}
+		}
+
+		public int Visor
+		{
+			get
+			{
+				return intFields[VISOR];
+			}
+			set
+			{
+				SetFieldWithBackup(VISOR, value);
+			}
+		}
+
+		public int MouthPiece
+		{
+			get
+			{
+				return intFields[MOUTHPIECE];
+			}
+			set
+			{
+				SetFieldWithBackup(MOUTHPIECE, value);
 			}
 		}
 
