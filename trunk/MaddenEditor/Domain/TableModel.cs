@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using MaddenEditor.Db;
+
 namespace MaddenEditor.Domain
 {
 	public class TableModel
@@ -31,12 +33,20 @@ namespace MaddenEditor.Domain
 		protected List<TableRecordModel> recordList = null;
 		protected String name;
 		protected RosterModel parentModel = null;
+		List<TdbFieldProperties> fieldList = null;
+		protected int dbIndex = -1;
 
-		public TableModel(string name, RosterModel rosterModel)
+		public TableModel(string name, RosterModel rosterModel, int dbIndex)
 		{
+			this.dbIndex = dbIndex;
 			parentModel = rosterModel;
 			this.name = name;
 			recordList = new List<TableRecordModel>();
+		}
+
+		public void SetFieldList(List<TdbFieldProperties> list)
+		{
+			fieldList = list;
 		}
 
 		public string Name
@@ -77,7 +87,49 @@ namespace MaddenEditor.Domain
 			}
 		}
 
-		public TableRecordModel CreateRecord(int recno)
+		public TableRecordModel CreateNewRecord()
+		{
+			TableRecordModel result = null;
+			int newRecNo = TDB.TDBTableRecordAdd(dbIndex, name, false);
+			if (newRecNo == 0xFFFF)
+			{
+				//We are at max capacity
+				//Chuck an exception
+				throw new ApplicationException("Table " + name + " has reached max capacity");
+			}
+
+			result = ConstructRecordModel(newRecNo);
+
+			result.Dirty = true;
+			parentModel.Dirty = true;
+
+			foreach (TdbFieldProperties fieldProps in fieldList)
+			{
+				switch (fieldProps.FieldType)
+				{
+					case TdbFieldType.tdbString:
+
+						string val = "Unassigned";
+						result.SetField(fieldProps.Name, val);
+						break;
+					case TdbFieldType.tdbUInt:
+						UInt32 intval = 0;
+						result.SetField(fieldProps.Name, (int)intval);
+						break;
+					case TdbFieldType.tdbSInt:
+						Int32 signedval = 0;
+						result.SetField(fieldProps.Name, signedval);
+						break;
+					default:
+						Console.WriteLine("NOT SUPPORTED YET!!!");
+						break;
+				}
+			}
+
+			return result;
+		}
+
+		public TableRecordModel ConstructRecordModel(int recno)
 		{
 			TableRecordModel newRecord = null;
 
@@ -119,6 +171,47 @@ namespace MaddenEditor.Domain
 			recordList.Add(newRecord);
 
 			return newRecord;
+		}
+
+		public void Save()
+		{
+			foreach (TableRecordModel record in recordList)
+			{
+				if (record.Dirty)
+				{
+					//First check to see if this record is going to be deleted
+					if (record.Deleted)
+					{
+						//Mark record for deletion in DB
+						TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, true);
+						continue;
+					}
+
+					string[] keyArray = null;
+					int[] valueArray = null;
+					string[] stringValueArray = null;
+
+					record.GetChangedIntFields(ref keyArray, ref valueArray);
+
+					for (int i = 0; i < keyArray.Length; i++)
+					{
+						TDB.TDBFieldSetValueAsInteger(dbIndex, name, keyArray[i], record.RecNo, valueArray[i]);
+					}
+
+					keyArray = null;
+
+					record.GetChangedStringFields(ref keyArray, ref stringValueArray);
+
+					for (int i = 0; i < keyArray.Length; i++)
+					{
+						TDB.TDBFieldSetValueAsString(dbIndex, name, keyArray[i], record.RecNo, stringValueArray[i]);
+					}
+
+					record.DiscardBackups();
+				}
+			}
+
+			TDB.TDBSave(dbIndex);
 		}
 	}
 }

@@ -32,6 +32,7 @@ namespace MaddenEditor.Domain
 	public class TableRecordModel
 	{
 		protected bool dirty = false;
+		protected bool deleted = false;
 		protected int recordNumber = -1;
 		protected Dictionary<string, int> intFields = null;
 		protected Dictionary<string, string> stringFields = null;
@@ -56,6 +57,14 @@ namespace MaddenEditor.Domain
 			get
 			{
 				return recordNumber;
+			}
+		}
+
+		public bool Deleted
+		{
+			get
+			{
+				return deleted;
 			}
 		}
 
@@ -186,6 +195,13 @@ namespace MaddenEditor.Domain
 			backupIntFields.Clear();
 
 			Dirty = false;
+		}
+
+		public void SetDeleteFlag(bool flag)
+		{
+			deleted = flag;
+			this.Dirty = true;
+			parentModel.Dirty = true;
 		}
 	}
 }

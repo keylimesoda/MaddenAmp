@@ -274,6 +274,8 @@ namespace MaddenEditor.Forms
 
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			isInitialising = true;
+
 			CheckSave();
 
 			CleanUI();			
@@ -341,7 +343,7 @@ namespace MaddenEditor.Forms
 				model.RemoveTeamFilter();
 			}
 
-			LoadPlayerInfo(model.CurrentPlayerRecord);
+			//LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
 		private void positionCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -355,7 +357,7 @@ namespace MaddenEditor.Forms
 				model.RemovePositionFilter();
 			}
 
-			LoadPlayerInfo(model.CurrentPlayerRecord);
+			//LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -892,12 +894,47 @@ namespace MaddenEditor.Forms
 
 		private void playerAddInjuryButton_Click(object sender, EventArgs e)
 		{
+			InjuryRecord injRec = model.CreateNewInjuryRecord();
 
+			injRec.PlayerId = model.CurrentPlayerRecord.PlayerId;
+			injRec.TeamId = model.CurrentPlayerRecord.TeamId;
+			injRec.InjuryLength = 0;
+			injRec.InjuryReserve = false;
+			injRec.InjuryType = 0;
+
+			LoadPlayerInfo(model.CurrentPlayerRecord);
 		}
 
 		private void playerRemoveInjuryButton_Click(object sender, EventArgs e)
 		{
+			//Mark the record for deletion
+			model.GetPlayersInjuryRecord(model.CurrentPlayerRecord.PlayerId).SetDeleteFlag(true);
 
+			LoadPlayerInfo(model.CurrentPlayerRecord);
+		}
+
+		private void playerInjuryCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.GetPlayersInjuryRecord(model.CurrentPlayerRecord.PlayerId).InjuryType = playerInjuryCombo.SelectedIndex;
+			}
+		}
+
+		private void playerInjuryReserve_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.GetPlayersInjuryRecord(model.CurrentPlayerRecord.PlayerId).InjuryReserve = playerInjuryReserve.Checked;
+			}
+		}
+
+		private void playerInjuryLength_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.GetPlayersInjuryRecord(model.CurrentPlayerRecord.PlayerId).InjuryLength = (int)playerInjuryLength.Value;
+			}
 		}
 
 		
