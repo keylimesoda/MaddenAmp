@@ -27,28 +27,13 @@ using System.Text;
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
 	public enum MaddenFileType 
 	{ 
 		RosterFile, 
 		FranchiseFile 
 	}
-
-	/*public enum MaddenTable
-	{
-		CITY_TABLE = 0,
-		CPSE_TABLE = 1,
-		COACH_TABLE = 2,
-		CTMP_TABLE = 3,
-		CTMU_TABLE = 4,
-		DEPTH_CHART_TABLE = 5,
-		INJURY_TABLE = 6,
-		PLAYER_TABLE = 7,
-		STADIUM_TABLE = 8,
-		UNIFORM_TABLE = 9,
-		TEAM_TABLE = 10
-	}*/
 
 	public enum MaddenPositions
 	{

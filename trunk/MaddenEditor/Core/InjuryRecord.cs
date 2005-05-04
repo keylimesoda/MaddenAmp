@@ -24,55 +24,54 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
-
-	public class TeamRecord : TableRecordModel
+	public class InjuryRecord : TableRecordModel
 	{
-		public const string TEAM_NAME = "TDNA";
-		public const string TEAM_LAST_NAME = "TLNA";
-		public const string TEAM_STATE = "TSNA";
+		public const string INJURY_LENGTH = "INJL";
+		public const string INJURY_TYPE = "INJT";
+		public const string PLAYER_ID = "PGID";
 		public const string TEAM_ID = "TGID";
+		public const string INJURY_RSV = "INIR";
 
-		public TeamRecord(int record, RosterModel rosterModel)
-			: base(record, rosterModel)
+		public InjuryRecord(int record, RosterModel rosterModel)	: base(record, rosterModel)
 		{
 
 		}
 
-		public string Name
+		public int InjuryLength
 		{
 			get
 			{
-				return stringFields[TEAM_NAME];
+				return intFields[INJURY_LENGTH];
 			}
 			set
 			{
-				stringFields[TEAM_NAME] = value;
+				SetFieldWithBackup(INJURY_LENGTH, value);
 			}
 		}
 
-		public string LastName
+		public int InjuryType
 		{
 			get
 			{
-				return stringFields[TEAM_LAST_NAME];
+				return intFields[INJURY_TYPE];
 			}
 			set
 			{
-				stringFields[TEAM_LAST_NAME] = value;
+				SetFieldWithBackup(INJURY_TYPE, value);
 			}
 		}
 
-		public string State
+		public int PlayerId
 		{
 			get
 			{
-				return stringFields[TEAM_STATE];
+				return intFields[PLAYER_ID];
 			}
 			set
 			{
-				stringFields[TEAM_STATE] = value;
+				SetFieldWithBackup(PLAYER_ID, value);
 			}
 		}
 
@@ -84,9 +83,20 @@ namespace MaddenEditor.Domain
 			}
 			set
 			{
-				intFields[TEAM_ID] = value;
+				SetFieldWithBackup(TEAM_ID, value);
 			}
 		}
 
+		public bool InjuryReserve
+		{
+			get
+			{
+				return (intFields[INJURY_RSV] == 1);
+			}
+			set
+			{
+				SetFieldWithBackup(INJURY_RSV, Convert.ToInt32(value));
+			}
+		}
 	}
 }

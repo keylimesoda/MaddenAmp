@@ -55,17 +55,17 @@
     <Compile Include="Db\TDB.cs" />
     <Compile Include="Db\TdbFieldProperties.cs" />
     <Compile Include="Db\TdbTableProperties.cs" />
-    <Compile Include="Domain\CityRecord.cs" />
-    <Compile Include="Domain\CoachRecord.cs" />
-    <Compile Include="Domain\DepthChartRecord.cs" />
-    <Compile Include="Domain\InjuryRecord.cs" />
-    <Compile Include="Domain\PlayerRecord.cs" />
-    <Compile Include="Domain\StadiumRecord.cs" />
-    <Compile Include="Domain\TableModel.cs" />
-    <Compile Include="Domain\RosterModel.cs" />
-    <Compile Include="Domain\TableRecordModel.cs" />
-    <Compile Include="Domain\TeamRecord.cs" />
-    <Compile Include="Domain\UniformRecord.cs" />
+    <Compile Include="Core\CityRecord.cs" />
+    <Compile Include="Core\CoachRecord.cs" />
+    <Compile Include="Core\DepthChartRecord.cs" />
+    <Compile Include="Core\InjuryRecord.cs" />
+    <Compile Include="Core\PlayerRecord.cs" />
+    <Compile Include="Core\StadiumRecord.cs" />
+    <Compile Include="Core\TableModel.cs" />
+    <Compile Include="Core\RosterModel.cs" />
+    <Compile Include="Core\TableRecordModel.cs" />
+    <Compile Include="Core\TeamRecord.cs" />
+    <Compile Include="Core\UniformRecord.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>

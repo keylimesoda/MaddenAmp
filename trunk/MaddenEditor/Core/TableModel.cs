@@ -26,7 +26,7 @@ using System.Text;
 
 using MaddenEditor.Db;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
 	public class TableModel
 	{

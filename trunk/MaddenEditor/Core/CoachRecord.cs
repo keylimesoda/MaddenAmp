@@ -15,18 +15,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net             colin.goudie@gmail.com
+ * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * 
+ * colin.goudie@gmail.com
  * 
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
-	public class StadiumTable : TableRecordModel
+	public class CoachRecord : TableRecordModel
 	{
-		public StadiumTable(int record, RosterModel rosterModel)
+		public CoachRecord(int record, RosterModel rosterModel)
 			: base(record, rosterModel)
 		{
 

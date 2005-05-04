@@ -24,11 +24,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
-	public class CityRecord : TableRecordModel
+	public class UniformRecord : TableRecordModel
 	{
-		public CityRecord(int record, RosterModel rosterModel)
+		public UniformRecord(int record, RosterModel rosterModel)
 			: base(record, rosterModel)
 		{
 
