@@ -24,11 +24,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
-	public class UniformRecord : TableRecordModel
+	public class DepthChartRecord : TableRecordModel
 	{
-		public UniformRecord(int record, RosterModel rosterModel)
+		public DepthChartRecord(int record, RosterModel rosterModel)
 			: base(record, rosterModel)
 		{
 

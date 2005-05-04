@@ -28,7 +28,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using MaddenEditor.Domain;
+using MaddenEditor.Core;
 
 namespace MaddenEditor.Forms
 {

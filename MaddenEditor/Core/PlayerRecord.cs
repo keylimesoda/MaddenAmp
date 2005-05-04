@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
 	public class PlayerRecord : TableRecordModel
 	{

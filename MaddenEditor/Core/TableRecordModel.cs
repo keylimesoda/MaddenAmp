@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace MaddenEditor.Domain
+namespace MaddenEditor.Core
 {
 	/// <summary>
 	/// A Table Model supports adding fields to the model

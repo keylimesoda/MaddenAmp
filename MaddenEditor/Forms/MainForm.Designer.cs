@@ -204,7 +204,6 @@ namespace MaddenEditor.Forms
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.playerRemoveInjuryButton = new System.Windows.Forms.Button();
 			this.playerAddInjuryButton = new System.Windows.Forms.Button();
-			this.label78 = new System.Windows.Forms.Label();
 			this.playerInjuryLength = new System.Windows.Forms.NumericUpDown();
 			this.label77 = new System.Windows.Forms.Label();
 			this.playerInjuryCombo = new System.Windows.Forms.ComboBox();
@@ -2539,7 +2538,6 @@ namespace MaddenEditor.Forms
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox3.Controls.Add(this.playerRemoveInjuryButton);
 			this.groupBox3.Controls.Add(this.playerAddInjuryButton);
-			this.groupBox3.Controls.Add(this.label78);
 			this.groupBox3.Controls.Add(this.playerInjuryLength);
 			this.groupBox3.Controls.Add(this.label77);
 			this.groupBox3.Controls.Add(this.playerInjuryCombo);
@@ -2569,15 +2567,6 @@ namespace MaddenEditor.Forms
 			this.playerAddInjuryButton.TabIndex = 6;
 			this.playerAddInjuryButton.Text = "Add";
 			this.playerAddInjuryButton.Click += new System.EventHandler(this.playerAddInjuryButton_Click);
-			// 
-			// label78
-			// 
-			this.label78.AutoSize = true;
-			this.label78.Location = new System.Drawing.Point(136, 56);
-			this.label78.Name = "label78";
-			this.label78.Size = new System.Drawing.Size(25, 13);
-			this.label78.TabIndex = 5;
-			this.label78.Text = "days";
 			// 
 			// playerInjuryLength
 			// 
@@ -3481,7 +3470,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label76;
 		private System.Windows.Forms.Button playerRemoveInjuryButton;
 		private System.Windows.Forms.Button playerAddInjuryButton;
-		private System.Windows.Forms.Label label78;
 		private System.Windows.Forms.NumericUpDown playerInjuryLength;
 		private System.Windows.Forms.Label label77;
 		private System.Windows.Forms.Label label86;
