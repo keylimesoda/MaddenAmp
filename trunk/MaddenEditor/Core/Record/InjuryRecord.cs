@@ -55,7 +55,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[INJURY_TYPE];
+				return (intFields[INJURY_TYPE] < 230 ? intFields[INJURY_TYPE] : 229);
 			}
 			set
 			{
@@ -96,6 +96,60 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetFieldWithBackup(INJURY_RSV, Convert.ToInt32(value));
+			}
+		}
+
+		public String LengthDescription
+		{
+			get
+			{
+				int length = intFields[INJURY_LENGTH]%256;
+
+				if (length == 0)
+				{
+					return "Ready To Play";
+				}
+				else if ((length >= 1 && length <= 9) || (length >= 257 && length <= 265))
+				{
+					return "Doubtful";
+				}
+				else if (length >= 10 && length <= 19)
+				{
+					return "Will return soon";
+				}
+				else if (length == 20)
+				{
+					return "1 quarter";
+				}
+				else if (length == 21)
+				{
+					return "2 quarters";
+				}
+				else if (length == 22)
+				{
+					return "3 quarters";
+				}
+				else if (length == 23)
+				{
+					return "Out for game";
+				}
+				else if (length >= 24 && length <= 243)
+				{
+					return (((length - 24)/20) + 1) + " week/s";
+				}
+				else if (length >= 244 && length <= 254)
+				{
+					return "12 weeks";
+				}
+				else if (length == 254)
+				{
+					return "Out for season";
+				}
+				else if (length == 255)
+				{
+					return "Career ending";
+				}
+				return "";
 			}
 		}
 	}

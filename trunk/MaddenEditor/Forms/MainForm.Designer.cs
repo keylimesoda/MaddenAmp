@@ -43,18 +43,18 @@ namespace MaddenEditor.Forms
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
-			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
-			this.teamPage = new System.Windows.Forms.TabPage();
-			this.label75 = new System.Windows.Forms.Label();
+			this.coachPage = new System.Windows.Forms.TabPage();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
+			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
+			this.coachEditControl1 = new MaddenEditor.Forms.CoachEditControl();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
-			this.teamPage.SuspendLayout();
+			this.coachPage.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -144,7 +144,7 @@ namespace MaddenEditor.Forms
 			// tabControl
 			// 
 			this.tabControl.Controls.Add(this.playerPage);
-			this.tabControl.Controls.Add(this.teamPage);
+			this.tabControl.Controls.Add(this.coachPage);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl.Location = new System.Drawing.Point(0, 24);
 			this.tabControl.Name = "tabControl";
@@ -162,32 +162,15 @@ namespace MaddenEditor.Forms
 			this.playerPage.TabIndex = 0;
 			this.playerPage.Text = "Player Editor";
 			// 
-			// playerEditControl
+			// coachPage
 			// 
-			this.playerEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.playerEditControl.Location = new System.Drawing.Point(3, 3);
-			this.playerEditControl.Name = "playerEditControl";
-			this.playerEditControl.Size = new System.Drawing.Size(778, 487);
-			this.playerEditControl.TabIndex = 0;
-			// 
-			// teamPage
-			// 
-			this.teamPage.Controls.Add(this.label75);
-			this.teamPage.Location = new System.Drawing.Point(4, 22);
-			this.teamPage.Name = "teamPage";
-			this.teamPage.Padding = new System.Windows.Forms.Padding(3);
-			this.teamPage.Size = new System.Drawing.Size(784, 493);
-			this.teamPage.TabIndex = 1;
-			this.teamPage.Text = "Team Editor";
-			// 
-			// label75
-			// 
-			this.label75.AutoSize = true;
-			this.label75.Location = new System.Drawing.Point(25, 16);
-			this.label75.Name = "label75";
-			this.label75.Size = new System.Drawing.Size(117, 13);
-			this.label75.TabIndex = 0;
-			this.label75.Text = "Nothing to See Here yet";
+			this.coachPage.Controls.Add(this.coachEditControl1);
+			this.coachPage.Location = new System.Drawing.Point(4, 22);
+			this.coachPage.Name = "coachPage";
+			this.coachPage.Padding = new System.Windows.Forms.Padding(3);
+			this.coachPage.Size = new System.Drawing.Size(784, 493);
+			this.coachPage.TabIndex = 1;
+			this.coachPage.Text = "Coach Editor";
 			// 
 			// statusStrip
 			// 
@@ -211,7 +194,7 @@ namespace MaddenEditor.Forms
 			this.toolStripProgressBar.AutoSize = false;
 			this.toolStripProgressBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
 			this.toolStripProgressBar.Name = "toolStripProgressBar";
-			this.toolStripProgressBar.Size = new System.Drawing.Size(250, 15);
+			this.toolStripProgressBar.Size = new System.Drawing.Size(250, 16);
 			this.toolStripProgressBar.Text = "toolStripProgressBar1";
 			// 
 			// rosterFileLoaderThread
@@ -226,6 +209,22 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.WorkerSupportsCancellation = true;
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
+			// 
+			// playerEditControl
+			// 
+			this.playerEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.playerEditControl.Location = new System.Drawing.Point(3, 3);
+			this.playerEditControl.Name = "playerEditControl";
+			this.playerEditControl.Size = new System.Drawing.Size(778, 487);
+			this.playerEditControl.TabIndex = 0;
+			// 
+			// coachEditControl1
+			// 
+			this.coachEditControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.coachEditControl1.Location = new System.Drawing.Point(3, 3);
+			this.coachEditControl1.Name = "coachEditControl1";
+			this.coachEditControl1.Size = new System.Drawing.Size(778, 487);
+			this.coachEditControl1.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -244,8 +243,7 @@ namespace MaddenEditor.Forms
 			this.menuStrip1.ResumeLayout(false);
 			this.tabControl.ResumeLayout(false);
 			this.playerPage.ResumeLayout(false);
-			this.teamPage.ResumeLayout(false);
-			this.teamPage.PerformLayout();
+			this.coachPage.ResumeLayout(false);
 			this.statusStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -263,7 +261,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage playerPage;
-		private System.Windows.Forms.TabPage teamPage;
+		private System.Windows.Forms.TabPage coachPage;
 		private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -273,8 +271,8 @@ namespace MaddenEditor.Forms
 		private System.ComponentModel.BackgroundWorker rosterFileLoaderThread;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem searchforPlayerToolStripMenuItem;
-		private System.Windows.Forms.Label label75;
 		private System.ComponentModel.BackgroundWorker testerWorkerThread;
 		private PlayerEditControl playerEditControl;
+		private CoachEditControl coachEditControl1;
     }
 }

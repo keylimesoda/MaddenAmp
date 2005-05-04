@@ -145,9 +145,9 @@ namespace MaddenEditor.Core
 				//case EditorModel.CITY_TABLE:
 				//	newRecord = new CityRecord(recno, parentModel);
 				//	break;
-				//case MaddenTable.COACH_TABLE:
-				//	newRecord = new CoachRecord(recno, parentModel);
-				//	break;
+				case EditorModel.COACH_TABLE:
+					newRecord = new CoachRecord(recno, parentModel);
+					break;
 				//case MaddenTable.CPSE_TABLE:
 				//	return null;
 				//case MaddenTable.CTMP_TABLE:
