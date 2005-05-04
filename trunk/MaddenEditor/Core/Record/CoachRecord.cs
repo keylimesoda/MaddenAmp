@@ -28,8 +28,8 @@ namespace MaddenEditor.Core.Record
 {
 	public class CoachRecord : TableRecordModel
 	{
-		public CoachRecord(int record, RosterModel rosterModel)
-			: base(record, rosterModel)
+		public CoachRecord(int record, EditorModel EditorModel)
+			: base(record, EditorModel)
 		{
 
 		}

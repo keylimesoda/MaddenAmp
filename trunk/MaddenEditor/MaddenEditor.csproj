@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\EditorModel.cs" />
+    <Compile Include="Core\PlayerEditingModel.cs" />
     <Compile Include="Db\TDB.cs" />
     <Compile Include="Db\TdbFieldProperties.cs" />
     <Compile Include="Db\TdbTableProperties.cs" />
@@ -62,7 +64,6 @@
     <Compile Include="Core\Record\PlayerRecord.cs" />
     <Compile Include="Core\Record\StadiumRecord.cs" />
     <Compile Include="Core\TableModel.cs" />
-    <Compile Include="Core\RosterModel.cs" />
     <Compile Include="Core\TableRecordModel.cs" />
     <Compile Include="Core\Record\TeamRecord.cs" />
     <Compile Include="Core\Record\UniformRecord.cs" />
@@ -72,17 +73,30 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\IEditorForm.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PlayerEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PlayerEditControl.Designer.cs">
+      <DependentUpon>PlayerEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CoachEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CoachEditControl.Designer.cs">
+      <DependentUpon>CoachEditControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,8 +106,14 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PlayerEditControl.resx">
+      <DependentUpon>PlayerEditControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CoachEditControl.resx">
+      <DependentUpon>CoachEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

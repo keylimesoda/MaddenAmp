@@ -28,8 +28,8 @@ namespace MaddenEditor.Core.Record
 {
 	public class UniformRecord : TableRecordModel
 	{
-		public UniformRecord(int record, RosterModel rosterModel)
-			: base(record, rosterModel)
+		public UniformRecord(int record, EditorModel EditorModel)
+			: base(record, EditorModel)
 		{
 
 		}
