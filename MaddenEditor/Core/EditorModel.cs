@@ -73,6 +73,7 @@ namespace MaddenEditor.Core
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
 		public const string INJURY_TABLE = "INJY";
+		public const string COACH_TABLE = "COCH";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -80,14 +81,8 @@ namespace MaddenEditor.Core
 		private string fileName = "";
 		private MainForm view = null;
 		private Dictionary<string, TableModel> tableModels = null;
-		private Dictionary<int, string> teamNameList = null;
-		private int currentPlayerIndex = 0;
-		/** The current Team Filter */
-		private string currentTeamFilter = null;
-		/** The current position filter */
-		private int currentPositionFilter = -1;
-		/** If we are currently filtering for draft class */
-		private bool currentDraftClassFilter = false;
+		private PlayerEditingModel playerEditingModel = null;
+		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private Dictionary<string, int> tableOrder = null;
 
 		public EditorModel(string filename, MainForm form)
@@ -114,11 +109,23 @@ namespace MaddenEditor.Core
 			tableOrder.Add(TEAM_TABLE, -1);
 			tableOrder.Add(PLAYER_TABLE, -1);
 			tableOrder.Add(INJURY_TABLE, -1);
+			tableOrder.Add(COACH_TABLE, -1);
 
 			//Process the file
 			if (!ProcessFile())
 			{
 				throw new ApplicationException("Error processing file: " + filename);
+			}
+
+			//Once we've processed the file create our PlayerEditingModel
+			playerEditingModel = new PlayerEditingModel(tableModels);
+		}
+
+		public PlayerEditingModel PlayerModel
+		{
+			get
+			{
+				return playerEditingModel;
 			}
 		}
 
@@ -148,6 +155,15 @@ namespace MaddenEditor.Core
 			{
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
 				Console.WriteLine("Table count in {0} = {1}", fileName, tableCount);
+
+				if (tableCount == 11)
+				{
+					fileType = MaddenFileType.RosterFile;
+				}
+				else
+				{
+					fileType = MaddenFileType.FranchiseFile;
+				}
 
 				for (int j = 0; j < tableCount; j++)
 				{
@@ -281,6 +297,18 @@ namespace MaddenEditor.Core
 			return true;
 		}
 
+		public void Save()
+		{
+			//To save we have to go through every record in our models and
+			//save the dirty ones
+
+			tableModels[PLAYER_TABLE].Save();
+			tableModels[INJURY_TABLE].Save();
+			tableModels[COACH_TABLE].Save();
+
+			this.Dirty = false;
+		}
+
 		public void Shutdown()
 		{
 			try
@@ -293,286 +321,6 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public ICollection<string> GetTeamNames()
-		{
-			if (teamNameList == null)
-			{
-				teamNameList = new Dictionary<int, string>();
-				foreach (TableRecordModel record in tableModels[TEAM_TABLE].GetRecords())
-				{
-					TeamRecord teamRecord = (TeamRecord)record;
-					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
-				}
-			}
-
-			return teamNameList.Values;
-		}
-
-		public string GetTeamNameFromTeamId(int teamid)
-		{
-			if (teamNameList.ContainsKey(teamid))
-				return teamNameList[teamid];
-			else
-				return UNKNOWN_TEAM_NAME;
-		}
-
-		public int GetTeamIdFromTeamName(string teamName)
-		{
-			if (teamNameList.ContainsValue(teamName))
-			{
-				//Theres got to be a better way to do this
-				int i = 0;
-				foreach (string team in teamNameList.Values)
-				{
-					if (team.Equals(teamName))
-					{
-						break;
-					}
-					i++;
-				}
-
-				//Now if we iterate through teamName list Key list to 'i' then
-				//we have the Team id
-				int j = 0;
-				int id = 0;
-				foreach (int key in teamNameList.Keys)
-				{
-					if (j == i)
-					{
-						id = key;
-						break;
-					}
-					j++;
-				}
-
-				return id;
-			}
-			else
-			{
-				throw new ApplicationException("Error getting TeamID for team name " + teamName);
-			}
-		}
-
-		public PlayerRecord GetPlayerRecord(int recno)
-		{
-			return (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(recno);
-		}
-
-		public PlayerRecord CurrentPlayerRecord
-		{
-			get
-			{
-				return (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
-			}
-			/*set
-			{
-				int i=0;
-				foreach (TableRecordModel rec in tableModels[PLAYER_TABLE].GetRecords())
-				{
-					if (rec == value)
-					{
-						currentPlayerIndex = i;
-						break;
-					}
-					i++;
-				}
-			}*/
-		}
-
-		public PlayerRecord GetNextPlayerRecord()
-		{
-			PlayerRecord record = null;
-
-			while (true)
-			{
-				currentPlayerIndex++;
-				if (currentPlayerIndex >= tableModels[PLAYER_TABLE].RecordCount)
-				{
-					currentPlayerIndex = 0;
-				}
-
-				record = (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
-
-				//If this record is marked for deletion then skip it
-				if (record.Deleted)
-				{
-					continue;
-				}
-
-				if (currentTeamFilter != null)
-				{
-					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
-					{
-						continue;
-					}
-				}
-				if (currentPositionFilter != -1)
-				{
-					if (record.PositionId != currentPositionFilter)
-					{
-						continue;
-					}
-				}
-				if (currentDraftClassFilter)
-				{
-					if (record.YearsPro != 0)
-					{
-						continue;
-					}
-				}
-	
-				//Found one
-				break;
-			}
-
-			return record;
-		}
-
-		public PlayerRecord GetPreviousPlayerRecord()
-		{
-			PlayerRecord record = null;
-
-			while (true)
-			{
-				currentPlayerIndex--;
-				if (currentPlayerIndex < 0)
-				{
-					currentPlayerIndex = tableModels[PLAYER_TABLE].RecordCount - 1;
-				}
-
-				record = (PlayerRecord)tableModels[PLAYER_TABLE].GetRecord(currentPlayerIndex);
-
-				//If this record is marked for deletion then skip it
-				if (record.Deleted)
-				{
-					continue;
-				}
-
-				if (currentTeamFilter != null)
-				{
-					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
-					{
-						continue;
-					}
-				}
-				if (currentPositionFilter != -1)
-				{
-					if (record.PositionId != currentPositionFilter)
-					{
-						continue;
-					}
-				}
-				if (currentDraftClassFilter)
-				{
-					if (record.YearsPro != 0)
-					{
-						continue;
-					}
-				}
-
-				//Found one
-				break;
-			}
-
-			return record;
-		}
-
-		public void SetDraftClassFilter(bool use)
-		{
-			currentDraftClassFilter = use;
-		}
-
-		public void SetTeamFilter(string teamname)
-		{
-			currentTeamFilter = teamname;
-		}
-
-		public void RemoveTeamFilter()
-		{
-			Console.WriteLine("Removing Team filter");
-			currentTeamFilter = null;
-		}
-
-		public void SetPositionFilter(int index)
-		{
-			currentPositionFilter = index;
-		}
-
-		public void RemovePositionFilter()
-		{
-			currentPositionFilter = -1;
-		}
-
-		public void Save()
-		{
-			//To save we have to go through every record in our models and
-			//save the dirty ones
-			
-			//At the moment we are only saving the player table
-			tableModels[PLAYER_TABLE].Save();
-			tableModels[INJURY_TABLE].Save();
-
-			this.Dirty = false;
-		}
-
-		public Dictionary<string, PlayerRecord> SearchForPlayers(String[] names)
-		{
-			Console.WriteLine("Starting search for " + names.ToString());
-			//This is not going to be efficient.
-			Dictionary<String, PlayerRecord> results = new Dictionary<String, PlayerRecord>();
-
-			foreach (TableRecordModel record in tableModels[PLAYER_TABLE].GetRecords())
-			{
-				String firstname = record.GetStringField(PlayerRecord.FIRST_NAME);
-				String lastname = record.GetStringField(PlayerRecord.LAST_NAME);
-
-				String firstnameLower = firstname.ToLower();
-				String lastnameLower = lastname.ToLower();
-
-				bool gotmatch = true;
-				foreach (String searchterm in names)
-				{
-					if ((firstnameLower.IndexOf(searchterm) == -1) && (lastnameLower.IndexOf(searchterm) == -1))
-					{
-						//We don't have a match
-						gotmatch = false;
-						break;
-					}
-				}
-				if (gotmatch)
-				{
-					results.Add(lastname + ", " + firstname + "   (" + GetTeamNameFromTeamId(record.GetIntField(PlayerRecord.TEAM_ID)) + ")", (PlayerRecord)record);
-				}
-			}
-			return results;
-		}
-
-		public InjuryRecord GetPlayersInjuryRecord(int playerId)
-		{
-			foreach (TableRecordModel record in tableModels[INJURY_TABLE].GetRecords())
-			{
-				if (record.Deleted)
-				{
-					continue;
-				}
-
-				InjuryRecord injuryRecord = (InjuryRecord)record;
-				if (playerId == injuryRecord.PlayerId)
-				{
-					return injuryRecord;
-				}
-			}
-			return null;
-		}
-
-		public InjuryRecord CreateNewInjuryRecord()
-		{
-			return (InjuryRecord)tableModels[INJURY_TABLE].CreateNewRecord();
-		}
-
-		public PlayerRecord CreateNewPlayerRecord()
-		{
-			return (PlayerRecord)tableModels[PLAYER_TABLE].CreateNewRecord();
-		}
+		
 	}
 }

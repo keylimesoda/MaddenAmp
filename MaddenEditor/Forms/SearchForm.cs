@@ -71,7 +71,7 @@ namespace MaddenEditor.Forms
 				results.Clear();
 				results = null;
 			}
-			results = model.SearchForPlayers(searchterms);
+			results = model.PlayerModel.SearchForPlayers(searchterms);
 			this.Cursor = Cursors.Default;
 
 			if (results == null)

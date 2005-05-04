@@ -231,6 +231,7 @@ namespace MaddenEditor.Forms
 			this.playerFaceMaskCombo = new System.Windows.Forms.ComboBox();
 			this.label72 = new System.Windows.Forms.Label();
 			this.playerHelmetStyleCombo = new System.Windows.Forms.ComboBox();
+			this.injuryLengthDescriptionTextBox = new System.Windows.Forms.TextBox();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -408,7 +409,7 @@ namespace MaddenEditor.Forms
 			this.positionComboBox.Name = "positionComboBox";
 			this.positionComboBox.Size = new System.Drawing.Size(161, 21);
 			this.positionComboBox.TabIndex = 5;
-			this.positionComboBox.SelectionChangeCommitted += new System.EventHandler(this.positionComboBox_SelectedIndexChanged);
+			this.positionComboBox.SelectedIndexChanged += new System.EventHandler(this.positionComboBox_SelectedIndexChanged);
 			// 
 			// teamComboBox
 			// 
@@ -420,7 +421,7 @@ namespace MaddenEditor.Forms
 			this.teamComboBox.Name = "teamComboBox";
 			this.teamComboBox.Size = new System.Drawing.Size(161, 21);
 			this.teamComboBox.TabIndex = 4;
-			this.teamComboBox.SelectionChangeCommitted += new System.EventHandler(this.teamComboBox_SelectedIndexChanged);
+			this.teamComboBox.SelectedIndexChanged += new System.EventHandler(this.teamComboBox_SelectedIndexChanged);
 			// 
 			// label9
 			// 
@@ -847,7 +848,7 @@ namespace MaddenEditor.Forms
 			this.groupBox1.Size = new System.Drawing.Size(228, 129);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Player Filter";
+			this.groupBox1.Text = "Player Navigate /  Filter";
 			// 
 			// filterDraftClassCheckBox
 			// 
@@ -2407,6 +2408,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.injuryLengthDescriptionTextBox);
 			this.groupBox3.Controls.Add(this.playerRemoveInjuryButton);
 			this.groupBox3.Controls.Add(this.playerAddInjuryButton);
 			this.groupBox3.Controls.Add(this.playerInjuryLength);
@@ -2443,7 +2445,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.playerInjuryLength.Location = new System.Drawing.Point(47, 49);
 			this.playerInjuryLength.Maximum = new decimal(new int[] {
-            365,
+            276,
             0,
             0,
             0});
@@ -2464,6 +2466,238 @@ namespace MaddenEditor.Forms
 			// playerInjuryCombo
 			// 
 			this.playerInjuryCombo.FormattingEnabled = true;
+			this.playerInjuryCombo.Items.AddRange(new object[] {
+            "Bruised ankle",
+            "Sprained ankle",
+            "Bruised forearm",
+            "Strained forearm",
+            "Strained bicep",
+            "Strained tricep",
+            "Upper arm buise",
+            "Back spasms",
+            "Bruised elbow",
+            "Elbow bursitis",
+            "Foot contusion",
+            "Foot sprain",
+            "Bruised hand",
+            "Broken finger",
+            "Dislocated finger",
+            "Broken thumb",
+            "Dislocated thumb",
+            "Dislocated wrist",
+            "Sprained wrist",
+            "Pinched nerve",
+            "Hip bursitis",
+            "Knee bruise",
+            "Knee bursitis",
+            "Strained calf",
+            "Leg cramp",
+            "Pulled hamstring",
+            "Bruised quadricep",
+            "Strained quadricep",
+            "Abdominal strain",
+            "Bruised ribs",
+            "Bruised sternum",
+            "Strained pectoral",
+            "Wind knocked out",
+            "Bruised shoulder",
+            "Strained shoulder",
+            "Strained Achilles",
+            "Bruised ankle",
+            "Sprained ankle",
+            "Bruised forearm",
+            "Strained forearm",
+            "Strained bicep",
+            "Strained tricep",
+            "Upper arm buise",
+            "Back spasms",
+            "Strained back",
+            "Bruised elbow",
+            "Elbow bursitis",
+            "Sprained elbow",
+            "Broken toe",
+            "Foot contusion",
+            "Foot sprain",
+            "Turf toe",
+            "Bruised hand",
+            "Broken finger",
+            "Dislocated finger",
+            "Broken thumb",
+            "Dislocated thumb",
+            "Dislocated wrist",
+            "Sprained wrist",
+            "Pinched nerve",
+            "Hip bursitis",
+            "Hip pointer",
+            "ACL sprain",
+            "Knee bruise",
+            "Knee bursitis",
+            "MCL sprain",
+            "PCL sprain",
+            "Strained calf",
+            "Leg cramp",
+            "Pulled groin",
+            "Pulled hamstring",
+            "Bruised quadricep",
+            "Strained quadricep",
+            "Abdominal strain",
+            "Bruised ribs",
+            "Bruised sternum",
+            "Strained pectoral",
+            "Bruised shoulder",
+            "Dislocated shoulder",
+            "Strained shoulder",
+            "Strained Achilles",
+            "Bruised ankle",
+            "Sprained ankle",
+            "High ankle sprain",
+            "Strained bicep",
+            "Strained tricep",
+            "Back spasms",
+            "Strained back",
+            "Bruised elbow",
+            "Elbow bursitis",
+            "Sprained elbow",
+            "Broken toe",
+            "Foot contusion",
+            "Foot sprain",
+            "Foot stress fracture",
+            "Turf toe",
+            "Bruised hand",
+            "Broken finger",
+            "Dislocated finger",
+            "Broken thumb",
+            "Dislocated thumb",
+            "Broken wrist",
+            "Dislocated wrist",
+            "Sprained wrist",
+            "Mild concussion",
+            "Pinched nerve",
+            "Hip bursitis",
+            "Hip pointer",
+            "ACL sprain",
+            "Knee bruise",
+            "Knee bursitis",
+            "MCL sprain",
+            "PCL sprain",
+            "Strained knee",
+            "Strained calf",
+            "Pulled groin",
+            "Pulled hamstring",
+            "Bruised quadricep",
+            "Strained quadricep",
+            "Abdominal strain",
+            "Bruised ribs",
+            "Bruised sternum",
+            "Strained pectoral",
+            "Bruised shoulder",
+            "Dislocated shoulder",
+            "Strained shoulder",
+            "Strained Achilles",
+            "Sprained ankle",
+            "High ankle sprain",
+            "Back spasms",
+            "Strained back",
+            "Sprained elbow",
+            "Broken toe",
+            "Foot stress fracture",
+            "Turf toe",
+            "Broken finger",
+            "Broken thumb",
+            "Sprained wrist",
+            "Mild concussion",
+            "Pinched nerve",
+            "Hip bursitis",
+            "Hip pointer",
+            "ACL sprain",
+            "Knee bruise",
+            "Knee bursitis",
+            "MCL sprain",
+            "PCL sprain",
+            "Strained knee",
+            "Pulled groin",
+            "Pulled hamstring",
+            "Strained quadricep",
+            "Abdominal strain",
+            "Abdominal tear",
+            "Broken ribs",
+            "Strained pectoral",
+            "Torn pectoral",
+            "Bruised shoulder",
+            "Strained shoulder",
+            "High ankle sprain",
+            "Broken ankle",
+            "Dislocated ankle",
+            "Forearm fracture",
+            "Torn bicep",
+            "Torn tricep",
+            "Upper arm fracture",
+            "Strained back",
+            "Dislocated elbow",
+            "Foot fracture",
+            "Foot stress fracture",
+            "Broken hand",
+            "Broken wrist",
+            "Broken jaw",
+            "Broken tailbone",
+            "Partially torn ACL",
+            "Knee cartilage tear",
+            "Dislocated knee",
+            "Partially torn MCL",
+            "Partially torn PCL",
+            "Strained knee",
+            "Broken fibula",
+            "Torn groin",
+            "Torn hamstring",
+            "Torn quadricep",
+            "Broken tibia",
+            "Abdominal tear",
+            "Broken ribs",
+            "Broken collarbone",
+            "Torn pectoral",
+            "Torn shoulder",
+            "Torn Achilles tendon",
+            "Broken ankle",
+            "Dislocated ankle",
+            "Forearm fracture",
+            "Upper arm fracture",
+            "Ruptured disk",
+            "Broken vertebrae",
+            "Broken elbow",
+            "Foot fracture",
+            "Broken wrist",
+            "Severe concussion",
+            "Dislocated hip",
+            "Hip fracture",
+            "Broken tailbone",
+            "Complete ACL tear",
+            "Partially torn ACL",
+            "Knee cartilage tear",
+            "Dislocated knee",
+            "Fractured patella",
+            "Complete MCL tear",
+            "Partially torn MCL",
+            "Complete PCL tear",
+            "Partially torn PCL",
+            "Broken femur",
+            "Broken fibula",
+            "Torn hamstring",
+            "Torn quadricep",
+            "Broken tibia",
+            "Broken collarbone",
+            "Broken shoulder",
+            "Torn rotator cuff",
+            "Torn shoulder",
+            "Torn Achilles tendon",
+            "Ruptured disk",
+            "Broken vertebrae",
+            "Severe concussion",
+            "Hip fracture",
+            "Complete ACL tear",
+            "Fractured patella",
+            "Complete MCL tear",
+            "Complete PCL tear",
+            ""});
 			this.playerInjuryCombo.Location = new System.Drawing.Point(46, 20);
 			this.playerInjuryCombo.Name = "playerInjuryCombo";
 			this.playerInjuryCombo.Size = new System.Drawing.Size(121, 21);
@@ -3001,6 +3235,17 @@ namespace MaddenEditor.Forms
 			this.playerHelmetStyleCombo.TabIndex = 0;
 			this.playerHelmetStyleCombo.SelectedIndexChanged += new System.EventHandler(this.playerHelmetStyleCombo_SelectedIndexChanged);
 			// 
+			// injuryLengthDescriptionTextBox
+			// 
+			this.injuryLengthDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.injuryLengthDescriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.injuryLengthDescriptionTextBox.Location = new System.Drawing.Point(136, 49);
+			this.injuryLengthDescriptionTextBox.Name = "injuryLengthDescriptionTextBox";
+			this.injuryLengthDescriptionTextBox.ReadOnly = true;
+			this.injuryLengthDescriptionTextBox.Size = new System.Drawing.Size(143, 20);
+			this.injuryLengthDescriptionTextBox.TabIndex = 8;
+			this.injuryLengthDescriptionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
 			// PlayerEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3288,5 +3533,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ComboBox playerFaceMaskCombo;
 		private System.Windows.Forms.Label label72;
 		private System.Windows.Forms.ComboBox playerHelmetStyleCombo;
+		private System.Windows.Forms.TextBox injuryLengthDescriptionTextBox;
 	}
 }

@@ -54,24 +54,25 @@ namespace MaddenEditor.Forms
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-			CheckSave();
-
-			Application.Exit();
+			if (CheckSave())
+			{
+				Application.Exit();
+			}
         }
 
-		private void CheckSave()
+		private bool CheckSave()
 		{
 			if (model != null && model.Dirty)
 			{
-				DialogResult result = MessageBox.Show("Do you want to save changes to currently opened file?", "Save?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				DialogResult result = MessageBox.Show("Do you want to save changes to currently opened file?", "Save?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
 				if (result == DialogResult.Yes)
 				{
 					model.Save();
 				}
-				else
+				else if (result == DialogResult.Cancel)
 				{
-
+					return false;
 				}
 			}
 
@@ -80,11 +81,16 @@ namespace MaddenEditor.Forms
 				model.Shutdown();
 			}	
 			model = null;
+
+			return true;
 		}
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			CheckSave();
+			if (!CheckSave())
+			{
+				return;
+			}
 
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.DefaultExt = "ros";
@@ -250,8 +256,8 @@ namespace MaddenEditor.Forms
 
 		private void testerWorkerThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
-			model.GetNextPlayerRecord();
-			playerEditControl.LoadPlayerInfo(model.CurrentPlayerRecord);
+			model.PlayerModel.GetNextPlayerRecord();
+			playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 		}
     }
 }
