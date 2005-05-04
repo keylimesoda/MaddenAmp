@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using MaddenEditor.Db;
+using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Core
 {

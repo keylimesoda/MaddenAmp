@@ -26,6 +26,7 @@ using System.Text;
 
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
+using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Core
 {
