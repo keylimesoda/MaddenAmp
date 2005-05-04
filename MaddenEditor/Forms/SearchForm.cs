@@ -35,11 +35,11 @@ namespace MaddenEditor.Forms
 {
 	public partial class SearchForm : Form
 	{
-		private RosterModel model = null;
+		private EditorModel model = null;
 		private PlayerRecord selectedPlayer = null;
 		private Dictionary<String, PlayerRecord> results = null;
 
-		public SearchForm(RosterModel model)
+		public SearchForm(EditorModel model)
 		{
 			this.model = model;
 			selectedPlayer = null;

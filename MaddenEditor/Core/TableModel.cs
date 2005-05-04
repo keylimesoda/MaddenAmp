@@ -33,15 +33,15 @@ namespace MaddenEditor.Core
 	{
 		protected List<TableRecordModel> recordList = null;
 		protected String name;
-		protected RosterModel parentModel = null;
+		protected EditorModel parentModel = null;
 		List<TdbFieldProperties> fieldList = null;
 		protected int dbIndex = -1;
 		protected string primaryKeyField = null;
 
-		public TableModel(string name, RosterModel rosterModel, int dbIndex)
+		public TableModel(string name, EditorModel EditorModel, int dbIndex)
 		{
 			this.dbIndex = dbIndex;
-			parentModel = rosterModel;
+			parentModel = EditorModel;
 			this.name = name;
 			recordList = new List<TableRecordModel>();
 		}
@@ -142,7 +142,7 @@ namespace MaddenEditor.Core
 
 			switch (name)
 			{
-				//case RosterModel.CITY_TABLE:
+				//case EditorModel.CITY_TABLE:
 				//	newRecord = new CityRecord(recno, parentModel);
 				//	break;
 				//case MaddenTable.COACH_TABLE:
@@ -157,16 +157,16 @@ namespace MaddenEditor.Core
 				//case MaddenTable.DEPTH_CHART_TABLE:
 				//	newRecord = new DepthChartRecord(recno, parentModel);
 				//	break;
-				case RosterModel.INJURY_TABLE:
+				case EditorModel.INJURY_TABLE:
 					newRecord = new InjuryRecord(recno, parentModel);
 					break;
-				case RosterModel.PLAYER_TABLE:
+				case EditorModel.PLAYER_TABLE:
 					newRecord = new PlayerRecord(recno, parentModel);
 					break;
 				//case MaddenTable.STADIUM_TABLE:
 				//	newRecord = new StadiumTable(recno, parentModel);
 				//	break;
-				case RosterModel.TEAM_TABLE:
+				case EditorModel.TEAM_TABLE:
 					newRecord = new TeamRecord(recno, parentModel);
 					break;
 				//case MaddenTable.UNIFORM_TABLE:

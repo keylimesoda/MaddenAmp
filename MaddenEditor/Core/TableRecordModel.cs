@@ -41,11 +41,11 @@ namespace MaddenEditor.Core
 		protected Dictionary<string, int> backupIntFields = null;
 		protected Dictionary<string, string> backupStringFields = null;
 
-		protected RosterModel parentModel = null;
+		protected EditorModel parentModel = null;
 
-		public TableRecordModel(int recordNumber, RosterModel rosterModel)
+		public TableRecordModel(int recordNumber, EditorModel EditorModel)
 		{
-			parentModel = rosterModel;
+			parentModel = EditorModel;
 			this.recordNumber = recordNumber;
 			intFields = new Dictionary<string, int>();
 			stringFields = new Dictionary<string, string>();

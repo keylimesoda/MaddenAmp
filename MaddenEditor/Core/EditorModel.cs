@@ -61,7 +61,12 @@ namespace MaddenEditor.Core
 		P
 	}
 
-	public class RosterModel
+	/// <summary>
+	/// This class is the main application model class. It is responsible for
+	/// creating all editing models that are manipulated by the GUI.
+	/// 
+	/// </summary>
+	public class EditorModel
 	{
 		public const int FREE_AGENT_TEAM_ID = 1009;
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
@@ -85,7 +90,7 @@ namespace MaddenEditor.Core
 		private bool currentDraftClassFilter = false;
 		private Dictionary<string, int> tableOrder = null;
 
-		public RosterModel(string filename, MainForm form)
+		public EditorModel(string filename, MainForm form)
 		{
 			view = form;
 			this.fileName = filename;

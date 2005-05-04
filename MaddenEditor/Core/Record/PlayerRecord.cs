@@ -123,8 +123,8 @@ namespace MaddenEditor.Core.Record
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
 
-		public PlayerRecord(int record, RosterModel rosterModel)
-			: base(record, rosterModel)
+		public PlayerRecord(int record, EditorModel EditorModel)
+			: base(record, EditorModel)
 		{
 
 		}

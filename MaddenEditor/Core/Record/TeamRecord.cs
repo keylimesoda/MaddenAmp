@@ -34,8 +34,8 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_STATE = "TSNA";
 		public const string TEAM_ID = "TGID";
 
-		public TeamRecord(int record, RosterModel rosterModel)
-			: base(record, rosterModel)
+		public TeamRecord(int record, EditorModel EditorModel)
+			: base(record, EditorModel)
 		{
 
 		}
