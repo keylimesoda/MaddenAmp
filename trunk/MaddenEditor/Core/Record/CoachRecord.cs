@@ -46,10 +46,12 @@ namespace MaddenEditor.Core.Record
 		public const string RB_RATING = "CRRB";
 		public const string OL_RATING = "CROL";
 		public const string WR_RATING = "CRWR";
-		public const string KP_RATING = "CRKS";
+		public const string KICK_RATING = "CRKS";
+		public const string PUNT_RATING = "CRPS";
 
 		public const string ETHICS = "CETH";
 		public const string KNOWLEDGE = "CKNW";
+		public const string MOTIVATION = "CMOT";
 		
 
 		public CoachRecord(int record, EditorModel EditorModel)
@@ -250,15 +252,27 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public int KickerPunterRating
+		public int KickerRating
 		{
 			get
 			{
-				return intFields[KP_RATING];
+				return intFields[KICK_RATING];
 			}
 			set
 			{
-				SetFieldWithBackup(KP_RATING, value);
+				SetFieldWithBackup(KICK_RATING, value);
+			}
+		}
+
+		public int PuntRating
+		{
+			get
+			{
+				return intFields[PUNT_RATING];
+			}
+			set
+			{
+				SetFieldWithBackup(PUNT_RATING, value);
 			}
 		}
 
@@ -283,6 +297,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetFieldWithBackup(KNOWLEDGE, value);
+			}
+		}
+
+		public int Motivation
+		{
+			get
+			{
+				return intFields[MOTIVATION];
+			}
+			set
+			{
+				SetFieldWithBackup(MOTIVATION, value);
 			}
 		}
 	}
