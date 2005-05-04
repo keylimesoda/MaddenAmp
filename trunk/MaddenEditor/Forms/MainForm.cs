@@ -29,6 +29,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using MaddenEditor.Core;
+using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Forms
 {

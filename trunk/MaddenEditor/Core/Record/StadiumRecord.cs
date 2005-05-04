@@ -15,78 +15,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
- * 
- * colin.goudie@gmail.com
+ * http://gommo.homelinux.net             colin.goudie@gmail.com
  * 
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Core
+namespace MaddenEditor.Core.Record
 {
-
-	public class TeamRecord : TableRecordModel
+	public class StadiumTable : TableRecordModel
 	{
-		public const string TEAM_NAME = "TDNA";
-		public const string TEAM_LAST_NAME = "TLNA";
-		public const string TEAM_STATE = "TSNA";
-		public const string TEAM_ID = "TGID";
-
-		public TeamRecord(int record, RosterModel rosterModel)
+		public StadiumTable(int record, RosterModel rosterModel)
 			: base(record, rosterModel)
 		{
 
 		}
-
-		public string Name
-		{
-			get
-			{
-				return stringFields[TEAM_NAME];
-			}
-			set
-			{
-				stringFields[TEAM_NAME] = value;
-			}
-		}
-
-		public string LastName
-		{
-			get
-			{
-				return stringFields[TEAM_LAST_NAME];
-			}
-			set
-			{
-				stringFields[TEAM_LAST_NAME] = value;
-			}
-		}
-
-		public string State
-		{
-			get
-			{
-				return stringFields[TEAM_STATE];
-			}
-			set
-			{
-				stringFields[TEAM_STATE] = value;
-			}
-		}
-
-		public int TeamId
-		{
-			get
-			{
-				return intFields[TEAM_ID];
-			}
-			set
-			{
-				intFields[TEAM_ID] = value;
-			}
-		}
-
 	}
 }
