@@ -1,3 +1,25 @@
+/******************************************************************************
+ * Madden 2005 Editor
+ * Copyright (C) 2005 Colin Goudie
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * 
+ * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * 
+ * colin.goudie@gmail.com
+ * 
+ *****************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +30,6 @@ namespace MaddenEditor.Core
 {
 	public class PlayerEditingModel
 	{
-		Dictionary<string, TableModel> tableModels = null;
-		private Dictionary<int, string> teamNameList = null;
 		private int currentPlayerIndex = 0;
 		/** The current Team Filter */
 		private string currentTeamFilter = null;
@@ -17,82 +37,40 @@ namespace MaddenEditor.Core
 		private int currentPositionFilter = -1;
 		/** If we are currently filtering for draft class */
 		private bool currentDraftClassFilter = false;
+		/** Reference to our EditorModel */
+		private EditorModel model = null;
 
-		public PlayerEditingModel(Dictionary<string, TableModel> tableModels)
+		public PlayerEditingModel(EditorModel model)
 		{
-			this.tableModels = tableModels;
+			this.model = model;
 		}
-
-		public ICollection<string> GetTeamNames()
-		{
-			if (teamNameList == null)
-			{
-				teamNameList = new Dictionary<int, string>();
-				foreach (TableRecordModel record in tableModels[EditorModel.TEAM_TABLE].GetRecords())
-				{
-					TeamRecord teamRecord = (TeamRecord)record;
-					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
-				}
-			}
-
-			return teamNameList.Values;
-		}
-
-		public string GetTeamNameFromTeamId(int teamid)
-		{
-			if (teamNameList.ContainsKey(teamid))
-				return teamNameList[teamid];
-			else
-				return EditorModel.UNKNOWN_TEAM_NAME;
-		}
-
-		public int GetTeamIdFromTeamName(string teamName)
-		{
-			if (teamNameList.ContainsValue(teamName))
-			{
-				//Theres got to be a better way to do this
-				int i = 0;
-				foreach (string team in teamNameList.Values)
-				{
-					if (team.Equals(teamName))
-					{
-						break;
-					}
-					i++;
-				}
-
-				//Now if we iterate through teamName list Key list to 'i' then
-				//we have the Team id
-				int j = 0;
-				int id = 0;
-				foreach (int key in teamNameList.Keys)
-				{
-					if (j == i)
-					{
-						id = key;
-						break;
-					}
-					j++;
-				}
-
-				return id;
-			}
-			else
-			{
-				throw new ApplicationException("Error getting TeamID for team name " + teamName);
-			}
-		}
-
+		
 		public PlayerRecord GetPlayerRecord(int recno)
 		{
-			return (PlayerRecord)tableModels[EditorModel.PLAYER_TABLE].GetRecord(recno);
+			return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(recno);
 		}
 
 		public PlayerRecord CurrentPlayerRecord
 		{
 			get
 			{
-				return (PlayerRecord)tableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+				return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+			}
+			set
+			{
+				PlayerRecord curr = value;
+				//need to set currenPlayerIndex to the correct index
+				int index = 0;
+				foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+				{
+					if (curr == rec)
+					{
+						currentPlayerIndex = index;
+						break;
+					}
+
+					index++;
+				}
 			}
 		}
 
@@ -103,12 +81,12 @@ namespace MaddenEditor.Core
 			while (true)
 			{
 				currentPlayerIndex++;
-				if (currentPlayerIndex >= tableModels[EditorModel.PLAYER_TABLE].RecordCount)
+				if (currentPlayerIndex >= model.TableModels[EditorModel.PLAYER_TABLE].RecordCount)
 				{
 					currentPlayerIndex = 0;
 				}
 
-				record = (PlayerRecord)tableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+				record = (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
 
 				//If this record is marked for deletion then skip it
 				if (record.Deleted)
@@ -118,7 +96,7 @@ namespace MaddenEditor.Core
 
 				if (currentTeamFilter != null)
 				{
-					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
+					if (!(model.TeamModel.GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
 					{
 						continue;
 					}
@@ -154,10 +132,10 @@ namespace MaddenEditor.Core
 				currentPlayerIndex--;
 				if (currentPlayerIndex < 0)
 				{
-					currentPlayerIndex = tableModels[EditorModel.PLAYER_TABLE].RecordCount - 1;
+					currentPlayerIndex = model.TableModels[EditorModel.PLAYER_TABLE].RecordCount - 1;
 				}
 
-				record = (PlayerRecord)tableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
+				record = (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
 
 				//If this record is marked for deletion then skip it
 				if (record.Deleted)
@@ -167,7 +145,7 @@ namespace MaddenEditor.Core
 
 				if (currentTeamFilter != null)
 				{
-					if (!(GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
+					if (!(model.TeamModel.GetTeamNameFromTeamId(record.TeamId).Equals(currentTeamFilter)))
 					{
 						continue;
 					}
@@ -226,7 +204,7 @@ namespace MaddenEditor.Core
 			//This is not going to be efficient.
 			Dictionary<String, PlayerRecord> results = new Dictionary<String, PlayerRecord>();
 
-			foreach (TableRecordModel record in tableModels[EditorModel.PLAYER_TABLE].GetRecords())
+			foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
 			{
 				String firstname = record.GetStringField(PlayerRecord.FIRST_NAME);
 				String lastname = record.GetStringField(PlayerRecord.LAST_NAME);
@@ -246,7 +224,14 @@ namespace MaddenEditor.Core
 				}
 				if (gotmatch)
 				{
-					results.Add(lastname + ", " + firstname + "   (" + GetTeamNameFromTeamId(record.GetIntField(PlayerRecord.TEAM_ID)) + ")", (PlayerRecord)record);
+					String key = lastname + ", " + firstname + "   (" + model.TeamModel.GetTeamNameFromTeamId(record.GetIntField(PlayerRecord.TEAM_ID)) + ")";
+					String addkey = key;
+					int count = 1;
+					while(results.ContainsKey(addkey))
+					{
+						addkey = key + "(" + count++ + ")";
+					}
+					results.Add(addkey, (PlayerRecord)record);
 				}
 			}
 			return results;
@@ -254,7 +239,7 @@ namespace MaddenEditor.Core
 
 		public InjuryRecord GetPlayersInjuryRecord(int playerId)
 		{
-			foreach (TableRecordModel record in tableModels[EditorModel.INJURY_TABLE].GetRecords())
+			foreach (TableRecordModel record in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
 			{
 				if (record.Deleted)
 				{
@@ -272,12 +257,12 @@ namespace MaddenEditor.Core
 
 		public InjuryRecord CreateNewInjuryRecord()
 		{
-			return (InjuryRecord)tableModels[EditorModel.INJURY_TABLE].CreateNewRecord();
+			return (InjuryRecord)model.TableModels[EditorModel.INJURY_TABLE].CreateNewRecord();
 		}
 
 		public PlayerRecord CreateNewPlayerRecord()
 		{
-			return (PlayerRecord)tableModels[EditorModel.PLAYER_TABLE].CreateNewRecord();
+			return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].CreateNewRecord();
 		}
 	}
 }

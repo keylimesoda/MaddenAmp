@@ -1,3 +1,25 @@
+/******************************************************************************
+ * Madden 2005 Editor
+ * Copyright (C) 2005 Colin Goudie
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * 
+ * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * 
+ * colin.goudie@gmail.com
+ * 
+ *****************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +54,7 @@ namespace MaddenEditor.Forms
 
 			firstNameTextBox.Text = record.FirstName;
 			lastNameTextBox.Text = record.LastName;
-			string team = model.PlayerModel.GetTeamNameFromTeamId(record.TeamId);
+			string team = model.TeamModel.GetTeamNameFromTeamId(record.TeamId);
 			if (team.Equals(EditorModel.UNKNOWN_TEAM_NAME))
 			{
 				teamComboBox.Enabled = false;
@@ -40,13 +62,6 @@ namespace MaddenEditor.Forms
 			else
 			{
 				teamComboBox.Text = team;
-			}
-
-			//Enable the Calculate OVR button in case we have disabled it
-			calculateOverallButton.Enabled = true;
-			if (record.PositionId == (int)MaddenPositions.K || record.PositionId == (int)MaddenPositions.P)
-			{
-				calculateOverallButton.Enabled = false;
 			}
 
 			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
@@ -203,7 +218,7 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
-			foreach (string teamname in model.PlayerModel.GetTeamNames())
+			foreach (string teamname in model.TeamModel.GetTeamNames())
 			{
 				teamComboBox.Items.Add(teamname);
 				filterTeamComboBox.Items.Add(teamname);
@@ -353,7 +368,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.CurrentPlayerRecord.TeamId = model.PlayerModel.GetTeamIdFromTeamName(teamComboBox.Text);
+				model.PlayerModel.CurrentPlayerRecord.TeamId = model.TeamModel.GetTeamIdFromTeamName(teamComboBox.Text);
 			}
 		}
 
@@ -378,14 +393,6 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.PositionId = (int)positionComboBox.SelectedIndex;
-				if ((int)positionComboBox.SelectedIndex == (int)MaddenPositions.K || (int)positionComboBox.SelectedIndex == (int)MaddenPositions.P)
-				{
-					calculateOverallButton.Enabled = false;
-				}
-				else
-				{
-					calculateOverallButton.Enabled = true;
-				}
 			}
 		}
 
