@@ -50,7 +50,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RESTRICTED_FA_1, value);
+				SetField(RESTRICTED_FA_1, value);
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RESTRICTED_FA_2, value);
+				SetField(RESTRICTED_FA_2, value);
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RESTRICTED_FA_3, value);
+				SetField(RESTRICTED_FA_3, value);
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RESTRICTED_FA_4, value);
+				SetField(RESTRICTED_FA_4, value);
 			}
 		}
 
@@ -98,7 +98,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SALARY_CAP, value);
+				SetField(SALARY_CAP, value);
 			}
 		}
 	}

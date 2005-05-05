@@ -123,6 +123,28 @@ namespace MaddenEditor.Core.Record
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
 
+		//Salary constants
+		public const string SALARY_YEAR_0 = "PSA0";
+		public const string SIGNING_BONUS_YEAR_0 = "PSB0";
+		public const string SALARY_YEAR_1 = "PSA1";
+		public const string SIGNING_BONUS_YEAR_1 = "PSB1";
+		public const string SALARY_YEAR_2 = "PSA2";
+		public const string SIGNING_BONUS_YEAR_2 = "PSB2";
+		public const string SALARY_YEAR_3 = "PSA3";
+		public const string SIGNING_BONUS_YEAR_3 = "PSB3";
+		public const string SALARY_YEAR_4 = "PSA4";
+		public const string SIGNING_BONUS_YEAR_4 = "PSB4";
+		public const string SALARY_YEAR_5 = "PSA5";
+		public const string SIGNING_BONUS_YEAR_5 = "PSB5";
+		public const string SALARY_YEAR_6 = "PSA6";
+		public const string SIGNING_BONUS_YEAR_6 = "PSB6";
+
+		private bool calculatedCapHit = false;
+		private int capHit = 0;
+		private int capHitDifference = 0;
+		double[] estYearlySalary = new double[7];
+		double[] estSigningBonusArray = new double[7];
+
 		public PlayerRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
@@ -133,11 +155,16 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
+				//The first time we access this record we should calculate this players cap hit
+				if (!calculatedCapHit)
+				{
+					CalculateCapHit();
+				}
 				return stringFields[FIRST_NAME];
 			}
 			set
 			{
-				SetFieldWithBackup(FIRST_NAME, value);
+				SetField(FIRST_NAME, value);
 			}
 		}
 
@@ -149,7 +176,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LAST_NAME, value);
+				SetField(LAST_NAME, value);
 			}
 		}
 
@@ -161,7 +188,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(POSITION_ID, value);
+				SetField(POSITION_ID, value);
 			}
 		}
 
@@ -173,7 +200,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(TEAM_ID, value);
+				SetField(TEAM_ID, value);
 			}
 		}
 
@@ -185,7 +212,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PLAYER_ID, value);
+				SetField(PLAYER_ID, value);
 			}
 		}
 
@@ -197,7 +224,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(COLLEGE_ID, value);
+				SetField(COLLEGE_ID, value);
 			}
 		}
 
@@ -209,7 +236,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(AGE, value);
+				SetField(AGE, value);
 			}
 		}
 
@@ -221,7 +248,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(YRS_PRO, value);
+				SetField(YRS_PRO, value);
 			}
 		}
 
@@ -233,7 +260,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(XP_POINTS, value);
+				SetField(XP_POINTS, value);
 			}
 		}
 
@@ -245,7 +272,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(NFL_ICON, Convert.ToInt32(value));
+				SetField(NFL_ICON, Convert.ToInt32(value));
 			}
 		}
 
@@ -257,7 +284,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PRO_BOWL, Convert.ToInt32(value));
+				SetField(PRO_BOWL, Convert.ToInt32(value));
 			}
 		}
 
@@ -269,7 +296,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(DOMINANT_HAND, Convert.ToInt32(value));
+				SetField(DOMINANT_HAND, Convert.ToInt32(value));
 			}
 		}
 
@@ -281,7 +308,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(JERSEY_NUMBER, value);
+				SetField(JERSEY_NUMBER, value);
 			}
 		}
 
@@ -293,7 +320,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(OVERALL, value);
+				SetField(OVERALL, value);
 			}
 		}
 
@@ -305,7 +332,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SPEED, value);
+				SetField(SPEED, value);
 			}
 		}
 
@@ -317,7 +344,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(STRENGTH, value);
+				SetField(STRENGTH, value);
 			}
 		}
 
@@ -329,7 +356,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(AWARENESS, value);
+				SetField(AWARENESS, value);
 			}
 		}
 
@@ -341,7 +368,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(AGILITY, value);
+				SetField(AGILITY, value);
 			}
 		}
 
@@ -353,7 +380,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(ACCELERATION, value);
+				SetField(ACCELERATION, value);
 			}
 		}
 
@@ -365,7 +392,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(CATCHING, value);
+				SetField(CATCHING, value);
 			}
 		}
 
@@ -377,7 +404,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(CARRYING, value);
+				SetField(CARRYING, value);
 			}
 		}
 
@@ -389,7 +416,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(JUMPING, value);
+				SetField(JUMPING, value);
 			}
 		}
 
@@ -401,7 +428,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(BREAK_TACKLE, value);
+				SetField(BREAK_TACKLE, value);
 			}
 		}
 
@@ -413,7 +440,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(TACKLE, value);
+				SetField(TACKLE, value);
 			}
 		}
 
@@ -425,7 +452,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(THROW_POWER, value);
+				SetField(THROW_POWER, value);
 			}
 		}
 
@@ -437,7 +464,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(THROW_ACCURACY, value);
+				SetField(THROW_ACCURACY, value);
 			}
 		}
 
@@ -449,7 +476,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PASS_BLOCKING, value);
+				SetField(PASS_BLOCKING, value);
 			}
 		}
 
@@ -461,7 +488,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RUN_BLOCKING, value);
+				SetField(RUN_BLOCKING, value);
 			}
 		}
 
@@ -473,7 +500,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(KICK_POWER, value);
+				SetField(KICK_POWER, value);
 			}
 		}
 
@@ -485,7 +512,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(KICK_ACCURACY, value);
+				SetField(KICK_ACCURACY, value);
 			}
 		}
 
@@ -497,7 +524,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(KICK_RETURN, value);
+				SetField(KICK_RETURN, value);
 			}
 		}
 
@@ -509,7 +536,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(STAMINA, value);
+				SetField(STAMINA, value);
 			}
 		}
 
@@ -521,7 +548,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(INJURY, value);
+				SetField(INJURY, value);
 			}
 		}
 
@@ -533,7 +560,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(TOUGHNESS, value);
+				SetField(TOUGHNESS, value);
 			}
 		}
 
@@ -545,7 +572,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(MORALE, value);
+				SetField(MORALE, value);
 			}
 		}
 
@@ -557,7 +584,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(IMPORTANCE, value);
+				SetField(IMPORTANCE, value);
 			}
 		}
 
@@ -569,7 +596,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(WEIGHT, value);
+				SetField(WEIGHT, value);
 			}
 		}
 
@@ -581,7 +608,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(HEIGHT, value);
+				SetField(HEIGHT, value);
 			}
 		}
 
@@ -593,7 +620,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(BODY_WEIGHT, value);
+				SetField(BODY_WEIGHT, value);
 			}
 		}
 
@@ -605,7 +632,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(BODY_MUSCLE, value);
+				SetField(BODY_MUSCLE, value);
 			}
 		}
 
@@ -617,7 +644,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(BODY_FAT, value);
+				SetField(BODY_FAT, value);
 			}
 		}
 
@@ -629,7 +656,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(EQP_SHOES, value);
+				SetField(EQP_SHOES, value);
 			}
 		}
 
@@ -641,7 +668,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(EQP_PAD_HEIGHT, value);
+				SetField(EQP_PAD_HEIGHT, value);
 			}
 		}
 
@@ -653,7 +680,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(EQP_PAD_WIDTH, value);
+				SetField(EQP_PAD_WIDTH, value);
 			}
 		}
 
@@ -665,7 +692,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(EQP_PAD_SHELF, value);
+				SetField(EQP_PAD_SHELF, value);
 			}
 		}
 
@@ -677,7 +704,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(EQP_FLAK_JACKET, value);
+				SetField(EQP_FLAK_JACKET, value);
 			}
 		}
 
@@ -689,7 +716,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(ARMS_MUSCLE, value);
+				SetField(ARMS_MUSCLE, value);
 			}
 		}
 
@@ -701,7 +728,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(ARMS_FAT, value);
+				SetField(ARMS_FAT, value);
 			}
 		}
 
@@ -713,7 +740,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEGS_THIGH_MUSCLE, value);
+				SetField(LEGS_THIGH_MUSCLE, value);
 			}
 		}
 
@@ -725,7 +752,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEGS_THIGH_FAT, value);
+				SetField(LEGS_THIGH_FAT, value);
 			}
 		}
 
@@ -737,7 +764,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEGS_CALF_MUSCLE, value);
+				SetField(LEGS_CALF_MUSCLE, value);
 			}
 		}
 
@@ -749,7 +776,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEGS_CALF_FAT, value);
+				SetField(LEGS_CALF_FAT, value);
 			}
 		}
 
@@ -761,7 +788,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(REAR_REAR_FAR, value);
+				SetField(REAR_REAR_FAR, value);
 			}
 		}
 
@@ -773,7 +800,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(REAR_SHAPE, value);
+				SetField(REAR_SHAPE, value);
 			}
 		}
 
@@ -785,7 +812,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(CONTRACT_LENGTH, value);
+				SetField(CONTRACT_LENGTH, value);
+				CalculateCapHit();
 			}
 		}
 
@@ -797,7 +825,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(CONTRACT_YRS_LEFT, value);
+				SetField(CONTRACT_YRS_LEFT, value);
+				CalculateCapHit();
 			}
 		}
 
@@ -809,7 +838,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SIGNING_BONUS, value);
+				SetField(SIGNING_BONUS, value);
+				CalculateCapHit();
 			}
 		}
 
@@ -821,7 +851,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(TOTAL_SALARY, value);
+				SetField(TOTAL_SALARY, value);
+				CalculateCapHit();
 			}
 		}
 
@@ -833,7 +864,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SKIN_COLOR, value);
+				SetField(SKIN_COLOR, value);
 			}
 		}
 
@@ -845,7 +876,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(FACE_SHAPE, value);
+				SetField(FACE_SHAPE, value);
 			}
 		}
 
@@ -857,7 +888,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(EYE_PAINT, value);
+				SetField(EYE_PAINT, value);
 			}
 		}
 
@@ -869,7 +900,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(THROWING_STYLE, value);
+				SetField(THROWING_STYLE, value);
 			}
 		}
 
@@ -881,7 +912,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(HAIR_COLOR, value);
+				SetField(HAIR_COLOR, value);
 			}
 		}
 
@@ -893,7 +924,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(HAIR_STYLE, value);
+				SetField(HAIR_STYLE, value);
 			}
 		}
 
@@ -905,7 +936,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(HELMET_STYLE, value);
+				SetField(HELMET_STYLE, value);
 			}
 		}
 
@@ -917,7 +948,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(FACE_MASK, value);
+				SetField(FACE_MASK, value);
 			}
 		}
 
@@ -929,7 +960,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(NECK_ROLL, value);
+				SetField(NECK_ROLL, value);
 			}
 		}
 
@@ -941,7 +972,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(VISOR, value);
+				SetField(VISOR, value);
 			}
 		}
 
@@ -953,7 +984,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(MOUTHPIECE, value);
+				SetField(MOUTHPIECE, value);
 			}
 		}
 
@@ -965,8 +996,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEFT_HAND_A, value);
-				SetFieldWithBackup(LEFT_HAND_B, value);
+				SetField(LEFT_HAND_A, value);
+				SetField(LEFT_HAND_B, value);
 			}
 		}
 
@@ -978,8 +1009,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RIGHT_HAND_A, value);
-				SetFieldWithBackup(RIGHT_HAND_B, value);
+				SetField(RIGHT_HAND_A, value);
+				SetField(RIGHT_HAND_B, value);
 			}
 		}
 
@@ -991,7 +1022,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEFT_ANKLE, value);
+				SetField(LEFT_ANKLE, value);
 			}
 		}
 
@@ -1003,7 +1034,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RIGHT_ANKLE, value);
+				SetField(RIGHT_ANKLE, value);
 			}
 		}
 
@@ -1015,7 +1046,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEFT_KNEE, value);
+				SetField(LEFT_KNEE, value);
 			}
 		}
 
@@ -1027,7 +1058,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RIGHT_KNEE, value);
+				SetField(RIGHT_KNEE, value);
 			}
 		}
 
@@ -1039,8 +1070,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEFT_ELBOW_A, value);
-				SetFieldWithBackup(LEFT_ELBOW_B, value);
+				SetField(LEFT_ELBOW_A, value);
+				SetField(LEFT_ELBOW_B, value);
 			}
 		}
 
@@ -1052,8 +1083,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RIGHT_ELBOW_A, value);
-				SetFieldWithBackup(RIGHT_ELBOW_B, value);
+				SetField(RIGHT_ELBOW_A, value);
+				SetField(RIGHT_ELBOW_B, value);
 			}
 		}
 
@@ -1065,8 +1096,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SLEEVES_A, value);
-				SetFieldWithBackup(SLEEVES_B, value);
+				SetField(SLEEVES_A, value);
+				SetField(SLEEVES_B, value);
 			}
 		}
 
@@ -1078,8 +1109,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LEFT_WRIST_A, value);
-				SetFieldWithBackup(LEFT_WRIST_B, value);
+				SetField(LEFT_WRIST_A, value);
+				SetField(LEFT_WRIST_B, value);
 			}
 		}
 
@@ -1091,8 +1122,8 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RIGHT_WRIST_A, value);
-				SetFieldWithBackup(RIGHT_WRIST_B, value);
+				SetField(RIGHT_WRIST_A, value);
+				SetField(RIGHT_WRIST_B, value);
 			}
 		}
 
@@ -1104,7 +1135,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(NASAL_STRIP, value);
+				SetField(NASAL_STRIP, value);
 			}
 		}
 
@@ -1280,5 +1311,126 @@ namespace MaddenEditor.Core.Record
 
 			Overall = (tempOverall < 100 ? (int)tempOverall : 99);
 		}
+
+		#region Salary Signing Bonus Functions
+
+		public int GetSalaryAtYear(int year)
+		{
+			string key = "PSA" + year;
+
+			if (intFields.ContainsKey(key))
+			{
+				return intFields[key];
+			}
+			else
+			{
+				return (int)estYearlySalary[year];
+			}
+		}
+
+		public int GetSigningBonusAtYear(int year)
+		{
+			string key = "PSB" + year;
+
+			if (intFields.ContainsKey(key))
+			{
+				return intFields[key];
+			}
+			else
+			{
+				return (int)estYearlySalary[year];
+			}
+		}
+
+		public int CapHit
+		{
+			get
+			{
+				return capHit;
+			}
+		}
+
+		public int CapHitDifference
+		{
+			get
+			{
+				return capHitDifference;
+			}
+		}
+
+		private void CalculateCapHit()
+		{
+			double tempSigningBonus = SigningBonus;
+			double tempSigningBonusPerYear = tempSigningBonus / ContractLength;
+			double tempTotalSalary = TotalSalary;
+			
+			for (int i=0; i < 7; i++)
+			{
+				estYearlySalary[i] = 0;
+				estSigningBonusArray[i] = 0;
+			}
+
+			for (int i = ContractLength; i > 1; i--)
+			{
+				double specval = (tempSigningBonus / tempTotalSalary > 0.2 ? 1.3 : 1 + 1.5 * (tempSigningBonus / tempTotalSalary));
+				double divisor = 1 + specval;
+				
+				for (int j = i - 1; j > 1; j--)
+				{
+					divisor += Math.Pow(specval, j);
+				}
+
+				double tempVal = (double)((tempTotalSalary - tempSigningBonus) / divisor);
+				//Console.WriteLine("Value is " + tempVal);
+
+				estYearlySalary[ContractLength-i] = tempVal;
+
+				tempSigningBonus -= tempSigningBonusPerYear;
+				tempTotalSalary -= (tempVal + tempSigningBonusPerYear);
+			}
+			//Calculate last year of contract
+			//Round other years first
+			estYearlySalary[ContractLength - 1] = TotalSalary - SigningBonus;
+			estSigningBonusArray[ContractLength - 1] = SigningBonus;
+			for (int i = 0; i < ContractLength - 1; i++)
+			{
+				estYearlySalary[i] = Math.Round(estYearlySalary[i]);
+				estSigningBonusArray[i] = Math.Round(tempSigningBonusPerYear);
+
+				estYearlySalary[ContractLength - 1] = estYearlySalary[ContractLength - 1] - estYearlySalary[i];
+				estSigningBonusArray[ContractLength - 1] = estSigningBonusArray[ContractLength - 1] - estSigningBonusArray[i];
+				//Console.WriteLine("Rounded = " + tempYearlySalary[i] + " SB: " + tempSigningBonusArray[i]);
+			}
+			//Console.WriteLine("Rounded = " + tempYearlySalary[ContractLength - 1] + " SB: " + tempSigningBonusArray[ContractLength - 1]);
+
+			if (!calculatedCapHit)
+			{
+				capHit = (int)(estYearlySalary[ContractLength - ContractYearsLeft] + estSigningBonusArray[ContractLength - ContractYearsLeft]);
+				calculatedCapHit = true;
+			}
+			else
+			{
+				int tempCapHit = (int)(estYearlySalary[ContractLength - ContractYearsLeft] + estSigningBonusArray[ContractLength - ContractYearsLeft]);
+				capHitDifference = tempCapHit - capHit;
+				capHit = tempCapHit;
+			}
+			
+			Console.WriteLine("Cap hit = " + capHit);
+
+			if (intFields.ContainsKey(SALARY_YEAR_0))
+			{
+				//We are a franchise file so save back our yearly stuff
+				for (int i = 0; i < 7; i++)
+				{
+					string key = "PSA" + i;
+					SetField(key, (int)estYearlySalary[i], false);
+					key = "PSB" + i;
+					SetField(key, (int)estSigningBonusArray[i], false);
+				}
+			}
+		}
+
+		#endregion
+
 	}
 }

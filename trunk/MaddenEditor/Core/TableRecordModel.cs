@@ -106,7 +106,7 @@ namespace MaddenEditor.Core
 			return intFields[fieldName];
 		}
 
-		protected void SetFieldWithBackup(string fieldName, string val)
+		protected void SetField(string fieldName, string val)
 		{
 			//Exit early if the new value is the same
 			if (stringFields[fieldName].Equals(val))
@@ -128,7 +128,19 @@ namespace MaddenEditor.Core
 			stringFields[fieldName] = val;
 		}
 
-		protected void SetFieldWithBackup(string fieldName, int val)
+		protected void SetField(string fieldName, string val, bool backup)
+		{
+			if (backup)
+			{
+				SetField(fieldName, val);
+			}
+			else
+			{
+				stringFields[fieldName] = val;
+			}
+		}
+
+		protected void SetField(string fieldName, int val)
 		{
 			//Exit early if the new value is the same
 			if (intFields[fieldName] == val)
@@ -149,6 +161,18 @@ namespace MaddenEditor.Core
 			}
 
 			intFields[fieldName] = val;
+		}
+
+		protected void SetField(string fieldName, int val, bool backup)
+		{
+			if (backup)
+			{
+				SetField(fieldName, val);
+			}
+			else
+			{
+				intFields[fieldName] = val;
+			}
 		}
 
 		public void GetChangedIntFields(ref string[] keyArray, ref int[] valueArray)

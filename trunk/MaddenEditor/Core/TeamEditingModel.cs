@@ -32,12 +32,35 @@ namespace MaddenEditor.Core
 	{
 		/** Collection of team names hashed by teamid */
 		private Dictionary<int, string> teamNameList = null;
+		/** View to the TeamRecords indexed by Teamid */
+		private Dictionary<int, TeamRecord> teamRecords = null;
 		/** Reference to our EditorModel */
 		private EditorModel model = null;
 
 		public TeamEditingModel(EditorModel model)
 		{
 			this.model = model;
+		}
+
+		public TeamRecord GetTeamRecord(int teamId)
+		{
+			if (teamRecords == null)
+			{
+				teamRecords = new Dictionary<int, TeamRecord>();
+				foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+				{
+					TeamRecord tr = (TeamRecord)record;
+					teamRecords.Add(tr.TeamId, tr);
+				}
+			}
+
+			if (teamRecords.ContainsKey(teamId))
+			{
+				return teamRecords[teamId];
+			}
+			
+			return null;
+			
 		}
 
 		public ICollection<string> GetTeamNames()
