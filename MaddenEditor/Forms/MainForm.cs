@@ -275,5 +275,10 @@ namespace MaddenEditor.Forms
 			model.PlayerModel.GetNextPlayerRecord();
 			playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 		}
+
+		private void editSalaryCapsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
     }
 }

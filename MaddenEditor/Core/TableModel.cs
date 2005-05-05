@@ -148,6 +148,9 @@ namespace MaddenEditor.Core
 				case EditorModel.COACH_TABLE:
 					newRecord = new CoachRecord(recno, parentModel);
 					break;
+				case EditorModel.SALARY_CAP_TABLE:
+					newRecord = new SalaryCapRecord(recno, parentModel);
+					break;
 				//case MaddenTable.CPSE_TABLE:
 				//	return null;
 				//case MaddenTable.CTMP_TABLE:

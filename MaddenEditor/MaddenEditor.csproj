@@ -55,6 +55,7 @@
     <Compile Include="Core\CoachEditingModel.cs" />
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
+    <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
     <Compile Include="Db\TDB.cs" />
     <Compile Include="Db\TdbFieldProperties.cs" />
@@ -88,6 +89,12 @@
     <Compile Include="Forms\PlayerEditControl.Designer.cs">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SalaryCapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SalaryCapForm.Designer.cs">
+      <DependentUpon>SalaryCapForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PlayerEditControl.resx">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SalaryCapForm.resx">
+      <DependentUpon>SalaryCapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>

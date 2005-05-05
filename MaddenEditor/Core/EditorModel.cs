@@ -74,6 +74,7 @@ namespace MaddenEditor.Core
 		public const string TEAM_TABLE = "TEAM";
 		public const string INJURY_TABLE = "INJY";
 		public const string COACH_TABLE = "COCH";
+		public const string SALARY_CAP_TABLE = "SLRI";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -87,6 +88,7 @@ namespace MaddenEditor.Core
 		private PlayerEditingModel playerEditingModel = null;
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
+		private SalaryCapRecord salaryCapRecord = null;
 
 		public EditorModel(string filename, MainForm form)
 		{
@@ -107,13 +109,6 @@ namespace MaddenEditor.Core
 			tableModels = new Dictionary<string, TableModel>();
 			tableOrder = new Dictionary<string, int>();
 
-			//Initialise the tableOrder with the Table names we want to 
-			//Process
-			tableOrder.Add(TEAM_TABLE, -1);
-			tableOrder.Add(PLAYER_TABLE, -1);
-			tableOrder.Add(INJURY_TABLE, -1);
-			tableOrder.Add(COACH_TABLE, -1);
-
 			//Process the file
 			if (!ProcessFile())
 			{
@@ -124,6 +119,12 @@ namespace MaddenEditor.Core
 			playerEditingModel = new PlayerEditingModel(this);
 			teamEditingModel = new TeamEditingModel(this);
 			coachEditingModel = new CoachEditingModel(this);
+
+			if (fileType == MaddenFileType.FranchiseFile)
+			{
+				//Get the SalaryCapRecord for its info
+				salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
+			}
 		}
 
 		public MaddenFileType FileType
@@ -155,6 +156,14 @@ namespace MaddenEditor.Core
 			get
 			{
 				return teamEditingModel;
+			}
+		}
+
+		public SalaryCapRecord SalaryCapModel
+		{
+			get
+			{
+				return salaryCapRecord;
 			}
 		}
 
@@ -200,6 +209,17 @@ namespace MaddenEditor.Core
 				else
 				{
 					fileType = MaddenFileType.FranchiseFile;
+				}
+
+				//Initialise the tableOrder with the Table names we want to 
+				//Process
+				tableOrder.Add(TEAM_TABLE, -1);
+				tableOrder.Add(PLAYER_TABLE, -1);
+				tableOrder.Add(INJURY_TABLE, -1);
+				tableOrder.Add(COACH_TABLE, -1);
+				if (fileType == MaddenFileType.FranchiseFile)
+				{
+					tableOrder.Add(SALARY_CAP_TABLE, -1);
 				}
 
 				for (int j = 0; j < tableCount; j++)
