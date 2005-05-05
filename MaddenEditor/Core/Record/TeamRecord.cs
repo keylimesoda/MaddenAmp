@@ -98,7 +98,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				intFields[TEAM_SALARY] = value;
+				SetField(TEAM_SALARY, value);
 			}
 		}
 

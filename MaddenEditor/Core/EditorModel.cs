@@ -362,6 +362,7 @@ namespace MaddenEditor.Core
 			tableModels[PLAYER_TABLE].Save();
 			tableModels[INJURY_TABLE].Save();
 			tableModels[COACH_TABLE].Save();
+			tableModels[TEAM_TABLE].Save();
 
 			this.Dirty = false;
 		}

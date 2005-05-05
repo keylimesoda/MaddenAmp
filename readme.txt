@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.5
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.3
 
-                                   5th May 2005
+                                   6th May 2005
 
                                     readme.txt
 
@@ -40,9 +40,13 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
+* (NEW) Better editing of Salary. Changes should be effecting Team Salary too now
+
+* (NEW) Editing of RFA Minimum Tenders and Salary Cap in Franchise files
+
 * Editing of some Coach attributes
 
-* (NEW) Adding/removing of injuries with full description and bug fixes
+* Adding/removing of injuries with full description and bug fixes
 
 * Delete function
 
@@ -104,11 +108,15 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 6. FUTURE PLANS
 ===============
 
-* Create Player function almost complete 
+* Remove Cap Penalty ability
 
-* Complete all attribute editing of players
+* Depth Chart editor
 
-* Add Team and Coach editing
+* Complete all attribute editing of players and coaches
+
+* Add Team editing
+
+* Create Player function 
 
 * Add player picture from DAT files to Player screen
 

@@ -43,7 +43,15 @@ namespace MaddenEditor.Forms
 			//Load Coach General info
 			coachesName.Text = record.Name;
 			coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
-			coachTeamCombo.Text = coachTeamCombo.Items[record.TeamId].ToString();
+			string team = model.TeamModel.GetTeamNameFromTeamId(record.TeamId);
+			if (team.Equals(EditorModel.UNKNOWN_TEAM_NAME))
+			{
+				coachTeamCombo.Enabled = false;
+			}
+			else
+			{
+				coachTeamCombo.Text = team;
+			}
 			coachAge.Value = (int)record.Age;
 			coachSalary.Value = (decimal)((double)record.Salary / 100.0);
 

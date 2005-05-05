@@ -158,7 +158,7 @@ namespace MaddenEditor.Core.Record
 				//The first time we access this record we should calculate this players cap hit
 				if (!calculatedCapHit)
 				{
-					CalculateCapHit();
+					CalculateCapHit(false);
 				}
 				return stringFields[FIRST_NAME];
 			}
@@ -813,7 +813,7 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(CONTRACT_LENGTH, value);
-				CalculateCapHit();
+				CalculateCapHit(true);
 			}
 		}
 
@@ -826,7 +826,7 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(CONTRACT_YRS_LEFT, value);
-				CalculateCapHit();
+				CalculateCapHit(true);
 			}
 		}
 
@@ -839,7 +839,7 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(SIGNING_BONUS, value);
-				CalculateCapHit();
+				CalculateCapHit(true);
 			}
 		}
 
@@ -852,7 +852,7 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(TOTAL_SALARY, value);
-				CalculateCapHit();
+				CalculateCapHit(true);
 			}
 		}
 
@@ -1338,7 +1338,7 @@ namespace MaddenEditor.Core.Record
 			}
 			else
 			{
-				return (int)estYearlySalary[year];
+				return (int)estSigningBonusArray[year];
 			}
 		}
 
@@ -1358,7 +1358,7 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		private void CalculateCapHit()
+		private void CalculateCapHit(bool causeDirty)
 		{
 			double tempSigningBonus = SigningBonus;
 			double tempSigningBonusPerYear = tempSigningBonus / ContractLength;
@@ -1368,6 +1368,11 @@ namespace MaddenEditor.Core.Record
 			{
 				estYearlySalary[i] = 0;
 				estSigningBonusArray[i] = 0;
+			}
+
+			if (ContractLength == 0)
+			{
+				return;
 			}
 
 			for (int i = ContractLength; i > 1; i--)
@@ -1423,9 +1428,9 @@ namespace MaddenEditor.Core.Record
 				for (int i = 0; i < 7; i++)
 				{
 					string key = "PSA" + i;
-					SetField(key, (int)estYearlySalary[i], false);
+					SetField(key, (int)estYearlySalary[i], causeDirty);
 					key = "PSB" + i;
-					SetField(key, (int)estSigningBonusArray[i], false);
+					SetField(key, (int)estSigningBonusArray[i], causeDirty);
 				}
 			}
 		}

@@ -45,6 +45,7 @@ namespace MaddenEditor.Forms
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
+			this.testButton = new System.Windows.Forms.Button();
 			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
 			this.coachPage = new System.Windows.Forms.TabPage();
 			this.coachEditControl = new MaddenEditor.Forms.CoachEditControl();
@@ -171,6 +172,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerPage
 			// 
+			this.playerPage.Controls.Add(this.testButton);
 			this.playerPage.Controls.Add(this.playerEditControl);
 			this.playerPage.Location = new System.Drawing.Point(4, 22);
 			this.playerPage.Name = "playerPage";
@@ -178,6 +180,17 @@ namespace MaddenEditor.Forms
 			this.playerPage.Size = new System.Drawing.Size(784, 493);
 			this.playerPage.TabIndex = 0;
 			this.playerPage.Text = "Player Editor";
+			// 
+			// testButton
+			// 
+			this.testButton.Enabled = false;
+			this.testButton.Location = new System.Drawing.Point(142, 107);
+			this.testButton.Name = "testButton";
+			this.testButton.Size = new System.Drawing.Size(75, 23);
+			this.testButton.TabIndex = 37;
+			this.testButton.Text = "Test";
+			this.testButton.Visible = false;
+			this.testButton.Click += new System.EventHandler(this.testButton_Click);
 			// 
 			// playerEditControl
 			// 
@@ -298,6 +311,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem franchiseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editSalaryCapsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripStatusLabel processingTableLabel;
+		private System.Windows.Forms.Button testButton;
 		private PlayerEditControl playerEditControl;
 		private CoachEditControl coachEditControl;
     }
