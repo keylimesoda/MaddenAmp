@@ -214,6 +214,21 @@ namespace MaddenEditor.Forms
 			LoadPlayerInfo(newRecord);
 		}
 
+		private void calculateEnhancement_Click(object sender, EventArgs e)
+		{
+			int currentOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
+			int desiredOvr = currentOvr;
+			if (enhancementPercentage.Value > 0)
+			{
+
+			}
+			else
+			{
+
+			}
+			
+		}
+
 		#region IEditorForm Members
 
 		public void InitialiseUI()
@@ -1051,6 +1066,8 @@ namespace MaddenEditor.Forms
 		}
 
 		#endregion
+
+		
 
 
 	}

@@ -187,6 +187,7 @@ namespace MaddenEditor.Forms
 			this.label10 = new System.Windows.Forms.Label();
 			this.playerInjuryPage = new System.Windows.Forms.TabPage();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.injuryLengthDescriptionTextBox = new System.Windows.Forms.TextBox();
 			this.playerRemoveInjuryButton = new System.Windows.Forms.Button();
 			this.playerAddInjuryButton = new System.Windows.Forms.Button();
 			this.playerInjuryLength = new System.Windows.Forms.NumericUpDown();
@@ -231,7 +232,11 @@ namespace MaddenEditor.Forms
 			this.playerFaceMaskCombo = new System.Windows.Forms.ComboBox();
 			this.label72 = new System.Windows.Forms.Label();
 			this.playerHelmetStyleCombo = new System.Windows.Forms.ComboBox();
-			this.injuryLengthDescriptionTextBox = new System.Windows.Forms.TextBox();
+			this.calculateEnhancement = new System.Windows.Forms.Button();
+			this.label75 = new System.Windows.Forms.Label();
+			this.label78 = new System.Windows.Forms.Label();
+			this.enhancementPercentage = new System.Windows.Forms.NumericUpDown();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -297,6 +302,8 @@ namespace MaddenEditor.Forms
 			this.groupBox3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).BeginInit();
 			this.groupBox2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).BeginInit();
+			this.groupBox4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// playerSplitContainer
@@ -940,6 +947,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRatingPage
 			// 
+			this.playerRatingPage.Controls.Add(this.groupBox4);
 			this.playerRatingPage.Controls.Add(this.label74);
 			this.playerRatingPage.Controls.Add(this.playerTotalSalary);
 			this.playerRatingPage.Controls.Add(this.label70);
@@ -2423,6 +2431,17 @@ namespace MaddenEditor.Forms
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Injury";
 			// 
+			// injuryLengthDescriptionTextBox
+			// 
+			this.injuryLengthDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.injuryLengthDescriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.injuryLengthDescriptionTextBox.Location = new System.Drawing.Point(136, 49);
+			this.injuryLengthDescriptionTextBox.Name = "injuryLengthDescriptionTextBox";
+			this.injuryLengthDescriptionTextBox.ReadOnly = true;
+			this.injuryLengthDescriptionTextBox.Size = new System.Drawing.Size(143, 20);
+			this.injuryLengthDescriptionTextBox.TabIndex = 8;
+			this.injuryLengthDescriptionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
 			// playerRemoveInjuryButton
 			// 
 			this.playerRemoveInjuryButton.Location = new System.Drawing.Point(137, 86);
@@ -3235,16 +3254,57 @@ namespace MaddenEditor.Forms
 			this.playerHelmetStyleCombo.TabIndex = 0;
 			this.playerHelmetStyleCombo.SelectedIndexChanged += new System.EventHandler(this.playerHelmetStyleCombo_SelectedIndexChanged);
 			// 
-			// injuryLengthDescriptionTextBox
+			// calculateEnhancement
 			// 
-			this.injuryLengthDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-			this.injuryLengthDescriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.injuryLengthDescriptionTextBox.Location = new System.Drawing.Point(136, 49);
-			this.injuryLengthDescriptionTextBox.Name = "injuryLengthDescriptionTextBox";
-			this.injuryLengthDescriptionTextBox.ReadOnly = true;
-			this.injuryLengthDescriptionTextBox.Size = new System.Drawing.Size(143, 20);
-			this.injuryLengthDescriptionTextBox.TabIndex = 8;
-			this.injuryLengthDescriptionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.calculateEnhancement.Location = new System.Drawing.Point(161, 14);
+			this.calculateEnhancement.Name = "calculateEnhancement";
+			this.calculateEnhancement.Size = new System.Drawing.Size(75, 23);
+			this.calculateEnhancement.TabIndex = 69;
+			this.calculateEnhancement.Text = "Calculate";
+			this.calculateEnhancement.Click += new System.EventHandler(this.calculateEnhancement_Click);
+			// 
+			// label75
+			// 
+			this.label75.AutoSize = true;
+			this.label75.Location = new System.Drawing.Point(144, 18);
+			this.label75.Name = "label75";
+			this.label75.Size = new System.Drawing.Size(11, 13);
+			this.label75.TabIndex = 67;
+			this.label75.Text = "%";
+			// 
+			// label78
+			// 
+			this.label78.AutoSize = true;
+			this.label78.Location = new System.Drawing.Point(10, 18);
+			this.label78.Name = "label78";
+			this.label78.Size = new System.Drawing.Size(63, 13);
+			this.label78.TabIndex = 68;
+			this.label78.Text = "Enhance by ";
+			// 
+			// enhancementPercentage
+			// 
+			this.enhancementPercentage.Location = new System.Drawing.Point(79, 14);
+			this.enhancementPercentage.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+			this.enhancementPercentage.Name = "enhancmentPercentage";
+			this.enhancementPercentage.Size = new System.Drawing.Size(59, 20);
+			this.enhancementPercentage.TabIndex = 66;
+			// 
+			// groupBox4
+			// 
+			this.groupBox4.Controls.Add(this.label78);
+			this.groupBox4.Controls.Add(this.calculateEnhancement);
+			this.groupBox4.Controls.Add(this.enhancementPercentage);
+			this.groupBox4.Controls.Add(this.label75);
+			this.groupBox4.Location = new System.Drawing.Point(237, 0);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(284, 43);
+			this.groupBox4.TabIndex = 70;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Rating Enhancer";
 			// 
 			// PlayerEditControl
 			// 
@@ -3324,6 +3384,9 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).EndInit();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).EndInit();
+			this.groupBox4.ResumeLayout(false);
+			this.groupBox4.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -3534,5 +3597,10 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label72;
 		private System.Windows.Forms.ComboBox playerHelmetStyleCombo;
 		private System.Windows.Forms.TextBox injuryLengthDescriptionTextBox;
+		private System.Windows.Forms.GroupBox groupBox4;
+		private System.Windows.Forms.Label label78;
+		private System.Windows.Forms.Button calculateEnhancement;
+		private System.Windows.Forms.NumericUpDown enhancementPercentage;
+		private System.Windows.Forms.Label label75;
 	}
 }

@@ -45,15 +45,15 @@ namespace MaddenEditor.Forms
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
-			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
 			this.coachPage = new System.Windows.Forms.TabPage();
-			this.coachEditControl = new MaddenEditor.Forms.CoachEditControl();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
+			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
+			this.coachEditControl = new MaddenEditor.Forms.CoachEditControl();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -143,6 +143,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.editSalaryCapsToolStripMenuItem.Name = "editSalaryCapsToolStripMenuItem";
 			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps";
+			this.editSalaryCapsToolStripMenuItem.Click += new System.EventHandler(this.editSalaryCapsToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -178,14 +179,6 @@ namespace MaddenEditor.Forms
 			this.playerPage.TabIndex = 0;
 			this.playerPage.Text = "Player Editor";
 			// 
-			// playerEditControl
-			// 
-			this.playerEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.playerEditControl.Location = new System.Drawing.Point(3, 3);
-			this.playerEditControl.Name = "playerEditControl";
-			this.playerEditControl.Size = new System.Drawing.Size(778, 487);
-			this.playerEditControl.TabIndex = 0;
-			// 
 			// coachPage
 			// 
 			this.coachPage.Controls.Add(this.coachEditControl);
@@ -195,14 +188,6 @@ namespace MaddenEditor.Forms
 			this.coachPage.Size = new System.Drawing.Size(784, 493);
 			this.coachPage.TabIndex = 1;
 			this.coachPage.Text = "Coach Editor";
-			// 
-			// coachEditControl
-			// 
-			this.coachEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.coachEditControl.Location = new System.Drawing.Point(3, 3);
-			this.coachEditControl.Name = "coachEditControl";
-			this.coachEditControl.Size = new System.Drawing.Size(778, 487);
-			this.coachEditControl.TabIndex = 0;
 			// 
 			// statusStrip
 			// 
@@ -246,6 +231,22 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.WorkerSupportsCancellation = true;
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
+			// 
+			// playerEditControl
+			// 
+			this.playerEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.playerEditControl.Location = new System.Drawing.Point(3, 3);
+			this.playerEditControl.Name = "playerEditControl";
+			this.playerEditControl.Size = new System.Drawing.Size(778, 487);
+			this.playerEditControl.TabIndex = 0;
+			// 
+			// coachEditControl
+			// 
+			this.coachEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.coachEditControl.Location = new System.Drawing.Point(3, 3);
+			this.coachEditControl.Name = "coachEditControl";
+			this.coachEditControl.Size = new System.Drawing.Size(778, 487);
+			this.coachEditControl.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -294,10 +295,10 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem searchforPlayerToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker testerWorkerThread;
-		private PlayerEditControl playerEditControl;
-		private CoachEditControl coachEditControl;
 		private System.Windows.Forms.ToolStripMenuItem franchiseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editSalaryCapsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripStatusLabel processingTableLabel;
+		private PlayerEditControl playerEditControl;
+		private CoachEditControl coachEditControl;
     }
 }
