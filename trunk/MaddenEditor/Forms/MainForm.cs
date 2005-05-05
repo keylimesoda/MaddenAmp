@@ -264,15 +264,11 @@ namespace MaddenEditor.Forms
 
 		private void testerWorkerThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-			// This method will run on a thread other than the UI thread.
-			// Be sure not to manipulate any Windows Forms controls created
-			// on the UI thread from this method.
 			while (true)
 			{
 				System.Threading.Thread.Sleep(250);
 				testerWorkerThread.ReportProgress(0);
 			}
-
 		}
 
 		private void testerWorkerThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
