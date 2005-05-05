@@ -46,15 +46,15 @@ namespace MaddenEditor.Forms
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
 			this.testButton = new System.Windows.Forms.Button();
+			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
 			this.coachPage = new System.Windows.Forms.TabPage();
+			this.coachEditControl = new MaddenEditor.Forms.CoachEditControl();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-			this.playerEditControl = new MaddenEditor.Forms.PlayerEditControl();
-			this.coachEditControl = new MaddenEditor.Forms.CoachEditControl();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -183,12 +183,22 @@ namespace MaddenEditor.Forms
 			// 
 			// testButton
 			// 
+			this.testButton.Enabled = false;
 			this.testButton.Location = new System.Drawing.Point(142, 107);
 			this.testButton.Name = "testButton";
 			this.testButton.Size = new System.Drawing.Size(75, 23);
 			this.testButton.TabIndex = 37;
 			this.testButton.Text = "Test";
+			this.testButton.Visible = false;
 			this.testButton.Click += new System.EventHandler(this.testButton_Click);
+			// 
+			// playerEditControl
+			// 
+			this.playerEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.playerEditControl.Location = new System.Drawing.Point(3, 3);
+			this.playerEditControl.Name = "playerEditControl";
+			this.playerEditControl.Size = new System.Drawing.Size(778, 487);
+			this.playerEditControl.TabIndex = 0;
 			// 
 			// coachPage
 			// 
@@ -199,6 +209,14 @@ namespace MaddenEditor.Forms
 			this.coachPage.Size = new System.Drawing.Size(784, 493);
 			this.coachPage.TabIndex = 1;
 			this.coachPage.Text = "Coach Editor";
+			// 
+			// coachEditControl
+			// 
+			this.coachEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.coachEditControl.Location = new System.Drawing.Point(3, 3);
+			this.coachEditControl.Name = "coachEditControl";
+			this.coachEditControl.Size = new System.Drawing.Size(778, 487);
+			this.coachEditControl.TabIndex = 0;
 			// 
 			// statusStrip
 			// 
@@ -242,22 +260,6 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.WorkerSupportsCancellation = true;
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
-			// 
-			// playerEditControl
-			// 
-			this.playerEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.playerEditControl.Location = new System.Drawing.Point(3, 3);
-			this.playerEditControl.Name = "playerEditControl";
-			this.playerEditControl.Size = new System.Drawing.Size(778, 487);
-			this.playerEditControl.TabIndex = 0;
-			// 
-			// coachEditControl
-			// 
-			this.coachEditControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.coachEditControl.Location = new System.Drawing.Point(3, 3);
-			this.coachEditControl.Name = "coachEditControl";
-			this.coachEditControl.Size = new System.Drawing.Size(778, 487);
-			this.coachEditControl.TabIndex = 0;
 			// 
 			// MainForm
 			// 
