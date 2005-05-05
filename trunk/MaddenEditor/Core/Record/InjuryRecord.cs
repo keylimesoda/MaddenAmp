@@ -137,7 +137,7 @@ namespace MaddenEditor.Core.Record
 				{
 					return (((length - 24)/20) + 1) + " week/s";
 				}
-				else if (length >= 244 && length <= 254)
+				else if (length >= 244 && length < 254)
 				{
 					return "12 weeks";
 				}

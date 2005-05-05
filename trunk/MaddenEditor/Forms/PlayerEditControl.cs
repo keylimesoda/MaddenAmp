@@ -193,7 +193,36 @@ namespace MaddenEditor.Forms
 
 		private void LoadPlayerSalaries(PlayerRecord record)
 		{
-			playerTeamSalary.Text = "" + ((double)model.TeamModel.GetTeamRecord(record.TeamId).Salary / 100.0);
+			TeamRecord teamRecord = model.TeamModel.GetTeamRecord(record.TeamId);
+			if (teamRecord == null)
+			{
+				playerCapRoom.Enabled = false;
+				playerCapRoom.Text = "";
+				playerCapHit.Enabled = false;
+				playerCapHit.Text = "";
+				playerTeamSalary.Enabled = false;
+				playerTeamSalary.Text = "";
+				playerContractLength.Enabled = false;
+				playerContractLength.Value = 0;
+				playerContractYearsLeft.Enabled = false;
+				playerContractYearsLeft.Value = 0;
+				playerSigningBonus.Enabled = false;
+				playerSigningBonus.Value = 0;
+				playerTotalSalary.Enabled = false;
+				playerTotalSalary.Value = 0;
+				return;
+			}
+			else
+			{
+				playerCapRoom.Enabled = true;
+				playerCapHit.Enabled = true;
+				playerTeamSalary.Enabled = true;
+				playerContractLength.Enabled = true;
+				playerContractYearsLeft.Enabled = true;
+				playerSigningBonus.Enabled = true;
+				playerTotalSalary.Enabled = true;
+			}
+			playerTeamSalary.Text = "" + ((double)teamRecord.Salary / 100.0);
 			playerCapHit.Text = "" + ((double)record.CapHit / 100.0);
 			if (model.FileType == MaddenFileType.FranchiseFile)
 			{
