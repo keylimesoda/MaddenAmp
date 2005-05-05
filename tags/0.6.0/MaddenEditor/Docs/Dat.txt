@@ -1,0 +1,37 @@
++----------------------------------------------------+
+| Madden 2005 *.dat (Type 3 - Some Compression Used) |
++----------------------------------------------------+
+
+// NOTE: Files with length=0 still incur padding, so are actually 128 null bytes
+
+4 - Header (TERF)
+4 - Directory Offset (128)
+4 - Unknown (83886594)
+2 - File Padding Size (128)
+2 - Number Of Files
+
+4 - Directory Header (DIR1)
+4 - Directory Length (including these 2 fields)
+
+// for each file
+  4 - File Offset (relative to the start of the FileDataHeader)
+  4 - File Length
+  
+0-127 - Padding to a multiple of 128 bytes
+  
+4 - Compression Header (COMP)
+4 - Compression Length (including these 2 fields)
+
+// for each file
+  4 - Compression Tag (0=uncompressed, 5=compressed)
+  4 - Decompressed Size (0=uncompressed)
+  
+0-127 - Padding to a multiple of 128 bytes
+  
+4 - File Data Header (DATA)
+4 - File Data Length (including these 3 fields)
+4 - null
+
+// for each file
+  X - File Data
+  0-127 - null Padding to a multiple of 128 bytes
