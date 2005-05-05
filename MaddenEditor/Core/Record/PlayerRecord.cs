@@ -1266,6 +1266,14 @@ namespace MaddenEditor.Core.Record
 					tempOverall += (((double)Tackle - 50) / 10) * 3.2;
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
 					break;
+				case (int)MaddenPositions.P:
+					tempOverall = (double)(-183 + 0.218*Awareness + 1.5 * KickPower + 1.33 * KickAccuracy);
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall));
+					break;
+				case (int)MaddenPositions.K:
+					tempOverall = (double)(-177 + 0.218*Awareness + 1.28 * KickPower + 1.47 * KickAccuracy);
+					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall));
+					break;
 
 
 			}

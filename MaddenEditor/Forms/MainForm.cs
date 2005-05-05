@@ -47,6 +47,7 @@ namespace MaddenEditor.Forms
 			
 			tabControl.Visible = false;
 			searchToolStripMenuItem.Visible = false;
+			franchiseToolStripMenuItem.Visible = false;
 			statusStrip.Visible = false;
 
 			isInitialising = false;
@@ -131,16 +132,31 @@ namespace MaddenEditor.Forms
 			//once the model is initialised set tell the custom edit
 			//controls about it
 			playerEditControl.Model = model;
+			coachEditControl.Model = model;
 		}
 
-		public void updateProgress(int percentage)
+		public void updateProgress(int percentage, string tablename)
 		{
-			rosterFileLoaderThread.ReportProgress(percentage);
+			rosterFileLoaderThread.ReportProgress(percentage, tablename);
 		}
 
 		private void InitialiseUI()
 		{
 			playerEditControl.InitialiseUI();
+			coachEditControl.InitialiseUI();
+
+			tabControl.Visible = true;
+			searchToolStripMenuItem.Visible = true;
+			processingTableLabel.Text = "";
+			statusStrip.Visible = false;
+			toolStripProgressBar.Value = 0;
+
+			/*if (model.FileType == MaddenFileType.FranchiseFile)
+			{
+				franchiseToolStripMenuItem.Visible = true;
+			}*/
+
+			this.Cursor = Cursors.Default;
 		}
 		
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -158,9 +174,12 @@ namespace MaddenEditor.Forms
 			searchForm = null;
 
 			playerEditControl.CleanUI();
-			
+			coachEditControl.CleanUI();
+						
 			tabControl.Visible = false;
 			searchToolStripMenuItem.Visible = false;
+			processingTableLabel.Text = "";
+			franchiseToolStripMenuItem.Visible = false;
 		}
 
 		private void rosterFileLoaderThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -175,19 +194,14 @@ namespace MaddenEditor.Forms
 			{
 				Console.WriteLine(err.ToString());
 			}
-
-			tabControl.Visible = true;
-			searchToolStripMenuItem.Visible = true;
-			statusStrip.Visible = false;
-			toolStripProgressBar.Value = 0;
-			this.Cursor = Cursors.Default;
-
+			
 			isInitialising = false;
 		}
 
 		private void rosterFileLoaderThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			toolStripProgressBar.Value = e.ProgressPercentage;
+			processingTableLabel.Text = "Loading Table: " + e.UserState.ToString();
 		}
 		
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -228,7 +242,9 @@ namespace MaddenEditor.Forms
 			if (searchForm.DialogResult == DialogResult.OK)
 			{
 				//Found a new player to switch to
-				playerEditControl.LoadPlayerInfo(searchForm.SelectedPlayer);
+				//need to set current player to this player
+				model.PlayerModel.CurrentPlayerRecord = searchForm.SelectedPlayer;
+				playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 			}
 		}
 		

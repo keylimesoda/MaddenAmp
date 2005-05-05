@@ -81,9 +81,12 @@ namespace MaddenEditor.Core
 		private string fileName = "";
 		private MainForm view = null;
 		private Dictionary<string, TableModel> tableModels = null;
-		private PlayerEditingModel playerEditingModel = null;
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private Dictionary<string, int> tableOrder = null;
+		/** Editing Models */
+		private PlayerEditingModel playerEditingModel = null;
+		private CoachEditingModel coachEditingModel = null;
+		private TeamEditingModel teamEditingModel = null;
 
 		public EditorModel(string filename, MainForm form)
 		{
@@ -117,8 +120,18 @@ namespace MaddenEditor.Core
 				throw new ApplicationException("Error processing file: " + filename);
 			}
 
-			//Once we've processed the file create our PlayerEditingModel
-			playerEditingModel = new PlayerEditingModel(tableModels);
+			//Once we've processed the file create our editing models
+			playerEditingModel = new PlayerEditingModel(this);
+			teamEditingModel = new TeamEditingModel(this);
+			coachEditingModel = new CoachEditingModel(this);
+		}
+
+		public MaddenFileType FileType
+		{
+			get
+			{
+				return fileType;
+			}
 		}
 
 		public PlayerEditingModel PlayerModel
@@ -126,6 +139,30 @@ namespace MaddenEditor.Core
 			get
 			{
 				return playerEditingModel;
+			}
+		}
+
+		public CoachEditingModel CoachModel
+		{
+			get
+			{
+				return coachEditingModel;
+			}
+		}
+
+		public TeamEditingModel TeamModel
+		{
+			get
+			{
+				return teamEditingModel;
+			}
+		}
+
+		public Dictionary<string, TableModel> TableModels
+		{
+			get
+			{
+				return tableModels;
 			}
 		}
 
@@ -204,7 +241,7 @@ namespace MaddenEditor.Core
 		private bool ProcessTable(int tableNumber)
 		{
 			//Reset the progress bar
-			view.updateProgress(0);
+			view.updateProgress(0, "");
 
 			//Get the table properties
 			TdbTableProperties tableProps = new TdbTableProperties();
@@ -288,12 +325,12 @@ namespace MaddenEditor.Core
 				recordsFound++;
 
 				currentProgress += progressInterval;
-				view.updateProgress((int)currentProgress);
+				view.updateProgress((int)currentProgress, table.Name);
 			}
 
 			tableModels.Add(table.Name, table);
 			Console.WriteLine("Finished processing Table: " + table.Name);
-			view.updateProgress(100);
+			view.updateProgress(100, table.Name);
 			return true;
 		}
 

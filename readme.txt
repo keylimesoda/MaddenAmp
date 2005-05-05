@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.5.9
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.0
 
-                                   4th May 2005
+                                   5th May 2005
 
                                     readme.txt
 
@@ -40,18 +40,20 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
-* (NEW) Delete function
+* Editing of some Coach attributes
 
-* (NEW) Adding/removing of injuries (Injuries not yet described)
+* (NEW) Adding/removing of injuries with full description and bug fixes
 
-* (NEW) Added Draft Class Filter for easy editing of draft classes
+* Delete function
 
-* (NEW) Supports loading franchise files
+* Added Draft Class Filter for easy editing of draft classes
 
-* (NEW) Added support to estimate OVR rating by hitting calculate
+* Supports loading franchise files
+
+* Added support to estimate OVR rating by hitting calculate
         (From files by ReMiNiScE @ football-freaks.com)
 
-* (NEW) Nearly all player attributes (bar 5) are now editable
+* Nearly all player attributes (bar 5) are now editable
 
 * Fast Search function to find specific players
 

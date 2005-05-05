@@ -37,6 +37,9 @@ namespace MaddenEditor.Core.Record
 		public const string SALARY = "CSAL";
 		public const string SUPERBOWL_LOSES = "CSBL";
 		public const string SUPERBOWL_WINS = "CSBW";
+		public const string PLAYOFF_LOSES = "CCPL";
+		public const string PLAYFF_WINS = "CCPW";
+		public const string WINNING_SEASONS = "CCWS";
 
 		public const string OFF_RATING = "COFF";
 		public const string DEF_RATING = "CDEF";
@@ -45,6 +48,7 @@ namespace MaddenEditor.Core.Record
 		public const string QB_RATING = "CRQB";
 		public const string RB_RATING = "CRRB";
 		public const string OL_RATING = "CROL";
+		public const string DL_RATING = "CRDL";
 		public const string WR_RATING = "CRWR";
 		public const string KICK_RATING = "CRKS";
 		public const string PUNT_RATING = "CRPS";
@@ -52,6 +56,7 @@ namespace MaddenEditor.Core.Record
 		public const string ETHICS = "CETH";
 		public const string KNOWLEDGE = "CKNW";
 		public const string MOTIVATION = "CMOT";
+		public const string CHEMISTRY = "CCHM";
 		
 
 		public CoachRecord(int record, EditorModel EditorModel)
@@ -156,6 +161,42 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
+		public int PlayoffLoses
+		{
+			get
+			{
+				return intFields[PLAYOFF_LOSES];
+			}
+			set
+			{
+				SetFieldWithBackup(PLAYOFF_LOSES, value);
+			}
+		}
+
+		public int PlayoffWins
+		{
+			get
+			{
+				return intFields[PLAYFF_WINS];
+			}
+			set
+			{
+				SetFieldWithBackup(PLAYFF_WINS, value);
+			}
+		}
+
+		public int WinningSeasons
+		{
+			get
+			{
+				return intFields[WINNING_SEASONS];
+			}
+			set
+			{
+				SetFieldWithBackup(WINNING_SEASONS, value);
+			}
+		}
+
 		public int OffensiveRating
 		{
 			get
@@ -240,6 +281,18 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
+		public int DefensiveLineRating
+		{
+			get
+			{
+				return intFields[DL_RATING];
+			}
+			set
+			{
+				SetFieldWithBackup(DL_RATING, value);
+			}
+		}
+
 		public int WideReceiverRating
 		{
 			get
@@ -309,6 +362,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetFieldWithBackup(MOTIVATION, value);
+			}
+		}
+
+		public int Chemistry
+		{
+			get
+			{
+				return intFields[CHEMISTRY];
+			}
+			set
+			{
+				SetFieldWithBackup(CHEMISTRY, value);
 			}
 		}
 	}
