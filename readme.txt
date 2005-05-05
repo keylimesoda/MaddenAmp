@@ -1,7 +1,7 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.5
 
                                    5th May 2005
 

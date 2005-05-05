@@ -59,16 +59,13 @@ namespace MaddenEditor.Forms
 			this.filterTeamComboBox = new System.Windows.Forms.ComboBox();
 			this.teamCheckBox = new System.Windows.Forms.CheckBox();
 			this.positionCheckBox = new System.Windows.Forms.CheckBox();
-			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerRatingPage = new System.Windows.Forms.TabPage();
-			this.label74 = new System.Windows.Forms.Label();
-			this.playerTotalSalary = new System.Windows.Forms.NumericUpDown();
-			this.label70 = new System.Windows.Forms.Label();
-			this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
-			this.label69 = new System.Windows.Forms.Label();
-			this.label68 = new System.Windows.Forms.Label();
-			this.playerContractYearsLeft = new System.Windows.Forms.NumericUpDown();
-			this.playerContractLength = new System.Windows.Forms.NumericUpDown();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.label78 = new System.Windows.Forms.Label();
+			this.calculateEnhancement = new System.Windows.Forms.Button();
+			this.enhancementPercentage = new System.Windows.Forms.NumericUpDown();
+			this.label75 = new System.Windows.Forms.Label();
 			this.playerProBowl = new System.Windows.Forms.CheckBox();
 			this.calculateOverallButton = new System.Windows.Forms.Button();
 			this.playerOverall = new System.Windows.Forms.NumericUpDown();
@@ -232,11 +229,47 @@ namespace MaddenEditor.Forms
 			this.playerFaceMaskCombo = new System.Windows.Forms.ComboBox();
 			this.label72 = new System.Windows.Forms.Label();
 			this.playerHelmetStyleCombo = new System.Windows.Forms.ComboBox();
-			this.calculateEnhancement = new System.Windows.Forms.Button();
-			this.label75 = new System.Windows.Forms.Label();
-			this.label78 = new System.Windows.Forms.Label();
-			this.enhancementPercentage = new System.Windows.Forms.NumericUpDown();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.contractPage = new System.Windows.Forms.TabPage();
+			this.label97 = new System.Windows.Forms.Label();
+			this.label98 = new System.Windows.Forms.Label();
+			this.playerSigningBonusYear0 = new System.Windows.Forms.TextBox();
+			this.playerSigningBonusYear1 = new System.Windows.Forms.TextBox();
+			this.playerSigningBonusYear2 = new System.Windows.Forms.TextBox();
+			this.playerSigningBonusYear3 = new System.Windows.Forms.TextBox();
+			this.playerSigningBonusYear4 = new System.Windows.Forms.TextBox();
+			this.playerSigningBonusYear5 = new System.Windows.Forms.TextBox();
+			this.playerSigningBonusYear6 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary6 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary5 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary4 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary3 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary2 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary1 = new System.Windows.Forms.TextBox();
+			this.playerYearlySalary0 = new System.Windows.Forms.TextBox();
+			this.label99 = new System.Windows.Forms.Label();
+			this.label100 = new System.Windows.Forms.Label();
+			this.label101 = new System.Windows.Forms.Label();
+			this.label102 = new System.Windows.Forms.Label();
+			this.label103 = new System.Windows.Forms.Label();
+			this.label104 = new System.Windows.Forms.Label();
+			this.label105 = new System.Windows.Forms.Label();
+			this.label96 = new System.Windows.Forms.Label();
+			this.playerTeamSalary = new System.Windows.Forms.TextBox();
+			this.label95 = new System.Windows.Forms.Label();
+			this.label74 = new System.Windows.Forms.Label();
+			this.playerTotalSalary = new System.Windows.Forms.NumericUpDown();
+			this.label70 = new System.Windows.Forms.Label();
+			this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
+			this.label69 = new System.Windows.Forms.Label();
+			this.label68 = new System.Windows.Forms.Label();
+			this.playerContractYearsLeft = new System.Windows.Forms.NumericUpDown();
+			this.playerContractLength = new System.Windows.Forms.NumericUpDown();
+			this.label106 = new System.Windows.Forms.Label();
+			this.playerCapRoom = new System.Windows.Forms.TextBox();
+			this.label107 = new System.Windows.Forms.Label();
+			this.label108 = new System.Windows.Forms.Label();
+			this.playerCapHit = new System.Windows.Forms.TextBox();
+			this.label109 = new System.Windows.Forms.Label();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -245,12 +278,10 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerAge)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.groupBox1.SuspendLayout();
-			this.tabControl1.SuspendLayout();
+			this.tabControl.SuspendLayout();
 			this.playerRatingPage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
+			this.groupBox4.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).BeginInit();
@@ -302,8 +333,11 @@ namespace MaddenEditor.Forms
 			this.groupBox3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).BeginInit();
 			this.groupBox2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).BeginInit();
-			this.groupBox4.SuspendLayout();
+			this.contractPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// playerSplitContainer
@@ -340,7 +374,7 @@ namespace MaddenEditor.Forms
 			// 
 			// playerSplitContainer.Panel2
 			// 
-			this.playerSplitContainer.Panel2.Controls.Add(this.tabControl1);
+			this.playerSplitContainer.Panel2.Controls.Add(this.tabControl);
 			this.playerSplitContainer.Size = new System.Drawing.Size(770, 583);
 			this.playerSplitContainer.SplitterDistance = 228;
 			this.playerSplitContainer.TabIndex = 1;
@@ -933,29 +967,22 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox.Text = "Position";
 			this.positionCheckBox.CheckedChanged += new System.EventHandler(this.positionCheckBox_CheckedChanged);
 			// 
-			// tabControl1
+			// tabControl
 			// 
-			this.tabControl1.Controls.Add(this.playerRatingPage);
-			this.tabControl1.Controls.Add(this.playerAppearancePage);
-			this.tabControl1.Controls.Add(this.playerInjuryPage);
-			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 0);
-			this.tabControl1.Name = "tabControl1";
-			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(538, 583);
-			this.tabControl1.TabIndex = 0;
+			this.tabControl.Controls.Add(this.playerRatingPage);
+			this.tabControl.Controls.Add(this.playerAppearancePage);
+			this.tabControl.Controls.Add(this.playerInjuryPage);
+			this.tabControl.Controls.Add(this.contractPage);
+			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControl.Location = new System.Drawing.Point(0, 0);
+			this.tabControl.Name = "tabControl";
+			this.tabControl.SelectedIndex = 0;
+			this.tabControl.Size = new System.Drawing.Size(538, 583);
+			this.tabControl.TabIndex = 0;
 			// 
 			// playerRatingPage
 			// 
 			this.playerRatingPage.Controls.Add(this.groupBox4);
-			this.playerRatingPage.Controls.Add(this.label74);
-			this.playerRatingPage.Controls.Add(this.playerTotalSalary);
-			this.playerRatingPage.Controls.Add(this.label70);
-			this.playerRatingPage.Controls.Add(this.playerSigningBonus);
-			this.playerRatingPage.Controls.Add(this.label69);
-			this.playerRatingPage.Controls.Add(this.label68);
-			this.playerRatingPage.Controls.Add(this.playerContractYearsLeft);
-			this.playerRatingPage.Controls.Add(this.playerContractLength);
 			this.playerRatingPage.Controls.Add(this.playerProBowl);
 			this.playerRatingPage.Controls.Add(this.calculateOverallButton);
 			this.playerRatingPage.Controls.Add(this.playerOverall);
@@ -1014,95 +1041,57 @@ namespace MaddenEditor.Forms
 			this.playerRatingPage.TabIndex = 0;
 			this.playerRatingPage.Text = "Player Ratings";
 			// 
-			// label74
+			// groupBox4
 			// 
-			this.label74.AutoSize = true;
-			this.label74.Location = new System.Drawing.Point(382, 166);
-			this.label74.Name = "label74";
-			this.label74.Size = new System.Drawing.Size(59, 13);
-			this.label74.TabIndex = 65;
-			this.label74.Text = "Total Salary";
+			this.groupBox4.Controls.Add(this.label78);
+			this.groupBox4.Controls.Add(this.calculateEnhancement);
+			this.groupBox4.Controls.Add(this.enhancementPercentage);
+			this.groupBox4.Controls.Add(this.label75);
+			this.groupBox4.Location = new System.Drawing.Point(367, 45);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(154, 120);
+			this.groupBox4.TabIndex = 70;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Rating Enhancer";
 			// 
-			// playerTotalSalary
+			// label78
 			// 
-			this.playerTotalSalary.DecimalPlaces = 2;
-			this.playerTotalSalary.Location = new System.Drawing.Point(447, 159);
-			this.playerTotalSalary.Maximum = new decimal(new int[] {
-            65536,
+			this.label78.AutoSize = true;
+			this.label78.Location = new System.Drawing.Point(37, 38);
+			this.label78.Name = "label78";
+			this.label78.Size = new System.Drawing.Size(63, 13);
+			this.label78.TabIndex = 68;
+			this.label78.Text = "Enhance by ";
+			// 
+			// calculateEnhancement
+			// 
+			this.calculateEnhancement.Location = new System.Drawing.Point(161, 14);
+			this.calculateEnhancement.Name = "calculateEnhancement";
+			this.calculateEnhancement.Size = new System.Drawing.Size(75, 23);
+			this.calculateEnhancement.TabIndex = 69;
+			this.calculateEnhancement.Text = "Calculate";
+			this.calculateEnhancement.Click += new System.EventHandler(this.calculateEnhancement_Click);
+			// 
+			// enhancementPercentage
+			// 
+			this.enhancementPercentage.Location = new System.Drawing.Point(38, 55);
+			this.enhancementPercentage.Minimum = new decimal(new int[] {
+            100,
             0,
             0,
-            131072});
-			this.playerTotalSalary.Name = "playerTotalSalary";
-			this.playerTotalSalary.Size = new System.Drawing.Size(74, 20);
-			this.playerTotalSalary.TabIndex = 24;
-			this.playerTotalSalary.ValueChanged += new System.EventHandler(this.playerTotalSalary_ValueChanged);
+            -2147483648});
+			this.enhancementPercentage.Name = "enhancementPercentage";
+			this.enhancementPercentage.Size = new System.Drawing.Size(59, 20);
+			this.enhancementPercentage.TabIndex = 66;
 			// 
-			// label70
+			// label75
 			// 
-			this.label70.AutoSize = true;
-			this.label70.Location = new System.Drawing.Point(370, 133);
-			this.label70.Name = "label70";
-			this.label70.Size = new System.Drawing.Size(71, 13);
-			this.label70.TabIndex = 63;
-			this.label70.Text = "Signing Bonus";
-			// 
-			// playerSigningBonus
-			// 
-			this.playerSigningBonus.DecimalPlaces = 2;
-			this.playerSigningBonus.Location = new System.Drawing.Point(447, 126);
-			this.playerSigningBonus.Maximum = new decimal(new int[] {
-            8192,
-            0,
-            0,
-            131072});
-			this.playerSigningBonus.Name = "playerSigningBonus";
-			this.playerSigningBonus.Size = new System.Drawing.Size(74, 20);
-			this.playerSigningBonus.TabIndex = 23;
-			this.playerSigningBonus.ValueChanged += new System.EventHandler(this.playerSigningBonus_ValueChanged);
-			// 
-			// label69
-			// 
-			this.label69.AutoSize = true;
-			this.label69.Location = new System.Drawing.Point(366, 95);
-			this.label69.Name = "label69";
-			this.label69.Size = new System.Drawing.Size(94, 13);
-			this.label69.TabIndex = 61;
-			this.label69.Text = "Contract Years Left";
-			// 
-			// label68
-			// 
-			this.label68.AutoSize = true;
-			this.label68.Location = new System.Drawing.Point(381, 56);
-			this.label68.Name = "label68";
-			this.label68.Size = new System.Drawing.Size(79, 13);
-			this.label68.TabIndex = 60;
-			this.label68.Text = "Contract Length";
-			// 
-			// playerContractYearsLeft
-			// 
-			this.playerContractYearsLeft.Location = new System.Drawing.Point(466, 88);
-			this.playerContractYearsLeft.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-			this.playerContractYearsLeft.Name = "playerContractYearsLeft";
-			this.playerContractYearsLeft.Size = new System.Drawing.Size(55, 20);
-			this.playerContractYearsLeft.TabIndex = 22;
-			this.playerContractYearsLeft.ValueChanged += new System.EventHandler(this.playerContractYearsLeft_ValueChanged);
-			// 
-			// playerContractLength
-			// 
-			this.playerContractLength.Location = new System.Drawing.Point(466, 49);
-			this.playerContractLength.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-			this.playerContractLength.Name = "playerContractLength";
-			this.playerContractLength.Size = new System.Drawing.Size(55, 20);
-			this.playerContractLength.TabIndex = 21;
-			this.playerContractLength.ValueChanged += new System.EventHandler(this.playerContractLength_ValueChanged);
+			this.label75.AutoSize = true;
+			this.label75.Location = new System.Drawing.Point(103, 62);
+			this.label75.Name = "label75";
+			this.label75.Size = new System.Drawing.Size(11, 13);
+			this.label75.TabIndex = 67;
+			this.label75.Text = "%";
 			// 
 			// playerProBowl
 			// 
@@ -3254,57 +3243,415 @@ namespace MaddenEditor.Forms
 			this.playerHelmetStyleCombo.TabIndex = 0;
 			this.playerHelmetStyleCombo.SelectedIndexChanged += new System.EventHandler(this.playerHelmetStyleCombo_SelectedIndexChanged);
 			// 
-			// calculateEnhancement
+			// contractPage
 			// 
-			this.calculateEnhancement.Location = new System.Drawing.Point(161, 14);
-			this.calculateEnhancement.Name = "calculateEnhancement";
-			this.calculateEnhancement.Size = new System.Drawing.Size(75, 23);
-			this.calculateEnhancement.TabIndex = 69;
-			this.calculateEnhancement.Text = "Calculate";
-			this.calculateEnhancement.Click += new System.EventHandler(this.calculateEnhancement_Click);
+			this.contractPage.Controls.Add(this.label108);
+			this.contractPage.Controls.Add(this.playerCapHit);
+			this.contractPage.Controls.Add(this.label109);
+			this.contractPage.Controls.Add(this.label106);
+			this.contractPage.Controls.Add(this.playerCapRoom);
+			this.contractPage.Controls.Add(this.label107);
+			this.contractPage.Controls.Add(this.label96);
+			this.contractPage.Controls.Add(this.playerTeamSalary);
+			this.contractPage.Controls.Add(this.label95);
+			this.contractPage.Controls.Add(this.label74);
+			this.contractPage.Controls.Add(this.playerTotalSalary);
+			this.contractPage.Controls.Add(this.label70);
+			this.contractPage.Controls.Add(this.playerSigningBonus);
+			this.contractPage.Controls.Add(this.label69);
+			this.contractPage.Controls.Add(this.label68);
+			this.contractPage.Controls.Add(this.playerContractYearsLeft);
+			this.contractPage.Controls.Add(this.playerContractLength);
+			this.contractPage.Controls.Add(this.label105);
+			this.contractPage.Controls.Add(this.label104);
+			this.contractPage.Controls.Add(this.label103);
+			this.contractPage.Controls.Add(this.label102);
+			this.contractPage.Controls.Add(this.label101);
+			this.contractPage.Controls.Add(this.label100);
+			this.contractPage.Controls.Add(this.label99);
+			this.contractPage.Controls.Add(this.playerYearlySalary6);
+			this.contractPage.Controls.Add(this.playerYearlySalary5);
+			this.contractPage.Controls.Add(this.playerYearlySalary4);
+			this.contractPage.Controls.Add(this.playerYearlySalary3);
+			this.contractPage.Controls.Add(this.playerYearlySalary2);
+			this.contractPage.Controls.Add(this.playerYearlySalary1);
+			this.contractPage.Controls.Add(this.playerYearlySalary0);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear6);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear5);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear4);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear3);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear2);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear1);
+			this.contractPage.Controls.Add(this.playerSigningBonusYear0);
+			this.contractPage.Controls.Add(this.label98);
+			this.contractPage.Controls.Add(this.label97);
+			this.contractPage.Location = new System.Drawing.Point(4, 22);
+			this.contractPage.Name = "contractPage";
+			this.contractPage.Padding = new System.Windows.Forms.Padding(3);
+			this.contractPage.Size = new System.Drawing.Size(530, 557);
+			this.contractPage.TabIndex = 3;
+			this.contractPage.Text = "Contract";
 			// 
-			// label75
+			// label97
 			// 
-			this.label75.AutoSize = true;
-			this.label75.Location = new System.Drawing.Point(144, 18);
-			this.label75.Name = "label75";
-			this.label75.Size = new System.Drawing.Size(11, 13);
-			this.label75.TabIndex = 67;
-			this.label75.Text = "%";
+			this.label97.AutoSize = true;
+			this.label97.Location = new System.Drawing.Point(18, 73);
+			this.label97.Name = "label97";
+			this.label97.Size = new System.Drawing.Size(71, 13);
+			this.label97.TabIndex = 0;
+			this.label97.Text = "Signing Bonus";
 			// 
-			// label78
+			// label98
 			// 
-			this.label78.AutoSize = true;
-			this.label78.Location = new System.Drawing.Point(10, 18);
-			this.label78.Name = "label78";
-			this.label78.Size = new System.Drawing.Size(63, 13);
-			this.label78.TabIndex = 68;
-			this.label78.Text = "Enhance by ";
+			this.label98.AutoSize = true;
+			this.label98.Location = new System.Drawing.Point(25, 106);
+			this.label98.Name = "label98";
+			this.label98.Size = new System.Drawing.Size(64, 13);
+			this.label98.TabIndex = 1;
+			this.label98.Text = "Yearly Salary";
 			// 
-			// enhancementPercentage
+			// playerSigningBonusYear0
 			// 
-			this.enhancementPercentage.Location = new System.Drawing.Point(79, 14);
-			this.enhancementPercentage.Minimum = new decimal(new int[] {
-            100,
+			this.playerSigningBonusYear0.Location = new System.Drawing.Point(95, 66);
+			this.playerSigningBonusYear0.Name = "playerSigningBonusYear0";
+			this.playerSigningBonusYear0.ReadOnly = true;
+			this.playerSigningBonusYear0.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear0.TabIndex = 2;
+			// 
+			// playerSigningBonusYear1
+			// 
+			this.playerSigningBonusYear1.Location = new System.Drawing.Point(150, 66);
+			this.playerSigningBonusYear1.Name = "playerSigningBonusYear1";
+			this.playerSigningBonusYear1.ReadOnly = true;
+			this.playerSigningBonusYear1.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear1.TabIndex = 3;
+			// 
+			// playerSigningBonusYear2
+			// 
+			this.playerSigningBonusYear2.Location = new System.Drawing.Point(205, 66);
+			this.playerSigningBonusYear2.Name = "playerSigningBonusYear2";
+			this.playerSigningBonusYear2.ReadOnly = true;
+			this.playerSigningBonusYear2.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear2.TabIndex = 4;
+			// 
+			// playerSigningBonusYear3
+			// 
+			this.playerSigningBonusYear3.Location = new System.Drawing.Point(260, 66);
+			this.playerSigningBonusYear3.Name = "playerSigningBonusYear3";
+			this.playerSigningBonusYear3.ReadOnly = true;
+			this.playerSigningBonusYear3.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear3.TabIndex = 5;
+			// 
+			// playerSigningBonusYear4
+			// 
+			this.playerSigningBonusYear4.Location = new System.Drawing.Point(315, 66);
+			this.playerSigningBonusYear4.Name = "playerSigningBonusYear4";
+			this.playerSigningBonusYear4.ReadOnly = true;
+			this.playerSigningBonusYear4.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear4.TabIndex = 6;
+			// 
+			// playerSigningBonusYear5
+			// 
+			this.playerSigningBonusYear5.Location = new System.Drawing.Point(370, 66);
+			this.playerSigningBonusYear5.Name = "playerSigningBonusYear5";
+			this.playerSigningBonusYear5.ReadOnly = true;
+			this.playerSigningBonusYear5.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear5.TabIndex = 7;
+			// 
+			// playerSigningBonusYear6
+			// 
+			this.playerSigningBonusYear6.Location = new System.Drawing.Point(425, 66);
+			this.playerSigningBonusYear6.Name = "playerSigningBonusYear6";
+			this.playerSigningBonusYear6.ReadOnly = true;
+			this.playerSigningBonusYear6.Size = new System.Drawing.Size(49, 20);
+			this.playerSigningBonusYear6.TabIndex = 8;
+			// 
+			// playerYearlySalary6
+			// 
+			this.playerYearlySalary6.Location = new System.Drawing.Point(425, 99);
+			this.playerYearlySalary6.Name = "playerYearlySalary6";
+			this.playerYearlySalary6.ReadOnly = true;
+			this.playerYearlySalary6.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary6.TabIndex = 15;
+			// 
+			// playerYearlySalary5
+			// 
+			this.playerYearlySalary5.Location = new System.Drawing.Point(370, 99);
+			this.playerYearlySalary5.Name = "playerYearlySalary5";
+			this.playerYearlySalary5.ReadOnly = true;
+			this.playerYearlySalary5.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary5.TabIndex = 14;
+			// 
+			// playerYearlySalary4
+			// 
+			this.playerYearlySalary4.Location = new System.Drawing.Point(315, 99);
+			this.playerYearlySalary4.Name = "playerYearlySalary4";
+			this.playerYearlySalary4.ReadOnly = true;
+			this.playerYearlySalary4.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary4.TabIndex = 13;
+			// 
+			// playerYearlySalary3
+			// 
+			this.playerYearlySalary3.Location = new System.Drawing.Point(260, 99);
+			this.playerYearlySalary3.Name = "playerYearlySalary3";
+			this.playerYearlySalary3.ReadOnly = true;
+			this.playerYearlySalary3.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary3.TabIndex = 12;
+			// 
+			// playerYearlySalary2
+			// 
+			this.playerYearlySalary2.Location = new System.Drawing.Point(205, 99);
+			this.playerYearlySalary2.Name = "playerYearlySalary2";
+			this.playerYearlySalary2.ReadOnly = true;
+			this.playerYearlySalary2.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary2.TabIndex = 11;
+			// 
+			// playerYearlySalary1
+			// 
+			this.playerYearlySalary1.Location = new System.Drawing.Point(150, 99);
+			this.playerYearlySalary1.Name = "playerYearlySalary1";
+			this.playerYearlySalary1.ReadOnly = true;
+			this.playerYearlySalary1.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary1.TabIndex = 10;
+			// 
+			// playerYearlySalary0
+			// 
+			this.playerYearlySalary0.Location = new System.Drawing.Point(95, 99);
+			this.playerYearlySalary0.Name = "playerYearlySalary0";
+			this.playerYearlySalary0.ReadOnly = true;
+			this.playerYearlySalary0.Size = new System.Drawing.Size(49, 20);
+			this.playerYearlySalary0.TabIndex = 9;
+			// 
+			// label99
+			// 
+			this.label99.AutoSize = true;
+			this.label99.Location = new System.Drawing.Point(113, 50);
+			this.label99.Name = "label99";
+			this.label99.Size = new System.Drawing.Size(9, 13);
+			this.label99.TabIndex = 16;
+			this.label99.Text = "1";
+			// 
+			// label100
+			// 
+			this.label100.AutoSize = true;
+			this.label100.Location = new System.Drawing.Point(169, 50);
+			this.label100.Name = "label100";
+			this.label100.Size = new System.Drawing.Size(9, 13);
+			this.label100.TabIndex = 17;
+			this.label100.Text = "2";
+			// 
+			// label101
+			// 
+			this.label101.AutoSize = true;
+			this.label101.Location = new System.Drawing.Point(224, 50);
+			this.label101.Name = "label101";
+			this.label101.Size = new System.Drawing.Size(9, 13);
+			this.label101.TabIndex = 18;
+			this.label101.Text = "3";
+			// 
+			// label102
+			// 
+			this.label102.AutoSize = true;
+			this.label102.Location = new System.Drawing.Point(280, 50);
+			this.label102.Name = "label102";
+			this.label102.Size = new System.Drawing.Size(9, 13);
+			this.label102.TabIndex = 19;
+			this.label102.Text = "4";
+			// 
+			// label103
+			// 
+			this.label103.AutoSize = true;
+			this.label103.Location = new System.Drawing.Point(335, 50);
+			this.label103.Name = "label103";
+			this.label103.Size = new System.Drawing.Size(9, 13);
+			this.label103.TabIndex = 20;
+			this.label103.Text = "5";
+			// 
+			// label104
+			// 
+			this.label104.AutoSize = true;
+			this.label104.Location = new System.Drawing.Point(389, 50);
+			this.label104.Name = "label104";
+			this.label104.Size = new System.Drawing.Size(9, 13);
+			this.label104.TabIndex = 21;
+			this.label104.Text = "6";
+			// 
+			// label105
+			// 
+			this.label105.AutoSize = true;
+			this.label105.Location = new System.Drawing.Point(444, 50);
+			this.label105.Name = "label105";
+			this.label105.Size = new System.Drawing.Size(9, 13);
+			this.label105.TabIndex = 22;
+			this.label105.Text = "7";
+			// 
+			// label96
+			// 
+			this.label96.AutoSize = true;
+			this.label96.Location = new System.Drawing.Point(159, 24);
+			this.label96.Name = "label96";
+			this.label96.Size = new System.Drawing.Size(12, 13);
+			this.label96.TabIndex = 84;
+			this.label96.Text = "M";
+			// 
+			// playerTeamSalary
+			// 
+			this.playerTeamSalary.Location = new System.Drawing.Point(95, 17);
+			this.playerTeamSalary.Name = "playerTeamSalary";
+			this.playerTeamSalary.ReadOnly = true;
+			this.playerTeamSalary.Size = new System.Drawing.Size(58, 20);
+			this.playerTeamSalary.TabIndex = 83;
+			// 
+			// label95
+			// 
+			this.label95.AutoSize = true;
+			this.label95.Location = new System.Drawing.Point(27, 24);
+			this.label95.Name = "label95";
+			this.label95.Size = new System.Drawing.Size(62, 13);
+			this.label95.TabIndex = 82;
+			this.label95.Text = "Team Salary";
+			// 
+			// label74
+			// 
+			this.label74.AutoSize = true;
+			this.label74.Location = new System.Drawing.Point(49, 196);
+			this.label74.Name = "label74";
+			this.label74.Size = new System.Drawing.Size(59, 13);
+			this.label74.TabIndex = 81;
+			this.label74.Text = "Total Salary";
+			// 
+			// playerTotalSalary
+			// 
+			this.playerTotalSalary.DecimalPlaces = 2;
+			this.playerTotalSalary.Location = new System.Drawing.Point(114, 189);
+			this.playerTotalSalary.Maximum = new decimal(new int[] {
+            65536,
             0,
             0,
-            -2147483648});
-			this.enhancementPercentage.Name = "enhancmentPercentage";
-			this.enhancementPercentage.Size = new System.Drawing.Size(59, 20);
-			this.enhancementPercentage.TabIndex = 66;
+            131072});
+			this.playerTotalSalary.Name = "playerTotalSalary";
+			this.playerTotalSalary.Size = new System.Drawing.Size(74, 20);
+			this.playerTotalSalary.TabIndex = 77;
+			this.playerTotalSalary.ValueChanged += new System.EventHandler(this.playerTotalSalary_ValueChanged);
 			// 
-			// groupBox4
+			// label70
 			// 
-			this.groupBox4.Controls.Add(this.label78);
-			this.groupBox4.Controls.Add(this.calculateEnhancement);
-			this.groupBox4.Controls.Add(this.enhancementPercentage);
-			this.groupBox4.Controls.Add(this.label75);
-			this.groupBox4.Location = new System.Drawing.Point(237, 0);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(284, 43);
-			this.groupBox4.TabIndex = 70;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Rating Enhancer";
+			this.label70.AutoSize = true;
+			this.label70.Location = new System.Drawing.Point(37, 157);
+			this.label70.Name = "label70";
+			this.label70.Size = new System.Drawing.Size(71, 13);
+			this.label70.TabIndex = 80;
+			this.label70.Text = "Signing Bonus";
+			// 
+			// playerSigningBonus
+			// 
+			this.playerSigningBonus.DecimalPlaces = 2;
+			this.playerSigningBonus.Location = new System.Drawing.Point(114, 150);
+			this.playerSigningBonus.Maximum = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            131072});
+			this.playerSigningBonus.Name = "playerSigningBonus";
+			this.playerSigningBonus.Size = new System.Drawing.Size(74, 20);
+			this.playerSigningBonus.TabIndex = 76;
+			this.playerSigningBonus.ValueChanged += new System.EventHandler(this.playerSigningBonus_ValueChanged);
+			// 
+			// label69
+			// 
+			this.label69.AutoSize = true;
+			this.label69.Location = new System.Drawing.Point(203, 196);
+			this.label69.Name = "label69";
+			this.label69.Size = new System.Drawing.Size(94, 13);
+			this.label69.TabIndex = 79;
+			this.label69.Text = "Contract Years Left";
+			// 
+			// label68
+			// 
+			this.label68.AutoSize = true;
+			this.label68.Location = new System.Drawing.Point(218, 157);
+			this.label68.Name = "label68";
+			this.label68.Size = new System.Drawing.Size(79, 13);
+			this.label68.TabIndex = 78;
+			this.label68.Text = "Contract Length";
+			// 
+			// playerContractYearsLeft
+			// 
+			this.playerContractYearsLeft.Location = new System.Drawing.Point(303, 189);
+			this.playerContractYearsLeft.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+			this.playerContractYearsLeft.Name = "playerContractYearsLeft";
+			this.playerContractYearsLeft.Size = new System.Drawing.Size(55, 20);
+			this.playerContractYearsLeft.TabIndex = 75;
+			this.playerContractYearsLeft.ValueChanged += new System.EventHandler(this.playerContractYearsLeft_ValueChanged);
+			// 
+			// playerContractLength
+			// 
+			this.playerContractLength.Location = new System.Drawing.Point(303, 150);
+			this.playerContractLength.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+			this.playerContractLength.Name = "playerContractLength";
+			this.playerContractLength.Size = new System.Drawing.Size(55, 20);
+			this.playerContractLength.TabIndex = 74;
+			this.playerContractLength.ValueChanged += new System.EventHandler(this.playerContractLength_ValueChanged);
+			// 
+			// label106
+			// 
+			this.label106.AutoSize = true;
+			this.label106.Location = new System.Drawing.Point(324, 24);
+			this.label106.Name = "label106";
+			this.label106.Size = new System.Drawing.Size(12, 13);
+			this.label106.TabIndex = 87;
+			this.label106.Text = "M";
+			// 
+			// playerCapRoom
+			// 
+			this.playerCapRoom.Location = new System.Drawing.Point(260, 17);
+			this.playerCapRoom.Name = "playerCapRoom";
+			this.playerCapRoom.ReadOnly = true;
+			this.playerCapRoom.Size = new System.Drawing.Size(58, 20);
+			this.playerCapRoom.TabIndex = 86;
+			// 
+			// label107
+			// 
+			this.label107.AutoSize = true;
+			this.label107.Location = new System.Drawing.Point(201, 24);
+			this.label107.Name = "label107";
+			this.label107.Size = new System.Drawing.Size(53, 13);
+			this.label107.TabIndex = 85;
+			this.label107.Text = "Cap Room";
+			// 
+			// label108
+			// 
+			this.label108.AutoSize = true;
+			this.label108.Location = new System.Drawing.Point(480, 24);
+			this.label108.Name = "label108";
+			this.label108.Size = new System.Drawing.Size(12, 13);
+			this.label108.TabIndex = 90;
+			this.label108.Text = "M";
+			// 
+			// playerCapHit
+			// 
+			this.playerCapHit.Location = new System.Drawing.Point(416, 17);
+			this.playerCapHit.Name = "playerCapHit";
+			this.playerCapHit.ReadOnly = true;
+			this.playerCapHit.Size = new System.Drawing.Size(58, 20);
+			this.playerCapHit.TabIndex = 89;
+			// 
+			// label109
+			// 
+			this.label109.AutoSize = true;
+			this.label109.Location = new System.Drawing.Point(372, 24);
+			this.label109.Name = "label109";
+			this.label109.Size = new System.Drawing.Size(38, 13);
+			this.label109.TabIndex = 88;
+			this.label109.Text = "Cap Hit";
 			// 
 			// PlayerEditControl
 			// 
@@ -3323,13 +3670,12 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
-			this.tabControl1.ResumeLayout(false);
+			this.tabControl.ResumeLayout(false);
 			this.playerRatingPage.ResumeLayout(false);
 			this.playerRatingPage.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
+			this.groupBox4.ResumeLayout(false);
+			this.groupBox4.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerExperiencePoints)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerMorale)).EndInit();
@@ -3384,9 +3730,12 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).EndInit();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).EndInit();
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox4.PerformLayout();
+			this.contractPage.ResumeLayout(false);
+			this.contractPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -3424,16 +3773,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ComboBox filterTeamComboBox;
 		private System.Windows.Forms.CheckBox teamCheckBox;
 		private System.Windows.Forms.CheckBox positionCheckBox;
-		private System.Windows.Forms.TabControl tabControl1;
+		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage playerRatingPage;
-		private System.Windows.Forms.Label label74;
-		private System.Windows.Forms.NumericUpDown playerTotalSalary;
-		private System.Windows.Forms.Label label70;
-		private System.Windows.Forms.NumericUpDown playerSigningBonus;
-		private System.Windows.Forms.Label label69;
-		private System.Windows.Forms.Label label68;
-		private System.Windows.Forms.NumericUpDown playerContractYearsLeft;
-		private System.Windows.Forms.NumericUpDown playerContractLength;
 		private System.Windows.Forms.CheckBox playerProBowl;
 		private System.Windows.Forms.Button calculateOverallButton;
 		private System.Windows.Forms.NumericUpDown playerOverall;
@@ -3602,5 +3943,46 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Button calculateEnhancement;
 		private System.Windows.Forms.NumericUpDown enhancementPercentage;
 		private System.Windows.Forms.Label label75;
+		private System.Windows.Forms.TabPage contractPage;
+		private System.Windows.Forms.Label label96;
+		private System.Windows.Forms.TextBox playerTeamSalary;
+		private System.Windows.Forms.Label label95;
+		private System.Windows.Forms.Label label74;
+		private System.Windows.Forms.NumericUpDown playerTotalSalary;
+		private System.Windows.Forms.Label label70;
+		private System.Windows.Forms.NumericUpDown playerSigningBonus;
+		private System.Windows.Forms.Label label69;
+		private System.Windows.Forms.Label label68;
+		private System.Windows.Forms.NumericUpDown playerContractYearsLeft;
+		private System.Windows.Forms.NumericUpDown playerContractLength;
+		private System.Windows.Forms.Label label105;
+		private System.Windows.Forms.Label label104;
+		private System.Windows.Forms.Label label103;
+		private System.Windows.Forms.Label label102;
+		private System.Windows.Forms.Label label101;
+		private System.Windows.Forms.Label label100;
+		private System.Windows.Forms.Label label99;
+		private System.Windows.Forms.TextBox playerYearlySalary6;
+		private System.Windows.Forms.TextBox playerYearlySalary5;
+		private System.Windows.Forms.TextBox playerYearlySalary4;
+		private System.Windows.Forms.TextBox playerYearlySalary3;
+		private System.Windows.Forms.TextBox playerYearlySalary2;
+		private System.Windows.Forms.TextBox playerYearlySalary1;
+		private System.Windows.Forms.TextBox playerYearlySalary0;
+		private System.Windows.Forms.TextBox playerSigningBonusYear6;
+		private System.Windows.Forms.TextBox playerSigningBonusYear5;
+		private System.Windows.Forms.TextBox playerSigningBonusYear4;
+		private System.Windows.Forms.TextBox playerSigningBonusYear3;
+		private System.Windows.Forms.TextBox playerSigningBonusYear2;
+		private System.Windows.Forms.TextBox playerSigningBonusYear1;
+		private System.Windows.Forms.TextBox playerSigningBonusYear0;
+		private System.Windows.Forms.Label label98;
+		private System.Windows.Forms.Label label97;
+		private System.Windows.Forms.Label label106;
+		private System.Windows.Forms.TextBox playerCapRoom;
+		private System.Windows.Forms.Label label107;
+		private System.Windows.Forms.Label label108;
+		private System.Windows.Forms.TextBox playerCapHit;
+		private System.Windows.Forms.Label label109;
 	}
 }

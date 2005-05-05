@@ -73,7 +73,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(NAME, value);
+				SetField(NAME, value);
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(COACH_ID, value);
+				SetField(COACH_ID, value);
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(TEAM_ID, value);
+				SetField(TEAM_ID, value);
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(AGE, value);
+				SetField(AGE, value);
 			}
 		}
 
@@ -121,7 +121,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(POSITION, value);
+				SetField(POSITION, value);
 			}
 		}
 
@@ -133,7 +133,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SALARY, value);
+				SetField(SALARY, value);
 			}
 		}
 
@@ -145,7 +145,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SUPERBOWL_WINS, value);
+				SetField(SUPERBOWL_WINS, value);
 			}
 		}
 
@@ -157,7 +157,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(SUPERBOWL_LOSES, value);
+				SetField(SUPERBOWL_LOSES, value);
 			}
 		}
 
@@ -169,7 +169,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PLAYOFF_LOSES, value);
+				SetField(PLAYOFF_LOSES, value);
 			}
 		}
 
@@ -181,7 +181,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PLAYFF_WINS, value);
+				SetField(PLAYFF_WINS, value);
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(WINNING_SEASONS, value);
+				SetField(WINNING_SEASONS, value);
 			}
 		}
 
@@ -205,7 +205,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(OFF_RATING, value);
+				SetField(OFF_RATING, value);
 			}
 		}
 
@@ -217,7 +217,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(DEF_RATING, value);
+				SetField(DEF_RATING, value);
 			}
 		}
 
@@ -229,7 +229,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(DB_RATING, value);
+				SetField(DB_RATING, value);
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(LB_RATING, value);
+				SetField(LB_RATING, value);
 			}
 		}
 
@@ -253,7 +253,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(QB_RATING, value);
+				SetField(QB_RATING, value);
 			}
 		}
 
@@ -265,7 +265,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(RB_RATING, value);
+				SetField(RB_RATING, value);
 			}
 		}
 
@@ -277,7 +277,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(OL_RATING, value);
+				SetField(OL_RATING, value);
 			}
 		}
 
@@ -289,7 +289,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(DL_RATING, value);
+				SetField(DL_RATING, value);
 			}
 		}
 
@@ -301,7 +301,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(WR_RATING, value);
+				SetField(WR_RATING, value);
 			}
 		}
 
@@ -313,7 +313,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(KICK_RATING, value);
+				SetField(KICK_RATING, value);
 			}
 		}
 
@@ -325,7 +325,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PUNT_RATING, value);
+				SetField(PUNT_RATING, value);
 			}
 		}
 
@@ -337,7 +337,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(ETHICS, value);
+				SetField(ETHICS, value);
 			}
 		}
 
@@ -349,7 +349,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(KNOWLEDGE, value);
+				SetField(KNOWLEDGE, value);
 			}
 		}
 
@@ -361,7 +361,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(MOTIVATION, value);
+				SetField(MOTIVATION, value);
 			}
 		}
 
@@ -373,7 +373,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(CHEMISTRY, value);
+				SetField(CHEMISTRY, value);
 			}
 		}
 	}

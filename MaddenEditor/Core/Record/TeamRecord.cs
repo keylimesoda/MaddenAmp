@@ -34,6 +34,8 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_STATE = "TSNA";
 		public const string TEAM_ID = "TGID";
 
+		public const string TEAM_SALARY = "TMSA";
+
 		public TeamRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
@@ -48,7 +50,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				stringFields[TEAM_NAME] = value;
+				SetField(TEAM_NAME, value);
 			}
 		}
 
@@ -60,7 +62,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				stringFields[TEAM_LAST_NAME] = value;
+				SetField(TEAM_LAST_NAME, value);
 			}
 		}
 
@@ -72,7 +74,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				stringFields[TEAM_STATE] = value;
+				SetField(TEAM_STATE, value);
 			}
 		}
 
@@ -84,7 +86,19 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				intFields[TEAM_ID] = value;
+				SetField(TEAM_ID, value);
+			}
+		}
+
+		public int Salary
+		{
+			get
+			{
+				return intFields[TEAM_SALARY];
+			}
+			set
+			{
+				intFields[TEAM_SALARY] = value;
 			}
 		}
 

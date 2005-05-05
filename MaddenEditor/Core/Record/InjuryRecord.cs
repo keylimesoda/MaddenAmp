@@ -47,7 +47,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(INJURY_LENGTH, value);
+				SetField(INJURY_LENGTH, value);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(INJURY_TYPE, value);
+				SetField(INJURY_TYPE, value);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(PLAYER_ID, value);
+				SetField(PLAYER_ID, value);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(TEAM_ID, value);
+				SetField(TEAM_ID, value);
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetFieldWithBackup(INJURY_RSV, Convert.ToInt32(value));
+				SetField(INJURY_RSV, Convert.ToInt32(value));
 			}
 		}
 

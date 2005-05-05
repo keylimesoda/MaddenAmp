@@ -115,6 +115,8 @@ namespace MaddenEditor.Forms
 			playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
 			playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
 
+			LoadPlayerSalaries(record);
+			
 			//Set player Appearance
 			playerFaceShape.Value = record.FaceShape;
 			playerBodyWeight.Value = record.BodyWeight;
@@ -187,6 +189,26 @@ namespace MaddenEditor.Forms
 			}
 
 			isInitialising = false;
+		}
+
+		private void LoadPlayerSalaries(PlayerRecord record)
+		{
+			playerTeamSalary.Text = "" + ((double)model.TeamModel.GetTeamRecord(record.TeamId).Salary / 100.0);
+			playerCapHit.Text = "" + ((double)record.CapHit / 100.0);
+			playerYearlySalary0.Text = "" + ((double)record.GetSalaryAtYear(0) / 100.0);
+			playerYearlySalary1.Text = "" + ((double)record.GetSalaryAtYear(1) / 100.0);
+			playerYearlySalary2.Text = "" + ((double)record.GetSalaryAtYear(2) / 100.0);
+			playerYearlySalary3.Text = "" + ((double)record.GetSalaryAtYear(3) / 100.0);
+			playerYearlySalary4.Text = "" + ((double)record.GetSalaryAtYear(4) / 100.0);
+			playerYearlySalary5.Text = "" + ((double)record.GetSalaryAtYear(5) / 100.0);
+			playerYearlySalary6.Text = "" + ((double)record.GetSalaryAtYear(6) / 100.0);
+			playerSigningBonusYear0.Text = "" + ((double)record.GetSigningBonusAtYear(0) / 100.0);
+			playerSigningBonusYear1.Text = "" + ((double)record.GetSigningBonusAtYear(1) / 100.0);
+			playerSigningBonusYear2.Text = "" + ((double)record.GetSigningBonusAtYear(2) / 100.0);
+			playerSigningBonusYear3.Text = "" + ((double)record.GetSigningBonusAtYear(3) / 100.0);
+			playerSigningBonusYear4.Text = "" + ((double)record.GetSigningBonusAtYear(4) / 100.0);
+			playerSigningBonusYear5.Text = "" + ((double)record.GetSigningBonusAtYear(5) / 100.0);
+			playerSigningBonusYear6.Text = "" + ((double)record.GetSigningBonusAtYear(6) / 100.0);
 		}
 
 		private void deletePlayerButton_Click(object sender, EventArgs e)
@@ -642,7 +664,17 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
+				//Before we set it make sure its ok
+				if (playerContractLength.Value < playerContractYearsLeft.Value)
+				{
+					//not right
+					playerContractLength.Value = playerContractYearsLeft.Value;
+					return;
+				}
 				model.PlayerModel.CurrentPlayerRecord.ContractLength = (int)playerContractLength.Value;
+				//The call above has recalculated the cap hit, we need to modify the Teams total salary
+				model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary = model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary + model.PlayerModel.CurrentPlayerRecord.CapHitDifference;
+				LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
 			}
 		}
 
@@ -650,7 +682,17 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
+				//Before we set it make sure its ok
+				if (playerContractYearsLeft.Value > playerContractLength.Value)
+				{
+					//not right
+					playerContractYearsLeft.Value = playerContractLength.Value;
+					return;
+				}
 				model.PlayerModel.CurrentPlayerRecord.ContractYearsLeft = (int)playerContractYearsLeft.Value;
+				//The call above has recalculated the cap hit, we need to modify the Teams total salary
+				model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary = model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary + model.PlayerModel.CurrentPlayerRecord.CapHitDifference;
+				LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
 			}
 		}
 
@@ -667,6 +709,10 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.SigningBonus = (int)(playerSigningBonus.Value * 100);
+				//The call above has recalculated the cap hit, we need to modify the Teams total salary
+				model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary = model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary + model.PlayerModel.CurrentPlayerRecord.CapHitDifference;
+				LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+				
 			}
 		}
 
@@ -675,6 +721,9 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.TotalSalary = (int)(playerTotalSalary.Value * 100);
+				//The call above has recalculated the cap hit, we need to modify the Teams total salary
+				model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary = model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).Salary + model.PlayerModel.CurrentPlayerRecord.CapHitDifference;
+				LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
 			}
 		}
 
@@ -1066,8 +1115,6 @@ namespace MaddenEditor.Forms
 		}
 
 		#endregion
-
-		
 
 
 	}
