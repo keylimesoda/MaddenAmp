@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Madden Editor 2005")]
-[assembly: AssemblyDescription("Thankyou for using this editor.\r\n\r\nReport bugs to bugs@tributech.com.au\r\n\r\nThis program is licenced under the LGPL.\r\nSource is available via subversion at\r\n\r\nhttp://gommo.homelinux.net/svn/repos/maddeneditor/trunk")]
+[assembly: AssemblyDescription("Thankyou for using this editor.\r\n\r\nReport bugs to bugs@tributech.com.au\r\n\r\nThis program is licenced under the LGPL.\r\nSource is available via subversion at\r\n\r\nhttp://gommo.homelinux.net/svn/repos/maddeneditor/trunk\r\n\r\nThanks go to \r\nSuchy63 for TDBAccess.dll making it all possible\r\nfritzdis for Salary Calculations\r\nReMiNiScE for his OVR ratings\r\nCinciBearFan for his K & P ratings\r\nOmega4ce for his Injury descriptions")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tributech")]
 [assembly: AssemblyProduct("Madden Editor 2005")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.6.5.0")]
-[assembly: AssemblyFileVersion("0.6.5.0")]
+[assembly: AssemblyVersion("0.6.3.0")]
+[assembly: AssemblyFileVersion("0.6.3.0")]

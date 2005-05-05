@@ -195,6 +195,10 @@ namespace MaddenEditor.Forms
 		{
 			playerTeamSalary.Text = "" + ((double)model.TeamModel.GetTeamRecord(record.TeamId).Salary / 100.0);
 			playerCapHit.Text = "" + ((double)record.CapHit / 100.0);
+			if (model.FileType == MaddenFileType.FranchiseFile)
+			{
+				playerCapRoom.Text = "" + Math.Round((((double)model.SalaryCapModel.SalaryCap / 10000.0 - (double)(model.TeamModel.GetTeamRecord(record.TeamId).Salary)) / 100.0), 2);
+			}
 			playerYearlySalary0.Text = "" + ((double)record.GetSalaryAtYear(0) / 100.0);
 			playerYearlySalary1.Text = "" + ((double)record.GetSalaryAtYear(1) / 100.0);
 			playerYearlySalary2.Text = "" + ((double)record.GetSalaryAtYear(2) / 100.0);
@@ -269,6 +273,19 @@ namespace MaddenEditor.Forms
 
 			filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
 			filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
+
+			if (model.FileType != MaddenFileType.FranchiseFile)
+			{
+				playerCapRoom.Visible = false;
+				capRoomLabel.Visible = false;
+				capRoomUnitLabel.Visible = false;
+			}
+			else
+			{
+				playerCapRoom.Visible = true;
+				capRoomUnitLabel.Visible = true;
+				capRoomLabel.Visible = true;
+			}
 
 			LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 		}

@@ -151,10 +151,10 @@ namespace MaddenEditor.Forms
 			statusStrip.Visible = false;
 			toolStripProgressBar.Value = 0;
 
-			/*if (model.FileType == MaddenFileType.FranchiseFile)
+			if (model.FileType == MaddenFileType.FranchiseFile)
 			{
 				franchiseToolStripMenuItem.Visible = true;
-			}*/
+			}
 
 			this.Cursor = Cursors.Default;
 		}
@@ -267,6 +267,11 @@ namespace MaddenEditor.Forms
 			// This method will run on a thread other than the UI thread.
 			// Be sure not to manipulate any Windows Forms controls created
 			// on the UI thread from this method.
+			while (true)
+			{
+				System.Threading.Thread.Sleep(250);
+				testerWorkerThread.ReportProgress(0);
+			}
 
 		}
 
@@ -278,7 +283,9 @@ namespace MaddenEditor.Forms
 
 		private void editSalaryCapsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
+			SalaryCapForm form = new SalaryCapForm(model);
+			form.ShowDialog();
 		}
+
     }
 }

@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Madden Editor 2005"
-!define PRODUCT_VERSION "0.6.5"
+!define PRODUCT_VERSION "0.6.3"
 !define PRODUCT_PUBLISHER "Tributech"
 !define PRODUCT_WEB_SITE "http://gommo.homelinux.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\MaddenEditor.exe"
@@ -61,6 +61,8 @@ Section "MainSection" SEC01
   File "MaddenEditor\bin\Release\tdbaccess.dll"
   File "licence.txt"
   File "readme.txt"
+  File "MaddenEditor\Docs\contributions.txt"
+  File "MaddenEditor\Docs\DBFileStructure.doc"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application

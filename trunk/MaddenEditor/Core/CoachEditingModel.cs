@@ -57,10 +57,11 @@ namespace MaddenEditor.Core
 			CoachRecord record = null;
 
 			int startingindex = currentCoachIndex;
+			bool found = false;
 			while (true)
 			{
 				currentCoachIndex++;
-				if (currentCoachIndex == startingindex)
+				if (currentCoachIndex == startingindex && found == false)
 				{
 					//We have looped around
 					return null;
@@ -94,6 +95,7 @@ namespace MaddenEditor.Core
 					}
 				}
 
+				found = true;
 				//Found one
 				break;
 			}
