@@ -419,7 +419,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.playerJerseyNumber.Location = new System.Drawing.Point(63, 305);
 			this.playerJerseyNumber.Maximum = new decimal(new int[] {
-            99,
+            199,
             0,
             0,
             0});
