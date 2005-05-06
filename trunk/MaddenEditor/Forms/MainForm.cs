@@ -46,7 +46,7 @@ namespace MaddenEditor.Forms
             InitializeComponent();
 			
 			tabControl.Visible = false;
-			searchToolStripMenuItem.Visible = false;
+			toolsToolStripMenuItem.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
 			statusStrip.Visible = false;
 
@@ -146,7 +146,7 @@ namespace MaddenEditor.Forms
 			coachEditControl.InitialiseUI();
 
 			tabControl.Visible = true;
-			searchToolStripMenuItem.Visible = true;
+			toolsToolStripMenuItem.Visible = true;
 			processingTableLabel.Text = "";
 			statusStrip.Visible = false;
 			toolStripProgressBar.Value = 0;
@@ -177,7 +177,7 @@ namespace MaddenEditor.Forms
 			coachEditControl.CleanUI();
 						
 			tabControl.Visible = false;
-			searchToolStripMenuItem.Visible = false;
+			toolsToolStripMenuItem.Visible = false;
 			processingTableLabel.Text = "";
 			franchiseToolStripMenuItem.Visible = false;
 		}
@@ -264,11 +264,10 @@ namespace MaddenEditor.Forms
 
 		private void testerWorkerThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-			while (true)
-			{
-				System.Threading.Thread.Sleep(250);
-				testerWorkerThread.ReportProgress(0);
-			}
+            // This method will run on a thread other than the UI thread.
+            // Be sure not to manipulate any Windows Forms controls created
+            // on the UI thread from this method.
+
 		}
 
 		private void testerWorkerThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -282,6 +281,13 @@ namespace MaddenEditor.Forms
 			SalaryCapForm form = new SalaryCapForm(model);
 			form.ShowDialog();
 		}
+
+        private void depthChartEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DepthChartEditor editor = new DepthChartEditor();
+
+            editor.Show();
+        }
 
     }
 }

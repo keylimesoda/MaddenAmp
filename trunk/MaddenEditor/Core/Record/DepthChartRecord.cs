@@ -28,10 +28,63 @@ namespace MaddenEditor.Core.Record
 {
 	public class DepthChartRecord : TableRecordModel
 	{
+        public const string PLAYER_ID = "PGID";
+        public const string TEAM_ID = "TGID";
+        public const string POSITION_ID = "PPOS";
+        public const string DEPTH_ORDER = "ddep";
+
 		public DepthChartRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
 
 		}
+
+        public int PlayerId
+        {
+            get
+            {
+                return intFields[PLAYER_ID];
+            }
+            set
+            {
+                SetField(PLAYER_ID, value);
+            }
+        }
+
+        public int TeamId
+        {
+            get
+            {
+                return intFields[TEAM_ID];
+            }
+            set
+            {
+                SetField(TEAM_ID, value);
+            }
+        }
+
+        public int PositionId
+        {
+            get
+            {
+                return intFields[POSITION_ID];
+            }
+            set
+            {
+                SetField(POSITION_ID, value);
+            }
+        }
+
+        public int DepthOrder
+        {
+            get
+            {
+                return intFields[DEPTH_ORDER];
+            }
+            set
+            {
+                SetField(DEPTH_ORDER, value);
+            }
+        }
 	}
 }

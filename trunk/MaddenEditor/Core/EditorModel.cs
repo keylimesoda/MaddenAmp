@@ -75,6 +75,7 @@ namespace MaddenEditor.Core
 		public const string INJURY_TABLE = "INJY";
 		public const string COACH_TABLE = "COCH";
 		public const string SALARY_CAP_TABLE = "SLRI";
+        public const string DEPTH_CHART_TABLE = "DCHT";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -217,6 +218,7 @@ namespace MaddenEditor.Core
 				tableOrder.Add(PLAYER_TABLE, -1);
 				tableOrder.Add(INJURY_TABLE, -1);
 				tableOrder.Add(COACH_TABLE, -1);
+                tableOrder.Add(DEPTH_CHART_TABLE, -1);
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
@@ -363,6 +365,7 @@ namespace MaddenEditor.Core
 			tableModels[INJURY_TABLE].Save();
 			tableModels[COACH_TABLE].Save();
 			tableModels[TEAM_TABLE].Save();
+            tableModels[DEPTH_CHART_TABLE].Save();
 
 			this.Dirty = false;
 		}
