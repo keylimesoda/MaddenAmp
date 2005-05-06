@@ -76,6 +76,12 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DepthChartEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DepthChartEditor.Designer.cs">
+      <DependentUpon>DepthChartEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\IEditorForm.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -111,6 +117,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DepthChartEditor.resx">
+      <DependentUpon>DepthChartEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
