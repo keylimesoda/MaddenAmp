@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\CoachEditingModel.cs" />
+    <Compile Include="Core\DepthChartEditingModel.cs" />
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
@@ -76,11 +77,11 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DepthChartEditor.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Forms\DepthChartEditorControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\DepthChartEditor.Designer.cs">
-      <DependentUpon>DepthChartEditor.cs</DependentUpon>
+    <Compile Include="Forms\DepthChartEditorControl.Designer.cs">
+      <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\IEditorForm.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -118,8 +119,8 @@
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DepthChartEditor.resx">
-      <DependentUpon>DepthChartEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\DepthChartEditorControl.resx">
+      <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -165,6 +166,9 @@
       <ProductName>.NET Framework 2.0 Beta</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shell32.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

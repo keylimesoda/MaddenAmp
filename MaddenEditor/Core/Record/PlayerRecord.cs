@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MaddenEditor.Core.Record
 {
@@ -1139,11 +1140,11 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public void CalculateOverallRating()
+		public int CalculateOverallRating(int positionId)
 		{
 			double tempOverall = 0;
 
-			switch (PositionId)
+			switch (positionId)
 			{
 				case (int)MaddenPositions.QB:
 					tempOverall = (((double)ThrowPower - 50) / 10) * 4.9;
@@ -1309,7 +1310,16 @@ namespace MaddenEditor.Core.Record
 
 			}
 
-			Overall = (tempOverall < 100 ? (int)tempOverall : 99);
+			if (tempOverall < 0)
+			{
+				tempOverall = 0;
+			}
+			if (tempOverall > 99)
+			{
+				tempOverall = 99;
+			}
+
+			return (int)tempOverall;
 		}
 
 		#region Salary Signing Bonus Functions
@@ -1436,6 +1446,31 @@ namespace MaddenEditor.Core.Record
 		}
 
 		#endregion
+
+		public DataGridViewRow GetDataRow(int positionId)
+		{
+			DataGridViewRow viewRow = new DataGridViewRow();
+
+			DataGridViewTextBoxCell posCell = new DataGridViewTextBoxCell();
+			posCell.Value = Enum.GetNames(typeof(MaddenPositions))[PositionId];
+			DataGridViewTextBoxCell nameCell = new DataGridViewTextBoxCell();
+			nameCell.Value = FirstName + " " + LastName;
+			DataGridViewTextBoxCell ovrCell = new DataGridViewTextBoxCell();
+			ovrCell.Value = CalculateOverallRating(positionId);
+			DataGridViewTextBoxCell playerCell = new DataGridViewTextBoxCell();
+			playerCell.Value = this;
+			viewRow.Cells.Add(posCell);
+			viewRow.Cells.Add(nameCell);
+			viewRow.Cells.Add(ovrCell);
+			viewRow.Cells.Add(playerCell);
+
+			posCell.ReadOnly = true;
+			nameCell.ReadOnly = true;
+			ovrCell.ReadOnly = true;
+			playerCell.ReadOnly = true;
+
+			return viewRow;
+		}
 
 	}
 }

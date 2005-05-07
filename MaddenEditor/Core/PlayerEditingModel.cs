@@ -50,6 +50,18 @@ namespace MaddenEditor.Core
 			return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(recno);
 		}
 
+		public PlayerRecord GetPlayerByPlayerId(int playerId)
+		{
+			foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+			{
+				if (((PlayerRecord)record).PlayerId == playerId)
+				{
+					return (PlayerRecord)record;
+				}
+			}
+			return null;
+		}
+
 		public PlayerRecord CurrentPlayerRecord
 		{
 			get
@@ -198,11 +210,11 @@ namespace MaddenEditor.Core
 			currentPositionFilter = -1;
 		}
 
-		public Dictionary<string, PlayerRecord> SearchForPlayers(String[] names)
+		public Dictionary<string, TableRecordModel> SearchForPlayers(String[] names)
 		{
 			Console.WriteLine("Starting search for " + names.ToString());
 			//This is not going to be efficient.
-			Dictionary<String, PlayerRecord> results = new Dictionary<String, PlayerRecord>();
+			Dictionary<String, TableRecordModel> results = new Dictionary<String, TableRecordModel>();
 
 			foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
 			{

@@ -33,24 +33,28 @@ using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Forms
 {
+	public enum SearchType { PLAYER, COACH };
+
 	public partial class SearchForm : Form
 	{
 		private EditorModel model = null;
-		private PlayerRecord selectedPlayer = null;
-		private Dictionary<String, PlayerRecord> results = null;
+		private TableRecordModel selectedTarget = null;
+		private Dictionary<String, TableRecordModel> results = null;
+		private SearchType searchType = SearchType.PLAYER;
 
-		public SearchForm(EditorModel model)
+		public SearchForm(EditorModel model, SearchType searchType)
 		{
 			this.model = model;
-			selectedPlayer = null;
+			this.searchType = searchType;
+			selectedTarget = null;
 			InitializeComponent();
 		}
 
-		public PlayerRecord SelectedPlayer
+		public TableRecordModel SelectedSearchTarget
 		{
 			get
 			{
-				return selectedPlayer;
+				return selectedTarget;
 			}
 		}
 
@@ -63,7 +67,7 @@ namespace MaddenEditor.Forms
 			char[] delims = { ' ', ',' };
 			string searchString = searchTextBox.Text.ToLower();
 			string[] searchterms = searchString.Split(delims);
-			selectedPlayer = null;
+			selectedTarget = null;
 
 			this.Cursor = Cursors.WaitCursor;
 			if (results != null)
@@ -71,7 +75,14 @@ namespace MaddenEditor.Forms
 				results.Clear();
 				results = null;
 			}
-			results = model.PlayerModel.SearchForPlayers(searchterms);
+			if (searchType == SearchType.PLAYER)
+			{
+				results = model.PlayerModel.SearchForPlayers(searchterms);
+			}
+			else
+			{
+				results = model.CoachModel.SearchForCoaches(searchterms);
+			}
 			this.Cursor = Cursors.Default;
 
 			if (results == null)
@@ -93,7 +104,7 @@ namespace MaddenEditor.Forms
 		{
 			string item = resultsListBox.SelectedItem.ToString();
 
-			selectedPlayer = results[item];
+			selectedTarget = results[item];
 			this.DialogResult = DialogResult.OK;
 			
 		}

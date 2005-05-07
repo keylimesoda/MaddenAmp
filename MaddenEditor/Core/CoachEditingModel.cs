@@ -50,6 +50,22 @@ namespace MaddenEditor.Core
 			{
 				return (CoachRecord)model.TableModels[EditorModel.COACH_TABLE].GetRecord(currentCoachIndex);
 			}
+			set
+			{
+				CoachRecord curr = value;
+				//need to set currenPlayerIndex to the correct index
+				int index = 0;
+				foreach (TableRecordModel rec in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+				{
+					if (curr == rec)
+					{
+						currentCoachIndex = index;
+						break;
+					}
+
+					index++;
+				}
+			}
 		}
 
 		public CoachRecord GetNextCoachRecord()
@@ -172,5 +188,43 @@ namespace MaddenEditor.Core
 		{
 			currentPositionFilter = -1;
 		}
+
+		public Dictionary<string, TableRecordModel> SearchForCoaches(String[] names)
+		{
+			Console.WriteLine("Starting search for " + names.ToString());
+			//This is not going to be efficient.
+			Dictionary<String, TableRecordModel> results = new Dictionary<String, TableRecordModel>();
+
+			foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+			{
+				String firstname = record.GetStringField(CoachRecord.NAME);
+
+				String firstnameLower = firstname.ToLower();
+
+				bool gotmatch = true;
+				foreach (String searchterm in names)
+				{
+					if (firstnameLower.IndexOf(searchterm) == -1)
+					{
+						//We don't have a match
+						gotmatch = false;
+						break;
+					}
+				}
+				if (gotmatch)
+				{
+					String key = firstname + "   (" + model.TeamModel.GetTeamNameFromTeamId(record.GetIntField(CoachRecord.TEAM_ID)) + ")";
+					String addkey = key;
+					int count = 1;
+					while (results.ContainsKey(addkey))
+					{
+						addkey = key + "(" + count++ + ")";
+					}
+					results.Add(addkey, (CoachRecord)record);
+				}
+			}
+			return results;
+		}
+
 	}
 }

@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.6.3
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.7.0
 
-                                   6th May 2005
+                                   8th May 2005
 
                                     readme.txt
 
@@ -40,6 +40,15 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
+* (NEW) Depth Chart Editing. 
+        PLEASE BE AWARE!!!! This lets you set any player to any position, However, i have 
+        experimented and it seems the game doesnt allow you to add certain players to 
+        positions. For example, I couldnt get the game to allow Lineman to play QB.
+        
+        In fact I couldnt even put a WR at CB. That sucks!!
+
+* (NEW) Coach searching.
+
 * (NEW) Better editing of Salary. Changes should be effecting Team Salary too now
 
 * (NEW) Editing of RFA Minimum Tenders and Salary Cap in Franchise files
@@ -66,6 +75,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. KNOWN ISSUES
 ===============
+
+* The Coach attributes are pretty much all wrong. So I wouldn't really use it
+  to edit coach attributes except for team and name etc..
 
 * Tabbing between settings doesnt work correctly
 
@@ -109,8 +121,6 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 ===============
 
 * Remove Cap Penalty ability
-
-* Depth Chart editor
 
 * Complete all attribute editing of players and coaches
 

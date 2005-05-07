@@ -90,7 +90,7 @@ namespace MaddenEditor.Core
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
 		private SalaryCapRecord salaryCapRecord = null;
-
+		
 		public EditorModel(string filename, MainForm form)
 		{
 			view = form;
@@ -120,6 +120,7 @@ namespace MaddenEditor.Core
 			playerEditingModel = new PlayerEditingModel(this);
 			teamEditingModel = new TeamEditingModel(this);
 			coachEditingModel = new CoachEditingModel(this);
+			
 
 			if (fileType == MaddenFileType.FranchiseFile)
 			{
