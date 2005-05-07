@@ -157,9 +157,9 @@ namespace MaddenEditor.Core
 				//	return null;
 				//case MaddenTable.CTMU_TABLE:
 				//	return null;
-				//case MaddenTable.DEPTH_CHART_TABLE:
-				//	newRecord = new DepthChartRecord(recno, parentModel);
-				//	break;
+				case EditorModel.DEPTH_CHART_TABLE:
+					newRecord = new DepthChartRecord(recno, parentModel);
+					break;
 				case EditorModel.INJURY_TABLE:
 					newRecord = new InjuryRecord(recno, parentModel);
 					break;

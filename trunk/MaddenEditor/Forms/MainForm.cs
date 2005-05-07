@@ -39,12 +39,28 @@ namespace MaddenEditor.Forms
 		private string fileToLoad;
 		private bool isInitialising = false;
 		
-		private SearchForm searchForm = null;
+		private SearchForm searchPlayerForm = null;
+		private SearchForm searchCoachForm = null;
+
+		private PlayerEditControl playerEditControl = null;
+		private CoachEditControl coachEditControl = null;
+		private DepthChartEditorControl depthChartEditorControl = null;
 
         public MainForm()
         {
             InitializeComponent();
-			
+
+			playerEditControl = new PlayerEditControl();
+			coachEditControl = new CoachEditControl();
+			depthChartEditorControl = new DepthChartEditorControl();
+
+			playerPage.Controls.Add(playerEditControl);
+			coachPage.Controls.Add(coachEditControl);
+			depthChartPage.Controls.Add(depthChartEditorControl);
+			playerEditControl.Dock = DockStyle.Fill;
+			coachEditControl.Dock = DockStyle.Fill;
+			depthChartEditorControl.Dock = DockStyle.Fill;
+						
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
@@ -133,6 +149,7 @@ namespace MaddenEditor.Forms
 			//controls about it
 			playerEditControl.Model = model;
 			coachEditControl.Model = model;
+			depthChartEditorControl.Model = model;
 		}
 
 		public void updateProgress(int percentage, string tablename)
@@ -144,6 +161,7 @@ namespace MaddenEditor.Forms
 		{
 			playerEditControl.InitialiseUI();
 			coachEditControl.InitialiseUI();
+			depthChartEditorControl.InitialiseUI();
 
 			tabControl.Visible = true;
 			toolsToolStripMenuItem.Visible = true;
@@ -171,10 +189,11 @@ namespace MaddenEditor.Forms
 		private void CleanUI()
 		{
 			//Now clean up ready for reloading
-			searchForm = null;
+			searchPlayerForm = null;
 
 			playerEditControl.CleanUI();
 			coachEditControl.CleanUI();
+			depthChartEditorControl.CleanUI();
 						
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
@@ -229,22 +248,43 @@ namespace MaddenEditor.Forms
 			AboutBox form = new AboutBox();
 			form.ShowDialog(this);
 		}
+
+		private void searchforCoachesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (searchCoachForm == null)
+			{
+				searchCoachForm = new SearchForm(model, SearchType.COACH);
+			}
+			searchCoachForm.ShowDialog(this);
+
+			if (searchCoachForm.DialogResult == DialogResult.OK)
+			{
+				//Found a new coach to switch to
+				//need to set current coach to this coach
+				model.CoachModel.CurrentCoachRecord = (CoachRecord)searchCoachForm.SelectedSearchTarget;
+				coachEditControl.LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
+				//Switch tab page to correct page
+				tabControl.SelectedIndex = 1;
+			}
+		}
 		
 		private void searchforPlayerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (searchForm == null)
+			if (searchPlayerForm == null)
 			{
-				searchForm = new SearchForm(model);
+				searchPlayerForm = new SearchForm(model, SearchType.PLAYER);
 			}
 
-			searchForm.ShowDialog(this);
+			searchPlayerForm.ShowDialog(this);
 
-			if (searchForm.DialogResult == DialogResult.OK)
+			if (searchPlayerForm.DialogResult == DialogResult.OK)
 			{
 				//Found a new player to switch to
 				//need to set current player to this player
-				model.PlayerModel.CurrentPlayerRecord = searchForm.SelectedPlayer;
+				model.PlayerModel.CurrentPlayerRecord = (PlayerRecord)searchPlayerForm.SelectedSearchTarget;
 				playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+				//Switch tab page to correct page
+				tabControl.SelectedIndex = 0;
 			}
 		}
 		
@@ -282,12 +322,8 @@ namespace MaddenEditor.Forms
 			form.ShowDialog();
 		}
 
-        private void depthChartEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DepthChartEditor editor = new DepthChartEditor();
+		
 
-            editor.Show();
-        }
 
     }
 }

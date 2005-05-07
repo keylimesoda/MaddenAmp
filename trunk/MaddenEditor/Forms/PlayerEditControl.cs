@@ -317,6 +317,8 @@ namespace MaddenEditor.Forms
 			}
 
 			LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+
+			
 		}
 
 		public void CleanUI()
@@ -501,7 +503,7 @@ namespace MaddenEditor.Forms
 
 		private void calculateOverallButton_Click(object sender, EventArgs e)
 		{
-			model.PlayerModel.CurrentPlayerRecord.CalculateOverallRating();
+			model.PlayerModel.CurrentPlayerRecord.Overall = model.PlayerModel.CurrentPlayerRecord.CalculateOverallRating(model.PlayerModel.CurrentPlayerRecord.PositionId);
 			//Reload the overall rating
 			playerOverall.Value = model.PlayerModel.CurrentPlayerRecord.Overall;
 		}
