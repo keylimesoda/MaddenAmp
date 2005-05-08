@@ -1,7 +1,7 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.7.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.7.5
 
                                    8th May 2005
 
@@ -40,18 +40,26 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
-* (NEW) Depth Chart Editing. 
+* (NEW) Global Attribute Editing (version 1)
+        Added a Tool to set/increment/decrement player attributes.
+        You can filter by the usual team/position/draft class options
+
+* (NEW) Coach editing is all corrected including all Priorities and balanced/aggressive/conservative
+        etc..
+        i.e QB's can have a priority set to scrambing/balanced/pocket
+
+* Depth Chart Editing. 
         PLEASE BE AWARE!!!! This lets you set any player to any position, However, i have 
         experimented and it seems the game doesnt allow you to add certain players to 
         positions. For example, I couldnt get the game to allow Lineman to play QB.
         
         In fact I couldnt even put a WR at CB. That sucks!!
 
-* (NEW) Coach searching.
+* Coach searching.
 
-* (NEW) Better editing of Salary. Changes should be effecting Team Salary too now
+* Better editing of Salary. Changes should be effecting Team Salary too now
 
-* (NEW) Editing of RFA Minimum Tenders and Salary Cap in Franchise files
+* Editing of RFA Minimum Tenders and Salary Cap in Franchise files
 
 * Editing of some Coach attributes
 
@@ -75,9 +83,6 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. KNOWN ISSUES
 ===============
-
-* The Coach attributes are pretty much all wrong. So I wouldn't really use it
-  to edit coach attributes except for team and name etc..
 
 * Tabbing between settings doesnt work correctly
 

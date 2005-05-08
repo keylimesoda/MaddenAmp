@@ -55,6 +55,8 @@ namespace MaddenEditor.Forms
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -123,7 +125,9 @@ namespace MaddenEditor.Forms
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.searchforPlayerToolStripMenuItem,
-            this.searchforCoachesToolStripMenuItem});
+            this.searchforCoachesToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.globalPlayerAttrEditorToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Text = "Tools";
 			// 
@@ -258,6 +262,16 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			// 
+			// globalPlayerAttrEditorToolStripMenuItem
+			// 
+			this.globalPlayerAttrEditorToolStripMenuItem.Name = "globalPlayerAttrEditorToolStripMenuItem";
+			this.globalPlayerAttrEditorToolStripMenuItem.Text = "Global Player Attr Editor ...";
+			this.globalPlayerAttrEditorToolStripMenuItem.Click += new System.EventHandler(this.globalPlayerAttrEditorToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -311,5 +325,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Button testButton;
 		private System.Windows.Forms.TabPage depthChartPage;
 		private System.Windows.Forms.ToolStripMenuItem searchforCoachesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem globalPlayerAttrEditorToolStripMenuItem;
     }
 }

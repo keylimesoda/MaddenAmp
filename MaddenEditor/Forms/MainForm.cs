@@ -240,7 +240,15 @@ namespace MaddenEditor.Forms
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			model.Save();
+			try
+			{
+				model.Save();
+				MessageBox.Show("File saved successfully!", "Save success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception err)
+			{
+				MessageBox.Show(err.ToString(), "Exception thrown while Saving", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 						
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -320,6 +328,13 @@ namespace MaddenEditor.Forms
 		{
 			SalaryCapForm form = new SalaryCapForm(model);
 			form.ShowDialog();
+		}
+
+		private void globalPlayerAttrEditorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			GlobalAttributeForm form = new GlobalAttributeForm(model);
+			form.InitialiseUI();
+			form.Show();
 		}
 
 		
