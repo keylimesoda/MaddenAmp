@@ -67,7 +67,7 @@ Section "MainSection" SEC01
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Madden Editor 2005.lnk" "$INSTDIR\MaddenEditor.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Madden Editor 2005 (${PRODUCT_VERSION}).lnk" "$INSTDIR\MaddenEditor.exe"
   CreateShortCut "$DESKTOP\Madden Editor 2005.lnk" "$INSTDIR\MaddenEditor.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
