@@ -15,6 +15,10 @@ namespace MaddenEditor.Forms
 	{
 		private bool isInitialising = false;
 
+		private NumericUpDown[] prioritySliders = null;
+		private NumericUpDown[] priorityTypeSliders = null;
+		private Label[] priorityDescriptionLabels = null;
+
 		private EditorModel model = null;
 
 		public CoachEditControl()
@@ -61,6 +65,20 @@ namespace MaddenEditor.Forms
 			coachSuperbowlWins.Value = (int)record.SuperBowlWins;
 			coachSuperBowlLoses.Value = (int)record.SuperBowlLoses;
 			coachWinningSeasons.Value = (int)record.WinningSeasons;
+			coachCareerWins.Value = (int)record.CareerWins;
+			coachCareerLoses.Value = (int)record.CareerLoses;
+			coachCareerTies.Value = (int)record.CareerTies;
+
+			if (record.DefensiveAlignment)
+			{
+				threeFourButton.Checked = false;
+				fourThreeButton.Checked = true;
+			}
+			else
+			{
+				threeFourButton.Checked = true;
+				fourThreeButton.Checked = false;
+			}
 
 			//Attributes
 			coachEthics.Value = (int)record.Ethics;
@@ -68,20 +86,79 @@ namespace MaddenEditor.Forms
 			coachMotivation.Value = (int)record.Motivation;
 			coachChemistry.Value = (int)record.Chemistry;
 
-			coachOffense.Value = (int)record.OffensiveRating;
-			coachDefense.Value = (int)record.DefensiveRating;
+			coachPassOff.Value = (int)record.OffensiveStrategy;
+			coachRunOff.Value = (int)(100 - record.OffensiveStrategy);
+			coachPassDef.Value = (int)record.DefensiveStrategy;
+			coachRunDef.Value = (int)(100 - record.DefensiveStrategy);
+			rb2.Value = (int)record.RunningBack2Sub;
+			rb1.Value = (int)(100 - record.RunningBack2Sub);
+			coachDefAggression.Value = record.DefensiveAggression;
+			coachOffAggression.Value = record.OffensiveAggression;
 
 			//Priorities
-			coachQBPriority.Value = (int)record.QuarterbackRating;
-			coachRBPriority.Value = (int)record.RunningbackRating;
-			coachWRPriority.Value = (int)record.OffensiveLineRating;
-			coachDLPriority.Value = (int)record.DefensiveLineRating;
-			coachLBPriority.Value = (int)record.LinebackerRating;
-			coachDBPriority.Value = (int)record.DefensiveBackRating;
-			coachKickerPriority.Value = (int)record.KickerRating;
-			coachPunterPriority.Value = (int)record.PuntRating;
-
+			SortedList<int, CoachPrioritySliderRecord> priorites = model.CoachModel.GetCurrentCoachSliders();
+			if (priorites.Count == 0)
+			{
+				for (int i = 0; i < Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length; i++)
+				{
+					prioritySliders[i].Value = 0;
+					priorityTypeSliders[i].Value = 0;
+					priorityDescriptionLabels[i].Text = "";
+				}
+			}
+			else
+			{
+				int index = 0;
+				foreach (CoachPrioritySliderRecord priorRecord in priorites.Values)
+				{
+					prioritySliders[index].Value = priorRecord.Priority;
+					priorityTypeSliders[index].Value = priorRecord.PriorityType;
+					priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, priorRecord.PriorityType);
+					index++;
+				}
+			}
+			
 			isInitialising = false;
+		}
+
+		private string DecodePriorityType(CoachSliderPlayerPositions pos, int type)
+		{
+			if (type == 2)
+			{
+				return "Balanced";
+			}
+
+			switch (pos)
+			{
+				case CoachSliderPlayerPositions.QB:
+					return (type == 0 ? "Pocket" : "Scrambling");
+				case CoachSliderPlayerPositions.HB:
+					return (type == 0 ? "Power" : "Speed");
+				case CoachSliderPlayerPositions.FB:
+				case CoachSliderPlayerPositions.TE:
+					return (type == 0 ? "Blocking" : "Receiving");
+				case CoachSliderPlayerPositions.WR:
+					return (type == 0 ? "Possession" : "Speed");
+				case CoachSliderPlayerPositions.T:
+				case CoachSliderPlayerPositions.G:
+				case CoachSliderPlayerPositions.C:
+					return (type == 0 ? "Run Blocking" : "Pass Blocking");
+				case CoachSliderPlayerPositions.DE:
+				case CoachSliderPlayerPositions.DT:
+					return (type == 0 ? "Pass Rushing" : "Run Stopping");
+				case CoachSliderPlayerPositions.OLB:
+				case CoachSliderPlayerPositions.MLB:
+					return (type == 0 ? "Coverage" : "Run Stopping");
+				case CoachSliderPlayerPositions.CB:
+				case CoachSliderPlayerPositions.SS:
+				case CoachSliderPlayerPositions.FS:
+					return (type == 0 ? "Coverage" : "Hard Hitting");
+				case CoachSliderPlayerPositions.K:
+				case CoachSliderPlayerPositions.P:
+					return (type == 0 ? "Power" : "Accurate");
+			} 
+
+			return "";
 		}
 
 		#region Coaches General Settings
@@ -130,7 +207,78 @@ namespace MaddenEditor.Forms
 			filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
 			filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
 
+			//Create priority controls
+			int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+			prioritySliders = new NumericUpDown[numPositions];
+			priorityTypeSliders = new NumericUpDown[numPositions];
+			priorityDescriptionLabels = new Label[numPositions];
+			for (int i = 0; i < numPositions; i++)
+			{
+				prioritySliders[i] = new NumericUpDown();
+				prioritySliders[i].Location = new Point(48, 11 + i * 26);
+				prioritySliders[i].Size = new Size(76, 20);
+				prioritySliders[i].Minimum = 0;
+				prioritySliders[i].Maximum = 100;
+				prioritySliders[i].Visible = true;
+				prioritySliders[i].ValueChanged += new EventHandler(prioritySlider_ValueChanged);
+
+				priorityGroupBox.Controls.Add(prioritySliders[i]);
+
+				priorityTypeSliders[i] = new NumericUpDown();
+				priorityTypeSliders[i].Location = new Point(130, 11 + i * 26);
+				priorityTypeSliders[i].Size = new Size(56, 20);
+				priorityTypeSliders[i].Minimum = 0;
+				priorityTypeSliders[i].Maximum = 2;
+				priorityTypeSliders[i].Visible = true;
+				priorityTypeSliders[i].ValueChanged += new EventHandler(priorityTypeSlider_ValueChanged);
+
+				priorityGroupBox.Controls.Add(priorityTypeSliders[i]);
+
+				priorityDescriptionLabels[i] = new Label();
+				priorityDescriptionLabels[i].Location = new Point(195, 13 + i * 26);
+				priorityDescriptionLabels[i].Visible = true;
+				
+				priorityGroupBox.Controls.Add(priorityDescriptionLabels[i]);
+			}
 			LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
+		}
+
+		void priorityTypeSlider_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+				int index;
+				for (index = 0; index < numPositions; index++)
+				{
+					if (sender == priorityTypeSliders[index])
+					{
+						break;
+					}
+				}
+
+				model.CoachModel.GetCurrentCoachSliders().Values[index].PriorityType = (int)priorityTypeSliders[index].Value;
+				priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, (int)priorityTypeSliders[index].Value);
+			}
+		}
+
+		void prioritySlider_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+				int index;
+				for (index = 0; index < numPositions; index++)
+				{
+					if (sender == prioritySliders[index])
+					{
+						break;
+					}
+				}
+
+				model.CoachModel.GetCurrentCoachSliders().Values[index].Priority = (int)prioritySliders[index].Value;
+				
+			}
 		}
 
 		public void CleanUI()
@@ -203,6 +351,30 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+		private void coachCareerWins_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.CareerWins = (int)coachCareerWins.Value;
+			}
+		}
+
+		private void coachCareerLoses_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.CareerLoses = (int)coachCareerLoses.Value;
+			}
+		}
+
+		private void coachCareerTies_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.CareerTies = (int)coachCareerTies.Value;
+			}
+		}
+
 		private void coachEthics_ValueChanged(object sender, EventArgs e)
 		{
 			if (!isInitialising)
@@ -232,94 +404,6 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.CoachModel.CurrentCoachRecord.Chemistry = (int)coachChemistry.Value;
-			}
-		}
-
-		private void coachOffense_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.OffensiveRating = (int)coachOffense.Value;
-			}
-		}
-
-		private void coachDefense_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.DefensiveRating = (int)coachDefense.Value;
-			}
-		}
-
-		private void coachQBPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.QuarterbackRating = (int)coachQBPriority.Value;
-			}
-		}
-
-		private void coachRBPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.RunningbackRating = (int)coachRBPriority.Value;
-			}
-		}
-
-		private void coachWRPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.WideReceiverRating = (int)coachWRPriority.Value;
-			}
-		}
-
-		private void coachOLPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.OffensiveLineRating = (int)coachOLPriority.Value;
-			}
-		}
-
-		private void coachDLPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.DefensiveLineRating = (int)coachDLPriority.Value;
-			}
-		}
-
-		private void coachLBPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.LinebackerRating = (int)coachLBPriority.Value;
-			}
-		}
-
-		private void coachDBPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.DefensiveBackRating = (int)coachDBPriority.Value;
-			}
-		}
-
-		private void coachKickerPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.KickerRating = (int)coachKickerPriority.Value;
-			}
-		}
-
-		private void coachPunterPriority_ValueChanged(object sender, EventArgs e)
-		{
-			if (!isInitialising)
-			{
-				model.CoachModel.CurrentCoachRecord.PuntRating = (int)coachPunterPriority.Value;
 			}
 		}
 
@@ -377,6 +461,65 @@ namespace MaddenEditor.Forms
 
 		
 
+		private void threeFourButton_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.DefensiveAlignment = false;
+			}
+		}
+
+		private void fourThreeButton_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.DefensiveAlignment = true;
+			}
+		}
+
+		private void coachPassOff_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.OffensiveStrategy = (int)coachPassOff.Value;
+				coachRunOff.Value = (int)(100 - coachPassOff.Value);
+			}
+		}
+
+		private void coachPassDef_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.DefensiveStrategy = (int)coachPassDef.Value;
+				coachRunDef.Value = (int)(100 - coachPassDef.Value);
+			}
+		}
+
+		private void rb2_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.RunningBack2Sub = (int)rb2.Value;
+				rb1.Value = (int)(100 - rb2.Value);
+			}
+		}
+
+		private void coachOffAggression_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.OffensiveAggression = (int)coachOffAggression.Value;
+			}
+		}
+
+		private void coachDefAggression_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.DefensiveAggression = (int)coachDefAggression.Value;
+			}
+		}
+	
 		
 	}
 }

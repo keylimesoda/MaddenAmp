@@ -151,8 +151,9 @@ namespace MaddenEditor.Core
 				case EditorModel.SALARY_CAP_TABLE:
 					newRecord = new SalaryCapRecord(recno, parentModel);
 					break;
-				//case MaddenTable.CPSE_TABLE:
-				//	return null;
+				case EditorModel.COACH_SLIDER_TABLE:
+					newRecord = new CoachPrioritySliderRecord(recno, parentModel);
+					break;
 				//case MaddenTable.CTMP_TABLE:
 				//	return null;
 				//case MaddenTable.CTMU_TABLE:
