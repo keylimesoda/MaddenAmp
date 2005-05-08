@@ -40,9 +40,18 @@ namespace MaddenEditor.Core.Record
 		public const string PLAYOFF_LOSES = "CCPL";
 		public const string PLAYFF_WINS = "CCPW";
 		public const string WINNING_SEASONS = "CCWS";
+		public const string CAREER_WINS = "CCWI";
+		public const string CAREER_LOSES = "CCLO";
+		public const string CAREER_TIES = "CCTI";
 
-		public const string OFF_RATING = "COFF";
-		public const string DEF_RATING = "CDEF";
+		public const string DEFENSE_TYPE = "CDTY";
+
+		public const string OFF_STRAT = "COTR";
+		public const string DEF_STRAT = "CDTR";
+		public const string RUNNING_BACK_SUB = "CRBT";
+		public const string OFF_AGGR = "COTA";
+		public const string DEF_AGGR = "CDTA";
+		
 		public const string DB_RATING = "CRDB";
 		public const string LB_RATING = "CRLB";
 		public const string QB_RATING = "CRQB";
@@ -197,27 +206,82 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public int OffensiveRating
+		public int CareerWins
 		{
 			get
 			{
-				return intFields[OFF_RATING];
+				return intFields[CAREER_WINS];
 			}
 			set
 			{
-				SetField(OFF_RATING, value);
+				SetField(CAREER_WINS, value);
 			}
 		}
 
-		public int DefensiveRating
+		public int CareerLoses
 		{
 			get
 			{
-				return intFields[DEF_RATING];
+				return intFields[CAREER_LOSES];
 			}
 			set
 			{
-				SetField(DEF_RATING, value);
+				SetField(CAREER_LOSES, value);
+			}
+		}
+
+		public int CareerTies
+		{
+			get
+			{
+				return intFields[CAREER_TIES];
+			}
+			set
+			{
+				SetField(CAREER_TIES, value);
+			}
+		}
+
+		public bool DefensiveAlignment
+		{
+			get
+			{
+				return (intFields[DEFENSE_TYPE] >= 50 ? true : false);
+			}
+			set
+			{
+				if (value)
+				{
+					SetField(DEFENSE_TYPE, 80);
+				}
+				else
+				{
+					SetField(DEFENSE_TYPE, 5);
+				}
+			}
+		}
+
+		public int OffensiveStrategy
+		{
+			get
+			{
+				return intFields[OFF_STRAT];
+			}
+			set
+			{
+				SetField(OFF_STRAT, value);
+			}
+		}
+
+		public int DefensiveStrategy
+		{
+			get
+			{
+				return intFields[DEF_STRAT];
+			}
+			set
+			{
+				SetField(DEF_STRAT, value);
 			}
 		}
 
@@ -374,6 +438,42 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(CHEMISTRY, value);
+			}
+		}
+
+		public int RunningBack2Sub
+		{
+			get
+			{
+				return intFields[RUNNING_BACK_SUB];
+			}
+			set
+			{
+				SetField(RUNNING_BACK_SUB, value);
+			}
+		}
+
+		public int OffensiveAggression
+		{
+			get
+			{
+				return intFields[OFF_AGGR];
+			}
+			set
+			{
+				SetField(OFF_AGGR, value);
+			}
+		}
+
+		public int DefensiveAggression
+		{
+			get
+			{
+				return intFields[DEF_AGGR];
+			}
+			set
+			{
+				SetField(DEF_AGGR, value);
 			}
 		}
 	}

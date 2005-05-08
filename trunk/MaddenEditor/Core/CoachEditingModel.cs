@@ -226,5 +226,28 @@ namespace MaddenEditor.Core
 			return results;
 		}
 
+		public SortedList<int, CoachPrioritySliderRecord> GetCurrentCoachSliders()
+		{
+			SortedList<int, CoachPrioritySliderRecord> results = new SortedList<int, CoachPrioritySliderRecord>();
+
+			foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_SLIDER_TABLE].GetRecords())
+			{
+				if (record.Deleted)
+				{
+					continue;
+				}
+
+				CoachPrioritySliderRecord sliderRecord = (CoachPrioritySliderRecord)record;
+				if (sliderRecord.CoachId == model.CoachModel.CurrentCoachRecord.CoachId)
+				{
+					results.Add(sliderRecord.PositionId, sliderRecord);
+				}
+			}
+
+			return results;
+		}
+
+		
+
 	}
 }

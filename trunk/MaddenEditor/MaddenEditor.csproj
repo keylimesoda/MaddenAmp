@@ -56,6 +56,7 @@
     <Compile Include="Core\DepthChartEditingModel.cs" />
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
+    <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
     <Compile Include="Db\TDB.cs" />
