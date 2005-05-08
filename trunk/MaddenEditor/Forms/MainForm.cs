@@ -50,6 +50,8 @@ namespace MaddenEditor.Forms
         {
             InitializeComponent();
 
+			this.Text = this.Text + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
 			playerEditControl = new PlayerEditControl();
 			coachEditControl = new CoachEditControl();
 			depthChartEditorControl = new DepthChartEditorControl();
