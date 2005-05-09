@@ -110,7 +110,7 @@ Section Uninstall
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\Madden Editor 2005.lnk"
-  Delete "$SMPROGRAMS\$ICONS_GROUP\Madden Editor 2005.lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\Madden Editor 2005 (${PRODUCT_VERSION}).lnk"
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
   RMDir "$INSTDIR"
