@@ -46,7 +46,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RESTRICTED_FA_1];
+				return GetIntField(RESTRICTED_FA_1);
 			}
 			set
 			{
@@ -58,7 +58,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RESTRICTED_FA_2];
+				return GetIntField(RESTRICTED_FA_2);
 			}
 			set
 			{
@@ -70,7 +70,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RESTRICTED_FA_3];
+				return GetIntField(RESTRICTED_FA_3);
 			}
 			set
 			{
@@ -82,7 +82,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RESTRICTED_FA_4];
+				return GetIntField(RESTRICTED_FA_4);
 			}
 			set
 			{
@@ -94,7 +94,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[SALARY_CAP];
+				return GetIntField(SALARY_CAP);
 			}
 			set
 			{

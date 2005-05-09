@@ -71,6 +71,7 @@ namespace MaddenEditor.Forms
 
 		private void LoadDepthChart()
 		{
+			this.Cursor = Cursors.WaitCursor;
 			isInitialising = true;
 			int teamId = model.TeamModel.GetTeamIdFromTeamName(teamCombo.SelectedItem.ToString());
 			int positionId = positionCombo.SelectedIndex;
@@ -112,7 +113,7 @@ namespace MaddenEditor.Forms
 				if (depthChartDataGrid.SelectedRows.Count == 0)
 					this.depthChartDataGrid.Rows[0].Selected = true;
 			}
-
+			this.Cursor = Cursors.Default;
 			isInitialising = false;
 		}
 

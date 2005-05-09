@@ -43,7 +43,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[INJURY_LENGTH];
+				return GetIntField(INJURY_LENGTH);
 			}
 			set
 			{
@@ -55,7 +55,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[INJURY_TYPE] < 230 ? intFields[INJURY_TYPE] : 229);
+				return (GetIntField(INJURY_TYPE) < 230 ? GetIntField(INJURY_TYPE) : 229);
 			}
 			set
 			{
@@ -67,7 +67,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[PLAYER_ID];
+				return GetIntField(PLAYER_ID);
 			}
 			set
 			{
@@ -79,7 +79,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TEAM_ID];
+				return GetIntField(TEAM_ID);
 			}
 			set
 			{
@@ -91,7 +91,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[INJURY_RSV] == 1);
+				return (GetIntField(INJURY_RSV) == 1);
 			}
 			set
 			{
@@ -103,7 +103,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				int length = intFields[INJURY_LENGTH]%256;
+				int length = GetIntField(INJURY_LENGTH)%256;
 
 				if (length == 0)
 				{

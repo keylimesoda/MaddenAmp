@@ -35,11 +35,11 @@ namespace MaddenEditor.Core
 		protected bool dirty = false;
 		protected bool deleted = false;
 		protected int recordNumber = -1;
-		protected Dictionary<string, int> intFields = null;
-		protected Dictionary<string, string> stringFields = null;
+		private Dictionary<string, int> intFields = null;
+		private Dictionary<string, string> stringFields = null;
 
-		protected Dictionary<string, int> backupIntFields = null;
-		protected Dictionary<string, string> backupStringFields = null;
+		private Dictionary<string, int> backupIntFields = null;
+		private Dictionary<string, string> backupStringFields = null;
 
 		protected EditorModel parentModel = null;
 
@@ -98,12 +98,39 @@ namespace MaddenEditor.Core
 
 		public string GetStringField(string fieldName)
 		{
-			return stringFields[fieldName];
+			try
+			{
+				return stringFields[fieldName];
+			}
+			catch(KeyNotFoundException err)
+			{
+				//Console.WriteLine("Error Getting StringField " + fieldName + " :" + err.ToString());
+				return "";
+			}
 		}
 
 		public int GetIntField(string fieldName)
 		{
-			return intFields[fieldName];
+			try
+			{
+				return intFields[fieldName];
+			}
+			catch (KeyNotFoundException err)
+			{
+				//Console.WriteLine("Error Getting IntField " + fieldName + " :" + err.ToString());
+				return 0;
+			}
+		}
+
+		protected bool ContainsField(string fieldName)
+		{
+			if (intFields.ContainsKey(fieldName))
+				return true;
+
+			if (stringFields.ContainsKey(fieldName))
+				return true;
+
+			return false;
 		}
 
 		protected void SetField(string fieldName, string val)
