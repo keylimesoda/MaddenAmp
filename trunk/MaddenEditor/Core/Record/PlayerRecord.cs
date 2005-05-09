@@ -161,7 +161,7 @@ namespace MaddenEditor.Core.Record
 				{
 					CalculateCapHit(false);
 				}
-				return stringFields[FIRST_NAME];
+				return GetStringField(FIRST_NAME);
 			}
 			set
 			{
@@ -173,7 +173,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return stringFields[LAST_NAME];
+				return GetStringField(LAST_NAME);
 			}
 			set
 			{
@@ -185,7 +185,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[POSITION_ID];
+				return GetIntField(POSITION_ID);
 			}
 			set
 			{
@@ -197,7 +197,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TEAM_ID];
+				return GetIntField(TEAM_ID);
 			}
 			set
 			{
@@ -209,7 +209,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[PLAYER_ID];
+				return GetIntField(PLAYER_ID);
 			}
 			set
 			{
@@ -221,7 +221,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[COLLEGE_ID];
+				return GetIntField(COLLEGE_ID);
 			}
 			set
 			{
@@ -233,7 +233,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[AGE];
+				return GetIntField(AGE);
 			}
 			set
 			{
@@ -245,7 +245,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[YRS_PRO];
+				return GetIntField(YRS_PRO);
 			}
 			set
 			{
@@ -257,7 +257,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[XP_POINTS];
+				return GetIntField(XP_POINTS);
 			}
 			set
 			{
@@ -269,7 +269,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[NFL_ICON] == 1);
+				return (GetIntField(NFL_ICON) == 1);
 			}
 			set
 			{
@@ -281,7 +281,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[PRO_BOWL] == 1);
+				return (GetIntField(PRO_BOWL) == 1);
 			}
 			set
 			{
@@ -293,7 +293,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[DOMINANT_HAND] == 1);
+				return (GetIntField(DOMINANT_HAND) == 1);
 			}
 			set
 			{
@@ -305,7 +305,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[JERSEY_NUMBER];
+				return GetIntField(JERSEY_NUMBER);
 			}
 			set
 			{
@@ -317,7 +317,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[OVERALL];
+				return GetIntField(OVERALL);
 			}
 			set
 			{
@@ -329,7 +329,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[SPEED];
+				return GetIntField(SPEED);
 			}
 			set
 			{
@@ -341,7 +341,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[STRENGTH];
+				return GetIntField(STRENGTH);
 			}
 			set
 			{
@@ -353,7 +353,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[AWARENESS];
+				return GetIntField(AWARENESS);
 			}
 			set
 			{
@@ -365,7 +365,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[AGILITY];
+				return GetIntField(AGILITY);
 			}
 			set
 			{
@@ -377,7 +377,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[ACCELERATION];
+				return GetIntField(ACCELERATION);
 			}
 			set
 			{
@@ -389,7 +389,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[CATCHING];
+				return GetIntField(CATCHING);
 			}
 			set
 			{
@@ -401,7 +401,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[CARRYING];
+				return GetIntField(CARRYING);
 			}
 			set
 			{
@@ -413,7 +413,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[JUMPING];
+				return GetIntField(JUMPING);
 			}
 			set
 			{
@@ -425,7 +425,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[BREAK_TACKLE];
+				return GetIntField(BREAK_TACKLE);
 			}
 			set
 			{
@@ -437,7 +437,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TACKLE];
+				return GetIntField(TACKLE);
 			}
 			set
 			{
@@ -449,7 +449,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[THROW_POWER];
+				return GetIntField(THROW_POWER);
 			}
 			set
 			{
@@ -461,7 +461,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[THROW_ACCURACY];
+				return GetIntField(THROW_ACCURACY);
 			}
 			set
 			{
@@ -473,7 +473,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[PASS_BLOCKING];
+				return GetIntField(PASS_BLOCKING);
 			}
 			set
 			{
@@ -485,7 +485,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RUN_BLOCKING];
+				return GetIntField(RUN_BLOCKING);
 			}
 			set
 			{
@@ -497,7 +497,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[KICK_POWER];
+				return GetIntField(KICK_POWER);
 			}
 			set
 			{
@@ -509,7 +509,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[KICK_ACCURACY];
+				return GetIntField(KICK_ACCURACY);
 			}
 			set
 			{
@@ -521,7 +521,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[KICK_RETURN];
+				return GetIntField(KICK_RETURN);
 			}
 			set
 			{
@@ -533,7 +533,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[STAMINA];
+				return GetIntField(STAMINA);
 			}
 			set
 			{
@@ -545,7 +545,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[INJURY];
+				return GetIntField(INJURY);
 			}
 			set
 			{
@@ -557,7 +557,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TOUGHNESS];
+				return GetIntField(TOUGHNESS);
 			}
 			set
 			{
@@ -569,7 +569,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[MORALE];
+				return GetIntField(MORALE);
 			}
 			set
 			{
@@ -581,7 +581,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[IMPORTANCE];
+				return GetIntField(IMPORTANCE);
 			}
 			set
 			{
@@ -593,7 +593,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[WEIGHT];
+				return GetIntField(WEIGHT);
 			}
 			set
 			{
@@ -605,7 +605,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[HEIGHT];
+				return GetIntField(HEIGHT);
 			}
 			set
 			{
@@ -617,7 +617,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[BODY_WEIGHT] < 100 ? intFields[BODY_WEIGHT] : 99);
+				return (GetIntField(BODY_WEIGHT) < 100 ? GetIntField(BODY_WEIGHT) : 99);
 			}
 			set
 			{
@@ -629,7 +629,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[BODY_MUSCLE] < 100 ? intFields[BODY_MUSCLE] : 99);
+				return (GetIntField(BODY_MUSCLE) < 100 ? GetIntField(BODY_MUSCLE) : 99);
 			}
 			set
 			{
@@ -641,7 +641,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[BODY_FAT] < 100 ? intFields[BODY_FAT] : 99);
+				return (GetIntField(BODY_FAT) < 100 ? GetIntField(BODY_FAT) : 99);
 			}
 			set
 			{
@@ -653,7 +653,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[EQP_SHOES] < 100 ? intFields[EQP_SHOES] : 99);
+				return (GetIntField(EQP_SHOES) < 100 ? GetIntField(EQP_SHOES) : 99);
 			}
 			set
 			{
@@ -665,7 +665,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[EQP_PAD_HEIGHT] < 100 ? intFields[EQP_PAD_HEIGHT] : 99);
+				return (GetIntField(EQP_PAD_HEIGHT) < 100 ? GetIntField(EQP_PAD_HEIGHT) : 99);
 			}
 			set
 			{
@@ -677,7 +677,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[EQP_PAD_WIDTH] < 100 ? intFields[EQP_PAD_WIDTH] : 99);
+				return (GetIntField(EQP_PAD_WIDTH) < 100 ? GetIntField(EQP_PAD_WIDTH) : 99);
 			}
 			set
 			{
@@ -689,7 +689,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[EQP_PAD_SHELF] < 100 ? intFields[EQP_PAD_SHELF] : 99);
+				return (GetIntField(EQP_PAD_SHELF) < 100 ? GetIntField(EQP_PAD_SHELF) : 99);
 			}
 			set
 			{
@@ -701,7 +701,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[EQP_FLAK_JACKET] < 100 ? intFields[EQP_FLAK_JACKET] : 99);
+				return (GetIntField(EQP_FLAK_JACKET) < 100 ? GetIntField(EQP_FLAK_JACKET) : 99);
 			}
 			set
 			{
@@ -713,7 +713,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[ARMS_MUSCLE] < 100 ? intFields[ARMS_MUSCLE] : 99);
+				return (GetIntField(ARMS_MUSCLE) < 100 ? GetIntField(ARMS_MUSCLE) : 99);
 			}
 			set
 			{
@@ -725,7 +725,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[ARMS_FAT] < 100 ? intFields[ARMS_FAT] : 99);
+				return (GetIntField(ARMS_FAT) < 100 ? GetIntField(ARMS_FAT) : 99);
 			}
 			set
 			{
@@ -737,7 +737,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[LEGS_THIGH_MUSCLE] < 100 ? intFields[LEGS_THIGH_MUSCLE] : 99);
+				return (GetIntField(LEGS_THIGH_MUSCLE) < 100 ? GetIntField(LEGS_THIGH_MUSCLE) : 99);
 			}
 			set
 			{
@@ -749,7 +749,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[LEGS_THIGH_FAT] < 100 ? intFields[LEGS_THIGH_FAT] : 99);
+				return (GetIntField(LEGS_THIGH_FAT) < 100 ? GetIntField(LEGS_THIGH_FAT) : 99);
 			}
 			set
 			{
@@ -761,7 +761,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[LEGS_CALF_MUSCLE] < 100 ? intFields[LEGS_CALF_MUSCLE] : 99);
+				return (GetIntField(LEGS_CALF_MUSCLE) < 100 ? GetIntField(LEGS_CALF_MUSCLE) : 99);
 			}
 			set
 			{
@@ -773,7 +773,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[LEGS_CALF_FAT] < 100 ? intFields[LEGS_CALF_FAT] : 99);
+				return (GetIntField(LEGS_CALF_FAT) < 100 ? GetIntField(LEGS_CALF_FAT) : 99);
 			}
 			set
 			{
@@ -785,7 +785,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[REAR_REAR_FAR] < 100 ? intFields[REAR_REAR_FAR] : 99);
+				return (GetIntField(REAR_REAR_FAR) < 100 ? GetIntField(REAR_REAR_FAR) : 99);
 			}
 			set
 			{
@@ -797,7 +797,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[REAR_SHAPE] < 100 ? intFields[REAR_SHAPE] : 99);
+				return (GetIntField(REAR_SHAPE) < 100 ? GetIntField(REAR_SHAPE) : 99);
 			}
 			set
 			{
@@ -809,7 +809,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[CONTRACT_LENGTH];
+				return GetIntField(CONTRACT_LENGTH);
 			}
 			set
 			{
@@ -822,7 +822,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[CONTRACT_YRS_LEFT];
+				return GetIntField(CONTRACT_YRS_LEFT);
 			}
 			set
 			{
@@ -835,7 +835,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[SIGNING_BONUS];
+				return GetIntField(SIGNING_BONUS);
 			}
 			set
 			{
@@ -848,7 +848,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TOTAL_SALARY];
+				return GetIntField(TOTAL_SALARY);
 			}
 			set
 			{
@@ -861,7 +861,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[SKIN_COLOR];
+				return GetIntField(SKIN_COLOR);
 			}
 			set
 			{
@@ -873,7 +873,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[ARMS_FAT] < 21 ? intFields[ARMS_FAT] : 20);
+				return (GetIntField(ARMS_FAT) < 21 ? GetIntField(ARMS_FAT) : 20);
 			}
 			set
 			{
@@ -885,7 +885,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[EYE_PAINT];
+				return GetIntField(EYE_PAINT);
 			}
 			set
 			{
@@ -897,7 +897,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[THROWING_STYLE];
+				return GetIntField(THROWING_STYLE);
 			}
 			set
 			{
@@ -909,7 +909,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[HAIR_COLOR];
+				return GetIntField(HAIR_COLOR);
 			}
 			set
 			{
@@ -921,7 +921,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[HAIR_STYLE];
+				return GetIntField(HAIR_STYLE);
 			}
 			set
 			{
@@ -933,7 +933,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[HELMET_STYLE];
+				return GetIntField(HELMET_STYLE);
 			}
 			set
 			{
@@ -945,7 +945,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[FACE_MASK];
+				return GetIntField(FACE_MASK);
 			}
 			set
 			{
@@ -957,7 +957,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (intFields[NECK_ROLL] < 3 ? intFields[NECK_ROLL] : 2);
+				return (GetIntField(NECK_ROLL) < 3 ? GetIntField(NECK_ROLL) : 2);
 			}
 			set
 			{
@@ -969,7 +969,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[VISOR];
+				return GetIntField(VISOR);
 			}
 			set
 			{
@@ -981,7 +981,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[MOUTHPIECE];
+				return GetIntField(MOUTHPIECE);
 			}
 			set
 			{
@@ -993,7 +993,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[LEFT_HAND_A];
+				return GetIntField(LEFT_HAND_A);
 			}
 			set
 			{
@@ -1006,7 +1006,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RIGHT_HAND_A];
+				return GetIntField(RIGHT_HAND_A);
 			}
 			set
 			{
@@ -1019,7 +1019,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[LEFT_ANKLE];
+				return GetIntField(LEFT_ANKLE);
 			}
 			set
 			{
@@ -1031,7 +1031,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RIGHT_ANKLE];
+				return GetIntField(RIGHT_ANKLE);
 			}
 			set
 			{
@@ -1043,7 +1043,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[LEFT_KNEE];
+				return GetIntField(LEFT_KNEE);
 			}
 			set
 			{
@@ -1055,7 +1055,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RIGHT_KNEE];
+				return GetIntField(RIGHT_KNEE);
 			}
 			set
 			{
@@ -1067,7 +1067,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[LEFT_ELBOW_A];
+				return GetIntField(LEFT_ELBOW_A);
 			}
 			set
 			{
@@ -1080,7 +1080,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RIGHT_ELBOW_A];
+				return GetIntField(RIGHT_ELBOW_A);
 			}
 			set
 			{
@@ -1093,7 +1093,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[SLEEVES_A];
+				return GetIntField(SLEEVES_A);
 			}
 			set
 			{
@@ -1106,7 +1106,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[LEFT_WRIST_A];
+				return GetIntField(LEFT_WRIST_A);
 			}
 			set
 			{
@@ -1119,7 +1119,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[RIGHT_WRIST_A];
+				return GetIntField(RIGHT_WRIST_A);
 			}
 			set
 			{
@@ -1132,7 +1132,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[NASAL_STRIP];
+				return GetIntField(NASAL_STRIP);
 			}
 			set
 			{
@@ -1328,9 +1328,9 @@ namespace MaddenEditor.Core.Record
 		{
 			string key = "PSA" + year;
 
-			if (intFields.ContainsKey(key))
+			if (ContainsField(key))
 			{
-				return intFields[key];
+				return GetIntField(key);
 			}
 			else
 			{
@@ -1342,9 +1342,9 @@ namespace MaddenEditor.Core.Record
 		{
 			string key = "PSB" + year;
 
-			if (intFields.ContainsKey(key))
+			if (ContainsField(key))
 			{
-				return intFields[key];
+				return GetIntField(key);
 			}
 			else
 			{
@@ -1432,7 +1432,7 @@ namespace MaddenEditor.Core.Record
 			
 			Console.WriteLine("Cap hit = " + capHit);
 
-			if (intFields.ContainsKey(SALARY_YEAR_0))
+			if (ContainsField(SALARY_YEAR_0))
 			{
 				//We are a franchise file so save back our yearly stuff
 				for (int i = 0; i < 7; i++)

@@ -106,8 +106,10 @@ namespace MaddenEditor.Forms
 			playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
 
 			playerMorale.Value = record.Morale;
-			playerImportance.Value = record.Importance;
 			playerNFLIcon.Checked = record.NFLIcon;
+			
+			playerImportance.Value = record.Importance;
+			
 			playerProBowl.Checked = record.ProBowl;
 			playerExperiencePoints.Value = record.XPPoints;
 			playerContractLength.Value = record.ContractLength;

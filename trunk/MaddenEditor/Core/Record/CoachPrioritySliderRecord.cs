@@ -44,7 +44,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[COACH_ID];
+				return GetIntField(COACH_ID);
 			}
 			set
 			{
@@ -56,7 +56,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[POSITION_ID];
+				return GetIntField(POSITION_ID);
 			}
 			set
 			{
@@ -68,7 +68,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[PRIORITY];
+				return GetIntField(PRIORITY);
 			}
 			set
 			{
@@ -80,7 +80,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[PRIORITY_TYPE];
+				return GetIntField(PRIORITY_TYPE);
 			}
 			set
 			{

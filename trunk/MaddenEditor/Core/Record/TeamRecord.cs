@@ -46,7 +46,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return stringFields[TEAM_NAME];
+				return GetStringField(TEAM_NAME);
 			}
 			set
 			{
@@ -58,7 +58,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return stringFields[TEAM_LAST_NAME];
+				return GetStringField(TEAM_LAST_NAME);
 			}
 			set
 			{
@@ -70,7 +70,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return stringFields[TEAM_STATE];
+				return GetStringField(TEAM_STATE);
 			}
 			set
 			{
@@ -82,7 +82,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TEAM_ID];
+				return GetIntField(TEAM_ID);
 			}
 			set
 			{
@@ -94,7 +94,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return intFields[TEAM_SALARY];
+				return GetIntField(TEAM_SALARY);
 			}
 			set
 			{
