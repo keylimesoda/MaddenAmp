@@ -44,6 +44,7 @@ namespace MaddenEditor.Forms
 			this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
@@ -156,7 +157,8 @@ namespace MaddenEditor.Forms
 			// franchiseToolStripMenuItem
 			// 
 			this.franchiseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editSalaryCapsToolStripMenuItem});
+            this.editSalaryCapsToolStripMenuItem,
+            this.setTeamCaptainsToolStripMenuItem});
 			this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
 			this.franchiseToolStripMenuItem.Text = "Franchise";
 			// 
@@ -165,6 +167,12 @@ namespace MaddenEditor.Forms
 			this.editSalaryCapsToolStripMenuItem.Name = "editSalaryCapsToolStripMenuItem";
 			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps";
 			this.editSalaryCapsToolStripMenuItem.Click += new System.EventHandler(this.editSalaryCapsToolStripMenuItem_Click);
+			// 
+			// setTeamCaptainsToolStripMenuItem
+			// 
+			this.setTeamCaptainsToolStripMenuItem.Name = "setTeamCaptainsToolStripMenuItem";
+			this.setTeamCaptainsToolStripMenuItem.Text = "Set Team Captains ...";
+			this.setTeamCaptainsToolStripMenuItem.Click += new System.EventHandler(this.setTeamCaptainsToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -327,5 +335,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem searchforCoachesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem globalPlayerAttrEditorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem setTeamCaptainsToolStripMenuItem;
     }
 }

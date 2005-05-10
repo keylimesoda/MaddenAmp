@@ -269,12 +269,12 @@ namespace MaddenEditor.Core
 
 		public InjuryRecord CreateNewInjuryRecord()
 		{
-			return (InjuryRecord)model.TableModels[EditorModel.INJURY_TABLE].CreateNewRecord();
+			return (InjuryRecord)model.TableModels[EditorModel.INJURY_TABLE].CreateNewRecord(false);
 		}
 
 		public PlayerRecord CreateNewPlayerRecord()
 		{
-			return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].CreateNewRecord();
+			return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].CreateNewRecord(false);
 		}
 	}
 }

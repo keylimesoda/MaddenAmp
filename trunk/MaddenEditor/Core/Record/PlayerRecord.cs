@@ -76,6 +76,8 @@ namespace MaddenEditor.Core.Record
 		public const string SIGNING_BONUS = "PSBO";
 		public const string TOTAL_SALARY = "PTSA";
 
+		public const string BODY_OVERALL = "PSBS";
+		public const string LEGS_THIGH_PADS = "PTPS";
 		public const string BODY_WEIGHT = "PMTS";
 		public const string BODY_MUSCLE = "PUTS";
 		public const string BODY_FAT = "PFTS";
@@ -150,6 +152,11 @@ namespace MaddenEditor.Core.Record
 			: base(record, EditorModel)
 		{
 
+		}
+
+		public override string ToString()
+		{
+			return FirstName + " " + LastName + " (" + Enum.GetNames(typeof(MaddenPositions))[PositionId].ToString() + ")";
 		}
 
 		public string FirstName
@@ -1137,6 +1144,31 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(NASAL_STRIP, value);
+			}
+		}
+
+		public int BodyOverall
+		{
+			get
+			{
+				return 99 - (GetIntField(BODY_OVERALL) > 99 ? 99 : GetIntField(BODY_OVERALL));
+			}
+			set
+			{
+				SetField(BODY_OVERALL, 99 - value);
+			}
+		}
+
+		public int LegsThighPads
+		{
+			get
+			{
+				return 99 - (GetIntField(LEGS_THIGH_PADS) > 99 ? 99 : GetIntField(LEGS_THIGH_PADS));
+			}
+			set
+			{
+				SetField(LEGS_THIGH_PADS, 99 - value);
+
 			}
 		}
 

@@ -1,7 +1,7 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.7.5.1
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.8.0.0
 
                                    8th May 2005
 
@@ -39,6 +39,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+
+* (NEW) Thanks to zentrarium we now have the ability to set team Captains!!! Available in the
+        Franchise menu option when loading a franchise file.
 
 * (NEw) Support for Madden 2004 files. (Only tested with Roster files at the moment, due to me
         not having any franchise files)

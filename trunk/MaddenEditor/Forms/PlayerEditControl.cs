@@ -137,7 +137,10 @@ namespace MaddenEditor.Forms
 			playerLegsCalfFat.Value = record.LegsCalfFat;
 			playerRearRearFat.Value = record.RearRearFat;
 			playerRearShape.Value = record.RearShape;
-
+			playerRearMuscle.Value = record.RearRearFat;
+			playerBodyOverall.Value = record.BodyOverall;
+			playerEquipmentThighPads.Value = (int)record.LegsThighPads;
+			
 			//Load Player equipment
 			playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
 			playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
@@ -160,7 +163,7 @@ namespace MaddenEditor.Forms
 			playerLeftAnkleCombo.Text = playerLeftAnkleCombo.Items[record.LeftAnkle % 4].ToString();
 			playerRightAnkleCombo.Text = playerRightAnkleCombo.Items[record.RightAnkle % 4].ToString();
 			playerNasalStripCombo.Text = playerNasalStripCombo.Items[record.NasalStrip].ToString();
-
+			
 			//Load Injury information
 			InjuryRecord injury = model.PlayerModel.GetPlayersInjuryRecord(record.PlayerId);
 
@@ -807,7 +810,10 @@ namespace MaddenEditor.Forms
 
 		private void playerBodyOverall_ValueChanged(object sender, EventArgs e)
 		{
-
+			if (!isInitialising)
+			{
+				model.PlayerModel.CurrentPlayerRecord.BodyOverall = (int)playerBodyOverall.Value;
+			}
 		}
 
 		private void playerBodyWeight_ValueChanged(object sender, EventArgs e)
@@ -976,7 +982,16 @@ namespace MaddenEditor.Forms
 
 		private void playerAddInjuryButton_Click(object sender, EventArgs e)
 		{
-			InjuryRecord injRec = model.PlayerModel.CreateNewInjuryRecord();
+			InjuryRecord injRec = null;
+			try
+			{
+				injRec = model.PlayerModel.CreateNewInjuryRecord();
+			}
+			catch (ApplicationException err)
+			{
+				MessageBox.Show("Error adding Injury\r\n" + err.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
 			injRec.PlayerId = model.PlayerModel.CurrentPlayerRecord.PlayerId;
 			injRec.TeamId = model.PlayerModel.CurrentPlayerRecord.TeamId;
@@ -1165,6 +1180,14 @@ namespace MaddenEditor.Forms
 		}
 
 		#endregion
+
+		private void playerEquipmentThighPads_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.PlayerModel.CurrentPlayerRecord.LegsThighPads = (int)playerEquipmentThighPads.Value;
+			}
+		}
 
 
 	}

@@ -183,9 +183,10 @@ namespace MaddenEditor.Forms
 		{
 			isInitialising = true;
 
-			CheckSave();
-
-			CleanUI();			
+			if (CheckSave())
+			{
+				CleanUI();
+			}
 		}
 
 		private void CleanUI()
@@ -337,6 +338,14 @@ namespace MaddenEditor.Forms
 			GlobalAttributeForm form = new GlobalAttributeForm(model);
 			form.InitialiseUI();
 			form.Show();
+		}
+
+		private void setTeamCaptainsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TeamCaptainForm form = new TeamCaptainForm(model);
+			form.InitialiseUI();
+
+			form.ShowDialog(this);
 		}
 
 		

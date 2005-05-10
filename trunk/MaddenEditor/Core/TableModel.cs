@@ -94,10 +94,10 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public TableRecordModel CreateNewRecord()
+		public TableRecordModel CreateNewRecord(bool allowExpand)
 		{
 			TableRecordModel result = null;
-			int newRecNo = TDB.TDBTableRecordAdd(dbIndex, name, false);
+			int newRecNo = TDB.TDBTableRecordAdd(dbIndex, name, allowExpand);
 			if (newRecNo == 0xFFFF)
 			{
 				//We are at max capacity
@@ -153,6 +153,9 @@ namespace MaddenEditor.Core
 					break;
 				case EditorModel.COACH_SLIDER_TABLE:
 					newRecord = new CoachPrioritySliderRecord(recno, parentModel);
+					break;
+				case EditorModel.TEAM_CAPTAIN_TABLE:
+					newRecord = new TeamCaptainRecord(recno, parentModel);
 					break;
 				//case MaddenTable.CTMP_TABLE:
 				//	return null;

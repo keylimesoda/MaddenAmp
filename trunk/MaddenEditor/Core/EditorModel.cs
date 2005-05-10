@@ -77,6 +77,7 @@ namespace MaddenEditor.Core
 		public const string SALARY_CAP_TABLE = "SLRI";
         public const string DEPTH_CHART_TABLE = "DCHT";
 		public const string COACH_SLIDER_TABLE = "CPSE";
+		public const string TEAM_CAPTAIN_TABLE = "TCPT";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -225,6 +226,7 @@ namespace MaddenEditor.Core
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
+					tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
 				}
 
 				for (int j = 0; j < tableCount; j++)
@@ -370,6 +372,7 @@ namespace MaddenEditor.Core
 			tableModels[TEAM_TABLE].Save();
             tableModels[DEPTH_CHART_TABLE].Save();
 			tableModels[COACH_SLIDER_TABLE].Save();
+			tableModels[TEAM_CAPTAIN_TABLE].Save();
 
 			this.Dirty = false;
 		}
