@@ -315,7 +315,7 @@ namespace MaddenEditor.Forms
 				if (depthChartDataGrid.SelectedRows[0].Cells[4].Value == null)
 				{
 					//We are transfering to a blank depthchart record we need to create a record for it
-					DepthChartRecord newRecord = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].CreateNewRecord();
+					DepthChartRecord newRecord = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].CreateNewRecord(false);
 					PlayerRecord playerRecord = (PlayerRecord)availablePlayerDatagrid.SelectedRows[0].Cells[3].Value;
 
 					newRecord.PlayerId = playerRecord.PlayerId;

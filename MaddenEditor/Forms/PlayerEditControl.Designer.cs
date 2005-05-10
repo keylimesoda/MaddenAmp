@@ -2272,11 +2272,11 @@ namespace MaddenEditor.Forms
 			// 
 			// playerEquipmentThighPads
 			// 
-			this.playerEquipmentThighPads.Enabled = false;
 			this.playerEquipmentThighPads.Location = new System.Drawing.Point(66, 270);
 			this.playerEquipmentThighPads.Name = "playerEquipmentThighPads";
 			this.playerEquipmentThighPads.Size = new System.Drawing.Size(58, 20);
 			this.playerEquipmentThighPads.TabIndex = 13;
+			this.playerEquipmentThighPads.ValueChanged += new System.EventHandler(this.playerEquipmentThighPads_ValueChanged);
 			// 
 			// playerEquipmentShoes
 			// 
@@ -2317,7 +2317,6 @@ namespace MaddenEditor.Forms
 			// 
 			// playerBodyOverall
 			// 
-			this.playerBodyOverall.Enabled = false;
 			this.playerBodyOverall.Location = new System.Drawing.Point(66, 42);
 			this.playerBodyOverall.Name = "playerBodyOverall";
 			this.playerBodyOverall.Size = new System.Drawing.Size(58, 20);
