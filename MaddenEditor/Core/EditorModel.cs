@@ -365,8 +365,12 @@ namespace MaddenEditor.Core
 		{
 			//To save we have to go through every record in our models and
 			//save the dirty ones
+			foreach (TableModel tmodel in tableModels.Values)
+			{
+				tmodel.Save();
+			}
 
-			tableModels[PLAYER_TABLE].Save();
+			/*tableModels[PLAYER_TABLE].Save();
 			tableModels[INJURY_TABLE].Save();
 			tableModels[COACH_TABLE].Save();
 			tableModels[TEAM_TABLE].Save();
@@ -376,7 +380,7 @@ namespace MaddenEditor.Core
 			{
 				tableModels[SALARY_CAP_TABLE].Save();
 				tableModels[TEAM_CAPTAIN_TABLE].Save();
-			}
+			}*/
 
 			this.Dirty = false;
 		}

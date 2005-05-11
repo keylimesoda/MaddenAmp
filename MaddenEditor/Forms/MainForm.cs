@@ -50,6 +50,8 @@ namespace MaddenEditor.Forms
         {
             InitializeComponent();
 
+			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
+
 			this.Text = this.Text + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 			playerEditControl = new PlayerEditControl();
@@ -129,7 +131,6 @@ namespace MaddenEditor.Forms
 						CleanUI();
 						statusStrip.Visible = true;
 
-						rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 						rosterFileLoaderThread.RunWorkerAsync();
 						
 						break;
@@ -182,6 +183,14 @@ namespace MaddenEditor.Forms
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			isInitialising = true;
+			rosterFileLoaderThread.Dispose();
+			rosterFileLoaderThread = null;
+			rosterFileLoaderThread = new BackgroundWorker();
+			rosterFileLoaderThread.WorkerReportsProgress = true;
+			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
+			rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
+			rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
+			
 
 			if (CheckSave())
 			{
