@@ -372,7 +372,11 @@ namespace MaddenEditor.Core
 			tableModels[TEAM_TABLE].Save();
             tableModels[DEPTH_CHART_TABLE].Save();
 			tableModels[COACH_SLIDER_TABLE].Save();
-			tableModels[TEAM_CAPTAIN_TABLE].Save();
+			if (fileType == MaddenFileType.FranchiseFile)
+			{
+				tableModels[SALARY_CAP_TABLE].Save();
+				tableModels[TEAM_CAPTAIN_TABLE].Save();
+			}
 
 			this.Dirty = false;
 		}

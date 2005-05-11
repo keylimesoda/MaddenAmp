@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.8.0.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.8.0.1
 
-                                   8th May 2005
+                                   11th May 2005
 
                                     readme.txt
 
@@ -15,10 +15,11 @@
    1. Introduction
    2. Requirements
    3. Features
-   4. Known Issues
-   5. Developer Information
-   6. Future Plans
-   7. Licence
+   4. Fixed Issues
+   5. Known Issues
+   6. Developer Information
+   7. Future Plans
+   8. Licence
 
 1. INTRODUCTION
 ===============
@@ -87,7 +88,12 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 * Filter functions to narrow browsing down making it easy to move through
   players on teams/positions
 
-4. KNOWN ISSUES
+4. FIXED ISSUES
+===============
+
+* Fixed issue with saving roster files in version 0.8.0.0
+
+5. KNOWN ISSUES
 ===============
 
 * Tabbing between settings doesnt work correctly
@@ -97,7 +103,7 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
   NOTE: Please, if you get a crash, email the details of the crash (Found in 
         the details section of the crash box) to bugs@tributech.com.au.
   
-5. DEVELOPER INFORMATION
+6. DEVELOPER INFORMATION
 ========================
 This product is being developed with Visual C# Express Beta 2.
 
@@ -128,7 +134,7 @@ theres enough reason too.
 
 The setup file is generated with NSIS (nsis.sourceforge.net)
 
-6. FUTURE PLANS
+7. FUTURE PLANS
 ===============
 
 * Remove Cap Penalty ability
@@ -145,7 +151,7 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 
 * More...
 
-7. LICENCE
+8. LICENCE
 ==========
 This program is developed under the LGPL. See licence.txt for full licence.
 
