@@ -108,6 +108,11 @@ namespace MaddenEditor.Forms
 
 		private void okButton_Click(object sender, EventArgs e)
 		{
+			model.SalaryCapModel.RestrictedFA1 = (int)year1RFA.Value;
+			model.SalaryCapModel.RestrictedFA2 = (int)year2RFA.Value;
+			model.SalaryCapModel.RestrictedFA3 = (int)year3RFA.Value;
+			model.SalaryCapModel.RestrictedFA4 = (int)year4RFA.Value;
+			model.SalaryCapModel.SalaryCap = (int)salaryCap.Value;
 			DialogResult = DialogResult.OK;
 		}
 
