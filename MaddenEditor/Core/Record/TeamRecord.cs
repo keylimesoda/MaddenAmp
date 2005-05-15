@@ -33,8 +33,23 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_LAST_NAME = "TLNA";
 		public const string TEAM_STATE = "TSNA";
 		public const string TEAM_ID = "TGID";
+		public const string REPUTATION = "TREP";
 
 		public const string TEAM_SALARY = "TMSA";
+
+		public const string QB_RATING = "TRQB";
+		public const string RB_RATING = "TRRB";
+		public const string OL_RATING = "TROL";
+		public const string WR_RATING = "TWRR";
+		public const string OFFENSIVE_RATING = "TROF";
+		public const string DB_RATING = "TRDB";
+		public const string LB_RATING = "TRLB";
+		public const string DE_RATING = "TRDE";
+		public const string DL_RATING = "TRDL";
+		public const string ST_RATING = "TRST";
+
+		public const string OFFENSIVE_PLAYBOOK = "TOPB";
+		public const string DEFENSIVE_PLAYBOOK = "TDPB";
 
 		public TeamRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)

@@ -1,7 +1,7 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.8.0.1
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.0.0
 
                                    11th May 2005
 
@@ -41,17 +41,17 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 3. FEATURES
 ===========
 
-* (NEW) Thanks to zentrarium we now have the ability to set team Captains!!! Available in the
+*  Thanks to zentrarium we now have the ability to set team Captains!!! Available in the
         Franchise menu option when loading a franchise file.
 
-* (NEw) Support for Madden 2004 files. (Only tested with Roster files at the moment, due to me
+*  Support for Madden 2004 files. (Only tested with Roster files at the moment, due to me
         not having any franchise files)
 
-* (NEW) Global Attribute Editing (version 1)
+*  Global Attribute Editing (version 1)
         Added a Tool to set/increment/decrement player attributes.
         You can filter by the usual team/position/draft class options
 
-* (NEW) Coach editing is all corrected including all Priorities and balanced/aggressive/conservative
+*  Coach editing is all corrected including all Priorities and balanced/aggressive/conservative
         etc..
         i.e QB's can have a priority set to scrambing/balanced/pocket
 

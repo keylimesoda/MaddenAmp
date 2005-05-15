@@ -85,6 +85,12 @@
     <Compile Include="Forms\DepthChartEditorControl.Designer.cs">
       <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportForm.Designer.cs">
+      <DependentUpon>ExportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GlobalAttributeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DepthChartEditorControl.resx">
       <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportForm.resx">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GlobalAttributeForm.resx">
       <DependentUpon>GlobalAttributeForm.cs</DependentUpon>

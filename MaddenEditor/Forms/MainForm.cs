@@ -69,6 +69,7 @@ namespace MaddenEditor.Forms
 			toolsToolStripMenuItem.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
 			statusStrip.Visible = false;
+			exportToolStripMenuItem.Enabled = false;
 
 			isInitialising = false;
         }
@@ -166,6 +167,7 @@ namespace MaddenEditor.Forms
 			coachEditControl.InitialiseUI();
 			depthChartEditorControl.InitialiseUI();
 
+			exportToolStripMenuItem.Enabled = true;
 			tabControl.Visible = true;
 			toolsToolStripMenuItem.Visible = true;
 			processingTableLabel.Text = "";
@@ -206,7 +208,8 @@ namespace MaddenEditor.Forms
 			playerEditControl.CleanUI();
 			coachEditControl.CleanUI();
 			depthChartEditorControl.CleanUI();
-						
+
+			exportToolStripMenuItem.Enabled = false;
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
 			processingTableLabel.Text = "";
@@ -355,6 +358,17 @@ namespace MaddenEditor.Forms
 			form.InitialiseUI();
 
 			form.ShowDialog(this);
+		}
+
+		private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ExportForm form = new ExportForm(model);
+			form.InitialiseUI();
+
+			form.ShowDialog(this);
+
+			form.CleanUI();
+			form = null;
 		}
 
 		

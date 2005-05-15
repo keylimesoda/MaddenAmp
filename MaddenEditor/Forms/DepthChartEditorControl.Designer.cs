@@ -28,33 +28,33 @@ namespace MaddenEditor.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DepthChartEditorControl));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DepthChartEditorControl));
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.positionCombo = new System.Windows.Forms.ComboBox();
 			this.teamCombo = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.availablePlayerDatagrid = new System.Windows.Forms.DataGridView();
-			this.teamDepthChartLabel = new System.Windows.Forms.Label();
-			this.depthChartDataGrid = new System.Windows.Forms.DataGridView();
-			this.depthOrderUpButton = new System.Windows.Forms.Button();
+			this.eraseButton = new System.Windows.Forms.Button();
+			this.transferButton = new System.Windows.Forms.Button();
 			this.depthOrderDownButton = new System.Windows.Forms.Button();
+			this.depthOrderUpButton = new System.Windows.Forms.Button();
+			this.availablePlayerDatagrid = new System.Windows.Forms.DataGridView();
 			this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.teamDepthChartLabel = new System.Windows.Forms.Label();
+			this.depthChartDataGrid = new System.Windows.Forms.DataGridView();
 			this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.transferButton = new System.Windows.Forms.Button();
-			this.eraseButton = new System.Windows.Forms.Button();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -96,6 +96,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.positionCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.positionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.positionCombo.FormattingEnabled = true;
 			this.positionCombo.Location = new System.Drawing.Point(4, 90);
 			this.positionCombo.Name = "positionCombo";
@@ -107,6 +108,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.teamCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.teamCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.teamCombo.FormattingEnabled = true;
 			this.teamCombo.Location = new System.Drawing.Point(4, 37);
 			this.teamCombo.Name = "teamCombo";
@@ -131,6 +133,46 @@ namespace MaddenEditor.Forms
 			this.label1.Size = new System.Drawing.Size(30, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Team";
+			// 
+			// eraseButton
+			// 
+			this.eraseButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("eraseButton.BackgroundImage")));
+			this.eraseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.eraseButton.Location = new System.Drawing.Point(3, 145);
+			this.eraseButton.Name = "eraseButton";
+			this.eraseButton.Size = new System.Drawing.Size(32, 33);
+			this.eraseButton.TabIndex = 8;
+			this.eraseButton.Click += new System.EventHandler(this.eraseButton_Click);
+			// 
+			// transferButton
+			// 
+			this.transferButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.transferButton.Location = new System.Drawing.Point(411, 185);
+			this.transferButton.Name = "transferButton";
+			this.transferButton.Size = new System.Drawing.Size(83, 30);
+			this.transferButton.TabIndex = 7;
+			this.transferButton.Text = "Transfer";
+			this.transferButton.Click += new System.EventHandler(this.transferButton_Click);
+			// 
+			// depthOrderDownButton
+			// 
+			this.depthOrderDownButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("depthOrderDownButton.BackgroundImage")));
+			this.depthOrderDownButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.depthOrderDownButton.Location = new System.Drawing.Point(3, 99);
+			this.depthOrderDownButton.Name = "depthOrderDownButton";
+			this.depthOrderDownButton.Size = new System.Drawing.Size(32, 33);
+			this.depthOrderDownButton.TabIndex = 6;
+			this.depthOrderDownButton.Click += new System.EventHandler(this.depthOrderDownButton_Click);
+			// 
+			// depthOrderUpButton
+			// 
+			this.depthOrderUpButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("depthOrderUpButton.BackgroundImage")));
+			this.depthOrderUpButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.depthOrderUpButton.Location = new System.Drawing.Point(3, 53);
+			this.depthOrderUpButton.Name = "depthOrderUpButton";
+			this.depthOrderUpButton.Size = new System.Drawing.Size(32, 33);
+			this.depthOrderUpButton.TabIndex = 5;
+			this.depthOrderUpButton.Click += new System.EventHandler(this.depthOrderUpButton_Click);
 			// 
 			// availablePlayerDatagrid
 			// 
@@ -170,6 +212,36 @@ namespace MaddenEditor.Forms
 			this.availablePlayerDatagrid.Text = "dataGridView2";
 			this.availablePlayerDatagrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.availablePlayerDatagrid_CellMouseUp);
 			this.availablePlayerDatagrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.availablePlayerDatagrid_CellClick);
+			// 
+			// dataGridViewTextBoxColumn4
+			// 
+			this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.dataGridViewTextBoxColumn4.Frozen = true;
+			this.dataGridViewTextBoxColumn4.HeaderText = "Position";
+			this.dataGridViewTextBoxColumn4.Name = "Position";
+			this.dataGridViewTextBoxColumn4.ReadOnly = true;
+			this.dataGridViewTextBoxColumn4.Width = 50;
+			// 
+			// dataGridViewTextBoxColumn5
+			// 
+			this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.dataGridViewTextBoxColumn5.HeaderText = "Name";
+			this.dataGridViewTextBoxColumn5.Name = "PlayersName";
+			this.dataGridViewTextBoxColumn5.ReadOnly = true;
+			// 
+			// dataGridViewTextBoxColumn6
+			// 
+			this.dataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.dataGridViewTextBoxColumn6.HeaderText = "OVR";
+			this.dataGridViewTextBoxColumn6.Name = "Overall";
+			this.dataGridViewTextBoxColumn6.ReadOnly = true;
+			// 
+			// dataGridViewTextBoxColumn7
+			// 
+			this.dataGridViewTextBoxColumn7.HeaderText = "PlayerObject";
+			this.dataGridViewTextBoxColumn7.Name = "PlayerObject";
+			this.dataGridViewTextBoxColumn7.ReadOnly = true;
+			this.dataGridViewTextBoxColumn7.Visible = false;
 			// 
 			// teamDepthChartLabel
 			// 
@@ -232,56 +304,6 @@ namespace MaddenEditor.Forms
 			this.depthChartDataGrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.depthChartDataGrid_CellMouseUp);
 			this.depthChartDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.depthChartDataGrid_CellClick);
 			// 
-			// depthOrderUpButton
-			// 
-			this.depthOrderUpButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("depthOrderUpButton.BackgroundImage")));
-			this.depthOrderUpButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.depthOrderUpButton.Location = new System.Drawing.Point(3, 53);
-			this.depthOrderUpButton.Name = "depthOrderUpButton";
-			this.depthOrderUpButton.Size = new System.Drawing.Size(32, 33);
-			this.depthOrderUpButton.TabIndex = 5;
-			this.depthOrderUpButton.Click += new System.EventHandler(this.depthOrderUpButton_Click);
-			// 
-			// depthOrderDownButton
-			// 
-			this.depthOrderDownButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("depthOrderDownButton.BackgroundImage")));
-			this.depthOrderDownButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.depthOrderDownButton.Location = new System.Drawing.Point(3, 99);
-			this.depthOrderDownButton.Name = "depthOrderDownButton";
-			this.depthOrderDownButton.Size = new System.Drawing.Size(32, 33);
-			this.depthOrderDownButton.TabIndex = 6;
-			this.depthOrderDownButton.Click += new System.EventHandler(this.depthOrderDownButton_Click);
-			// 
-			// dataGridViewTextBoxColumn4
-			// 
-			this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.dataGridViewTextBoxColumn4.Frozen = true;
-			this.dataGridViewTextBoxColumn4.HeaderText = "Position";
-			this.dataGridViewTextBoxColumn4.Name = "Position";
-			this.dataGridViewTextBoxColumn4.ReadOnly = true;
-			this.dataGridViewTextBoxColumn4.Width = 50;
-			// 
-			// dataGridViewTextBoxColumn5
-			// 
-			this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.dataGridViewTextBoxColumn5.HeaderText = "Name";
-			this.dataGridViewTextBoxColumn5.Name = "PlayersName";
-			this.dataGridViewTextBoxColumn5.ReadOnly = true;
-			// 
-			// dataGridViewTextBoxColumn6
-			// 
-			this.dataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.dataGridViewTextBoxColumn6.HeaderText = "OVR";
-			this.dataGridViewTextBoxColumn6.Name = "Overall";
-			this.dataGridViewTextBoxColumn6.ReadOnly = true;
-			// 
-			// dataGridViewTextBoxColumn7
-			// 
-			this.dataGridViewTextBoxColumn7.HeaderText = "PlayerObject";
-			this.dataGridViewTextBoxColumn7.Name = "PlayerObject";
-			this.dataGridViewTextBoxColumn7.ReadOnly = true;
-			this.dataGridViewTextBoxColumn7.Visible = false;
-			// 
 			// dataGridViewTextBoxColumn1
 			// 
 			this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -324,26 +346,6 @@ namespace MaddenEditor.Forms
 			this.dataGridViewTextBoxColumn9.Name = "DepthChartObject";
 			this.dataGridViewTextBoxColumn9.ReadOnly = true;
 			this.dataGridViewTextBoxColumn9.Visible = false;
-			// 
-			// transferButton
-			// 
-			this.transferButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.transferButton.Location = new System.Drawing.Point(411, 185);
-			this.transferButton.Name = "transferButton";
-			this.transferButton.Size = new System.Drawing.Size(83, 30);
-			this.transferButton.TabIndex = 7;
-			this.transferButton.Text = "Transfer";
-			this.transferButton.Click += new System.EventHandler(this.transferButton_Click);
-			// 
-			// eraseButton
-			// 
-			this.eraseButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("eraseButton.BackgroundImage")));
-			this.eraseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.eraseButton.Location = new System.Drawing.Point(3, 145);
-			this.eraseButton.Name = "eraseButton";
-			this.eraseButton.Size = new System.Drawing.Size(32, 33);
-			this.eraseButton.TabIndex = 8;
-			this.eraseButton.Click += new System.EventHandler(this.eraseButton_Click);
 			// 
 			// DepthChartEditorControl
 			// 
