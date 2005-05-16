@@ -111,6 +111,13 @@ namespace MaddenEditor.Forms
 				OwnerRecord record = (OwnerRecord)obj;
 
 				record.UserControlled = true;
+				record.ComputerControl1 = false;
+				record.ComputerControl2 = false;
+				record.ComputerControl3 = false;
+				record.ComputerControl4 = false;
+				record.ComputerControl5 = false;
+				record.ComputerControl6 = false;
+				record.ComputerControl7 = false;
 			}
 
 			DialogResult = DialogResult.OK;
@@ -127,6 +134,13 @@ namespace MaddenEditor.Forms
 				removeList.Add(obj);
 
 				rec.UserControlled = false;
+				rec.ComputerControl1 = true;
+				rec.ComputerControl2 = true;
+				rec.ComputerControl3 = true;
+				rec.ComputerControl4 = true;
+				rec.ComputerControl5 = true;
+				rec.ComputerControl6 = true;
+				rec.ComputerControl7 = true;
 			}
 
 			foreach (object obj in removeList)
