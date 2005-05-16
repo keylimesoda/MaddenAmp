@@ -371,6 +371,18 @@ namespace MaddenEditor.Forms
 			form = null;
 		}
 
+		private void setUserControlledTeamsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UserControlledTeamForm form = new UserControlledTeamForm(model);
+
+			form.InitialiseUI();
+
+			form.ShowDialog(this);
+
+			form.CleanUI();
+			form = null;
+		}
+
 		
 
 

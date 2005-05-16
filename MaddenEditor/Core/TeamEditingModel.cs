@@ -34,6 +34,8 @@ namespace MaddenEditor.Core
 		private Dictionary<int, string> teamNameList = null;
 		/** View to the TeamRecords indexed by Teamid */
 		private Dictionary<int, TeamRecord> teamRecords = null;
+		/** View to the OwnedTeam records */
+		private List<OwnerRecord> teamOwnerRecords = null;
 		/** Reference to our EditorModel */
 		private EditorModel model = null;
 
@@ -85,6 +87,21 @@ namespace MaddenEditor.Core
 				return teamNameList[teamid];
 			else
 				return EditorModel.UNKNOWN_TEAM_NAME;
+		}
+
+		public ICollection<OwnerRecord> GetTeamRecordsInOwnerTable()
+		{
+			if (teamOwnerRecords == null)
+			{
+				teamOwnerRecords = new List<OwnerRecord>();
+
+				foreach (TableRecordModel record in model.TableModels[EditorModel.OWNER_TABLE].GetRecords())
+				{
+					teamOwnerRecords.Add((OwnerRecord)record);
+				}
+			}
+
+			return teamOwnerRecords;
 		}
 
 		public int GetTeamIdFromTeamName(string teamName)
