@@ -257,12 +257,17 @@ namespace MaddenEditor.Forms
 		{
 			try
 			{
+				this.Cursor = Cursors.WaitCursor;
 				model.Save();
 				MessageBox.Show("File saved successfully!", "Save success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			catch (Exception err)
 			{
 				MessageBox.Show(err.ToString(), "Exception thrown while Saving", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				this.Cursor = Cursors.Default;
 			}
 		}
 						
