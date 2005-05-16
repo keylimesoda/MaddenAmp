@@ -142,9 +142,6 @@ namespace MaddenEditor.Core
 
 			switch (name)
 			{
-				//case EditorModel.CITY_TABLE:
-				//	newRecord = new CityRecord(recno, parentModel);
-				//	break;
 				case EditorModel.COACH_TABLE:
 					newRecord = new CoachRecord(recno, parentModel);
 					break;
@@ -157,10 +154,9 @@ namespace MaddenEditor.Core
 				case EditorModel.TEAM_CAPTAIN_TABLE:
 					newRecord = new TeamCaptainRecord(recno, parentModel);
 					break;
-				//case MaddenTable.CTMP_TABLE:
-				//	return null;
-				//case MaddenTable.CTMU_TABLE:
-				//	return null;
+				case EditorModel.OWNER_TABLE:
+					newRecord = new OwnerRecord(recno, parentModel);
+					break;
 				case EditorModel.DEPTH_CHART_TABLE:
 					newRecord = new DepthChartRecord(recno, parentModel);
 					break;
@@ -170,15 +166,9 @@ namespace MaddenEditor.Core
 				case EditorModel.PLAYER_TABLE:
 					newRecord = new PlayerRecord(recno, parentModel);
 					break;
-				//case MaddenTable.STADIUM_TABLE:
-				//	newRecord = new StadiumTable(recno, parentModel);
-				//	break;
 				case EditorModel.TEAM_TABLE:
 					newRecord = new TeamRecord(recno, parentModel);
 					break;
-				//case MaddenTable.UNIFORM_TABLE:
-				//	newRecord = new UniformRecord(recno, parentModel);
-				//	break;
 			}
 
 			//Add the new record to our list of records

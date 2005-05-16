@@ -57,6 +57,11 @@ namespace MaddenEditor.Core.Record
 
 		}
 
+		public override string ToString()
+		{
+			return Name;
+		}
+
 		public string Name
 		{
 			get

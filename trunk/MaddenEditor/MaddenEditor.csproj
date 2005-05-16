@@ -57,6 +57,7 @@
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
     <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
+    <Compile Include="Core\Record\OwnerRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
@@ -134,6 +135,12 @@
     <Compile Include="Forms\TeamCaptainForm.Designer.cs">
       <DependentUpon>TeamCaptainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UserControlledTeamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserControlledTeamForm.Designer.cs">
+      <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
@@ -165,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TeamCaptainForm.resx">
       <DependentUpon>TeamCaptainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserControlledTeamForm.resx">
+      <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
