@@ -29,6 +29,7 @@ namespace MaddenEditor.Forms
 		private void InitializeComponent()
 		{
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.label48 = new System.Windows.Forms.Label();
 			this.label31 = new System.Windows.Forms.Label();
 			this.label30 = new System.Windows.Forms.Label();
 			this.label29 = new System.Windows.Forms.Label();
@@ -116,7 +117,6 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.coachEthics = new System.Windows.Forms.NumericUpDown();
 			this.label10 = new System.Windows.Forms.Label();
-			this.label48 = new System.Windows.Forms.Label();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -198,6 +198,16 @@ namespace MaddenEditor.Forms
 			this.splitContainer1.SplitterDistance = 228;
 			this.splitContainer1.TabIndex = 0;
 			this.splitContainer1.Text = "splitContainer1";
+			// 
+			// label48
+			// 
+			this.label48.AutoSize = true;
+			this.label48.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label48.Location = new System.Drawing.Point(0, 6);
+			this.label48.Name = "label48";
+			this.label48.Size = new System.Drawing.Size(205, 18);
+			this.label48.TabIndex = 25;
+			this.label48.Text = "COACH INFORMATION";
 			// 
 			// label31
 			// 
@@ -309,6 +319,7 @@ namespace MaddenEditor.Forms
 			// 
 			// label27
 			// 
+			this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label27.AutoSize = true;
 			this.label27.Location = new System.Drawing.Point(160, 162);
 			this.label27.Name = "label27";
@@ -1181,16 +1192,6 @@ namespace MaddenEditor.Forms
 			this.label10.Size = new System.Drawing.Size(32, 13);
 			this.label10.TabIndex = 0;
 			this.label10.Text = "Ethics";
-			// 
-			// label48
-			// 
-			this.label48.AutoSize = true;
-			this.label48.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label48.Location = new System.Drawing.Point(0, 6);
-			this.label48.Name = "label48";
-			this.label48.Size = new System.Drawing.Size(205, 18);
-			this.label48.TabIndex = 25;
-			this.label48.Text = "COACH INFORMATION";
 			// 
 			// CoachEditControl
 			// 
