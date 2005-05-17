@@ -22,71 +22,62 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
 using MaddenEditor.Core;
+using MaddenEditor.Core.Record;
 
-namespace MaddenEditor.Core.Record
+namespace MaddenEditor.Forms
 {
-	public class TeamCaptainRecord : TableRecordModel
+	public partial class DepthChartEditorForm : Form, IEditorForm
 	{
-		public const string CAPTAIN_1 = "CPT1";
-		public const string CAPTAIN_2 = "CPT2";
-		public const string CAPTAIN_3 = "CPT3";
-		public const string TEAM_ID = "TGID";
+		private EditorModel model = null;
 
-		public TeamCaptainRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		private DepthChartEditorControl depthChartControl = null;
+
+		public DepthChartEditorForm(EditorModel model)
 		{
+			this.model = model;
+			InitializeComponent();
 
+			this.Cursor = Cursors.WaitCursor;
+
+			depthChartControl = new DepthChartEditorControl();
+			depthChartControl.Model = model;
+
+			this.Controls.Add(depthChartControl);
+
+			depthChartControl.Dock = DockStyle.Fill;
+
+			this.Cursor = Cursors.Default;
+		}
+		
+		#region IEditorForm Members
+
+		public MaddenEditor.Core.EditorModel Model
+		{
+			set {  }
 		}
 
-		public int Captain1
+		public void InitialiseUI()
 		{
-			get
-			{
-				return GetIntField(CAPTAIN_1);
-			}
-			set
-			{
-				SetField(CAPTAIN_1, value);
-			}
+			depthChartControl.InitialiseUI();
 		}
 
-		public int Captain2
+		public void CleanUI()
 		{
-			get
-			{
-				return GetIntField(CAPTAIN_2);
-			}
-			set
-			{
-				SetField(CAPTAIN_2, value);
-			}
+			depthChartControl.CleanUI();
 		}
 
-		public int Captain3
-		{
-			get
-			{
-				return GetIntField(CAPTAIN_3);
-			}
-			set
-			{
-				SetField(CAPTAIN_3, value);
-			}
-		}
+		#endregion
 
-		public int TeamId
+		private void DepthChartEditorForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			get
-			{
-				return GetIntField(TEAM_ID);
-			}
-			set
-			{
-				SetField(TEAM_ID, value);
-			}
+			CleanUI();
 		}
-	}
+}
 }

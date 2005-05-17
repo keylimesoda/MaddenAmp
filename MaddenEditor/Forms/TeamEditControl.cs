@@ -22,71 +22,43 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
 using System.Text;
+using System.Windows.Forms;
 
 using MaddenEditor.Core;
+using MaddenEditor.Core.Record;
 
-namespace MaddenEditor.Core.Record
+namespace MaddenEditor.Forms
 {
-	public class TeamCaptainRecord : TableRecordModel
+	public partial class TeamEditControl : UserControl, IEditorForm
 	{
-		public const string CAPTAIN_1 = "CPT1";
-		public const string CAPTAIN_2 = "CPT2";
-		public const string CAPTAIN_3 = "CPT3";
-		public const string TEAM_ID = "TGID";
+		private EditorModel model = null;
 
-		public TeamCaptainRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public TeamEditControl()
 		{
-
+			InitializeComponent();
 		}
 
-		public int Captain1
+		#region IEditorForm Members
+
+		public MaddenEditor.Core.EditorModel Model
 		{
-			get
-			{
-				return GetIntField(CAPTAIN_1);
-			}
-			set
-			{
-				SetField(CAPTAIN_1, value);
-			}
+			set { this.model = value; }
 		}
 
-		public int Captain2
+		public void InitialiseUI()
 		{
-			get
-			{
-				return GetIntField(CAPTAIN_2);
-			}
-			set
-			{
-				SetField(CAPTAIN_2, value);
-			}
+			
 		}
 
-		public int Captain3
+		public void CleanUI()
 		{
-			get
-			{
-				return GetIntField(CAPTAIN_3);
-			}
-			set
-			{
-				SetField(CAPTAIN_3, value);
-			}
+			
 		}
 
-		public int TeamId
-		{
-			get
-			{
-				return GetIntField(TEAM_ID);
-			}
-			set
-			{
-				SetField(TEAM_ID, value);
-			}
-		}
-	}
+		#endregion
+}
 }
