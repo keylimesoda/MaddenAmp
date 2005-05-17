@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -142,6 +142,9 @@ namespace MaddenEditor.Core
 
 			switch (name)
 			{
+				case EditorModel.CITY_TABLE:
+					newRecord = new CityRecord(recno, parentModel);
+					break;
 				case EditorModel.COACH_TABLE:
 					newRecord = new CoachRecord(recno, parentModel);
 					break;

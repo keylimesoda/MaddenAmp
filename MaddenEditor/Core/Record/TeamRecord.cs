@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -55,6 +55,7 @@ namespace MaddenEditor.Core.Record
 
 		public const string DEFENSIVE_RATING = "TRDE";
 		public const string OFFENSIVE_RATING = "TROF";
+		public const string OVERALL_RATING = "TROV";
 
 		public const string OFFENSIVE_PLAYBOOK = "TOPB";
 		public const string DEFENSIVE_PLAYBOOK = "TDPB";
@@ -320,6 +321,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(DEFENSIVE_RATING, value);
+			}
+		}
+
+		public int OverallRating
+		{
+			get
+			{
+				return GetIntField(OVERALL_RATING);
+			}
+			set
+			{
+				SetField(OVERALL_RATING, value);
 			}
 		}
 

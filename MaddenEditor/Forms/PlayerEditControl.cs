@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -50,6 +50,13 @@ namespace MaddenEditor.Forms
 
 		public void LoadPlayerInfo(PlayerRecord record)
 		{
+			if (record == null)
+			{
+				MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+				return;
+			}
+
 			isInitialising = true;
 
 			firstNameTextBox.Text = record.FirstName;
@@ -1188,7 +1195,6 @@ namespace MaddenEditor.Forms
 				model.PlayerModel.CurrentPlayerRecord.LegsThighPads = (int)playerEquipmentThighPads.Value;
 			}
 		}
-
-
+		
 	}
 }

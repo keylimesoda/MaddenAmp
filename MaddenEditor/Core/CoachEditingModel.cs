@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -73,11 +73,10 @@ namespace MaddenEditor.Core
 			CoachRecord record = null;
 
 			int startingindex = currentCoachIndex;
-			bool found = false;
 			while (true)
 			{
 				currentCoachIndex++;
-				if (currentCoachIndex == startingindex && found == false)
+				if (currentCoachIndex == startingindex)
 				{
 					//We have looped around
 					return null;
@@ -111,7 +110,6 @@ namespace MaddenEditor.Core
 					}
 				}
 
-				found = true;
 				//Found one
 				break;
 			}

@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -79,6 +79,7 @@ namespace MaddenEditor.Core
 		public const string COACH_SLIDER_TABLE = "CPSE";
 		public const string TEAM_CAPTAIN_TABLE = "TCPT";
 		public const string OWNER_TABLE = "OWNR";
+		public const string CITY_TABLE = "CITY";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -224,6 +225,7 @@ namespace MaddenEditor.Core
 				tableOrder.Add(COACH_TABLE, -1);
                 tableOrder.Add(DEPTH_CHART_TABLE, -1);
 				tableOrder.Add(COACH_SLIDER_TABLE, -1);
+				tableOrder.Add(CITY_TABLE, -1);
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
 					tableOrder.Add(SALARY_CAP_TABLE, -1);

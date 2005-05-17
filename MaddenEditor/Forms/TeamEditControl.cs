@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -37,9 +37,15 @@ namespace MaddenEditor.Forms
 	{
 		private EditorModel model = null;
 
+		private bool isInitialising = false;
+
 		public TeamEditControl()
 		{
+			isInitialising = true;
+
 			InitializeComponent();
+
+			isInitialising = false;
 		}
 
 		#region IEditorForm Members
@@ -51,14 +57,428 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
-			
+			isInitialising = true;
+
+			//Fill in the combo boxes
+			foreach (ComboRecord rec in model.TeamModel.LeagueList)
+			{
+				leagueCombo.Items.Add(rec);
+				filterTeamLeagueCombo.Items.Add(rec);
+			}
+			foreach (ComboRecord rec in model.TeamModel.DivisionList)
+			{
+				divisionCombo.Items.Add(rec);
+				filterTeamDivisionCombo.Items.Add(rec);
+			}
+			foreach (ComboRecord rec in model.TeamModel.ConferenceList)
+			{
+				conferenceCombo.Items.Add(rec);
+				filterTeamConferenceCombo.Items.Add(rec);
+			}
+			foreach (ComboRecord rec in model.TeamModel.CityList)
+			{
+				cityCombo.Items.Add(rec);
+			}
+			foreach (ComboRecord rec in model.TeamModel.OffensivePlaybookList)
+			{
+				teamOffensivePlaybookCombo.Items.Add(rec);
+			}
+			foreach (ComboRecord rec in model.TeamModel.DefensivePlaybookList)
+			{
+				teamDefensivePlaybookCombo.Items.Add(rec);
+			}
+
+			leagueCombo.SelectedIndex = 0;
+			divisionCombo.SelectedIndex = 0;
+			conferenceCombo.SelectedIndex = 0;
+			filterTeamConferenceCombo.SelectedIndex = 0;
+			filterTeamDivisionCombo.SelectedIndex = 0;
+			filterTeamLeagueCombo.SelectedIndex = 0;
+			cityCombo.SelectedIndex = 0;
+			teamDefensivePlaybookCombo.SelectedIndex = 0;
+			teamOffensivePlaybookCombo.SelectedIndex = 0;
+
+			//Load a team
+			LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+
+			isInitialising = false;
 		}
 
 		public void CleanUI()
 		{
-			
+			//Clear the combo boxes
+			filterTeamLeagueCombo.Items.Clear();
+			filterTeamDivisionCombo.Items.Clear();
+			filterTeamConferenceCombo.Items.Clear();
+			leagueCombo.Items.Clear();
+			divisionCombo.Items.Clear();
+			conferenceCombo.Items.Clear();
+			cityCombo.Items.Clear();
+			teamDefensivePlaybookCombo.Items.Clear();
+			teamOffensivePlaybookCombo.Items.Clear();
 		}
 
 		#endregion
-}
+
+		private void LoadTeamInfo(TeamRecord record)
+		{
+			if (record == null)
+			{
+				MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+				return;
+			}
+
+			isInitialising = true;
+
+			nameTextBox.Text = record.Name;
+			longNameTextBox.Text = record.LongName;
+			shortTeamName.Text = record.ShortName;
+			nickNameTextBox.Text = record.NickName;
+
+			teamQBRating.Value = record.QBRating;
+			teamRBRating.Value = record.RBRating;
+			teamWRRating.Value = record.WRRating;
+			teamOLRating.Value = record.OLRating;
+
+			teamDLRating.Value = record.DLRating;
+			teamLBRating.Value = record.LBRating;
+			teamDBRating.Value = record.DBRating;
+
+			teamSpecialTeamsRating.Value = record.SpecialTeamsRating;
+			teamOffensiveRating.Value = record.OffensiveRating;
+			teamDefensiveRating.Value = record.DefensiveRating;
+			teamOverallRating.Value = record.OverallRating;
+
+			teamReputation.Value = record.Reputation;
+
+			foreach (Object obj in divisionCombo.Items)
+			{
+				if (((ComboRecord)obj).Id == record.DivisionId)
+				{
+					divisionCombo.SelectedItem = obj;
+					break;
+				}
+			}
+			foreach (Object obj in leagueCombo.Items)
+			{
+				if (((ComboRecord)obj).Id == record.LeagueId)
+				{
+					leagueCombo.SelectedItem = obj;
+					break;
+				}
+			}
+			foreach (object obj in conferenceCombo.Items)
+			{
+				if (((ComboRecord)obj).Id == record.ConferenceId)
+				{
+					conferenceCombo.SelectedItem = obj;
+					break;
+				}
+			}
+			foreach (object obj in cityCombo.Items)
+			{
+				if (((ComboRecord)obj).Id == record.CityId)
+				{
+					cityCombo.SelectedItem = obj;
+					break;
+				}
+			}
+			bool found = false;
+			foreach (object obj in teamOffensivePlaybookCombo.Items)
+			{
+				if (((ComboRecord)obj).Id == record.OffensivePlaybook)
+				{
+					teamOffensivePlaybookCombo.SelectedItem = obj;
+					found = true;
+					break;
+				}
+			}
+			teamOffensivePlaybookCombo.Enabled = found;
+			foreach (object obj in teamDefensivePlaybookCombo.Items)
+			{
+				if (((ComboRecord)obj).Id == record.DefensivePlaybook)
+				{
+					teamDefensivePlaybookCombo.SelectedItem = obj;
+					break;
+				}
+			}
+			
+			isInitialising = false;
+		}
+
+		private void nameTextBox_TextChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.Name = nameTextBox.Text;
+			}
+		}
+
+		private void leftButton_Click(object sender, EventArgs e)
+		{
+			LoadTeamInfo(model.TeamModel.GetPreviousTeamRecord());
+		}
+
+		private void rightButton_Click(object sender, EventArgs e)
+		{
+			LoadTeamInfo(model.TeamModel.GetNextTeamRecord());
+		}
+
+		private void filterConferenceCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (filterConferenceCheckBox.Checked)
+			{
+				model.TeamModel.SetConferenceFilter(((ComboRecord)filterTeamConferenceCombo.SelectedItem).Id);
+
+				model.TeamModel.GetNextTeamRecord();
+				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+			}
+			else
+			{
+				model.TeamModel.RemoveConferenceFilter();
+			}
+		}
+
+		private void filterTeamConferenceCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (filterConferenceCheckBox.Checked)
+			{
+				model.TeamModel.SetConferenceFilter(((ComboRecord)filterTeamConferenceCombo.SelectedItem).Id);
+
+				model.TeamModel.GetNextTeamRecord();
+				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+			}
+		}
+
+		private void filterDivisionCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (filterDivisionCheckBox.Checked)
+			{
+				model.TeamModel.SetDivisionFilter(((ComboRecord)filterTeamDivisionCombo.SelectedItem).Id);
+
+				model.TeamModel.GetNextTeamRecord();
+				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+			}
+			else
+			{
+				model.TeamModel.RemoveDivisionFilter();
+			}
+		}
+
+		private void filterTeamDivisionCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (filterDivisionCheckBox.Checked)
+			{
+				model.TeamModel.SetDivisionFilter(((ComboRecord)filterTeamDivisionCombo.SelectedItem).Id);
+
+				model.TeamModel.GetNextTeamRecord();
+				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+			}
+		}
+
+		private void filterLeagueCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (filterLeagueCheckBox.Checked)
+			{
+				model.TeamModel.SetLeagueFilter(((ComboRecord)filterTeamLeagueCombo.SelectedItem).Id);
+
+				model.TeamModel.GetNextTeamRecord();
+				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+			}
+			else
+			{
+				model.TeamModel.RemoveLeagueFilter();
+			}
+		}
+
+		private void filterTeamLeagueCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (filterLeagueCheckBox.Checked)
+			{
+				model.TeamModel.SetLeagueFilter(((ComboRecord)filterTeamLeagueCombo.SelectedItem).Id);
+
+				model.TeamModel.GetNextTeamRecord();
+				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
+			}
+		}
+
+		private void nameTextBox_Leave(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.Name = nameTextBox.Text;
+			}
+		}
+
+		private void longNameTextBox_Leave(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.LongName = longNameTextBox.Text;
+			}
+		}
+
+		private void shortTeamName_Leave(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.ShortName = shortTeamName.Text;
+			}
+		}
+
+		private void nickNameTextBox_Leave(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.NickName = nickNameTextBox.Text;
+			}
+		}
+
+		private void conferenceCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.ConferenceId = (((ComboRecord)conferenceCombo.SelectedItem).Id);
+			}
+		}
+
+		private void divisionCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.DivisionId = (((ComboRecord)divisionCombo.SelectedItem).Id);
+			}
+		}
+
+		private void leagueCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.LeagueId = (((ComboRecord)leagueCombo.SelectedItem).Id);
+			}
+		}
+
+		private void cityCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.CityId = (((ComboRecord)cityCombo.SelectedItem).Id);
+			}
+		}
+
+		private void teamQBRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.QBRating = (int)teamQBRating.Value;
+			}
+		}
+
+		private void teamRBRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.RBRating = (int)teamRBRating.Value;
+			}
+		}
+
+		private void teamWRRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.WRRating = (int)teamWRRating.Value;
+			}
+		}
+
+		private void teamOLRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.OLRating = (int)teamOLRating.Value;
+			}
+		}
+
+		private void teamDLRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.DLRating = (int)teamDLRating.Value;
+			}
+		}
+
+		private void teamLBRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.LBRating = (int)teamLBRating.Value;
+			}
+		}
+
+		private void teamDBRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.DBRating = (int)teamDBRating.Value;
+			}
+		}
+
+		private void teamOffensiveRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.OffensiveRating = (int)teamOffensiveRating.Value;
+			}
+		}
+
+		private void teamSpecialTeamsRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.SpecialTeamsRating = (int)teamSpecialTeamsRating.Value;
+			}
+		}
+
+		private void teamDefensiveRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.DefensiveRating = (int)teamDefensiveRating.Value;
+			}
+		}
+
+		private void teamOverallRating_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.OverallRating = (int)teamOverallRating.Value;
+			}
+		}
+
+		private void teamOffensivePlaybookCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.OffensivePlaybook = (((ComboRecord)teamOffensivePlaybookCombo.SelectedItem).Id);
+			}
+		}
+
+		private void teamDefensivePlaybookCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.DefensivePlaybook = (((ComboRecord)teamDefensivePlaybookCombo.SelectedItem).Id);
+			}
+		}
+
+		private void teamReputation_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.Reputation = (int)teamReputation.Value;
+			}
+		}
+
+	}
+	
 }

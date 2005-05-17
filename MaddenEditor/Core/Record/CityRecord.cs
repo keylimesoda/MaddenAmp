@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -28,10 +28,37 @@ namespace MaddenEditor.Core.Record
 {
 	public class CityRecord : TableRecordModel
 	{
+		public const string CITY_ID = "CYID";
+		public const string CITY_NAME = "CYNM";
+
 		public CityRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
 
+		}
+
+		public string Name
+		{
+			get
+			{
+				return GetStringField(CITY_NAME);
+			}
+			set
+			{
+				SetField(CITY_NAME, value);
+			}
+		}
+
+		public int CityId
+		{
+			get
+			{
+				return GetIntField(CITY_ID);
+			}
+			set
+			{
+				SetField(CITY_ID, value);
+			}
 		}
 	}
 }
