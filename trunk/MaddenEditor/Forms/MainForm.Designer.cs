@@ -47,20 +47,21 @@ namespace MaddenEditor.Forms
 			this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
 			this.testButton = new System.Windows.Forms.Button();
 			this.coachPage = new System.Windows.Forms.TabPage();
-			this.depthChartPage = new System.Windows.Forms.TabPage();
+			this.teamPage = new System.Windows.Forms.TabPage();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -143,6 +144,7 @@ namespace MaddenEditor.Forms
             this.searchforPlayerToolStripMenuItem,
             this.searchforCoachesToolStripMenuItem,
             this.toolStripSeparator3,
+            this.depthChartEditorToolStripMenuItem,
             this.globalPlayerAttrEditorToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Text = "Tools";
@@ -190,6 +192,12 @@ namespace MaddenEditor.Forms
 			this.setTeamCaptainsToolStripMenuItem.Text = "Set Team Captains ...";
 			this.setTeamCaptainsToolStripMenuItem.Click += new System.EventHandler(this.setTeamCaptainsToolStripMenuItem_Click);
 			// 
+			// setUserControlledTeamsToolStripMenuItem
+			// 
+			this.setUserControlledTeamsToolStripMenuItem.Name = "setUserControlledTeamsToolStripMenuItem";
+			this.setUserControlledTeamsToolStripMenuItem.Text = "Set User Controlled Teams ...";
+			this.setUserControlledTeamsToolStripMenuItem.Click += new System.EventHandler(this.setUserControlledTeamsToolStripMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -207,7 +215,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.tabControl.Controls.Add(this.playerPage);
 			this.tabControl.Controls.Add(this.coachPage);
-			this.tabControl.Controls.Add(this.depthChartPage);
+			this.tabControl.Controls.Add(this.teamPage);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl.Location = new System.Drawing.Point(0, 24);
 			this.tabControl.Name = "tabControl";
@@ -245,13 +253,13 @@ namespace MaddenEditor.Forms
 			this.coachPage.TabIndex = 1;
 			this.coachPage.Text = "Coach Editor";
 			// 
-			// depthChartPage
+			// teamPage
 			// 
-			this.depthChartPage.Location = new System.Drawing.Point(4, 22);
-			this.depthChartPage.Name = "depthChartPage";
-			this.depthChartPage.Size = new System.Drawing.Size(784, 493);
-			this.depthChartPage.TabIndex = 2;
-			this.depthChartPage.Text = "Depth Chart Editor";
+			this.teamPage.Location = new System.Drawing.Point(4, 22);
+			this.teamPage.Name = "teamPage";
+			this.teamPage.Size = new System.Drawing.Size(784, 493);
+			this.teamPage.TabIndex = 2;
+			this.teamPage.Text = "Team Editor";
 			// 
 			// statusStrip
 			// 
@@ -296,11 +304,11 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
 			// 
-			// setUserControlledTeamsToolStripMenuItem
+			// depthChartEditorToolStripMenuItem
 			// 
-			this.setUserControlledTeamsToolStripMenuItem.Name = "setUserControlledTeamsToolStripMenuItem";
-			this.setUserControlledTeamsToolStripMenuItem.Text = "Set User Controlled Teams ...";
-			this.setUserControlledTeamsToolStripMenuItem.Click += new System.EventHandler(this.setUserControlledTeamsToolStripMenuItem_Click);
+			this.depthChartEditorToolStripMenuItem.Name = "depthChartEditorToolStripMenuItem";
+			this.depthChartEditorToolStripMenuItem.Text = "Depth Chart Editor ...";
+			this.depthChartEditorToolStripMenuItem.Click += new System.EventHandler(this.depthChartEditorToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -353,7 +361,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem editSalaryCapsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripStatusLabel processingTableLabel;
 		private System.Windows.Forms.Button testButton;
-		private System.Windows.Forms.TabPage depthChartPage;
+		private System.Windows.Forms.TabPage teamPage;
 		private System.Windows.Forms.ToolStripMenuItem searchforCoachesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem globalPlayerAttrEditorToolStripMenuItem;
@@ -361,5 +369,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem setUserControlledTeamsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem depthChartEditorToolStripMenuItem;
     }
 }

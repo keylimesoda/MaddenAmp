@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 /******************************************************************************
  * Madden 2005 Editor
  * Copyright (C) 2005 Colin Goudie
@@ -22,6 +20,8 @@ using System.Collections.Generic;
  * colin.goudie@gmail.com
  * 
  *****************************************************************************/
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;

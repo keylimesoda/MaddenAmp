@@ -33,9 +33,15 @@ using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Forms
 {
+	/// <summary>
+	/// This is the main form that is displayed to the user. It contains the tab control
+	/// which contains most of the other user controls as well as the menu bar enabling
+	/// access into special functions.
+	/// </summary>
+	/// <author>Colin Goudie</author>
     public partial class MainForm : Form
     {
-		private EditorModel model = null;
+		private EditorModel model = null;	
 		private string fileToLoad;
 		private bool isInitialising = false;
 		
@@ -44,8 +50,11 @@ namespace MaddenEditor.Forms
 
 		private PlayerEditControl playerEditControl = null;
 		private CoachEditControl coachEditControl = null;
-		private DepthChartEditorControl depthChartEditorControl = null;
-
+		private TeamEditControl teamEditControl = null;
+		
+		/// <summary>
+		/// Constructor for the MainForm
+		/// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -56,15 +65,16 @@ namespace MaddenEditor.Forms
 
 			playerEditControl = new PlayerEditControl();
 			coachEditControl = new CoachEditControl();
-			depthChartEditorControl = new DepthChartEditorControl();
-
+			teamEditControl = new TeamEditControl();
+			
 			playerPage.Controls.Add(playerEditControl);
 			coachPage.Controls.Add(coachEditControl);
-			depthChartPage.Controls.Add(depthChartEditorControl);
+			teamPage.Controls.Add(teamEditControl);
+			
 			playerEditControl.Dock = DockStyle.Fill;
 			coachEditControl.Dock = DockStyle.Fill;
-			depthChartEditorControl.Dock = DockStyle.Fill;
-						
+			teamEditControl.Dock = DockStyle.Fill;
+									
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
@@ -82,6 +92,11 @@ namespace MaddenEditor.Forms
 			}
         }
 
+		/// <summary>
+		/// Checks to see if our model is dirty and if so prompts the user to save the file.
+		/// </summary>
+		/// <returns>true - If user selected to save or not to save the file
+		///          false - If the user cancels the close/save request</returns>
 		private bool CheckSave()
 		{
 			if (model != null && model.Dirty)
@@ -153,7 +168,8 @@ namespace MaddenEditor.Forms
 			//controls about it
 			playerEditControl.Model = model;
 			coachEditControl.Model = model;
-			depthChartEditorControl.Model = model;
+			teamEditControl.Model = model;
+			
 		}
 
 		public void updateProgress(int percentage, string tablename)
@@ -165,8 +181,8 @@ namespace MaddenEditor.Forms
 		{
 			playerEditControl.InitialiseUI();
 			coachEditControl.InitialiseUI();
-			depthChartEditorControl.InitialiseUI();
-
+			teamEditControl.InitialiseUI();
+			
 			exportToolStripMenuItem.Enabled = true;
 			tabControl.Visible = true;
 			toolsToolStripMenuItem.Visible = true;
@@ -207,8 +223,8 @@ namespace MaddenEditor.Forms
 
 			playerEditControl.CleanUI();
 			coachEditControl.CleanUI();
-			depthChartEditorControl.CleanUI();
-
+			teamEditControl.CleanUI();
+			
 			exportToolStripMenuItem.Enabled = false;
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
@@ -386,6 +402,17 @@ namespace MaddenEditor.Forms
 
 			form.CleanUI();
 			form = null;
+		}
+
+		private void depthChartEditorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			DepthChartEditorForm form = new DepthChartEditorForm(model);
+
+			form.InitialiseUI();
+
+			form.Show(this);
+
+
 		}
 
 		

@@ -86,6 +86,12 @@
     <Compile Include="Forms\DepthChartEditorControl.Designer.cs">
       <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DepthChartEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DepthChartEditorForm.Designer.cs">
+      <DependentUpon>DepthChartEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,12 @@
     <Compile Include="Forms\TeamCaptainForm.Designer.cs">
       <DependentUpon>TeamCaptainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TeamEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TeamEditControl.Designer.cs">
+      <DependentUpon>TeamEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DepthChartEditorControl.resx">
       <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DepthChartEditorForm.resx">
+      <DependentUpon>DepthChartEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
@@ -172,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TeamCaptainForm.resx">
       <DependentUpon>TeamCaptainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TeamEditControl.resx">
+      <DependentUpon>TeamEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserControlledTeamForm.resx">
       <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
