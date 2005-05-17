@@ -3,7 +3,7 @@
 
                         UNOFFICIAL MADDEN 2005 EDITOR 0.9.0.0
 
-                                   11th May 2005
+                                   17th May 2005
 
                                     readme.txt
 
@@ -40,6 +40,16 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+
+* (NEW) Team editing
+
+* (NEW) Export to CSV for players
+
+* (NEW) Moved Depth Chart to Tools Menu
+
+* (NEW) Fixed salary cap editing (It takes effect now, however there is still a salary cap bug when editing player salaries)
+
+* (NEW) Set User Controlled Teams in Franchise
 
 *  Thanks to zentrarium we now have the ability to set team Captains!!! Available in the
         Franchise menu option when loading a franchise file.
@@ -91,10 +101,15 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 4. FIXED ISSUES
 ===============
 
-* Fixed issue with saving roster files in version 0.8.0.0
+* Fixed issue where editing salary cap max's didnt take effect
+
+* Fixed issue where moving all players to different positions caused a lockup
 
 5. KNOWN ISSUES
 ===============
+* Issue with loading Madden 2004 franchise files
+
+* Editing players salary doesnt seem to edit teams total salary correctly in franchise mode
 
 * Tabbing between settings doesnt work correctly
 
