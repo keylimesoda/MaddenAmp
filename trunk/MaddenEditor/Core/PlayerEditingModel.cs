@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -90,9 +90,16 @@ namespace MaddenEditor.Core
 		{
 			PlayerRecord record = null;
 
+			int startingindex = currentPlayerIndex;
 			while (true)
 			{
 				currentPlayerIndex++;
+				if (currentPlayerIndex == startingindex)
+				{
+					//We have looped around
+					return null;
+				}
+
 				if (currentPlayerIndex >= model.TableModels[EditorModel.PLAYER_TABLE].RecordCount)
 				{
 					currentPlayerIndex = 0;
@@ -139,9 +146,16 @@ namespace MaddenEditor.Core
 		{
 			PlayerRecord record = null;
 
+			int startingindex = currentPlayerIndex;
 			while (true)
 			{
 				currentPlayerIndex--;
+				if (currentPlayerIndex == startingindex)
+				{
+					//We have looped around
+					return null;
+				}
+
 				if (currentPlayerIndex < 0)
 				{
 					currentPlayerIndex = model.TableModels[EditorModel.PLAYER_TABLE].RecordCount - 1;
@@ -196,7 +210,6 @@ namespace MaddenEditor.Core
 
 		public void RemoveTeamFilter()
 		{
-			Console.WriteLine("Removing Team filter");
 			currentTeamFilter = null;
 		}
 

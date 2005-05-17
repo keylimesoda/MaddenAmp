@@ -17,7 +17,7 @@
  * 
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
- * colin.goudie@gmail.com
+ * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
@@ -56,13 +56,9 @@ namespace MaddenEditor.Forms
 		{
 			if (record == null)
 			{
-				model.CoachModel.RemovePositionFilter();
-				model.CoachModel.RemoveTeamFilter();
-				MessageBox.Show("No Records available. Removing filters", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				filterPositionCheckBox.Checked = false;
-				filterTeamCheckBox.Checked = false;
-				model.CoachModel.GetNextCoachRecord();
-				record = model.CoachModel.CurrentCoachRecord;
+				MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+				return;
 			}
 			isInitialising = true;
 
