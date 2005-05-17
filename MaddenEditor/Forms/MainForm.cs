@@ -41,8 +41,10 @@ namespace MaddenEditor.Forms
 	/// <author>Colin Goudie</author>
     public partial class MainForm : Form
     {
+		private const string TITLE_STRING = "Madden Editor 2005";
 		private EditorModel model = null;	
-		private string fileToLoad;
+		private string filePathToLoad;
+		public string fileToLoad;
 		private bool isInitialising = false;
 		
 		private SearchForm searchPlayerForm = null;
@@ -61,7 +63,8 @@ namespace MaddenEditor.Forms
 
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 
-			this.Text = this.Text + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 			playerEditControl = new PlayerEditControl();
 			coachEditControl = new CoachEditControl();
@@ -138,7 +141,7 @@ namespace MaddenEditor.Forms
 			{
 				foreach (string filename in dialog.FileNames)
 				{
-					fileToLoad = filename;
+					filePathToLoad = filename;
 					// Insert code here to process the files.
 					try
 					{
@@ -163,7 +166,7 @@ namespace MaddenEditor.Forms
 
 		void rosterFileLoaderThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-			model = new EditorModel(fileToLoad, this);
+			model = new EditorModel(filePathToLoad, this);
 			//once the model is initialised set tell the custom edit
 			//controls about it
 			playerEditControl.Model = model;
@@ -179,6 +182,8 @@ namespace MaddenEditor.Forms
 
 		private void InitialiseUI()
 		{
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
 			playerEditControl.InitialiseUI();
 			coachEditControl.InitialiseUI();
 			teamEditControl.InitialiseUI();
@@ -218,6 +223,7 @@ namespace MaddenEditor.Forms
 
 		private void CleanUI()
 		{
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			//Now clean up ready for reloading
 			searchPlayerForm = null;
 
