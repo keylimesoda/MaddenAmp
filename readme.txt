@@ -1,7 +1,7 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.0.0
+i                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.1.0
 
                                    17th May 2005
 
@@ -40,6 +40,8 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+
+* (NEW) Installer does a primitive check to ensure correct .net framework is installed
 
 * (NEW) Team editing
 

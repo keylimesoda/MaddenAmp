@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Madden Editor 2005"
-!define PRODUCT_VERSION "0.9.0.0"
+!define PRODUCT_VERSION "0.9.1.0"
 !define PRODUCT_PUBLISHER "Tributech"
 !define PRODUCT_WEB_SITE "http://gommo.homelinux.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\MaddenEditor.exe"
@@ -18,6 +18,7 @@
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
+Page custom CheckDotNet
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
@@ -89,7 +90,6 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 SectionEnd
 
-
 Function un.onUninstSuccess
   HideWindow
   MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer."
@@ -119,3 +119,39 @@ Section Uninstall
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
 SectionEnd
+
+; Function: GetDotNet
+; Author: Joe Cincotta ( joe@pixolut.com )
+; Date: 24/6/2004
+;
+; Detect the .NET Framework installation. Download if not present.
+; NOTES: 
+; Requires a default web browser to be installed.
+; This function will quit if the framework has not been found. 
+; you could replace this with a 'click when done' dialog or something
+; similar which waits for the installation process to complete.
+; - Note that my quick and dirty exe exists approach could be updated
+; to use the registry approaches in the other .NET detect examples...
+;
+; Usage:
+;   Call GetDotNet
+;
+
+Function CheckDotNet
+  Call GetDotNet
+FunctionEnd
+
+Function GetDotNet
+  IfFileExists "$WINDIR\Microsoft.NET\Framework\v2.0.50215\installUtil.exe" NextStep
+  MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION "You must have the Microsoft .NET \
+Framework 2.0 Beta 2 Installed to use this application. $\n$\nClick 'Yes' to open your browser \
+to the download page. $\nClick 'No' to ignore and install anyway. $\nClick 'Cancel' to cancel installation" IDYES yes IDNO no
+  Quit
+yes:
+  ExecShell Open "http://www.microsoft.com/downloads/details.aspx?FamilyID=7ABD8C8F-287E-4C7E-9A4A-A4ECFF40FC8E&displaylang=en" SW_SHOWNORMAL
+  MessageBox MB_OK|MB_ICONEXCLAMATION "Click 'OK' when your download and install is complete. $\n$\n After \
+you click 'OK' this installation will continue"
+no:
+NextStep:
+FunctionEnd
+
