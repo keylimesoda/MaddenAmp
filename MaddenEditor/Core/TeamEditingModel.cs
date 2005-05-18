@@ -68,14 +68,17 @@ namespace MaddenEditor.Core
 			divisionList.Add(new ComboRecord("NFC South", 5));
 			divisionList.Add(new ComboRecord("NFC East", 6));
 			divisionList.Add(new ComboRecord("NFC West", 7));
+			divisionList.Add(new ComboRecord("NFL Euro", 8));
 
 			conferenceList = new List<ComboRecord>();
 			conferenceList.Add(new ComboRecord("N/A", 3));
+			conferenceList.Add(new ComboRecord("NFL Euro", 2));
 			conferenceList.Add(new ComboRecord("NFC", 1));
 			conferenceList.Add(new ComboRecord("AFC", 0));
 
 			leagueList = new List<ComboRecord>();
 			leagueList.Add(new ComboRecord("N/A", 3));
+			leagueList.Add(new ComboRecord("NFL Euro", 1));
 			leagueList.Add(new ComboRecord("NFL", 0));
 
 			cityList = new List<ComboRecord>();
