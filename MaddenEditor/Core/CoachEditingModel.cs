@@ -84,7 +84,8 @@ namespace MaddenEditor.Core
 
 				if (currentCoachIndex >= model.TableModels[EditorModel.COACH_TABLE].RecordCount)
 				{
-					currentCoachIndex = 0;
+					currentCoachIndex = -1;
+					continue;
 				}
 
 				record = (CoachRecord)model.TableModels[EditorModel.COACH_TABLE].GetRecord(currentCoachIndex);
@@ -133,7 +134,8 @@ namespace MaddenEditor.Core
 
 				if (currentCoachIndex < 0)
 				{
-					currentCoachIndex = model.TableModels[EditorModel.COACH_TABLE].RecordCount - 1;
+					currentCoachIndex = model.TableModels[EditorModel.COACH_TABLE].RecordCount;
+					continue;
 				}
 
 				record = (CoachRecord)model.TableModels[EditorModel.COACH_TABLE].GetRecord(currentCoachIndex);

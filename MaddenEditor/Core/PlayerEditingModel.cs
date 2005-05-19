@@ -102,7 +102,8 @@ namespace MaddenEditor.Core
 
 				if (currentPlayerIndex >= model.TableModels[EditorModel.PLAYER_TABLE].RecordCount)
 				{
-					currentPlayerIndex = 0;
+					currentPlayerIndex = -1;
+					continue;
 				}
 
 				record = (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
@@ -158,7 +159,8 @@ namespace MaddenEditor.Core
 
 				if (currentPlayerIndex < 0)
 				{
-					currentPlayerIndex = model.TableModels[EditorModel.PLAYER_TABLE].RecordCount - 1;
+					currentPlayerIndex = model.TableModels[EditorModel.PLAYER_TABLE].RecordCount;
+					continue;
 				}
 
 				record = (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].GetRecord(currentPlayerIndex);
