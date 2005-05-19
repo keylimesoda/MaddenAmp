@@ -158,6 +158,7 @@ namespace MaddenEditor.Forms
 					hbuilder.Append("First Name,");
 					hbuilder.Append("Last Name,");
 					hbuilder.Append("Team,");
+					hbuilder.Append("Age,");
 					hbuilder.Append("Height,");
 					hbuilder.Append("Weight,");
 					hbuilder.Append("OVR,");
@@ -196,6 +197,8 @@ namespace MaddenEditor.Forms
 						builder.Append(rec.LastName);
 						builder.Append(",");
 						builder.Append(model.TeamModel.GetTeamNameFromTeamId(rec.TeamId));
+						builder.Append(",");
+						builder.Append(rec.Age);
 						builder.Append(",");
 						builder.Append((rec.Height/12) + "' " + (rec.Height%12) + "\"");
 						builder.Append(",");
