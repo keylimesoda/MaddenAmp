@@ -130,80 +130,86 @@ namespace MaddenEditor.Forms
 			}
 
 			isInitialising = true;
-
-			nameTextBox.Text = record.Name;
-			longNameTextBox.Text = record.LongName;
-			shortTeamName.Text = record.ShortName;
-			nickNameTextBox.Text = record.NickName;
-
-			teamQBRating.Value = record.QBRating;
-			teamRBRating.Value = record.RBRating;
-			teamWRRating.Value = record.WRRating;
-			teamOLRating.Value = record.OLRating;
-
-			teamDLRating.Value = record.DLRating;
-			teamLBRating.Value = record.LBRating;
-			teamDBRating.Value = record.DBRating;
-
-			teamSpecialTeamsRating.Value = record.SpecialTeamsRating;
-			teamOffensiveRating.Value = record.OffensiveRating;
-			teamDefensiveRating.Value = record.DefensiveRating;
-			teamOverallRating.Value = record.OverallRating;
-
-			teamReputation.Value = record.Reputation;
-
-			foreach (Object obj in divisionCombo.Items)
+			try
 			{
-				if (((ComboRecord)obj).Id == record.DivisionId)
+				nameTextBox.Text = record.Name;
+				longNameTextBox.Text = record.LongName;
+				shortTeamName.Text = record.ShortName;
+				nickNameTextBox.Text = record.NickName;
+
+				teamQBRating.Value = record.QBRating;
+				teamRBRating.Value = record.RBRating;
+				teamWRRating.Value = record.WRRating;
+				teamOLRating.Value = record.OLRating;
+
+				teamDLRating.Value = record.DLRating;
+				teamLBRating.Value = record.LBRating;
+				teamDBRating.Value = record.DBRating;
+
+				teamSpecialTeamsRating.Value = record.SpecialTeamsRating;
+				teamOffensiveRating.Value = record.OffensiveRating;
+				teamDefensiveRating.Value = record.DefensiveRating;
+				teamOverallRating.Value = record.OverallRating;
+
+				teamReputation.Value = record.Reputation;
+
+				foreach (Object obj in divisionCombo.Items)
 				{
-					divisionCombo.SelectedItem = obj;
-					break;
+					if (((ComboRecord)obj).Id == record.DivisionId)
+					{
+						divisionCombo.SelectedItem = obj;
+						break;
+					}
+				}
+				foreach (Object obj in leagueCombo.Items)
+				{
+					if (((ComboRecord)obj).Id == record.LeagueId)
+					{
+						leagueCombo.SelectedItem = obj;
+						break;
+					}
+				}
+				foreach (object obj in conferenceCombo.Items)
+				{
+					if (((ComboRecord)obj).Id == record.ConferenceId)
+					{
+						conferenceCombo.SelectedItem = obj;
+						break;
+					}
+				}
+				foreach (object obj in cityCombo.Items)
+				{
+					if (((ComboRecord)obj).Id == record.CityId)
+					{
+						cityCombo.SelectedItem = obj;
+						break;
+					}
+				}
+				bool found = false;
+				foreach (object obj in teamOffensivePlaybookCombo.Items)
+				{
+					if (((ComboRecord)obj).Id == record.OffensivePlaybook)
+					{
+						teamOffensivePlaybookCombo.SelectedItem = obj;
+						found = true;
+						break;
+					}
+				}
+				teamOffensivePlaybookCombo.Enabled = found;
+				foreach (object obj in teamDefensivePlaybookCombo.Items)
+				{
+					if (((ComboRecord)obj).Id == record.DefensivePlaybook)
+					{
+						teamDefensivePlaybookCombo.SelectedItem = obj;
+						break;
+					}
 				}
 			}
-			foreach (Object obj in leagueCombo.Items)
+			catch (Exception e)
 			{
-				if (((ComboRecord)obj).Id == record.LeagueId)
-				{
-					leagueCombo.SelectedItem = obj;
-					break;
-				}
+				MessageBox.Show("Exception Occured loading this Team:\r\n" + e.ToString(), "Exception Loading Team", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-			foreach (object obj in conferenceCombo.Items)
-			{
-				if (((ComboRecord)obj).Id == record.ConferenceId)
-				{
-					conferenceCombo.SelectedItem = obj;
-					break;
-				}
-			}
-			foreach (object obj in cityCombo.Items)
-			{
-				if (((ComboRecord)obj).Id == record.CityId)
-				{
-					cityCombo.SelectedItem = obj;
-					break;
-				}
-			}
-			bool found = false;
-			foreach (object obj in teamOffensivePlaybookCombo.Items)
-			{
-				if (((ComboRecord)obj).Id == record.OffensivePlaybook)
-				{
-					teamOffensivePlaybookCombo.SelectedItem = obj;
-					found = true;
-					break;
-				}
-			}
-			teamOffensivePlaybookCombo.Enabled = found;
-			foreach (object obj in teamDefensivePlaybookCombo.Items)
-			{
-				if (((ComboRecord)obj).Id == record.DefensivePlaybook)
-				{
-					teamDefensivePlaybookCombo.SelectedItem = obj;
-					break;
-				}
-			}
-			
+
 			isInitialising = false;
 		}
 

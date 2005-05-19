@@ -238,7 +238,14 @@ namespace MaddenEditor.Core
 				CoachPrioritySliderRecord sliderRecord = (CoachPrioritySliderRecord)record;
 				if (sliderRecord.CoachId == model.CoachModel.CurrentCoachRecord.CoachId)
 				{
-					results.Add(sliderRecord.PositionId, sliderRecord);
+					try
+					{
+						results.Add(sliderRecord.PositionId, sliderRecord);
+					}
+					catch (System.ArgumentException e)
+					{
+						Console.Write("Key already exists for coach sliders\n\r" + e.ToString());
+					}
 				}
 			}
 

@@ -59,147 +59,153 @@ namespace MaddenEditor.Forms
 
 			isInitialising = true;
 
-			firstNameTextBox.Text = record.FirstName;
-			lastNameTextBox.Text = record.LastName;
-			string team = model.TeamModel.GetTeamNameFromTeamId(record.TeamId);
-			if (team.Equals(EditorModel.UNKNOWN_TEAM_NAME))
+			try
 			{
-				teamComboBox.Enabled = false;
+				firstNameTextBox.Text = record.FirstName;
+				lastNameTextBox.Text = record.LastName;
+				string team = model.TeamModel.GetTeamNameFromTeamId(record.TeamId);
+				if (team.Equals(EditorModel.UNKNOWN_TEAM_NAME))
+				{
+					teamComboBox.Enabled = false;
+				}
+				else
+				{
+					teamComboBox.Text = team;
+				}
+
+				positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
+				collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
+
+				playerAge.Value = record.Age;
+				if (record.JerseyNumber > 99)
+				{
+					//Must be a draft class, disable jersey number editing
+					playerJerseyNumber.Enabled = false;
+				}
+				else
+				{
+					playerJerseyNumber.Value = record.JerseyNumber;
+				}
+				playerYearsPro.Value = record.YearsPro;
+				playerWeight.Value = record.Weight + 160;
+				playerHeightComboBox.SelectedIndex = record.Height - 65;
+				playerOverall.Value = record.Overall;
+				playerDominantHand.Checked = record.DominantHand;
+
+				playerSpeed.Value = record.Speed;
+				playerStrength.Value = record.Strength;
+				playerAwareness.Value = record.Awareness;
+				playerAgility.Value = record.Agility;
+				playerAcceleration.Value = record.Acceleration;
+				playerCatching.Value = record.Catching;
+				playerCarrying.Value = record.Carrying;
+				playerJumping.Value = record.Jumping;
+				playerBreakTackle.Value = record.BreakTackle;
+				playerTackle.Value = record.Tackle;
+				playerThrowPower.Value = record.ThrowPower;
+				playerThrowAccuracy.Value = record.ThrowAccuracy;
+				playerPassBlocking.Value = record.PassBlocking;
+				playerRunBlocking.Value = record.RunBlocking;
+				playerKickPower.Value = record.KickPower;
+				playerKickAccuracy.Value = record.KickAccuracy;
+				playerKickReturn.Value = record.KickReturn;
+				playerStamina.Value = record.Stamina;
+				playerInjury.Value = record.Injury;
+				playerToughness.Value = record.Toughness;
+				playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
+
+				playerMorale.Value = record.Morale;
+				playerNFLIcon.Checked = record.NFLIcon;
+
+				playerImportance.Value = record.Importance;
+
+				playerProBowl.Checked = record.ProBowl;
+				playerExperiencePoints.Value = record.XPPoints;
+				playerContractLength.Value = record.ContractLength;
+				playerContractYearsLeft.Value = record.ContractYearsLeft;
+				playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
+				playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
+
+				LoadPlayerSalaries(record);
+
+				//Set player Appearance
+				playerFaceShape.Value = record.FaceShape;
+				playerBodyWeight.Value = record.BodyWeight;
+				playerBodyMuscle.Value = record.BodyMuscle;
+				playerBodyFat.Value = record.BodyFat;
+				playerEquipmentShoes.Value = record.EquipmentShoes;
+				playerEquipmentPadHeight.Value = record.EquipmentPadHeight;
+				playerEquipmentPadWidth.Value = record.EquipmentPadWidth;
+				playerEquipmentPadShelf.Value = record.EquipmentPadShelf;
+				playerEquipmentFlakJacket.Value = record.EquipmentFlakJacket;
+				playerArmsMuscle.Value = record.ArmsMuscle;
+				playerArmsFat.Value = record.ArmsFat;
+				playerLegsThighMuscle.Value = record.LegsThighMuscle;
+				playerLegsThighFat.Value = record.LegsThighFat;
+				playerLegsCalfMuscle.Value = record.LegsCalfMuscle;
+				playerLegsCalfFat.Value = record.LegsCalfFat;
+				playerRearRearFat.Value = record.RearRearFat;
+				playerRearShape.Value = record.RearShape;
+				playerRearMuscle.Value = record.RearRearFat;
+				playerBodyOverall.Value = record.BodyOverall;
+				playerEquipmentThighPads.Value = (int)record.LegsThighPads;
+
+				//Load Player equipment
+				playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
+				playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
+				playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
+				playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
+				playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
+				playerEyePaintCombo.Text = playerEyePaintCombo.Items[record.EyePaint].ToString();
+				playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
+				playerVisorCombo.Text = playerVisorCombo.Items[record.Visor].ToString();
+				playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();
+				playerLeftElbowCombo.Text = playerLeftElbowCombo.Items[record.LeftElbow].ToString();
+				playerRightElbowCombo.Text = playerRightElbowCombo.Items[record.RightElbow].ToString();
+				playerLeftWristCombo.Text = playerLeftWristCombo.Items[record.LeftWrist].ToString();
+				playerRightWristCombo.Text = playerRightWristCombo.Items[record.RightWrist].ToString();
+				playerLeftHandCombo.Text = playerLeftHandCombo.Items[record.LeftHand].ToString();
+				playerRightHandCombo.Text = playerRightHandCombo.Items[record.RightHand].ToString();
+				playerSleevesCombo.Text = playerSleevesCombo.Items[record.Sleeves].ToString();
+				playerLeftKneeCombo.Text = playerLeftKneeCombo.Items[record.LeftKnee].ToString();
+				playerRightKneeCombo.Text = playerRightKneeCombo.Items[record.RightKnee].ToString();
+				playerLeftAnkleCombo.Text = playerLeftAnkleCombo.Items[record.LeftAnkle % 4].ToString();
+				playerRightAnkleCombo.Text = playerRightAnkleCombo.Items[record.RightAnkle % 4].ToString();
+				playerNasalStripCombo.Text = playerNasalStripCombo.Items[record.NasalStrip].ToString();
+
+				//Load Injury information
+				InjuryRecord injury = model.PlayerModel.GetPlayersInjuryRecord(record.PlayerId);
+
+				if (injury == null)
+				{
+					playerInjuryCombo.Enabled = false;
+					playerInjuryCombo.Text = "";
+					playerInjuryLength.Enabled = false;
+					playerInjuryLength.Value = 0;
+					playerRemoveInjuryButton.Enabled = false;
+					playerInjuryReserve.Enabled = false;
+					playerAddInjuryButton.Enabled = true;
+					injuryLengthDescriptionTextBox.Enabled = false;
+					injuryLengthDescriptionTextBox.Text = "";
+
+				}
+				else
+				{
+					playerInjuryCombo.Enabled = true;
+					playerInjuryLength.Enabled = true;
+					playerRemoveInjuryButton.Enabled = true;
+					playerInjuryReserve.Enabled = true;
+					playerAddInjuryButton.Enabled = false;
+					playerInjuryCombo.Text = playerInjuryCombo.Items[injury.InjuryType].ToString();
+					playerInjuryLength.Value = injury.InjuryLength;
+					playerInjuryReserve.Checked = injury.InjuryReserve;
+					injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
+				}
 			}
-			else
+			catch (Exception e)
 			{
-				teamComboBox.Text = team;
+				MessageBox.Show("Exception Occured loading this Player:\r\n" + e.ToString(), "Exception Loading Player", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-
-			positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
-			collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
-
-			playerAge.Value = record.Age;
-			if (record.JerseyNumber > 99)
-			{
-				//Must be a draft class, disable jersey number editing
-				playerJerseyNumber.Enabled = false;
-			}
-			else
-			{
-				playerJerseyNumber.Value = record.JerseyNumber;
-			}
-			playerYearsPro.Value = record.YearsPro;
-			playerWeight.Value = record.Weight + 160;
-			playerHeightComboBox.SelectedIndex = record.Height - 65;
-			playerOverall.Value = record.Overall;
-			playerDominantHand.Checked = record.DominantHand;
-
-			playerSpeed.Value = record.Speed;
-			playerStrength.Value = record.Strength;
-			playerAwareness.Value = record.Awareness;
-			playerAgility.Value = record.Agility;
-			playerAcceleration.Value = record.Acceleration;
-			playerCatching.Value = record.Catching;
-			playerCarrying.Value = record.Carrying;
-			playerJumping.Value = record.Jumping;
-			playerBreakTackle.Value = record.BreakTackle;
-			playerTackle.Value = record.Tackle;
-			playerThrowPower.Value = record.ThrowPower;
-			playerThrowAccuracy.Value = record.ThrowAccuracy;
-			playerPassBlocking.Value = record.PassBlocking;
-			playerRunBlocking.Value = record.RunBlocking;
-			playerKickPower.Value = record.KickPower;
-			playerKickAccuracy.Value = record.KickAccuracy;
-			playerKickReturn.Value = record.KickReturn;
-			playerStamina.Value = record.Stamina;
-			playerInjury.Value = record.Injury;
-			playerToughness.Value = record.Toughness;
-			playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
-
-			playerMorale.Value = record.Morale;
-			playerNFLIcon.Checked = record.NFLIcon;
-			
-			playerImportance.Value = record.Importance;
-			
-			playerProBowl.Checked = record.ProBowl;
-			playerExperiencePoints.Value = record.XPPoints;
-			playerContractLength.Value = record.ContractLength;
-			playerContractYearsLeft.Value = record.ContractYearsLeft;
-			playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
-			playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
-
-			LoadPlayerSalaries(record);
-			
-			//Set player Appearance
-			playerFaceShape.Value = record.FaceShape;
-			playerBodyWeight.Value = record.BodyWeight;
-			playerBodyMuscle.Value = record.BodyMuscle;
-			playerBodyFat.Value = record.BodyFat;
-			playerEquipmentShoes.Value = record.EquipmentShoes;
-			playerEquipmentPadHeight.Value = record.EquipmentPadHeight;
-			playerEquipmentPadWidth.Value = record.EquipmentPadWidth;
-			playerEquipmentPadShelf.Value = record.EquipmentPadShelf;
-			playerEquipmentFlakJacket.Value = record.EquipmentFlakJacket;
-			playerArmsMuscle.Value = record.ArmsMuscle;
-			playerArmsFat.Value = record.ArmsFat;
-			playerLegsThighMuscle.Value = record.LegsThighMuscle;
-			playerLegsThighFat.Value = record.LegsThighFat;
-			playerLegsCalfMuscle.Value = record.LegsCalfMuscle;
-			playerLegsCalfFat.Value = record.LegsCalfFat;
-			playerRearRearFat.Value = record.RearRearFat;
-			playerRearShape.Value = record.RearShape;
-			playerRearMuscle.Value = record.RearRearFat;
-			playerBodyOverall.Value = record.BodyOverall;
-			playerEquipmentThighPads.Value = (int)record.LegsThighPads;
-			
-			//Load Player equipment
-			playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
-			playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
-			playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
-			playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
-			playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
-			playerEyePaintCombo.Text = playerEyePaintCombo.Items[record.EyePaint].ToString();
-			playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
-			playerVisorCombo.Text = playerVisorCombo.Items[record.Visor].ToString();
-			playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();
-			playerLeftElbowCombo.Text = playerLeftElbowCombo.Items[record.LeftElbow].ToString();
-			playerRightElbowCombo.Text = playerRightElbowCombo.Items[record.RightElbow].ToString();
-			playerLeftWristCombo.Text = playerLeftWristCombo.Items[record.LeftWrist].ToString();
-			playerRightWristCombo.Text = playerRightWristCombo.Items[record.RightWrist].ToString();
-			playerLeftHandCombo.Text = playerLeftHandCombo.Items[record.LeftHand].ToString();
-			playerRightHandCombo.Text = playerRightHandCombo.Items[record.RightHand].ToString();
-			playerSleevesCombo.Text = playerSleevesCombo.Items[record.Sleeves].ToString();
-			playerLeftKneeCombo.Text = playerLeftKneeCombo.Items[record.LeftKnee].ToString();
-			playerRightKneeCombo.Text = playerRightKneeCombo.Items[record.RightKnee].ToString();
-			playerLeftAnkleCombo.Text = playerLeftAnkleCombo.Items[record.LeftAnkle % 4].ToString();
-			playerRightAnkleCombo.Text = playerRightAnkleCombo.Items[record.RightAnkle % 4].ToString();
-			playerNasalStripCombo.Text = playerNasalStripCombo.Items[record.NasalStrip].ToString();
-			
-			//Load Injury information
-			InjuryRecord injury = model.PlayerModel.GetPlayersInjuryRecord(record.PlayerId);
-
-			if (injury == null)
-			{
-				playerInjuryCombo.Enabled = false;
-				playerInjuryCombo.Text = "";
-				playerInjuryLength.Enabled = false;
-				playerInjuryLength.Value = 0;
-				playerRemoveInjuryButton.Enabled = false;
-				playerInjuryReserve.Enabled = false;
-				playerAddInjuryButton.Enabled = true;
-				injuryLengthDescriptionTextBox.Enabled = false;
-				injuryLengthDescriptionTextBox.Text = "";
-
-			}
-			else
-			{
-				playerInjuryCombo.Enabled = true;
-				playerInjuryLength.Enabled = true;
-				playerRemoveInjuryButton.Enabled = true;
-				playerInjuryReserve.Enabled = true;
-				playerAddInjuryButton.Enabled = false;
-				playerInjuryCombo.Text = playerInjuryCombo.Items[injury.InjuryType].ToString();
-				playerInjuryLength.Value = injury.InjuryLength;
-				playerInjuryReserve.Checked = injury.InjuryReserve;
-				injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
-			}
-
 			isInitialising = false;
 		}
 
