@@ -43,6 +43,7 @@ namespace MaddenEditor.Forms
 			this.searchforPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.searchforCoachesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,6 @@ namespace MaddenEditor.Forms
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-			this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -164,6 +164,12 @@ namespace MaddenEditor.Forms
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			// 
+			// depthChartEditorToolStripMenuItem
+			// 
+			this.depthChartEditorToolStripMenuItem.Name = "depthChartEditorToolStripMenuItem";
+			this.depthChartEditorToolStripMenuItem.Text = "Depth Chart Editor ...";
+			this.depthChartEditorToolStripMenuItem.Click += new System.EventHandler(this.depthChartEditorToolStripMenuItem_Click);
 			// 
 			// globalPlayerAttrEditorToolStripMenuItem
 			// 
@@ -303,12 +309,6 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.WorkerSupportsCancellation = true;
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
-			// 
-			// depthChartEditorToolStripMenuItem
-			// 
-			this.depthChartEditorToolStripMenuItem.Name = "depthChartEditorToolStripMenuItem";
-			this.depthChartEditorToolStripMenuItem.Text = "Depth Chart Editor ...";
-			this.depthChartEditorToolStripMenuItem.Click += new System.EventHandler(this.depthChartEditorToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 

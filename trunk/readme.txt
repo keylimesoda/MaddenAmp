@@ -3,7 +3,7 @@
 
 i                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.1.0
 
-                                   17th May 2005
+                                   19th May 2005
 
                                     readme.txt
 
@@ -40,6 +40,7 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+* (NEW) Added better exception handling if player,coach or team is loaded with unexpected values
 
 * (NEW) Installer does a primitive check to ensure correct .net framework is installed
 
@@ -102,6 +103,11 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. FIXED ISSUES
 ===============
+* Fixed absence of NFL Europe league
+
+* Fixed issue where Team Combobox stayed disabled in Coach editing screen
+
+* Fixed issue where loading certain coaches would crash
 
 * Fixed issue where editing salary cap max's didnt take effect
 
