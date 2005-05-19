@@ -705,11 +705,6 @@ namespace MaddenEditor.Forms
 			// coachDefAggression
 			// 
 			this.coachDefAggression.Location = new System.Drawing.Point(75, 398);
-			this.coachDefAggression.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
 			this.coachDefAggression.Name = "coachDefAggression";
 			this.coachDefAggression.Size = new System.Drawing.Size(42, 20);
 			this.coachDefAggression.TabIndex = 29;
@@ -736,11 +731,6 @@ namespace MaddenEditor.Forms
 			// coachOffAggression
 			// 
 			this.coachOffAggression.Location = new System.Drawing.Point(75, 294);
-			this.coachOffAggression.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
 			this.coachOffAggression.Name = "coachOffAggression";
 			this.coachOffAggression.Size = new System.Drawing.Size(42, 20);
 			this.coachOffAggression.TabIndex = 24;
