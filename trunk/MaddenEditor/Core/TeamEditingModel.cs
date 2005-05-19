@@ -254,7 +254,8 @@ namespace MaddenEditor.Core
 
 				if (currentTeamRecord >= model.TableModels[EditorModel.TEAM_TABLE].RecordCount)
 				{
-					currentTeamRecord = 0;
+					currentTeamRecord = -1;
+					continue;
 				}
 
 				record = (TeamRecord)model.TableModels[EditorModel.TEAM_TABLE].GetRecord(currentTeamRecord);
@@ -310,7 +311,8 @@ namespace MaddenEditor.Core
 
 				if (currentTeamRecord < 0)
 				{
-					currentTeamRecord = model.TableModels[EditorModel.TEAM_TABLE].RecordCount - 1;
+					currentTeamRecord = model.TableModels[EditorModel.TEAM_TABLE].RecordCount;
+					continue;
 				}
 
 				record = (TeamRecord)model.TableModels[EditorModel.TEAM_TABLE].GetRecord(currentTeamRecord);
