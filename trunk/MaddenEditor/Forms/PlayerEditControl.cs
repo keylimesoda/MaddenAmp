@@ -63,15 +63,9 @@ namespace MaddenEditor.Forms
 			{
 				firstNameTextBox.Text = record.FirstName;
 				lastNameTextBox.Text = record.LastName;
-				string team = model.TeamModel.GetTeamNameFromTeamId(record.TeamId);
-				if (team.Equals(EditorModel.UNKNOWN_TEAM_NAME))
-				{
-					teamComboBox.Enabled = false;
-				}
-				else
-				{
-					teamComboBox.Text = team;
-				}
+
+				TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
+				teamComboBox.SelectedItem = (object)team;
 
 				positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 				collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
@@ -306,21 +300,21 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
-			foreach (string teamname in model.TeamModel.GetTeamNames())
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				teamComboBox.Items.Add(teamname);
-				filterTeamComboBox.Items.Add(teamname);
+				teamComboBox.Items.Add(record);
+				filterTeamComboBox.Items.Add(record);
 			}
-
+			
 			foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
 			{
 				positionComboBox.Items.Add(pos);
 				filterPositionComboBox.Items.Add(pos);
 			}
 
-			filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
-			filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
-
+			filterTeamComboBox.SelectedIndex = 0;
+			filterPositionComboBox.SelectedIndex = 0;
+			
 			if (model.FileType != MaddenFileType.FranchiseFile)
 			{
 				playerCapRoom.Visible = false;
@@ -373,7 +367,7 @@ namespace MaddenEditor.Forms
 		{
 			if (teamCheckBox.Checked)
 			{
-				model.PlayerModel.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
+				model.PlayerModel.SetTeamFilter(filterTeamComboBox.Text);
 				filterDraftClassCheckBox.Checked = false;
 				//Generate a move next so it will filter
 				model.PlayerModel.GetNextPlayerRecord();
@@ -421,7 +415,7 @@ namespace MaddenEditor.Forms
 		{
 			if (teamCheckBox.Checked)
 			{
-				model.PlayerModel.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
+				model.PlayerModel.SetTeamFilter(filterTeamComboBox.Text);
 				//Generate a move next so it will filter
 				model.PlayerModel.GetNextPlayerRecord();
 				LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
@@ -471,7 +465,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.CurrentPlayerRecord.TeamId = model.TeamModel.GetTeamIdFromTeamName(teamComboBox.Text);
+				model.PlayerModel.CurrentPlayerRecord.TeamId = ((TeamRecord)teamComboBox.SelectedItem).TeamId;
 			}
 		}
 

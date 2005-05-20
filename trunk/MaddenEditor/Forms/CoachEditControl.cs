@@ -67,17 +67,11 @@ namespace MaddenEditor.Forms
 				//Load Coach General info
 				coachesName.Text = record.Name;
 				coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
-				string team = model.TeamModel.GetTeamNameFromTeamId(record.TeamId);
-				if (team.Equals(EditorModel.UNKNOWN_TEAM_NAME))
-				{
-					coachTeamCombo.Text = team;
-					coachTeamCombo.Enabled = false;
-				}
-				else
-				{
-					coachTeamCombo.Enabled = true;
-					coachTeamCombo.Text = team;
-				}
+
+				TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
+
+				coachTeamCombo.SelectedItem = (object)team;
+				
 				coachAge.Value = (int)record.Age;
 				coachSalary.Value = (decimal)((double)record.Salary / 100.0);
 
@@ -210,7 +204,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.CoachModel.CurrentCoachRecord.TeamId = coachTeamCombo.SelectedIndex;
+				model.CoachModel.CurrentCoachRecord.TeamId = ((TeamRecord)coachTeamCombo.SelectedItem).TeamId;
 			}
 		}
 
@@ -225,14 +219,14 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
-			foreach (string teamname in model.TeamModel.GetTeamNames())
+			foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				coachTeamCombo.Items.Add(teamname);
-				filterTeamComboBox.Items.Add(teamname);
+				coachTeamCombo.Items.Add(rec);
+				filterTeamComboBox.Items.Add(rec);
 			}
 
-			filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
-			filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();
+			filterPositionComboBox.SelectedIndex = 0;
+			filterTeamComboBox.SelectedIndex = 0;
 
 			//Create priority controls
 			int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
