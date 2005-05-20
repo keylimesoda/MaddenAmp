@@ -390,6 +390,16 @@ namespace MaddenEditor.Core
 
 		public string GetTeamNameFromTeamId(int teamid)
 		{
+			if (teamNameList == null)
+			{
+				teamNameList = new Dictionary<int, string>();
+
+				foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+				{
+					TeamRecord teamRecord = (TeamRecord)record;
+					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
+				}
+			}
 			if (teamNameList.ContainsKey(teamid))
 				return teamNameList[teamid];
 			else
