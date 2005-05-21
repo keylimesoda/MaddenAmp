@@ -148,113 +148,120 @@ namespace MaddenEditor.Forms
 		
 			if (fileDialog.ShowDialog() == DialogResult.OK)
 			{
-				if ((myStream = fileDialog.OpenFile()) != null)
+				try
 				{
-					StreamWriter wText = new StreamWriter(myStream);
-
-					//Output the headers first
-					StringBuilder hbuilder = new StringBuilder();
-					hbuilder.Append("Position,");
-					hbuilder.Append("First Name,");
-					hbuilder.Append("Last Name,");
-					hbuilder.Append("Team,");
-					hbuilder.Append("Age,");
-					hbuilder.Append("Height,");
-					hbuilder.Append("Weight,");
-					hbuilder.Append("OVR,");
-					hbuilder.Append("Speed,");
-					hbuilder.Append("Strength,");
-					hbuilder.Append("Awareness,");
-					hbuilder.Append("Agility,");
-					hbuilder.Append("Acceleration,");
-					hbuilder.Append("Catching,");
-					hbuilder.Append("Carrying,");
-					hbuilder.Append("Jumping,");
-					hbuilder.Append("Break Tackle,");
-					hbuilder.Append("Tackle,");
-					hbuilder.Append("Throw Power,");
-					hbuilder.Append("Throw Accuracy,");
-					hbuilder.Append("Pass Blocking,");
-					hbuilder.Append("Run Blocking,");
-					hbuilder.Append("Kick Power,");
-					hbuilder.Append("Kick Accuracy,");
-					hbuilder.Append("Kick Return,");
-					hbuilder.Append("Stamina,");
-					hbuilder.Append("Injury,");
-					hbuilder.Append("Toughness,");
-					hbuilder.Append("Importance,");
-					hbuilder.Append("Morale");
-
-					wText.WriteLine(hbuilder.ToString());
-
-					foreach (PlayerRecord rec in playerList)
+					if ((myStream = fileDialog.OpenFile()) != null)
 					{
-						StringBuilder builder = new StringBuilder();
-						builder.Append(Enum.GetNames(typeof(MaddenPositions))[rec.PositionId].ToString());
-						builder.Append(",");
-						builder.Append(rec.FirstName);
-						builder.Append(",");
-						builder.Append(rec.LastName);
-						builder.Append(",");
-						builder.Append(model.TeamModel.GetTeamNameFromTeamId(rec.TeamId));
-						builder.Append(",");
-						builder.Append(rec.Age);
-						builder.Append(",");
-						builder.Append((rec.Height/12) + "' " + (rec.Height%12) + "\"");
-						builder.Append(",");
-						builder.Append(rec.Weight + 160);
-						builder.Append(",");
-						builder.Append(rec.Overall);
-						builder.Append(",");
-						builder.Append(rec.Speed);
-						builder.Append(",");
-						builder.Append(rec.Strength);
-						builder.Append(",");
-						builder.Append(rec.Awareness);
-						builder.Append(",");
-						builder.Append(rec.Agility);
-						builder.Append(",");
-						builder.Append(rec.Acceleration);
-						builder.Append(",");
-						builder.Append(rec.Catching);
-						builder.Append(",");
-						builder.Append(rec.Carrying);
-						builder.Append(",");
-						builder.Append(rec.Jumping);
-						builder.Append(",");
-						builder.Append(rec.BreakTackle);
-						builder.Append(",");
-						builder.Append(rec.Tackle);
-						builder.Append(",");
-						builder.Append(rec.ThrowPower);
-						builder.Append(",");
-						builder.Append(rec.ThrowAccuracy);
-						builder.Append(",");
-						builder.Append(rec.PassBlocking);
-						builder.Append(",");
-						builder.Append(rec.RunBlocking);
-						builder.Append(",");
-						builder.Append(rec.KickPower);
-						builder.Append(",");
-						builder.Append(rec.KickAccuracy);
-						builder.Append(",");
-						builder.Append(rec.KickReturn);
-						builder.Append(",");
-						builder.Append(rec.Stamina);
-						builder.Append(",");
-						builder.Append(rec.Injury);
-						builder.Append(",");
-						builder.Append(rec.Toughness);
-						builder.Append(",");
-						builder.Append(rec.Importance);
-						builder.Append(",");
-						builder.Append(rec.Morale);
-						wText.WriteLine(builder.ToString());
-						wText.Flush();
-					}
-					
+						StreamWriter wText = new StreamWriter(myStream);
 
-					myStream.Close();
+						//Output the headers first
+						StringBuilder hbuilder = new StringBuilder();
+						hbuilder.Append("Position,");
+						hbuilder.Append("First Name,");
+						hbuilder.Append("Last Name,");
+						hbuilder.Append("Team,");
+						hbuilder.Append("Age,");
+						hbuilder.Append("Height,");
+						hbuilder.Append("Weight,");
+						hbuilder.Append("OVR,");
+						hbuilder.Append("Speed,");
+						hbuilder.Append("Strength,");
+						hbuilder.Append("Awareness,");
+						hbuilder.Append("Agility,");
+						hbuilder.Append("Acceleration,");
+						hbuilder.Append("Catching,");
+						hbuilder.Append("Carrying,");
+						hbuilder.Append("Jumping,");
+						hbuilder.Append("Break Tackle,");
+						hbuilder.Append("Tackle,");
+						hbuilder.Append("Throw Power,");
+						hbuilder.Append("Throw Accuracy,");
+						hbuilder.Append("Pass Blocking,");
+						hbuilder.Append("Run Blocking,");
+						hbuilder.Append("Kick Power,");
+						hbuilder.Append("Kick Accuracy,");
+						hbuilder.Append("Kick Return,");
+						hbuilder.Append("Stamina,");
+						hbuilder.Append("Injury,");
+						hbuilder.Append("Toughness,");
+						hbuilder.Append("Importance,");
+						hbuilder.Append("Morale");
+
+						wText.WriteLine(hbuilder.ToString());
+
+						foreach (PlayerRecord rec in playerList)
+						{
+							StringBuilder builder = new StringBuilder();
+							builder.Append(Enum.GetNames(typeof(MaddenPositions))[rec.PositionId].ToString());
+							builder.Append(",");
+							builder.Append(rec.FirstName);
+							builder.Append(",");
+							builder.Append(rec.LastName);
+							builder.Append(",");
+							builder.Append(model.TeamModel.GetTeamNameFromTeamId(rec.TeamId));
+							builder.Append(",");
+							builder.Append(rec.Age);
+							builder.Append(",");
+							builder.Append((rec.Height / 12) + "' " + (rec.Height % 12) + "\"");
+							builder.Append(",");
+							builder.Append(rec.Weight + 160);
+							builder.Append(",");
+							builder.Append(rec.Overall);
+							builder.Append(",");
+							builder.Append(rec.Speed);
+							builder.Append(",");
+							builder.Append(rec.Strength);
+							builder.Append(",");
+							builder.Append(rec.Awareness);
+							builder.Append(",");
+							builder.Append(rec.Agility);
+							builder.Append(",");
+							builder.Append(rec.Acceleration);
+							builder.Append(",");
+							builder.Append(rec.Catching);
+							builder.Append(",");
+							builder.Append(rec.Carrying);
+							builder.Append(",");
+							builder.Append(rec.Jumping);
+							builder.Append(",");
+							builder.Append(rec.BreakTackle);
+							builder.Append(",");
+							builder.Append(rec.Tackle);
+							builder.Append(",");
+							builder.Append(rec.ThrowPower);
+							builder.Append(",");
+							builder.Append(rec.ThrowAccuracy);
+							builder.Append(",");
+							builder.Append(rec.PassBlocking);
+							builder.Append(",");
+							builder.Append(rec.RunBlocking);
+							builder.Append(",");
+							builder.Append(rec.KickPower);
+							builder.Append(",");
+							builder.Append(rec.KickAccuracy);
+							builder.Append(",");
+							builder.Append(rec.KickReturn);
+							builder.Append(",");
+							builder.Append(rec.Stamina);
+							builder.Append(",");
+							builder.Append(rec.Injury);
+							builder.Append(",");
+							builder.Append(rec.Toughness);
+							builder.Append(",");
+							builder.Append(rec.Importance);
+							builder.Append(",");
+							builder.Append(rec.Morale);
+							wText.WriteLine(builder.ToString());
+							wText.Flush();
+						}
+
+
+						myStream.Close();
+					}
+				}
+				catch(IOException err)
+				{
+					MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 
