@@ -30,12 +30,20 @@ using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Core
 {
+	/// <summary>
+	/// This enumeration helps identify the two different kinds of files we can load
+	/// with this editor
+	/// </summary>
 	public enum MaddenFileType 
 	{ 
 		RosterFile, 
 		FranchiseFile 
 	}
 
+	/// <summary>
+	/// Enumeration to describe the positions in the Madden game. The order of these is
+	/// important as they match up with the position ID's in the database
+	/// </summary>
 	public enum MaddenPositions
 	{
 		QB = 0,
@@ -64,7 +72,6 @@ namespace MaddenEditor.Core
 	/// <summary>
 	/// This class is the main application model class. It is responsible for
 	/// creating all editing models that are manipulated by the GUI.
-	/// 
 	/// </summary>
 	public class EditorModel
 	{
@@ -75,7 +82,7 @@ namespace MaddenEditor.Core
 		public const string INJURY_TABLE = "INJY";
 		public const string COACH_TABLE = "COCH";
 		public const string SALARY_CAP_TABLE = "SLRI";
-        public const string DEPTH_CHART_TABLE = "DCHT";
+		public const string DEPTH_CHART_TABLE = "DCHT";
 		public const string COACH_SLIDER_TABLE = "CPSE";
 		public const string TEAM_CAPTAIN_TABLE = "TCPT";
 		public const string OWNER_TABLE = "OWNR";
@@ -89,7 +96,8 @@ namespace MaddenEditor.Core
 		private Dictionary<string, TableModel> tableModels = null;
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private Dictionary<string, int> tableOrder = null;
-		/** Editing Models */
+		
+		// Editing model objects
 		private PlayerEditingModel playerEditingModel = null;
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
@@ -110,8 +118,9 @@ namespace MaddenEditor.Core
 				Console.WriteLine(e.ToString());
 				throw new ApplicationException("Can't open file: " + e.ToString());
 			}
-
+			//This collection will hold the created TableModel objects for each database table opened
 			tableModels = new Dictionary<string, TableModel>();
+			//We create a collection of database table names that we want to load
 			tableOrder = new Dictionary<string, int>();
 
 			//Process the file
@@ -132,7 +141,9 @@ namespace MaddenEditor.Core
 				salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
 			}
 		}
-
+		/// <summary>
+		/// The Enumerated Filetype that is currently loaded
+		/// </summary>
 		public MaddenFileType FileType
 		{
 			get
@@ -140,7 +151,9 @@ namespace MaddenEditor.Core
 				return fileType;
 			}
 		}
-
+		/// <summary>
+		/// The PlayerEditingModel object to manipulate Player objects
+		/// </summary>
 		public PlayerEditingModel PlayerModel
 		{
 			get
@@ -148,7 +161,9 @@ namespace MaddenEditor.Core
 				return playerEditingModel;
 			}
 		}
-
+		/// <summary>
+		/// The CoachEditingModel object to manipulate Coach objects
+		/// </summary>
 		public CoachEditingModel CoachModel
 		{
 			get
@@ -156,7 +171,9 @@ namespace MaddenEditor.Core
 				return coachEditingModel;
 			}
 		}
-
+		/// <summary>
+		/// The TeamEditingModel object to manipulate Team objects
+		/// </summary>
 		public TeamEditingModel TeamModel
 		{
 			get
@@ -164,7 +181,9 @@ namespace MaddenEditor.Core
 				return teamEditingModel;
 			}
 		}
-
+		/// <summary>
+		/// The SalaryCapRecord object. There is only ever one record in this table
+		/// </summary>
 		public SalaryCapRecord SalaryCapModel
 		{
 			get
@@ -172,7 +191,10 @@ namespace MaddenEditor.Core
 				return salaryCapRecord;
 			}
 		}
-
+		/// <summary>
+		/// This readonly property returns the tablemodel collection allowing you
+		/// to get lowerlevel access to the database records for any table
+		/// </summary>
 		public Dictionary<string, TableModel> TableModels
 		{
 			get
@@ -180,7 +202,10 @@ namespace MaddenEditor.Core
 				return tableModels;
 			}
 		}
-
+		/// <summary>
+		/// The Dirty flag indicates wether or not changes have been made to the loaded objects
+		/// and therefore these changes need to be saved in order to be persisted
+		/// </summary>
 		public bool Dirty
 		{
 			get
@@ -199,7 +224,11 @@ namespace MaddenEditor.Core
 		{
 			return tableModels[tableName];
 		}
-
+		/// <summary>
+		/// This is the main function that processes the database file and loads the 
+		/// tables into objects in memory
+		/// </summary>
+		/// <returns>True or False depending on success of loading the database file</returns>
 		private bool ProcessFile()
 		{
 			bool result = true;
@@ -207,7 +236,7 @@ namespace MaddenEditor.Core
 			{
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
 				Console.WriteLine("Table count in {0} = {1}", fileName, tableCount);
-
+				//Set the filetype of this loaded file
 				if (tableCount == 11)
 				{
 					fileType = MaddenFileType.RosterFile;
@@ -216,9 +245,8 @@ namespace MaddenEditor.Core
 				{
 					fileType = MaddenFileType.FranchiseFile;
 				}
-
 				//Initialise the tableOrder with the Table names we want to 
-				//Process
+				//process
 				tableOrder.Add(TEAM_TABLE, -1);
 				tableOrder.Add(PLAYER_TABLE, -1);
 				tableOrder.Add(INJURY_TABLE, -1);
@@ -226,6 +254,7 @@ namespace MaddenEditor.Core
                 tableOrder.Add(DEPTH_CHART_TABLE, -1);
 				tableOrder.Add(COACH_SLIDER_TABLE, -1);
 				tableOrder.Add(CITY_TABLE, -1);
+				//Make sure we only load some tables if we are a franchise file
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
@@ -268,7 +297,13 @@ namespace MaddenEditor.Core
 
 			return result;
 		}
-
+		/// <summary>
+		/// This function processes a single table and constructs a TableModel object for that
+		/// table. This includes loading the fields of the database and creating specific
+		/// records for those fields.
+		/// </summary>
+		/// <param name="tableNumber">The Table number of the table in the database</param>
+		/// <returns>True if successful, false otherwise</returns>
 		private bool ProcessTable(int tableNumber)
 		{
 			//Reset the progress bar

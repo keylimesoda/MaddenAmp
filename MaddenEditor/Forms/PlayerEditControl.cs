@@ -37,6 +37,8 @@ namespace MaddenEditor.Forms
 	{
 		private EditorModel model = null;
 
+		private PlayerRecord lastLoadedRecord = null;
+
 		private bool isInitialising = false;
 
 		public PlayerEditControl()
@@ -199,8 +201,14 @@ namespace MaddenEditor.Forms
 			catch (Exception e)
 			{
 				MessageBox.Show("Exception Occured loading this Player:\r\n" + e.ToString(), "Exception Loading Player", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				LoadPlayerInfo(lastLoadedRecord);
+				return;
 			}
-			isInitialising = false;
+			finally
+			{
+				isInitialising = false;
+			}
+			lastLoadedRecord = record;
 		}
 
 		private void LoadPlayerSalaries(PlayerRecord record)

@@ -39,6 +39,8 @@ namespace MaddenEditor.Forms
 
 		private bool isInitialising = false;
 
+		private TeamRecord lastLoadedRecord = null;
+
 		public TeamEditControl()
 		{
 			isInitialising = true;
@@ -208,9 +210,14 @@ namespace MaddenEditor.Forms
 			catch (Exception e)
 			{
 				MessageBox.Show("Exception Occured loading this Team:\r\n" + e.ToString(), "Exception Loading Team", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				LoadTeamInfo(lastLoadedRecord);
+				return;
 			}
-
-			isInitialising = false;
+			finally 
+			{
+				isInitialising = false;
+			}
+			lastLoadedRecord = record;
 		}
 
 		private void nameTextBox_TextChanged(object sender, EventArgs e)
