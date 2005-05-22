@@ -43,6 +43,8 @@ namespace MaddenEditor.Forms
 
 		private EditorModel model = null;
 
+		private CoachRecord lastLoadedRecord = null;
+
 		public CoachEditControl()
 		{
 			isInitialising = true;
@@ -71,7 +73,7 @@ namespace MaddenEditor.Forms
 				TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
 
 				coachTeamCombo.SelectedItem = (object)team;
-				
+
 				coachAge.Value = (int)record.Age;
 				coachSalary.Value = (decimal)((double)record.Salary / 100.0);
 
@@ -137,9 +139,14 @@ namespace MaddenEditor.Forms
 			catch (Exception e)
 			{
 				MessageBox.Show("Exception Occured loading this Coach:\r\n" + e.ToString(), "Exception Loading Coach", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				LoadCoachInfo(lastLoadedRecord);
+				return;
 			}
-			
-			isInitialising = false;
+			finally
+			{
+				isInitialising = false;
+			}
+			lastLoadedRecord = record;
 		}
 
 		private string DecodePriorityType(CoachSliderPlayerPositions pos, int type)
