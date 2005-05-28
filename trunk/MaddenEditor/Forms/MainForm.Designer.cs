@@ -62,6 +62,7 @@ namespace MaddenEditor.Forms
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
+			this.editScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -180,6 +181,7 @@ namespace MaddenEditor.Forms
 			// franchiseToolStripMenuItem
 			// 
 			this.franchiseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editScheduleToolStripMenuItem,
             this.editSalaryCapsToolStripMenuItem,
             this.setTeamCaptainsToolStripMenuItem,
             this.setUserControlledTeamsToolStripMenuItem});
@@ -189,7 +191,7 @@ namespace MaddenEditor.Forms
 			// editSalaryCapsToolStripMenuItem
 			// 
 			this.editSalaryCapsToolStripMenuItem.Name = "editSalaryCapsToolStripMenuItem";
-			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps";
+			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps ...";
 			this.editSalaryCapsToolStripMenuItem.Click += new System.EventHandler(this.editSalaryCapsToolStripMenuItem_Click);
 			// 
 			// setTeamCaptainsToolStripMenuItem
@@ -310,6 +312,12 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
 			// 
+			// editScheduleToolStripMenuItem
+			// 
+			this.editScheduleToolStripMenuItem.Name = "editScheduleToolStripMenuItem";
+			this.editScheduleToolStripMenuItem.Text = "Edit Schedule ...";
+			this.editScheduleToolStripMenuItem.Click += new System.EventHandler(this.editScheduleToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -370,5 +378,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem setUserControlledTeamsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem depthChartEditorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem editScheduleToolStripMenuItem;
     }
 }

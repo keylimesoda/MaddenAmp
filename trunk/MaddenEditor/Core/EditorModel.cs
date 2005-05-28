@@ -87,6 +87,7 @@ namespace MaddenEditor.Core
 		public const string TEAM_CAPTAIN_TABLE = "TCPT";
 		public const string OWNER_TABLE = "OWNR";
 		public const string CITY_TABLE = "CITY";
+		public const string SCHEDULE_TABLE = "SCHD";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -133,7 +134,7 @@ namespace MaddenEditor.Core
 			playerEditingModel = new PlayerEditingModel(this);
 			teamEditingModel = new TeamEditingModel(this);
 			coachEditingModel = new CoachEditingModel(this);
-			
+		
 
 			if (fileType == MaddenFileType.FranchiseFile)
 			{
@@ -260,6 +261,7 @@ namespace MaddenEditor.Core
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
 					tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
+					tableOrder.Add(SCHEDULE_TABLE, -1);
 				}
 
 				for (int j = 0; j < tableCount; j++)

@@ -421,8 +421,15 @@ namespace MaddenEditor.Forms
 
 		}
 
-		
+		private void editScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScheduleEditingForm form = new ScheduleEditingForm(model);
 
+			form.InitialiseUI();
+			form.Show(this);
+
+			form.CleanUI();
+		}
 
     }
 }

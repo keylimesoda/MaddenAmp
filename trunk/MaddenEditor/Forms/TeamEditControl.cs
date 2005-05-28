@@ -62,30 +62,30 @@ namespace MaddenEditor.Forms
 			isInitialising = true;
 
 			//Fill in the combo boxes
-			foreach (ComboRecord rec in model.TeamModel.LeagueList)
+			foreach (GenericRecord rec in model.TeamModel.LeagueList)
 			{
 				leagueCombo.Items.Add(rec);
 				filterTeamLeagueCombo.Items.Add(rec);
 			}
-			foreach (ComboRecord rec in model.TeamModel.DivisionList)
+			foreach (GenericRecord rec in model.TeamModel.DivisionList)
 			{
 				divisionCombo.Items.Add(rec);
 				filterTeamDivisionCombo.Items.Add(rec);
 			}
-			foreach (ComboRecord rec in model.TeamModel.ConferenceList)
+			foreach (GenericRecord rec in model.TeamModel.ConferenceList)
 			{
 				conferenceCombo.Items.Add(rec);
 				filterTeamConferenceCombo.Items.Add(rec);
 			}
-			foreach (ComboRecord rec in model.TeamModel.CityList)
+			foreach (GenericRecord rec in model.TeamModel.CityList)
 			{
 				cityCombo.Items.Add(rec);
 			}
-			foreach (ComboRecord rec in model.TeamModel.OffensivePlaybookList)
+			foreach (GenericRecord rec in model.TeamModel.OffensivePlaybookList)
 			{
 				teamOffensivePlaybookCombo.Items.Add(rec);
 			}
-			foreach (ComboRecord rec in model.TeamModel.DefensivePlaybookList)
+			foreach (GenericRecord rec in model.TeamModel.DefensivePlaybookList)
 			{
 				teamDefensivePlaybookCombo.Items.Add(rec);
 			}
@@ -157,7 +157,7 @@ namespace MaddenEditor.Forms
 
 				foreach (Object obj in divisionCombo.Items)
 				{
-					if (((ComboRecord)obj).Id == record.DivisionId)
+					if (((GenericRecord)obj).Id == record.DivisionId)
 					{
 						divisionCombo.SelectedItem = obj;
 						break;
@@ -165,7 +165,7 @@ namespace MaddenEditor.Forms
 				}
 				foreach (Object obj in leagueCombo.Items)
 				{
-					if (((ComboRecord)obj).Id == record.LeagueId)
+					if (((GenericRecord)obj).Id == record.LeagueId)
 					{
 						leagueCombo.SelectedItem = obj;
 						break;
@@ -173,7 +173,7 @@ namespace MaddenEditor.Forms
 				}
 				foreach (object obj in conferenceCombo.Items)
 				{
-					if (((ComboRecord)obj).Id == record.ConferenceId)
+					if (((GenericRecord)obj).Id == record.ConferenceId)
 					{
 						conferenceCombo.SelectedItem = obj;
 						break;
@@ -181,7 +181,7 @@ namespace MaddenEditor.Forms
 				}
 				foreach (object obj in cityCombo.Items)
 				{
-					if (((ComboRecord)obj).Id == record.CityId)
+					if (((GenericRecord)obj).Id == record.CityId)
 					{
 						cityCombo.SelectedItem = obj;
 						break;
@@ -190,7 +190,7 @@ namespace MaddenEditor.Forms
 				bool found = false;
 				foreach (object obj in teamOffensivePlaybookCombo.Items)
 				{
-					if (((ComboRecord)obj).Id == record.OffensivePlaybook)
+					if (((GenericRecord)obj).Id == record.OffensivePlaybook)
 					{
 						teamOffensivePlaybookCombo.SelectedItem = obj;
 						found = true;
@@ -200,7 +200,7 @@ namespace MaddenEditor.Forms
 				teamOffensivePlaybookCombo.Enabled = found;
 				foreach (object obj in teamDefensivePlaybookCombo.Items)
 				{
-					if (((ComboRecord)obj).Id == record.DefensivePlaybook)
+					if (((GenericRecord)obj).Id == record.DefensivePlaybook)
 					{
 						teamDefensivePlaybookCombo.SelectedItem = obj;
 						break;
@@ -242,7 +242,7 @@ namespace MaddenEditor.Forms
 		{
 			if (filterConferenceCheckBox.Checked)
 			{
-				model.TeamModel.SetConferenceFilter(((ComboRecord)filterTeamConferenceCombo.SelectedItem).Id);
+				model.TeamModel.SetConferenceFilter(((GenericRecord)filterTeamConferenceCombo.SelectedItem).Id);
 
 				model.TeamModel.GetNextTeamRecord();
 				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
@@ -257,7 +257,7 @@ namespace MaddenEditor.Forms
 		{
 			if (filterConferenceCheckBox.Checked)
 			{
-				model.TeamModel.SetConferenceFilter(((ComboRecord)filterTeamConferenceCombo.SelectedItem).Id);
+				model.TeamModel.SetConferenceFilter(((GenericRecord)filterTeamConferenceCombo.SelectedItem).Id);
 
 				model.TeamModel.GetNextTeamRecord();
 				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
@@ -268,7 +268,7 @@ namespace MaddenEditor.Forms
 		{
 			if (filterDivisionCheckBox.Checked)
 			{
-				model.TeamModel.SetDivisionFilter(((ComboRecord)filterTeamDivisionCombo.SelectedItem).Id);
+				model.TeamModel.SetDivisionFilter(((GenericRecord)filterTeamDivisionCombo.SelectedItem).Id);
 
 				model.TeamModel.GetNextTeamRecord();
 				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
@@ -283,7 +283,7 @@ namespace MaddenEditor.Forms
 		{
 			if (filterDivisionCheckBox.Checked)
 			{
-				model.TeamModel.SetDivisionFilter(((ComboRecord)filterTeamDivisionCombo.SelectedItem).Id);
+				model.TeamModel.SetDivisionFilter(((GenericRecord)filterTeamDivisionCombo.SelectedItem).Id);
 
 				model.TeamModel.GetNextTeamRecord();
 				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
@@ -294,7 +294,7 @@ namespace MaddenEditor.Forms
 		{
 			if (filterLeagueCheckBox.Checked)
 			{
-				model.TeamModel.SetLeagueFilter(((ComboRecord)filterTeamLeagueCombo.SelectedItem).Id);
+				model.TeamModel.SetLeagueFilter(((GenericRecord)filterTeamLeagueCombo.SelectedItem).Id);
 
 				model.TeamModel.GetNextTeamRecord();
 				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
@@ -309,7 +309,7 @@ namespace MaddenEditor.Forms
 		{
 			if (filterLeagueCheckBox.Checked)
 			{
-				model.TeamModel.SetLeagueFilter(((ComboRecord)filterTeamLeagueCombo.SelectedItem).Id);
+				model.TeamModel.SetLeagueFilter(((GenericRecord)filterTeamLeagueCombo.SelectedItem).Id);
 
 				model.TeamModel.GetNextTeamRecord();
 				LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
@@ -352,7 +352,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.TeamModel.CurrentTeamRecord.ConferenceId = (((ComboRecord)conferenceCombo.SelectedItem).Id);
+				model.TeamModel.CurrentTeamRecord.ConferenceId = (((GenericRecord)conferenceCombo.SelectedItem).Id);
 			}
 		}
 
@@ -360,7 +360,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.TeamModel.CurrentTeamRecord.DivisionId = (((ComboRecord)divisionCombo.SelectedItem).Id);
+				model.TeamModel.CurrentTeamRecord.DivisionId = (((GenericRecord)divisionCombo.SelectedItem).Id);
 			}
 		}
 
@@ -368,7 +368,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.TeamModel.CurrentTeamRecord.LeagueId = (((ComboRecord)leagueCombo.SelectedItem).Id);
+				model.TeamModel.CurrentTeamRecord.LeagueId = (((GenericRecord)leagueCombo.SelectedItem).Id);
 			}
 		}
 
@@ -376,7 +376,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.TeamModel.CurrentTeamRecord.CityId = (((ComboRecord)cityCombo.SelectedItem).Id);
+				model.TeamModel.CurrentTeamRecord.CityId = (((GenericRecord)cityCombo.SelectedItem).Id);
 			}
 		}
 
@@ -472,7 +472,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.TeamModel.CurrentTeamRecord.OffensivePlaybook = (((ComboRecord)teamOffensivePlaybookCombo.SelectedItem).Id);
+				model.TeamModel.CurrentTeamRecord.OffensivePlaybook = (((GenericRecord)teamOffensivePlaybookCombo.SelectedItem).Id);
 			}
 		}
 
@@ -480,7 +480,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.TeamModel.CurrentTeamRecord.DefensivePlaybook = (((ComboRecord)teamDefensivePlaybookCombo.SelectedItem).Id);
+				model.TeamModel.CurrentTeamRecord.DefensivePlaybook = (((GenericRecord)teamDefensivePlaybookCombo.SelectedItem).Id);
 			}
 		}
 

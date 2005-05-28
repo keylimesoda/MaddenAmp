@@ -33,10 +33,11 @@ namespace MaddenEditor.Forms
 			this.label1 = new System.Windows.Forms.Label();
 			this.attributeCombo = new System.Windows.Forms.ComboBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.chkDraftClassFilter = new System.Windows.Forms.CheckBox();
 			this.filterPositionComboBox = new System.Windows.Forms.ComboBox();
 			this.filterTeamComboBox = new System.Windows.Forms.ComboBox();
-			this.filterPositionCheckBox = new System.Windows.Forms.CheckBox();
-			this.filterTeamCheckBox = new System.Windows.Forms.CheckBox();
+			this.chkPositionFilter = new System.Windows.Forms.CheckBox();
+			this.chkTeamFilter = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.applyButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
@@ -47,12 +48,17 @@ namespace MaddenEditor.Forms
 			this.incrementCheckBox = new System.Windows.Forms.RadioButton();
 			this.decrementCheckBox = new System.Windows.Forms.RadioButton();
 			this.setCheckBox = new System.Windows.Forms.RadioButton();
-			this.filterDraftClassCheckBox = new System.Windows.Forms.CheckBox();
+			this.chkAgeFilter = new System.Windows.Forms.CheckBox();
+			this.nudAgeFilter = new System.Windows.Forms.NumericUpDown();
+			this.rbGreaterThan = new System.Windows.Forms.RadioButton();
+			this.rbEqualTo = new System.Windows.Forms.RadioButton();
+			this.rbLessThan = new System.Windows.Forms.RadioButton();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.incrementNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.decrementNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.setNumeric)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -116,17 +122,31 @@ namespace MaddenEditor.Forms
 			// 
 			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Controls.Add(this.filterDraftClassCheckBox);
+			this.groupBox1.Controls.Add(this.rbLessThan);
+			this.groupBox1.Controls.Add(this.rbEqualTo);
+			this.groupBox1.Controls.Add(this.rbGreaterThan);
+			this.groupBox1.Controls.Add(this.nudAgeFilter);
+			this.groupBox1.Controls.Add(this.chkAgeFilter);
+			this.groupBox1.Controls.Add(this.chkDraftClassFilter);
 			this.groupBox1.Controls.Add(this.filterPositionComboBox);
 			this.groupBox1.Controls.Add(this.filterTeamComboBox);
-			this.groupBox1.Controls.Add(this.filterPositionCheckBox);
-			this.groupBox1.Controls.Add(this.filterTeamCheckBox);
+			this.groupBox1.Controls.Add(this.chkPositionFilter);
+			this.groupBox1.Controls.Add(this.chkTeamFilter);
 			this.groupBox1.Location = new System.Drawing.Point(268, 52);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(235, 100);
+			this.groupBox1.Size = new System.Drawing.Size(235, 144);
 			this.groupBox1.TabIndex = 3;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Filter Settings";
+			// 
+			// chkDraftClassFilter
+			// 
+			this.chkDraftClassFilter.AutoSize = true;
+			this.chkDraftClassFilter.Location = new System.Drawing.Point(16, 121);
+			this.chkDraftClassFilter.Name = "chkDraftClassFilter";
+			this.chkDraftClassFilter.Size = new System.Drawing.Size(73, 17);
+			this.chkDraftClassFilter.TabIndex = 4;
+			this.chkDraftClassFilter.Text = "Draft Class";
 			// 
 			// filterPositionComboBox
 			// 
@@ -149,23 +169,23 @@ namespace MaddenEditor.Forms
 			this.filterTeamComboBox.TabIndex = 1;
 			this.filterTeamComboBox.SelectedIndexChanged += new System.EventHandler(this.filterTeamComboBox_SelectedIndexChanged);
 			// 
-			// filterPositionCheckBox
+			// chkPositionFilter
 			// 
-			this.filterPositionCheckBox.AutoSize = true;
-			this.filterPositionCheckBox.Location = new System.Drawing.Point(16, 54);
-			this.filterPositionCheckBox.Name = "filterPositionCheckBox";
-			this.filterPositionCheckBox.Size = new System.Drawing.Size(59, 17);
-			this.filterPositionCheckBox.TabIndex = 2;
-			this.filterPositionCheckBox.Text = "Position";
+			this.chkPositionFilter.AutoSize = true;
+			this.chkPositionFilter.Location = new System.Drawing.Point(16, 54);
+			this.chkPositionFilter.Name = "chkPositionFilter";
+			this.chkPositionFilter.Size = new System.Drawing.Size(59, 17);
+			this.chkPositionFilter.TabIndex = 2;
+			this.chkPositionFilter.Text = "Position";
 			// 
-			// filterTeamCheckBox
+			// chkTeamFilter
 			// 
-			this.filterTeamCheckBox.AutoSize = true;
-			this.filterTeamCheckBox.Location = new System.Drawing.Point(16, 24);
-			this.filterTeamCheckBox.Name = "filterTeamCheckBox";
-			this.filterTeamCheckBox.Size = new System.Drawing.Size(49, 17);
-			this.filterTeamCheckBox.TabIndex = 0;
-			this.filterTeamCheckBox.Text = "Team";
+			this.chkTeamFilter.AutoSize = true;
+			this.chkTeamFilter.Location = new System.Drawing.Point(16, 24);
+			this.chkTeamFilter.Name = "chkTeamFilter";
+			this.chkTeamFilter.Size = new System.Drawing.Size(49, 17);
+			this.chkTeamFilter.TabIndex = 0;
+			this.chkTeamFilter.Text = "Team";
 			// 
 			// label2
 			// 
@@ -179,7 +199,7 @@ namespace MaddenEditor.Forms
 			// applyButton
 			// 
 			this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.applyButton.Location = new System.Drawing.Point(356, 362);
+			this.applyButton.Location = new System.Drawing.Point(356, 334);
 			this.applyButton.Name = "applyButton";
 			this.applyButton.Size = new System.Drawing.Size(75, 23);
 			this.applyButton.TabIndex = 5;
@@ -189,7 +209,7 @@ namespace MaddenEditor.Forms
 			// cancelButton
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cancelButton.Location = new System.Drawing.Point(437, 362);
+			this.cancelButton.Location = new System.Drawing.Point(437, 334);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 6;
@@ -207,9 +227,9 @@ namespace MaddenEditor.Forms
 			this.groupBox2.Controls.Add(this.incrementCheckBox);
 			this.groupBox2.Controls.Add(this.decrementCheckBox);
 			this.groupBox2.Controls.Add(this.setCheckBox);
-			this.groupBox2.Location = new System.Drawing.Point(12, 158);
+			this.groupBox2.Location = new System.Drawing.Point(12, 203);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(491, 198);
+			this.groupBox2.Size = new System.Drawing.Size(491, 125);
 			this.groupBox2.TabIndex = 4;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Change by";
@@ -280,20 +300,57 @@ namespace MaddenEditor.Forms
 			this.setCheckBox.TabStop = false;
 			this.setCheckBox.Text = "Set to";
 			// 
-			// filterDraftClassCheckBox
+			// chkAgeFilter
 			// 
-			this.filterDraftClassCheckBox.AutoSize = true;
-			this.filterDraftClassCheckBox.Location = new System.Drawing.Point(16, 79);
-			this.filterDraftClassCheckBox.Name = "filterDraftClassCheckBox";
-			this.filterDraftClassCheckBox.Size = new System.Drawing.Size(73, 17);
-			this.filterDraftClassCheckBox.TabIndex = 4;
-			this.filterDraftClassCheckBox.Text = "Draft Class";
+			this.chkAgeFilter.AutoSize = true;
+			this.chkAgeFilter.Location = new System.Drawing.Point(16, 87);
+			this.chkAgeFilter.Name = "chkAgeFilter";
+			this.chkAgeFilter.Size = new System.Drawing.Size(41, 17);
+			this.chkAgeFilter.TabIndex = 5;
+			this.chkAgeFilter.Text = "Age";
+			// 
+			// nudAgeFilter
+			// 
+			this.nudAgeFilter.Location = new System.Drawing.Point(81, 84);
+			this.nudAgeFilter.Name = "nudAgeFilter";
+			this.nudAgeFilter.Size = new System.Drawing.Size(46, 20);
+			this.nudAgeFilter.TabIndex = 6;
+			// 
+			// rbGreaterThan
+			// 
+			this.rbGreaterThan.AutoSize = true;
+			this.rbGreaterThan.Checked = true;
+			this.rbGreaterThan.Location = new System.Drawing.Point(136, 86);
+			this.rbGreaterThan.Name = "rbGreaterThan";
+			this.rbGreaterThan.Size = new System.Drawing.Size(27, 17);
+			this.rbGreaterThan.TabIndex = 7;
+			this.rbGreaterThan.Text = ">";
+			// 
+			// rbEqualTo
+			// 
+			this.rbEqualTo.AutoSize = true;
+			this.rbEqualTo.Location = new System.Drawing.Point(202, 87);
+			this.rbEqualTo.Name = "rbEqualTo";
+			this.rbEqualTo.Size = new System.Drawing.Size(27, 17);
+			this.rbEqualTo.TabIndex = 8;
+			this.rbEqualTo.TabStop = false;
+			this.rbEqualTo.Text = "=";
+			// 
+			// rbLessThan
+			// 
+			this.rbLessThan.AutoSize = true;
+			this.rbLessThan.Location = new System.Drawing.Point(169, 87);
+			this.rbLessThan.Name = "rbLessThan";
+			this.rbLessThan.Size = new System.Drawing.Size(27, 17);
+			this.rbLessThan.TabIndex = 9;
+			this.rbLessThan.TabStop = false;
+			this.rbLessThan.Text = "<";
 			// 
 			// GlobalAttributeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(515, 397);
+			this.ClientSize = new System.Drawing.Size(515, 369);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.applyButton);
@@ -312,6 +369,7 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.incrementNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.decrementNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.setNumeric)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -324,8 +382,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ComboBox attributeCombo;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.CheckBox filterPositionCheckBox;
-		private System.Windows.Forms.CheckBox filterTeamCheckBox;
+		private System.Windows.Forms.CheckBox chkPositionFilter;
+		private System.Windows.Forms.CheckBox chkTeamFilter;
 		private System.Windows.Forms.ComboBox filterPositionComboBox;
 		private System.Windows.Forms.ComboBox filterTeamComboBox;
 		private System.Windows.Forms.Button applyButton;
@@ -337,6 +395,11 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown incrementNumeric;
 		private System.Windows.Forms.NumericUpDown decrementNumeric;
 		private System.Windows.Forms.NumericUpDown setNumeric;
-		private System.Windows.Forms.CheckBox filterDraftClassCheckBox;
+		private System.Windows.Forms.CheckBox chkDraftClassFilter;
+		private System.Windows.Forms.CheckBox chkAgeFilter;
+		private System.Windows.Forms.RadioButton rbLessThan;
+		private System.Windows.Forms.RadioButton rbEqualTo;
+		private System.Windows.Forms.RadioButton rbGreaterThan;
+		private System.Windows.Forms.NumericUpDown nudAgeFilter;
 	}
 }

@@ -172,6 +172,9 @@ namespace MaddenEditor.Core
 				case EditorModel.TEAM_TABLE:
 					newRecord = new TeamRecord(recno, parentModel);
 					break;
+				case EditorModel.SCHEDULE_TABLE:
+					newRecord = new ScheduleRecord(recno, parentModel);
+					break;
 			}
 
 			//Add the new record to our list of records
