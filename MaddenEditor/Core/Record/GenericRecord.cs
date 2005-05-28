@@ -9,12 +9,12 @@ namespace MaddenEditor.Core.Record
 	/// The class has a descriptive string to display in the box as well
 	/// as an ID that can be used to identify itself
 	/// </summary>
-	public class ComboRecord
+	public class GenericRecord
 	{
 		private string name;
 		private int id;
 
-		public ComboRecord(string name, int id)
+		public GenericRecord(string name, int id)
 		{
 			this.name = name;
 			this.id = id;

@@ -123,21 +123,21 @@ namespace MaddenEditor.Forms
 
 				PlayerRecord playerRecord = (PlayerRecord)record;
 
-				if (filterTeamCheckBox.Checked)
+				if (chkTeamFilter.Checked)
 				{
 					if (playerRecord.TeamId != model.TeamModel.GetTeamIdFromTeamName(filterTeamComboBox.SelectedItem.ToString()))
 					{
 						continue;
 					}
 				}
-				if (filterPositionCheckBox.Checked)
+				if (chkPositionFilter.Checked)
 				{
 					if (playerRecord.PositionId != filterPositionComboBox.SelectedIndex)
 					{
 						continue;
 					}
 				}
-				if (filterDraftClassCheckBox.Checked)
+				if (chkDraftClassFilter.Checked)
 				{
 					if (playerRecord.YearsPro != 0)
 					{

@@ -1,0 +1,90 @@
+his is for all people with "tdbwrite" experience.
+
+First sorry for my English.
+
+After long looking for, trying and swearing, i think i have a way found to do that with the "tdbwrite".
+
+For testing I generate the normal Sharks with which I wanted to replace the Bears.
+
+Here step for step as proceeded I:
+
+1. Teamtype.
+
+Change the createt Team to a current and the current to a Old Time!
+Caution! If you change the current team to a createt and select it in the roster, the game breaks down.
+
+2. The Coaches.
+
+A created team has only one coach (HC). That is not enough! You need 4 Coaches (HC,OC,DC,ST). But in the default Roster i did not found the coaches i was looking for. So i changed the coaches from the Bears to the Sharks and the HC from the Sharks to the Bears.
+
+3. League-Conference-Division and the fu..... order.
+
+To change the League-Conference and Division is not difficult. But i always had problems in the teamselect screen. If I selected the Sharks always also the Bucs were selected. If I then go into the franchise mode, were the bucs my team. I tried then 3 days of everything. But i did not found a solution. I remembered then "Madden 2004" and changed the owner for both teams in the franchise. From now on I had the possibility to play the preseason with the Sharks but in the regulare season was end.
+
+There another solution had to be! And after two further days I found the solution. The order in the division!!!!!!!!
+
+The small field "DISN" in the "TEAM" table was the solution for the teamselect screen. 
+
+0 = place 1 in the division, 1 = second, 2 = third, 3 = fourth. I set the Sharks to "DISN 0" and the Bears to 7. Now i can select the "Sharks" in the screen.
+
+The problem with selecting was solved but I could not play yet. I knew the problem with the order and so the next field however now found.
+
+Table "TEAM" Field "TDRI". All existing teams have number from 0 to 230. All createt Tems have the number 511. I changed the "TDRI" 511 (Sharks) to 0 (Bears) and reverse. Surprise i can play and simulate the regulare season with the Sharks.
+
+Next problem the schedules. The Sharks have in the first season a wrong schedule. Solution? The order!
+
+Table "Team" Field "TORD". All teams have a number for the order in the Roster.
+I changed the "TORD" 512 (Sharks) to 1 (Bears) and reverse. Now the schedule was correct.
+
+And here the best at all!
+
+After i save the franchise file (training camp) i changed the Sharks back to a custom team (TTYP 5) and i have all CustomArts for the Sharks.
+
+4. Things those do not function correctly at the moment.
+
+"Local News in the "Storyline Central" Caution! If you select the cratet team, the game breaks down.
+"Fans" You can not creat a Fan with the modified Roster and in the game they have no Shirts.
+"Teamhelmet in the roster" There is the helmet from the current team but in the franchise is it right.
+"Stadium" the custom built stadium has no seat for the Ticket sales (this i looking first next time).
+
+So, I think that is the first step! I hope all people with "tdbwrite" experience, Nza and gommo can do something with it.
+
+I simulate 3 Years (after 3 Years the money is out) and play some games without the game breaks down, but i am not sure it always works. Thus always secure all files.
+
+Here is my tdbwrite file.
+
+open c:\test\team.ros
+table TEAM
+search TGID 0
+write TTYP 0
+search TGID 1
+write TTYP 2
+flush
+table COCH
+search CCID 220
+write TGID 0
+search CCID 221
+write TGID 0
+search CCID 222
+write TGID 0
+search CCID 124
+write TGID 0
+search CCID 2
+write TGID 1
+flush
+table TEAM
+search TGID 1
+write CGID 3
+write DGID 15
+write DISN 7
+write TDRI 511
+write TORD 512
+search TGID 0
+write CGID 1
+write DGID 4
+write DISN 0
+write TDRI 0
+write TORD 1
+flush
+
+Thanks.

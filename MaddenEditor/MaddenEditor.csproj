@@ -57,10 +57,12 @@
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
     <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
-    <Compile Include="Core\Record\ComboRecord.cs" />
+    <Compile Include="Core\Record\GenericRecord.cs" />
     <Compile Include="Core\Record\OwnerRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
+    <Compile Include="Core\Record\ScheduleRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
+    <Compile Include="Core\ScheduleEditingModel.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
     <Compile Include="Db\TDB.cs" />
     <Compile Include="Db\TdbFieldProperties.cs" />
@@ -124,6 +126,12 @@
     <Compile Include="Forms\SalaryCapForm.Designer.cs">
       <DependentUpon>SalaryCapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ScheduleEditingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScheduleEditingForm.Designer.cs">
+      <DependentUpon>ScheduleEditingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SalaryCapForm.resx">
       <DependentUpon>SalaryCapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScheduleEditingForm.resx">
+      <DependentUpon>ScheduleEditingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>

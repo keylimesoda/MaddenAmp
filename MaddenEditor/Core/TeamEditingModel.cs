@@ -45,94 +45,103 @@ namespace MaddenEditor.Core
 		private int currentDivisionFilterId = -1;
 		private int currentLeagueFilterId = -1;
 		/** Lists of hardcoded values */
-		private IList<ComboRecord> divisionList = null;
-		private IList<ComboRecord> conferenceList = null;
-		private IList<ComboRecord> leagueList = null;
-		private IList<ComboRecord> offensivePlayBookList = null;
-		private IList<ComboRecord> defensivePlayBookList = null;
+		private IList<GenericRecord> divisionList = null;
+		private IList<GenericRecord> conferenceList = null;
+		private IList<GenericRecord> leagueList = null;
+		private IList<GenericRecord> offensivePlayBookList = null;
+		private IList<GenericRecord> defensivePlayBookList = null;
+		private IList<GenericRecord> teamTypeList = null;
 		/** Add the city list here for the time being */
-		private IList<ComboRecord> cityList = null;
+		private IList<GenericRecord> cityList = null;
 
 		public TeamEditingModel(EditorModel model)
 		{
 			this.model = model;
 
-			//Initialise the ComboRecord lists
-			divisionList = new List<ComboRecord>();
-			divisionList.Add(new ComboRecord("N/A", 31));
-			divisionList.Add(new ComboRecord("AFC North", 0));
-			divisionList.Add(new ComboRecord("AFC South", 1));
-			divisionList.Add(new ComboRecord("AFC East", 2));
-			divisionList.Add(new ComboRecord("AFC West", 3));
-			divisionList.Add(new ComboRecord("NFC North", 4));
-			divisionList.Add(new ComboRecord("NFC South", 5));
-			divisionList.Add(new ComboRecord("NFC East", 6));
-			divisionList.Add(new ComboRecord("NFC West", 7));
-			divisionList.Add(new ComboRecord("NFL Euro", 8));
+			//Initialise the GenericRecord lists
+			teamTypeList = new List<GenericRecord>();
 
-			conferenceList = new List<ComboRecord>();
-			conferenceList.Add(new ComboRecord("N/A", 3));
-			conferenceList.Add(new ComboRecord("NFL Euro", 2));
-			conferenceList.Add(new ComboRecord("NFC", 1));
-			conferenceList.Add(new ComboRecord("AFC", 0));
+			teamTypeList.Add(new GenericRecord("Probowl", 16));
+			teamTypeList.Add(new GenericRecord("NFL Europe", 7));
+			teamTypeList.Add(new GenericRecord("Created", 5));
+			teamTypeList.Add(new GenericRecord("Historical", 2));
+			teamTypeList.Add(new GenericRecord("Free Agents", 1));
+			teamTypeList.Add(new GenericRecord("NFL", 0));
 
-			leagueList = new List<ComboRecord>();
-			leagueList.Add(new ComboRecord("N/A", 3));
-			leagueList.Add(new ComboRecord("NFL Euro", 1));
-			leagueList.Add(new ComboRecord("NFL", 0));
+			divisionList = new List<GenericRecord>();
+			divisionList.Add(new GenericRecord("N/A", 31));
+			divisionList.Add(new GenericRecord("AFC North", 0));
+			divisionList.Add(new GenericRecord("AFC South", 1));
+			divisionList.Add(new GenericRecord("AFC East", 2));
+			divisionList.Add(new GenericRecord("AFC West", 3));
+			divisionList.Add(new GenericRecord("NFC North", 4));
+			divisionList.Add(new GenericRecord("NFC South", 5));
+			divisionList.Add(new GenericRecord("NFC East", 6));
+			divisionList.Add(new GenericRecord("NFC West", 7));
+			divisionList.Add(new GenericRecord("NFL Euro", 8));
 
-			cityList = new List<ComboRecord>();
+			conferenceList = new List<GenericRecord>();
+			conferenceList.Add(new GenericRecord("N/A", 3));
+			conferenceList.Add(new GenericRecord("NFL Euro", 2));
+			conferenceList.Add(new GenericRecord("NFC", 1));
+			conferenceList.Add(new GenericRecord("AFC", 0));
+
+			leagueList = new List<GenericRecord>();
+			leagueList.Add(new GenericRecord("N/A", 3));
+			leagueList.Add(new GenericRecord("NFL Euro", 1));
+			leagueList.Add(new GenericRecord("NFL", 0));
+
+			cityList = new List<GenericRecord>();
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.CITY_TABLE].GetRecords())
 			{
-				cityList.Add(new ComboRecord(((CityRecord)rec).Name, ((CityRecord)rec).CityId));
+				cityList.Add(new GenericRecord(((CityRecord)rec).Name, ((CityRecord)rec).CityId));
 			}
 
-			offensivePlayBookList = new List<ComboRecord>();
-			offensivePlayBookList.Add(new ComboRecord("CHI-L.Smith", 0));
-			offensivePlayBookList.Add(new ComboRecord("CIN-M.Lewis", 1));
-			offensivePlayBookList.Add(new ComboRecord("BUF-M.Mularkey", 2));
-			offensivePlayBookList.Add(new ComboRecord("DEN-M.Shanahan", 3));
-			offensivePlayBookList.Add(new ComboRecord("CLE-B.Davis", 4));
-			offensivePlayBookList.Add(new ComboRecord("TB-J.Gruden", 5));
-			offensivePlayBookList.Add(new ComboRecord("ARI-D.Green", 6));
-			offensivePlayBookList.Add(new ComboRecord("SD-Schottenheimer", 7));
-			offensivePlayBookList.Add(new ComboRecord("KC-D.Vermeil", 8));
-			offensivePlayBookList.Add(new ComboRecord("IND-T.Dungy", 9));
-			offensivePlayBookList.Add(new ComboRecord("DAL-M.Carthon", 10));
-			offensivePlayBookList.Add(new ComboRecord("MIA-D.Wannstedt", 11));
-			offensivePlayBookList.Add(new ComboRecord("PHI-A.Reid", 12));
-			offensivePlayBookList.Add(new ComboRecord("ATL-J.Mora Jr", 13));
-			offensivePlayBookList.Add(new ComboRecord("SF-D.Erickson", 14));
-			offensivePlayBookList.Add(new ComboRecord("NYG-T.Coughlin", 15));
-			offensivePlayBookList.Add(new ComboRecord("JAX-J.Del Rio", 16));
-			offensivePlayBookList.Add(new ComboRecord("NYJ-H.Edwards", 17));
-			offensivePlayBookList.Add(new ComboRecord("DET-S.Mariucci", 18));
-			offensivePlayBookList.Add(new ComboRecord("GB-M.Sherman", 19));
-			offensivePlayBookList.Add(new ComboRecord("CAR-J.Fox", 20));
-			offensivePlayBookList.Add(new ComboRecord("NE-B.Belichick", 21));
-			offensivePlayBookList.Add(new ComboRecord("OAK-N.Turner", 22));
-			offensivePlayBookList.Add(new ComboRecord("STL-M.Martz", 23));
-			offensivePlayBookList.Add(new ComboRecord("BAL-B.Billick", 24));
-			offensivePlayBookList.Add(new ComboRecord("WAS-J.Gibbs", 25));
-			offensivePlayBookList.Add(new ComboRecord("NO-J.Hasslet", 26));
-			offensivePlayBookList.Add(new ComboRecord("SEA-M.Holmgren", 27));
-			offensivePlayBookList.Add(new ComboRecord("PIT-B.Cowher", 28));
-			offensivePlayBookList.Add(new ComboRecord("TEN-J.Fisher", 29));
-			offensivePlayBookList.Add(new ComboRecord("MIN-M.Tice", 30));
-			offensivePlayBookList.Add(new ComboRecord("HOU-D.Capers", 31));
-			offensivePlayBookList.Add(new ComboRecord("Balanced", 32));
-			offensivePlayBookList.Add(new ComboRecord("Pass Balanced", 33));
-			offensivePlayBookList.Add(new ComboRecord("Run Balanced", 34));
-			offensivePlayBookList.Add(new ComboRecord("Run Heavy", 35));
-			offensivePlayBookList.Add(new ComboRecord("West Coast", 36));
-			offensivePlayBookList.Add(new ComboRecord("Run'n'Gun", 37));
+			offensivePlayBookList = new List<GenericRecord>();
+			offensivePlayBookList.Add(new GenericRecord("CHI-L.Smith", 0));
+			offensivePlayBookList.Add(new GenericRecord("CIN-M.Lewis", 1));
+			offensivePlayBookList.Add(new GenericRecord("BUF-M.Mularkey", 2));
+			offensivePlayBookList.Add(new GenericRecord("DEN-M.Shanahan", 3));
+			offensivePlayBookList.Add(new GenericRecord("CLE-B.Davis", 4));
+			offensivePlayBookList.Add(new GenericRecord("TB-J.Gruden", 5));
+			offensivePlayBookList.Add(new GenericRecord("ARI-D.Green", 6));
+			offensivePlayBookList.Add(new GenericRecord("SD-Schottenheimer", 7));
+			offensivePlayBookList.Add(new GenericRecord("KC-D.Vermeil", 8));
+			offensivePlayBookList.Add(new GenericRecord("IND-T.Dungy", 9));
+			offensivePlayBookList.Add(new GenericRecord("DAL-M.Carthon", 10));
+			offensivePlayBookList.Add(new GenericRecord("MIA-D.Wannstedt", 11));
+			offensivePlayBookList.Add(new GenericRecord("PHI-A.Reid", 12));
+			offensivePlayBookList.Add(new GenericRecord("ATL-J.Mora Jr", 13));
+			offensivePlayBookList.Add(new GenericRecord("SF-D.Erickson", 14));
+			offensivePlayBookList.Add(new GenericRecord("NYG-T.Coughlin", 15));
+			offensivePlayBookList.Add(new GenericRecord("JAX-J.Del Rio", 16));
+			offensivePlayBookList.Add(new GenericRecord("NYJ-H.Edwards", 17));
+			offensivePlayBookList.Add(new GenericRecord("DET-S.Mariucci", 18));
+			offensivePlayBookList.Add(new GenericRecord("GB-M.Sherman", 19));
+			offensivePlayBookList.Add(new GenericRecord("CAR-J.Fox", 20));
+			offensivePlayBookList.Add(new GenericRecord("NE-B.Belichick", 21));
+			offensivePlayBookList.Add(new GenericRecord("OAK-N.Turner", 22));
+			offensivePlayBookList.Add(new GenericRecord("STL-M.Martz", 23));
+			offensivePlayBookList.Add(new GenericRecord("BAL-B.Billick", 24));
+			offensivePlayBookList.Add(new GenericRecord("WAS-J.Gibbs", 25));
+			offensivePlayBookList.Add(new GenericRecord("NO-J.Hasslet", 26));
+			offensivePlayBookList.Add(new GenericRecord("SEA-M.Holmgren", 27));
+			offensivePlayBookList.Add(new GenericRecord("PIT-B.Cowher", 28));
+			offensivePlayBookList.Add(new GenericRecord("TEN-J.Fisher", 29));
+			offensivePlayBookList.Add(new GenericRecord("MIN-M.Tice", 30));
+			offensivePlayBookList.Add(new GenericRecord("HOU-D.Capers", 31));
+			offensivePlayBookList.Add(new GenericRecord("Balanced", 32));
+			offensivePlayBookList.Add(new GenericRecord("Pass Balanced", 33));
+			offensivePlayBookList.Add(new GenericRecord("Run Balanced", 34));
+			offensivePlayBookList.Add(new GenericRecord("Run Heavy", 35));
+			offensivePlayBookList.Add(new GenericRecord("West Coast", 36));
+			offensivePlayBookList.Add(new GenericRecord("Run'n'Gun", 37));
 			
-
-			defensivePlayBookList = new List<ComboRecord>();
-			defensivePlayBookList.Add(new ComboRecord("4-3", 0));
-			defensivePlayBookList.Add(new ComboRecord("3-4", 1));
-			defensivePlayBookList.Add(new ComboRecord("4-6", 2));
-			defensivePlayBookList.Add(new ComboRecord("Cover 2", 3));
+			defensivePlayBookList = new List<GenericRecord>();
+			defensivePlayBookList.Add(new GenericRecord("4-3", 0));
+			defensivePlayBookList.Add(new GenericRecord("3-4", 1));
+			defensivePlayBookList.Add(new GenericRecord("4-6", 2));
+			defensivePlayBookList.Add(new GenericRecord("Cover 2", 3));
 		}
 
 		public void SetConferenceFilter(int id)
@@ -165,7 +174,7 @@ namespace MaddenEditor.Core
 			currentLeagueFilterId = -1;
 		}
 
-		public IList<ComboRecord> DivisionList
+		public IList<GenericRecord> DivisionList
 		{
 			get
 			{
@@ -173,7 +182,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public IList<ComboRecord> LeagueList
+		public IList<GenericRecord> LeagueList
 		{
 			get
 			{
@@ -181,7 +190,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public IList<ComboRecord> ConferenceList
+		public IList<GenericRecord> ConferenceList
 		{
 			get
 			{
@@ -189,7 +198,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public IList<ComboRecord> CityList
+		public IList<GenericRecord> CityList
 		{
 			get
 			{
@@ -197,7 +206,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public IList<ComboRecord> OffensivePlaybookList
+		public IList<GenericRecord> OffensivePlaybookList
 		{
 			get
 			{
@@ -205,7 +214,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public IList<ComboRecord> DefensivePlaybookList
+		public IList<GenericRecord> DefensivePlaybookList
 		{
 			get
 			{

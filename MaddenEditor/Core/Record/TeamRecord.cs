@@ -26,7 +26,6 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record
 {
-
 	public class TeamRecord : TableRecordModel
 	{
 		public const string TEAM_NAME = "TDNA";
@@ -59,6 +58,11 @@ namespace MaddenEditor.Core.Record
 
 		public const string OFFENSIVE_PLAYBOOK = "TOPB";
 		public const string DEFENSIVE_PLAYBOOK = "TDPB";
+
+		public const string DIVISION_ORDER = "DISN";
+		public const string TEAM_ORDER = "TORD";
+		public const string TEAM_SOMETHING = "TDRI";
+		public const string TEAM_TYPE = "TTYP";
 
 		public TeamRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
