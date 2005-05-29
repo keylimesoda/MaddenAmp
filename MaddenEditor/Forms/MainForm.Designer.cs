@@ -46,6 +46,7 @@ namespace MaddenEditor.Forms
 			this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,7 @@ namespace MaddenEditor.Forms
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-			this.editScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -183,10 +184,17 @@ namespace MaddenEditor.Forms
 			this.franchiseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editScheduleToolStripMenuItem,
             this.editSalaryCapsToolStripMenuItem,
+            this.toolStripSeparator5,
             this.setTeamCaptainsToolStripMenuItem,
             this.setUserControlledTeamsToolStripMenuItem});
 			this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
 			this.franchiseToolStripMenuItem.Text = "Franchise";
+			// 
+			// editScheduleToolStripMenuItem
+			// 
+			this.editScheduleToolStripMenuItem.Name = "editScheduleToolStripMenuItem";
+			this.editScheduleToolStripMenuItem.Text = "Edit Schedule ...";
+			this.editScheduleToolStripMenuItem.Click += new System.EventHandler(this.editScheduleToolStripMenuItem_Click);
 			// 
 			// editSalaryCapsToolStripMenuItem
 			// 
@@ -312,11 +320,9 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
 			// 
-			// editScheduleToolStripMenuItem
+			// toolStripSeparator5
 			// 
-			this.editScheduleToolStripMenuItem.Name = "editScheduleToolStripMenuItem";
-			this.editScheduleToolStripMenuItem.Text = "Edit Schedule ...";
-			this.editScheduleToolStripMenuItem.Click += new System.EventHandler(this.editScheduleToolStripMenuItem_Click);
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			// 
 			// MainForm
 			// 
@@ -379,5 +385,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem setUserControlledTeamsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem depthChartEditorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editScheduleToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
     }
 }

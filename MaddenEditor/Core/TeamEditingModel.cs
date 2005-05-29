@@ -360,6 +360,17 @@ namespace MaddenEditor.Core
 			return record;
 		}
 
+		private void CreateTeamNameList()
+		{
+			teamNameList = new Dictionary<int, string>();
+
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				TeamRecord teamRecord = (TeamRecord)record;
+				teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
+			}
+		}
+
 		public TeamRecord GetTeamRecord(int teamId)
 		{
 			if (teamRecords == null)
@@ -385,13 +396,7 @@ namespace MaddenEditor.Core
 		{
 			if (teamNameList == null)
 			{
-				teamNameList = new Dictionary<int, string>();
-				
-				foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-				{
-					TeamRecord teamRecord = (TeamRecord)record;
-					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
-				}
+				CreateTeamNameList();
 			}
 
 			return teamNameList.Values;
@@ -401,13 +406,7 @@ namespace MaddenEditor.Core
 		{
 			if (teamNameList == null)
 			{
-				teamNameList = new Dictionary<int, string>();
-
-				foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-				{
-					TeamRecord teamRecord = (TeamRecord)record;
-					teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
-				}
+				CreateTeamNameList();
 			}
 			if (teamNameList.ContainsKey(teamid))
 				return teamNameList[teamid];
@@ -432,6 +431,11 @@ namespace MaddenEditor.Core
 
 		public int GetTeamIdFromTeamName(string teamName)
 		{
+			if (teamNameList == null)
+			{
+				CreateTeamNameList();
+			}
+
 			if (teamNameList.ContainsValue(teamName))
 			{
 				//Theres got to be a better way to do this

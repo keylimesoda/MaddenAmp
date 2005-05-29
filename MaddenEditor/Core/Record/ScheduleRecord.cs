@@ -59,11 +59,11 @@ namespace MaddenEditor.Core.Record
 		public const string HUMAN_USER = "GFHU";
 
 		// The List of Game Day Types
-		private readonly static List<GenericRecord> gameDayTypeList;
+		public readonly static List<GenericRecord> gameDayTypeList;
 		// The List of Game States
-		private readonly static List<GenericRecord> gameStateList;
+		public readonly static List<GenericRecord> gameStateList;
 		// The List of Weightings
-		private readonly static List<GenericRecord> gameWeightings;
+		public readonly static List<GenericRecord> gameWeightings;
 
 		static ScheduleRecord() 
 		{

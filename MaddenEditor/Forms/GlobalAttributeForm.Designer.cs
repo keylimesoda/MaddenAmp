@@ -33,7 +33,12 @@ namespace MaddenEditor.Forms
 			this.label1 = new System.Windows.Forms.Label();
 			this.attributeCombo = new System.Windows.Forms.ComboBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.chkDraftClassFilter = new System.Windows.Forms.CheckBox();
+			this.rbAgeLessThan = new System.Windows.Forms.RadioButton();
+			this.rbAgeEqualTo = new System.Windows.Forms.RadioButton();
+			this.rbAgeGreaterThan = new System.Windows.Forms.RadioButton();
+			this.nudAgeFilter = new System.Windows.Forms.NumericUpDown();
+			this.chkAgeFilter = new System.Windows.Forms.CheckBox();
+			this.chkYearsProFilter = new System.Windows.Forms.CheckBox();
 			this.filterPositionComboBox = new System.Windows.Forms.ComboBox();
 			this.filterTeamComboBox = new System.Windows.Forms.ComboBox();
 			this.chkPositionFilter = new System.Windows.Forms.CheckBox();
@@ -48,17 +53,17 @@ namespace MaddenEditor.Forms
 			this.incrementCheckBox = new System.Windows.Forms.RadioButton();
 			this.decrementCheckBox = new System.Windows.Forms.RadioButton();
 			this.setCheckBox = new System.Windows.Forms.RadioButton();
-			this.chkAgeFilter = new System.Windows.Forms.CheckBox();
-			this.nudAgeFilter = new System.Windows.Forms.NumericUpDown();
-			this.rbGreaterThan = new System.Windows.Forms.RadioButton();
-			this.rbEqualTo = new System.Windows.Forms.RadioButton();
-			this.rbLessThan = new System.Windows.Forms.RadioButton();
+			this.rbYearsProLessThan = new System.Windows.Forms.RadioButton();
+			this.rbYearsProEqualTo = new System.Windows.Forms.RadioButton();
+			this.rbYearsProGreaterThan = new System.Windows.Forms.RadioButton();
+			this.nudYearsProFilter = new System.Windows.Forms.NumericUpDown();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).BeginInit();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.incrementNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.decrementNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.setNumeric)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -122,12 +127,16 @@ namespace MaddenEditor.Forms
 			// 
 			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Controls.Add(this.rbLessThan);
-			this.groupBox1.Controls.Add(this.rbEqualTo);
-			this.groupBox1.Controls.Add(this.rbGreaterThan);
+			this.groupBox1.Controls.Add(this.rbYearsProLessThan);
+			this.groupBox1.Controls.Add(this.rbYearsProEqualTo);
+			this.groupBox1.Controls.Add(this.rbYearsProGreaterThan);
+			this.groupBox1.Controls.Add(this.nudYearsProFilter);
+			this.groupBox1.Controls.Add(this.rbAgeLessThan);
+			this.groupBox1.Controls.Add(this.rbAgeEqualTo);
+			this.groupBox1.Controls.Add(this.rbAgeGreaterThan);
 			this.groupBox1.Controls.Add(this.nudAgeFilter);
 			this.groupBox1.Controls.Add(this.chkAgeFilter);
-			this.groupBox1.Controls.Add(this.chkDraftClassFilter);
+			this.groupBox1.Controls.Add(this.chkYearsProFilter);
 			this.groupBox1.Controls.Add(this.filterPositionComboBox);
 			this.groupBox1.Controls.Add(this.filterTeamComboBox);
 			this.groupBox1.Controls.Add(this.chkPositionFilter);
@@ -139,14 +148,60 @@ namespace MaddenEditor.Forms
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Filter Settings";
 			// 
-			// chkDraftClassFilter
+			// rbAgeLessThan
 			// 
-			this.chkDraftClassFilter.AutoSize = true;
-			this.chkDraftClassFilter.Location = new System.Drawing.Point(16, 121);
-			this.chkDraftClassFilter.Name = "chkDraftClassFilter";
-			this.chkDraftClassFilter.Size = new System.Drawing.Size(73, 17);
-			this.chkDraftClassFilter.TabIndex = 4;
-			this.chkDraftClassFilter.Text = "Draft Class";
+			this.rbAgeLessThan.AutoSize = true;
+			this.rbAgeLessThan.Location = new System.Drawing.Point(169, 87);
+			this.rbAgeLessThan.Name = "rbAgeLessThan";
+			this.rbAgeLessThan.Size = new System.Drawing.Size(27, 17);
+			this.rbAgeLessThan.TabIndex = 9;
+			this.rbAgeLessThan.TabStop = false;
+			this.rbAgeLessThan.Text = "<";
+			// 
+			// rbAgeEqualTo
+			// 
+			this.rbAgeEqualTo.AutoSize = true;
+			this.rbAgeEqualTo.Location = new System.Drawing.Point(202, 87);
+			this.rbAgeEqualTo.Name = "rbAgeEqualTo";
+			this.rbAgeEqualTo.Size = new System.Drawing.Size(27, 17);
+			this.rbAgeEqualTo.TabIndex = 8;
+			this.rbAgeEqualTo.TabStop = false;
+			this.rbAgeEqualTo.Text = "=";
+			// 
+			// rbAgeGreaterThan
+			// 
+			this.rbAgeGreaterThan.AutoSize = true;
+			this.rbAgeGreaterThan.Checked = true;
+			this.rbAgeGreaterThan.Location = new System.Drawing.Point(136, 86);
+			this.rbAgeGreaterThan.Name = "rbAgeGreaterThan";
+			this.rbAgeGreaterThan.Size = new System.Drawing.Size(27, 17);
+			this.rbAgeGreaterThan.TabIndex = 7;
+			this.rbAgeGreaterThan.Text = ">";
+			// 
+			// nudAgeFilter
+			// 
+			this.nudAgeFilter.Location = new System.Drawing.Point(81, 84);
+			this.nudAgeFilter.Name = "nudAgeFilter";
+			this.nudAgeFilter.Size = new System.Drawing.Size(46, 20);
+			this.nudAgeFilter.TabIndex = 6;
+			// 
+			// chkAgeFilter
+			// 
+			this.chkAgeFilter.AutoSize = true;
+			this.chkAgeFilter.Location = new System.Drawing.Point(7, 87);
+			this.chkAgeFilter.Name = "chkAgeFilter";
+			this.chkAgeFilter.Size = new System.Drawing.Size(41, 17);
+			this.chkAgeFilter.TabIndex = 5;
+			this.chkAgeFilter.Text = "Age";
+			// 
+			// chkYearsProFilter
+			// 
+			this.chkYearsProFilter.AutoSize = true;
+			this.chkYearsProFilter.Location = new System.Drawing.Point(7, 121);
+			this.chkYearsProFilter.Name = "chkYearsProFilter";
+			this.chkYearsProFilter.Size = new System.Drawing.Size(68, 17);
+			this.chkYearsProFilter.TabIndex = 4;
+			this.chkYearsProFilter.Text = "Years Pro";
 			// 
 			// filterPositionComboBox
 			// 
@@ -172,7 +227,7 @@ namespace MaddenEditor.Forms
 			// chkPositionFilter
 			// 
 			this.chkPositionFilter.AutoSize = true;
-			this.chkPositionFilter.Location = new System.Drawing.Point(16, 54);
+			this.chkPositionFilter.Location = new System.Drawing.Point(7, 54);
 			this.chkPositionFilter.Name = "chkPositionFilter";
 			this.chkPositionFilter.Size = new System.Drawing.Size(59, 17);
 			this.chkPositionFilter.TabIndex = 2;
@@ -181,7 +236,7 @@ namespace MaddenEditor.Forms
 			// chkTeamFilter
 			// 
 			this.chkTeamFilter.AutoSize = true;
-			this.chkTeamFilter.Location = new System.Drawing.Point(16, 24);
+			this.chkTeamFilter.Location = new System.Drawing.Point(7, 24);
 			this.chkTeamFilter.Name = "chkTeamFilter";
 			this.chkTeamFilter.Size = new System.Drawing.Size(49, 17);
 			this.chkTeamFilter.TabIndex = 0;
@@ -300,51 +355,42 @@ namespace MaddenEditor.Forms
 			this.setCheckBox.TabStop = false;
 			this.setCheckBox.Text = "Set to";
 			// 
-			// chkAgeFilter
+			// rbYearsProLessThan
 			// 
-			this.chkAgeFilter.AutoSize = true;
-			this.chkAgeFilter.Location = new System.Drawing.Point(16, 87);
-			this.chkAgeFilter.Name = "chkAgeFilter";
-			this.chkAgeFilter.Size = new System.Drawing.Size(41, 17);
-			this.chkAgeFilter.TabIndex = 5;
-			this.chkAgeFilter.Text = "Age";
+			this.rbYearsProLessThan.AutoSize = true;
+			this.rbYearsProLessThan.Location = new System.Drawing.Point(169, 120);
+			this.rbYearsProLessThan.Name = "rbYearsProLessThan";
+			this.rbYearsProLessThan.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProLessThan.TabIndex = 13;
+			this.rbYearsProLessThan.TabStop = false;
+			this.rbYearsProLessThan.Text = "<";
 			// 
-			// nudAgeFilter
+			// rbYearsProEqualTo
 			// 
-			this.nudAgeFilter.Location = new System.Drawing.Point(81, 84);
-			this.nudAgeFilter.Name = "nudAgeFilter";
-			this.nudAgeFilter.Size = new System.Drawing.Size(46, 20);
-			this.nudAgeFilter.TabIndex = 6;
+			this.rbYearsProEqualTo.AutoSize = true;
+			this.rbYearsProEqualTo.Location = new System.Drawing.Point(202, 120);
+			this.rbYearsProEqualTo.Name = "rbYearsProEqualTo";
+			this.rbYearsProEqualTo.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProEqualTo.TabIndex = 12;
+			this.rbYearsProEqualTo.TabStop = false;
+			this.rbYearsProEqualTo.Text = "=";
 			// 
-			// rbGreaterThan
+			// rbYearsProGreaterThan
 			// 
-			this.rbGreaterThan.AutoSize = true;
-			this.rbGreaterThan.Checked = true;
-			this.rbGreaterThan.Location = new System.Drawing.Point(136, 86);
-			this.rbGreaterThan.Name = "rbGreaterThan";
-			this.rbGreaterThan.Size = new System.Drawing.Size(27, 17);
-			this.rbGreaterThan.TabIndex = 7;
-			this.rbGreaterThan.Text = ">";
+			this.rbYearsProGreaterThan.AutoSize = true;
+			this.rbYearsProGreaterThan.Checked = true;
+			this.rbYearsProGreaterThan.Location = new System.Drawing.Point(136, 119);
+			this.rbYearsProGreaterThan.Name = "rbYearsProGreaterThan";
+			this.rbYearsProGreaterThan.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProGreaterThan.TabIndex = 11;
+			this.rbYearsProGreaterThan.Text = ">";
 			// 
-			// rbEqualTo
+			// nudYearsProFilter
 			// 
-			this.rbEqualTo.AutoSize = true;
-			this.rbEqualTo.Location = new System.Drawing.Point(202, 87);
-			this.rbEqualTo.Name = "rbEqualTo";
-			this.rbEqualTo.Size = new System.Drawing.Size(27, 17);
-			this.rbEqualTo.TabIndex = 8;
-			this.rbEqualTo.TabStop = false;
-			this.rbEqualTo.Text = "=";
-			// 
-			// rbLessThan
-			// 
-			this.rbLessThan.AutoSize = true;
-			this.rbLessThan.Location = new System.Drawing.Point(169, 87);
-			this.rbLessThan.Name = "rbLessThan";
-			this.rbLessThan.Size = new System.Drawing.Size(27, 17);
-			this.rbLessThan.TabIndex = 9;
-			this.rbLessThan.TabStop = false;
-			this.rbLessThan.Text = "<";
+			this.nudYearsProFilter.Location = new System.Drawing.Point(81, 117);
+			this.nudYearsProFilter.Name = "nudYearsProFilter";
+			this.nudYearsProFilter.Size = new System.Drawing.Size(46, 20);
+			this.nudYearsProFilter.TabIndex = 10;
 			// 
 			// GlobalAttributeForm
 			// 
@@ -364,12 +410,13 @@ namespace MaddenEditor.Forms
 			this.Text = "Global Player Attribute Editor Form";
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).EndInit();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.incrementNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.decrementNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.setNumeric)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -395,11 +442,15 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown incrementNumeric;
 		private System.Windows.Forms.NumericUpDown decrementNumeric;
 		private System.Windows.Forms.NumericUpDown setNumeric;
-		private System.Windows.Forms.CheckBox chkDraftClassFilter;
+		private System.Windows.Forms.CheckBox chkYearsProFilter;
 		private System.Windows.Forms.CheckBox chkAgeFilter;
-		private System.Windows.Forms.RadioButton rbLessThan;
-		private System.Windows.Forms.RadioButton rbEqualTo;
-		private System.Windows.Forms.RadioButton rbGreaterThan;
+		private System.Windows.Forms.RadioButton rbAgeLessThan;
+		private System.Windows.Forms.RadioButton rbAgeEqualTo;
+		private System.Windows.Forms.RadioButton rbAgeGreaterThan;
 		private System.Windows.Forms.NumericUpDown nudAgeFilter;
+		private System.Windows.Forms.RadioButton rbYearsProLessThan;
+		private System.Windows.Forms.RadioButton rbYearsProEqualTo;
+		private System.Windows.Forms.RadioButton rbYearsProGreaterThan;
+		private System.Windows.Forms.NumericUpDown nudYearsProFilter;
 	}
 }

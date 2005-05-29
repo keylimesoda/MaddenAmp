@@ -155,6 +155,9 @@ namespace MaddenEditor.Forms
 
 				teamReputation.Value = record.Reputation;
 
+				rbWhite.Checked = (record.ShoeColor == 0);
+				rbBlack.Checked = (record.ShoeColor == 1);
+
 				foreach (Object obj in divisionCombo.Items)
 				{
 					if (((GenericRecord)obj).Id == record.DivisionId)
@@ -489,6 +492,22 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.TeamModel.CurrentTeamRecord.Reputation = (int)teamReputation.Value;
+			}
+		}
+
+		private void rbWhite_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.ShoeColor = (rbWhite.Checked == true ? 0 : 1);
+			}
+		}
+
+		private void rbBlack_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.ShoeColor = (rbBlack.Checked == true ? 1 : 0);
 			}
 		}
 
