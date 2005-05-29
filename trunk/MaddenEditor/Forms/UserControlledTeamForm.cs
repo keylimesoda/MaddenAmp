@@ -140,6 +140,24 @@ namespace MaddenEditor.Forms
 				record.ComputerControl5 = false;
 				record.ComputerControl6 = false;
 				record.ComputerControl7 = false;
+				//Need to also change the schedule records for the games for this team
+				foreach (TableRecordModel rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+				{
+					try
+					{
+						if (((ScheduleRecord)rec).AwayTeam.TeamId == record.TeamId || ((ScheduleRecord)rec).HomeTeam.TeamId == record.TeamId)
+						{
+							//Then set this game to user controlled
+							((ScheduleRecord)rec).HumanControlled = true;
+						}
+					}
+					catch (NullReferenceException err)
+					{
+						//A null reference exception happens when its trying to find teams that don't
+						//exist on the schedule, its ok
+						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
+					}
+				}
 			}
 
 			DialogResult = DialogResult.OK;
@@ -163,6 +181,25 @@ namespace MaddenEditor.Forms
 				rec.ComputerControl5 = true;
 				rec.ComputerControl6 = true;
 				rec.ComputerControl7 = true;
+
+				//Need to also change the schedule records for the games for this team
+				foreach (TableRecordModel record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+				{
+					try
+					{
+						if (((ScheduleRecord)record).AwayTeam.TeamId == rec.TeamId || ((ScheduleRecord)record).HomeTeam.TeamId == rec.TeamId)
+						{
+							//Then set this game to user controlled
+							((ScheduleRecord)record).HumanControlled = false;
+						}
+					}
+					catch (NullReferenceException err)
+					{
+						//A null reference exception happens when its trying to find teams that don't
+						//exist on the schedule, its ok
+						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
+					}
+				}
 			}
 
 			foreach (object obj in removeList)

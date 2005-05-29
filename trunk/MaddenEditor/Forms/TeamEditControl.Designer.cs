@@ -83,6 +83,9 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.rbWhite = new System.Windows.Forms.RadioButton();
+			this.rbBlack = new System.Windows.Forms.RadioButton();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -99,6 +102,7 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.teamWRRating)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamRBRating)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamQBRating)).BeginInit();
+			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -131,6 +135,7 @@ namespace MaddenEditor.Forms
 			// 
 			// splitContainer1.Panel2
 			// 
+			this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
 			this.splitContainer1.Panel2.Controls.Add(this.teamOverallRating);
 			this.splitContainer1.Panel2.Controls.Add(this.label26);
 			this.splitContainer1.Panel2.Controls.Add(this.teamReputation);
@@ -726,6 +731,37 @@ namespace MaddenEditor.Forms
 			this.label10.TabIndex = 0;
 			this.label10.Text = "QB Rating";
 			// 
+			// groupBox2
+			// 
+			this.groupBox2.Controls.Add(this.rbBlack);
+			this.groupBox2.Controls.Add(this.rbWhite);
+			this.groupBox2.Location = new System.Drawing.Point(44, 295);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(122, 49);
+			this.groupBox2.TabIndex = 28;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Team Shoe Color";
+			// 
+			// rbWhite
+			// 
+			this.rbWhite.AutoSize = true;
+			this.rbWhite.Location = new System.Drawing.Point(6, 19);
+			this.rbWhite.Name = "rbWhite";
+			this.rbWhite.Size = new System.Drawing.Size(49, 17);
+			this.rbWhite.TabIndex = 0;
+			this.rbWhite.Text = "White";
+			this.rbWhite.CheckedChanged += new System.EventHandler(this.rbWhite_CheckedChanged);
+			// 
+			// rbBlack
+			// 
+			this.rbBlack.AutoSize = true;
+			this.rbBlack.Location = new System.Drawing.Point(61, 19);
+			this.rbBlack.Name = "rbBlack";
+			this.rbBlack.Size = new System.Drawing.Size(48, 17);
+			this.rbBlack.TabIndex = 1;
+			this.rbBlack.Text = "Black";
+			this.rbBlack.CheckedChanged += new System.EventHandler(this.rbBlack_CheckedChanged);
+			// 
 			// TeamEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -752,6 +788,8 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.teamWRRating)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamRBRating)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamQBRating)).EndInit();
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -813,5 +851,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.CheckBox filterLeagueCheckBox;
 		private System.Windows.Forms.CheckBox filterDivisionCheckBox;
 		private System.Windows.Forms.CheckBox filterConferenceCheckBox;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.RadioButton rbBlack;
+		private System.Windows.Forms.RadioButton rbWhite;
 	}
 }

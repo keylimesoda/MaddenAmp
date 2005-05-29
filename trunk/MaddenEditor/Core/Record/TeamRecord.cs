@@ -64,6 +64,8 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_SOMETHING = "TDRI";
 		public const string TEAM_TYPE = "TTYP";
 
+		public const string TEAM_SHOE_COLOR = "TSHO";
+
 		public TeamRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
@@ -361,6 +363,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(DEFENSIVE_PLAYBOOK, value);
+			}
+		}
+
+		public int ShoeColor
+		{
+			get
+			{
+				return GetIntField(TEAM_SHOE_COLOR);
+			}
+			set
+			{
+				SetField(TEAM_SHOE_COLOR, value);
 			}
 		}
 	}

@@ -88,3 +88,27 @@ write TORD 1
 flush
 
 Thanks.
+
+ere are the tables and fields for the Stadium and the Ticketprices.
+
+Stadium:
+table "STAD"
+"SGID" Stadium ID
+"SCAP" Capacity Maximum
+"SCCS" Capacity Club Seat
+"SCLB" Capacity Luxury Box
+"SCLL" Capacity Lower Level
+"SCML" Capacity Mid Level
+"SCUE" Capacity Upper Endzone
+"SCUL" Capacity Upper Level
+
+Prices:
+table "OTGO"
+"OWGT" Seat Location (0 = Upper Level, 1 = Upper Endzone, 2 = Mid Level, 
+3 = Lower Level, 4 = Club Seats, 5 = Luxury Boxes)
+"OWGP" Price
+
+I noticed, there are no rivals for the costumteam. Here the fields.
+
+table "TEAM"
+"TRV1, TRV2, TRV3". Insert the TGID from the rivals.

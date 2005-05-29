@@ -28,6 +28,7 @@ namespace MaddenEditor.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScheduleEditingForm));
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.gbWeekNav = new System.Windows.Forms.GroupBox();
@@ -120,6 +121,9 @@ namespace MaddenEditor.Forms
 			this.dgScheduleView.AllowUserToAddRows = false;
 			this.dgScheduleView.AllowUserToDeleteRows = false;
 			this.dgScheduleView.AllowUserToResizeRows = false;
+			dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
+			dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			this.dgScheduleView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
 			this.dgScheduleView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -138,6 +142,7 @@ namespace MaddenEditor.Forms
 			this.dgScheduleView.Size = new System.Drawing.Size(610, 491);
 			this.dgScheduleView.TabIndex = 1;
 			this.dgScheduleView.Text = "dataGridView1";
+			this.dgScheduleView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgScheduleView_CellEndEdit);
 			// 
 			// dataGridViewComboBoxColumn1
 			// 

@@ -137,11 +137,52 @@ namespace MaddenEditor.Forms
 						continue;
 					}
 				}
-				if (chkDraftClassFilter.Checked)
+				if (chkAgeFilter.Checked)
 				{
-					if (playerRecord.YearsPro != 0)
+					if (rbAgeGreaterThan.Checked)
 					{
-						continue;
+						if (playerRecord.Age <= (int)nudAgeFilter.Value)
+						{
+							continue;
+						}
+					}
+					else if (rbAgeLessThan.Checked)
+					{
+						if (playerRecord.Age >= (int)nudAgeFilter.Value)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						if (playerRecord.Age != (int)nudAgeFilter.Value)
+						{
+							continue;
+						}
+					}
+				}
+				if (chkYearsProFilter.Checked)
+				{
+					if (rbYearsProGreaterThan.Checked)
+					{
+						if (playerRecord.YearsPro <= (int)nudYearsProFilter.Value)
+						{
+							continue;
+						}
+					}
+					else if (rbYearsProLessThan.Checked)
+					{
+						if (playerRecord.YearsPro >= (int)nudYearsProFilter.Value)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						if (playerRecord.YearsPro != (int)nudYearsProFilter.Value)
+						{
+							continue;
+						}
 					}
 				}
 

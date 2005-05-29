@@ -93,21 +93,28 @@ namespace MaddenEditor.Forms
 		private void ScheduleEditingForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			//Dispose of our schedule model
+			CleanUI();
 			scheduleModel = null;
 		}
 
 		public DataGridViewRow CreateDataGridRow(ScheduleRecord record)
 		{
+			//Bloody hell. I can't see how to put actual objects in the
+			//datagridviewcomboboxcells so I'm just putting strings.
+			//It sucks but I'll fix it later if I find out how
 			DataGridViewRow viewRow = new DataGridViewRow();
 
 			DataGridViewComboBoxCell stateCell = new DataGridViewComboBoxCell();
-			stateCell.DataSource = record.GameStates;
-			stateCell.Value = record.State;
+			foreach(GenericRecord val in record.GameStates)
+			{
+				stateCell.Items.Add(val.ToString());
+			}
+			stateCell.Value = record.State.ToString();
 
 			DataGridViewComboBoxCell homeCell = new DataGridViewComboBoxCell();
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				homeCell.Items.Add(rec);
+				homeCell.Items.Add(rec.ToString());
 			}
 			homeCell.Value = record.HomeTeam;
 
@@ -117,7 +124,7 @@ namespace MaddenEditor.Forms
 			DataGridViewComboBoxCell awayCell = new DataGridViewComboBoxCell();
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				awayCell.Items.Add(rec);
+				awayCell.Items.Add(rec.ToString());
 			}
 			awayCell.Value = record.AwayTeam;
 
@@ -128,11 +135,17 @@ namespace MaddenEditor.Forms
 			overtimeCell.Value = record.OverTime;
 
 			DataGridViewComboBoxCell dayTypeCell = new DataGridViewComboBoxCell();
-			dayTypeCell.DataSource = record.GameDayTypes;
+			foreach (GenericRecord val in record.GameDayTypes)
+			{
+				dayTypeCell.Items.Add(val.ToString());
+			}
 			dayTypeCell.Value = record.DayType;
 
 			DataGridViewComboBoxCell weightingCell = new DataGridViewComboBoxCell();
-			weightingCell.DataSource = record.GameWeightings;
+			foreach (GenericRecord val in record.GameWeightings)
+			{
+				weightingCell.Items.Add(val.ToString());
+			}
 			weightingCell.Value = record.Weighting;
 			
 			viewRow.Cells.Add(stateCell);
@@ -152,6 +165,7 @@ namespace MaddenEditor.Forms
 			if (currentWeekNumber > 1)
 			{
 				currentWeekNumber--;
+				cbWeekSelector.SelectedIndex = currentWeekNumber;
 				LoadWeek(currentWeekNumber);
 			}
 		}
@@ -161,6 +175,7 @@ namespace MaddenEditor.Forms
 			if (currentWeekNumber < ScheduleEditingModel.NUMBER_OF_WEEKS)
 			{
 				currentWeekNumber++;
+				cbWeekSelector.SelectedIndex = currentWeekNumber;
 				LoadWeek(currentWeekNumber);
 			}
 		}
@@ -168,6 +183,66 @@ namespace MaddenEditor.Forms
 		private void cbWeekSelector_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			LoadWeek(cbWeekSelector.SelectedIndex + 1);
+		}
+
+		private void dgScheduleView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		{
+			if (!isInitialising)
+			{
+				switch (e.ColumnIndex)
+				{
+					case 0: // Game state
+						foreach (GenericRecord rec in ScheduleRecord.gameStateList)
+						{
+							if (rec.ToString().Equals(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()))
+							{
+								//Found the rec 
+								scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].State = rec;
+								break;
+							}
+						}
+						break;
+					case 1: // Home Team
+						scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].HomeTeam = model.TeamModel.GetTeamRecord(model.TeamModel.GetTeamIdFromTeamName(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()));
+						break;
+					case 2: // Home Team Score
+						scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].HomeTeamScore = Convert.ToInt32(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+						break;
+					case 3: // Away Team
+						scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].AwayTeam = model.TeamModel.GetTeamRecord(model.TeamModel.GetTeamIdFromTeamName(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()));
+						break;
+					case 4: // Away Team Score
+						scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].AwayTeamScore = Convert.ToInt32(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+						break;
+					case 5: // Overtime
+						scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].OverTime = Convert.ToBoolean(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+						break;
+					case 6: // Day
+						foreach (GenericRecord rec in ScheduleRecord.gameDayTypeList)
+						{
+							if (rec.ToString().Equals(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()))
+							{
+								//Found the rec
+								scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].DayType = rec;
+								break;
+							}
+						}
+						break;
+					case 7: // Weighting
+						foreach (GenericRecord rec in ScheduleRecord.gameWeightings)
+						{
+							if (rec.ToString().Equals(dgScheduleView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()))
+							{
+								//Found the rec
+								scheduleModel.GetWeek(currentWeekNumber)[e.RowIndex].Weighting = rec;
+								break;
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
 		}
 	}
 }
