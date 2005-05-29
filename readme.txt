@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-i                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.2.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.5.0
 
-                                   19th May 2005
+                                   29th May 2005
 
                                     readme.txt
 
@@ -40,19 +40,19 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
-* (NEW) Added better exception handling if player,coach or team is loaded with unexpected values
+* (NEW) Regular season schedule editing. (Will add postseason later)
 
-* (NEW) Installer does a primitive check to ensure correct .net framework is installed
+* (NEW) Added additional filters to Global player editor
 
-* (NEW) Team editing
+* Team editing
 
-* (NEW) Export to CSV for players
+* Export to CSV for players
 
-* (NEW) Moved Depth Chart to Tools Menu
+* Moved Depth Chart to Tools Menu
 
-* (NEW) Fixed salary cap editing (It takes effect now, however there is still a salary cap bug when editing player salaries)
+* Fixed salary cap editing (It takes effect now, however there is still a salary cap bug when editing player salaries)
 
-* (NEW) Set User Controlled Teams in Franchise
+*  Set User Controlled Teams in Franchise
 
 *  Thanks to zentrarium we now have the ability to set team Captains!!! Available in the
         Franchise menu option when loading a franchise file.
@@ -163,8 +163,6 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 * Remove Cap Penalty ability
 
 * Complete all attribute editing of players and coaches
-
-* Add Team editing
 
 * Create Player function 
 
