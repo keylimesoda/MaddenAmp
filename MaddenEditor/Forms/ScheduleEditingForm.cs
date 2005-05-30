@@ -165,7 +165,7 @@ namespace MaddenEditor.Forms
 			if (currentWeekNumber > 1)
 			{
 				currentWeekNumber--;
-				cbWeekSelector.SelectedIndex = currentWeekNumber;
+				cbWeekSelector.SelectedIndex = currentWeekNumber - 1;
 				LoadWeek(currentWeekNumber);
 			}
 		}
@@ -175,7 +175,7 @@ namespace MaddenEditor.Forms
 			if (currentWeekNumber < ScheduleEditingModel.NUMBER_OF_WEEKS)
 			{
 				currentWeekNumber++;
-				cbWeekSelector.SelectedIndex = currentWeekNumber;
+				cbWeekSelector.SelectedIndex = currentWeekNumber - 1;
 				LoadWeek(currentWeekNumber);
 			}
 		}
