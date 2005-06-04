@@ -66,7 +66,8 @@ namespace MaddenEditor.Core.Record
 		public const string KNOWLEDGE = "CKNW";
 		public const string MOTIVATION = "CMOT";
 		public const string CHEMISTRY = "CCHM";
-		
+
+		public const string USER_CONTROLLED = "CFUC";
 
 		public CoachRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
@@ -474,6 +475,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(DEF_AGGR, value);
+			}
+		}
+
+		public bool HumanControlled
+		{
+			get
+			{
+				return (GetIntField(USER_CONTROLLED) == 1);
+			}
+			set
+			{
+				SetField(USER_CONTROLLED, Convert.ToInt32(value));
 			}
 		}
 	}
