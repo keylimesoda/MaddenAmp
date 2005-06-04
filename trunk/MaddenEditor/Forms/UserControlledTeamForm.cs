@@ -158,6 +158,15 @@ namespace MaddenEditor.Forms
 						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
 					}
 				}
+				//Also need to find the User controlled bit in the Head coaches record for this team
+				foreach (TableRecordModel rec in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+				{
+					CoachRecord crec = (CoachRecord)rec;
+					if (crec.TeamId == record.TeamId && crec.Position == 0) // Position 0 is Head coach
+					{
+						crec.HumanControlled = true;
+					}
+				}
 			}
 
 			DialogResult = DialogResult.OK;
@@ -198,6 +207,15 @@ namespace MaddenEditor.Forms
 						//A null reference exception happens when its trying to find teams that don't
 						//exist on the schedule, its ok
 						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
+					}
+				}
+				//Also need to find the User controlled bit in the Head coaches record for this team
+				foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+				{
+					CoachRecord crec = (CoachRecord)record;
+					if (crec.TeamId == rec.TeamId && crec.Position == 0) // Position 0 is Head coach
+					{
+						crec.HumanControlled = false;
 					}
 				}
 			}
