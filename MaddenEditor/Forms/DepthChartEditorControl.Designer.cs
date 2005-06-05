@@ -29,11 +29,11 @@ namespace MaddenEditor.Forms
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DepthChartEditorControl));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.positionCombo = new System.Windows.Forms.ComboBox();
 			this.teamCombo = new System.Windows.Forms.ComboBox();
@@ -55,6 +55,7 @@ namespace MaddenEditor.Forms
 			this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.applyButton = new System.Windows.Forms.Button();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -80,6 +81,7 @@ namespace MaddenEditor.Forms
 			// 
 			// splitContainer.Panel2
 			// 
+			this.splitContainer.Panel2.Controls.Add(this.applyButton);
 			this.splitContainer.Panel2.Controls.Add(this.eraseButton);
 			this.splitContainer.Panel2.Controls.Add(this.transferButton);
 			this.splitContainer.Panel2.Controls.Add(this.depthOrderDownButton);
@@ -181,23 +183,23 @@ namespace MaddenEditor.Forms
 			this.availablePlayerDatagrid.AllowUserToDeleteRows = false;
 			this.availablePlayerDatagrid.AllowUserToResizeColumns = false;
 			this.availablePlayerDatagrid.AllowUserToResizeRows = false;
-			dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
-			dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
-			this.availablePlayerDatagrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle6.BackColor = System.Drawing.Color.WhiteSmoke;
+			dataGridViewCellStyle6.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			this.availablePlayerDatagrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
 			this.availablePlayerDatagrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.availablePlayerDatagrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			this.availablePlayerDatagrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle2.FormatProvider = new System.Globalization.CultureInfo("en-AU");
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.availablePlayerDatagrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle7.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.availablePlayerDatagrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
 			this.availablePlayerDatagrid.Columns.Add(this.dataGridViewTextBoxColumn4);
 			this.availablePlayerDatagrid.Columns.Add(this.dataGridViewTextBoxColumn5);
 			this.availablePlayerDatagrid.Columns.Add(this.dataGridViewTextBoxColumn6);
@@ -207,7 +209,7 @@ namespace MaddenEditor.Forms
 			this.availablePlayerDatagrid.Name = "availablePlayerDatagrid";
 			this.availablePlayerDatagrid.ReadOnly = true;
 			this.availablePlayerDatagrid.RowHeadersVisible = false;
-			this.availablePlayerDatagrid.Size = new System.Drawing.Size(508, 248);
+			this.availablePlayerDatagrid.Size = new System.Drawing.Size(508, 227);
 			this.availablePlayerDatagrid.TabIndex = 2;
 			this.availablePlayerDatagrid.Text = "dataGridView2";
 			this.availablePlayerDatagrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.availablePlayerDatagrid_CellMouseUp);
@@ -262,37 +264,37 @@ namespace MaddenEditor.Forms
 			this.depthChartDataGrid.AllowUserToDeleteRows = false;
 			this.depthChartDataGrid.AllowUserToResizeColumns = false;
 			this.depthChartDataGrid.AllowUserToResizeRows = false;
-			dataGridViewCellStyle3.BackColor = System.Drawing.Color.WhiteSmoke;
-			dataGridViewCellStyle3.FormatProvider = new System.Globalization.CultureInfo("en-AU");
-			this.depthChartDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle8.BackColor = System.Drawing.Color.WhiteSmoke;
+			dataGridViewCellStyle8.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			this.depthChartDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
 			this.depthChartDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.depthChartDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			this.depthChartDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle4.FormatProvider = new System.Globalization.CultureInfo("en-AU");
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.depthChartDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle9.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.depthChartDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
 			this.depthChartDataGrid.Columns.Add(this.dataGridViewTextBoxColumn1);
 			this.depthChartDataGrid.Columns.Add(this.dataGridViewTextBoxColumn2);
 			this.depthChartDataGrid.Columns.Add(this.dataGridViewTextBoxColumn3);
 			this.depthChartDataGrid.Columns.Add(this.dataGridViewTextBoxColumn8);
 			this.depthChartDataGrid.Columns.Add(this.dataGridViewTextBoxColumn9);
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle5.FormatProvider = new System.Globalization.CultureInfo("en-AU");
-			dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(1);
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle10.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			dataGridViewCellStyle10.Padding = new System.Windows.Forms.Padding(1);
+			dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle10;
 			this.depthChartDataGrid.Location = new System.Drawing.Point(41, 37);
 			this.depthChartDataGrid.MultiSelect = false;
 			this.depthChartDataGrid.Name = "depthChartDataGrid";
@@ -347,6 +349,16 @@ namespace MaddenEditor.Forms
 			this.dataGridViewTextBoxColumn9.ReadOnly = true;
 			this.dataGridViewTextBoxColumn9.Visible = false;
 			// 
+			// applyButton
+			// 
+			this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.applyButton.Location = new System.Drawing.Point(436, 454);
+			this.applyButton.Name = "applyButton";
+			this.applyButton.Size = new System.Drawing.Size(75, 23);
+			this.applyButton.TabIndex = 9;
+			this.applyButton.Text = "Apply";
+			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+			// 
 			// DepthChartEditorControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -388,5 +400,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
 		private System.Windows.Forms.Button transferButton;
 		private System.Windows.Forms.Button eraseButton;
+		private System.Windows.Forms.Button applyButton;
 	}
 }

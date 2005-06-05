@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.5.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.6.0
 
-                                   29th May 2005
+                                   5th June 2005
 
                                     readme.txt
 
@@ -40,9 +40,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
-* (NEW) Regular season schedule editing. (Will add postseason later)
+* Regular season schedule editing. (Will add postseason later)
 
-* (NEW) Added additional filters to Global player editor
+* Added additional filters to Global player editor
 
 * Team editing
 
@@ -103,6 +103,11 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. FIXED ISSUES
 ===============
+* Fixed loading of 2004 franchise files (though team captains and changing user controlled
+                                         teams are not available )
+
+* Fixed changing user controlled teams not taking immediate effect
+
 * Fixed absence of NFL Europe league
 
 * Fixed issue where Team Combobox stayed disabled in Coach editing screen
@@ -115,7 +120,6 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 5. KNOWN ISSUES
 ===============
-* Issue with loading Madden 2004 franchise files
 
 * Editing players salary doesnt seem to edit teams total salary correctly in franchise mode
 
@@ -159,6 +163,8 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 
 7. FUTURE PLANS
 ===============
+
+* More user friendly GUI with dialog position remembering etc..
 
 * Remove Cap Penalty ability
 

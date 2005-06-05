@@ -40,6 +40,12 @@ namespace MaddenEditor.Core
 		FranchiseFile 
 	}
 
+	public enum MaddenFileVersion
+	{
+		Ver2004,
+		Ver2005
+	}
+
 	/// <summary>
 	/// Enumeration to describe the positions in the Madden game. The order of these is
 	/// important as they match up with the position ID's in the database
@@ -96,6 +102,7 @@ namespace MaddenEditor.Core
 		private MainForm view = null;
 		private Dictionary<string, TableModel> tableModels = null;
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
+		private MaddenFileVersion fileVersion = MaddenFileVersion.Ver2005; //Assume 2005
 		private Dictionary<string, int> tableOrder = null;
 		
 		// Editing model objects
@@ -150,6 +157,16 @@ namespace MaddenEditor.Core
 			get
 			{
 				return fileType;
+			}
+		}
+		/// <summary>
+		/// The Enumerated FileVersion that is currently loaded
+		/// </summary>
+		public MaddenFileVersion FileVersion
+		{
+			get
+			{
+				return fileVersion;
 			}
 		}
 		/// <summary>
@@ -285,18 +302,26 @@ namespace MaddenEditor.Core
 				Console.WriteLine(e.ToString());
 			}
 
-			foreach (int tableNumber in tableOrder.Values)
+			foreach (KeyValuePair<string, int> pair in tableOrder)
 			{
-				if (tableNumber == -1)
+				if (pair.Value == -1)
 				{
+					//This could simply mean we have hit a table 
+					//that doesnt exist in a madden 2004 database
+					if (pair.Key.Equals(TEAM_CAPTAIN_TABLE))
+					{
+						//This is ok but mark our file as a Madden2004 database
+						fileVersion = MaddenFileVersion.Ver2004;
+						continue;
+					}
 					//Something is wrong, we expected to have found a table
 					//for this table but we didnt find one, so die
 					result = false;
 					break;
 				}
-				result &= ProcessTable(tableNumber);
+				result &= ProcessTable(pair.Value);
 			}
-
+						
 			return result;
 		}
 		/// <summary>
