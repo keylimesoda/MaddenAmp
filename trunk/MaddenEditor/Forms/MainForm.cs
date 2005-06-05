@@ -44,7 +44,6 @@ namespace MaddenEditor.Forms
 		private const string TITLE_STRING = "Madden Editor 2005";
 		private EditorModel model = null;	
 		private string filePathToLoad;
-		public string fileToLoad;
 		private bool isInitialising = false;
 		
 		private SearchForm searchPlayerForm = null;
@@ -182,8 +181,8 @@ namespace MaddenEditor.Forms
 
 		private void InitialiseUI()
 		{
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "  - " + System.IO.Path.GetFileName(filePathToLoad);
+						
 			playerEditControl.InitialiseUI();
 			coachEditControl.InitialiseUI();
 			teamEditControl.InitialiseUI();
@@ -198,6 +197,18 @@ namespace MaddenEditor.Forms
 			if (model.FileType == MaddenFileType.FranchiseFile)
 			{
 				franchiseToolStripMenuItem.Visible = true;
+				if (model.FileVersion == MaddenFileVersion.Ver2004)
+				{
+					//2004 version don't support Team Captain editing
+					setTeamCaptainsToolStripMenuItem.Enabled = false;
+					//2004 version has issues at the moment with changing user controlled teams
+					setUserControlledTeamsToolStripMenuItem.Enabled = false;
+				}
+				else
+				{
+					setTeamCaptainsToolStripMenuItem.Enabled = true;
+					setUserControlledTeamsToolStripMenuItem.Enabled = true;
+				}
 			}
 
 			this.Cursor = Cursors.Default;

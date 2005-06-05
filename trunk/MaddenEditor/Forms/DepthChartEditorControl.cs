@@ -395,5 +395,10 @@ namespace MaddenEditor.Forms
 				}
 			}
 		}
+
+		private void applyButton_Click(object sender, EventArgs e)
+		{
+			this.ParentForm.Close();
+		}
 	}
 }

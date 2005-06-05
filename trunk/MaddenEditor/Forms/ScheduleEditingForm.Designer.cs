@@ -45,6 +45,7 @@ namespace MaddenEditor.Forms
 			this.dataGridViewComboBoxColumn4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.dataGridViewComboBoxColumn5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.lblTitle = new System.Windows.Forms.Label();
+			this.applyButton = new System.Windows.Forms.Button();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -65,6 +66,7 @@ namespace MaddenEditor.Forms
 			// 
 			// splitContainer.Panel2
 			// 
+			this.splitContainer.Panel2.Controls.Add(this.applyButton);
 			this.splitContainer.Panel2.Controls.Add(this.dgScheduleView);
 			this.splitContainer.Panel2.Controls.Add(this.lblTitle);
 			this.splitContainer.Size = new System.Drawing.Size(792, 540);
@@ -139,7 +141,7 @@ namespace MaddenEditor.Forms
 			this.dgScheduleView.Location = new System.Drawing.Point(3, 44);
 			this.dgScheduleView.Name = "dgScheduleView";
 			this.dgScheduleView.RowHeadersVisible = false;
-			this.dgScheduleView.Size = new System.Drawing.Size(610, 491);
+			this.dgScheduleView.Size = new System.Drawing.Size(610, 466);
 			this.dgScheduleView.TabIndex = 1;
 			this.dgScheduleView.Text = "dataGridView1";
 			this.dgScheduleView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgScheduleView_CellEndEdit);
@@ -200,6 +202,16 @@ namespace MaddenEditor.Forms
 			this.lblTitle.TabIndex = 0;
 			this.lblTitle.Text = "Week 1";
 			// 
+			// applyButton
+			// 
+			this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.applyButton.Location = new System.Drawing.Point(538, 512);
+			this.applyButton.Name = "applyButton";
+			this.applyButton.Size = new System.Drawing.Size(75, 23);
+			this.applyButton.TabIndex = 2;
+			this.applyButton.Text = "Apply";
+			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+			// 
 			// ScheduleEditingForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -237,5 +249,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn4;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn5;
+		private System.Windows.Forms.Button applyButton;
 	}
 }

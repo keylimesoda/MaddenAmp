@@ -48,6 +48,7 @@ namespace MaddenEditor.Forms
 			this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +64,6 @@ namespace MaddenEditor.Forms
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -202,6 +202,10 @@ namespace MaddenEditor.Forms
 			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps ...";
 			this.editSalaryCapsToolStripMenuItem.Click += new System.EventHandler(this.editSalaryCapsToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			// 
 			// setTeamCaptainsToolStripMenuItem
 			// 
 			this.setTeamCaptainsToolStripMenuItem.Name = "setTeamCaptainsToolStripMenuItem";
@@ -319,10 +323,6 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.WorkerSupportsCancellation = true;
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
-			// 
-			// toolStripSeparator5
-			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			// 
 			// MainForm
 			// 
