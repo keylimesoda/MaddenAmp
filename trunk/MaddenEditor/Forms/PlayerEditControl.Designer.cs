@@ -269,6 +269,10 @@ namespace MaddenEditor.Forms
 			this.playerSigningBonusYear0 = new System.Windows.Forms.TextBox();
 			this.label98 = new System.Windows.Forms.Label();
 			this.label97 = new System.Windows.Forms.Label();
+			this.playerDraftRound = new System.Windows.Forms.NumericUpDown();
+			this.playerDraftRoundIndex = new System.Windows.Forms.NumericUpDown();
+			this.label106 = new System.Windows.Forms.Label();
+			this.label107 = new System.Windows.Forms.Label();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -337,6 +341,8 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRound)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRoundIndex)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// playerSplitContainer
@@ -970,6 +976,10 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRatingPage
 			// 
+			this.playerRatingPage.Controls.Add(this.label107);
+			this.playerRatingPage.Controls.Add(this.label106);
+			this.playerRatingPage.Controls.Add(this.playerDraftRoundIndex);
+			this.playerRatingPage.Controls.Add(this.playerDraftRound);
 			this.playerRatingPage.Controls.Add(this.groupBox4);
 			this.playerRatingPage.Controls.Add(this.playerProBowl);
 			this.playerRatingPage.Controls.Add(this.calculateOverallButton);
@@ -3644,6 +3654,60 @@ namespace MaddenEditor.Forms
 			this.label97.TabIndex = 0;
 			this.label97.Text = "Signing Bonus";
 			// 
+			// playerDraftRound
+			// 
+			this.playerDraftRound.Location = new System.Drawing.Point(466, 198);
+			this.playerDraftRound.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+			this.playerDraftRound.Name = "playerDraftRound";
+			this.playerDraftRound.Size = new System.Drawing.Size(55, 20);
+			this.playerDraftRound.TabIndex = 71;
+			this.playerDraftRound.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.playerDraftRound.ValueChanged += new System.EventHandler(this.playerDraftRound_ValueChanged);
+			// 
+			// playerDraftRoundIndex
+			// 
+			this.playerDraftRoundIndex.Location = new System.Drawing.Point(466, 229);
+			this.playerDraftRoundIndex.Maximum = new decimal(new int[] {
+            33,
+            0,
+            0,
+            0});
+			this.playerDraftRoundIndex.Name = "playerDraftRoundIndex";
+			this.playerDraftRoundIndex.Size = new System.Drawing.Size(55, 20);
+			this.playerDraftRoundIndex.TabIndex = 72;
+			this.playerDraftRoundIndex.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.playerDraftRoundIndex.ValueChanged += new System.EventHandler(this.playerDraftRoundIndex_ValueChanged);
+			// 
+			// label106
+			// 
+			this.label106.AutoSize = true;
+			this.label106.Location = new System.Drawing.Point(399, 202);
+			this.label106.Name = "label106";
+			this.label106.Size = new System.Drawing.Size(61, 13);
+			this.label106.TabIndex = 73;
+			this.label106.Text = "Draft Round";
+			// 
+			// label107
+			// 
+			this.label107.AutoSize = true;
+			this.label107.Location = new System.Drawing.Point(370, 232);
+			this.label107.Name = "label107";
+			this.label107.Size = new System.Drawing.Size(90, 13);
+			this.label107.TabIndex = 74;
+			this.label107.Text = "Draft Round Index";
+			// 
 			// PlayerEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3727,6 +3791,8 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRound)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRoundIndex)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -3974,5 +4040,9 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label108;
 		private System.Windows.Forms.TextBox playerCapHit;
 		private System.Windows.Forms.Label label109;
+		private System.Windows.Forms.NumericUpDown playerDraftRoundIndex;
+		private System.Windows.Forms.NumericUpDown playerDraftRound;
+		private System.Windows.Forms.Label label107;
+		private System.Windows.Forms.Label label106;
 	}
 }
