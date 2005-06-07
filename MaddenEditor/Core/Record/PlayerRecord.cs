@@ -122,6 +122,8 @@ namespace MaddenEditor.Core.Record
 		public const string RIGHT_WRIST_A = "PRWR";
 		public const string RIGHT_WRIST_B = "TRWR";
 		public const string NASAL_STRIP = "PBRE";
+		public const string LEFT_TATTOO = "PTAL";
+		public const string RIGHT_TATTOO = "PTAR";
 
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
@@ -1144,6 +1146,30 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(NASAL_STRIP, value);
+			}
+		}
+
+		public int LeftTattoo
+		{
+			get
+			{
+				return GetIntField(LEFT_TATTOO);
+			}
+			set
+			{
+				SetField(LEFT_TATTOO, value);
+			}
+		}
+
+		public int RightTattoo
+		{
+			get
+			{
+				return GetIntField(RIGHT_TATTOO);
+			}
+			set
+			{
+				SetField(RIGHT_TATTOO, value);
 			}
 		}
 
