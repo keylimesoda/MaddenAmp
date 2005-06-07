@@ -35,6 +35,15 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_ID = "TGID";
 		public const string REPUTATION = "TREP";
 
+		//Colours
+		public const string SECONDARY_BLUE = "TB2B";
+		public const string PRIMARY_BLUE = "TBCB";
+		public const string SECONDARY_GREEN = "TB2G";
+		public const string PRIMARY_GREEN = "TBCG";
+		public const string SECONDARY_RED = "TB2R";
+		public const string PRIMARY_RED = "TBCR";
+		public const string CUSTOM_ART_FILE = "CART";
+
 		public const string CITY_ID = "CYID";
 		public const string CONFERENCE_ID = "CGID";
 		public const string DIVISION_ID = "DGID";
