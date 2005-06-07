@@ -122,6 +122,9 @@ namespace MaddenEditor.Forms
 				playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
 				playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
 
+				playerDraftRound.Value = (decimal)record.DraftRound;
+				playerDraftRoundIndex.Value = (decimal)record.DraftRoundIndex;
+
 				LoadPlayerSalaries(record);
 
 				//Set player Appearance
@@ -1201,6 +1204,22 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.LegsThighPads = (int)playerEquipmentThighPads.Value;
+			}
+		}
+
+		private void playerDraftRound_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.PlayerModel.CurrentPlayerRecord.DraftRound = (int)playerDraftRound.Value;
+			}
+		}
+
+		private void playerDraftRoundIndex_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.PlayerModel.CurrentPlayerRecord.DraftRoundIndex = (int)playerDraftRoundIndex.Value;
 			}
 		}
 		

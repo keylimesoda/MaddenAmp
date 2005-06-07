@@ -83,6 +83,12 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ColorChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorChooser.Designer.cs">
+      <DependentUpon>ColorChooser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DepthChartEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorChooser.resx">
+      <DependentUpon>ColorChooser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DepthChartEditorControl.resx">
       <DependentUpon>DepthChartEditorControl.cs</DependentUpon>

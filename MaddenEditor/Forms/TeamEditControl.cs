@@ -511,6 +511,13 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+		private void btnPrimary_Click(object sender, EventArgs e)
+		{
+			ColorChooser chooser = new ColorChooser();
+
+			chooser.ShowDialog(this);
+		}
+
 	}
 	
 }

@@ -144,6 +144,9 @@ namespace MaddenEditor.Core.Record
 		public const string SALARY_YEAR_6 = "PSA6";
 		public const string SIGNING_BONUS_YEAR_6 = "PSB6";
 
+		public const string DRAFT_ROUND_INDEX = "PDPI";
+		public const string DRAFT_ROUND = "PDRO";
+
 		private bool calculatedCapHit = false;
 		private int capHit = 0;
 		private int capHitDifference = 0;
@@ -1194,7 +1197,30 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(LEGS_THIGH_PADS, 99 - value);
+			}
+		}
 
+		public int DraftRoundIndex
+		{
+			get
+			{
+				return GetIntField(DRAFT_ROUND_INDEX);
+			}
+			set
+			{
+				SetField(DRAFT_ROUND_INDEX, value);
+			}
+		}
+
+		public int DraftRound
+		{
+			get
+			{
+				return GetIntField(DRAFT_ROUND);
+			}
+			set
+			{
+				SetField(DRAFT_ROUND, value);
 			}
 		}
 

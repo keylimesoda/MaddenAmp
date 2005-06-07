@@ -386,5 +386,33 @@ namespace MaddenEditor.Core.Record
 				SetField(TEAM_SHOE_COLOR, value);
 			}
 		}
+
+		public System.Drawing.Color PrimaryColor
+		{
+			get
+			{
+				return System.Drawing.Color.FromArgb(GetIntField(PRIMARY_RED), GetIntField(PRIMARY_GREEN), GetIntField(PRIMARY_BLUE));
+			}
+			set
+			{
+				SetField(PRIMARY_RED, value.R);
+				SetField(PRIMARY_GREEN, value.G);
+				SetField(PRIMARY_BLUE, value.B);
+			}
+		}
+
+		public System.Drawing.Color SecondaryColor
+		{
+			get
+			{
+				return System.Drawing.Color.FromArgb(GetIntField(SECONDARY_RED), GetIntField(SECONDARY_GREEN), GetIntField(SECONDARY_BLUE));
+			}
+			set
+			{
+				SetField(SECONDARY_RED, value.R);
+				SetField(SECONDARY_GREEN, value.G);
+				SetField(SECONDARY_BLUE, value.B);
+			}
+		}
 	}
 }
