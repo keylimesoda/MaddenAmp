@@ -55,6 +55,10 @@ namespace MaddenEditor.Forms
 			this.label3 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
+			this.btnSecondary = new System.Windows.Forms.Button();
+			this.pnlSecondary = new System.Windows.Forms.Panel();
+			this.btnPrimary = new System.Windows.Forms.Button();
+			this.pnlPrimary = new System.Windows.Forms.Panel();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.rbBlack = new System.Windows.Forms.RadioButton();
 			this.rbWhite = new System.Windows.Forms.RadioButton();
@@ -86,10 +90,6 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.btnPrimary = new System.Windows.Forms.Button();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.btnSecondary = new System.Windows.Forms.Button();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -140,9 +140,9 @@ namespace MaddenEditor.Forms
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.btnSecondary);
-			this.splitContainer1.Panel2.Controls.Add(this.panel2);
+			this.splitContainer1.Panel2.Controls.Add(this.pnlSecondary);
 			this.splitContainer1.Panel2.Controls.Add(this.btnPrimary);
-			this.splitContainer1.Panel2.Controls.Add(this.panel1);
+			this.splitContainer1.Panel2.Controls.Add(this.pnlPrimary);
 			this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
 			this.splitContainer1.Panel2.Controls.Add(this.teamOverallRating);
 			this.splitContainer1.Panel2.Controls.Add(this.label26);
@@ -436,6 +436,40 @@ namespace MaddenEditor.Forms
 			this.label2.Size = new System.Drawing.Size(192, 18);
 			this.label2.TabIndex = 0;
 			this.label2.Text = "TEAM INFORMATION";
+			// 
+			// btnSecondary
+			// 
+			this.btnSecondary.Location = new System.Drawing.Point(302, 322);
+			this.btnSecondary.Name = "btnSecondary";
+			this.btnSecondary.Size = new System.Drawing.Size(105, 22);
+			this.btnSecondary.TabIndex = 32;
+			this.btnSecondary.Text = "Secondary Color...";
+			this.btnSecondary.Click += new System.EventHandler(this.btnSecondary_Click);
+			// 
+			// pnlSecondary
+			// 
+			this.pnlSecondary.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnlSecondary.Location = new System.Drawing.Point(271, 322);
+			this.pnlSecondary.Name = "pnlSecondary";
+			this.pnlSecondary.Size = new System.Drawing.Size(24, 22);
+			this.pnlSecondary.TabIndex = 31;
+			// 
+			// btnPrimary
+			// 
+			this.btnPrimary.Location = new System.Drawing.Point(301, 290);
+			this.btnPrimary.Name = "btnPrimary";
+			this.btnPrimary.Size = new System.Drawing.Size(106, 22);
+			this.btnPrimary.TabIndex = 30;
+			this.btnPrimary.Text = "Primary Color...";
+			this.btnPrimary.Click += new System.EventHandler(this.btnPrimary_Click);
+			// 
+			// pnlPrimary
+			// 
+			this.pnlPrimary.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnlPrimary.Location = new System.Drawing.Point(271, 290);
+			this.pnlPrimary.Name = "pnlPrimary";
+			this.pnlPrimary.Size = new System.Drawing.Size(24, 22);
+			this.pnlPrimary.TabIndex = 29;
 			// 
 			// groupBox2
 			// 
@@ -770,39 +804,6 @@ namespace MaddenEditor.Forms
 			this.label10.TabIndex = 0;
 			this.label10.Text = "QB Rating";
 			// 
-			// panel1
-			// 
-			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Location = new System.Drawing.Point(271, 290);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(24, 22);
-			this.panel1.TabIndex = 29;
-			// 
-			// btnPrimary
-			// 
-			this.btnPrimary.Location = new System.Drawing.Point(301, 290);
-			this.btnPrimary.Name = "btnPrimary";
-			this.btnPrimary.Size = new System.Drawing.Size(106, 22);
-			this.btnPrimary.TabIndex = 30;
-			this.btnPrimary.Text = "Primary Color...";
-			this.btnPrimary.Click += new System.EventHandler(this.btnPrimary_Click);
-			// 
-			// panel2
-			// 
-			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel2.Location = new System.Drawing.Point(271, 322);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(24, 22);
-			this.panel2.TabIndex = 31;
-			// 
-			// btnSecondary
-			// 
-			this.btnSecondary.Location = new System.Drawing.Point(302, 322);
-			this.btnSecondary.Name = "btnSecondary";
-			this.btnSecondary.Size = new System.Drawing.Size(105, 22);
-			this.btnSecondary.TabIndex = 32;
-			this.btnSecondary.Text = "Secondary Color...";
-			// 
 			// TeamEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -896,8 +897,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.RadioButton rbBlack;
 		private System.Windows.Forms.RadioButton rbWhite;
 		private System.Windows.Forms.Button btnSecondary;
-		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel pnlSecondary;
 		private System.Windows.Forms.Button btnPrimary;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel pnlPrimary;
 	}
 }

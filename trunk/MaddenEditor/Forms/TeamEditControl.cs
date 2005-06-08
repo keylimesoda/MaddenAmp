@@ -158,6 +158,10 @@ namespace MaddenEditor.Forms
 				rbWhite.Checked = (record.ShoeColor == 0);
 				rbBlack.Checked = (record.ShoeColor == 1);
 
+				//Team colours
+				pnlPrimary.BackColor = record.PrimaryColor;
+				pnlSecondary.BackColor = record.SecondaryColor;
+
 				foreach (Object obj in divisionCombo.Items)
 				{
 					if (((GenericRecord)obj).Id == record.DivisionId)
@@ -513,9 +517,40 @@ namespace MaddenEditor.Forms
 
 		private void btnPrimary_Click(object sender, EventArgs e)
 		{
-			ColorChooser chooser = new ColorChooser();
+			ColorChooser chooser = new ColorChooser(model.TeamModel.CurrentTeamRecord.PrimaryColor);
 
-			chooser.ShowDialog(this);
+			DialogResult result = chooser.ShowDialog(this);
+
+			if (result == DialogResult.OK)
+			{
+				//Change primary color
+				model.TeamModel.CurrentTeamRecord.PrimaryColor = chooser.ChosenColor;
+				//Update the panel
+				pnlPrimary.BackColor = chooser.ChosenColor;
+			}
+
+			chooser.Dispose();
+
+			chooser = null;
+		}
+
+		private void btnSecondary_Click(object sender, EventArgs e)
+		{
+			ColorChooser chooser = new ColorChooser(model.TeamModel.CurrentTeamRecord.SecondaryColor);
+
+			DialogResult result = chooser.ShowDialog(this);
+
+			if (result == DialogResult.OK)
+			{
+				//Change secondary color
+				model.TeamModel.CurrentTeamRecord.SecondaryColor = chooser.ChosenColor;
+				//Update the panel
+				pnlSecondary.BackColor = chooser.ChosenColor;
+			}
+
+			chooser.Dispose();
+
+			chooser = null;
 		}
 
 	}
