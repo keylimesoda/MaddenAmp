@@ -60,6 +60,10 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerRatingPage = new System.Windows.Forms.TabPage();
+			this.label107 = new System.Windows.Forms.Label();
+			this.label106 = new System.Windows.Forms.Label();
+			this.playerDraftRoundIndex = new System.Windows.Forms.NumericUpDown();
+			this.playerDraftRound = new System.Windows.Forms.NumericUpDown();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.label78 = new System.Windows.Forms.Label();
 			this.calculateEnhancement = new System.Windows.Forms.Button();
@@ -269,10 +273,6 @@ namespace MaddenEditor.Forms
 			this.playerSigningBonusYear0 = new System.Windows.Forms.TextBox();
 			this.label98 = new System.Windows.Forms.Label();
 			this.label97 = new System.Windows.Forms.Label();
-			this.playerDraftRound = new System.Windows.Forms.NumericUpDown();
-			this.playerDraftRoundIndex = new System.Windows.Forms.NumericUpDown();
-			this.label106 = new System.Windows.Forms.Label();
-			this.label107 = new System.Windows.Forms.Label();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -283,6 +283,8 @@ namespace MaddenEditor.Forms
 			this.groupBox1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerRatingPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRoundIndex)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRound)).BeginInit();
 			this.groupBox4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerOverall)).BeginInit();
@@ -341,8 +343,6 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerDraftRound)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerDraftRoundIndex)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// playerSplitContainer
@@ -1038,6 +1038,60 @@ namespace MaddenEditor.Forms
 			this.playerRatingPage.Size = new System.Drawing.Size(530, 557);
 			this.playerRatingPage.TabIndex = 0;
 			this.playerRatingPage.Text = "Player Ratings";
+			// 
+			// label107
+			// 
+			this.label107.AutoSize = true;
+			this.label107.Location = new System.Drawing.Point(370, 232);
+			this.label107.Name = "label107";
+			this.label107.Size = new System.Drawing.Size(90, 13);
+			this.label107.TabIndex = 74;
+			this.label107.Text = "Draft Round Index";
+			// 
+			// label106
+			// 
+			this.label106.AutoSize = true;
+			this.label106.Location = new System.Drawing.Point(399, 202);
+			this.label106.Name = "label106";
+			this.label106.Size = new System.Drawing.Size(61, 13);
+			this.label106.TabIndex = 73;
+			this.label106.Text = "Draft Round";
+			// 
+			// playerDraftRoundIndex
+			// 
+			this.playerDraftRoundIndex.Location = new System.Drawing.Point(466, 229);
+			this.playerDraftRoundIndex.Maximum = new decimal(new int[] {
+            33,
+            0,
+            0,
+            0});
+			this.playerDraftRoundIndex.Name = "playerDraftRoundIndex";
+			this.playerDraftRoundIndex.Size = new System.Drawing.Size(55, 20);
+			this.playerDraftRoundIndex.TabIndex = 72;
+			this.playerDraftRoundIndex.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.playerDraftRoundIndex.ValueChanged += new System.EventHandler(this.playerDraftRoundIndex_ValueChanged);
+			// 
+			// playerDraftRound
+			// 
+			this.playerDraftRound.Location = new System.Drawing.Point(466, 198);
+			this.playerDraftRound.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+			this.playerDraftRound.Name = "playerDraftRound";
+			this.playerDraftRound.Size = new System.Drawing.Size(55, 20);
+			this.playerDraftRound.TabIndex = 71;
+			this.playerDraftRound.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.playerDraftRound.ValueChanged += new System.EventHandler(this.playerDraftRound_ValueChanged);
 			// 
 			// groupBox4
 			// 
@@ -3654,60 +3708,6 @@ namespace MaddenEditor.Forms
 			this.label97.TabIndex = 0;
 			this.label97.Text = "Signing Bonus";
 			// 
-			// playerDraftRound
-			// 
-			this.playerDraftRound.Location = new System.Drawing.Point(466, 198);
-			this.playerDraftRound.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-			this.playerDraftRound.Name = "playerDraftRound";
-			this.playerDraftRound.Size = new System.Drawing.Size(55, 20);
-			this.playerDraftRound.TabIndex = 71;
-			this.playerDraftRound.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.playerDraftRound.ValueChanged += new System.EventHandler(this.playerDraftRound_ValueChanged);
-			// 
-			// playerDraftRoundIndex
-			// 
-			this.playerDraftRoundIndex.Location = new System.Drawing.Point(466, 229);
-			this.playerDraftRoundIndex.Maximum = new decimal(new int[] {
-            33,
-            0,
-            0,
-            0});
-			this.playerDraftRoundIndex.Name = "playerDraftRoundIndex";
-			this.playerDraftRoundIndex.Size = new System.Drawing.Size(55, 20);
-			this.playerDraftRoundIndex.TabIndex = 72;
-			this.playerDraftRoundIndex.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.playerDraftRoundIndex.ValueChanged += new System.EventHandler(this.playerDraftRoundIndex_ValueChanged);
-			// 
-			// label106
-			// 
-			this.label106.AutoSize = true;
-			this.label106.Location = new System.Drawing.Point(399, 202);
-			this.label106.Name = "label106";
-			this.label106.Size = new System.Drawing.Size(61, 13);
-			this.label106.TabIndex = 73;
-			this.label106.Text = "Draft Round";
-			// 
-			// label107
-			// 
-			this.label107.AutoSize = true;
-			this.label107.Location = new System.Drawing.Point(370, 232);
-			this.label107.Name = "label107";
-			this.label107.Size = new System.Drawing.Size(90, 13);
-			this.label107.TabIndex = 74;
-			this.label107.Text = "Draft Round Index";
-			// 
 			// PlayerEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3728,6 +3728,8 @@ namespace MaddenEditor.Forms
 			this.tabControl.ResumeLayout(false);
 			this.playerRatingPage.ResumeLayout(false);
 			this.playerRatingPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRoundIndex)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.playerDraftRound)).EndInit();
 			this.groupBox4.ResumeLayout(false);
 			this.groupBox4.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.enhancementPercentage)).EndInit();
@@ -3791,8 +3793,6 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerDraftRound)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.playerDraftRoundIndex)).EndInit();
 			this.ResumeLayout(false);
 
 		}

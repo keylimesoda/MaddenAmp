@@ -282,6 +282,44 @@ namespace MaddenEditor.Core
 			return null;
 		}
 
+		public void ChangePlayersTeam(TeamRecord newTeam)
+		{
+			//Don't do anything if the team is same as the current players team
+			if (CurrentPlayerRecord.TeamId != newTeam.TeamId)
+			{
+				CurrentPlayerRecord.TeamId = newTeam.TeamId;
+				//Also have to ensure we update this players injuries in the injury table
+				//and remove this player form any depth charts
+				foreach (TableRecordModel record in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
+				{
+					if (record.Deleted)
+						continue;
+
+					//If this injury record is for this player then update its team field
+					InjuryRecord injRecord = (InjuryRecord)record;
+
+					if (injRecord.PlayerId == CurrentPlayerRecord.PlayerId)
+					{
+						injRecord.TeamId = newTeam.TeamId;
+					}
+				}
+
+				//Now at the moment we are just going to remove him from all depth charts
+				foreach(TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+				{
+					if (record.Deleted)
+						continue;
+
+					DepthChartRecord depthRecord = (DepthChartRecord)record;
+
+					if (depthRecord.PlayerId == CurrentPlayerRecord.PlayerId)
+					{
+						depthRecord.SetDeleteFlag(true);
+					}
+				}
+			}
+		}
+
 		public InjuryRecord CreateNewInjuryRecord()
 		{
 			return (InjuryRecord)model.TableModels[EditorModel.INJURY_TABLE].CreateNewRecord(false);
