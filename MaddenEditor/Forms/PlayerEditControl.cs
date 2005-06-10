@@ -122,8 +122,22 @@ namespace MaddenEditor.Forms
 				playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
 				playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
 
-				playerDraftRound.Value = (decimal)record.DraftRound;
-				playerDraftRoundIndex.Value = (decimal)record.DraftRoundIndex;
+				try
+				{
+					playerDraftRound.Value = (decimal)record.DraftRound;
+				}
+				catch (Exception error)
+				{
+					playerDraftRound.Value = 15;
+				}
+				try
+				{
+					playerDraftRoundIndex.Value = (decimal)record.DraftRoundIndex;
+				}
+				catch (Exception error)
+				{
+					playerDraftRoundIndex.Value = 33;
+				}
 
 				LoadPlayerSalaries(record);
 
@@ -476,7 +490,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.CurrentPlayerRecord.TeamId = ((TeamRecord)teamComboBox.SelectedItem).TeamId;
+				model.PlayerModel.ChangePlayersTeam(((TeamRecord)teamComboBox.SelectedItem));
 			}
 		}
 
