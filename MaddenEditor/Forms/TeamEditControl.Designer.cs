@@ -355,7 +355,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.nickNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.nickNameTextBox.Location = new System.Drawing.Point(67, 129);
+			this.nickNameTextBox.Location = new System.Drawing.Point(67, 127);
 			this.nickNameTextBox.Name = "nickNameTextBox";
 			this.nickNameTextBox.Size = new System.Drawing.Size(142, 20);
 			this.nickNameTextBox.TabIndex = 8;
@@ -365,7 +365,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.shortTeamName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.shortTeamName.Location = new System.Drawing.Point(67, 94);
+			this.shortTeamName.Location = new System.Drawing.Point(67, 95);
 			this.shortTeamName.Name = "shortTeamName";
 			this.shortTeamName.Size = new System.Drawing.Size(142, 20);
 			this.shortTeamName.TabIndex = 6;
@@ -375,7 +375,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.longNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.longNameTextBox.Location = new System.Drawing.Point(67, 60);
+			this.longNameTextBox.Location = new System.Drawing.Point(67, 63);
 			this.longNameTextBox.Name = "longNameTextBox";
 			this.longNameTextBox.Size = new System.Drawing.Size(142, 20);
 			this.longNameTextBox.TabIndex = 4;
@@ -394,7 +394,7 @@ namespace MaddenEditor.Forms
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(10, 132);
+			this.label5.Location = new System.Drawing.Point(10, 134);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(51, 13);
 			this.label5.TabIndex = 7;
@@ -403,7 +403,7 @@ namespace MaddenEditor.Forms
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(2, 97);
+			this.label4.Location = new System.Drawing.Point(3, 102);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(59, 13);
 			this.label4.TabIndex = 5;
@@ -412,7 +412,7 @@ namespace MaddenEditor.Forms
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 63);
+			this.label3.Location = new System.Drawing.Point(3, 70);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(58, 13);
 			this.label3.TabIndex = 3;
@@ -421,7 +421,7 @@ namespace MaddenEditor.Forms
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(30, 34);
+			this.label1.Location = new System.Drawing.Point(30, 38);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(31, 13);
 			this.label1.TabIndex = 1;
@@ -504,7 +504,7 @@ namespace MaddenEditor.Forms
 			// 
 			// teamOverallRating
 			// 
-			this.teamOverallRating.Location = new System.Drawing.Point(301, 134);
+			this.teamOverallRating.Location = new System.Drawing.Point(301, 141);
 			this.teamOverallRating.Maximum = new decimal(new int[] {
             99,
             0,
@@ -518,7 +518,7 @@ namespace MaddenEditor.Forms
 			// label26
 			// 
 			this.label26.AutoSize = true;
-			this.label26.Location = new System.Drawing.Point(225, 141);
+			this.label26.Location = new System.Drawing.Point(225, 148);
 			this.label26.Name = "label26";
 			this.label26.Size = new System.Drawing.Size(70, 13);
 			this.label26.TabIndex = 20;
@@ -533,7 +533,7 @@ namespace MaddenEditor.Forms
             0,
             0});
 			this.teamReputation.Name = "teamReputation";
-			this.teamReputation.Size = new System.Drawing.Size(120, 20);
+			this.teamReputation.Size = new System.Drawing.Size(75, 20);
 			this.teamReputation.TabIndex = 27;
 			this.teamReputation.ValueChanged += new System.EventHandler(this.teamReputation_ValueChanged);
 			// 

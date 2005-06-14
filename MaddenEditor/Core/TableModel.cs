@@ -104,7 +104,7 @@ namespace MaddenEditor.Core
 				//Chuck an exception
 				throw new ApplicationException("Table " + name + " has reached max capacity");
 			}
-
+						
 			result = ConstructRecordModel(newRecNo);
 
 			result.Dirty = true;
