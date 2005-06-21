@@ -51,12 +51,23 @@ namespace MaddenEditor.Core
 			//Now add the records to these collections
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
 			{
+				if (rec.Deleted)
+					continue;
+
 				try
 				{
 					ScheduleRecord scheduleRecord = (ScheduleRecord)rec;
 					
 					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber+1];
-					list.Add(scheduleRecord.GameNumber, scheduleRecord);
+					try
+					{
+						list.Add(scheduleRecord.GameNumber, scheduleRecord);
+					}
+					catch (ArgumentException err2)
+					{
+						//Something is wrong with this schedule
+						throw err2;						
+					}
 				}
 				catch (KeyNotFoundException err)
 				{
