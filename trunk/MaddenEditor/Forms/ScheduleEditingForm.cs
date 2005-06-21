@@ -30,8 +30,16 @@ namespace MaddenEditor.Forms
 
 			this.Cursor = Cursors.WaitCursor;
 			//Create our model
-			scheduleModel = new ScheduleEditingModel(model);
-
+			try
+			{
+				scheduleModel = new ScheduleEditingModel(model);
+			}
+			catch (ArgumentException e)
+			{
+				//This has been thrown if something went wrong loading the franchises
+				//schedule
+				throw e;
+			}
 			this.Cursor = Cursors.Default;
 
 			LoadWeek(currentWeekNumber);

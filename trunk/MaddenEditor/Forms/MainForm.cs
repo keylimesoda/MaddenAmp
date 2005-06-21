@@ -434,12 +434,19 @@ namespace MaddenEditor.Forms
 
 		private void editScheduleToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScheduleEditingForm form = new ScheduleEditingForm(model);
+			try
+			{
+				ScheduleEditingForm form = new ScheduleEditingForm(model);
 
-			form.InitialiseUI();
-			form.Show(this);
+				form.InitialiseUI();
+				form.Show(this);
 
-			form.CleanUI();
+				form.CleanUI();
+			}
+			catch (ArgumentException err)
+			{
+				MessageBox.Show("The Schedule in this franchise file cannot be loaded for editing\r\nReport this to " + EditorModel.SUPPORT_EMAIL, "Error loading schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}			
 		}
 
     }

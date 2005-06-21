@@ -81,6 +81,7 @@ namespace MaddenEditor.Core
 	/// </summary>
 	public class EditorModel
 	{
+		public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
