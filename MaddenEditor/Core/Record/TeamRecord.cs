@@ -69,8 +69,8 @@ namespace MaddenEditor.Core.Record
 		public const string DEFENSIVE_PLAYBOOK = "TDPB";
 
 		public const string DIVISION_ORDER = "DISN";
-		public const string TEAM_ORDER = "TORD";
-		public const string TEAM_SOMETHING = "TDRI";
+		public const string TEAM_ROSTER_ORDER = "TORD";
+		public const string TEAM_ORDER = "TDRI";
 		public const string TEAM_TYPE = "TTYP";
 
 		public const string TEAM_SHOE_COLOR = "TSHO";
@@ -412,6 +412,54 @@ namespace MaddenEditor.Core.Record
 				SetField(SECONDARY_RED, value.R);
 				SetField(SECONDARY_GREEN, value.G);
 				SetField(SECONDARY_BLUE, value.B);
+			}
+		}
+
+		public int TeamType
+		{
+			get
+			{
+				return GetIntField(TEAM_TYPE);
+			}
+			set
+			{
+				SetField(TEAM_TYPE, value);
+			}
+		}
+
+		public int DivisionOrder
+		{
+			get
+			{
+				return GetIntField(DIVISION_ORDER);
+			}
+			set
+			{
+				SetField(DIVISION_ORDER, value);
+			}
+		}
+
+		public int TeamOrder
+		{
+			get
+			{
+				return GetIntField(TEAM_ORDER);
+			}
+			set
+			{
+				SetField(TEAM_ORDER, value);
+			}
+		}
+
+		public int TeamRosterOrder
+		{
+			get
+			{
+				return GetIntField(TEAM_ROSTER_ORDER);
+			}
+			set
+			{
+				SetField(TEAM_ROSTER_ORDER, value);
 			}
 		}
 	}

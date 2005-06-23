@@ -89,6 +89,12 @@
     <Compile Include="Forms\ColorChooser.Designer.cs">
       <DependentUpon>ColorChooser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CustomTeamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomTeamForm.Designer.cs">
+      <DependentUpon>CustomTeamForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DepthChartEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -175,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomTeamForm.resx">
+      <DependentUpon>CustomTeamForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DepthChartEditorControl.resx">
       <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
