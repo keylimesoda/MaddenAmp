@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.6.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.7.0
 
-                                   5th June 2005
+                                   26th June 2005
 
                                     readme.txt
 
@@ -40,6 +40,8 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+* Added Color selectors for team primary colors
+
 * Regular season schedule editing. (Will add postseason later)
 
 * Added additional filters to Global player editor
@@ -103,6 +105,11 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. FIXED ISSUES
 ===============
+* Fixed issue where moving a player to a different team didnt remove him from his
+  old teams depth chart
+
+* Fixed issue where moving a player to a different team didn't also move his injuries 
+
 * Fixed loading of 2004 franchise files (though team captains and changing user controlled
                                          teams are not available )
 

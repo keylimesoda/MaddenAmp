@@ -29,11 +29,11 @@ namespace MaddenEditor.Forms
 		private void InitializeComponent()
 		{
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			this.lbNFCNorth = new System.Windows.Forms.ListBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
@@ -68,6 +68,39 @@ namespace MaddenEditor.Forms
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(647, 202);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
+			// label4
+			// 
+			this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label4.AutoSize = true;
+			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label4.Location = new System.Drawing.Point(533, 3);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(64, 13);
+			this.label4.TabIndex = 4;
+			this.label4.Text = "NFC South";
+			// 
+			// label3
+			// 
+			this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label3.AutoSize = true;
+			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label3.Location = new System.Drawing.Point(372, 3);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(60, 13);
+			this.label3.TabIndex = 3;
+			this.label3.Text = "NFC West";
+			// 
+			// label2
+			// 
+			this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label2.Location = new System.Drawing.Point(213, 3);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(56, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "NFC East";
+			// 
 			// lbNFCNorth
 			// 
 			this.lbNFCNorth.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -87,39 +120,6 @@ namespace MaddenEditor.Forms
 			this.label1.Size = new System.Drawing.Size(62, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "NFC North";
-			// 
-			// label2
-			// 
-			this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(213, 3);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(56, 13);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "NFC East";
-			// 
-			// label3
-			// 
-			this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(372, 3);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(60, 13);
-			this.label3.TabIndex = 3;
-			this.label3.Text = "NFC West";
-			// 
-			// label4
-			// 
-			this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label4.Location = new System.Drawing.Point(533, 3);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(64, 13);
-			this.label4.TabIndex = 4;
-			this.label4.Text = "NFC South";
 			// 
 			// label5
 			// 
