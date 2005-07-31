@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 using MaddenEditor.Core.Record;
 
@@ -254,7 +255,94 @@ namespace MaddenEditor.Core
 			return results;
 		}
 
-		
+		/// <summary>
+		/// Changes the current coaches position to the new position. This method
+		/// also ensures that other table are updated. The important table to change
+		/// is the CPSE or Coach Slider table. 
+		/// </summary>
+		/// <param name="newPosition">The new position of the coach</param>
+		/// <returns>Returns false if we cannot correctly update this coaches position</returns>
+		public bool ChangeCoachPosition(MaddenCoachPosition newPosition)
+		{
+			bool result = true;
+			if (CurrentCoachRecord.Position == (int)newPosition)
+			{
+				//Don't worry if we are changing it to the same position
+				return true;
+			}
+
+			if (newPosition == MaddenCoachPosition.HeadCoach)
+			{
+				//We need to make sure we have values for this coach in our
+				//coach position slider table
+
+				//We need to see if we have values for this coachid in the CPSE table.
+				//There also should be CoachRecord.NUMBER_OF_COACHING_POSITIONS
+				int count = 0;
+				foreach (TableRecordModel recordModel in model.TableModels[EditorModel.COACH_SLIDER_TABLE].GetRecords())
+				{
+					if (recordModel.Deleted)
+					{
+						continue;
+					}
+
+					CoachPrioritySliderRecord record = (CoachPrioritySliderRecord)recordModel;
+
+					if (CurrentCoachRecord.CoachId == record.CoachId)
+					{
+						count++;
+					}
+
+					if (count == CoachPrioritySliderRecord.NUMBER_OF_COACHING_POSITIONS)
+					{
+						break;
+					}
+				}
+
+				if (count == 0)
+				{
+					//There is no values for this coach
+					for (int i = 0; i < CoachPrioritySliderRecord.NUMBER_OF_COACHING_POSITIONS; i++)
+					{
+						try
+						{
+							CoachPrioritySliderRecord record = (CoachPrioritySliderRecord)model.TableModels[EditorModel.COACH_SLIDER_TABLE].CreateNewRecord(false);
+
+							record.CoachId = CurrentCoachRecord.CoachId;
+							record.PositionId = i;
+							record.Priority = 50;
+							record.PriorityType = 0;
+						}
+						catch (ApplicationException e)
+						{
+							MessageBox.Show("Error creating record when changing coach position:\r\n" + e.ToString(), "Exception Changing Coach Position", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							return false;
+						}
+					}
+					MessageBox.Show("You just moved a coordinator to a Head Coach.\r\nDefault values were assigned to his coaching priorities", "Warning...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+				else if (count > 0 && count < CoachPrioritySliderRecord.NUMBER_OF_COACHING_POSITIONS)
+				{
+					//There are some values for this coach but not enough, we'll have to fix this
+					//At the moment return false;
+					MessageBox.Show("You just moved a coordinator to a Head Coach.\r\nHowever, there was a problem setting his priority values", "Warning...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return false;
+				}
+				else if (count == CoachPrioritySliderRecord.NUMBER_OF_COACHING_POSITIONS)
+				{
+					//We have values for this coach so don't worry about it
+				}
+			}
+
+			if (result)
+			{
+				//Update the record
+				CurrentCoachRecord.Position = (int)newPosition;
+			}
+
+
+			return result;
+		}
 
 	}
 }
