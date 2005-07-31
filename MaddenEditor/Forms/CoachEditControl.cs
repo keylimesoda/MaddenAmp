@@ -108,8 +108,8 @@ namespace MaddenEditor.Forms
 				coachRunOff.Value = (int)(100 - record.OffensiveStrategy);
 				coachPassDef.Value = (int)record.DefensiveStrategy;
 				coachRunDef.Value = (int)(100 - record.DefensiveStrategy);
-				rb2.Value = (int)record.RunningBack2Sub;
-				rb1.Value = (int)(100 - record.RunningBack2Sub);
+				rb2.Value = (int)(100 - record.RunningBack2Sub);
+				rb1.Value = (int)(record.RunningBack2Sub);
 				coachDefAggression.Value = record.DefensiveAggression;
 				coachOffAggression.Value = record.OffensiveAggression;
 
@@ -203,7 +203,14 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.CoachModel.CurrentCoachRecord.Position = coachesPositionCombo.SelectedIndex;
+				if (model.CoachModel.ChangeCoachPosition((MaddenCoachPosition)coachesPositionCombo.SelectedIndex))
+				{
+					LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
+				}
+				else
+				{
+					coachesPositionCombo.SelectedIndex = model.CoachModel.CurrentCoachRecord.Position;
+				}
 			}
 		}
 
@@ -527,7 +534,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.CoachModel.CurrentCoachRecord.RunningBack2Sub = (int)rb2.Value;
+				model.CoachModel.CurrentCoachRecord.RunningBack2Sub = (int)(100 - rb2.Value);
 				rb1.Value = (int)(100 - rb2.Value);
 			}
 		}

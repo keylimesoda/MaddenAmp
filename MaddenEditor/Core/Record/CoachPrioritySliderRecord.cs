@@ -56,6 +56,8 @@ namespace MaddenEditor.Core.Record
 		public const string POSITION_ID = "PDRP";
 		public const string PRIORITY_TYPE = "CDPT";
 
+		public const int NUMBER_OF_COACHING_POSITIONS = 17;
+
 		public CoachPrioritySliderRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{

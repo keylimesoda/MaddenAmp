@@ -26,6 +26,17 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record
 {
+	/// <summary>
+	/// Enumeration describing the coaching positions in this game
+	/// </summary>
+	public enum MaddenCoachPosition
+	{
+		HeadCoach = 0,
+		OffensiveCoordinator,
+		DefensiveCoordinator,
+		SpecialTeams
+	}
+
 	public class CoachRecord : TableRecordModel
 	{
 		public const string NAME = "CLNA";
