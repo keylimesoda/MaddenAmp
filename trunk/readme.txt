@@ -1,11 +1,11 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.7.0
+                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.7.1
 
-                                   26th June 2005
+                                  20th August 2005
 
-                                    readme.txt
+                                     readme.txt
 
                                   ----------------
 
@@ -40,6 +40,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+* Should support Madden 2006 Roster files without throwing exceptions. Don't know about franchise
+  files cause I dont have any yet.
+
 * Added Color selectors for team primary colors
 
 * Regular season schedule editing. (Will add postseason later)
