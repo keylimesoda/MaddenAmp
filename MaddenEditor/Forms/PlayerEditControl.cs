@@ -167,7 +167,17 @@ namespace MaddenEditor.Forms
 				playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
 				playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
 				playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
-				playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
+				//TODO Madden 2006 needs more helmet styles
+				try
+				{
+					playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
+					playerHelmetStyleCombo.Enabled = true;
+				}
+				catch (Exception helmetStyleException)
+				{
+					//This is a Madden 2006 issue
+					playerHelmetStyleCombo.Enabled = false;
+				}
 				playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
 				playerEyePaintCombo.Text = playerEyePaintCombo.Items[record.EyePaint].ToString();
 				playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
@@ -217,7 +227,7 @@ namespace MaddenEditor.Forms
 			}
 			catch (Exception e)
 			{
-				MessageBox.Show("Exception Occured loading this Player:\r\n" + e.ToString(), "Exception Loading Player", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Exception Occured loading this Player:\r\nCaused by " + e.Source + "\r\n" + e.ToString(), "Exception Loading Player", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				LoadPlayerInfo(lastLoadedRecord);
 				return;
 			}
