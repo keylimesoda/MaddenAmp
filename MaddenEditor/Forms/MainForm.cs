@@ -1,5 +1,5 @@
 /******************************************************************************
- * Madden 2005 Editor
+ * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ namespace MaddenEditor.Forms
 	/// <author>Colin Goudie</author>
     public partial class MainForm : Form
     {
-		private const string TITLE_STRING = "Madden Editor 2005";
+		private const string TITLE_STRING = "Gommo's Madden Editor";
 		private EditorModel model = null;	
 		private string filePathToLoad;
 		private bool isInitialising = false;
@@ -197,6 +197,7 @@ namespace MaddenEditor.Forms
 			if (model.FileType == MaddenFileType.FranchiseFile)
 			{
 				franchiseToolStripMenuItem.Visible = true;
+				setGameInjuriesToolStripMenuItem.Enabled = false;
 				if (model.FileVersion == MaddenFileVersion.Ver2004)
 				{
 					//2004 version don't support Team Captain editing
@@ -204,10 +205,14 @@ namespace MaddenEditor.Forms
 					//2004 version has issues at the moment with changing user controlled teams
 					setUserControlledTeamsToolStripMenuItem.Enabled = false;
 				}
-				else
+				if (model.FileVersion >= MaddenFileVersion.Ver2005)
 				{
 					setTeamCaptainsToolStripMenuItem.Enabled = true;
 					setUserControlledTeamsToolStripMenuItem.Enabled = true;
+				}
+				if (model.FileVersion >= MaddenFileVersion.Ver2006)
+				{
+					setGameInjuriesToolStripMenuItem.Enabled = true;
 				}
 			}
 
@@ -447,6 +452,16 @@ namespace MaddenEditor.Forms
 			{
 				MessageBox.Show("The Schedule in this franchise file cannot be loaded for editing\r\nReport this to " + EditorModel.SUPPORT_EMAIL, "Error loading schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}			
+		}
+
+		private void setGameInjuriesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			GameInjuryForm form = new GameInjuryForm(model);
+
+			form.InitialiseUI();
+			form.ShowDialog();
+
+			form.CleanUI();
 		}
 
     }

@@ -28,87 +28,38 @@ using MaddenEditor.Core;
 
 namespace MaddenEditor.Core.Record
 {
-	public enum CoachSliderPlayerPositions
+	class GameOptionRecord : TableRecordModel
 	{
-		QB = 0,
-		HB = 1,
-		FB = 2,
-		WR = 3,
-		TE = 4,
-		T = 5,
-		G = 6,
-		C = 7,
-		DE = 8,
-		DT = 9,
-		OLB = 10,
-		MLB = 11,
-		CB = 12,
-		FS = 13,
-		SS = 14,
-		K = 15,
-		P = 16
-	}
+		public const string INGAME_INJURY = "INGI";
+		public const string SIM_INJURY = "SIMI";
 
-	public class CoachPrioritySliderRecord : TableRecordModel
-	{
-		public const string COACH_ID = "CCID";
-		public const string PRIORITY = "PPIM";
-		public const string POSITION_ID = "PDRP";
-		public const string PRIORITY_TYPE = "CDPT";
-
-		public const int NUMBER_OF_COACHING_POSITIONS = 17;
-
-		public CoachPrioritySliderRecord(int record, EditorModel EditorModel)
+		public GameOptionRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
 
 		}
 
-		public int CoachId
+		public int InGameInjury
 		{
-			get
-			{
-				return GetIntField(COACH_ID);
-			}
 			set
 			{
-				SetField(COACH_ID, value);
+				SetField(INGAME_INJURY, value);
+			}
+			get
+			{
+				return GetIntField(INGAME_INJURY);
 			}
 		}
 
-		public int PositionId
+		public int SimInjury
 		{
-			get
-			{
-				return GetIntField(POSITION_ID);
-			}
 			set
 			{
-				SetField(POSITION_ID, value);
+				SetField(SIM_INJURY, value);
 			}
-		}
-
-		public int Priority
-		{
 			get
 			{
-				return GetIntField(PRIORITY);
-			}
-			set
-			{
-				SetField(PRIORITY, value);
-			}
-		}
-
-		public int PriorityType
-		{
-			get
-			{
-				return GetIntField(PRIORITY_TYPE);
-			}
-			set
-			{
-				SetField(PRIORITY_TYPE, value);
+				return GetIntField(SIM_INJURY);
 			}
 		}
 	}

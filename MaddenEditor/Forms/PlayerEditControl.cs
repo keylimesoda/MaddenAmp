@@ -1,5 +1,5 @@
 /******************************************************************************
- * Madden 2005 Editor
+ * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -116,7 +116,7 @@ namespace MaddenEditor.Forms
 				playerImportance.Value = record.Importance;
 
 				playerProBowl.Checked = record.ProBowl;
-				playerExperiencePoints.Value = record.XPPoints;
+				playerPortraitId.Value = record.PortraitId;
 				playerContractLength.Value = record.ContractLength;
 				playerContractYearsLeft.Value = record.ContractYearsLeft;
 				playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
@@ -735,7 +735,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.CurrentPlayerRecord.XPPoints = (int)playerExperiencePoints.Value;
+				model.PlayerModel.CurrentPlayerRecord.PortraitId = (int)playerPortraitId.Value;
 			}
 		}
 

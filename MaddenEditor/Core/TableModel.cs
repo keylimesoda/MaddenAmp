@@ -1,5 +1,5 @@
 /******************************************************************************
- * Madden 2005 Editor
+ * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -174,6 +174,9 @@ namespace MaddenEditor.Core
 					break;
 				case EditorModel.SCHEDULE_TABLE:
 					newRecord = new ScheduleRecord(recno, parentModel);
+					break;
+				case EditorModel.GAME_OPTIONS_TABLE:
+					newRecord = new GameOptionRecord(recno, parentModel);
 					break;
 			}
 
