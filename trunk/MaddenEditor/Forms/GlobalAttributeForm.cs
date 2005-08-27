@@ -1,5 +1,5 @@
 /******************************************************************************
- * Madden 2005 Editor
+ * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,7 +61,6 @@ namespace MaddenEditor.Forms
 			STAMINA,
 			INJURY,
 			TOUGHNESS,
-			EXP_POINTS,
 			IMPORTANCE,
 			MORALE
 		}
@@ -272,13 +271,6 @@ namespace MaddenEditor.Forms
 						record.Catching = record.Catching + value;
 					if (record.Catching < 0) record.Catching = 0;
 					if (record.Catching > 99) record.Catching = 99;
-					break;
-				case EditableAttributes.EXP_POINTS:
-					if (absolutevalue)
-						record.XPPoints = value;
-					else
-						record.XPPoints = record.XPPoints + value;
-					if (record.XPPoints < 0) record.XPPoints = 0;
 					break;
 				case EditableAttributes.IMPORTANCE:
 					if (absolutevalue)

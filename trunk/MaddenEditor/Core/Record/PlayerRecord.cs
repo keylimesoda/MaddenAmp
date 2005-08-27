@@ -1,5 +1,5 @@
 /******************************************************************************
- * Madden 2005 Editor
+ * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -68,7 +68,7 @@ namespace MaddenEditor.Core.Record
 
 		public const string MORALE = "PMOR";
 		public const string IMPORTANCE = "PIMP";
-		public const string XP_POINTS = "PSXP";
+		public const string PORTRAIT_ID = "PSXP";
 		public const string NFL_ICON = "PICN";
 		public const string PRO_BOWL = "PFPB";
 		public const string CONTRACT_LENGTH = "PCON";
@@ -265,15 +265,15 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public int XPPoints
+		public int PortraitId
 		{
 			get
 			{
-				return GetIntField(XP_POINTS);
+				return GetIntField(PORTRAIT_ID);
 			}
 			set
 			{
-				SetField(XP_POINTS, value);
+				SetField(PORTRAIT_ID, value);
 			}
 		}
 

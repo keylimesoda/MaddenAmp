@@ -51,6 +51,7 @@ namespace MaddenEditor.Forms
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.setGameInjuriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
@@ -186,7 +187,8 @@ namespace MaddenEditor.Forms
             this.editSalaryCapsToolStripMenuItem,
             this.toolStripSeparator5,
             this.setTeamCaptainsToolStripMenuItem,
-            this.setUserControlledTeamsToolStripMenuItem});
+            this.setUserControlledTeamsToolStripMenuItem,
+            this.setGameInjuriesToolStripMenuItem});
 			this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
 			this.franchiseToolStripMenuItem.Text = "Franchise";
 			// 
@@ -217,6 +219,12 @@ namespace MaddenEditor.Forms
 			this.setUserControlledTeamsToolStripMenuItem.Name = "setUserControlledTeamsToolStripMenuItem";
 			this.setUserControlledTeamsToolStripMenuItem.Text = "Set User Controlled Teams ...";
 			this.setUserControlledTeamsToolStripMenuItem.Click += new System.EventHandler(this.setUserControlledTeamsToolStripMenuItem_Click);
+			// 
+			// setGameInjuriesToolStripMenuItem
+			// 
+			this.setGameInjuriesToolStripMenuItem.Name = "setGameInjuriesToolStripMenuItem";
+			this.setGameInjuriesToolStripMenuItem.Text = "Set Game Injuries ...";
+			this.setGameInjuriesToolStripMenuItem.Click += new System.EventHandler(this.setGameInjuriesToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -338,7 +346,7 @@ namespace MaddenEditor.Forms
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Madden Editor 2005";
+			this.Text = "Gommo\'s Madden Editor";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.menuStrip1.ResumeLayout(false);
 			this.tabControl.ResumeLayout(false);
@@ -386,5 +394,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem depthChartEditorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editScheduleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem setGameInjuriesToolStripMenuItem;
     }
 }

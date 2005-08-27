@@ -1,5 +1,5 @@
 /******************************************************************************
- * Madden 2005 Editor
+ * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,8 @@ namespace MaddenEditor.Core
 	public enum MaddenFileVersion
 	{
 		Ver2004,
-		Ver2005
+		Ver2005,	//Franchise contains 159 tables
+		Ver2006		//Franchise contains 183
 	}
 
 	/// <summary>
@@ -83,6 +84,9 @@ namespace MaddenEditor.Core
 	{
 		public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
+		public const int MADDEN_FRA_2004_TABLE_COUNT = 136;
+		public const int MADDEN_FRA_2005_TABLE_COUNT = 159;
+		public const int MADDEN_FRA_2006_TABLE_COUNT = 183;
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
@@ -95,6 +99,8 @@ namespace MaddenEditor.Core
 		public const string OWNER_TABLE = "OWNR";
 		public const string CITY_TABLE = "CITY";
 		public const string SCHEDULE_TABLE = "SCHD";
+		// Madden 2006 specific tables
+		public const string GAME_OPTIONS_TABLE = "GOPT";
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -263,6 +269,20 @@ namespace MaddenEditor.Core
 				else
 				{
 					fileType = MaddenFileType.FranchiseFile;
+					Console.WriteLine("Franchise contains {0} tables", tableCount);
+					switch (tableCount)
+					{
+						case MADDEN_FRA_2005_TABLE_COUNT:
+							fileVersion = MaddenFileVersion.Ver2005;
+							break;
+						case MADDEN_FRA_2006_TABLE_COUNT:
+							fileVersion = MaddenFileVersion.Ver2006;
+							break;
+						default:
+							//Madden 2004 file
+							fileVersion = MaddenFileVersion.Ver2004;
+							break;
+					}
 				}
 				//Initialise the tableOrder with the Table names we want to 
 				//process
@@ -277,9 +297,16 @@ namespace MaddenEditor.Core
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
-					tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
 					tableOrder.Add(SCHEDULE_TABLE, -1);
+					if (fileVersion >= MaddenFileVersion.Ver2005)
+					{
+						tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
+					}
+					if (fileVersion >= MaddenFileVersion.Ver2006)
+					{
+						tableOrder.Add(GAME_OPTIONS_TABLE, -1);
+					}
 				}
 
 				for (int j = 0; j < tableCount; j++)
@@ -287,8 +314,6 @@ namespace MaddenEditor.Core
 					TdbTableProperties tableProps = new TdbTableProperties();
 					tableProps.Name = new string((char)0, 5);
 					TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
-
-					Console.WriteLine("File Contains Table: {0}", tableProps.Name);
 
 					//If we found a table we want to process, then store its
 					//order number in our tableOrder Hashmap
