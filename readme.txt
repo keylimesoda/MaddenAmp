@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                        UNOFFICIAL MADDEN 2005 EDITOR 0.9.7.1
+                           GOMMO'S MADDEN EDITOR 1.0.0.0
 
-                                  20th August 2005
+                                  27th August 2005
 
                                      readme.txt
 
@@ -40,8 +40,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
-* Should support Madden 2006 Roster files without throwing exceptions. Don't know about franchise
-  files cause I dont have any yet.
+* Supports to most extent Madden 2004,2005 & 2006
+
+* Added In-Game and Sim Injury sliders for Madden 2006 franchises
 
 * Added Color selectors for team primary colors
 
