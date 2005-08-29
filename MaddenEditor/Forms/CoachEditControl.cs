@@ -115,13 +115,16 @@ namespace MaddenEditor.Forms
 
 				//Priorities
 				SortedList<int, CoachPrioritySliderRecord> priorites = model.CoachModel.GetCurrentCoachSliders();
-				if (priorites.Count == 0)
+				int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+				if (priorites.Count != priorityCount)
 				{
 					for (int i = 0; i < Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length; i++)
 					{
 						prioritySliders[i].Value = 0;
 						priorityTypeSliders[i].Value = 0;
 						priorityDescriptionLabels[i].Text = "";
+						prioritySliders[i].Enabled = false;
+						priorityTypeSliders[i].Enabled = false;
 					}
 				}
 				else
@@ -132,6 +135,8 @@ namespace MaddenEditor.Forms
 						prioritySliders[index].Value = priorRecord.Priority;
 						priorityTypeSliders[index].Value = priorRecord.PriorityType;
 						priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, priorRecord.PriorityType);
+						prioritySliders[index].Enabled = true;
+						priorityTypeSliders[index].Enabled = true;
 						index++;
 					}
 				}
@@ -292,8 +297,12 @@ namespace MaddenEditor.Forms
 					}
 				}
 
-				model.CoachModel.GetCurrentCoachSliders().Values[index].PriorityType = (int)priorityTypeSliders[index].Value;
-				priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, (int)priorityTypeSliders[index].Value);
+				SortedList<int, CoachPrioritySliderRecord> priorities = model.CoachModel.GetCurrentCoachSliders();
+				if (priorities.Count == numPositions)
+				{
+					priorities.Values[index].PriorityType = (int)priorityTypeSliders[index].Value;
+					priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, (int)priorityTypeSliders[index].Value);
+				}
 			}
 		}
 
@@ -311,8 +320,11 @@ namespace MaddenEditor.Forms
 					}
 				}
 
-				model.CoachModel.GetCurrentCoachSliders().Values[index].Priority = (int)prioritySliders[index].Value;
-				
+				SortedList<int, CoachPrioritySliderRecord> priorities = model.CoachModel.GetCurrentCoachSliders();
+				if (priorities.Count == numPositions)
+				{
+					priorities.Values[index].Priority = (int)prioritySliders[index].Value;
+				}
 			}
 		}
 
