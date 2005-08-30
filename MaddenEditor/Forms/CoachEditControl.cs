@@ -98,6 +98,8 @@ namespace MaddenEditor.Forms
 					fourThreeButton.Checked = false;
 				}
 
+				coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
+
 				//Attributes
 				coachEthics.Value = (int)record.Ethics;
 				coachKnowledge.Value = (int)record.Knowledge;
@@ -246,6 +248,12 @@ namespace MaddenEditor.Forms
 
 			filterPositionComboBox.SelectedIndex = 0;
 			filterTeamComboBox.SelectedIndex = 0;
+
+			foreach (GenericRecord rec in model.TeamModel.DefensivePlaybookList)
+			{
+				coachDefensivePlaybook.Items.Add(rec);
+			}
+			coachDefensivePlaybook.SelectedIndex = 0;
 
 			//Create priority controls
 			int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
@@ -564,6 +572,14 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.CoachModel.CurrentCoachRecord.DefensiveAggression = (int)coachDefAggression.Value;
+			}
+		}
+
+		private void coachDefensivePlaybook_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.DefensivePlaybook = (int)coachDefensivePlaybook.SelectedIndex;
 			}
 		}
 		

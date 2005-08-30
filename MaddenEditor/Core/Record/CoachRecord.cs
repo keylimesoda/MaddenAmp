@@ -56,6 +56,7 @@ namespace MaddenEditor.Core.Record
 		public const string CAREER_TIES = "CCTI";
 
 		public const string DEFENSE_TYPE = "CDTY";
+		public const string DEFENSIVE_PLAYBOOK = "CDID";
 
 		public const string OFF_STRAT = "COTR";
 		public const string DEF_STRAT = "CDTR";
@@ -264,7 +265,7 @@ namespace MaddenEditor.Core.Record
 			{
 				if (value)
 				{
-					SetField(DEFENSE_TYPE, 80);
+					SetField(DEFENSE_TYPE, 95);
 				}
 				else
 				{
@@ -273,6 +274,18 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
+		public int DefensivePlaybook
+		{
+			get
+			{
+				return GetIntField(DEFENSIVE_PLAYBOOK);
+			}
+			set
+			{
+				SetField(DEFENSIVE_PLAYBOOK, value);
+			}
+		}
+		
 		public int OffensiveStrategy
 		{
 			get

@@ -57,7 +57,7 @@ namespace MaddenEditor.Forms
 		{
 			depthEditingModel = new DepthChartEditingModel(model);
 			isInitialising = true;
-			foreach (string team in model.TeamModel.GetTeamNames())
+			foreach (TeamRecord team in model.TeamModel.GetTeams())
 			{
 				teamCombo.Items.Add(team);
 			}
@@ -72,7 +72,7 @@ namespace MaddenEditor.Forms
 			positionCombo.Items.Add("LS");
 			positionCombo.Items.Add("3DRB");
 			positionCombo.Text = positionCombo.Items[0].ToString();
-			teamCombo.Text = teamCombo.Items[0].ToString();
+			teamCombo.SelectedIndex = 0;
 
 			isInitialising = false;
 
@@ -95,7 +95,7 @@ namespace MaddenEditor.Forms
 		{
 			this.Cursor = Cursors.WaitCursor;
 			isInitialising = true;
-			int teamId = model.TeamModel.GetTeamIdFromTeamName(teamCombo.SelectedItem.ToString());
+			int teamId = ((TeamRecord)teamCombo.SelectedItem).TeamId;
 			int positionId = positionCombo.SelectedIndex;
 
 			SortedList<int, DepthPlayerValueObject> depthList = depthEditingModel.GetPlayers(teamId, positionId);

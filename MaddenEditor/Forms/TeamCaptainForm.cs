@@ -93,7 +93,7 @@ namespace MaddenEditor.Forms
 		{
 			isInitialising = true;
 			//Load up the team tables
-			foreach (string team in model.TeamModel.GetTeamNames())
+			foreach (TeamRecord team in model.TeamModel.GetTeams())
 			{
 				teamComboBox.Items.Add(team);
 			}
@@ -119,7 +119,7 @@ namespace MaddenEditor.Forms
 			}
 			isInitialising = true;
 			this.Cursor = Cursors.WaitCursor;
-			int teamId = model.TeamModel.GetTeamIdFromTeamName(teamComboBox.Text);
+			int teamId = ((TeamRecord)teamComboBox.SelectedItem).TeamId;
 
 			offensiveCaptainCombo.Items.Clear();
 			defensiveCaptainCombo.Items.Clear();

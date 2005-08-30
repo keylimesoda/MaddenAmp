@@ -53,7 +53,7 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
-			foreach (string team in model.TeamModel.GetTeamNames())
+			foreach (TeamRecord team in model.TeamModel.GetTeams())
 			{
 				filterTeamCombo.Items.Add(team);
 			}
@@ -100,7 +100,7 @@ namespace MaddenEditor.Forms
 			if (filterTeamCheckbox.Checked)
 			{
 				//Get the team id for the team selected in the combobox
-				teamID = model.TeamModel.GetTeamIdFromTeamName(filterTeamCombo.SelectedItem.ToString());
+				teamID = ((TeamRecord)(filterTeamCombo.SelectedItem)).TeamId;
 			}
 
 			if (filterPositionCheckbox.Checked)

@@ -89,6 +89,15 @@ namespace MaddenEditor.Forms
 			{
 				teamDefensivePlaybookCombo.Items.Add(rec);
 			}
+			foreach (TeamRecord team in model.TeamModel.GetTeams())
+			{
+				cbTeamRival1.Items.Add(team);
+				cbTeamRival2.Items.Add(team);
+				cbTeamRival3.Items.Add(team);
+			}
+			cbTeamRival1.SelectedIndex = 0;
+			cbTeamRival2.SelectedIndex = 0;
+			cbTeamRival3.SelectedIndex = 0;
 
 			leagueCombo.SelectedIndex = 0;
 			divisionCombo.SelectedIndex = 0;
@@ -155,8 +164,18 @@ namespace MaddenEditor.Forms
 
 				teamReputation.Value = record.Reputation;
 
-				rbWhite.Checked = (record.ShoeColor == 0);
-				rbBlack.Checked = (record.ShoeColor == 1);
+				if (model.FileVersion != MaddenFileVersion.Ver2006)
+				{
+					rbWhite.Checked = (record.ShoeColor == 0);
+					rbBlack.Checked = (record.ShoeColor == 1);
+					rbWhite.Enabled = true;
+					rbBlack.Enabled = true;
+				}
+				else
+				{
+					rbWhite.Enabled = false;
+					rbBlack.Enabled = false;
+				}
 
 				//Team colours
 				pnlPrimary.BackColor = record.PrimaryColor;
@@ -212,6 +231,21 @@ namespace MaddenEditor.Forms
 						teamDefensivePlaybookCombo.SelectedItem = obj;
 						break;
 					}
+				}
+				if (model.FileVersion >= MaddenFileVersion.Ver2005)
+				{
+					cbTeamRival1.SelectedIndex = model.TeamModel.CurrentTeamRecord.TeamRival1;
+					cbTeamRival2.SelectedIndex = model.TeamModel.CurrentTeamRecord.TeamRival2;
+					cbTeamRival3.SelectedIndex = model.TeamModel.CurrentTeamRecord.TeamRival3;
+					cbTeamRival1.Enabled = true;
+					cbTeamRival2.Enabled = true;
+					cbTeamRival3.Enabled = true;
+				}
+				else
+				{
+					cbTeamRival1.Enabled = false;
+					cbTeamRival2.Enabled = false;
+					cbTeamRival3.Enabled = false;
 				}
 			}
 			catch (Exception e)

@@ -75,6 +75,10 @@ namespace MaddenEditor.Core.Record
 
 		public const string TEAM_SHOE_COLOR = "TSHO";
 
+		public const string TEAM_RIVAL_1 = "TRV1";
+		public const string TEAM_RIVAL_2 = "TRV2";
+		public const string TEAM_RIVAL_3 = "TRV3";
+
 		public TeamRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
@@ -412,6 +416,42 @@ namespace MaddenEditor.Core.Record
 				SetField(SECONDARY_RED, value.R);
 				SetField(SECONDARY_GREEN, value.G);
 				SetField(SECONDARY_BLUE, value.B);
+			}
+		}
+
+		public int TeamRival1
+		{
+			get
+			{
+				return GetIntField(TEAM_RIVAL_1);
+			}
+			set
+			{
+				SetField(TEAM_RIVAL_1, value);
+			}
+		}
+
+		public int TeamRival2
+		{
+			get
+			{
+				return GetIntField(TEAM_RIVAL_2);
+			}
+			set
+			{
+				SetField(TEAM_RIVAL_2, value);
+			}
+		}
+
+		public int TeamRival3
+		{
+			get
+			{
+				return GetIntField(TEAM_RIVAL_3);
+			}
+			set
+			{
+				SetField(TEAM_RIVAL_3, value);
 			}
 		}
 
