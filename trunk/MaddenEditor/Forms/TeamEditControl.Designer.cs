@@ -90,6 +90,12 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
+			this.label22 = new System.Windows.Forms.Label();
+			this.cbTeamRival1 = new System.Windows.Forms.ComboBox();
+			this.cbTeamRival2 = new System.Windows.Forms.ComboBox();
+			this.cbTeamRival3 = new System.Windows.Forms.ComboBox();
+			this.label23 = new System.Windows.Forms.Label();
+			this.label24 = new System.Windows.Forms.Label();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -139,6 +145,12 @@ namespace MaddenEditor.Forms
 			// 
 			// splitContainer1.Panel2
 			// 
+			this.splitContainer1.Panel2.Controls.Add(this.label24);
+			this.splitContainer1.Panel2.Controls.Add(this.label23);
+			this.splitContainer1.Panel2.Controls.Add(this.cbTeamRival3);
+			this.splitContainer1.Panel2.Controls.Add(this.cbTeamRival2);
+			this.splitContainer1.Panel2.Controls.Add(this.cbTeamRival1);
+			this.splitContainer1.Panel2.Controls.Add(this.label22);
 			this.splitContainer1.Panel2.Controls.Add(this.btnSecondary);
 			this.splitContainer1.Panel2.Controls.Add(this.pnlSecondary);
 			this.splitContainer1.Panel2.Controls.Add(this.btnPrimary);
@@ -540,7 +552,7 @@ namespace MaddenEditor.Forms
 			// label25
 			// 
 			this.label25.AutoSize = true;
-			this.label25.Location = new System.Drawing.Point(240, 265);
+			this.label25.Location = new System.Drawing.Point(240, 262);
 			this.label25.Name = "label25";
 			this.label25.Size = new System.Drawing.Size(55, 13);
 			this.label25.TabIndex = 26;
@@ -804,6 +816,57 @@ namespace MaddenEditor.Forms
 			this.label10.TabIndex = 0;
 			this.label10.Text = "QB Rating";
 			// 
+			// label22
+			// 
+			this.label22.AutoSize = true;
+			this.label22.Location = new System.Drawing.Point(229, 363);
+			this.label22.Name = "label22";
+			this.label22.Size = new System.Drawing.Size(66, 13);
+			this.label22.TabIndex = 33;
+			this.label22.Text = "Team Rival 1";
+			// 
+			// cbTeamRival1
+			// 
+			this.cbTeamRival1.FormattingEnabled = true;
+			this.cbTeamRival1.Location = new System.Drawing.Point(301, 355);
+			this.cbTeamRival1.Name = "cbTeamRival1";
+			this.cbTeamRival1.Size = new System.Drawing.Size(121, 21);
+			this.cbTeamRival1.TabIndex = 34;
+			// 
+			// cbTeamRival2
+			// 
+			this.cbTeamRival2.FormattingEnabled = true;
+			this.cbTeamRival2.Location = new System.Drawing.Point(301, 393);
+			this.cbTeamRival2.Name = "cbTeamRival2";
+			this.cbTeamRival2.Size = new System.Drawing.Size(121, 21);
+			this.cbTeamRival2.TabIndex = 35;
+			// 
+			// cbTeamRival3
+			// 
+			this.cbTeamRival3.FormattingEnabled = true;
+			this.cbTeamRival3.Location = new System.Drawing.Point(301, 432);
+			this.cbTeamRival3.Name = "cbTeamRival3";
+			this.cbTeamRival3.Size = new System.Drawing.Size(121, 21);
+			this.cbTeamRival3.TabIndex = 36;
+			// 
+			// label23
+			// 
+			this.label23.AutoSize = true;
+			this.label23.Location = new System.Drawing.Point(229, 401);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(66, 13);
+			this.label23.TabIndex = 37;
+			this.label23.Text = "Team Rival 2";
+			// 
+			// label24
+			// 
+			this.label24.AutoSize = true;
+			this.label24.Location = new System.Drawing.Point(229, 440);
+			this.label24.Name = "label24";
+			this.label24.Size = new System.Drawing.Size(66, 13);
+			this.label24.TabIndex = 38;
+			this.label24.Text = "Team Rival 3";
+			// 
 			// TeamEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -900,5 +963,11 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Panel pnlSecondary;
 		private System.Windows.Forms.Button btnPrimary;
 		private System.Windows.Forms.Panel pnlPrimary;
+		private System.Windows.Forms.ComboBox cbTeamRival1;
+		private System.Windows.Forms.Label label22;
+		private System.Windows.Forms.Label label24;
+		private System.Windows.Forms.Label label23;
+		private System.Windows.Forms.ComboBox cbTeamRival3;
+		private System.Windows.Forms.ComboBox cbTeamRival2;
 	}
 }

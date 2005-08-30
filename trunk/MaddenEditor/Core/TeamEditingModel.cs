@@ -33,7 +33,7 @@ namespace MaddenEditor.Core
 		/** Collection of team names hashed by teamid */
 		private Dictionary<int, string> teamNameList = null;
 		/** View to the TeamRecords indexed by Teamid */
-		private Dictionary<int, TeamRecord> teamRecords = null;
+		private SortedList<int, TeamRecord> teamRecords = null;
 		/** View to the OwnedTeam records */
 		private List<OwnerRecord> teamOwnerRecords = null;
 		/** Reference to our EditorModel */
@@ -142,6 +142,8 @@ namespace MaddenEditor.Core
 			defensivePlayBookList.Add(new GenericRecord("3-4", 1));
 			defensivePlayBookList.Add(new GenericRecord("4-6", 2));
 			defensivePlayBookList.Add(new GenericRecord("Cover 2", 3));
+			defensivePlayBookList.Add(new GenericRecord("Balanced D", 4));
+			defensivePlayBookList.Add(new GenericRecord("QB Contain", 5));
 		}
 
 		public void SetConferenceFilter(int id)
@@ -371,16 +373,32 @@ namespace MaddenEditor.Core
 			}
 		}
 
+		private void CreateTeamRecords()
+		{
+			teamRecords = new SortedList<int, TeamRecord>();
+
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				TeamRecord tr = (TeamRecord)record;
+				teamRecords.Add(tr.TeamId, tr);
+			}
+		}
+
+		public ICollection<TeamRecord> GetTeams()
+		{
+			if (teamRecords == null)
+			{
+				CreateTeamRecords();
+			}
+
+			return teamRecords.Values;
+		}
+
 		public TeamRecord GetTeamRecord(int teamId)
 		{
 			if (teamRecords == null)
 			{
-				teamRecords = new Dictionary<int, TeamRecord>();
-				foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-				{
-					TeamRecord tr = (TeamRecord)record;
-					teamRecords.Add(tr.TeamId, tr);
-				}
+				CreateTeamRecords();
 			}
 
 			if (teamRecords.ContainsKey(teamId))
@@ -390,16 +408,6 @@ namespace MaddenEditor.Core
 			
 			return null;
 			
-		}
-
-		public ICollection<string> GetTeamNames()
-		{
-			if (teamNameList == null)
-			{
-				CreateTeamNameList();
-			}
-
-			return teamNameList.Values;
 		}
 
 		public string GetTeamNameFromTeamId(int teamid)

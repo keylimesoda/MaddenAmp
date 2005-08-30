@@ -85,9 +85,9 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
-			foreach (string teamname in model.TeamModel.GetTeamNames())
+			foreach (TeamRecord team in model.TeamModel.GetTeams())
 			{
-				filterTeamComboBox.Items.Add(teamname);
+				filterTeamComboBox.Items.Add(team);
 			}
 
 			foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
@@ -124,7 +124,7 @@ namespace MaddenEditor.Forms
 
 				if (chkTeamFilter.Checked)
 				{
-					if (playerRecord.TeamId != model.TeamModel.GetTeamIdFromTeamName(filterTeamComboBox.SelectedItem.ToString()))
+					if (playerRecord.TeamId != ((TeamRecord)filterTeamComboBox.SelectedItem).TeamId)
 					{
 						continue;
 					}

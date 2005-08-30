@@ -38,6 +38,7 @@ namespace MaddenEditor.Forms
 			this.coachCareerLoses = new System.Windows.Forms.NumericUpDown();
 			this.coachCareerWins = new System.Windows.Forms.NumericUpDown();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.coachDefensivePlaybook = new System.Windows.Forms.ComboBox();
 			this.fourThreeButton = new System.Windows.Forms.RadioButton();
 			this.threeFourButton = new System.Windows.Forms.RadioButton();
 			this.label27 = new System.Windows.Forms.Label();
@@ -288,14 +289,26 @@ namespace MaddenEditor.Forms
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.coachDefensivePlaybook);
 			this.groupBox3.Controls.Add(this.fourThreeButton);
 			this.groupBox3.Controls.Add(this.threeFourButton);
 			this.groupBox3.Location = new System.Drawing.Point(15, 333);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(190, 37);
+			this.groupBox3.Size = new System.Drawing.Size(190, 65);
 			this.groupBox3.TabIndex = 13;
 			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Defensive Alignment";
+			this.groupBox3.Text = "Defensive Tactics";
+			// 
+			// coachDefensivePlaybook
+			// 
+			this.coachDefensivePlaybook.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.coachDefensivePlaybook.FormattingEnabled = true;
+			this.coachDefensivePlaybook.Location = new System.Drawing.Point(22, 37);
+			this.coachDefensivePlaybook.Name = "coachDefensivePlaybook";
+			this.coachDefensivePlaybook.Size = new System.Drawing.Size(143, 21);
+			this.coachDefensivePlaybook.TabIndex = 23;
+			this.coachDefensivePlaybook.SelectedIndexChanged += new System.EventHandler(this.coachDefensivePlaybook_SelectedIndexChanged);
 			// 
 			// fourThreeButton
 			// 
@@ -1320,6 +1333,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown coachOffAggression;
 		private System.Windows.Forms.NumericUpDown coachDefAggression;
 		private System.Windows.Forms.Label label48;
+		private System.Windows.Forms.ComboBox coachDefensivePlaybook;
 
 
 	}
