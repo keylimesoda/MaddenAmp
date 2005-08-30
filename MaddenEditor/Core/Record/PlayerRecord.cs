@@ -66,6 +66,7 @@ namespace MaddenEditor.Core.Record
 		public const string TOUGHNESS = "PTGH";
 		public const string THROWING_STYLE = "PSTY";
 
+		public const string TENDANCY = "PTEN";
 		public const string MORALE = "PMOR";
 		public const string IMPORTANCE = "PIMP";
 		public const string PORTRAIT_ID = "PSXP";
@@ -1197,6 +1198,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(LEGS_THIGH_PADS, 99 - value);
+			}
+		}
+
+		public int Tendancy
+		{
+			get
+			{
+				return GetIntField(TENDANCY);
+			}
+			set
+			{
+				SetField(TENDANCY, value);
 			}
 		}
 

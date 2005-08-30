@@ -30,7 +30,6 @@ namespace MaddenEditor.Forms
 		{
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.label48 = new System.Windows.Forms.Label();
-			this.label31 = new System.Windows.Forms.Label();
 			this.label30 = new System.Windows.Forms.Label();
 			this.label29 = new System.Windows.Forms.Label();
 			this.label28 = new System.Windows.Forms.Label();
@@ -49,8 +48,6 @@ namespace MaddenEditor.Forms
 			this.coachAge = new System.Windows.Forms.NumericUpDown();
 			this.label11 = new System.Windows.Forms.Label();
 			this.coachSuperBowlLoses = new System.Windows.Forms.NumericUpDown();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
 			this.coachSuperbowlWins = new System.Windows.Forms.NumericUpDown();
 			this.coachPlayoffLoses = new System.Windows.Forms.NumericUpDown();
 			this.label7 = new System.Windows.Forms.Label();
@@ -58,7 +55,7 @@ namespace MaddenEditor.Forms
 			this.coachPlayoffWins = new System.Windows.Forms.NumericUpDown();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
-			this.coachTeamCombo = new System.Windows.Forms.ComboBox();
+			this.cbTeamCombo = new System.Windows.Forms.ComboBox();
 			this.coachesPositionCombo = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.coachesName = new System.Windows.Forms.TextBox();
@@ -118,6 +115,12 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.coachEthics = new System.Windows.Forms.NumericUpDown();
 			this.label10 = new System.Windows.Forms.Label();
+			this.cbSkinColor = new System.Windows.Forms.ComboBox();
+			this.label50 = new System.Windows.Forms.Label();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.label31 = new System.Windows.Forms.Label();
+			this.label51 = new System.Windows.Forms.Label();
+			this.label52 = new System.Windows.Forms.Label();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -148,6 +151,7 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.coachKnowledge)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.coachMotivation)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.coachEthics)).BeginInit();
+			this.tabPage1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -158,33 +162,16 @@ namespace MaddenEditor.Forms
 			// 
 			// splitContainer1.Panel1
 			// 
+			this.splitContainer1.Panel1.Controls.Add(this.label50);
+			this.splitContainer1.Panel1.Controls.Add(this.cbSkinColor);
 			this.splitContainer1.Panel1.Controls.Add(this.label48);
-			this.splitContainer1.Panel1.Controls.Add(this.label31);
-			this.splitContainer1.Panel1.Controls.Add(this.label30);
-			this.splitContainer1.Panel1.Controls.Add(this.label29);
-			this.splitContainer1.Panel1.Controls.Add(this.label28);
-			this.splitContainer1.Panel1.Controls.Add(this.coachCareerTies);
-			this.splitContainer1.Panel1.Controls.Add(this.coachCareerLoses);
-			this.splitContainer1.Panel1.Controls.Add(this.coachCareerWins);
 			this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
 			this.splitContainer1.Panel1.Controls.Add(this.label27);
 			this.splitContainer1.Panel1.Controls.Add(this.coachSalary);
 			this.splitContainer1.Panel1.Controls.Add(this.label26);
-			this.splitContainer1.Panel1.Controls.Add(this.coachWinningSeasons);
-			this.splitContainer1.Panel1.Controls.Add(this.label14);
 			this.splitContainer1.Panel1.Controls.Add(this.coachAge);
 			this.splitContainer1.Panel1.Controls.Add(this.label11);
-			this.splitContainer1.Panel1.Controls.Add(this.coachSuperBowlLoses);
-			this.splitContainer1.Panel1.Controls.Add(this.label8);
-			this.splitContainer1.Panel1.Controls.Add(this.label9);
-			this.splitContainer1.Panel1.Controls.Add(this.coachSuperbowlWins);
-			this.splitContainer1.Panel1.Controls.Add(this.coachPlayoffLoses);
-			this.splitContainer1.Panel1.Controls.Add(this.label7);
-			this.splitContainer1.Panel1.Controls.Add(this.label6);
-			this.splitContainer1.Panel1.Controls.Add(this.coachPlayoffWins);
-			this.splitContainer1.Panel1.Controls.Add(this.label5);
-			this.splitContainer1.Panel1.Controls.Add(this.label4);
-			this.splitContainer1.Panel1.Controls.Add(this.coachTeamCombo);
+			this.splitContainer1.Panel1.Controls.Add(this.cbTeamCombo);
 			this.splitContainer1.Panel1.Controls.Add(this.coachesPositionCombo);
 			this.splitContainer1.Panel1.Controls.Add(this.label3);
 			this.splitContainer1.Panel1.Controls.Add(this.coachesName);
@@ -210,45 +197,36 @@ namespace MaddenEditor.Forms
 			this.label48.TabIndex = 25;
 			this.label48.Text = "COACH INFORMATION";
 			// 
-			// label31
-			// 
-			this.label31.AutoSize = true;
-			this.label31.Location = new System.Drawing.Point(78, 180);
-			this.label31.Name = "label31";
-			this.label31.Size = new System.Drawing.Size(72, 13);
-			this.label31.TabIndex = 24;
-			this.label31.Text = "Career Record";
-			// 
 			// label30
 			// 
 			this.label30.AutoSize = true;
-			this.label30.Location = new System.Drawing.Point(159, 206);
+			this.label30.Location = new System.Drawing.Point(215, 46);
 			this.label30.Name = "label30";
-			this.label30.Size = new System.Drawing.Size(10, 13);
+			this.label30.Size = new System.Drawing.Size(23, 13);
 			this.label30.TabIndex = 23;
-			this.label30.Text = "T";
+			this.label30.Text = "Ties";
 			// 
 			// label29
 			// 
 			this.label29.AutoSize = true;
-			this.label29.Location = new System.Drawing.Point(89, 206);
+			this.label29.Location = new System.Drawing.Point(122, 46);
 			this.label29.Name = "label29";
-			this.label29.Size = new System.Drawing.Size(9, 13);
+			this.label29.Size = new System.Drawing.Size(31, 13);
 			this.label29.TabIndex = 22;
-			this.label29.Text = "L";
+			this.label29.Text = "Loses";
 			// 
 			// label28
 			// 
 			this.label28.AutoSize = true;
-			this.label28.Location = new System.Drawing.Point(14, 206);
+			this.label28.Location = new System.Drawing.Point(35, 46);
 			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(14, 13);
+			this.label28.Size = new System.Drawing.Size(27, 13);
 			this.label28.TabIndex = 21;
-			this.label28.Text = "W";
+			this.label28.Text = "Wins";
 			// 
 			// coachCareerTies
 			// 
-			this.coachCareerTies.Location = new System.Drawing.Point(172, 199);
+			this.coachCareerTies.Location = new System.Drawing.Point(244, 39);
 			this.coachCareerTies.Maximum = new decimal(new int[] {
             1023,
             0,
@@ -261,7 +239,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachCareerLoses
 			// 
-			this.coachCareerLoses.Location = new System.Drawing.Point(104, 199);
+			this.coachCareerLoses.Location = new System.Drawing.Point(159, 39);
 			this.coachCareerLoses.Maximum = new decimal(new int[] {
             1023,
             0,
@@ -274,7 +252,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachCareerWins
 			// 
-			this.coachCareerWins.Location = new System.Drawing.Point(29, 199);
+			this.coachCareerWins.Location = new System.Drawing.Point(68, 39);
 			this.coachCareerWins.Maximum = new decimal(new int[] {
             1023,
             0,
@@ -292,7 +270,7 @@ namespace MaddenEditor.Forms
 			this.groupBox3.Controls.Add(this.coachDefensivePlaybook);
 			this.groupBox3.Controls.Add(this.fourThreeButton);
 			this.groupBox3.Controls.Add(this.threeFourButton);
-			this.groupBox3.Location = new System.Drawing.Point(15, 333);
+			this.groupBox3.Location = new System.Drawing.Point(22, 240);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(190, 65);
 			this.groupBox3.TabIndex = 13;
@@ -334,7 +312,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label27.AutoSize = true;
-			this.label27.Location = new System.Drawing.Point(160, 162);
+			this.label27.Location = new System.Drawing.Point(160, 208);
 			this.label27.Name = "label27";
 			this.label27.Size = new System.Drawing.Size(12, 13);
 			this.label27.TabIndex = 17;
@@ -345,7 +323,7 @@ namespace MaddenEditor.Forms
 			this.coachSalary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.coachSalary.DecimalPlaces = 2;
-			this.coachSalary.Location = new System.Drawing.Point(78, 155);
+			this.coachSalary.Location = new System.Drawing.Point(78, 201);
 			this.coachSalary.Maximum = new decimal(new int[] {
             16383,
             0,
@@ -358,7 +336,7 @@ namespace MaddenEditor.Forms
 			// label26
 			// 
 			this.label26.AutoSize = true;
-			this.label26.Location = new System.Drawing.Point(40, 162);
+			this.label26.Location = new System.Drawing.Point(40, 208);
 			this.label26.Name = "label26";
 			this.label26.Size = new System.Drawing.Size(32, 13);
 			this.label26.TabIndex = 15;
@@ -366,7 +344,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachWinningSeasons
 			// 
-			this.coachWinningSeasons.Location = new System.Drawing.Point(137, 303);
+			this.coachWinningSeasons.Location = new System.Drawing.Point(195, 218);
 			this.coachWinningSeasons.Maximum = new decimal(new int[] {
             63,
             0,
@@ -380,7 +358,7 @@ namespace MaddenEditor.Forms
 			// label14
 			// 
 			this.label14.AutoSize = true;
-			this.label14.Location = new System.Drawing.Point(47, 310);
+			this.label14.Location = new System.Drawing.Point(103, 225);
 			this.label14.Name = "label14";
 			this.label14.Size = new System.Drawing.Size(86, 13);
 			this.label14.TabIndex = 13;
@@ -412,7 +390,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachSuperBowlLoses
 			// 
-			this.coachSuperBowlLoses.Location = new System.Drawing.Point(137, 277);
+			this.coachSuperBowlLoses.Location = new System.Drawing.Point(195, 170);
 			this.coachSuperBowlLoses.Maximum = new decimal(new int[] {
             63,
             0,
@@ -423,27 +401,9 @@ namespace MaddenEditor.Forms
 			this.coachSuperBowlLoses.TabIndex = 11;
 			this.coachSuperBowlLoses.ValueChanged += new System.EventHandler(this.coachSuperBowlLoses_ValueChanged);
 			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(122, 284);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(9, 13);
-			this.label8.TabIndex = 10;
-			this.label8.Text = "L";
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(55, 284);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(14, 13);
-			this.label9.TabIndex = 9;
-			this.label9.Text = "W";
-			// 
 			// coachSuperbowlWins
 			// 
-			this.coachSuperbowlWins.Location = new System.Drawing.Point(73, 277);
+			this.coachSuperbowlWins.Location = new System.Drawing.Point(110, 170);
 			this.coachSuperbowlWins.Maximum = new decimal(new int[] {
             63,
             0,
@@ -456,7 +416,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachPlayoffLoses
 			// 
-			this.coachPlayoffLoses.Location = new System.Drawing.Point(137, 238);
+			this.coachPlayoffLoses.Location = new System.Drawing.Point(195, 103);
 			this.coachPlayoffLoses.Maximum = new decimal(new int[] {
             1023,
             0,
@@ -470,24 +430,24 @@ namespace MaddenEditor.Forms
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(122, 245);
+			this.label7.Location = new System.Drawing.Point(159, 110);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(9, 13);
+			this.label7.Size = new System.Drawing.Size(31, 13);
 			this.label7.TabIndex = 6;
-			this.label7.Text = "L";
+			this.label7.Text = "Loses";
 			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(55, 245);
+			this.label6.Location = new System.Drawing.Point(79, 110);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(14, 13);
+			this.label6.Size = new System.Drawing.Size(27, 13);
 			this.label6.TabIndex = 5;
-			this.label6.Text = "W";
+			this.label6.Text = "Wins";
 			// 
 			// coachPlayoffWins
 			// 
-			this.coachPlayoffWins.Location = new System.Drawing.Point(73, 238);
+			this.coachPlayoffWins.Location = new System.Drawing.Point(110, 103);
 			this.coachPlayoffWins.Maximum = new decimal(new int[] {
             1023,
             0,
@@ -501,7 +461,7 @@ namespace MaddenEditor.Forms
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(63, 261);
+			this.label5.Location = new System.Drawing.Point(118, 140);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(91, 13);
 			this.label5.TabIndex = 3;
@@ -510,22 +470,22 @@ namespace MaddenEditor.Forms
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(74, 222);
+			this.label4.Location = new System.Drawing.Point(136, 79);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(73, 13);
 			this.label4.TabIndex = 2;
 			this.label4.Text = "Playoff Record";
 			// 
-			// coachTeamCombo
+			// cbTeamCombo
 			// 
-			this.coachTeamCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			this.cbTeamCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.coachTeamCombo.FormattingEnabled = true;
-			this.coachTeamCombo.Location = new System.Drawing.Point(78, 93);
-			this.coachTeamCombo.Name = "coachTeamCombo";
-			this.coachTeamCombo.Size = new System.Drawing.Size(140, 21);
-			this.coachTeamCombo.TabIndex = 1;
-			this.coachTeamCombo.SelectedIndexChanged += new System.EventHandler(this.coachTeamCombo_SelectedIndexChanged);
+			this.cbTeamCombo.FormattingEnabled = true;
+			this.cbTeamCombo.Location = new System.Drawing.Point(78, 93);
+			this.cbTeamCombo.Name = "cbTeamCombo";
+			this.cbTeamCombo.Size = new System.Drawing.Size(140, 21);
+			this.cbTeamCombo.TabIndex = 1;
+			this.cbTeamCombo.SelectedIndexChanged += new System.EventHandler(this.coachTeamCombo_SelectedIndexChanged);
 			// 
 			// coachesPositionCombo
 			// 
@@ -671,6 +631,7 @@ namespace MaddenEditor.Forms
 			// tabControl
 			// 
 			this.tabControl.Controls.Add(this.attributePage);
+			this.tabControl.Controls.Add(this.tabPage1);
 			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl.Location = new System.Drawing.Point(0, 0);
 			this.tabControl.Name = "tabControl";
@@ -1196,6 +1157,86 @@ namespace MaddenEditor.Forms
 			this.label10.TabIndex = 0;
 			this.label10.Text = "Ethics";
 			// 
+			// cbSkinColor
+			// 
+			this.cbSkinColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.cbSkinColor.FormattingEnabled = true;
+			this.cbSkinColor.Items.AddRange(new object[] {
+            "Light 1",
+            "Light 2",
+            "Light 3",
+            "Medium",
+            "Dark"});
+			this.cbSkinColor.Location = new System.Drawing.Point(79, 162);
+			this.cbSkinColor.Name = "cbSkinColor";
+			this.cbSkinColor.Size = new System.Drawing.Size(93, 21);
+			this.cbSkinColor.TabIndex = 26;
+			this.cbSkinColor.SelectedIndexChanged += new System.EventHandler(this.cbSkinColor_SelectedIndexChanged);
+			// 
+			// label50
+			// 
+			this.label50.AutoSize = true;
+			this.label50.Location = new System.Drawing.Point(21, 170);
+			this.label50.Name = "label50";
+			this.label50.Size = new System.Drawing.Size(51, 13);
+			this.label50.TabIndex = 27;
+			this.label50.Text = "Skin Color";
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Controls.Add(this.label52);
+			this.tabPage1.Controls.Add(this.label51);
+			this.tabPage1.Controls.Add(this.label31);
+			this.tabPage1.Controls.Add(this.coachCareerLoses);
+			this.tabPage1.Controls.Add(this.label4);
+			this.tabPage1.Controls.Add(this.label5);
+			this.tabPage1.Controls.Add(this.coachPlayoffWins);
+			this.tabPage1.Controls.Add(this.label30);
+			this.tabPage1.Controls.Add(this.label6);
+			this.tabPage1.Controls.Add(this.label29);
+			this.tabPage1.Controls.Add(this.label7);
+			this.tabPage1.Controls.Add(this.label28);
+			this.tabPage1.Controls.Add(this.coachPlayoffLoses);
+			this.tabPage1.Controls.Add(this.coachCareerTies);
+			this.tabPage1.Controls.Add(this.coachSuperbowlWins);
+			this.tabPage1.Controls.Add(this.coachCareerWins);
+			this.tabPage1.Controls.Add(this.coachSuperBowlLoses);
+			this.tabPage1.Controls.Add(this.label14);
+			this.tabPage1.Controls.Add(this.coachWinningSeasons);
+			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Size = new System.Drawing.Size(530, 557);
+			this.tabPage1.TabIndex = 1;
+			this.tabPage1.Text = "Career Records";
+			// 
+			// label31
+			// 
+			this.label31.AutoSize = true;
+			this.label31.Location = new System.Drawing.Point(135, 12);
+			this.label31.Name = "label31";
+			this.label31.Size = new System.Drawing.Size(74, 13);
+			this.label31.TabIndex = 24;
+			this.label31.Text = "Overall Record";
+			// 
+			// label51
+			// 
+			this.label51.AutoSize = true;
+			this.label51.Location = new System.Drawing.Point(159, 177);
+			this.label51.Name = "label51";
+			this.label51.Size = new System.Drawing.Size(31, 13);
+			this.label51.TabIndex = 25;
+			this.label51.Text = "Loses";
+			// 
+			// label52
+			// 
+			this.label52.AutoSize = true;
+			this.label52.Location = new System.Drawing.Point(79, 177);
+			this.label52.Name = "label52";
+			this.label52.Size = new System.Drawing.Size(27, 13);
+			this.label52.TabIndex = 26;
+			this.label52.Text = "Wins";
+			// 
 			// CoachEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1238,6 +1279,8 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.coachKnowledge)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.coachMotivation)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.coachEthics)).EndInit();
+			this.tabPage1.ResumeLayout(false);
+			this.tabPage1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -1258,14 +1301,12 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.CheckBox filterPositionCheckBox;
 		private System.Windows.Forms.ComboBox coachesPositionCombo;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox coachTeamCombo;
+		private System.Windows.Forms.ComboBox cbTeamCombo;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.NumericUpDown coachPlayoffWins;
 		private System.Windows.Forms.NumericUpDown coachSuperBowlLoses;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.NumericUpDown coachSuperbowlWins;
 		private System.Windows.Forms.NumericUpDown coachPlayoffLoses;
 		private System.Windows.Forms.Label label7;
@@ -1306,7 +1347,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown coachCareerLoses;
 		private System.Windows.Forms.NumericUpDown coachCareerWins;
 		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.Label label31;
 		private System.Windows.Forms.RadioButton fourThreeButton;
 		private System.Windows.Forms.RadioButton threeFourButton;
 		private System.Windows.Forms.Label label32;
@@ -1334,6 +1374,12 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown coachDefAggression;
 		private System.Windows.Forms.Label label48;
 		private System.Windows.Forms.ComboBox coachDefensivePlaybook;
+		private System.Windows.Forms.Label label50;
+		private System.Windows.Forms.ComboBox cbSkinColor;
+		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.Label label52;
+		private System.Windows.Forms.Label label51;
+		private System.Windows.Forms.Label label31;
 
 
 	}

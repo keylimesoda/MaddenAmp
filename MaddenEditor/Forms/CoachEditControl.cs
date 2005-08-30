@@ -72,9 +72,10 @@ namespace MaddenEditor.Forms
 
 				TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
 
-				coachTeamCombo.SelectedItem = (object)team;
+				cbTeamCombo.SelectedItem = (object)team;
 
 				coachAge.Value = (int)record.Age;
+				cbSkinColor.SelectedIndex = (int)record.SkinColor;
 				coachSalary.Value = (decimal)((double)record.Salary / 100.0);
 
 				//Win-Loss Records
@@ -225,7 +226,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.CoachModel.CurrentCoachRecord.TeamId = ((TeamRecord)coachTeamCombo.SelectedItem).TeamId;
+				model.CoachModel.CurrentCoachRecord.TeamId = ((TeamRecord)cbTeamCombo.SelectedItem).TeamId;
 			}
 		}
 
@@ -242,7 +243,7 @@ namespace MaddenEditor.Forms
 		{
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				coachTeamCombo.Items.Add(rec);
+				cbTeamCombo.Items.Add(rec);
 				filterTeamComboBox.Items.Add(rec);
 			}
 
@@ -338,7 +339,7 @@ namespace MaddenEditor.Forms
 
 		public void CleanUI()
 		{
-			coachTeamCombo.Items.Clear();
+			cbTeamCombo.Items.Clear();
 			filterTeamComboBox.Items.Clear();
 		}
 
@@ -580,6 +581,14 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.CoachModel.CurrentCoachRecord.DefensivePlaybook = (int)coachDefensivePlaybook.SelectedIndex;
+			}
+		}
+
+		private void cbSkinColor_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.CoachModel.CurrentCoachRecord.SkinColor = (int)cbSkinColor.SelectedIndex;
 			}
 		}
 		
