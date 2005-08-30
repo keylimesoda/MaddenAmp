@@ -44,6 +44,7 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_ID = "TGID";
 		public const string AGE = "CAGE";
 		public const string POSITION = "COPS";
+		public const string SKIN_COLOR = "CSKI";
 
 		public const string SALARY = "CSAL";
 		public const string SUPERBOWL_LOSES = "CSBL";
@@ -132,6 +133,19 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(AGE, value);
+			}
+		}
+
+		public int SkinColor
+		{
+			//The skin color is 0-4 but it is reversed
+			get
+			{
+				return GetIntField(SKIN_COLOR);
+			}
+			set
+			{
+				SetField(SKIN_COLOR, value);
 			}
 		}
 

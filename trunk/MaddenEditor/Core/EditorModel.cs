@@ -87,6 +87,9 @@ namespace MaddenEditor.Core
 		public const int MADDEN_FRA_2004_TABLE_COUNT = 136;
 		public const int MADDEN_FRA_2005_TABLE_COUNT = 159;
 		public const int MADDEN_FRA_2006_TABLE_COUNT = 183;
+		public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
+		public const int MADDEN_ROS_2005_TEAM_FIELD_COUNT = 115;
+		public const int MADDEN_ROS_2006_TEAM_FIELD_COUNT = 111;
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
@@ -265,6 +268,8 @@ namespace MaddenEditor.Core
 				if (tableCount == 11)
 				{
 					fileType = MaddenFileType.RosterFile;
+					//We need to find a way to distinguish between the different madden versions
+					//We will do this further down when we get the tables properties
 				}
 				else
 				{
@@ -314,6 +319,25 @@ namespace MaddenEditor.Core
 					TdbTableProperties tableProps = new TdbTableProperties();
 					tableProps.Name = new string((char)0, 5);
 					TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
+
+					//We use the player table to work out what version a roster file is
+					if (FileType == MaddenFileType.RosterFile && tableProps.Name.Equals(PLAYER_TABLE))
+					{
+						switch (tableProps.FieldCount)
+						{
+							case MADDEN_ROS_2004_TEAM_FIELD_COUNT:
+								fileVersion = MaddenFileVersion.Ver2004;
+								break;
+							case MADDEN_ROS_2005_TEAM_FIELD_COUNT:
+								fileVersion = MaddenFileVersion.Ver2005;
+								break;
+							case MADDEN_ROS_2006_TEAM_FIELD_COUNT:
+								fileVersion = MaddenFileVersion.Ver2006;
+								break;
+							default:
+								break;
+						}
+					}
 
 					//If we found a table we want to process, then store its
 					//order number in our tableOrder Hashmap

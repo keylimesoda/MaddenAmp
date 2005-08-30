@@ -39,10 +39,28 @@ namespace MaddenEditor.Core
 		private bool currentDraftClassFilter = false;
 		/** Reference to our EditorModel */
 		private EditorModel model = null;
+		/** Lists of hardcoded values */
+		private IList<GenericRecord> helmetStyleList = null;
 
 		public PlayerEditingModel(EditorModel model)
 		{
 			this.model = model;
+
+			//Initialise the GenericRecord lists
+			helmetStyleList = new List<GenericRecord>();
+
+			helmetStyleList.Add(new GenericRecord("Style 1", 0));
+			helmetStyleList.Add(new GenericRecord("Style 2", 1));
+			helmetStyleList.Add(new GenericRecord("Style 3", 2));
+			if (model.FileVersion < MaddenFileVersion.Ver2006)
+			{
+				helmetStyleList.Add(new GenericRecord("Revolution", 3));
+			}
+			else
+			{
+				helmetStyleList.Add(new GenericRecord("Schutt DNA", 3));
+				helmetStyleList.Add(new GenericRecord("Revolution", 4));
+			}
 		}
 		
 		public PlayerRecord GetPlayerRecord(int recno)
@@ -304,19 +322,79 @@ namespace MaddenEditor.Core
 					}
 				}
 
-				//Now at the moment we are just going to remove him from all depth charts
-				foreach(TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+				RemovePlayerFromDepthChart(CurrentPlayerRecord.PlayerId);
+			}
+		}
+
+		/// <summary>
+		/// TODO:
+		/// This method should be put into the depth chart editing model at some stage.
+		/// The hole depth chart editing functionality has too much logic in the form objects
+		/// and it needs to be moved into the depth chart editing model
+		/// </summary>
+		/// <param name="playerId"></param>
+		private void RemovePlayerFromDepthChart(int playerId)
+		{
+			List<DepthChartRecord> oldDepthChartRecords = new List<DepthChartRecord>();
+
+			//Now at the moment we are just going to remove him from all depth charts
+			foreach (TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+			{
+				if (record.Deleted)
+					continue;
+
+				DepthChartRecord depthRecord = (DepthChartRecord)record;
+
+				if (depthRecord.PlayerId == playerId)
 				{
-					if (record.Deleted)
+					depthRecord.SetDeleteFlag(true);
+					//Now record the position and team and depth cause we want to fix up
+					//the other players ordering in that same position
+					oldDepthChartRecords.Add(depthRecord);
+				}
+			}
+
+			//Now we have a list of the old depth charts that this player belongs too, we need to fix each 
+			//one up. This is not going to be very efficient :)
+
+			foreach (DepthChartRecord record in oldDepthChartRecords)
+			{
+				foreach (TableRecordModel depthChartRec in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+				{
+					if (depthChartRec.Deleted)
 						continue;
 
-					DepthChartRecord depthRecord = (DepthChartRecord)record;
+					DepthChartRecord depthRecord = (DepthChartRecord)depthChartRec;
 
-					if (depthRecord.PlayerId == CurrentPlayerRecord.PlayerId)
+					if (depthRecord.TeamId == record.TeamId && depthRecord.PositionId == record.PositionId)
 					{
-						depthRecord.SetDeleteFlag(true);
+						if (depthRecord.DepthOrder > record.DepthOrder)
+						{
+							depthRecord.DepthOrder--;
+						}
+
+						//TODO: We could probably exit early after we found like 6 or something
+						//records cause thats the maximum depth chart level anyway. but we'll try this
+						//first
 					}
 				}
+			}
+		}
+
+		public void DeletePlayerRecord(PlayerRecord record)
+		{
+			//Mark this record for deletion
+			record.SetDeleteFlag(true);
+
+			//Remove this player from any depth charts
+			RemovePlayerFromDepthChart(record.PlayerId);
+		}
+
+		public IList<GenericRecord> HelmetStyleList
+		{
+			get
+			{
+				return helmetStyleList;
 			}
 		}
 

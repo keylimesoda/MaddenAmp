@@ -115,6 +115,23 @@ namespace MaddenEditor.Forms
 
 				playerImportance.Value = record.Importance;
 
+				if (model.FileVersion >= MaddenFileVersion.Ver2005)
+				{
+					//Load the player tendancy and reinitialise the combo
+					cbTendancy.Enabled = true;
+					cbTendancy.Items.Clear();
+					for (int i = 0; i < 3; i++)
+					{
+						cbTendancy.Items.Add(DecodeTendancy((MaddenPositions)record.PositionId, i));
+					}
+
+					cbTendancy.SelectedIndex = record.Tendancy;
+				}
+				else
+				{
+					cbTendancy.Enabled = false;
+				}
+				
 				playerProBowl.Checked = record.ProBowl;
 				playerPortraitId.Value = record.PortraitId;
 				playerContractLength.Value = record.ContractLength;
@@ -167,17 +184,7 @@ namespace MaddenEditor.Forms
 				playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
 				playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
 				playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
-				//TODO Madden 2006 needs more helmet styles
-				try
-				{
-					playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
-					playerHelmetStyleCombo.Enabled = true;
-				}
-				catch (Exception helmetStyleException)
-				{
-					//This is a Madden 2006 issue
-					playerHelmetStyleCombo.Enabled = false;
-				}
+				playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
 				playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
 				playerEyePaintCombo.Text = playerEyePaintCombo.Items[record.EyePaint].ToString();
 				playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
@@ -296,8 +303,8 @@ namespace MaddenEditor.Forms
 			DialogResult result = MessageBox.Show("Are you sure you want to delete this player?\r\n\r\nAlthough this player will disappear from the editor\r\nchanges will not take effect until you save.", "About to Delete " + model.PlayerModel.CurrentPlayerRecord.FirstName + " " + model.PlayerModel.CurrentPlayerRecord.LastName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 			if (result == DialogResult.Yes)
 			{
-				//Mark this record for deletion
-				model.PlayerModel.CurrentPlayerRecord.SetDeleteFlag(true);
+				PlayerRecord rec = model.PlayerModel.CurrentPlayerRecord;
+				model.PlayerModel.DeletePlayerRecord(rec);
 				LoadPlayerInfo(model.PlayerModel.GetNextPlayerRecord());
 			}
 		}
@@ -349,6 +356,11 @@ namespace MaddenEditor.Forms
 
 			filterTeamComboBox.SelectedIndex = 0;
 			filterPositionComboBox.SelectedIndex = 0;
+
+			foreach (GenericRecord rec in model.PlayerModel.HelmetStyleList)
+			{
+				playerHelmetStyleCombo.Items.Add(rec);
+			}
 			
 			if (model.FileType != MaddenFileType.FranchiseFile)
 			{
@@ -1244,6 +1256,58 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.DraftRoundIndex = (int)playerDraftRoundIndex.Value;
+			}
+		}
+
+		private string DecodeTendancy(MaddenPositions pos, int type)
+		{
+			if (type == 2)
+			{
+				return "Balanced";
+			}
+
+			switch (pos)
+			{
+				case MaddenPositions.QB:
+					return (type == 0 ? "Pocket" : "Scrambling");
+				case MaddenPositions.HB:
+					return (type == 0 ? "Power" : "Speed");
+				case MaddenPositions.FB:
+				case MaddenPositions.TE:
+					return (type == 0 ? "Blocking" : "Receiving");
+				case MaddenPositions.WR:
+					return (type == 0 ? "Possession" : "Speed");
+				case MaddenPositions.LT:
+				case MaddenPositions.LG:
+				case MaddenPositions.C:
+				case MaddenPositions.RG:
+				case MaddenPositions.RT:
+					return (type == 0 ? "Run Blocking" : "Pass Blocking");
+				case MaddenPositions.LE:
+				case MaddenPositions.RE:
+				case MaddenPositions.DT:
+					return (type == 0 ? "Pass Rushing" : "Run Stopping");
+				case MaddenPositions.LOLB:
+				case MaddenPositions.MLB:
+				case MaddenPositions.ROLB:
+					return (type == 0 ? "Coverage" : "Run Stopping");
+				case MaddenPositions.CB:
+				case MaddenPositions.SS:
+				case MaddenPositions.FS:
+					return (type == 0 ? "Coverage" : "Hard Hitting");
+				case MaddenPositions.K:
+				case MaddenPositions.P:
+					return (type == 0 ? "Power" : "Accurate");
+			}
+
+			return "";
+		}
+
+		private void cbTendancy_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.PlayerModel.CurrentPlayerRecord.Tendancy = cbTendancy.SelectedIndex;
 			}
 		}
 		

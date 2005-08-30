@@ -33,6 +33,10 @@ namespace MaddenEditor.Forms
 			this.label1 = new System.Windows.Forms.Label();
 			this.attributeCombo = new System.Windows.Forms.ComboBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.rbYearsProLessThan = new System.Windows.Forms.RadioButton();
+			this.rbYearsProEqualTo = new System.Windows.Forms.RadioButton();
+			this.rbYearsProGreaterThan = new System.Windows.Forms.RadioButton();
+			this.nudYearsProFilter = new System.Windows.Forms.NumericUpDown();
 			this.rbAgeLessThan = new System.Windows.Forms.RadioButton();
 			this.rbAgeEqualTo = new System.Windows.Forms.RadioButton();
 			this.rbAgeGreaterThan = new System.Windows.Forms.RadioButton();
@@ -53,17 +57,13 @@ namespace MaddenEditor.Forms
 			this.incrementCheckBox = new System.Windows.Forms.RadioButton();
 			this.decrementCheckBox = new System.Windows.Forms.RadioButton();
 			this.setCheckBox = new System.Windows.Forms.RadioButton();
-			this.rbYearsProLessThan = new System.Windows.Forms.RadioButton();
-			this.rbYearsProEqualTo = new System.Windows.Forms.RadioButton();
-			this.rbYearsProGreaterThan = new System.Windows.Forms.RadioButton();
-			this.nudYearsProFilter = new System.Windows.Forms.NumericUpDown();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).BeginInit();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.incrementNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.decrementNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.setNumeric)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -115,7 +115,6 @@ namespace MaddenEditor.Forms
             "Stamina",
             "Injury",
             "Toughness",
-            "Experience Points",
             "Importance",
             "Morale"});
 			this.attributeCombo.Location = new System.Drawing.Point(93, 91);
@@ -147,6 +146,43 @@ namespace MaddenEditor.Forms
 			this.groupBox1.TabIndex = 3;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Filter Settings";
+			// 
+			// rbYearsProLessThan
+			// 
+			this.rbYearsProLessThan.AutoSize = true;
+			this.rbYearsProLessThan.Location = new System.Drawing.Point(169, 120);
+			this.rbYearsProLessThan.Name = "rbYearsProLessThan";
+			this.rbYearsProLessThan.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProLessThan.TabIndex = 13;
+			this.rbYearsProLessThan.TabStop = false;
+			this.rbYearsProLessThan.Text = "<";
+			// 
+			// rbYearsProEqualTo
+			// 
+			this.rbYearsProEqualTo.AutoSize = true;
+			this.rbYearsProEqualTo.Location = new System.Drawing.Point(202, 120);
+			this.rbYearsProEqualTo.Name = "rbYearsProEqualTo";
+			this.rbYearsProEqualTo.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProEqualTo.TabIndex = 12;
+			this.rbYearsProEqualTo.TabStop = false;
+			this.rbYearsProEqualTo.Text = "=";
+			// 
+			// rbYearsProGreaterThan
+			// 
+			this.rbYearsProGreaterThan.AutoSize = true;
+			this.rbYearsProGreaterThan.Checked = true;
+			this.rbYearsProGreaterThan.Location = new System.Drawing.Point(136, 119);
+			this.rbYearsProGreaterThan.Name = "rbYearsProGreaterThan";
+			this.rbYearsProGreaterThan.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProGreaterThan.TabIndex = 11;
+			this.rbYearsProGreaterThan.Text = ">";
+			// 
+			// nudYearsProFilter
+			// 
+			this.nudYearsProFilter.Location = new System.Drawing.Point(81, 117);
+			this.nudYearsProFilter.Name = "nudYearsProFilter";
+			this.nudYearsProFilter.Size = new System.Drawing.Size(46, 20);
+			this.nudYearsProFilter.TabIndex = 10;
 			// 
 			// rbAgeLessThan
 			// 
@@ -355,43 +391,6 @@ namespace MaddenEditor.Forms
 			this.setCheckBox.TabStop = false;
 			this.setCheckBox.Text = "Set to";
 			// 
-			// rbYearsProLessThan
-			// 
-			this.rbYearsProLessThan.AutoSize = true;
-			this.rbYearsProLessThan.Location = new System.Drawing.Point(169, 120);
-			this.rbYearsProLessThan.Name = "rbYearsProLessThan";
-			this.rbYearsProLessThan.Size = new System.Drawing.Size(27, 17);
-			this.rbYearsProLessThan.TabIndex = 13;
-			this.rbYearsProLessThan.TabStop = false;
-			this.rbYearsProLessThan.Text = "<";
-			// 
-			// rbYearsProEqualTo
-			// 
-			this.rbYearsProEqualTo.AutoSize = true;
-			this.rbYearsProEqualTo.Location = new System.Drawing.Point(202, 120);
-			this.rbYearsProEqualTo.Name = "rbYearsProEqualTo";
-			this.rbYearsProEqualTo.Size = new System.Drawing.Size(27, 17);
-			this.rbYearsProEqualTo.TabIndex = 12;
-			this.rbYearsProEqualTo.TabStop = false;
-			this.rbYearsProEqualTo.Text = "=";
-			// 
-			// rbYearsProGreaterThan
-			// 
-			this.rbYearsProGreaterThan.AutoSize = true;
-			this.rbYearsProGreaterThan.Checked = true;
-			this.rbYearsProGreaterThan.Location = new System.Drawing.Point(136, 119);
-			this.rbYearsProGreaterThan.Name = "rbYearsProGreaterThan";
-			this.rbYearsProGreaterThan.Size = new System.Drawing.Size(27, 17);
-			this.rbYearsProGreaterThan.TabIndex = 11;
-			this.rbYearsProGreaterThan.Text = ">";
-			// 
-			// nudYearsProFilter
-			// 
-			this.nudYearsProFilter.Location = new System.Drawing.Point(81, 117);
-			this.nudYearsProFilter.Name = "nudYearsProFilter";
-			this.nudYearsProFilter.Size = new System.Drawing.Size(46, 20);
-			this.nudYearsProFilter.TabIndex = 10;
-			// 
 			// GlobalAttributeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -410,13 +409,13 @@ namespace MaddenEditor.Forms
 			this.Text = "Global Player Attribute Editor Form";
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).EndInit();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.incrementNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.decrementNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.setNumeric)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -272,6 +272,8 @@ namespace MaddenEditor.Forms
 			this.playerSigningBonusYear0 = new System.Windows.Forms.TextBox();
 			this.label98 = new System.Windows.Forms.Label();
 			this.label97 = new System.Windows.Forms.Label();
+			this.cbTendancy = new System.Windows.Forms.ComboBox();
+			this.label110 = new System.Windows.Forms.Label();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -351,6 +353,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerSplitContainer.Panel1
 			// 
+			this.playerSplitContainer.Panel1.Controls.Add(this.label110);
+			this.playerSplitContainer.Panel1.Controls.Add(this.cbTendancy);
 			this.playerSplitContainer.Panel1.Controls.Add(this.deletePlayerButton);
 			this.playerSplitContainer.Panel1.Controls.Add(this.createPlayerButton);
 			this.playerSplitContainer.Panel1.Controls.Add(this.playerDominantHand);
@@ -383,7 +387,7 @@ namespace MaddenEditor.Forms
 			// 
 			// deletePlayerButton
 			// 
-			this.deletePlayerButton.Location = new System.Drawing.Point(137, 253);
+			this.deletePlayerButton.Location = new System.Drawing.Point(137, 279);
 			this.deletePlayerButton.Name = "deletePlayerButton";
 			this.deletePlayerButton.Size = new System.Drawing.Size(75, 23);
 			this.deletePlayerButton.TabIndex = 37;
@@ -393,7 +397,7 @@ namespace MaddenEditor.Forms
 			// createPlayerButton
 			// 
 			this.createPlayerButton.Enabled = false;
-			this.createPlayerButton.Location = new System.Drawing.Point(56, 253);
+			this.createPlayerButton.Location = new System.Drawing.Point(56, 279);
 			this.createPlayerButton.Name = "createPlayerButton";
 			this.createPlayerButton.Size = new System.Drawing.Size(75, 23);
 			this.createPlayerButton.TabIndex = 36;
@@ -3275,11 +3279,6 @@ namespace MaddenEditor.Forms
 			// 
 			this.playerHelmetStyleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerHelmetStyleCombo.FormattingEnabled = true;
-			this.playerHelmetStyleCombo.Items.AddRange(new object[] {
-            "Style 1",
-            "Style 2",
-            "Style 3",
-            "Revolution"});
 			this.playerHelmetStyleCombo.Location = new System.Drawing.Point(120, 19);
 			this.playerHelmetStyleCombo.Name = "playerHelmetStyleCombo";
 			this.playerHelmetStyleCombo.Size = new System.Drawing.Size(92, 21);
@@ -3696,6 +3695,27 @@ namespace MaddenEditor.Forms
 			this.label97.TabIndex = 0;
 			this.label97.Text = "Signing Bonus";
 			// 
+			// cbTendancy
+			// 
+			this.cbTendancy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.cbTendancy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTendancy.FormattingEnabled = true;
+			this.cbTendancy.Location = new System.Drawing.Point(63, 252);
+			this.cbTendancy.Name = "cbTendancy";
+			this.cbTendancy.Size = new System.Drawing.Size(161, 21);
+			this.cbTendancy.TabIndex = 38;
+			this.cbTendancy.SelectedIndexChanged += new System.EventHandler(this.cbTendancy_SelectedIndexChanged);
+			// 
+			// label110
+			// 
+			this.label110.AutoSize = true;
+			this.label110.Location = new System.Drawing.Point(8, 258);
+			this.label110.Name = "label110";
+			this.label110.Size = new System.Drawing.Size(51, 13);
+			this.label110.TabIndex = 39;
+			this.label110.Text = "Tendancy";
+			// 
 			// PlayerEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4030,5 +4050,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.NumericUpDown playerDraftRound;
 		private System.Windows.Forms.Label label107;
 		private System.Windows.Forms.Label label106;
+		private System.Windows.Forms.Label label110;
+		private System.Windows.Forms.ComboBox cbTendancy;
 	}
 }

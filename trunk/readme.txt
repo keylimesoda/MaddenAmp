@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                           GOMMO'S MADDEN EDITOR 1.0.0.0
+                           GOMMO'S MADDEN EDITOR 1.1.0.0
 
-                                  27th August 2005
+                                  30th August 2005
 
                                      readme.txt
 
@@ -40,6 +40,16 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 3. FEATURES
 ===========
+* Added Player Tendancies
+
+* Added Team Rivals
+
+* Added Team Defensive PlayStyle
+
+* Added coach skin color (Not sure if its right)
+
+* Added new helmet style for 2006
+
 * Supports to most extent Madden 2004,2005 & 2006
 
 * Added In-Game and Sim Injury sliders for Madden 2006 franchises
@@ -109,6 +119,9 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. FIXED ISSUES
 ===============
+* Fixed issue where deleting a player caused the file to not work. This was due to 
+  the player not being removed from the depth chart
+
 * Fixed issue where moving a player to a different team didnt remove him from his
   old teams depth chart
 
