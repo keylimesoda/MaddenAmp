@@ -55,6 +55,12 @@ namespace MaddenEditor.Forms
 			this.label3 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
+			this.label24 = new System.Windows.Forms.Label();
+			this.label23 = new System.Windows.Forms.Label();
+			this.cbTeamRival3 = new System.Windows.Forms.ComboBox();
+			this.cbTeamRival2 = new System.Windows.Forms.ComboBox();
+			this.cbTeamRival1 = new System.Windows.Forms.ComboBox();
+			this.label22 = new System.Windows.Forms.Label();
 			this.btnSecondary = new System.Windows.Forms.Button();
 			this.pnlSecondary = new System.Windows.Forms.Panel();
 			this.btnPrimary = new System.Windows.Forms.Button();
@@ -90,12 +96,6 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
-			this.label22 = new System.Windows.Forms.Label();
-			this.cbTeamRival1 = new System.Windows.Forms.ComboBox();
-			this.cbTeamRival2 = new System.Windows.Forms.ComboBox();
-			this.cbTeamRival3 = new System.Windows.Forms.ComboBox();
-			this.label23 = new System.Windows.Forms.Label();
-			this.label24 = new System.Windows.Forms.Label();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -448,6 +448,60 @@ namespace MaddenEditor.Forms
 			this.label2.Size = new System.Drawing.Size(192, 18);
 			this.label2.TabIndex = 0;
 			this.label2.Text = "TEAM INFORMATION";
+			// 
+			// label24
+			// 
+			this.label24.AutoSize = true;
+			this.label24.Location = new System.Drawing.Point(229, 440);
+			this.label24.Name = "label24";
+			this.label24.Size = new System.Drawing.Size(66, 13);
+			this.label24.TabIndex = 38;
+			this.label24.Text = "Team Rival 3";
+			// 
+			// label23
+			// 
+			this.label23.AutoSize = true;
+			this.label23.Location = new System.Drawing.Point(229, 401);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(66, 13);
+			this.label23.TabIndex = 37;
+			this.label23.Text = "Team Rival 2";
+			// 
+			// cbTeamRival3
+			// 
+			this.cbTeamRival3.FormattingEnabled = true;
+			this.cbTeamRival3.Location = new System.Drawing.Point(301, 432);
+			this.cbTeamRival3.Name = "cbTeamRival3";
+			this.cbTeamRival3.Size = new System.Drawing.Size(121, 21);
+			this.cbTeamRival3.TabIndex = 36;
+			this.cbTeamRival3.SelectedIndexChanged += new System.EventHandler(this.cbTeamRival3_SelectedIndexChanged);
+			// 
+			// cbTeamRival2
+			// 
+			this.cbTeamRival2.FormattingEnabled = true;
+			this.cbTeamRival2.Location = new System.Drawing.Point(301, 393);
+			this.cbTeamRival2.Name = "cbTeamRival2";
+			this.cbTeamRival2.Size = new System.Drawing.Size(121, 21);
+			this.cbTeamRival2.TabIndex = 35;
+			this.cbTeamRival2.SelectedIndexChanged += new System.EventHandler(this.cbTeamRival2_SelectedIndexChanged);
+			// 
+			// cbTeamRival1
+			// 
+			this.cbTeamRival1.FormattingEnabled = true;
+			this.cbTeamRival1.Location = new System.Drawing.Point(301, 355);
+			this.cbTeamRival1.Name = "cbTeamRival1";
+			this.cbTeamRival1.Size = new System.Drawing.Size(121, 21);
+			this.cbTeamRival1.TabIndex = 34;
+			this.cbTeamRival1.SelectedIndexChanged += new System.EventHandler(this.cbTeamRival1_SelectedIndexChanged);
+			// 
+			// label22
+			// 
+			this.label22.AutoSize = true;
+			this.label22.Location = new System.Drawing.Point(229, 363);
+			this.label22.Name = "label22";
+			this.label22.Size = new System.Drawing.Size(66, 13);
+			this.label22.TabIndex = 33;
+			this.label22.Text = "Team Rival 1";
 			// 
 			// btnSecondary
 			// 
@@ -815,57 +869,6 @@ namespace MaddenEditor.Forms
 			this.label10.Size = new System.Drawing.Size(52, 13);
 			this.label10.TabIndex = 0;
 			this.label10.Text = "QB Rating";
-			// 
-			// label22
-			// 
-			this.label22.AutoSize = true;
-			this.label22.Location = new System.Drawing.Point(229, 363);
-			this.label22.Name = "label22";
-			this.label22.Size = new System.Drawing.Size(66, 13);
-			this.label22.TabIndex = 33;
-			this.label22.Text = "Team Rival 1";
-			// 
-			// cbTeamRival1
-			// 
-			this.cbTeamRival1.FormattingEnabled = true;
-			this.cbTeamRival1.Location = new System.Drawing.Point(301, 355);
-			this.cbTeamRival1.Name = "cbTeamRival1";
-			this.cbTeamRival1.Size = new System.Drawing.Size(121, 21);
-			this.cbTeamRival1.TabIndex = 34;
-			// 
-			// cbTeamRival2
-			// 
-			this.cbTeamRival2.FormattingEnabled = true;
-			this.cbTeamRival2.Location = new System.Drawing.Point(301, 393);
-			this.cbTeamRival2.Name = "cbTeamRival2";
-			this.cbTeamRival2.Size = new System.Drawing.Size(121, 21);
-			this.cbTeamRival2.TabIndex = 35;
-			// 
-			// cbTeamRival3
-			// 
-			this.cbTeamRival3.FormattingEnabled = true;
-			this.cbTeamRival3.Location = new System.Drawing.Point(301, 432);
-			this.cbTeamRival3.Name = "cbTeamRival3";
-			this.cbTeamRival3.Size = new System.Drawing.Size(121, 21);
-			this.cbTeamRival3.TabIndex = 36;
-			// 
-			// label23
-			// 
-			this.label23.AutoSize = true;
-			this.label23.Location = new System.Drawing.Point(229, 401);
-			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(66, 13);
-			this.label23.TabIndex = 37;
-			this.label23.Text = "Team Rival 2";
-			// 
-			// label24
-			// 
-			this.label24.AutoSize = true;
-			this.label24.Location = new System.Drawing.Point(229, 440);
-			this.label24.Name = "label24";
-			this.label24.Size = new System.Drawing.Size(66, 13);
-			this.label24.TabIndex = 38;
-			this.label24.Text = "Team Rival 3";
 			// 
 			// TeamEditControl
 			// 

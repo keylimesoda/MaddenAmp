@@ -234,9 +234,32 @@ namespace MaddenEditor.Forms
 				}
 				if (model.FileVersion >= MaddenFileVersion.Ver2005)
 				{
-					cbTeamRival1.SelectedIndex = model.TeamModel.CurrentTeamRecord.TeamRival1;
-					cbTeamRival2.SelectedIndex = model.TeamModel.CurrentTeamRecord.TeamRival2;
-					cbTeamRival3.SelectedIndex = model.TeamModel.CurrentTeamRecord.TeamRival3;
+					if (model.TeamModel.CurrentTeamRecord.TeamRival1 == 1023)
+					{
+						cbTeamRival1.Text = "N/A";
+					}
+					else
+					{
+						cbTeamRival1.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival1);
+					}
+
+					if (model.TeamModel.CurrentTeamRecord.TeamRival2 == 1023)
+					{
+						cbTeamRival2.Text = "N/A";
+					}
+					else
+					{
+						cbTeamRival2.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival2);
+					}
+
+					if (model.TeamModel.CurrentTeamRecord.TeamRival3 == 1023)
+					{
+						cbTeamRival3.Text = "N/A";
+					}
+					else
+					{
+						cbTeamRival3.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival3);
+					}
 					cbTeamRival1.Enabled = true;
 					cbTeamRival2.Enabled = true;
 					cbTeamRival3.Enabled = true;
@@ -585,6 +608,30 @@ namespace MaddenEditor.Forms
 			chooser.Dispose();
 
 			chooser = null;
+		}
+
+		private void cbTeamRival1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.TeamRival1 = ((TeamRecord)cbTeamRival1.SelectedItem).TeamId;
+			}
+		}
+
+		private void cbTeamRival2_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.TeamRival2 = ((TeamRecord)cbTeamRival2.SelectedItem).TeamId;
+			}
+		}
+
+		private void cbTeamRival3_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.TeamModel.CurrentTeamRecord.TeamRival3 = ((TeamRecord)cbTeamRival3.SelectedItem).TeamId;
+			}
 		}
 
 	}

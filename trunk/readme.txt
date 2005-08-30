@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                           GOMMO'S MADDEN EDITOR 1.1.0.0
+                           GOMMO'S MADDEN EDITOR 1.1.1.0
 
-                                  30th August 2005
+                                  31st August 2005
 
                                      readme.txt
 
@@ -119,6 +119,10 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. FIXED ISSUES
 ===============
+* Fixed crash in Team Navigator
+
+* Fixed editing of Team Rivals
+
 * Fixed issue where deleting a player caused the file to not work. This was due to 
   the player not being removed from the depth chart
 
