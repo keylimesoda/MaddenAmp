@@ -51,6 +51,8 @@ namespace MaddenEditor.Forms
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.draftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setGameInjuriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -188,8 +190,10 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator5,
             this.setTeamCaptainsToolStripMenuItem,
             this.setUserControlledTeamsToolStripMenuItem,
-            this.setGameInjuriesToolStripMenuItem});
-			this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
+			this.setGameInjuriesToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.draftMenuItem});
+            this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
 			this.franchiseToolStripMenuItem.Text = "Franchise";
 			// 
 			// editScheduleToolStripMenuItem
@@ -226,6 +230,16 @@ namespace MaddenEditor.Forms
 			this.setGameInjuriesToolStripMenuItem.Text = "Set Game Injuries ...";
 			this.setGameInjuriesToolStripMenuItem.Click += new System.EventHandler(this.setGameInjuriesToolStripMenuItem_Click);
 			// 
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            // 
+            // draftMenuItem
+            // 
+            this.draftMenuItem.Name = "draftMenuItem";
+            this.draftMenuItem.Text = "Enter Draft";
+            this.draftMenuItem.Click += new System.EventHandler(this.enterDraftToolStripMenuItem_Click);
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -394,6 +408,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem depthChartEditorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editScheduleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem draftMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem setGameInjuriesToolStripMenuItem;
     }
 }

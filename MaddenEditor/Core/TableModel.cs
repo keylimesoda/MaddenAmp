@@ -175,6 +175,15 @@ namespace MaddenEditor.Core
 				case EditorModel.SCHEDULE_TABLE:
 					newRecord = new ScheduleRecord(recno, parentModel);
 					break;
+                // MADDEN DRAFT EDIT
+                case EditorModel.DRAFT_PICK_TABLE:
+                    newRecord = new DraftPickRecord(recno, parentModel);
+                    break;
+
+                case EditorModel.DRAFTED_PLAYERS_TABLE:
+                    newRecord = new RookieRecord(recno, parentModel);
+                    break;
+                // MADDEN DRAFT EDIT
 				case EditorModel.GAME_OPTIONS_TABLE:
 					newRecord = new GameOptionRecord(recno, parentModel);
 					break;

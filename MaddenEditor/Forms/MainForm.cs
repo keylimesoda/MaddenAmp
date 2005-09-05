@@ -27,6 +27,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using MaddenEditor.ConSole;
 
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
@@ -463,6 +464,13 @@ namespace MaddenEditor.Forms
 
 			form.CleanUI();
 		}
+        // MADDEN DRAFT EDIT
+        private void enterDraftToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DraftConfigForm form = new DraftConfigForm(model);
+            form.Show(this);
+        }
+        // MADDEN DRAFT EDIT
 
     }
 }

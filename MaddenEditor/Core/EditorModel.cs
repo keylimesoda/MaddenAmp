@@ -24,6 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+// MADDEN DRAFT EDIT
+using MaddenEditor.ConSole;
+// MADDEN DRAFT EDIT
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
 using MaddenEditor.Core.Record;
@@ -104,6 +107,10 @@ namespace MaddenEditor.Core
 		public const string SCHEDULE_TABLE = "SCHD";
 		// Madden 2006 specific tables
 		public const string GAME_OPTIONS_TABLE = "GOPT";
+        // MADDEN DRAFT EDIT
+        public const string DRAFT_PICK_TABLE = "DRPK";
+        public const string DRAFTED_PLAYERS_TABLE = "DRPL";
+        // MADDEN DRAFT EDIT
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -304,6 +311,10 @@ namespace MaddenEditor.Core
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
 					tableOrder.Add(SCHEDULE_TABLE, -1);
+                    // MADDEN DRAFT EDIT
+                    tableOrder.Add(DRAFT_PICK_TABLE, -1);
+                    tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);
+                    // MADDEN DRAFT EDIT
 					if (fileVersion >= MaddenFileVersion.Ver2005)
 					{
 						tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
