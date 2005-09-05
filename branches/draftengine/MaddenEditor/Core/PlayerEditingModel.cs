@@ -62,6 +62,25 @@ namespace MaddenEditor.Core
 				helmetStyleList.Add(new GenericRecord("Revolution", 4));
 			}
 		}
+
+        // MADDEN DRAFT EDIT
+        private LocalMath math = new LocalMath();
+
+        public void ComputeEffectiveOVRs(DraftModel dm)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                PlayerRecord rec = (PlayerRecord)record;
+
+                if (model.TeamModel.GetTeamRecord(rec.TeamId) == null || model.TeamModel.GetTeamRecord(rec.TeamId).TeamType != 0) { continue; }
+
+                rec.EffectiveOVR = rec.Overall + math.theta(5 - rec.YearsPro) * (5 - rec.YearsPro) * (5 - model.TeamModel.GetTeamRecord(rec.TeamId).CON) / 2
+                    + math.injury(rec.Injury, dm.positionData[rec.PositionId].DurabilityNeed);
+
+                rec.Value = LocalMath.ValueScale * dm.positionData[rec.PositionId].Value(model.TeamModel.GetTeamRecord(rec.TeamId).DefensiveSystem) * math.valcurve(rec.EffectiveOVR);
+            }
+        }
+        // MADDEN DRAFT EDIT
 		
 		public PlayerRecord GetPlayerRecord(int recno)
 		{

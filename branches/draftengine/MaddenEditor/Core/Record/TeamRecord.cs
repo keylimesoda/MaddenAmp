@@ -78,12 +78,160 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_RIVAL_1 = "TRV1";
 		public const string TEAM_RIVAL_2 = "TRV2";
 		public const string TEAM_RIVAL_3 = "TRV3";
+        // MADDEN DRAFT EDIT
+        private int wins;
+        private int playoffExit;
+        private int strengthOfSchedule;
+        private int effectiveSOS;
+        private int con;
+        // MADDEN DRAFT EDIT
 
 		public TeamRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
 
 		}
+        // MADDEN DRAFT EDIT
+        public enum Defense {
+            Front43=0,
+            Front34,
+            Cover2
+        }
+
+        public int DefensiveSystem
+        {
+            get {
+                if (DefensivePlaybook == 1) {
+                    return (int)Defense.Front34;
+                } else if (DefensivePlaybook == 3) {
+                    return (int)Defense.Cover2;
+                } else {
+                    return (int)Defense.Front43;
+                }
+            }
+        }
+            
+        public int CON
+        {
+            get
+            {
+                return con;
+            }
+            set
+            {
+                con = value;
+            }
+        }
+
+        public int Wins
+        {
+            get
+            {
+                return wins;
+            }
+        }
+
+        public int EffectiveSOS
+        {
+            get
+            {
+                return effectiveSOS;
+            }
+        }
+
+        public int StrengthOfSchedule
+        {
+            get
+            {
+                return strengthOfSchedule;
+            }
+        }
+
+        public int PlayoffExit
+        {
+            get
+            {
+                return playoffExit;
+            }
+            set
+            {
+                playoffExit = value;
+            }
+        }
+
+        // In principle I'd prefer a better way of calculating OVR, but in the 
+        // interest of saving time, we'll go with this for now.
+        public int GetOverall()
+        {
+            return OverallRating;
+        }
+
+
+        public void ComputeWins(EditorModel model)
+        {
+            wins = 0;
+            playoffExit = 0;
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+            {
+                ScheduleRecord rec = (ScheduleRecord)record;
+
+                if (rec.HomeTeam.TeamId == TeamId || rec.AwayTeam.TeamId == TeamId)
+                {
+                    if (rec.WeekNumber < 17)
+                    {
+                        // If it's a regular season week, then add to their number of wins
+                        if (rec.Winner() == TeamId)
+                        {
+                            wins++;
+                        }
+                    }
+                    else if (rec.WeekNumber < 20 && rec.Loser() == TeamId)
+                    {
+                        // If it's a non-Superbowl playoff game, record the exit value
+                        playoffExit = rec.WeekNumber - 16;
+                    }
+                    else if (rec.WeekNumber == 20)
+                    {
+                        if (rec.Loser() == TeamId)
+                        {
+                            playoffExit = 4;
+                        }
+                        else if (rec.Winner() == TeamId)
+                        {
+                            playoffExit = 5;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void ComputeStrengthOfSchedule(EditorModel model)
+        {
+            strengthOfSchedule = 0;
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+            {
+                ScheduleRecord rec = (ScheduleRecord)record;
+
+                if (rec.WeekNumber < 17)
+                {
+
+                    if (rec.HomeTeam.TeamId == TeamId)
+                    {
+                        strengthOfSchedule += rec.AwayTeam.Wins;
+                    }
+                    else if (rec.AwayTeam.TeamId == TeamId)
+                    {
+                        strengthOfSchedule += rec.HomeTeam.Wins;
+                    }
+                }
+            }
+
+            effectiveSOS = 1000 * playoffExit + strengthOfSchedule;
+        }
+
+        // MADDEN DRAFT EDIT
 
 		public override string ToString()
 		{

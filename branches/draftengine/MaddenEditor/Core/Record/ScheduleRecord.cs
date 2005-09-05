@@ -100,6 +100,41 @@ namespace MaddenEditor.Core.Record
 
 		}
 
+        // MADDEN DRAFT EDIT
+        public int Winner()
+        {
+            // I key this off of scores rather than game states in
+            // case EA changes the GAME_STATE to 'int' correspondence
+            if (GetIntField(AWAY_SCORE) > GetIntField(HOME_SCORE))
+            {
+                return GetIntField(AWAY_TEAM_ID);
+            }
+            else if (GetIntField(AWAY_SCORE) < GetIntField(HOME_SCORE))
+            {
+                return GetIntField(HOME_TEAM_ID);
+            }
+
+            // Game resulted in a tie
+            return -1;
+        }
+
+        public int Loser()
+        {
+            // I key this off of scores rather than game states in
+            // case EA changes the GAME_STATE to 'int' correspondence
+            if (GetIntField(AWAY_SCORE) < GetIntField(HOME_SCORE))
+            {
+                return GetIntField(AWAY_TEAM_ID);
+            }
+            else if (GetIntField(AWAY_SCORE) > GetIntField(HOME_SCORE))
+            {
+                return GetIntField(HOME_TEAM_ID);
+            }
+
+            // Game resulted in a tie
+            return -1;
+        }
+        // MADDEN DRAFT EDIT
 		public IList<GenericRecord> GameStates
 		{
 			get

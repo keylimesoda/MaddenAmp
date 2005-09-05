@@ -154,6 +154,10 @@ namespace MaddenEditor.Core.Record
 		double[] estYearlySalary = new double[7];
 		double[] estSigningBonusArray = new double[7];
 
+        // MADDEN DRAFT EDIT
+        public double EffectiveOVR;
+        public double Value;
+        // MADDEN DRAFT EDIT
 		public PlayerRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
