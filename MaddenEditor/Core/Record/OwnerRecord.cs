@@ -30,6 +30,7 @@ namespace MaddenEditor.Core.Record
 	{
 		public const string TEAM_ID = "TGID";
 		public const string USER_CONTROLLED = "CFUC";
+		public const string RELOCATION_YEAR = "OFYR";
 		public const string COMPUTER_CONTROL_1 = "CFDA";
 		public const string COMPUTER_CONTROL_2 = "CFFA";
 		public const string COMPUTER_CONTROL_3 = "CFDP";
@@ -58,6 +59,18 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(TEAM_ID, value);
+			}
+		}
+
+		public int RelocationYear
+		{
+			get
+			{
+				return GetIntField(RELOCATION_YEAR);
+			}
+			set
+			{
+				SetField(RELOCATION_YEAR, value);
 			}
 		}
 
