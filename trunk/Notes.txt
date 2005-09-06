@@ -10,3 +10,5 @@ Stitch.
 
 Note: Fra.00 has NO Human controled teams
       Fra.01 has ALL 32 teams Human contoled
+
+
