@@ -470,6 +470,14 @@ namespace MaddenEditor.Forms
             DraftConfigForm form = new DraftConfigForm(model);
             form.Show(this);
         }
+
+        private void depthChartMenuItem_Click(object sender, EventArgs e)
+        {
+            DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+
+            dcr.ReorderDepthCharts(false);
+        }
+
         // MADDEN DRAFT EDIT
 
     }
