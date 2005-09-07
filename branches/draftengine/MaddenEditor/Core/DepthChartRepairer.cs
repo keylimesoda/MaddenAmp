@@ -22,8 +22,111 @@ namespace MaddenEditor.Core
         private List<int> starters;
         private Dictionary<int, Dictionary<int, double>> valuesByPosition;
 
+        private void ComputeCONs(List<int> teamOveralls)
+        {
+            List<int> rankedTeams = new List<int>();
 
-        public DepthChartRepairer (EditorModel em, Dictionary<int, Position> pd) {
+            for (int i = 0; i < 32; i++)
+            {
+                int bestId = 0;
+                int bestRating = 0;
+
+                for (int j = 0; j < 32; j++)
+                {
+                    if (bestRating < teamOveralls[j] && !rankedTeams.Contains(j))
+                    {
+                        bestRating = teamOveralls[j];
+                        bestId = j;
+                    }
+                }
+
+                rankedTeams.Add(bestId);
+            }
+
+            for (int i = 0; i < 32; i++) {
+                Console.WriteLine(teamOveralls[rankedTeams[i]]);
+            }
+
+            List<int> conCutoffs = new List<int>();
+            conCutoffs.Add(teamOveralls[rankedTeams[28]]);
+            conCutoffs.Add(teamOveralls[rankedTeams[22]]);
+            conCutoffs.Add(teamOveralls[rankedTeams[14]]);
+            conCutoffs.Add(teamOveralls[rankedTeams[6]]);
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+            {
+                TeamRecord tr = (TeamRecord)record;
+
+                if (tr.TeamId >= 32) { continue; }
+
+                if (teamOveralls[tr.TeamId] < conCutoffs[0])
+                {
+                    tr.CON = 1;
+                }
+                else if (teamOveralls[tr.TeamId] < conCutoffs[1])
+                {
+                    tr.CON = 2;
+                }
+                else if (teamOveralls[tr.TeamId] < conCutoffs[2])
+                {
+                    tr.CON = 3;
+                }
+                else if (teamOveralls[tr.TeamId] < conCutoffs[3])
+                {
+                    tr.CON = 4;
+                }
+                else
+                {
+                    tr.CON = 5;
+                }
+
+                Console.WriteLine(tr.Name + " " + teamOveralls[tr.TeamId] + " " + tr.CON);
+
+                // Should add code here that increases CON if they've got an old QB
+                // who's above 90 or so and about to retire.
+            }
+        }
+
+        public List<int> ComputeTeamOveralls(List<List<List<PlayerRecord>>> depthChart)
+        {
+
+            List<int> toReturn = new List<int>();
+
+            for (int i = 0; i < 32; i++)
+            {
+                double numerator = 0;
+                double denominator = 0;
+                int defense = model.TeamModel.GetTeamRecord(i).DefensiveSystem;
+
+                for (int j = 0; j < 21; j++)
+                {
+                    for (int k = 0; k < positionData[j].Starters(defense); k++)
+                    {
+                        numerator += positionData[j].Value(defense) * depthChart[i][j][k].Overall;
+                        denominator += positionData[j].Value(defense);
+                    }
+
+                    if (j >= 19) { continue; }
+
+                    for (int k = positionData[j].Starters(defense); k < 2*positionData[j].Starters(defense); k++)
+                    {
+                        numerator += 0.5*positionData[j].BackupNeed * positionData[j].Value(defense) * depthChart[i][j][k].Overall;
+                        denominator += 0.5 * positionData[j].BackupNeed * positionData[j].Value(defense);
+                    }
+                }
+
+                double tempOverall = (double)numerator / denominator;
+
+                toReturn.Add((int)Math.Round(tempOverall + 2.0*(tempOverall - 85.0)));
+
+                Console.WriteLine(model.TeamModel.GetTeamRecord(i).Name + " " + toReturn[i] + " " + model.TeamModel.GetTeamRecord(i).OverallRating);
+            }
+
+            return toReturn;
+        }
+
+        public DepthChartRepairer(EditorModel em, Dictionary<int, Position> pd)
+        {
             model = em;
             positionData = pd;
 
@@ -42,9 +145,20 @@ namespace MaddenEditor.Core
 
             for (int i = 0; i < 32; i++)
             {
-                depthChart.Add(SortDepthChart(i, withProgression));
+                depthChart.Add(SortDepthChart(i, false));
             }
 
+            if (withProgression)
+            {
+                ComputeCONs(ComputeTeamOveralls(depthChart));
+                depthChart = new List<List<List<PlayerRecord>>>();
+
+                for (int i = 0; i < 32; i++)
+                {
+                    depthChart.Add(SortDepthChart(i, true));
+                }
+            }
+            
             SaveDepthChartList(depthChart);
         }
 
@@ -67,7 +181,7 @@ namespace MaddenEditor.Core
                 {
                     for (int depth = 0; depth < depthChart[team][pos].Count; depth++)
                     {
-                        DepthChartRecord newRecord = (DepthChartRecord)dcRecords.CreateNewRecord(true);
+                        DepthChartRecord newRecord = (DepthChartRecord)dcRecords.CreateNewRecord(false);
 
                         newRecord.TeamId = team;
                         newRecord.PositionId = pos;
@@ -85,6 +199,9 @@ namespace MaddenEditor.Core
             toReturn = new List<List<PlayerRecord>>();
             starters = new List<int>();
 
+            // to be passed when we need an empty list
+            List<int> empty = new List<int>();
+
             List<int> groupstarters = new List<int>();
             List<int> groupstartersTemp = new List<int>();
 
@@ -101,17 +218,32 @@ namespace MaddenEditor.Core
             }
 
             // First calculate each player's value at any position he might play
-            valuesByPosition = new Dictionary<int,Dictionary<int,double>>();
+            valuesByPosition = new Dictionary<int, Dictionary<int, double>>();
+
+            for (int i = 0; i < 26; i++)
+            {
+                valuesByPosition[i] = new Dictionary<int, double>();
+            }
 
             foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
             {
                 PlayerRecord player = (PlayerRecord)rec;
 
                 if (TeamToSort != player.TeamId) { continue; }
-
+                
                 foreach (KeyValuePair<int, double> pair in awarenessAdjust[player.PositionId])
                 {
-                    valuesByPosition[pair.Key][player.PlayerId] = positionData[pair.Key].Value(model.TeamModel.GetTeamRecord(player.TeamId).DefensiveSystem) * math.valcurve(GetAdjustedOverall(player, pair.Key) + math.theta(5 - player.YearsPro) * (5.0 - (double)player.YearsPro) * (5.0 - con) / 2.0 - math.theta(player.Age + 5.0 - positionData[player.PositionId].RetirementAge) * ((double)player.Age + 5.0 - (double)positionData[player.PositionId].RetirementAge) * (5.0 - con) / 2.0);
+                    double value;
+                    if (pair.Key < 21)
+                    {
+                        value = positionData[pair.Key].Value(model.TeamModel.GetTeamRecord(player.TeamId).DefensiveSystem);
+                    }
+                    else
+                    {
+                        value = 1;
+                    }
+
+                    valuesByPosition[pair.Key][player.PlayerId] = value * math.valcurve(GetAdjustedOverall(player, pair.Key) + math.theta(5 - player.YearsPro) * (5.0 - (double)player.YearsPro) * (5.0 - con) / 2.0 - math.theta(player.Age + 5.0 - positionData[player.PositionId].RetirementAge) * ((double)player.Age + 5.0 - (double)positionData[player.PositionId].RetirementAge) * (5.0 - con) / 2.0);
                 }
             }
 
@@ -196,7 +328,7 @@ namespace MaddenEditor.Core
 
 
             // Get the starting WR's -- only fill with actual WR's
-            SimpleFill(0, 4, (int)MaddenPositions.WR, (int)MaddenPositions.WR, null, TeamToSort);
+            SimpleFill(0, 4, (int)MaddenPositions.WR, (int)MaddenPositions.WR, empty, TeamToSort);
 
             // Get the 5th WR.  Since there's no formation with 5 WR's and a TE/HB/FB, fill
             // the 5th slot with the best WR left
@@ -699,8 +831,8 @@ namespace MaddenEditor.Core
 
             // I guess we could put punters at the bottom of kickers and vice versa
             // but that seems like a bit of a hassle -- I'll just assume it'll get figured out
-            SimpleFill(0, 3, (int)MaddenPositions.P, -1, null, TeamToSort);
-            SimpleFill(0, 3, (int)MaddenPositions.K, -1, null, TeamToSort);
+            SimpleFill(0, 3, (int)MaddenPositions.P, -1, empty, TeamToSort);
+            SimpleFill(0, 3, (int)MaddenPositions.K, -1, empty, TeamToSort);
 
             // Just make PR and KR tables the same -- no reason to differentiate really.
             // For now, just fill them, and skip over starters.  Could be made better
@@ -709,13 +841,13 @@ namespace MaddenEditor.Core
             SimpleFill(0, 3, 22, -1, starters, TeamToSort);
 
             // KOS
-            SimpleFill(0, 3, 23, -1, null, TeamToSort);
+            SimpleFill(0, 3, 23, -1, empty, TeamToSort);
 
             // LS
             SimpleFill(0, 3, 24, -1, starters, TeamToSort);
 
             // 3DRB
-            SimpleFill(0, 3, 25, -1, null, TeamToSort);
+            SimpleFill(0, 3, 25, -1, empty, TeamToSort);
 
             return toReturn;
         }
@@ -926,6 +1058,7 @@ namespace MaddenEditor.Core
                     break;
                 case 21: // KR
                 case 22: // PR
+                    // This is too simple!  It should be improved...
                     tempOverall = (double)player.KickReturn;
                     break;
                 case 23: // KOS
@@ -945,6 +1078,9 @@ namespace MaddenEditor.Core
                     // 3DRB -- again, no idea what the formula is.  Took HB formula, made PBK more important, 
                     // CTH more important, ACC more important, CAR less important, BTK less important
                     // Supposed to be kind of an HB/WR hybrid.
+                    //
+                    // Seems basically right though -- only noticed a couple of small mistakes
+                    // in the depth chart by using this algorithm.
                     tempOverall = (((double)player.PassBlocking - 50) / 10) * 0.6;
                     tempOverall += (((double)player.BreakTackle - 50) / 10) * 2.1;
                     tempOverall += (((double)player.Carrying - 50) / 10) * 1.4;
@@ -974,6 +1110,7 @@ namespace MaddenEditor.Core
         {
             for (int i = 0; i < 21; i++)
             {
+                awarenessAdjust[i] = new Dictionary<int, double>();
                 awarenessAdjust[i][i] = 1.0;
             }
 
