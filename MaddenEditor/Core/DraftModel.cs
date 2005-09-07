@@ -1917,7 +1917,6 @@ namespace MaddenEditor.Core.Record
                 }
             }
         }
-
     }
 
     public class Position
