@@ -68,6 +68,7 @@ namespace MaddenEditor.Forms
             this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
             this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
             this.depthChartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.depthChartProgMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.playerPage.SuspendLayout();
@@ -194,7 +195,8 @@ namespace MaddenEditor.Forms
             this.setGameInjuriesToolStripMenuItem,
             this.toolStripSeparator6,
             this.draftMenuItem,
-            this.depthChartMenuItem});
+            this.depthChartMenuItem,
+            this.depthChartProgMenuItem});
             this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
             this.franchiseToolStripMenuItem.Text = "Franchise";
             // 
@@ -351,8 +353,14 @@ namespace MaddenEditor.Forms
             // depthChartMenuItem
             // 
             this.depthChartMenuItem.Name = "depthChartMenuItem";
-            this.depthChartMenuItem.Text = "Reorder Depth Charts";
+            this.depthChartMenuItem.Text = "Reorder Depth Charts (No Prog)";
             this.depthChartMenuItem.Click += new System.EventHandler(this.depthChartMenuItem_Click);
+            // 
+            // depthChartProgMenuItem
+            // 
+            this.depthChartProgMenuItem.Name = "depthChartProgMenuItem";
+            this.depthChartProgMenuItem.Text = "Reorder Depth Charts (w/ Prog)";
+            this.depthChartProgMenuItem.Click += new System.EventHandler(this.depthChartProgMenuItem_Click);
             // 
             // MainForm
             // 
@@ -420,5 +428,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem draftMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem setGameInjuriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem depthChartMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem depthChartProgMenuItem;
     }
 }

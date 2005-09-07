@@ -478,6 +478,13 @@ namespace MaddenEditor.Forms
             dcr.ReorderDepthCharts(false);
         }
 
+        private void depthChartProgMenuItem_Click(object sender, EventArgs e)
+        {
+            DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+
+            dcr.ReorderDepthCharts(true);
+        }
+
         // MADDEN DRAFT EDIT
 
     }
