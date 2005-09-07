@@ -137,7 +137,7 @@ namespace MaddenEditor.Core
             return Math.Exp(-77.4609 + 30.4199*temp - 4.32888*Math.Pow(temp, 2) + 0.280661*Math.Pow(temp, 3) - 0.00682204 * Math.Pow(temp, 4));
         }
 
-        public int theta(int x)
+        public double theta(double x)
         {
             if (x > 0)
             {
