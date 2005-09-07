@@ -55,6 +55,7 @@
     <Compile Include="ConSole\ConSoleDraft.cs" />
     <Compile Include="Core\CoachEditingModel.cs" />
     <Compile Include="Core\DepthChartEditingModel.cs" />
+    <Compile Include="Core\DepthChartRepairer.cs" />
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\LocalMath.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
