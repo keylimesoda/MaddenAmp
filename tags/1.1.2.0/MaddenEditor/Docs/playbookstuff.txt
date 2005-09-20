@@ -1,0 +1,32 @@
+Hi, in the past I changed very much with "tdbwrite".
+One of it was to edit the playbooks that coaches in franchise uses.
+Perhaps Nza or gommo can build the function in the next editor.
+
+Table "COCH" field "CPID"
+
+default Off-playbooks:
+
+6=ARI,13=ATL,24=BAL, 2=BUF, 20=CAR, 0=CHI, 1=CIN, 4=CLE, 10=DAL, 3=DEN,
+18=DET, 19=GB, 31=HOU, 9=IND, 16=JAX, 8=KC, 11=MIA, 30=MIN, 21=NE, 26=NO,
+15=NYG, 17=NYJ, 22=OAK, 12=PHI, 28=PIT, 7=SD, 27=SEA, 14=SF, 23=STL, 5=TB,
+29=TEN, 25=WAS.
+
+other off-playbooks:
+
+32=balanced, 33=pass ballanced, 34=run ballanced, 35=run heavy, 36=west coast, 37=run n gun
+
+38 - ? createt playbooks
+
+Table "COCH" field "CDID"
+
+default def-playbooks:
+
+0=4-3, 1=3-4, 2=4-6, 3=Cover2
+
+other def-playbooks:
+
+4=ballanced D, 5=QB contains
+
+6 - ? createt playbooks
+
+Thanks and sorry for my english.
