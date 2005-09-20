@@ -159,7 +159,7 @@ namespace MaddenEditor.Forms
 				LoadPlayerSalaries(record);
 
 				//Set player Appearance
-				playerFaceShape.Value = record.FaceShape;
+				cbFaceId.Value = (int)record.FaceId;
 				playerBodyWeight.Value = record.BodyWeight;
 				playerBodyMuscle.Value = record.BodyMuscle;
 				playerBodyFat.Value = record.BodyFat;
@@ -182,7 +182,7 @@ namespace MaddenEditor.Forms
 
 				//Load Player equipment
 				playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
-				playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
+				//playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
 				playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
 				playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
 				playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
@@ -356,6 +356,15 @@ namespace MaddenEditor.Forms
 
 			filterTeamComboBox.SelectedIndex = 0;
 			filterPositionComboBox.SelectedIndex = 0;
+
+			if (model.FileVersion >= MaddenFileVersion.Ver2006)
+			{
+				playerFaceShape.Enabled = false;
+			}
+			else
+			{
+				playerFaceShape.Enabled = true;
+			}
 
 			foreach (GenericRecord rec in model.PlayerModel.HelmetStyleList)
 			{
@@ -1010,7 +1019,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.CurrentPlayerRecord.SkinType = playerSkinColorCombo.SelectedIndex;
+				//model.PlayerModel.CurrentPlayerRecord.SkinType = playerSkinColorCombo.SelectedIndex;
 			}
 		}
 
@@ -1018,7 +1027,7 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.CurrentPlayerRecord.FaceShape = (int)playerFaceShape.Value;
+				//model.PlayerModel.CurrentPlayerRecord.FaceShape = (int)playerFaceShape.Value;
 			}
 		}
 
@@ -1227,7 +1236,7 @@ namespace MaddenEditor.Forms
 
 		private void playerFaceMaskCombo_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (isInitialising)
+			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.FaceMask = playerFaceMaskCombo.SelectedIndex;
 			}
@@ -1308,6 +1317,14 @@ namespace MaddenEditor.Forms
 			if (!isInitialising)
 			{
 				model.PlayerModel.CurrentPlayerRecord.Tendancy = cbTendancy.SelectedIndex;
+			}
+		}
+
+		private void cbFaceId_ValueChanged(object sender, EventArgs e)
+		{
+			if (!isInitialising)
+			{
+				model.PlayerModel.CurrentPlayerRecord.FaceId = (int)cbFaceId.Value;
 			}
 		}
 		
