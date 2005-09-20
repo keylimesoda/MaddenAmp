@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                           GOMMO'S MADDEN EDITOR 1.1.1.0
+                           GOMMO'S MADDEN EDITOR 1.1.2.0
 
-                                  31st August 2005
+                                  20th September 2005
 
                                      readme.txt
 
@@ -119,6 +119,8 @@ The Actual package name is .NET Framework Version 2.0 Redistributable Package Be
 
 4. FIXED ISSUES
 ===============
+* Fixed Player Face mask bug
+
 * Fixed crash in Team Navigator
 
 * Fixed editing of Team Rivals

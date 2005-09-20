@@ -96,8 +96,9 @@ namespace MaddenEditor.Core.Record
 		public const string REAR_REAR_FAR = "PMGS";
 		public const string REAR_SHAPE = "PQGS";
 
-		public const string SKIN_COLOR = "PCPH";
-		public const string FACE_SHAPE = "PFGE";
+		//public const string SKIN_COLOR = "PCPH";
+		//public const string FACE_SHAPE = "PFGE";
+		public const string FACE_ID = "PFEx";
 		public const string HAIR_COLOR = "PHCL";
 		public const string HAIR_STYLE = "PHED";
 		public const string EYE_PAINT = "PEYE";
@@ -870,6 +871,7 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
+		/*
 		public int SkinType
 		{
 			get
@@ -886,11 +888,23 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(ARMS_FAT) < 21 ? GetIntField(ARMS_FAT) : 20);
+				return (GetIntField(FACE_SHAPE) < 21 ? GetIntField(FACE_SHAPE) : 20);
 			}
 			set
 			{
 				SetField(FACE_SHAPE, value);
+			}
+		}*/
+
+		public int FaceId
+		{
+			get
+			{
+				return GetIntField(FACE_ID);
+			}
+			set
+			{
+				SetField(FACE_ID, value);
 			}
 		}
 
