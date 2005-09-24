@@ -28,7 +28,8 @@ namespace MaddenEditor.Core
 {
     public class LocalMath
     {
-        public const double ValueScale = 0.28*1.3;
+        //public const double ValueScale = 0.28*1.3;
+        public const double ValueScale = 0.2427;
 
         public LocalMath()
         {

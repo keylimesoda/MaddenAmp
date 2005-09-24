@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MaddenEditor.Forms;
 
 namespace MaddenEditor.Core.Record
 {
@@ -32,16 +33,34 @@ namespace MaddenEditor.Core.Record
 		/** The current Team Filter */
 		private string currentTeamFilter = null;
 		/** Reference to our EditorModel */
-		private EditorModel model = null;
+		public EditorModel model = null;
         /** Rookies, indexed by PlayerId **/
-        private Dictionary<int, RookieRecord> rookies = new Dictionary<int, RookieRecord>();
-        private List<double> pickValues = new List<double>();
-        private int HumanTeamId;
+        public Dictionary<int, RookieRecord> rookies = new Dictionary<int, RookieRecord>();
+
+        public List<double> pickValues = new List<double>();
+        public int HumanTeamId;
         public const double TotalScoutingHours = 1000.0;
 
         public Dictionary<int,Position> positionData = new Dictionary<int,Position>();
 
         private LocalMath math = new LocalMath();
+        public DepthChartRepairer dcr;
+
+        // true if the team just traded up; false otherwise.
+        private bool PreventTrade = false;
+        private bool humanRejected = false;
+
+        public Dictionary<int, TradeOffer> tradeOffers;
+        private Dictionary<int, double> BestOffers;
+        public Dictionary<int, Dictionary<int, double>> probs;
+        public Dictionary<int, RookieRecord> favorites;
+
+        public TradeUpForm tradeUpForm;
+        public TradeDownForm tradeDownForm;
+        public DraftForm df;
+
+        // futureTradedPicks[fromTeam][round] = toTeam;
+        public Dictionary<int, Dictionary<int, int>> futureTradedPicks = new Dictionary<int,Dictionary<int,int>>();
 
         // We ran into problems with seeding of random numbers.  Let's create a single
         // instance of Random, and make repeated calls to it.
@@ -55,36 +74,202 @@ namespace MaddenEditor.Core.Record
          * depthChart[TeamId][PositionId][Depth] = PlayerRecord */
         private List<List<List<PlayerRecord>>> depthChart;
 
-        public void DumpRookies(int sort)
+        /* To accomodate the fact that players might be put at a position
+         * other than their native one, we need to know what a player's
+         * value is at positions other than his own.  To do this, we
+         * associate values on the current roster with depth chart slots
+         * rather than players.
+         * 
+         * depthChartValues[teamId][PositionId][Depth] */
+        private List<List<List<double>>> depthChartValues;
+
+        private void RepairRookies()
         {
             List<int> found = new List<int>();
+            for (int i = 0; i < rookies.Count; i++ )
+            {
+                double bestEOR = 0;
+                RookieRecord rook = null;
+                foreach (RookieRecord r in rookies.Values)
+                {
+                    if (RookEOR(r) > bestEOR && !found.Contains(r.PlayerId))
+                    {
+                        rook = r;
+                        bestEOR = RookEOR(r);
+                    }
+                }
+                found.Add(rook.PlayerId);
+
+                Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+
+                // For whatever reason, at certain positions, the ratings
+                // are more or less fine as they are.
+                if (rook.Player.PositionId == (int)MaddenPositions.FB)
+                {
+                    continue;
+                }
+
+                int randMax = (int)((i+10) / 15) + 5;
+                rook.Player.Speed -= rand.Next(randMax/3);
+                rook.Player.Agility -= rand.Next(randMax/3);
+                rook.Player.Acceleration -= rand.Next(randMax/3);
+                rook.Player.Strength -= rand.Next(randMax/2);
+                rook.Player.Jumping -= rand.Next(randMax/2);
+
+                // FS's, ROLB's, TE's and MLB's get hammered by these adjustments, and so make
+                // some allowances for them.
+                int factor = 1;
+                if ((rook.Player.PositionId == (int)MaddenPositions.FS)
+                    || (rook.Player.PositionId == (int)MaddenPositions.MLB)
+                    || (rook.Player.PositionId == (int)MaddenPositions.ROLB)
+                    || (rook.Player.PositionId == (int)MaddenPositions.TE))
+                {
+                    factor = 2;
+                }
+
+                int ssfactor = 1;
+                if (rook.Player.PositionId == (int)MaddenPositions.SS)
+                {
+                    ssfactor = 2;
+                }
+
+                rook.Player.Awareness -= rand.Next(ssfactor*randMax/factor);
+
+                rook.Player.Catching -= rand.Next(randMax/factor);
+                rook.Player.Carrying -= rand.Next(randMax/2);
+                rook.Player.BreakTackle -= rand.Next(randMax);
+                rook.Player.Tackle -= rand.Next(ssfactor*randMax/factor);
+                rook.Player.ThrowAccuracy -= rand.Next(randMax);
+                rook.Player.ThrowPower -= rand.Next(randMax);
+                rook.Player.PassBlocking -= rand.Next(randMax);
+                rook.Player.RunBlocking -= rand.Next(randMax);
+
+                rook.Player.KickAccuracy -= rand.Next(randMax/3);
+                rook.Player.KickPower -= rand.Next(randMax/3);
+
+/*
+                rook.Player.Speed -= rand.Next(3);
+                rook.Player.Agility -= rand.Next(4);
+                rook.Player.Acceleration -= rand.Next(3);
+                rook.Player.Strength -= rand.Next(5);
+                rook.Player.Jumping -= rand.Next(4);
+
+                rook.Player.Awareness -= rand.Next(11);
+
+                rook.Player.Catching -= rand.Next(11);
+                rook.Player.Carrying -= rand.Next(6);
+                rook.Player.BreakTackle -= rand.Next(11);
+                rook.Player.Tackle -= rand.Next(11);
+                rook.Player.ThrowAccuracy -= rand.Next(11);
+                rook.Player.ThrowPower -= rand.Next(11);
+                rook.Player.PassBlocking -= rand.Next(11);
+                rook.Player.RunBlocking -= rand.Next(11);
+                rook.Player.KickAccuracy -= rand.Next(11);
+                rook.Player.KickPower -= rand.Next(11);
+
+
+                rook.Player.Speed -= (int)Math.Pow(rand.Next(3), 2);
+                rook.Player.Agility -= (int)Math.Pow(rand.Next(3), 2);
+                rook.Player.Acceleration -= (int)Math.Pow(rand.Next(3),2);
+                rook.Player.Strength -= (int)Math.Pow(rand.Next(3),2);
+                rook.Player.Jumping -= (int)Math.Pow(rand.Next(3),2);
+
+                int j = 2;
+                rook.Player.Catching -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.Carrying -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.BreakTackle -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.Tackle -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.ThrowAccuracy -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.ThrowPower -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.PassBlocking -= (int)Math.Pow(rand.Next(4),2)-j;
+                rook.Player.RunBlocking -= (int)Math.Pow(rand.Next(4),2)-j;
+
+                rook.Player.KickAccuracy -= (int)Math.Pow(rand.Next(3),2)-j;
+                rook.Player.KickPower -= (int)Math.Pow(rand.Next(3),2)-j;
+*/
+                rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
+                Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+
+                rook.ActualValue = LocalMath.ValueScale * positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) * math.valcurve(rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed));
+            }
+        }
+
+        public double RookEOR(RookieRecord rook)
+        {
+            return rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed);
+        }
+
+        public void DumpRookiesByPosition()
+        {
+            Console.WriteLine("\n");
+            for (int j = 0; j < 21; j++)
+            {
+                List<int> found = new List<int>();
+
+                bool stop = false;
+                for (int i = 0; i < 250 && !stop; i++)
+                {
+                    double bestRating = 0;
+                    int bestId = -1;
+
+                    foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+                    {
+                        if (rook.Value.Player.PositionId == j && rook.Value.Player.Overall > bestRating && !found.Contains(rook.Key))
+                        {
+                            bestId = rook.Key;
+                            bestRating = rook.Value.Player.Overall;
+                        }
+                    }
+
+                    if (bestId == -1) { stop = true; continue; }
+
+                    found.Add(bestId);
+
+                    Console.WriteLine(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
+                }
+
+                Console.WriteLine("");
+            }
+
+            Console.WriteLine("");
+        }
+
+        public void DumpRookies()
+        {
+            Console.WriteLine("\n");
+
+            List<int> found = new List<int>();
+            string points = "";
 
             for (int i = 0; i < 250; i++)
             {
-
                 double bestRating = 0;
                 int bestId = -1;
 
-                foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+                foreach (KeyValuePair<int, RookieRecord> r in rookies)
                 {
-                    /*
-                    if (rook.Value.ratings[0][(int)RookieRecord.RatingType.Final][sort] > bestRating &&
-                        !found.Contains(rook.Key))
-                     */
-                    if (rook.Value.values[0][(int)RookieRecord.ValueType.NoProg] > bestRating &&
-                        !found.Contains(rook.Key))
+                    if (r.Value.ActualValue > bestRating && !found.Contains(r.Key))
                     {
-
-                        bestId = rook.Key;
-                        /* bestRating = rook.Value.ratings[0][(int)RookieRecord.RatingType.Final][sort]; */
-                        bestRating = rook.Value.values[0][(int)RookieRecord.ValueType.NoProg];
+                        bestId = r.Key;
+                        bestRating = r.Value.ActualValue;
                     }
                 }
 
+                RookieRecord rook = rookies[bestId];
+                if (bestId == -1) { break; }
+
                 found.Add(bestId);
 
-                Console.WriteLine(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].values[0][(int)RookieRecord.ValueType.NoProg] + " " + pickValues[i]);
+                points += "{" + RookEOR(rook) + ", " + pickValues[i] / positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) + "}, ";
+
+                Console.WriteLine(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
             }
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine(points);
+            Console.WriteLine("");
+            Console.WriteLine("");
         }
 
         public List<RookieRecord> GetDraftBoard(TeamRecord team, int pickNumber)
@@ -98,12 +283,12 @@ namespace MaddenEditor.Core.Record
 
                 foreach (KeyValuePair<int, RookieRecord> rook in rookies)
                 {
-                    if (rook.Value.PerceivedEffectiveValue(team, pickNumber) > bestRating &&
+                    if (rook.Value.PerceivedEffectiveValue(team, pickNumber, dcr.awarenessAdjust) > bestRating &&
                         !draftBoard.Contains(rook.Value) && !(rook.Value.DraftedTeam < 32))
                     {
 
                         bestId = rook.Key;
-                        bestRating = rook.Value.PerceivedEffectiveValue(team, pickNumber);
+                        bestRating = rook.Value.PerceivedEffectiveValue(team, pickNumber, dcr.awarenessAdjust);
                     }
                 }
 
@@ -238,43 +423,60 @@ namespace MaddenEditor.Core.Record
 
             if (toDraft == null)
             {
-                Dictionary<int, RookieRecord> favorites = GetFavoriteRookies(pickNumber);
+                favorites = GetFavoriteRookies(pickNumber);
                 toDraft = favorites[dpRecord.CurrentTeamId];
             }
             
             /*
              * Some debugging/diagnostic code
              */ 
+            
             Console.WriteLine("\n" + " " + pickNumber + " " + dpRecord.CurrentTeamId + " " + toDraft.Player.ToString() + " " + toDraft.Player.Overall + " " + toDraft.Player.Injury + "\n");
             int trash = 2 + 2;
 
-            if (pickNumber == 3)
+            if (true)
             {
                 Console.WriteLine(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON);
                 foreach (RookieRecord rook in GetDraftBoard(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber))
                 {
                     if (rook.DraftedTeam < 32) { continue; }
-                    Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber) + " " + rook.TotalNeed(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber) + " " + rook.needs[dpRecord.CurrentTeamId][(int)RookieRecord.NeedType.Starter] + " " + rook.needs[dpRecord.CurrentTeamId][(int)RookieRecord.NeedType.Backup] + " " + rook.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.WithProg] + " " + rook.Player.Overall + " " + rook.Player.Injury);
+                    Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue +  " " + rook.values[dpRecord.CurrentTeamId][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(dpRecord.CurrentTeamId, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[dpRecord.CurrentTeamId] + rook.PostCombineScoutedHours[dpRecord.CurrentTeamId]));
                 }
             }
             
             toDraft.DraftedTeam = dpRecord.CurrentTeamId;
             toDraft.DraftPickNumber = pickNumber;
 
+
+
+            // **** NEED TO INCLUDE THIS LOGIC ****
+            //
             // For now, they still don't see his actual ratings -- just what they scouted.
             // Not only does this make sense, but it also prevents two picks at the same position
             // (two K's, two P's, etc.)
+
+            depthChart[dpRecord.CurrentTeamId] = dcr.SortDepthChart(dpRecord.CurrentTeamId, true, rookies);
+            CalculateDepthChartValues(dpRecord.CurrentTeamId);
+
+            /*
             toDraft.Player.EffectiveOVR = toDraft.ratings[dpRecord.CurrentTeamId][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.OVR] + 5 * (5 - model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON) / 2
                     + math.injury(toDraft.ratings[dpRecord.CurrentTeamId][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.INJ], positionData[toDraft.Player.PositionId].DurabilityNeed);
             toDraft.Player.Value = LocalMath.ValueScale * positionData[toDraft.Player.PositionId].Value(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).DefensiveSystem) * math.valcurve(toDraft.Player.EffectiveOVR);
 
             depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId].Add(toDraft.Player);
             depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId] = SortByEffectiveOVR(depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId], dpRecord.CurrentTeamId, toDraft.Player.PositionId);
+             */
 
             foreach (KeyValuePair<int, RookieRecord> rook in rookies)
             {
-                if (rook.Value.Player.PositionId != toDraft.Player.PositionId) { continue; }
-                rook.Value.CalculateNeeds(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId], positionData);
+                // Really only need to calculate within the same position grouping.
+                // Would be more efficient to skip players not in the grouping of the drafted player....
+
+                foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
+                {
+                    if (pair.Key > 20) { continue; }
+                    rook.Value.CalculateNeeds(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), depthChart[dpRecord.CurrentTeamId][pair.Key], depthChartValues[dpRecord.CurrentTeamId][pair.Key], positionData, pair.Key);
+                }            
             }
 
             return toDraft;
@@ -311,7 +513,7 @@ namespace MaddenEditor.Core.Record
                 Console.Write(model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).Overall + " " + model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).Injury + " ");
                 if (pickValues.Count > 100)
                 {
-                    Console.WriteLine(Math.Round(rookieRecord.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.NoProg]) + " " + pickValues[i]);
+//                    Console.WriteLine(Math.Round(rookieRecord.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.NoProg]) + " " + pickValues[i]);
 
                 }
                 else
@@ -324,10 +526,11 @@ namespace MaddenEditor.Core.Record
         public void InitializeScouting()
         {
             SetInitialRookieAttributes();
-            CalculateOveralls((int)RookieRecord.RatingType.Initial);
-
             SetRookieValues((int)RookieRecord.RatingType.Initial);
+            SetNeeds();
+
             DetermineProjections((int)RookieRecord.RatingType.Initial);
+            //SetPerceivedRookieValues();
             SetCombineStats(HumanTeamId, (int)RookieRecord.RatingType.Initial);
 
             foreach (KeyValuePair<int, RookieRecord> rook in rookies)
@@ -340,9 +543,11 @@ namespace MaddenEditor.Core.Record
         public void DoCombine() {
             DoCPURookieScouting(true);
             SetCombineRookieAttributes();
-            CalculateOveralls((int)RookieRecord.RatingType.Combine);
             SetRookieValues((int)RookieRecord.RatingType.Combine);
+            SetNeeds();
+
             DetermineProjections((int)RookieRecord.RatingType.Combine);
+            //SetPerceivedRookieValues();
             SetCombineStats(HumanTeamId, (int)RookieRecord.RatingType.Combine);
         }
 
@@ -350,12 +555,925 @@ namespace MaddenEditor.Core.Record
         {
             DoCPURookieScouting(false);
             SetFinalRookieAttributes();
-            CalculateOveralls((int)RookieRecord.RatingType.Final);
             SetRookieValues((int)RookieRecord.RatingType.Final);
-            DetermineProjections((int)RookieRecord.RatingType.Final);
+            SetNeeds();
 
+            DetermineProjections((int)RookieRecord.RatingType.Final);
+            SetPerceivedRookieValues();
             SetCombineStats(HumanTeamId, (int)RookieRecord.RatingType.Final);
-            SetInitialNeeds();
+        }
+
+        private void CalculateDepthChartValues(int TeamId)
+        {
+            // At each position, calculate the effective value of that player
+            // and store it in depthChartValues.  Use this.dcr.GetAdjustedOverall
+            // to calculate adjusted overall values.
+
+            for (int i = 0; i < 21; i++)
+            {
+                depthChartValues[TeamId].Add(new List<double>());
+
+                for (int j = 0; j < depthChart[TeamId][i].Count; j++)
+                {
+                    PlayerRecord rec = depthChart[TeamId][i][j];
+
+                    double tempOverall = (double)dcr.GetAdjustedOverall(rec, i) + math.theta(5.0 - rec.YearsPro) * (5.0 - (double)rec.YearsPro) * (5.0 - (double)model.TeamModel.GetTeamRecord(TeamId).CON) / 2.0
+                        + math.injury(rec.Injury, positionData[i].DurabilityNeed);
+
+                    depthChartValues[TeamId][i].Add(LocalMath.ValueScale * positionData[i].Value(model.TeamModel.GetTeamRecord(TeamId).DefensiveSystem) * math.valcurve(tempOverall));
+                }
+            }
+        }
+
+        public void GetProbabilities(int pickNumber)
+        {
+            Dictionary<int, Dictionary<int, double>> toReturn = new Dictionary<int,Dictionary<int,double>>();
+
+            for (int i = 0; i < 32; i++)
+            {
+                Dictionary<int, double> tempProbs = new Dictionary<int, double>();
+                TeamRecord team = model.TeamModel.GetTeamRecord(i);
+                RookieRecord favorite = GetFavoriteRookies(pickNumber)[i];
+                double totalProb = 0;
+
+                toReturn[i] = new Dictionary<int,double>();
+                double favoritePerceivedValue = favorite.PerceivedEffectiveValue(team, pickNumber, dcr.awarenessAdjust);
+
+                foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+                {
+//                    if (rook.Value.DraftedTeam < 32) { continue; }
+
+                    if (rook.Value.AverageNeed(team, pickNumber, dcr.awarenessAdjust) < positionData[rook.Value.Player.PositionId].Threshold || rook.Value.DraftedTeam < 32)
+                    {
+                        tempProbs[rook.Key] = 0;
+                    }
+                    else if (rook.Value.PlayerId == favorite.PlayerId)
+                    {
+                        tempProbs[rook.Key] = 1;
+                    }
+                    else
+                    {
+                        tempProbs[rook.Key] = Math.Exp(-3.0 * (favoritePerceivedValue - rook.Value.PerceivedEffectiveValue(team, pickNumber, dcr.awarenessAdjust)) / favoritePerceivedValue);
+                    }
+
+                    if (tempProbs[rook.Key] < 0.33) { tempProbs[rook.Key] = 0; }
+                    totalProb += tempProbs[rook.Key];
+                }
+
+                foreach (KeyValuePair<int, RookieRecord> rook in rookies) {
+                    toReturn[i][rook.Key] = tempProbs[rook.Key] / totalProb;
+                }
+            }
+
+            probs = toReturn;
+        }
+
+        public TradeOffer tradePendingAccept()
+        {
+            foreach (TradeOffer to in tradeOffers.Values)
+            {
+                if (to.status == (int)TradeOfferStatus.PendingAccept)
+                {
+                    return to;
+                }
+            }
+
+            return null;
+        }
+
+        public bool tradeExists(int teamId)
+        {
+            return tradeOffers.ContainsKey(teamId);
+        }
+
+        public bool tradePending(int teamId)
+        {
+            foreach (TradeOffer to in tradeOffers.Values)
+            {
+                if (to.status != (int)TradeOfferStatus.Rejected && (to.status == (int)TradeOfferStatus.HigherResponsePending || to.status == (int)TradeOfferStatus.LowerResponsePending) && (teamId == -1 || teamId == to.LowerTeam))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void AcceptTrade(TradeOffer to)
+        {
+            // reassign picks
+
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+            {
+                DraftPickRecord record = (DraftPickRecord)rec;
+
+                if (to.PicksFromHigher.Contains(record.PickNumber) || record.PickNumber == to.pickNumber)
+                {
+                    record.CurrentTeamId = to.LowerTeam;
+                }
+                else if (to.PicksFromLower.Contains(record.PickNumber))
+                {
+                    record.CurrentTeamId = to.HigherTeam;
+                }
+            }
+
+            foreach (int pick in to.PicksFromLower)
+            {
+                if (pick > 1000)
+                {
+                    futureTradedPicks[to.LowerTeam][pick - 1000] = to.HigherTeam;
+                }
+            }
+
+            foreach (int pick in to.PicksFromHigher)
+            {
+                if (pick > 1000)
+                {
+                    futureTradedPicks[to.HigherTeam][pick - 1000] = to.LowerTeam;
+                }
+            }
+        }
+
+        public TradeOffer setupTradeOffer(int LowerTeamId, int pickNumber)
+        {
+            int currentSelector = -1;
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+            {
+                DraftPickRecord record = (DraftPickRecord)rec;
+
+                if (record.PickNumber == pickNumber)
+                {
+                    currentSelector = record.CurrentTeamId;
+                    break;
+                }
+            }
+
+            TradeOffer to = new TradeOffer(currentSelector, LowerTeamId, this);
+            to.pickNumber = pickNumber;
+
+            foreach (TradeOffer locTO in tradeOffers.Values)
+            {
+                if (locTO.status == (int)TradeOfferStatus.PendingAccept)
+                {
+                    to.biddingWar = true;
+                    break;
+                }
+            }
+
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+            {
+                DraftPickRecord record = (DraftPickRecord)rec;
+
+                if (record.CurrentTeamId == LowerTeamId && record.PickNumber > pickNumber)
+                {
+                    to.lowerAvailable.Add(record.PickNumber);
+                }
+                else if (record.CurrentTeamId == currentSelector && record.PickNumber > pickNumber)
+                {
+                    to.higherAvailable.Add(record.PickNumber);
+                }
+            }
+
+            to.MaxGive = BestOffers[LowerTeamId];
+            Console.WriteLine("Maximum to give is " + to.MaxGive);
+
+            // Only allow trading of future picks if they've got at least 6 picks left for next year.
+            // Could be better about this -- could allow it if the *net* number of picks for next year
+            // is still 5 or more -- i.e., allow it if they pick up a future pick from the other team
+            // in the trade.  So, we need to count the number of picks they've got.
+
+            int futurePicks = 7;
+            for (int i = 0; i < 32; i++)
+            {
+                if (i == LowerTeamId)
+                {
+                    futurePicks -= futureTradedPicks[i].Count;
+                }
+                else
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        if (futureTradedPicks[i].ContainsKey(j) && futureTradedPicks[i][j] == LowerTeamId)
+                        {
+                            futurePicks++;
+                        }
+                    }
+                }
+            }
+
+            if (LowerTeamId != HumanTeamId && futurePicks < 6)
+            {
+                to.allowFuturePicksFromLower = false;
+            }
+
+
+            futurePicks = 7;
+            for (int i = 0; i < 32; i++)
+            {
+                if (i == currentSelector)
+                {
+                    futurePicks -= futureTradedPicks[i].Count;
+                }
+                else
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        if (futureTradedPicks[i].ContainsKey(j) && futureTradedPicks[i][j] == currentSelector)
+                        {
+                            futurePicks++;
+                        }
+                    }
+                }
+            }
+
+            if (futurePicks < 6 && currentSelector != HumanTeamId)
+            {
+                to.allowFuturePicksFromHigher = false;
+            }
+
+            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.3 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.6 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.7)))
+            {
+                to.allowFutureHighPicks = true;
+            }
+
+            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.6 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.85)))
+            {
+                to.allowMultipleHighPicks = true;
+            }
+
+            if (LowerTeamId == HumanTeamId)
+            {
+                to.status = (int)TradeOfferStatus.LowerResponsePending;
+                tradeOffers.Add(LowerTeamId, to);
+            }
+            else if (currentSelector == HumanTeamId)
+            {
+                to.status = (int)TradeOfferStatus.HigherResponsePending;
+                tradeOffers.Add(LowerTeamId, to);
+            }
+
+            return to;
+        }
+
+        public TradeOffer tradeInitialOffer(int LowerTeamId, int pickNumber)
+        {
+            if (LowerTeamId == HumanTeamId && humanRejected)
+            {
+                return null;
+            }
+
+            TradeOffer to = setupTradeOffer(LowerTeamId, pickNumber);
+
+            if (LowerTeamId != HumanTeamId && to.MaxGive < 0.5 * pickValues[pickNumber])
+            {
+                if (to.HigherTeam != HumanTeamId)
+                {
+                    Console.WriteLine("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " outright.\n");
+                    to.status = (int)TradeOfferStatus.Rejected;
+                    tradeOffers.Add(LowerTeamId, to);
+                }
+                else
+                {
+                    tradeOffers.Remove(LowerTeamId);
+                }
+
+                return null;
+            }
+
+            double offer;
+            if (LowerTeamId != HumanTeamId)
+            {
+                double initialStart = Math.Min(to.MaxGive, pickValues[pickNumber]);
+                offer = (5.0 / 6.0 - (1.0 / 6.0) * rand.NextDouble()) * initialStart;
+                Console.WriteLine("Initial attempted offer: " + offer);
+            }
+            else
+            {
+                // if this is a potential human offer, give the maximum initial bid
+                // we're really just doing this to get a to.MinAccept
+
+                offer = 10000;
+            }
+
+            double minaccept = to.makeCounterOffer(offer, false);
+            Console.WriteLine("Initial actual offer:    " + to.offersFromLower[0]);
+            Console.WriteLine("Minimum to take: " + to.MinAccept);
+
+            if (LowerTeamId != HumanTeamId && to.HigherTeam != HumanTeamId && to.offersFromLower[0] < 0.5 * to.MinAccept)
+            {
+                Console.WriteLine("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " after initial offer.\n");
+                to.status = (int)TradeOfferStatus.Rejected;
+                tradeOffers.Add(LowerTeamId, to);
+                return null;
+            }
+            else if (LowerTeamId != HumanTeamId)
+            {
+                to.status = (int)TradeOfferStatus.HigherResponsePending;
+                tradeOffers[LowerTeamId] = to;
+                Console.WriteLine("");
+
+                if (to.HigherTeam == HumanTeamId)
+                {
+                    if (to.offersFromLower[0] < 0.6 * pickValues[pickNumber])
+                    {
+                        tradeOffers.Remove(LowerTeamId);
+                        return null;
+                    }
+                    else
+                    {
+                        df.refreshTradeTeams = true;
+                        return to;
+                    }
+                }
+
+                return null;
+            }
+            else
+            {
+                to.offersFromLower = new List<double>();
+                if (minaccept > 0.85 * pickValues[pickNumber])
+                {
+                    humanRejected = true;
+
+                    tradeOffers.Remove(HumanTeamId);
+                    return null;
+                }
+
+                to.status = (int)TradeOfferStatus.HigherResponsePending;
+
+                tradeOffers[LowerTeamId] = to;
+                tradeCounterOffer(LowerTeamId);
+
+                if (to.status == (int)TradeOfferStatus.Rejected)
+                {
+                    humanRejected = true;
+
+                    // Remove it so the human can still make offers, even though the CPU won't accept it.
+                    tradeOffers.Remove(HumanTeamId);
+                    return null;
+                }
+
+                return to;
+            }
+        }
+
+        public TradeOffer tradeCounterOffer(int LowerTeamId)
+        {
+            TradeOffer to = null;
+           
+            foreach (TradeOffer t in tradeOffers.Values) {
+                if (t.LowerTeam == LowerTeamId) {
+                    to = t;
+                    break;
+                }
+            }
+
+            if (to.status == (int)TradeOfferStatus.HigherResponsePending)
+            {
+                if (to.HigherTeam == HumanTeamId)
+                {
+                    return null;
+                }
+
+                df.refreshTradeTeams = true;
+
+                double ourPreviousOffer;
+                double theirCurrentOffer;
+                if (to.offersFromLower.Count > 0)
+                {
+                    theirCurrentOffer = to.offersFromLower[to.offersFromLower.Count - 1];
+                }
+                else
+                {
+                    theirCurrentOffer = 0;
+                }
+
+                if (to.offersFromHigher.Count == 0)
+                {
+                    ourPreviousOffer = (1.2 + 0.3 * rand.NextDouble()) * to.MinAccept;
+                }
+                else
+                {
+                    ourPreviousOffer = to.offersFromHigher[to.offersFromHigher.Count - 1];
+                }
+
+                Console.WriteLine("Higher Team responding...");
+                Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer +
+                    " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
+
+                // First determine if we like this offer or if we should counteroffer
+                if (theirCurrentOffer == ourPreviousOffer || (theirCurrentOffer > (1.1 - 0.05 * to.higherStrikes) * to.MinAccept) || (to.biddingWar && theirCurrentOffer > to.MinAccept))
+                {
+                    // We'll take the offer.  Let's see if we can drive up the bidding first though.
+
+                    Console.WriteLine("Accepting offer...");
+
+                    bool anotherOffer = false;
+                    to.status = (int)TradeOfferStatus.PendingAccept;
+                    to.MinAccept = (1.03 + 0.04*rand.NextDouble())*theirCurrentOffer;
+                    to.biddingWar = true;
+
+                    foreach (TradeOffer locTO in tradeOffers.Values)
+                    {
+                        if (locTO.LowerTeam == to.LowerTeam || locTO.status == (int)TradeOfferStatus.Rejected) { continue; }
+
+                        Console.WriteLine("Bidding war with " + model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + "...");
+
+                        if (locTO.MinAccept < to.MinAccept)
+                        {
+                            locTO.MinAccept = to.MinAccept;
+                        }
+
+                        locTO.biddingWar = true;
+
+                        locTO.makeCounterOffer((1.05 + 0.05*rand.NextDouble())*locTO.MinAccept, true);
+
+                        // This should only happen if the top three picks from the lower team
+                        // still can't get near the minimum acceptance value.
+                        if (locTO.offersFromHigher[locTO.offersFromHigher.Count - 1] < locTO.MinAccept && locTO.PicksFromHigher.Count == 0)
+                        {
+                            Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + " can't match offer.  Ending trade talks.");
+                            
+                            locTO.status = (int)TradeOfferStatus.Rejected;
+
+                            if (locTO.LowerTeam == HumanTeamId && tradeUpForm != null)
+                            {
+                                tradeUpForm.HigherOffer((int)TradeResponse.BiddingWarReject);
+                            }
+                        }
+                        else
+                        {
+                            anotherOffer = true;
+                            locTO.status = (int)TradeOfferStatus.LowerResponsePending;
+
+                            if (locTO.LowerTeam == HumanTeamId && tradeUpForm != null)
+                            {
+                                tradeUpForm.HigherOffer((int)TradeResponse.BiddingWar);
+                            }
+                        }
+                    }
+
+                    // If there's no other offer now, might as well take this one
+                    // Could improve to wait if there's a lot of time left on the clock
+                    if (!anotherOffer)
+                    {
+                        Console.WriteLine("No other offer around.  Accepting this one.  Returning...\n");
+
+                        if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                        {
+                            tradeUpForm.HigherOffer((int)TradeResponse.Accept);
+                        }
+
+                        AcceptTrade(to);
+                        return to;
+                    }
+                    else if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                    {
+                        tradeUpForm.HigherOffer((int)TradeResponse.PendingAccept);
+                    }
+
+                    return null;
+
+                } else {
+
+                    // We don't like their offer quite yet.  Let's counteroffer.
+                    // If they didn't come increase at least 20 percent toward our
+                    // MinAccept, add a strike, and don't move quite as far.
+
+                    Console.WriteLine("Didn't like last offer...");
+
+                    if (to.offersFromLower.Count >= 2 && to.offersFromLower[to.offersFromLower.Count - 2] + (to.MinAccept - to.offersFromLower[to.offersFromLower.Count - 2]) / 5.0
+                        > theirCurrentOffer && !to.lastWasStrike)
+                    {
+                        to.lowerStrikes = to.lowerStrikes + 1;
+                        to.lastWasStrike = true;
+
+                        Console.WriteLine("Offer too low.  Strike " + to.lowerStrikes + ".");
+
+                        if (to.lowerStrikes >= 3)
+                        {
+                            Console.WriteLine("Lower team strikes out.  Returning...\n");
+
+                            // they struck out
+                            to.status = (int)TradeOfferStatus.Rejected;
+                            if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                            {
+                                tradeUpForm.HigherOffer((int)TradeResponse.Reject);
+                            }
+                            
+                            return null;
+                        }
+
+                        double attemptedOffer = ourPreviousOffer - (3.0 - (double)to.lowerStrikes) * rand.NextDouble() / 20.0 * (ourPreviousOffer - to.MinAccept);
+
+                        Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+
+                        to.makeCounterOffer(attemptedOffer, true);
+                        Console.WriteLine("Actual counter-offer: " + to.offersFromHigher[to.offersFromHigher.Count - 1]);
+
+                        if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                        {
+                            tradeUpForm.strikeAdded = true;
+                        }
+                    }
+                    else
+                    {
+                        // Be a little more compromising
+                        to.lastWasStrike = false;
+
+                        double attemptedOffer = ourPreviousOffer - (0.2 + 0.2 * rand.NextDouble()) * (ourPreviousOffer - to.MinAccept);
+                        Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+
+                        to.makeCounterOffer(attemptedOffer, true);
+                        Console.WriteLine("Actual counter-offer: " + to.offersFromHigher[to.offersFromHigher.Count - 1]);
+                    }
+
+                    // This should only happen if the top three picks from the lower team
+                    // still can't get near the minimum acceptance value.
+                    if (to.offersFromHigher[to.offersFromHigher.Count - 1] < to.MinAccept && to.PicksFromHigher.Count == 0)
+                    {
+                        Console.WriteLine("Lower team can't get up to our minimum acceptance level.  Rejecting offer.");
+                        to.status = (int)TradeOfferStatus.Rejected;
+
+                        if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                        {
+                            tradeUpForm.HigherOffer((int)TradeResponse.Reject);
+                        }
+                    }
+                    else
+                    {
+                        to.status = (int)TradeOfferStatus.LowerResponsePending;
+
+                        if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                        {
+                            tradeUpForm.HigherOffer((int)TradeResponse.CounterOffer);
+                        }
+                    }
+
+                    Console.WriteLine("Returning...\n");
+                    return null;
+                }
+            }
+            else if (to.status == (int)TradeOfferStatus.LowerResponsePending)
+            {
+                if (to.LowerTeam == HumanTeamId)
+                {
+                    return null;
+                }
+
+                df.refreshTradeTeams = true;
+
+                double ourPreviousOffer;
+                double theirCurrentOffer = to.offersFromHigher[to.offersFromHigher.Count - 1];
+
+                if (to.offersFromLower.Count == 0)
+                {
+                    ourPreviousOffer = (5.0/6.0 - (1.0/6.0) * rand.NextDouble()) * to.MaxGive;
+                }
+                else
+                {
+                    ourPreviousOffer = to.offersFromLower[to.offersFromLower.Count - 1];
+                }
+
+                bool fail = false;
+                if (to.HigherTeam == HumanTeamId) 
+                {
+                    bool futureHighPicks = false;
+                    bool multipleHighPicks = false;
+                    bool futurePicks = false;
+
+                    int highPicks = 0;
+                    foreach (int pick in to.PicksFromLower) {
+                        if (pick > 1000) 
+                        {
+                            futurePicks = true;
+                        
+                            if (pick < 1003) {
+                                futureHighPicks = true;
+                            }
+
+                            if (futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.LowerTeam).CON) > 200) {
+                                highPicks++;
+                            }
+                        } 
+                        else 
+                        {
+                            if (pickValues[pick] > 200) 
+                            {
+                                highPicks++;
+                            }
+                        }
+                    }
+
+                    if (to.PicksFromLower.Count > 3 || (!to.allowFutureHighPicks && futureHighPicks) || (!to.allowFuturePicksFromLower && futurePicks)
+                        || (!to.allowMultipleHighPicks && highPicks > 2))
+                    {
+
+                        fail = true;
+                    }
+                }
+
+                Console.WriteLine("Lower Team responding...");
+                Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer +
+                    " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
+
+                // First determine if we like this offer or if we should counteroffer
+                if (!fail && (theirCurrentOffer <= ourPreviousOffer || theirCurrentOffer < (0.9 + 0.05 * to.lowerStrikes) * to.MaxGive))
+                {
+                    if (to.HigherTeam == HumanTeamId)
+                    {
+                        to.offersFromLower.Add(to.offersFromHigher[to.offersFromHigher.Count - 1]);
+                        to.status = (int)TradeOfferStatus.HigherResponsePending;
+                        tradeDownForm.Message(to, (int)TradeResponse.Accept);
+                        return null;
+                    }
+                    else
+                    {
+                        // Lower teams don't get final authority on accepting offers.
+                        // They accept conditionally, and the higher team has final say.
+
+                        Console.WriteLine("Accepting offer...");
+
+                        bool anotherOffer = false;
+                        to.status = (int)TradeOfferStatus.PendingAccept;
+                        to.MinAccept = (1.03 + 0.04 * rand.NextDouble()) * theirCurrentOffer;
+                        to.biddingWar = true;
+
+                        foreach (TradeOffer locTO in tradeOffers.Values)
+                        {
+                            if (locTO.LowerTeam == to.LowerTeam || locTO.status == (int)TradeOfferStatus.Rejected) { continue; }
+
+                            Console.WriteLine("Bidding war with " + model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + "...");
+
+                            if (locTO.MinAccept < to.MinAccept)
+                            {
+                                locTO.MinAccept = to.MinAccept;
+                            }
+
+                            locTO.biddingWar = true;
+
+                            locTO.makeCounterOffer((1.05 + 0.05 * rand.NextDouble()) * locTO.MinAccept, true);
+
+                            // This should only happen if the top three picks from the lower team
+                            // still can't get near the minimum acceptance value.
+                            if (locTO.offersFromHigher[locTO.offersFromHigher.Count - 1] < locTO.MinAccept && locTO.PicksFromHigher.Count == 0)
+                            {
+                                Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + " can't match offer.  Ending trade talks.");
+
+                                locTO.status = (int)TradeOfferStatus.Rejected;
+
+                                if (locTO.LowerTeam == HumanTeamId && tradeUpForm != null)
+                                {
+                                    tradeUpForm.HigherOffer((int)TradeResponse.BiddingWarReject);
+                                }
+                            }
+                            else
+                            {
+                                anotherOffer = true;
+                                locTO.status = (int)TradeOfferStatus.LowerResponsePending;
+
+                                if (locTO.LowerTeam == HumanTeamId && tradeUpForm != null)
+                                {
+                                    tradeUpForm.HigherOffer((int)TradeResponse.BiddingWar);
+                                }
+                            }
+                        }
+
+                        // If there's no other offer now, might as well take this one
+                        // Could improve to wait if there's a lot of time left on the clock
+                        if (!anotherOffer)
+                        {
+                            Console.WriteLine("No other offer around.  Accepting this one.  Returning...\n");
+
+                            AcceptTrade(to);
+                            return to;
+                        }
+
+                        Console.WriteLine("Returning...\n");
+                        return null;
+                    }
+                }
+                else
+                {
+
+                    // We don't like their offer quite yet.  Let's counteroffer.
+                    // If they didn't come increase at least 20 percent toward our
+                    // MaxGive, add a strike, and don't move quite as far.
+
+                    Console.WriteLine("Didn't like last offer...");
+
+                    if (to.offersFromHigher.Count > 1 && to.offersFromHigher[to.offersFromHigher.Count - 2] + (to.MaxGive - to.offersFromHigher[to.offersFromHigher.Count - 2]) / 5.0
+                        < theirCurrentOffer && !to.lastWasStrike)
+                    {
+                        to.higherStrikes = to.higherStrikes + 1;
+                        to.lastWasStrike = true;
+
+                        Console.WriteLine("Offer too low.  Strike " + to.higherStrikes + ".");
+
+                        if (to.higherStrikes >= 3)
+                        {
+                            Console.WriteLine("Higher team strikes out.  Returning...\n");
+                            // they struck out
+                            to.status = (int)TradeOfferStatus.Rejected;
+                            if (to.HigherTeam == HumanTeamId)
+                            {
+                                tradeDownForm.Message(to, (int)TradeResponse.Reject);
+                            }
+                            return null;
+                        }
+
+                        double attemptedOffer = ourPreviousOffer - (3.0 - (double)to.higherStrikes) * rand.NextDouble() / 20.0 * (ourPreviousOffer - to.MaxGive);
+                        Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+
+                        to.makeCounterOffer(attemptedOffer, false);
+                        if (to.HigherTeam == HumanTeamId)
+                        {
+                            tradeDownForm.Message(to, (int)TradeResponse.CounterOffer);
+                        }
+                        Console.WriteLine("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
+                    }
+                    else
+                    {
+                        // Be a little more compromising
+                        to.lastWasStrike = false;
+
+                        double attemptedOffer = ourPreviousOffer - (0.2 + 0.2 * rand.NextDouble()) * (ourPreviousOffer - to.MaxGive);
+                        Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+                        
+                        to.makeCounterOffer(attemptedOffer, false);
+                        if (to.HigherTeam == HumanTeamId)
+                        {
+                            tradeDownForm.Message(to, (int)TradeResponse.CounterOffer);
+                        }
+
+                        Console.WriteLine("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
+                    }
+
+                    to.status = (int)TradeOfferStatus.HigherResponsePending;
+
+                    Console.WriteLine("Returning...\n");
+                    return null;
+                }
+            }
+            else if (to.status == (int)TradeOfferStatus.PendingAccept)
+            {
+                // Could add code here to revoke offer if they wait too long
+                
+                // If there's no other offer on the table and they're waiting
+                // to accept this one, just accept it and move on.
+                bool anotherOffer = false;
+
+                Console.WriteLine("Processing pending acceptance...");
+
+                foreach (TradeOffer locTO in tradeOffers.Values)
+                {
+                    if (locTO.status != (int)TradeOfferStatus.Rejected && locTO.LowerTeam != to.LowerTeam)
+                    {
+                        anotherOffer = true;
+                    }
+                }
+
+                if (!anotherOffer)
+                {
+                    Console.WriteLine("No other trade around -- accept this one.  Returning...\n");
+                    
+                    if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
+                    {
+                        tradeUpForm.HigherOffer((int)TradeResponse.Accept);
+                    }
+
+                    AcceptTrade(to);
+                    return to;
+                }
+            }
+
+            Console.WriteLine("Continue waiting.  Returning...\n");
+            return null;
+        }
+
+        public int GetNextPick(int teamId, int pickNumber)
+        {
+            int nextpick = -1;
+            for (int j = pickNumber + 1; j < model.TableModels[EditorModel.DRAFT_PICK_TABLE].RecordCount; j++)
+            {
+                if (GetDraftPickByNumber(j).CurrentTeamId == teamId)
+                {
+                    nextpick = j;
+                    break;
+                }
+            }
+            return nextpick;
+        }
+
+
+        // Initialize data structures; find the best offers for making a deal (minimum offer for the team
+        // with the pick; maximum offer for all other teams)
+        public void SetTradeParameters(int pickNumber)
+        {
+            tradeOffers = new Dictionary<int,TradeOffer>();
+            BestOffers = new Dictionary<int,double>();
+
+            favorites = GetFavoriteRookies(pickNumber);
+            tradeUpForm = null;
+            tradeDownForm = null;
+            humanRejected = false;
+
+            int currentSelector = -1;
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+            {
+                DraftPickRecord record = (DraftPickRecord)rec;
+
+                if (record.PickNumber == pickNumber)
+                {
+                    currentSelector = record.CurrentTeamId;
+                    break;
+                }
+            }
+
+            GetProbabilities(pickNumber);
+
+            for (int i = 0; i < 32; i++)
+            {
+                double favoriteEffectiveValue = favorites[i].EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust);
+                double favoriteValue = favorites[i].AverageValue(model.TeamModel.GetTeamRecord(i), dcr.awarenessAdjust);
+
+                if (i != currentSelector)
+                {
+                    // Find maximum value to trade up
+
+                    // double wantfrac = Math.Tanh(favoriteEffectiveValue / pickValues[pickNumber]) / Math.Tanh(1.0);
+                    double wantfrac = Math.Tanh(favoriteValue / pickValues[pickNumber]) / Math.Tanh(1.0);
+
+                    int nextpick = GetNextPick(i, pickNumber);
+
+                    foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+                    {
+                        if (rook.Value.PlayerId == favorites[i].PlayerId || rook.Value.DraftedTeam < 32) { continue; }
+                        if (rook.Value.AverageNeed(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) <= positionData[rook.Value.Player.PositionId].Threshold ||
+                            // replace with statement on NFL projected position
+                            rook.Value.AverageValue(model.TeamModel.GetTeamRecord(i), dcr.awarenessAdjust) <= 0.75 * pickValues[nextpick]) { continue; }
+
+                        double tempEV = rook.Value.EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust);
+                        double wantfracTemp = Math.Tanh((2.0*favoriteEffectiveValue - tempEV) / tempEV);
+
+                        if (wantfracTemp > 0.95) { wantfracTemp = 1; }
+                        else
+                        {
+
+                        }
+
+                        wantfrac *= wantfracTemp;
+                    }
+
+                    double probabilityRemaining = 1;
+                    double probabilityTaken = 0;
+
+                    foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+                    {
+                        DraftPickRecord record = (DraftPickRecord)rec;
+
+                        if (record.PickNumber < pickNumber) { continue; }
+                        if (record.CurrentTeamId == i) { break;}
+
+                        double pickfactor = Math.Max(0, (1.0 - 1.014*Math.Tanh(((double)record.PickNumber - (double)pickNumber - 6.0) / 2.0)));
+
+                        probabilityTaken += probs[record.CurrentTeamId][favorites[i].PlayerId] * probabilityRemaining *
+                            (0.5)*pickfactor;
+                        probabilityRemaining *= (1.0 - probs[record.CurrentTeamId][favorites[i].PlayerId]);
+
+                        if (favoriteEffectiveValue < 0)
+                        {
+                            Console.WriteLine("FEV");
+                        }
+                        else if (probs[record.CurrentTeamId][favorites[i].PlayerId] > 1)
+                        {
+                            Console.WriteLine(probs[record.CurrentTeamId][favorites[i].PlayerId]);
+                        }
+                        else if (wantfrac < 0)
+                        {
+                            Console.WriteLine("wantfrac");
+                        }
+                        else if (probabilityTaken < 0)
+                        {
+                            Console.WriteLine("probtaken");
+                        }
+
+                        if (pickfactor == 0)
+                        {
+                            break;
+                        }
+                    }
+
+                    BestOffers[i] = favoriteEffectiveValue * wantfrac * probabilityTaken;
+                    Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(i) + " " + Math.Round(BestOffers[i]) + " " + favorites[i].Player.ToString());
+
+                    foreach (RookieRecord rook in GetDraftBoard(model.TeamModel.GetTeamRecord(i), pickNumber))
+                    {
+                        if (rook.DraftedTeam < 32) { continue; }
+                        Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue + " " + rook.values[i][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(i, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[i] + rook.PostCombineScoutedHours[i]));
+                    }
+                    Console.WriteLine("");
+                }
+            }
         }
 
         public void InitializeDraft(int htid)
@@ -365,12 +1483,29 @@ namespace MaddenEditor.Core.Record
             InitializePositionData();
             InitializePickValues();
 
-            model.TeamModel.ComputeCONs();
-            model.PlayerModel.ComputeEffectiveOVRs(this);
+            dcr = new DepthChartRepairer(model, positionData);
 
             ExtractRookies();
-            GenerateInternalDepthChart();
+
+//            DumpRookies();
+            RepairRookies();
+            
+            dcr = new DepthChartRepairer(model, positionData);
+            depthChart = dcr.ReorderDepthCharts(true);
+
+            depthChartValues = new List<List<List<double>>>();
+
+            for (int i = 0; i < 32; i++)
+            {
+                futureTradedPicks.Add(i, new Dictionary<int, int>());
+
+                depthChartValues.Add(new List<List<double>>());
+                CalculateDepthChartValues(i);
+            }
+
+            // model.PlayerModel.ComputeEffectiveOVRs(this);
             CalculateActualProjections();
+            DumpRookies();
 
             // This next call shouldn't be needed once the draft scouting
             // apparatus is finished.
@@ -473,7 +1608,7 @@ namespace MaddenEditor.Core.Record
                     }
                 }
 
-                rook.Value.CalculateOverall((int)RookieRecord.RatingType.Initial);
+//                rook.Value.CalculateOverall((int)RookieRecord.RatingType.Initial);
             }
         }
 
@@ -553,24 +1688,54 @@ namespace MaddenEditor.Core.Record
                 Dictionary<int, double> positionNeeds = new Dictionary<int,double>();
                 TeamRecord team = model.TeamModel.GetTeamRecord(i);
 
+                /*
                 for (int j = 0; j < 21; j++) {
                     positionNeeds[j] = positionData[j].Value(team.DefensiveSystem) * ScoutNeed(team, j);
                 }
+                 * */
 
                 // Determine relative scouting priority.  For now, we'll see that relative scouting priority
                 // is positionNeeds[positionId]*Log[value];
                 Dictionary<int,double> scoutingPriority = new Dictionary<int,double>();
                 double maxPriority = 0;
                 foreach(KeyValuePair<int, RookieRecord> rook in rookies) {
-                    scoutingPriority[rook.Key] = positionNeeds[rook.Value.Player.PositionId]*Math.Log(rook.Value.values[team.TeamId][(int)RookieRecord.ValueType.NoProg]);
+
+                    // We used to use the ScoutNeed function to determine
+                    // general need at positions, then multiply by
+                    // the log of value to determine scouting priority.
+                    //
+                    // This was done because taking a lot of something like
+                    // RookieRecord.EffectiveValue essentially
+                    // penalizes low-rated guys twice -- once
+                    // for low value, and once more since low value
+                    // translates into low need.
+                    //
+                    // With the ability now to draft a guy for a position
+                    // other than his assigned position, this gets a lot
+                    // more complicated.  So, let's instead go back to using
+                    // EffectiveValue and see how it works.  We might want to 
+                    // change this again later.
+                    // 
+                    // We'll compensate by taking the square root of scoutingPriority
+                    // before the combine, and just use the log afterward.  (We used to
+                    // use the log before, and then square the log afterward.)
+
+                    if (rook.Value.EffectiveValue(team, 25, dcr.awarenessAdjust) > 1)
+                    {
+                        scoutingPriority[rook.Key] = Math.Log(rook.Value.EffectiveValue(team, 25, dcr.awarenessAdjust));
+                    }
+                    else
+                    {
+                        scoutingPriority[rook.Key] = 0;
+                    }
 
                     if (scoutingPriority[rook.Key] > maxPriority)
                     {
                         maxPriority = scoutingPriority[rook.Key];
                     }
 
-                    if (!beforeCombine) {
-                        scoutingPriority[rook.Key] = Math.Pow(scoutingPriority[rook.Key], 2.0);
+                    if (beforeCombine) {
+                        scoutingPriority[rook.Key] = Math.Pow(scoutingPriority[rook.Key], 0.5);
                     }
                 }
 
@@ -655,10 +1820,13 @@ namespace MaddenEditor.Core.Record
                     } else {
                         rookies[pair.Key].PostCombineScoutedHours[team.TeamId] = pair.Value;
                     }
+
+//                    Console.WriteLine(i + " " + rookies[pair.Key].Player + " " + pair.Key + " " + pair.Value);
                 }
             }
         }
 
+        /*
         private double ScoutNeed(TeamRecord team, int PositionId)
         {
 
@@ -672,13 +1840,8 @@ namespace MaddenEditor.Core.Record
             int numStarters = positionData[PositionId].Starters(team.DefensiveSystem);
             int startTemp;
 
-            /** First calculate the starter need **/
-
             if (depthChart[team.TeamId][PositionId].Count < numStarters)
             {
-                /*
-                needs[team.TeamId][(int)NeedType.Starter] = 1;
-                 */
 
                 // If there's no current starter, they can always get a stop-gap guy
                 // in free agency, who we'll assume has OVR = 75, INJ = 75, YRP >= 5,
@@ -692,8 +1855,6 @@ namespace MaddenEditor.Core.Record
             {
                 starterNeed = math.need(rookval, depthChart[team.TeamId][PositionId][numStarters - 1].Value);
             }
-
-            /** Now calculate backup need. **/
 
             if (numStarters == 1 && (PositionId != (int)MaddenPositions.TE && PositionId != (int)MaddenPositions.QB && PositionId != (int)MaddenPositions.HB))
             {
@@ -781,8 +1942,6 @@ namespace MaddenEditor.Core.Record
 
             backupNeed = backupTemp * positionData[PositionId].BackupNeed;
 
-            /** Now calculate need for a successor. **/
-
             int oldest = 0;
 
             if (depthChart[team.TeamId][PositionId].Count >= numStarters)
@@ -850,6 +2009,7 @@ namespace MaddenEditor.Core.Record
             return toReturn;
 
         }
+*/
 
         public void FixDraftOrder()
         {
@@ -967,10 +2127,10 @@ namespace MaddenEditor.Core.Record
 
         }
 
-        private Dictionary<int, RookieRecord> GetFavoriteRookies(int pickNumber)
+        public Dictionary<int, RookieRecord> GetFavoriteRookies(int pickNumber)
         {
-
-            Dictionary<int, RookieRecord> favorites = new Dictionary<int,RookieRecord>();
+            Dictionary<int, RookieRecord> toReturn = new Dictionary<int,RookieRecord>();
+            int CurrentSelector = GetDraftPickByNumber(pickNumber).CurrentTeamId;
             
             foreach (KeyValuePair<int,TeamRecord> team in model.TeamModel.GetTeamRecords())
             {
@@ -979,36 +2139,30 @@ namespace MaddenEditor.Core.Record
                 double HighestValue = 0;
                 RookieRecord BestPlayer = null;
 
-                int nextpick = 0;
-                for (int i = pickNumber + 1; i < model.TableModels[EditorModel.DRAFT_PICK_TABLE].RecordCount; i++)
+                int startvalue = -1;
+                if (team.Value.TeamId == CurrentSelector)
                 {
-                    if (GetDraftPickByNumber(i).CurrentTeamId == team.Value.TeamId)
-                    {
-                        nextpick = i;
-                        break;
-                    }
+                    startvalue = pickNumber + 10;
+                }
+                else
+                {
+                    startvalue = pickNumber + 1;
                 }
 
-                if (pickNumber == 4 && team.Key == 11)
-                {
-                    int trash;
-                }
+                int nextpick = GetNextPick(team.Value.TeamId, startvalue);
 
                 foreach (KeyValuePair<int, RookieRecord> rook in rookies) {
+
                     if(rook.Value.DraftedTeam < 32) { continue; }
-                    if (rook.Value.EffectiveValue(team.Value, pickNumber) > HighestValue && 
-                        rook.Value.TotalNeed(team.Value, pickNumber) > positionData[rook.Value.Player.PositionId].Threshold &&
-                        rook.Value.values[team.Value.TeamId][(int)RookieRecord.ValueType.NoProg] > 0.75*pickValues[nextpick]) {
+                    if (rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust) > HighestValue && 
+                        rook.Value.AverageNeed(team.Value, pickNumber, dcr.awarenessAdjust) > positionData[rook.Value.Player.PositionId].Threshold &&
+                        
+                        // replace with statement on NFL projected position
+                        rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > 0.75*pickValues[nextpick]) {
 
-                        HighestValue = rook.Value.EffectiveValue(team.Value, pickNumber);
-                        BestPlayer = rook.Value;
+                            HighestValue = rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust);
+                            BestPlayer = rook.Value;
                     }
-                }
-
-
-                if (pickNumber == 4 && team.Key == 11)
-                {
-                    int trash;
                 }
 
                 if (BestPlayer == null)
@@ -1016,21 +2170,22 @@ namespace MaddenEditor.Core.Record
                     HighestValue = 0;
                     foreach (KeyValuePair<int, RookieRecord> rook in rookies)
                     {
+                        // Take the best dude available -- except at certain positions
                         if (rook.Value.DraftedTeam < 32 ||
                             rook.Value.Player.PositionId == (int)MaddenPositions.QB ||
                             rook.Value.Player.PositionId == (int)MaddenPositions.FB ||
                             rook.Value.Player.PositionId == (int)MaddenPositions.P ||
                             rook.Value.Player.PositionId == (int)MaddenPositions.K) { continue; }
 
-                        if (rook.Value.values[team.Value.TeamId][(int)RookieRecord.ValueType.NoProg] > HighestValue)
+                        if (rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > HighestValue)
                         {
-                            HighestValue = rook.Value.values[team.Value.TeamId][(int)RookieRecord.ValueType.NoProg];
+                            HighestValue = rook.Value.AverageValue(team.Value, dcr.awarenessAdjust);
                             BestPlayer = rook.Value;
                         }
                     }
                 }
 
-                favorites.Add(team.Value.TeamId, BestPlayer);
+                toReturn.Add(team.Value.TeamId, BestPlayer);
 
             }
             /*
@@ -1038,7 +2193,7 @@ namespace MaddenEditor.Core.Record
                 Console.WriteLine(rook.Key + " " + rook.Value.Player.ToString());
             }
             */
-            return favorites;
+            return toReturn;
         }
 
         private void DetermineProjections(int type)
@@ -1051,7 +2206,7 @@ namespace MaddenEditor.Core.Record
                 double total = 0;
                 for (int i = 0; i < 32; i++)
                 {
-                    total += rook.Value.values[i][(int)RookieRecord.ValueType.NoProg];
+                    total += rook.Value.AverageValue(model.TeamModel.GetTeamRecord(i), dcr.awarenessAdjust);
                 }
                 AverageValues[rook.Key] = total / 32;
             }
@@ -1150,10 +2305,10 @@ namespace MaddenEditor.Core.Record
 
                 foreach (KeyValuePair<int, RookieRecord> rook in rookies)
                 {
-                    if (rook.Value.values[HumanTeamId][(int)RookieRecord.ValueType.NoProg] > bestRating && !RookieRanks.ContainsKey(rook.Key))
+                    if (rook.Value.AverageValue(model.TeamModel.GetTeamRecord(HumanTeamId), dcr.awarenessAdjust) > bestRating && !RookieRanks.ContainsKey(rook.Key))
                     {
                         bestId = rook.Key;
-                        bestRating = rook.Value.values[HumanTeamId][(int)RookieRecord.ValueType.NoProg];
+                        bestRating = rook.Value.AverageValue(model.TeamModel.GetTeamRecord(HumanTeamId), dcr.awarenessAdjust);
                     }
                 }
 
@@ -1307,14 +2462,18 @@ namespace MaddenEditor.Core.Record
             }
         }
 
-        private void SetInitialNeeds()
+        private void SetNeeds()
         {
             foreach (KeyValuePair<int, RookieRecord> rook in rookies)
             {
                 foreach (KeyValuePair<int,TeamRecord> team in model.TeamModel.GetTeamRecords())
                 {
                     if (team.Value.TeamType != 0) { continue; }
-                    rook.Value.CalculateNeeds(team.Value, depthChart[team.Value.TeamId][rook.Value.Player.PositionId], positionData);
+                    foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId]) {
+                        if (pair.Key > 20) { continue; }
+
+                        rook.Value.CalculateNeeds(team.Value, depthChart[team.Value.TeamId][pair.Key], depthChartValues[team.Value.TeamId][pair.Key], positionData, pair.Key);
+                    }
                 }
             }
         }
@@ -1325,19 +2484,47 @@ namespace MaddenEditor.Core.Record
                 foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords()) {
                     if (team.Value.TeamType != 0) { continue; }
 
-                    rook.Value.values[team.Key][(int)RookieRecord.ValueType.NoProg] =
-                        LocalMath.ValueScale * positionData[rook.Value.Player.PositionId].Value(team.Value.DefensiveSystem) * math.valcurve(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.OVR] + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[rook.Value.Player.PositionId].DurabilityNeed));
+                    foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
+                    {
+                        if (pair.Key > 20) { continue; }
 
-                    rook.Value.values[team.Key][(int)RookieRecord.ValueType.WithProg] =
-                        LocalMath.ValueScale * positionData[rook.Value.Player.PositionId].Value(team.Value.DefensiveSystem) * math.valcurve(5 * (5 - team.Value.CON) / 2 + rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.OVR] + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[rook.Value.Player.PositionId].DurabilityNeed));
+                        rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.NoProg] =
+                            LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
 
-                    // SHOULD BE IMPROVED LATER
-                    rook.Value.values[team.Key][(int)RookieRecord.ValueType.Perceived] =
-                        rook.Value.values[team.Key][(int)RookieRecord.ValueType.NoProg];
+                        rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.WithProg] =
+                            LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(5.0 * (5.0 - (double)team.Value.CON) / 2 + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
+                    }
                 }
             }
         }
 
+        private void SetPerceivedRookieValues()
+        {
+            foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+            {
+                foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
+                {
+                    if (pair.Key > 20) { continue; }
+
+                    double totalAtPosition = 0;
+
+                    foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
+                    {
+                        if (team.Value.TeamType != 0) { continue; }
+                        totalAtPosition += rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.NoProg];
+                    }
+
+                    foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
+                    {
+                        if (team.Value.TeamType != 0) { continue; }
+                        rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.Perceived] = (totalAtPosition / 32.0)
+                            * (0.9 + 0.2 * rand.NextDouble() + 0.02 * (double)(rook.Value.PreCombineScoutedHours[team.Key] + rook.Value.PostCombineScoutedHours[team.Key]) * rand.NextDouble());
+                    }
+                }
+            }
+        }
+
+        /*
         public void CalculateOveralls(int type)
         {
             foreach (KeyValuePair<int, RookieRecord> rook in rookies)
@@ -1346,6 +2533,7 @@ namespace MaddenEditor.Core.Record
             }
         }
 
+        
         private void GenerateInternalDepthChart()
         {
             // Empty out our depth chart
@@ -1383,7 +2571,7 @@ namespace MaddenEditor.Core.Record
                 }
             }
 
-            /*
+            
             int team = 10;
             Console.WriteLine(model.TeamModel.GetTeamRecord(team).CON);
 
@@ -1393,7 +2581,7 @@ namespace MaddenEditor.Core.Record
                     Console.WriteLine(rec.PositionId + " " + j + " " + rec.EffectiveOVR + " " + rec.Overall + " " + rec.Injury + " " + math.injury(rec.Injury) + " " + rec.YearsPro);
                 }
             }
-            */
+            
         }
 
         private List<PlayerRecord> SortByEffectiveOVR(List<PlayerRecord> records, int teamId, int positionId)
@@ -1420,6 +2608,7 @@ namespace MaddenEditor.Core.Record
 
             return newList;
         }
+*/
 
         // Set rookie drafted teams to 1023, add to rookies dictionary, 
         // assign corresponding PlayerRecord to RookieRecord
@@ -1430,10 +2619,11 @@ namespace MaddenEditor.Core.Record
 
                 record.DraftedTeam = 1023;
                 record.DraftPickNumber = 255;
-
-                rookies.Add(record.PlayerId, record);
-
+                record.dm = this;
                 record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerId));
+
+                record.InitializeDictionaries(dcr.awarenessAdjust);
+                rookies.Add(record.PlayerId, record);
             }
         }
 
@@ -1631,6 +2821,34 @@ namespace MaddenEditor.Core.Record
             positionData.Add((int)MaddenPositions.SS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
             positionData.Add((int)MaddenPositions.K, new Position(4, 4, 4, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
             positionData.Add((int)MaddenPositions.P, new Position(1, 1, 1, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
+        }
+
+        public double futureValues(int round, int con) 
+        {
+            if (round < 1 || round > 7)
+            {
+                return 0;
+            }
+
+            List<double> startingValues = new List<double>();
+            startingValues.Add(800);
+            startingValues.Add(360);
+            startingValues.Add(150);
+            startingValues.Add(60);
+            startingValues.Add(26);
+            startingValues.Add(16);
+            startingValues.Add(8);
+
+            List<double> slope = new List<double>();
+            slope.Add(100);
+            slope.Add(50);
+            slope.Add(20);
+            slope.Add(8);
+            slope.Add(2);
+            slope.Add(1.5);
+            slope.Add(1);
+
+            return startingValues[round-1] + (1 - con) * slope[round-1];
         }
 
         private void InitializePickValues()
@@ -1892,6 +3110,7 @@ namespace MaddenEditor.Core.Record
             pickValues.Add(0.5);
         }
 
+        /*
         private void AssignRookieScoutedAttributes()
         {
             foreach (KeyValuePair<int, RookieRecord> rook in rookies)
@@ -1917,6 +3136,390 @@ namespace MaddenEditor.Core.Record
                 }
             }
         }
+         * */
+    }
+
+    public class TradeOffer
+    {
+        public int status = 0;
+        public int HigherTeam;
+        public int LowerTeam;
+        public int pickNumber;
+
+        public double MinAccept;
+        public double MaxGive;
+
+        public bool lastWasStrike = false;
+
+        public int higherStrikes = 0;
+        public int lowerStrikes = 0;
+
+        public bool biddingWar = false;
+        public bool allowFutureHighPicks = false;
+        public bool allowFuturePicksFromLower = true;
+        public bool allowFuturePicksFromHigher = true;
+        public bool allowMultipleHighPicks = false;
+
+        private DraftModel dm;
+
+        public List<int> PicksFromLower = new List<int>();
+        public List<int> PicksFromHigher = new List<int>();
+
+        public List<double> offersFromHigher = new List<double>();
+        public List<double> offersFromLower = new List<double>();
+
+        public List<int> higherAvailable = new List<int>();
+        public List<int> lowerAvailable = new List<int>();
+
+        List<int> tempPicksFromLower;
+        List<int> tempPicksFromHigher;
+
+        double target;
+
+        public TradeOffer(int higherId, int lowerId, DraftModel model)
+        {
+            HigherTeam = higherId;
+            LowerTeam = lowerId;
+            dm = model;
+        }
+
+        private int numHighPicks()
+        {
+            int toRet = 0;
+            foreach (int pick in tempPicksFromLower)
+            {
+                if (pick < 1000)
+                {
+                    if (dm.pickValues[pick] > 200)
+                    {
+                        toRet++;
+                    }
+                }
+                else
+                {
+                    if (dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON) > 200)
+                    {
+                        toRet++;
+                    }
+                }
+            }
+            return toRet;
+        }
+
+        public int AddClosestPick(bool fromLower)
+        {
+            if (fromLower)
+            {
+                // Add the pick that gets us closest to the mark.
+
+                int bestPick = -1;
+                double bestDifference = 10000;
+                foreach (int pick in lowerAvailable)
+                {
+                    if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromLower.Contains(pick))
+                    {
+                        if (!allowMultipleHighPicks && dm.pickValues[pick] > 200 && numHighPicks() >= 2)
+                        {
+                            continue;
+                        }
+
+                        bestPick = pick;
+                        bestDifference = Math.Abs(target - dm.pickValues[pick]);
+                    }
+                }
+                lowerAvailable.Sort();
+
+                // If the closest pick wasn't our most valuable remaining pick, add this one
+                // and return.  Otherwise, allow possibility of adding a future pick.
+                int highestAvailablePick = -1;
+                foreach (int pick in lowerAvailable)
+                {
+                    if (!tempPicksFromLower.Contains(pick))
+                    {
+                        if (!allowMultipleHighPicks && dm.pickValues[pick] > 200 && numHighPicks() >= 2)
+                        {
+                            continue;
+                        }
+
+                        highestAvailablePick = pick;
+                        break;
+                    }
+                }
+
+
+                if (!allowFuturePicksFromLower || bestPick != highestAvailablePick)
+                {
+                    tempPicksFromLower.Add(bestPick);
+                    return bestPick;
+                }
+
+                // If there was no such pick, add the most valuable pick.
+                int round = (int)Math.Floor((double)pickNumber / 32.0) + 1;
+
+                int startRound = -1;
+                if (allowFutureHighPicks)
+                {
+                    startRound = round;
+                }
+                else
+                {
+                    startRound = round + 2;
+                }
+
+                int con = dm.model.TeamModel.GetTeamRecord(LowerTeam).CON;
+                for (int i = startRound; i < 8; i++)
+                {
+                    if (Math.Abs(target - dm.futureValues(i, con)) < bestDifference && !tempPicksFromLower.Contains(1000 + i)
+                        && !dm.futureTradedPicks[LowerTeam].ContainsKey(i))
+                    {
+                        bestPick = i + 1000;
+                        bestDifference = Math.Abs(target - dm.futureValues(i, con));
+                    }
+                }
+
+                if (bestPick != -1)
+                {
+                    tempPicksFromLower.Add(bestPick);
+                }
+
+                return bestPick;
+            }
+            else
+            {
+                // Add the pick that gets us closest to the mark.
+
+                int bestPick = -1;
+                double bestDifference = 10000;
+                foreach (int pick in higherAvailable)
+                {
+                    if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromHigher.Contains(pick))
+                    {
+                        bestPick = pick;
+                        bestDifference = Math.Abs(target - dm.pickValues[pick]);
+                    }
+                }
+                higherAvailable.Sort();
+
+                // If the closest pick wasn't our most valuable remaining pick, add this one
+                // and return.  Otherwise, allow possibility of adding a future pick.
+                int highestAvailablePick = -1;
+                foreach (int pick in higherAvailable)
+                {
+                    if (!tempPicksFromHigher.Contains(pick))
+                    {
+                        highestAvailablePick = pick;
+                        break;
+                    }
+                }
+
+                if (!allowFuturePicksFromHigher || bestPick != highestAvailablePick)
+                {
+                    tempPicksFromHigher.Add(bestPick);
+                    return bestPick;
+                }
+
+                // If there was no such pick, add the most valuable pick.
+                int startRound = (int)Math.Floor((double)pickNumber / 32.0) + 3;
+
+                int con = dm.model.TeamModel.GetTeamRecord(HigherTeam).CON;
+                for (int i = startRound; i < 8; i++)
+                {
+                    if (Math.Abs(target - dm.futureValues(i, con)) < bestDifference && !tempPicksFromHigher.Contains(1000 + i)
+                        && !dm.futureTradedPicks[HigherTeam].ContainsKey(i))
+                    {
+                        bestPick = i + 1000;
+                        bestDifference = Math.Abs(target - dm.futureValues(i, con));
+                    }
+                }
+
+                if (bestPick != -1)
+                {
+                    tempPicksFromLower.Add(bestPick);
+                }
+
+                return bestPick;
+            }
+        }
+
+        public double SetMinTake()
+        {
+            if (biddingWar)
+            {
+                foreach (TradeOffer to in dm.tradeOffers.Values)
+                {
+                    if (to.status == (int)TradeOfferStatus.PendingAccept)
+                    {
+                        MinAccept = to.MinAccept;
+                        return MinAccept;
+                    }
+                }
+
+                Console.WriteLine("\n\nSEVERE ERROR!\n\n");
+                return -1;
+            }
+
+            // Find minimum value to trade down
+            double mintake;
+            double favoriteEffectiveValue = dm.favorites[HigherTeam].EffectiveValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust);
+            double favoriteValue = dm.favorites[HigherTeam].AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust);
+
+            if (favoriteEffectiveValue * 1.5 < dm.pickValues[pickNumber])
+            {
+                mintake = favoriteEffectiveValue;
+            }
+            else
+            {
+                mintake = favoriteEffectiveValue * Math.Tanh(favoriteEffectiveValue / dm.pickValues[pickNumber]) / Math.Tanh(1.0);
+
+                double wantfrac = 1;
+
+                PicksFromLower.Sort();
+                int nextpick = PicksFromLower[0];
+
+                foreach (KeyValuePair<int, RookieRecord> rook in dm.rookies)
+                {
+                    if (rook.Value.AverageNeed(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust) <= dm.positionData[rook.Value.Player.PositionId].Threshold ||
+                        // replace with statement on NFL projected position
+                        (nextpick < 1000 && rook.Value.AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust) <= 0.75 * dm.pickValues[nextpick])) { continue; }
+
+                    if (rook.Value.PlayerId == dm.favorites[HigherTeam].PlayerId || rook.Value.DraftedTeam < 32)
+                    {
+                        continue;
+                    }
+
+                    double tempEV = rook.Value.EffectiveValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust);
+                    double tempwantfrac = Math.Tanh((favoriteEffectiveValue - tempEV) / tempEV);
+
+                    if (tempwantfrac > 0.95) { tempwantfrac = 1; }
+                    wantfrac -= wantfrac * (1 - tempwantfrac) / 2.0;
+                }
+
+                double probabilityTaken = dm.probs[LowerTeam][dm.favorites[HigherTeam].PlayerId];
+                double probabilityRemaining = probabilityTaken;
+
+                foreach (TableRecordModel rec in dm.model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+                {
+                    DraftPickRecord record = (DraftPickRecord)rec;
+
+                    if (record.PickNumber <= pickNumber) { continue; }
+                    if (record.PickNumber == nextpick) { break; }
+
+                    probabilityTaken += dm.probs[record.CurrentTeamId][dm.favorites[HigherTeam].PlayerId] * probabilityRemaining;
+                    probabilityRemaining *= (1.0 - dm.probs[record.CurrentTeamId][dm.favorites[HigherTeam].PlayerId]);
+
+                    if (probabilityRemaining == 0) { break; }
+                }
+
+                if (probabilityTaken == 1 && wantfrac == 1)
+                {
+                    mintake = 100000;
+                }
+                else
+                {
+                    mintake *= 1.0 / Math.Sqrt(Math.Pow(1.0 - probabilityTaken, 2.0) + Math.Pow(1.0 - wantfrac, 2.0));
+                }
+            }
+
+            if (mintake < dm.pickValues[pickNumber+1]+1)
+            {
+                MinAccept = dm.pickValues[pickNumber+1]+1;
+            }
+            else
+            {
+                MinAccept = mintake;
+            }
+
+            return mintake;
+        }
+
+
+        public double makeCounterOffer(double value, bool fromHigher)
+        {
+            target = value;
+            tempPicksFromLower = new List<int>();
+            tempPicksFromHigher = new List<int>();
+
+            // Start the offer with the most valuable pick from the lower team.
+            while (Math.Abs(target) > 0.03 * value && (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= 3) &&
+                !((target > 0 && tempPicksFromLower.Count >= 3) || (target < 0 && tempPicksFromHigher.Count >= 2)))
+            {
+                int addedPick = AddClosestPick(target > 0);
+                double thisValue = 0;
+
+                if (addedPick < 1000)
+                {
+                    thisValue = dm.pickValues[addedPick];
+                }
+                else
+                {
+                    if (target > 0)
+                    {
+                        thisValue = dm.futureValues(addedPick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON);
+                    }
+                    else
+                    {
+                        thisValue = dm.futureValues(addedPick - 1000, dm.model.TeamModel.GetTeamRecord(HigherTeam).CON);
+                    }
+                }
+
+                if (target > 0)
+                {
+                    target -= thisValue;
+                }
+                else {
+                    target += thisValue;
+                }
+            }
+
+            PicksFromHigher = tempPicksFromHigher;
+            PicksFromLower = tempPicksFromLower;
+
+            double tempValue = 0;
+
+            foreach (int pick in PicksFromLower)
+            {
+                if (pick < 1000)
+                {
+                    tempValue += dm.pickValues[pick];
+                }
+                else
+                {
+                    tempValue += dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON);
+                }
+            }
+
+            foreach (int pick in PicksFromHigher)
+            {
+                if (pick < 1000)
+                {
+                    tempValue -= dm.pickValues[pick];
+                }
+                else
+                {
+                    tempValue -= dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(HigherTeam).CON);
+                }
+            }
+
+            if (fromHigher)
+            {
+                offersFromHigher.Add(tempValue);
+                return 0;
+            }
+            else
+            {
+                offersFromLower.Add(tempValue);
+                return SetMinTake();
+            }
+        }
+    }
+
+    public enum TradeOfferStatus
+    {
+        HigherResponsePending = 0,
+        LowerResponsePending,
+        Rejected,
+        Accepted,
+        PendingAccept
     }
 
     public class Position

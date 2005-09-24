@@ -64,7 +64,10 @@ namespace MaddenEditor.Core
 		}
 
         // MADDEN DRAFT EDIT
-        private LocalMath math = new LocalMath();
+/*
+ * ******  DEPRECATED *******
+ * 
+ * private LocalMath math = new LocalMath();
 
         public void ComputeEffectiveOVRs(DraftModel dm)
         {
@@ -80,6 +83,7 @@ namespace MaddenEditor.Core
                 rec.Value = LocalMath.ValueScale * dm.positionData[rec.PositionId].Value(model.TeamModel.GetTeamRecord(rec.TeamId).DefensiveSystem) * math.valcurve(rec.EffectiveOVR);
             }
         }
+ * */
         // MADDEN DRAFT EDIT
 		
 		public PlayerRecord GetPlayerRecord(int recno)
