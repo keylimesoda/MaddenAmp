@@ -33,6 +33,7 @@ namespace MaddenEditor.Core.Record
         public const string DRAFT_PICK_NUMBER = "DPNM";
 
         private PlayerRecord player;
+        public DraftModel dm;
 
         public Dictionary<int, int> EstimatedPickNumber = new Dictionary<int,int>();
         public Dictionary<int, string> EstimatedRound = new Dictionary<int,string>();
@@ -46,116 +47,122 @@ namespace MaddenEditor.Core.Record
         public Dictionary<int, double> ActualRatings = new Dictionary<int,double>();
         public double ActualValue;
 
+        private double power = 10;
+
         // Has structure ratings[TeamId][RatingType][Attribute]
         public Dictionary<int, Dictionary<int, Dictionary<int, double>>> ratings = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
 
-        // Has structure values[TeamId][ValueType]
-        public Dictionary<int, Dictionary<int, double>> values = new Dictionary<int,Dictionary<int,double>>();
+        // Has structure values[TeamId][PositionId][ValueType]
+        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> values = new Dictionary<int,Dictionary<int,Dictionary<int, double>>>();
 
-        // Has structure needs[TeamId][NeedType]
-        public Dictionary<int, Dictionary<int, double>> needs = new Dictionary<int,Dictionary<int,double>>();
+        // Has structure needs[TeamId][PositionId][NeedType]
+        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> needs = new Dictionary<int,Dictionary<int,Dictionary<int,double>>>();
 
         public RookieRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
 		{
-            for (int i=0; i < 32; i++) {
-                ratings.Add(i, new Dictionary<int,Dictionary<int,double>>());
-                values.Add(i, new Dictionary<int, double>());
-                needs.Add(i, new Dictionary<int, double>());
 
-                for (int j=0; j < 3; j++) {
-                    ratings[i].Add(j, new Dictionary<int,double>());
+        }
+
+        public void InitializeDictionaries(Dictionary<int, Dictionary<int, double>> awarenessAdjust) 
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                ratings.Add(i, new Dictionary<int, Dictionary<int, double>>());
+                values.Add(i, new Dictionary<int, Dictionary<int, double>>());
+                needs.Add(i, new Dictionary<int, Dictionary<int, double>>());
+
+                for (int j = 0; j < 3; j++)
+                {
+                    ratings[i].Add(j, new Dictionary<int, double>());
+                }
+
+                foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+                {
+                    values[i][pair.Key] = new Dictionary<int, double>();
+                    needs[i][pair.Key] = new Dictionary<int, double>();
                 }
             }
-		}
+        }
 
-        public void CalculateNeeds(TeamRecord team, List<PlayerRecord> depthChart, Dictionary<int, Position> positionData)
+        public void CalculateNeeds(TeamRecord team, List<PlayerRecord> depthChart, List<double> depthChartValues, Dictionary<int, Position> positionData, int thePosition)
         {
-            double starterNeed = 0;
             double backupNeed = 0;
             double successorNeed = 0;
             LocalMath math = new LocalMath();
 
-            int numStarters = positionData[Player.PositionId].Starters(team.DefensiveSystem);
-            int startTemp;
-
-            if (Player.PositionId == 0 && team.TeamId == 20)
-            {
-                int trash;
-            }
+            int numStarters = positionData[thePosition].Starters(team.DefensiveSystem);
 
             /** First calculate the starter need **/
 
-            if (depthChart.Count < numStarters)
-            {
-                /*
-                needs[team.TeamId][(int)NeedType.Starter] = 1;
-                 */
+            // If there's no current starter, they can always get a stop-gap guy
+            // in free agency, who we'll assume has OVR = 78, INJ = 75, YRP >= 5,
+            // so their effective overall is just 78.  This should at least prevent
+            // the totally boneheaded picks.
 
-                // If there's no current starter, they can always get a stop-gap guy
-                // in free agency, who we'll assume has OVR = 75, INJ = 75, YRP >= 5,
-                // so their effective overall is just 75.  This should at least prevent
-                // the totally boneheaded picks.
-                int stopgapEffectiveOVR = 78;
-                double sgValue = LocalMath.ValueScale * positionData[Player.PositionId].Value(team.DefensiveSystem) * math.valcurve(stopgapEffectiveOVR);
-                needs[team.TeamId][(int)NeedType.Starter] = math.need(values[team.TeamId][(int)ValueType.WithProg], sgValue);
+            int stopgapEffectiveOVR = 78;
+            double sgValue = LocalMath.ValueScale * positionData[thePosition].Value(team.DefensiveSystem) * math.valcurve(stopgapEffectiveOVR);
+
+            if (depthChartValues.Count < numStarters)
+            {
+                needs[team.TeamId][thePosition][(int)NeedType.Starter] = math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], sgValue);
             }
             else
             {
-                needs[team.TeamId][(int)NeedType.Starter] = math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters - 1].Value);
+                needs[team.TeamId][thePosition][(int)NeedType.Starter] = math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], Math.Max(depthChartValues[numStarters - 1], sgValue));
             }
 
             /** Now calculate backup need. **/
 
-            if (numStarters == 1 && (Player.PositionId != (int)MaddenPositions.TE && Player.PositionId != (int)MaddenPositions.QB && Player.PositionId != (int)MaddenPositions.HB))
+            if (numStarters == 1 && (thePosition != (int)MaddenPositions.TE && thePosition != (int)MaddenPositions.QB && thePosition != (int)MaddenPositions.HB))
             {
-                if (depthChart.Count <= 1)
+                if (depthChartValues.Count <= 1)
                 {
                     backupNeed = 1;
                 }
                 else
                 {
-                    backupNeed = math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters].Value);
+                    backupNeed = math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters]);
                 }
             } else {
-                if (Player.PositionId != (int)MaddenPositions.CB && Player.PositionId != (int)MaddenPositions.WR)
+                if (thePosition != (int)MaddenPositions.CB && thePosition != (int)MaddenPositions.WR)
                 {
-                    if (depthChart.Count <= numStarters)
+                    if (depthChartValues.Count <= numStarters)
                     {
                         backupNeed = 0.75;
                     }
                     else
                     {
-                        backupNeed = 0.75 * math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters].Value);
+                        backupNeed = 0.75 * math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters]);
                     }
 
-                    if (depthChart.Count <= numStarters + 1)
+                    if (depthChartValues.Count <= numStarters + 1)
                     {
                         backupNeed += 0.25;
                     }
                     else
                     {
-                        backupNeed = 0.25 * math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters+1].Value);
+                        backupNeed = 0.25 * math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters+1]);
                     }
                 }
                 else
                 {
-                    if (depthChart.Count <= 2)
+                    if (depthChartValues.Count <= 2)
                     {
                         backupNeed = 0.75;
                     }
                     else
                     {
-                        backupNeed = 0.75 * math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters].Value);
+                        backupNeed = 0.75 * math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters]);
                     }
 
-                    if (depthChart.Count <= 3)
+                    if (depthChartValues.Count <= 3)
                     {
                         backupNeed += 0.35;
                     }
                     else
                     {
-                        backupNeed += 0.35 * math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters+1].Value);
+                        backupNeed += 0.35 * math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters+1]);
                     }
 
                     if (depthChart.Count <= 4)
@@ -164,23 +171,23 @@ namespace MaddenEditor.Core.Record
                     }
                     else
                     {
-                        backupNeed += 0.15 * math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[numStarters+2].Value);
+                        backupNeed += 0.15 * math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters+2]);
                     }
                 }
             }
 
             double injuryFactor = 0;
 
-            for (int i = 0; i < Math.Min(numStarters, depthChart.Count); i++)
+            for (int i = 0; i < Math.Min(numStarters, depthChartValues.Count); i++)
             {
-                injuryFactor += (1 - math.injury(depthChart[i].Injury, positionData[depthChart[i].PositionId].DurabilityNeed) / 10) / Math.Min(numStarters, depthChart.Count);
+                injuryFactor += (1 - math.injury(depthChart[i].Injury, positionData[thePosition].DurabilityNeed) / 10) / Math.Min(numStarters, depthChartValues.Count);
             }
 
             double backupTemp;
 
             // At these positions, backups are useful even if the starter isn't likely
             // to be injured
-            if (Player.PositionId == (int)MaddenPositions.HB || Player.PositionId == (int)MaddenPositions.WR || Player.PositionId == (int)MaddenPositions.DT || Player.PositionId == (int)MaddenPositions.CB)
+            if (thePosition == (int)MaddenPositions.HB || thePosition == (int)MaddenPositions.WR || thePosition == (int)MaddenPositions.DT || thePosition == (int)MaddenPositions.CB)
             {
                 backupTemp = backupNeed * (0.75 * injuryFactor + 0.25);
             }
@@ -191,13 +198,13 @@ namespace MaddenEditor.Core.Record
 
             if (backupTemp > 1.25) { backupTemp = 1.25; }
 
-            needs[team.TeamId][(int)NeedType.Backup] = backupTemp * positionData[Player.PositionId].BackupNeed;
+            needs[team.TeamId][thePosition][(int)NeedType.Backup] = backupTemp * positionData[thePosition].BackupNeed;
 
             /** Now calculate need for a successor. **/
 
             int oldest = 0;
 
-            if (depthChart.Count >= numStarters)
+            if (depthChartValues.Count >= numStarters)
             {
                 if (numStarters == 2)
                 {
@@ -215,7 +222,7 @@ namespace MaddenEditor.Core.Record
                     oldest = depthChart[0].Age;
                 }
 
-                double factor = 1 - 0.2 * (positionData[Player.PositionId].RetirementAge - oldest + (1 / 2) * (team.CON - 5));
+                double factor = 1 - 0.2 * (positionData[thePosition].RetirementAge - oldest + (1 / 2) * (team.CON - 5));
 
                 if (factor <= 0)
                 {
@@ -228,7 +235,7 @@ namespace MaddenEditor.Core.Record
                     int possibleSuccessor = -1;
                     for (int i = numStarters; i < depthChart.Count; i++) 
                     {
-                        if (positionData[Player.PositionId].RetirementAge - depthChart[i].Age + (1/2)*(team.CON - 5) >= 5) {
+                        if (positionData[thePosition].RetirementAge - depthChart[i].Age + (1/2)*(team.CON - 5) >= 5) {
                             possibleSuccessor = i;
                             break;
                         }
@@ -236,13 +243,13 @@ namespace MaddenEditor.Core.Record
 
                     if (possibleSuccessor == -1) 
                     {
-                        successorNeed = factor * positionData[Player.PositionId].SuccessorNeed;
+                        successorNeed = factor * positionData[thePosition].SuccessorNeed;
                     } 
                     else 
                     {
-                        if (values[team.TeamId][(int)ValueType.WithProg] > depthChart[possibleSuccessor].Value)
+                        if (values[team.TeamId][thePosition][(int)ValueType.WithProg] > depthChartValues[possibleSuccessor])
                         {
-                            successorNeed = factor * positionData[Player.PositionId].SuccessorNeed * math.need(values[team.TeamId][(int)ValueType.WithProg], depthChart[possibleSuccessor].Value);
+                            successorNeed = factor * positionData[thePosition].SuccessorNeed * math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[possibleSuccessor]);
                         }
                         else
                         {
@@ -256,7 +263,7 @@ namespace MaddenEditor.Core.Record
                 successorNeed = 0;
             }
 
-            needs[team.TeamId][(int)NeedType.Successor] = successorNeed;
+            needs[team.TeamId][thePosition][(int)NeedType.Successor] = successorNeed;
         }
 
         public double PrimarySkill(int TeamId, int type)
@@ -337,209 +344,486 @@ namespace MaddenEditor.Core.Record
             return -1;
         }
 
-        public void CalculateOverall(int type)
+        public double GetAdjustedOverall(int TeamId, int type, int position, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
+        {
+            double tempOverall = 0;
+            switch (position)
+            {
+                case (int)MaddenPositions.QB:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.THP] - 50) / 10) * 4.9;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.THA] - 50) / 10) * 5.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 4.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 2.0;
+                    tempOverall += 28;
+                    break;
+                case (int)MaddenPositions.HB:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 0.33;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 3.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CAR] - 50) / 10) * 2.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 2.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 2.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 0.6;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 1.4;
+                    tempOverall += 27;
+                    break;
+                case (int)MaddenPositions.FB:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 1.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.RBK] - 50) / 10) * 7.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CAR] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 2.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 5.2;
+                    tempOverall += 39;
+                    break;
+                case (int)MaddenPositions.WR:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 2.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 2.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 2.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 2.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 4.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.JMP] - 50) / 10) * 1.4;
+                    tempOverall += 26;
+                    break;
+                case (int)MaddenPositions.TE:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 2.65;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 2.65;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 2.65;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.25;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.25;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 5.4;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 1.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 1.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.RBK] - 50) / 10) * 5.4;
+                    tempOverall += 35;
+                    break;
+                case (int)MaddenPositions.LT:
+                case (int)MaddenPositions.RT:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 4.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.RBK] - 50) / 10) * 3.75;
+                    tempOverall += 26;
+                    break;
+                case (int)MaddenPositions.LG:
+                case (int)MaddenPositions.RG:
+                case (int)MaddenPositions.C:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.7;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.25;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.25;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.7;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 3.25;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.RBK] - 50) / 10) * 4.8;
+                    tempOverall += 28;
+                    break;
+                case (int)MaddenPositions.LE:
+                case (int)MaddenPositions.RE:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 1.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 3.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 5.5;
+                    tempOverall += 30;
+                    break;
+                case (int)MaddenPositions.DT:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 5.5;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 2.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 4.55;
+                    tempOverall += 29;
+                    break;
+                case (int)MaddenPositions.LOLB:
+                case (int)MaddenPositions.ROLB:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 2.4;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.6;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 2.4;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 1.3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 4.8;
+                    tempOverall += 29;
+                    break;
+                case (int)MaddenPositions.MLB:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 0.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.4;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 5.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.65;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 5.2;
+                    tempOverall += 27;
+                    break;
+                case (int)MaddenPositions.CB:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.85;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 0.9;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.85;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.55;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 2.35;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 3;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.JMP] - 50) / 10) * 1.55;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 1.55;
+                    tempOverall += 28;
+                    break;
+                case (int)MaddenPositions.FS:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 0.9;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 4.85;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.5;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 2.5;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 3.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.JMP] - 50) / 10) * 1.5;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 2.5;
+                    tempOverall += 30;
+                    break;
+                case (int)MaddenPositions.SS:
+                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 1.7;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 4.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.7;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.7;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CTH] - 50) / 10) * 3.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.JMP] - 50) / 10) * 0.9;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.TAK] - 50) / 10) * 3.2;
+                    tempOverall += 30;
+                    break;
+                case (int)MaddenPositions.P:
+                    tempOverall = (double)(-183 + 0.218 * ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] + 1.5 * ratings[TeamId][type][(int)Attribute.KPR] + 1.33 * ratings[TeamId][type][(int)Attribute.KAC]);
+                    break;
+                case (int)MaddenPositions.K:
+                    tempOverall = (double)(-177 + 0.218 * ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] + 1.28 * ratings[TeamId][type][(int)Attribute.KPR] + 1.47 * ratings[TeamId][type][(int)Attribute.KAC]);
+                    break;
+            }
+
+            if (tempOverall < 0)
+            {
+                tempOverall = 0;
+            }
+            if (tempOverall > 99)
+            {
+                tempOverall = 99;
+            }
+
+            return tempOverall;
+        }
+
+        /*
+        public void CalculateOverall(int type, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
         {
             for (int i = 0; i < 32; i++) {
                 double tempOverall = 0;
 
-                switch (Player.PositionId)
+                foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
                 {
-                    case (int)MaddenPositions.QB:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.THP] - 50) / 10) * 4.9;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.THA] - 50) / 10) * 5.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 4.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 2.0;
-                        tempOverall += 28;
-                        break;
-                    case (int)MaddenPositions.HB:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 0.33;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 3.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CAR] - 50) / 10) * 2.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 2.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.6;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 1.4;
-                        tempOverall += 27;
-                        break;
-                    case (int)MaddenPositions.FB:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 1.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 7.2;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CAR] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 5.2;
-                        tempOverall += 39;
-                        break;
-                    case (int)MaddenPositions.WR:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 2.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 2.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 4.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 1.4;
-                        tempOverall += 26;
-                        break;
-                    case (int)MaddenPositions.TE:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 2.65;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 2.65;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.65;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.25;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.25;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 5.4;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 1.2;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 1.2;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 5.4;
-                        tempOverall += 35;
-                        break;
-                    case (int)MaddenPositions.LT:
-                    case (int)MaddenPositions.RT:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 4.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 3.75;
-                        tempOverall += 26;
-                        break;
-                    case (int)MaddenPositions.LG:
-                    case (int)MaddenPositions.RG:
-                    case (int)MaddenPositions.C:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 1.7;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.25;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.25;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.7;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 3.25;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 4.8;
-                        tempOverall += 28;
-                        break;
-                    case (int)MaddenPositions.LE:
-                    case (int)MaddenPositions.RE:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 1.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 3.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 5.5;
-                        tempOverall += 30;
-                        break;
-                    case (int)MaddenPositions.DT:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 5.5;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.8;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 4.55;
-                        tempOverall += 29;
-                        break;
-                    case (int)MaddenPositions.LOLB:
-                    case (int)MaddenPositions.ROLB:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 2.4;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.6;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 2.4;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 1.3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 4.8;
-                        tempOverall += 29;
-                        break;
-                    case (int)MaddenPositions.MLB:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 0.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.4;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 5.2;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.65;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 5.2;
-                        tempOverall += 27;
-                        break;
-                    case (int)MaddenPositions.CB:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.85;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.9;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.85;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.55;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.35;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 3;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 1.55;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 1.55;
-                        tempOverall += 28;
-                        break;
-                    case (int)MaddenPositions.FS:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.9;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 4.85;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.5;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.5;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 3.0;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 1.5;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 2.5;
-                        tempOverall += 30;
-                        break;
-                    case (int)MaddenPositions.SS:
-                        tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.2;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 1.7;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 4.75;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.7;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.7;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 3.2;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 0.9;
-                        tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 3.2;
-                        tempOverall += 30;
-                        break;
-                    case (int)MaddenPositions.P:
-                        tempOverall = (double)(-183 + 0.218 * ratings[i][type][(int)Attribute.AWR] + 1.5 * ratings[i][type][(int)Attribute.KPR] + 1.33 * ratings[i][type][(int)Attribute.KAC]);
-                        break;
-                    case (int)MaddenPositions.K:
-                        tempOverall = (double)(-177 + 0.218 * ratings[i][type][(int)Attribute.AWR] + 1.28 * ratings[i][type][(int)Attribute.KPR] + 1.47 * ratings[i][type][(int)Attribute.KAC]);
-                        break;
-                }
 
-                if (tempOverall < 0)
-                {
-                    tempOverall = 0;
-                }
-                if (tempOverall > 99)
-                {
-                    tempOverall = 99;
-                }
+                    switch (Player.PositionId)
+                    {
+                        case (int)MaddenPositions.QB:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.THP] - 50) / 10) * 4.9;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.THA] - 50) / 10) * 5.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 4.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 2.0;
+                            tempOverall += 28;
+                            break;
+                        case (int)MaddenPositions.HB:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 0.33;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 3.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CAR] - 50) / 10) * 2.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 2.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.6;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 1.4;
+                            tempOverall += 27;
+                            break;
+                        case (int)MaddenPositions.FB:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 1.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 7.2;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CAR] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 5.2;
+                            tempOverall += 39;
+                            break;
+                        case (int)MaddenPositions.WR:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 2.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 2.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 4.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 1.4;
+                            tempOverall += 26;
+                            break;
+                        case (int)MaddenPositions.TE:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 2.65;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 2.65;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 2.65;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.25;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.25;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 5.4;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.BTK] - 50) / 10) * 1.2;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 1.2;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 5.4;
+                            tempOverall += 35;
+                            break;
+                        case (int)MaddenPositions.LT:
+                        case (int)MaddenPositions.RT:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 4.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 3.75;
+                            tempOverall += 26;
+                            break;
+                        case (int)MaddenPositions.LG:
+                        case (int)MaddenPositions.RG:
+                        case (int)MaddenPositions.C:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 1.7;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.25;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.25;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.7;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.PBK] - 50) / 10) * 3.25;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.RBK] - 50) / 10) * 4.8;
+                            tempOverall += 28;
+                            break;
+                        case (int)MaddenPositions.LE:
+                        case (int)MaddenPositions.RE:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 1.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 3.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 5.5;
+                            tempOverall += 30;
+                            break;
+                        case (int)MaddenPositions.DT:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 5.5;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.8;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 4.55;
+                            tempOverall += 29;
+                            break;
+                        case (int)MaddenPositions.LOLB:
+                        case (int)MaddenPositions.ROLB:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 2.4;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.6;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 2.4;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 1.3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 4.8;
+                            tempOverall += 29;
+                            break;
+                        case (int)MaddenPositions.MLB:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 0.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 3.4;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 5.2;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.65;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 5.2;
+                            tempOverall += 27;
+                            break;
+                        case (int)MaddenPositions.CB:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.85;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.9;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 3.85;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.55;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.35;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 3;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 1.55;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 1.55;
+                            tempOverall += 28;
+                            break;
+                        case (int)MaddenPositions.FS:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 0.9;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 4.85;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.5;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 2.5;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 3.0;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 1.5;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 2.5;
+                            tempOverall += 30;
+                            break;
+                        case (int)MaddenPositions.SS:
+                            tempOverall = (((double)ratings[i][type][(int)Attribute.SPD] - 50) / 10) * 3.2;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.STR] - 50) / 10) * 1.7;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AWR] - 50) / 10) * 4.75;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.AGI] - 50) / 10) * 1.7;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.ACC] - 50) / 10) * 1.7;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.CTH] - 50) / 10) * 3.2;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.JMP] - 50) / 10) * 0.9;
+                            tempOverall += (((double)ratings[i][type][(int)Attribute.TAK] - 50) / 10) * 3.2;
+                            tempOverall += 30;
+                            break;
+                        case (int)MaddenPositions.P:
+                            tempOverall = (double)(-183 + 0.218 * ratings[i][type][(int)Attribute.AWR] + 1.5 * ratings[i][type][(int)Attribute.KPR] + 1.33 * ratings[i][type][(int)Attribute.KAC]);
+                            break;
+                        case (int)MaddenPositions.K:
+                            tempOverall = (double)(-177 + 0.218 * ratings[i][type][(int)Attribute.AWR] + 1.28 * ratings[i][type][(int)Attribute.KPR] + 1.47 * ratings[i][type][(int)Attribute.KAC]);
+                            break;
+                    }
 
-                ratings[i][type][(int)Attribute.OVR] = tempOverall;
+                    if (tempOverall < 0)
+                    {
+                        tempOverall = 0;
+                    }
+                    if (tempOverall > 99)
+                    {
+                        tempOverall = 99;
+                    }
+
+                    ratings[i][type][(int)Attribute.OVR] = tempOverall;
+                }
             }
         }
+        */
 
-        public double TotalNeed(TeamRecord team, int pickNumber) {
-            double ProbabilityOfStarting = Math.Sqrt(needs[team.TeamId][(int)NeedType.Starter]);
-            double toReturn =  (needs[team.TeamId][(int)NeedType.Starter] +
-                Math.Tanh((double)pickNumber / 45) * (1 - ProbabilityOfStarting) * needs[team.TeamId][(int)NeedType.Backup] +
-                Math.Tanh(((double)pickNumber + 5) / (5 * team.CON)) * (1 - ProbabilityOfStarting) * needs[team.TeamId][(int)NeedType.Successor]);
+        public double TotalNeed(TeamRecord team, int pickNumber, int position) {
+            double ProbabilityOfStarting = Math.Sqrt(needs[team.TeamId][position][(int)NeedType.Starter]);
+            double toReturn =  (needs[team.TeamId][position][(int)NeedType.Starter] +
+                Math.Tanh((double)pickNumber / 45) * (1 - ProbabilityOfStarting) * needs[team.TeamId][position][(int)NeedType.Backup] +
+                Math.Tanh(((double)pickNumber + 5) / (5 * team.CON)) * (1 - ProbabilityOfStarting) * needs[team.TeamId][position][(int)NeedType.Successor]);
             return toReturn;
         }
 
-        public double EffectiveValue(TeamRecord team, int pickNumber) {
+        public double AverageValue(TeamRecord team, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
+        {
+            // Power essentially determines how we add together effective values
+            // at multiple positions.  If power = 1, we just add them.  If power = 2,
+            // we square them all, then add, then take a square root.  For now, we'll
+            // use power = 5.
+
+            double valueSubtotal = 0;
+
+            foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+            {
+                if (pair.Key > 20) { continue; }
+
+                double tempValue = values[team.TeamId][pair.Key][(int)ValueType.NoProg];
+                valueSubtotal += Math.Pow(tempValue, power);
+            }
+
+            return Math.Pow(valueSubtotal, 1 / power);
+        }
+
+        public double AverageNeed(TeamRecord team, int pickNumber, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
+        {
+            double valueSubtotal = 0;
+
+            foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+            {
+                if (pair.Key > 20) { continue; }
+
+                double tempValue = TotalNeed(team, pickNumber, pair.Key);
+                valueSubtotal += Math.Pow(tempValue, power);
+            }
+
+            return Math.Pow(valueSubtotal, 1 / power);
+        }
+
+        public double AverageStarterNeed(int teamId, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
+        {
+            double valueSubtotal = 0;
+
+            foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+            {
+                if (pair.Key > 20) { continue; }
+
+                double tempValue = needs[teamId][pair.Key][(int)NeedType.Starter];
+                valueSubtotal += Math.Pow(tempValue, power);
+            }
+
+            return Math.Pow(valueSubtotal, 1 / power);
+        }
+
+        public double AverageSuccessorNeed(int teamId, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
+        {
+            double valueSubtotal = 0;
+
+            foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+            {
+                if (pair.Key > 20) { continue; }
+
+                double tempValue = needs[teamId][pair.Key][(int)NeedType.Successor];
+                valueSubtotal += Math.Pow(tempValue, power);
+            }
+
+            return Math.Pow(valueSubtotal, 1 / power);
+        }
+
+        public double EffectiveValue(TeamRecord team, int pickNumber, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
+        {
             double valfrac = 0.25 + 0.075 * Math.Floor((double)(pickNumber / 32));
             double needfrac = 1 - valfrac;
 
-            double toReturn =  values[team.TeamId][(int)ValueType.NoProg] * (needfrac * TotalNeed(team, pickNumber) + valfrac);
-            return toReturn;
+            // Power essentially determines how we add together effective values
+            // at multiple positions.  If power = 1, we just add them.  If power = 2,
+            // we square them all, then add, then take a square root.  For now, we'll
+            // use power = 2.
+
+            double valueSubtotal = 0;
+
+            foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+            {
+                if (pair.Key > 20) { continue; }
+
+                double tempValue = values[team.TeamId][pair.Key][(int)ValueType.NoProg] * (needfrac * TotalNeed(team, pickNumber, pair.Key) + valfrac);
+                valueSubtotal += Math.Pow(tempValue, power);
+            }
+
+            return Math.Pow(valueSubtotal, 1 / power);
         }
 
-        public double PerceivedEffectiveValue(TeamRecord team, int pickNumber)
+        public double PerceivedEffectiveValue(TeamRecord team, int pickNumber, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
         {
-            double valfrac = 0.2 + 0.075 * Math.Floor((double)(pickNumber / 32));
+            double valfrac = 0.25 + 0.075 * Math.Floor((double)(pickNumber / 32));
             double needfrac = 1 - valfrac;
 
-            double toReturn = values[team.TeamId][(int)ValueType.Perceived] * (needfrac * TotalNeed(team, pickNumber) + valfrac);
-            return toReturn;
+            // Power essentially determines how we add together effective values
+            // at multiple positions.  If power = 1, we just add them.  If power = 2,
+            // we square them all, then add, then take a square root.  For now, we'll
+            // use power = 2.
+
+            double valueSubtotal = 0;
+
+            foreach (KeyValuePair<int, double> pair in awarenessAdjust[Player.PositionId])
+            {
+                if (pair.Key > 20) { continue; }
+
+                double tempValue = values[team.TeamId][pair.Key][(int)ValueType.Perceived] * (needfrac * TotalNeed(team, pickNumber, pair.Key) + valfrac);
+                valueSubtotal += Math.Pow(tempValue, power);
+            }
+
+            return Math.Pow(valueSubtotal, 1 / power);
         }
         
         public int PlayerId
