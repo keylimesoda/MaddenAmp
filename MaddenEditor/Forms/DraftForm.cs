@@ -39,8 +39,15 @@ namespace MaddenEditor.Forms
         double secondsPerPick;
         int timeRemaining;
         Random random;
+        bool quitSkipping = false;
+        bool skipping = false;
 
         double pickProb;
+
+        double tradeProbPerm;
+        double tradeProb;
+        bool preventTrades = false;
+
         LocalMath math = new LocalMath();
 
         DataTable draftPickData = new DataTable();
@@ -58,15 +65,23 @@ namespace MaddenEditor.Forms
         DataTable wishlistData = new DataTable();
         BindingSource wishlistBinding = new BindingSource();
 
-        int CurrentPick = 0;
-        int CurrentSelectingId;
+        public int CurrentPick = 0;
+        public int CurrentSelectingId;
         int HumanTeamId;
         int SelectedPlayer = 0;
+
         bool sortDirection = true;
+        int previousSortedColumn = -1;
+        public bool refreshTradeTeams = false;
+
+        public TradeUpForm tradeUpForm = null;
+        public TradeDownForm tradeDownForm = null;
 
         public DraftForm(EditorModel ParentModel, DraftModel draftmodel, int humanId, int seconds)
         {
             dm = draftmodel;
+            dm.df = this;
+
             HumanTeamId = humanId;
             secondsPerPick = seconds;
             model = ParentModel;
@@ -77,7 +92,9 @@ namespace MaddenEditor.Forms
         {
             this.Invalidate();
 
-            pickProb = 1 - Math.Pow(0.5, 1/secondsPerPick);
+            pickProb = 1 - Math.Pow(0.5, 1.0 / secondsPerPick);
+            tradeProb = 1 - Math.Pow(0.5, 60.0 / secondsPerPick);
+            tradeProbPerm = tradeProb;
 
             /*
             dm = new DraftModel(model);
@@ -92,16 +109,16 @@ namespace MaddenEditor.Forms
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
             random = new Random(unchecked((int)DateTime.Now.Ticks));
 
+            dm.SetTradeParameters(CurrentPick);
+
             if (CurrentSelectingId == HumanTeamId)
             {
                 draftButton.Enabled = true;
             }
-            else
-            {
-                timeRemaining = (int)secondsPerPick;
-                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
-                draftTimer.Start();
-            }
+
+            timeRemaining = (int)secondsPerPick;
+            clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+            draftTimer.Start();
 
             /*
             for (int i = 0; i < 32*7; i++)
@@ -248,8 +265,6 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("secondaryskill", "System.Double"));
             rookieData.Columns.Add(AddColumn("2nd Skill", "System.String"));
 
-            RefillRookieGrid();
-
             rookieBinding.DataSource = rookieData;
 
             RookieGrid.DataSource = rookieBinding;
@@ -283,6 +298,8 @@ namespace MaddenEditor.Forms
             RookieGrid.Columns["2nd Skill"].Width = 63;
 
             RookieGrid.RowHeadersVisible = false;
+
+            RefillRookieGrid();
         }
 
         private void RefillRookieGrid() {
@@ -360,6 +377,24 @@ namespace MaddenEditor.Forms
                 rookieData.Rows.Add(dr);
             }
 
+            RookieGrid.Sort(RookieGrid.Columns["myproj"], ListSortDirection.Ascending);
+            RookieGrid.CurrentCell = RookieGrid[1, 0];
+        }
+
+        public string pickToString(int pick, int con)
+        {
+            if (pick < 1000)
+            {
+                int round = pick / 32 + 1;
+                int pickInRound = pick % 32 + 1;
+
+                return "Round " + round + ", Pick " + pickInRound + " (" + dm.pickValues[pick] + ")";
+            }
+            else
+            {
+                int round = pick - 1000;
+                return "Round " + (pick - 1000) + ", Next Year" + " (" + dm.futureValues(round, con) + ")";
+            }
         }
 
         private DataColumn AddColumn(string ColName, string ColType)
@@ -531,6 +566,8 @@ namespace MaddenEditor.Forms
 
         private bool MakePick(RookieRecord drafted)
         {
+            // Stop the timer while we process
+            draftTimer.Stop();
             drafted = dm.MakeSelection(CurrentPick, drafted);
 
             draftPickData.Rows[CurrentPick]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
@@ -556,7 +593,6 @@ namespace MaddenEditor.Forms
 
             if (CurrentSelectingId == HumanTeamId)
             {
-                draftTimer.Start();
                 draftButton.Enabled = false;
                 PlayerToDraft.Text = "";
             }
@@ -571,34 +607,239 @@ namespace MaddenEditor.Forms
                 return false;
             }
 
+            dm.SetTradeParameters(CurrentPick);
+            preventTrades = false;
+            tradeButton.Enabled = true;
+
+            if (tradeUpForm != null)
+            {
+                tradeUpForm = null;
+            }
+
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
             timeRemaining = (int)secondsPerPick;
             clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
             if (CurrentSelectingId == HumanTeamId)
             {
-                draftTimer.Stop();
+//                draftTimer.Stop();
                 draftButton.Enabled = true;
             }
 
+            draftTimer.Start();
             return true;
         }
 
         private void timerOnTick(object sender, EventArgs e)
         {
+            tick(false);
+        }
+
+        public void DisableTradeButton() {
+            tradeButton.Enabled = false;
+        }
+
+        public void ProcessTrade(TradeOffer to)
+        {
+            draftTimer.Stop();
+
+            string highergets = "";
+            string lowergets = "";
+
+            to.PicksFromHigher.Add(CurrentPick);
+
+            for (int i = 0; i < 32 * 7; i++)
+            {
+                if (to.PicksFromHigher.Contains(i))
+                {
+                    draftPickData.Rows[i]["Team"] = model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam);
+                    lowergets += (i+1) + " (" + dm.pickValues[i] + ") ";
+                }
+                else if (to.PicksFromLower.Contains(i))
+                {
+                    draftPickData.Rows[i]["Team"] = model.TeamModel.GetTeamNameFromTeamId(to.HigherTeam);
+                    highergets += (i + 1) + " (" + dm.pickValues[i] + ") ";
+                }
+            }
+
+            foreach (int pick in to.PicksFromHigher)
+            {
+                if (pick > 1000)
+                {
+                    lowergets += pick + " (" + dm.futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.HigherTeam).CON) + ") ";
+                }
+            }
+
+            foreach (int pick in to.PicksFromLower)
+            {
+                if (pick > 1000)
+                {
+                    highergets += pick + " (" + dm.futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.LowerTeam).CON) + ") ";
+                }
+            }
+
+            if (tradeDownForm != null)
+            {
+                tradeDownForm.Close();
+                tradeDownForm = null;
+            }
+
+            if (tradeUpForm != null)
+            {
+                tradeUpForm.Close();
+                tradeUpForm = null;
+            }
+
+            string alertstring = "Trade!\n\n" + model.TeamModel.GetTeamNameFromTeamId(to.HigherTeam) + " get " + highergets + "\n" + model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam) + " get " + lowergets;
+            MessageBox.Show(alertstring, "", MessageBoxButtons.OKCancel);
+
+            this.Invalidate(true);
+            this.Update();
+
+            tradeButton.Enabled = false;
+
+            if (CurrentSelectingId == HumanTeamId)
+            {
+                draftButton.Enabled = false;
+                PlayerToDraft.Text = "";
+            }
+
+            dm.SetTradeParameters(CurrentPick);
+
+            CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
+            timeRemaining = (int)secondsPerPick;
+            clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+            if (CurrentSelectingId == HumanTeamId)
+            {
+//                draftTimer.Stop();
+                draftButton.Enabled = true;
+            }
+
+            preventTrades = true;
+            draftTimer.Start();
+        }
+
+        private void tick(bool refresh)
+        {
             timeRemaining--;
             clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
             double test = random.NextDouble();
-            //Console.WriteLine(test + " " + pickProb);
+            refreshTradeTeams = false;
 
-            if (test < pickProb || timeRemaining == 0)
+            if (timeRemaining <= 0)
+            {
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    return;
+                }
+
+                TradeOffer to = dm.tradePendingAccept();
+
+                if (to == null)
+                {
+                    MakePick(null);
+                    return;
+                }
+                else
+                {
+                    dm.AcceptTrade(to);
+                    ProcessTrade(to);
+                    return;
+                }
+            }
+            else if (CurrentSelectingId != HumanTeamId && !dm.tradePending(-1) && (test < pickProb || ((dm.tradeOffers.Count == 32 && skipping) || (skipping && preventTrades) || (skipping && dm.tradeOffers.Count == 31 && !dm.tradeExists(HumanTeamId)))))
             {
                 MakePick(null);
+                return;
+            }
+            else if (!preventTrades)
+            {
+                // randomize the team that starts the trade bidding.
+                int i = (int)Math.Floor(32*random.NextDouble());
+
+                // j just counts iterations; current team should be 'i'.
+                for (int j = 0; j < 32; j++)
+                {
+                    if (i == CurrentSelectingId) { continue; }
+                    test = random.NextDouble();
+
+                    if (test < tradeProb)
+                    {
+                        if (dm.tradePending(i))
+                        {
+                            Console.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            TradeOffer to = dm.tradeCounterOffer(i);
+
+                            if (to != null && CurrentSelectingId != HumanTeamId)
+                            {
+                                ProcessTrade(to);
+                                return;
+                            }
+                        }
+                        else if (!dm.tradeExists(i))
+                        {
+                            Console.WriteLine("Initiating trade talks with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            TradeOffer to = dm.tradeInitialOffer(i, CurrentPick);
+
+                            if (to != null)
+                            {
+                                if (CurrentSelectingId == HumanTeamId && tradeDownForm == null)
+                                {
+                                    string teamName = dm.model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam);
+                                    draftTimer.Stop();
+                                    DialogResult dr = MessageBox.Show("The " + teamName + " have a trade offer for you.\nDo you want to start trade discussions with them?\nIf not, you will not be able to negotiate with them again on this pick.", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    draftTimer.Start();
+
+                                    if (dr == DialogResult.Yes)
+                                    {
+                                        tradeDownForm = new TradeDownForm(dm, this, to);
+                                        tradeDownForm.Show();
+                                    }
+                                    else
+                                    {
+                                        to.status = (int)TradeOfferStatus.Rejected;
+                                    }
+                                }
+                                else if (CurrentSelectingId != HumanTeamId)
+                                {
+                                    DialogResult dr = MessageBox.Show("The " + dm.model.TeamModel.GetTeamNameFromTeamId(CurrentSelectingId) + " have a trade offer for you.\nDo you want to start trade discussions with them?", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                    if (dr == DialogResult.Yes)
+                                    {
+                                        quitSkipping = true;
+                                        tradeUpForm = new TradeUpForm(dm, this, to);
+                                        tradeUpForm.Show();
+                                    }
+                                    else
+                                    {
+                                        to.status = (int)TradeOfferStatus.Rejected;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    i++;
+                    if (i == 32) { i = 0; }
+                }
+
+                if (tradeDownForm != null && refreshTradeTeams)
+                {
+                    tradeDownForm.FillTeamBoxes();
+                }
+            }
+
+            if (refresh)
+            {
+                this.Invalidate(true);
+                this.Update();
             }
         }
 
-        private void fixSort(object sender, EventArgs e) {
+        private void fixSort(object sender, EventArgs e)
+        {
             DataGridView dgv = (DataGridView)sender;
             string column = dgv.SortedColumn.Name;
             int columnindex = dgv.SortedColumn.Index;
@@ -607,7 +848,7 @@ namespace MaddenEditor.Forms
                 || column.Equals("Height") || column.Equals("Our Grade") || column.Equals("1st Skill") || column.Equals("2nd Skill"))
             {
 
-                if (sortDirection)
+                if ((sortDirection && !((previousSortedColumn+1) != columnindex && columnindex > 23)) || ((previousSortedColumn+1) != columnindex && columnindex < 23))
                 {
                     dgv.Sort(dgv.Columns[columnindex - 1], System.ComponentModel.ListSortDirection.Ascending);
                     sortDirection = false;
@@ -617,7 +858,12 @@ namespace MaddenEditor.Forms
                     dgv.Sort(dgv.Columns[columnindex - 1], System.ComponentModel.ListSortDirection.Descending);
                     sortDirection = true;
                 }
+
+                return;
             }
+
+            previousSortedColumn = columnindex;
+            RookieGrid.CurrentCell = RookieGrid[1,0];
         }
 
         private string seconds(int secs)
@@ -691,20 +937,19 @@ namespace MaddenEditor.Forms
 
         private void SkipButton_MouseClick(object sender, MouseEventArgs e)
         {
-            for (int i = 0; i < PicksToSkip.Value; i++)
-            {
-                if (CurrentSelectingId == HumanTeamId)
-                {
-                    break;
-                }
+            int initialPick = CurrentPick;
+            skipping = true;
+            tradeProb = 1;
 
-                if (!MakePick(null))
-                {
-                    break;
-                }
+            while (!quitSkipping && CurrentPick < initialPick + PicksToSkip.Value && CurrentSelectingId != HumanTeamId && CurrentPick < 32 * 7)
+            {
+                tick(true);
             }
 
-            PicksToSkip.Value = 1;
+            tradeProb = tradeProbPerm;
+            skipping = false;
+            quitSkipping = false;
+//            PicksToSkip.Value = 1;
         }
 
         private void showDraftedPlayers_CheckedChanged(object sender, EventArgs e)
@@ -736,6 +981,38 @@ namespace MaddenEditor.Forms
         private void upButton_MouseClick(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void tradeButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentSelectingId == HumanTeamId)
+            {
+                int pick = (int)DraftResults.CurrentRow.Index;
+                if (pick <= CurrentPick)
+                {
+                    return;
+                }
+
+                string teamName = (string)DraftResults.Rows[pick].Cells["Team"].Value;
+                int teamId = dm.model.TeamModel.GetTeamIdFromTeamName(teamName);
+                DialogResult dr = MessageBox.Show("Are you sure you want to make a trade offer to the " + teamName + "?  If you start, you can always cancel, but you can't restart after you've cancelled.  You WILL be able to scout rookies while you negotiate the trade.", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dr == DialogResult.Yes)
+                {
+                    tradeDownForm = new TradeDownForm(dm, this, dm.setupTradeOffer(teamId, CurrentPick));
+                    tradeDownForm.Show();
+                }
+            }
+            else
+            {
+                DialogResult dr = MessageBox.Show("Are you sure you want to make a trade offer?  If you start, you can always cancel, but you can't restart after you've cancelled.  You WILL be able to scout rookies while you negotiate the trade.", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dr == DialogResult.Yes)
+                {
+                    tradeUpForm = new TradeUpForm(dm, this, dm.setupTradeOffer(HumanTeamId, CurrentPick));
+                    tradeUpForm.Show();
+                }
+            }
         }
     }
 }

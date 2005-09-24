@@ -50,8 +50,8 @@ namespace MaddenEditor.Forms
             }
             teamNames.Sort();
             teamChooser.Items.AddRange(teamNames.ToArray());
-            seconds.Value = 30;
-            minutes.Value = 0;
+            seconds.Value = 0;
+            minutes.Value = 5;
         }
 
         private void startButton_Click(object sender, EventArgs e)
