@@ -354,6 +354,7 @@ namespace MaddenEditor.Forms
             this.tradeButton.Size = new System.Drawing.Size(128, 21);
             this.tradeButton.TabIndex = 22;
             this.tradeButton.Text = "Make Trade Offer";
+            this.tradeButton.Click += new System.EventHandler(this.tradeButton_Click);
             // 
             // wishlistGrid
             // 

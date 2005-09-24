@@ -43,7 +43,9 @@ namespace MaddenEditor.Forms
         int stage;
         int SecondsPerPick;
         int totalHours;
+
         bool sortDirection = true;
+        int previousSortedColumn = -1;
 
         LocalMath math = new LocalMath();
 
@@ -157,8 +159,6 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("2nd Skill", "System.String"));
             rookieData.Columns.Add(AddColumn("Hrs Scouted", "System.Int16"));
 
-            RefillRookieGrid();
-
             rookieBinding.DataSource = rookieData;
 
             RookieGrid.DataSource = rookieBinding;
@@ -210,6 +210,7 @@ namespace MaddenEditor.Forms
             RookieGrid.Columns["2nd Skill"].ReadOnly = true;
 
             RookieGrid.RowHeadersVisible = false;
+            RefillRookieGrid();
 
             InitializeComboBoxes();
         }
@@ -432,6 +433,17 @@ namespace MaddenEditor.Forms
 
                 rookieData.Rows.Add(dr);
             }
+
+            if (stage == 0)
+            {
+                RookieGrid.Sort(RookieGrid.Columns["initproj"], ListSortDirection.Ascending);
+            }
+            else
+            {
+                RookieGrid.Sort(RookieGrid.Columns["ourgrade"], ListSortDirection.Ascending);
+            }
+
+            RookieGrid.CurrentCell = RookieGrid[1, 0];
         }
 
         private DataColumn AddColumn(string ColName, string ColType)
@@ -477,6 +489,23 @@ namespace MaddenEditor.Forms
             if (column.Equals("Init. Proj.") || column.Equals("Curr. Proj.") || column.Equals("Doctor")
                 || column.Equals("Height") || column.Equals("Actual") || column.Equals("Our Grade") || column.Equals("1st Skill") || column.Equals("2nd Skill"))
             {
+                if ((sortDirection && !((previousSortedColumn+1) != columnindex && columnindex > 22)) || ((previousSortedColumn+1) != columnindex && columnindex < 22))
+                {
+                    RookieGrid.Sort(RookieGrid.Columns[columnindex - 1], System.ComponentModel.ListSortDirection.Ascending);
+                    sortDirection = false;
+                }
+                else
+                {
+                    RookieGrid.Sort(RookieGrid.Columns[columnindex - 1], System.ComponentModel.ListSortDirection.Descending);
+                    sortDirection = true;
+                }
+
+                return;
+            }
+
+            previousSortedColumn = columnindex;
+/*
+    {
 
                 if (sortDirection)
                 {
@@ -489,8 +518,9 @@ namespace MaddenEditor.Forms
                     sortDirection = true;
                 }
             }
-
+*/
             FillHourData();
+            RookieGrid.CurrentCell = RookieGrid[1, 0];
         }
 
         private void RookiePositionFilter_SelectedIndexChanged(object sender, EventArgs e)
