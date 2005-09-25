@@ -199,6 +199,18 @@
     <Compile Include="Forms\TeamEditControl.Designer.cs">
       <DependentUpon>TeamEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TradeDownForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TradeDownForm.Designer.cs">
+      <DependentUpon>TradeDownForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TradeUpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TradeUpForm.Designer.cs">
+      <DependentUpon>TradeUpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +275,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TeamEditControl.resx">
       <DependentUpon>TeamEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TradeDownForm.resx">
+      <DependentUpon>TradeDownForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TradeUpForm.resx">
+      <DependentUpon>TradeUpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserControlledTeamForm.resx">
       <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
