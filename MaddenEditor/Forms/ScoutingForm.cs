@@ -47,10 +47,11 @@ namespace MaddenEditor.Forms
         bool sortDirection = true;
         int previousSortedColumn = -1;
 
-        LocalMath math = new LocalMath();
+        LocalMath math;
 
         public ScoutingForm(EditorModel em, int htId, int seconds)
         {
+            math = new LocalMath(em.FileVersion);
             SecondsPerPick = seconds;
             HumanTeamId = htId;
             model = em;
@@ -639,7 +640,7 @@ namespace MaddenEditor.Forms
         {
             if (stage == 2)
             {
-                DialogResult dr = MessageBox.Show("Start NFL Draft?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+                DialogResult dr = MessageBox.Show("Start Draft?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
 
                 if (dr == DialogResult.Yes)
                 {
@@ -673,7 +674,7 @@ namespace MaddenEditor.Forms
                     else if (stage == 1)
                     {
                         dm.DoFinal();
-                        button1.Text = "Advance to NFL Draft";
+                        button1.Text = "Advance to Draft";
                     }
 
                     stage++;
@@ -699,7 +700,7 @@ namespace MaddenEditor.Forms
                     else if (stage == 1)
                     {
                         dm.DoFinal();
-                        button1.Text = "Advance to NFL Draft";
+                        button1.Text = "Advance to Draft";
                     }
 
                     stage++;
@@ -709,6 +710,19 @@ namespace MaddenEditor.Forms
                     RefreshAllocations();
                 }
             }
+        }
+
+        private void scoutingHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string helpstring = "Scout players to get more precise estimates of their abilities.  You\n" +
+                "have 500 hours per scouting period to distribute among the players, and two scouting periods.\n" +
+                "The more you scout a player, the more accurate your attribute estimates will be.\n\n" +
+                "You can set the number of hours for each player individually in the right-most column.  You can\n" +
+                "also set or increment the number of hours for all players at a certain position (or even\n" +
+                "all positions) using the controls at the bottom.\n\n" +
+                "When you are finished with the current stage, click the button in the bottom right corner.";
+
+            MessageBox.Show(helpstring, "Help");
         }
     }
 }

@@ -39,16 +39,19 @@ namespace MaddenEditor.Forms
         double secondsPerPick;
         int timeRemaining;
         Random random;
+
         bool quitSkipping = false;
         bool skipping = false;
+        bool noNotify = false;
 
         double pickProb;
 
         double tradeProbPerm;
         double tradeProb;
         bool preventTrades = false;
+        string tradeLog;
 
-        LocalMath math = new LocalMath();
+        LocalMath math;
 
         DataTable draftPickData = new DataTable();
         BindingSource draftPickBinding = new BindingSource();
@@ -77,15 +80,28 @@ namespace MaddenEditor.Forms
         public TradeUpForm tradeUpForm = null;
         public TradeDownForm tradeDownForm = null;
 
+        int threadToDo = -1;
+
         public DraftForm(EditorModel ParentModel, DraftModel draftmodel, int humanId, int seconds)
         {
             dm = draftmodel;
             dm.df = this;
 
+            math = new LocalMath(dm.model.FileVersion);
+
             HumanTeamId = humanId;
             secondsPerPick = seconds;
             model = ParentModel;
             InitializeComponent();
+
+            statusLabel.Text = "Ready.";
+
+
+            autoPickBackgroundWorker.WorkerReportsProgress = true;
+
+            autoPickBackgroundWorker.DoWork += new DoWorkEventHandler(SkipButton_Thread);
+            autoPickBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(skippingFinished);
+            autoPickBackgroundWorker.ProgressChanged += new ProgressChangedEventHandler(autoPickBackgroundWorker_ProgressChanged);
         }
 
         private void DraftForm_Load(object sender, EventArgs e)
@@ -107,6 +123,9 @@ namespace MaddenEditor.Forms
             InitializeComboBoxes();
 
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
+            selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+            selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
             random = new Random(unchecked((int)DateTime.Now.Ticks));
 
             dm.SetTradeParameters(CurrentPick);
@@ -244,8 +263,8 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("Drafted By", "System.String"));
             rookieData.Columns.Add(AddColumn("actualproj", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Actual", "System.String"));
-            rookieData.Columns.Add(AddColumn("nflproj", "System.Int16"));
-            rookieData.Columns.Add(AddColumn("NFL Proj.", "System.String"));
+            rookieData.Columns.Add(AddColumn("allproj", "System.Int16"));
+            rookieData.Columns.Add(AddColumn("All Proj.", "System.String"));
             rookieData.Columns.Add(AddColumn("myproj", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Our Grade", "System.String"));
             rookieData.Columns.Add(AddColumn("Hrs Scouted", "System.Int16"));
@@ -268,7 +287,7 @@ namespace MaddenEditor.Forms
             rookieBinding.DataSource = rookieData;
 
             RookieGrid.DataSource = rookieBinding;
-            RookieGrid.Columns["nflproj"].Visible = false;
+            RookieGrid.Columns["allproj"].Visible = false;
             RookieGrid.Columns["PGID"].Visible = false;
             RookieGrid.Columns["myproj"].Visible = false;
             RookieGrid.Columns["picknumber"].Visible = false;
@@ -283,7 +302,7 @@ namespace MaddenEditor.Forms
             RookieGrid.Columns["Drafted By"].Width = 75;
             RookieGrid.Columns["Hrs Scouted"].Width = 70;
             RookieGrid.Columns["Actual"].Width = 54;
-            RookieGrid.Columns["NFL Proj."].Width = 54;
+            RookieGrid.Columns["All Proj."].Width = 54;
             RookieGrid.Columns["Our Grade"].Width = 58;
             RookieGrid.Columns["Height"].Width = 40;
             RookieGrid.Columns["Weight"].Width = 42;
@@ -343,8 +362,8 @@ namespace MaddenEditor.Forms
                 dr["PGID"] = rook.Key;
                 dr["Player"] = rook.Value.Player.FirstName + " " + rook.Value.Player.LastName;
                 dr["Position"] = Enum.GetNames(typeof(MaddenPositions))[rook.Value.Player.PositionId].ToString();
-                dr["nflproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Final];
-                dr["NFL Proj."] = rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final];
+                dr["allproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Final];
+                dr["All Proj."] = rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final];
                 dr["actualproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Actual];
                 dr["Actual"] = rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Actual];
 
@@ -564,10 +583,80 @@ namespace MaddenEditor.Forms
             }
         }
 
+        void autoPickBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (threadToDo == 1)
+            {
+                draftTimer.Stop();
+            }
+            else if (threadToDo == 2)
+            {
+                draftButton.Enabled = false;
+                PlayerToDraft.Text = "";
+            }
+            else if (threadToDo == 3)
+            {
+                draftTimer.Stop();
+                SkipButton.Enabled = false;
+            }
+            else if (threadToDo == 4)
+            {
+                selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    draftButton.Enabled = true;
+                }
+
+                if (!noNotify)
+                {
+                    draftTimer.Start();
+                }
+            }
+            else if (threadToDo == 5)
+            {
+                selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    draftButton.Enabled = true;
+                }
+
+                if (!noNotify)
+                {
+                    draftTimer.Start();
+                }
+            }
+            else if (threadToDo == 6)
+            {
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+            }
+            else if (threadToDo == 7)
+            {
+                progressBar.Value = e.ProgressPercentage;
+            }
+
+        }
+
         private bool MakePick(RookieRecord drafted)
         {
             // Stop the timer while we process
-            draftTimer.Stop();
+
+            if (skipping)
+            {
+                threadToDo = 1;
+                autoPickBackgroundWorker.ReportProgress(0);
+            }
+            else
+            {
+                draftTimer.Stop();
+            }
             drafted = dm.MakeSelection(CurrentPick, drafted);
 
             draftPickData.Rows[CurrentPick]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
@@ -593,8 +682,16 @@ namespace MaddenEditor.Forms
 
             if (CurrentSelectingId == HumanTeamId)
             {
-                draftButton.Enabled = false;
-                PlayerToDraft.Text = "";
+                if (skipping)
+                {
+                    threadToDo = 2;
+                    autoPickBackgroundWorker.ReportProgress(0);
+                }
+                else
+                {
+                    draftButton.Enabled = false;
+                    PlayerToDraft.Text = "";
+                }
             }
 
             CurrentPick++;
@@ -602,14 +699,26 @@ namespace MaddenEditor.Forms
             if (CurrentPick == 32 * 7)
             {
                 // End the draft.
-                draftTimer.Stop();
-                SkipButton.Enabled = false;
+                if (skipping)
+                {
+                    threadToDo = 3;
+                    autoPickBackgroundWorker.ReportProgress(0);
+                }
+                else
+                {
+                    draftTimer.Stop();
+                    SkipButton.Enabled = false;
+                }
                 return false;
             }
 
             dm.SetTradeParameters(CurrentPick);
             preventTrades = false;
-            tradeButton.Enabled = true;
+
+            if (!skipping)
+            {
+                tradeButton.Enabled = true;
+            }
 
             if (tradeUpForm != null)
             {
@@ -618,15 +727,30 @@ namespace MaddenEditor.Forms
 
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
             timeRemaining = (int)secondsPerPick;
-            clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
-            if (CurrentSelectingId == HumanTeamId)
+            if (skipping)
             {
-//                draftTimer.Stop();
-                draftButton.Enabled = true;
+                threadToDo = 4;
+                autoPickBackgroundWorker.ReportProgress(0);
+            }
+            else
+            {
+                selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    draftButton.Enabled = true;
+                }
+
+                if (!noNotify)
+                {
+                    draftTimer.Start();
+                }
             }
 
-            draftTimer.Start();
             return true;
         }
 
@@ -641,7 +765,15 @@ namespace MaddenEditor.Forms
 
         public void ProcessTrade(TradeOffer to)
         {
-            draftTimer.Stop();
+            if (skipping && !noNotify)
+            {
+                threadToDo = 1;
+                autoPickBackgroundWorker.ReportProgress(0);
+            }
+            else
+            {
+                draftTimer.Stop();
+            }
 
             string highergets = "";
             string lowergets = "";
@@ -690,11 +822,16 @@ namespace MaddenEditor.Forms
                 tradeUpForm = null;
             }
 
-            string alertstring = "Trade!\n\n" + model.TeamModel.GetTeamNameFromTeamId(to.HigherTeam) + " get " + highergets + "\n" + model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam) + " get " + lowergets;
-            MessageBox.Show(alertstring, "", MessageBoxButtons.OKCancel);
+            tradeLog += model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam) + " get " + lowergets + "\n" + model.TeamModel.GetTeamNameFromTeamId(to.HigherTeam) + " get " + highergets + "\n\n\n";
 
-            this.Invalidate(true);
-            this.Update();
+            if (!noNotify)
+            {
+                MessageBox.Show("Trade!\n\n" + tradeLog.Trim(), "", MessageBoxButtons.OKCancel);
+                tradeLog = "";
+            }
+
+            //this.Invalidate(true);
+            //this.Update();
 
             tradeButton.Enabled = false;
 
@@ -708,22 +845,45 @@ namespace MaddenEditor.Forms
 
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
             timeRemaining = (int)secondsPerPick;
-            clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
-
-            if (CurrentSelectingId == HumanTeamId)
-            {
-//                draftTimer.Stop();
-                draftButton.Enabled = true;
-            }
-
             preventTrades = true;
-            draftTimer.Start();
+
+            if (skipping)
+            {
+                threadToDo = 5;
+                autoPickBackgroundWorker.ReportProgress(0);
+            }
+            else
+            {
+                selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    draftButton.Enabled = true;
+                }
+
+                if (!noNotify)
+                {
+                    draftTimer.Start();
+                }
+            }
         }
 
         private void tick(bool refresh)
         {
             timeRemaining--;
-            clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+            if (skipping)
+            {
+                threadToDo = 6;
+                autoPickBackgroundWorker.ReportProgress(0);
+            }
+            else
+            {
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+            }
 
             double test = random.NextDouble();
             refreshTradeTeams = false;
@@ -749,13 +909,22 @@ namespace MaddenEditor.Forms
                     return;
                 }
             }
-            else if (CurrentSelectingId != HumanTeamId && !dm.tradePending(-1) && (test < pickProb || ((dm.tradeOffers.Count == 32 && skipping) || (skipping && preventTrades) || (skipping && dm.tradeOffers.Count == 31 && !dm.tradeExists(HumanTeamId)))))
+            else if (CurrentSelectingId != HumanTeamId && !dm.tradePending(-1) && (test < pickProb || ((dm.tradeOffers.Count == 31 && skipping) || (skipping && preventTrades) || (skipping && dm.tradeOffers.Count == 30 && !dm.tradeExists(HumanTeamId)))))
             {
                 MakePick(null);
                 return;
             }
             else if (!preventTrades)
             {
+                Console.WriteLine(dm.tradeOffers.Count);
+                if (skipping)
+                {
+                    Console.WriteLine("skipping " + tradeProb);
+                }
+                if (!dm.tradeExists(HumanTeamId)) {
+                    Console.WriteLine("No Human trade");
+                }
+
                 // randomize the team that starts the trade bidding.
                 int i = (int)Math.Floor(32*random.NextDouble());
 
@@ -763,9 +932,12 @@ namespace MaddenEditor.Forms
                 for (int j = 0; j < 32; j++)
                 {
                     if (i == CurrentSelectingId) { continue; }
+
+                    if (skipping && noNotify && i == HumanTeamId) { continue; }
+
                     test = random.NextDouble();
 
-                    if (test < tradeProb)
+                    if (skipping || test < tradeProb)
                     {
                         if (dm.tradePending(i))
                         {
@@ -804,17 +976,20 @@ namespace MaddenEditor.Forms
                                 }
                                 else if (CurrentSelectingId != HumanTeamId)
                                 {
-                                    DialogResult dr = MessageBox.Show("The " + dm.model.TeamModel.GetTeamNameFromTeamId(CurrentSelectingId) + " have a trade offer for you.\nDo you want to start trade discussions with them?", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    if (!noNotify)
+                                    {
+                                        DialogResult dr = MessageBox.Show("The " + dm.model.TeamModel.GetTeamNameFromTeamId(CurrentSelectingId) + " have a trade offer for you.\nDo you want to start trade discussions with them?", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                                    if (dr == DialogResult.Yes)
-                                    {
-                                        quitSkipping = true;
-                                        tradeUpForm = new TradeUpForm(dm, this, to);
-                                        tradeUpForm.Show();
-                                    }
-                                    else
-                                    {
-                                        to.status = (int)TradeOfferStatus.Rejected;
+                                        if (dr == DialogResult.Yes)
+                                        {
+                                            quitSkipping = true;
+                                            tradeUpForm = new TradeUpForm(dm, this, to);
+                                            tradeUpForm.Show();
+                                        }
+                                        else
+                                        {
+                                            to.status = (int)TradeOfferStatus.Rejected;
+                                        }
                                     }
                                 }
                             }
@@ -830,12 +1005,6 @@ namespace MaddenEditor.Forms
                     tradeDownForm.FillTeamBoxes();
                 }
             }
-
-            if (refresh)
-            {
-                this.Invalidate(true);
-                this.Update();
-            }
         }
 
         private void fixSort(object sender, EventArgs e)
@@ -844,7 +1013,7 @@ namespace MaddenEditor.Forms
             string column = dgv.SortedColumn.Name;
             int columnindex = dgv.SortedColumn.Index;
 
-            if (column.Equals("Proj. Rd.") || column.Equals("Drafted By") || column.Equals("NFL Proj.") || column.Equals("Doctor") || column.Equals("Actual")
+            if (column.Equals("Proj. Rd.") || column.Equals("Drafted By") || column.Equals("All Proj.") || column.Equals("Doctor") || column.Equals("Actual")
                 || column.Equals("Height") || column.Equals("Our Grade") || column.Equals("1st Skill") || column.Equals("2nd Skill"))
             {
 
@@ -937,19 +1106,121 @@ namespace MaddenEditor.Forms
 
         private void SkipButton_MouseClick(object sender, MouseEventArgs e)
         {
+            progressBar.Value = 0;
+            SkipButton.Enabled = false;
+            PicksToSkip.Enabled = false;
+            tradeButton.Enabled = false;
+            draftTimer.Stop();
+            statusLabel.Text = "Skipping Picks...";
+            
+            autoPickBackgroundWorker.RunWorkerAsync();
+        }
+
+        private void SkipButton_Thread(object sender, DoWorkEventArgs e)
+        {
             int initialPick = CurrentPick;
             skipping = true;
             tradeProb = 1;
+            tradeLog = "";
 
-            while (!quitSkipping && CurrentPick < initialPick + PicksToSkip.Value && CurrentSelectingId != HumanTeamId && CurrentPick < 32 * 7)
+            int nextHumanPick = dm.GetNextPick(HumanTeamId, CurrentPick);
+
+            int totalToSkip = (int)Math.Min((double)PicksToSkip.Value, (double)nextHumanPick - CurrentPick);
+            totalToSkip = (int)Math.Min((double)totalToSkip, 32.0 * 7 - CurrentPick);
+
+            DialogResult dr = MessageBox.Show("Interrupt skipping to receive trade offers?", "Interupt?", MessageBoxButtons.YesNoCancel);
+
+            while (dr != DialogResult.Cancel && !quitSkipping && CurrentPick < initialPick + PicksToSkip.Value && CurrentSelectingId != HumanTeamId && CurrentPick < 32 * 7)
             {
-                tick(true);
+                if (dr == DialogResult.No)
+                {
+                    noNotify = true;
+                    TradeOffer to = null;
+                    while (!preventTrades)
+                    {
+                        int bestId = dm.GetBestOffer();
+
+                        if (bestId == HumanTeamId || bestId == CurrentSelectingId) { dm.BestOffers.Remove(bestId); continue; }
+
+                        if (bestId == -1)
+                        {
+                            break;
+                        }
+                        else if (dm.BestOffers[bestId] < dm.pickValues[CurrentPick + 1] + 1)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            TradeOffer temp = dm.setupTradeOffer(bestId, CurrentPick);
+
+                            double tempOffer = 10000;
+                            temp.makeCounterOffer(tempOffer, false);
+
+                            if (temp.MaxGive > temp.MinAccept)
+                            {
+                                tempOffer = 0.25*(3*temp.MinAccept + temp.MaxGive);
+
+                                temp.makeCounterOffer(tempOffer, false);
+
+                                if (temp.offersFromLower.Count >= 2 && temp.offersFromLower[1] > temp.MinAccept && temp.offersFromLower[1] < temp.MaxGive)
+                                {
+                                    to = temp;
+                                    break;
+                                }
+                            }
+                        }
+
+                        dm.BestOffers.Remove(bestId);
+                    }
+
+                    if (to != null)
+                    {
+                        dm.AcceptTrade(to);
+                        ProcessTrade(to);
+                    }
+                    else
+                    {
+                        MakePick(null);
+                    }
+
+//                    this.Invalidate(true);
+  //                  this.Update();
+
+                    threadToDo = 7;
+                    autoPickBackgroundWorker.ReportProgress(100 * (CurrentPick - initialPick) / totalToSkip);
+                }
+                else
+                {
+                    tick(true);
+                }
             }
 
             tradeProb = tradeProbPerm;
+
             skipping = false;
             quitSkipping = false;
-//            PicksToSkip.Value = 1;
+        }
+
+        private void skippingFinished(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (noNotify && tradeLog.Length > 0)
+            {
+                MessageBox.Show(tradeLog.Trim(), "Trade Log", MessageBoxButtons.OK);
+            }
+
+            noNotify = false;
+
+            SkipButton.Enabled = true;
+            PicksToSkip.Enabled = true;
+
+            if (!preventTrades)
+            {
+                tradeButton.Enabled = true;
+            }
+            
+            draftTimer.Start();
+            statusLabel.Text = "Ready.";
         }
 
         private void showDraftedPlayers_CheckedChanged(object sender, EventArgs e)
@@ -1013,6 +1284,24 @@ namespace MaddenEditor.Forms
                     tradeUpForm.Show();
                 }
             }
+        }
+
+        private void draftHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string helpstring = "When it's your turn to pick, click on the player you want in the list\n" +
+                "of rookies, then click \"Draft\".\n\n" +
+                "If you want to trade down instead, choose the team you want to make an offer to, and\n" +
+                "click \"Make Trade Offer\".\n\n" +
+                "When the CPU is picking, you can make a trade offer to the current team by clicking\n" +
+                "\"Make Trade Offer\".  If they are interested, the CPU might offer you a trade as well.\n\n" +
+                "You can also skip a set number of picks by choosing a number in the \"Skip\" field,\n" +
+                "then clicking \"Skip\".  You will be asked if you want to still receive trade offers while\n" +
+                "skipping.  If you choose \"No\", skipping will move faster.\n\n" +
+                "The top box on the right allows you to look at a team's draft board -- who that team is\n" +
+                "likely to draft.  The lower box on the right allows you to look at a team's depth chart\n" +
+                "at the position you choose.";
+
+            MessageBox.Show(helpstring, "Help");
         }
     }
 }
