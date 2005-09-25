@@ -32,7 +32,7 @@ namespace MaddenEditor.Core
     public class DepthChartRepairer
     {
         EditorModel model;
-        LocalMath math = new LocalMath();
+        LocalMath math;
         public Dictionary<int, Position> positionData;
 
         // awarenessAdjust[ActualPosition][AlternativePosition]
@@ -160,6 +160,8 @@ namespace MaddenEditor.Core
         {
             model = em;
             positionData = pd;
+
+            math = new LocalMath(model.FileVersion);
 
             InitializeAwarenessAdjust();
 
