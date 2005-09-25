@@ -43,7 +43,7 @@ namespace MaddenEditor.Core.Record
 
         public Dictionary<int,Position> positionData = new Dictionary<int,Position>();
 
-        private LocalMath math = new LocalMath();
+        private LocalMath math;
         public DepthChartRepairer dcr;
 
         // true if the team just traded up; false otherwise.
@@ -51,7 +51,7 @@ namespace MaddenEditor.Core.Record
         private bool humanRejected = false;
 
         public Dictionary<int, TradeOffer> tradeOffers;
-        private Dictionary<int, double> BestOffers;
+        public Dictionary<int, double> BestOffers;
         public Dictionary<int, Dictionary<int, double>> probs;
         public Dictionary<int, RookieRecord> favorites;
 
@@ -260,7 +260,7 @@ namespace MaddenEditor.Core.Record
 
                 found.Add(bestId);
 
-                points += "{" + RookEOR(rook) + ", " + pickValues[i] / positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) + "}, ";
+                points += "{" + RookEOR(rook) + ", " + Math.Log(1.2*pickValues[i] / positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43)) + "}, ";
 
                 Console.WriteLine(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
             }
@@ -596,6 +596,16 @@ namespace MaddenEditor.Core.Record
                 RookieRecord favorite = GetFavoriteRookies(pickNumber)[i];
                 double totalProb = 0;
 
+                if (favorite == null)
+                {
+                    foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+                    {
+                        toReturn[i][rook.Key] = 0;
+                    }
+                    continue;
+                }
+
+
                 toReturn[i] = new Dictionary<int,double>();
                 double favoritePerceivedValue = favorite.PerceivedEffectiveValue(team, pickNumber, dcr.awarenessAdjust);
 
@@ -790,12 +800,17 @@ namespace MaddenEditor.Core.Record
                 to.allowFuturePicksFromHigher = false;
             }
 
-            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.3 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.6 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.7)))
+            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.3 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.7 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8)))
+            {
+                to.MaxPicksFromLower = 3;
+            }
+
+            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.6 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.9)))
             {
                 to.allowFutureHighPicks = true;
             }
 
-            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.6 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.85)))
+            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.8 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.9 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.95)))
             {
                 to.allowMultipleHighPicks = true;
             }
@@ -855,10 +870,8 @@ namespace MaddenEditor.Core.Record
             }
 
             double minaccept = to.makeCounterOffer(offer, false);
-            Console.WriteLine("Initial actual offer:    " + to.offersFromLower[0]);
-            Console.WriteLine("Minimum to take: " + to.MinAccept);
 
-            if (LowerTeamId != HumanTeamId && to.HigherTeam != HumanTeamId && to.offersFromLower[0] < 0.5 * to.MinAccept)
+            if (LowerTeamId != HumanTeamId && to.HigherTeam != HumanTeamId && (to.offersFromLower.Count == 0 || to.offersFromLower[0] < 0.5 * to.MinAccept))
             {
                 Console.WriteLine("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " after initial offer.\n");
                 to.status = (int)TradeOfferStatus.Rejected;
@@ -867,6 +880,9 @@ namespace MaddenEditor.Core.Record
             }
             else if (LowerTeamId != HumanTeamId)
             {
+                Console.WriteLine("Initial actual offer:    " + to.offersFromLower[0]);
+                Console.WriteLine("Minimum to take: " + to.MinAccept);
+
                 to.status = (int)TradeOfferStatus.HigherResponsePending;
                 tradeOffers[LowerTeamId] = to;
                 Console.WriteLine("");
@@ -889,7 +905,6 @@ namespace MaddenEditor.Core.Record
             }
             else
             {
-                to.offersFromLower = new List<double>();
                 if (minaccept > 0.85 * pickValues[pickNumber])
                 {
                     humanRejected = true;
@@ -897,6 +912,10 @@ namespace MaddenEditor.Core.Record
                     tradeOffers.Remove(HumanTeamId);
                     return null;
                 }
+
+                Console.WriteLine("Initial actual offer:    " + to.offersFromLower[0]);
+                Console.WriteLine("Minimum to take: " + to.MinAccept);
+                to.offersFromLower = new List<double>();
 
                 to.status = (int)TradeOfferStatus.HigherResponsePending;
 
@@ -957,8 +976,7 @@ namespace MaddenEditor.Core.Record
                 }
 
                 Console.WriteLine("Higher Team responding...");
-                Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer +
-                    " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
+                Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer + " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
 
                 // First determine if we like this offer or if we should counteroffer
                 if (theirCurrentOffer == ourPreviousOffer || (theirCurrentOffer > (1.1 - 0.05 * to.higherStrikes) * to.MinAccept) || (to.biddingWar && theirCurrentOffer > to.MinAccept))
@@ -1138,7 +1156,6 @@ namespace MaddenEditor.Core.Record
                 if (to.HigherTeam == HumanTeamId) 
                 {
                     bool futureHighPicks = false;
-                    bool multipleHighPicks = false;
                     bool futurePicks = false;
 
                     int highPicks = 0;
@@ -1164,17 +1181,15 @@ namespace MaddenEditor.Core.Record
                         }
                     }
 
-                    if (to.PicksFromLower.Count > 3 || (!to.allowFutureHighPicks && futureHighPicks) || (!to.allowFuturePicksFromLower && futurePicks)
+                    if (to.PicksFromLower.Count > to.MaxPicksFromLower || (!to.allowFutureHighPicks && futureHighPicks) || (!to.allowFuturePicksFromLower && futurePicks)
                         || (!to.allowMultipleHighPicks && highPicks > 2))
                     {
-
                         fail = true;
                     }
                 }
 
                 Console.WriteLine("Lower Team responding...");
-                Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer +
-                    " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
+                Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer + " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
 
                 // First determine if we like this offer or if we should counteroffer
                 if (!fail && (theirCurrentOffer <= ourPreviousOffer || theirCurrentOffer < (0.9 + 0.05 * to.lowerStrikes) * to.MaxGive))
@@ -1361,9 +1376,30 @@ namespace MaddenEditor.Core.Record
                     break;
                 }
             }
+
+            if (nextpick == -1)
+            {
+                nextpick = pickValues.Count - 1;
+            }
+
             return nextpick;
         }
 
+        public int GetBestOffer() {
+            int bestId = -1;
+            double bestOffer = 0;
+
+            foreach (KeyValuePair<int, double> pair in BestOffers) 
+            {
+                if (pair.Value > bestOffer) 
+                {
+                    bestId = pair.Key;
+                    bestOffer = pair.Value;
+                }
+            }
+
+            return bestId;
+        }
 
         // Initialize data structures; find the best offers for making a deal (minimum offer for the team
         // with the pick; maximum offer for all other teams)
@@ -1401,7 +1437,7 @@ namespace MaddenEditor.Core.Record
                     // Find maximum value to trade up
 
                     // double wantfrac = Math.Tanh(favoriteEffectiveValue / pickValues[pickNumber]) / Math.Tanh(1.0);
-                    double wantfrac = Math.Tanh(favoriteValue / pickValues[pickNumber]) / Math.Tanh(1.0);
+                    double wantfrac = 1.15*Math.Tanh(favoriteValue / pickValues[pickNumber]);
 
                     int nextpick = GetNextPick(i, pickNumber);
 
@@ -1409,7 +1445,7 @@ namespace MaddenEditor.Core.Record
                     {
                         if (rook.Value.PlayerId == favorites[i].PlayerId || rook.Value.DraftedTeam < 32) { continue; }
                         if (rook.Value.AverageNeed(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) <= positionData[rook.Value.Player.PositionId].Threshold ||
-                            // replace with statement on NFL projected position
+                            // replace with statement on league projected position
                             rook.Value.AverageValue(model.TeamModel.GetTeamRecord(i), dcr.awarenessAdjust) <= 0.75 * pickValues[nextpick]) { continue; }
 
                         double tempEV = rook.Value.EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust);
@@ -1488,7 +1524,11 @@ namespace MaddenEditor.Core.Record
             ExtractRookies();
 
 //            DumpRookies();
-            RepairRookies();
+
+            if (model.FileVersion == MaddenFileVersion.Ver2006)
+            {
+                RepairRookies();
+            }
             
             dcr = new DepthChartRepairer(model, positionData);
             depthChart = dcr.ReorderDepthCharts(true);
@@ -1543,8 +1583,7 @@ namespace MaddenEditor.Core.Record
         {
             foreach (KeyValuePair<int, RookieRecord> rook in rookies)
             {
-                Console.WriteLine(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial]
-                + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
+                Console.WriteLine(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
             }
         }
 
@@ -2157,7 +2196,7 @@ namespace MaddenEditor.Core.Record
                     if (rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust) > HighestValue && 
                         rook.Value.AverageNeed(team.Value, pickNumber, dcr.awarenessAdjust) > positionData[rook.Value.Player.PositionId].Threshold &&
                         
-                        // replace with statement on NFL projected position
+                        // replace with statement on league projected position
                         rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > 0.75*pickValues[nextpick]) {
 
                             HighestValue = rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust);
@@ -2185,8 +2224,22 @@ namespace MaddenEditor.Core.Record
                     }
                 }
 
-                toReturn.Add(team.Value.TeamId, BestPlayer);
+                // If we still don't have a best player, take best available overall,
+                // regardless of position.
+                if (BestPlayer == null)
+                {
+                    HighestValue = 0;
+                    foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+                    {
+                        if (rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > HighestValue)
+                        {
+                            HighestValue = rook.Value.AverageValue(team.Value, dcr.awarenessAdjust);
+                            BestPlayer = rook.Value;
+                        }
+                    }
+                }
 
+                toReturn.Add(team.Value.TeamId, BestPlayer);
             }
             /*
             foreach(KeyValuePair<int,RookieRecord> rook in favorites) {
@@ -2655,6 +2708,7 @@ namespace MaddenEditor.Core.Record
         public DraftModel(EditorModel model)
 		{
 			this.model = model;
+            math = new LocalMath(model.FileVersion);
 		}
 
         public DraftPickRecord GetDraftPickRecord(int recno)
@@ -3108,6 +3162,7 @@ namespace MaddenEditor.Core.Record
             pickValues.Add(0.7);
             pickValues.Add(0.6);
             pickValues.Add(0.5);
+            pickValues.Add(0);
         }
 
         /*
@@ -3159,6 +3214,7 @@ namespace MaddenEditor.Core.Record
         public bool allowFuturePicksFromLower = true;
         public bool allowFuturePicksFromHigher = true;
         public bool allowMultipleHighPicks = false;
+        public int MaxPicksFromLower = 2;
 
         private DraftModel dm;
 
@@ -3213,7 +3269,7 @@ namespace MaddenEditor.Core.Record
                 // Add the pick that gets us closest to the mark.
 
                 int bestPick = -1;
-                double bestDifference = 10000;
+                double bestDifference = target;
                 foreach (int pick in lowerAvailable)
                 {
                     if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromLower.Contains(pick))
@@ -3247,9 +3303,12 @@ namespace MaddenEditor.Core.Record
                 }
 
 
-                if (!allowFuturePicksFromLower || bestPick != highestAvailablePick)
+                if (!allowFuturePicksFromLower || (bestPick != -1 && bestPick != highestAvailablePick))
                 {
-                    tempPicksFromLower.Add(bestPick);
+                    if (bestPick != -1)
+                    {
+                        tempPicksFromLower.Add(bestPick);
+                    }
                     return bestPick;
                 }
 
@@ -3289,7 +3348,7 @@ namespace MaddenEditor.Core.Record
                 // Add the pick that gets us closest to the mark.
 
                 int bestPick = -1;
-                double bestDifference = 10000;
+                double bestDifference = target;
                 foreach (int pick in higherAvailable)
                 {
                     if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromHigher.Contains(pick))
@@ -3312,9 +3371,12 @@ namespace MaddenEditor.Core.Record
                     }
                 }
 
-                if (!allowFuturePicksFromHigher || bestPick != highestAvailablePick)
+                if (!allowFuturePicksFromHigher || (bestPick != -1 && bestPick != highestAvailablePick))
                 {
-                    tempPicksFromHigher.Add(bestPick);
+                    if (bestPick != -1)
+                    {
+                        tempPicksFromHigher.Add(bestPick);
+                    }
                     return bestPick;
                 }
 
@@ -3369,7 +3431,7 @@ namespace MaddenEditor.Core.Record
             }
             else
             {
-                mintake = favoriteEffectiveValue * Math.Tanh(favoriteEffectiveValue / dm.pickValues[pickNumber]) / Math.Tanh(1.0);
+                mintake = favoriteEffectiveValue * Math.Tanh(favoriteValue / dm.pickValues[pickNumber]) / Math.Tanh(1.0);
 
                 double wantfrac = 1;
 
@@ -3379,7 +3441,7 @@ namespace MaddenEditor.Core.Record
                 foreach (KeyValuePair<int, RookieRecord> rook in dm.rookies)
                 {
                     if (rook.Value.AverageNeed(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust) <= dm.positionData[rook.Value.Player.PositionId].Threshold ||
-                        // replace with statement on NFL projected position
+                        // replace with statement on league projected position
                         (nextpick < 1000 && rook.Value.AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust) <= 0.75 * dm.pickValues[nextpick])) { continue; }
 
                     if (rook.Value.PlayerId == dm.favorites[HigherTeam].PlayerId || rook.Value.DraftedTeam < 32)
@@ -3433,20 +3495,25 @@ namespace MaddenEditor.Core.Record
         }
 
 
-        public double makeCounterOffer(double value, bool fromHigher)
+        public double makeCounterOffer(double value, bool fromHigher)      
         {
             target = value;
             tempPicksFromLower = new List<int>();
             tempPicksFromHigher = new List<int>();
 
             // Start the offer with the most valuable pick from the lower team.
-            while (Math.Abs(target) > 0.03 * value && (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= 3) &&
-                !((target > 0 && tempPicksFromLower.Count >= 3) || (target < 0 && tempPicksFromHigher.Count >= 2)))
+            while (Math.Abs(target) > 0.03 * value && (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= MaxPicksFromLower) &&
+                !((target > 0 && tempPicksFromLower.Count >= MaxPicksFromLower) || (target < 0 && tempPicksFromHigher.Count >= 2)))
             {
                 int addedPick = AddClosestPick(target > 0);
                 double thisValue = 0;
 
-                if (addedPick < 1000)
+                if (addedPick == -1)
+                {
+                    thisValue = 0;
+                    break;
+                }
+                else if (addedPick < 1000)
                 {
                     thisValue = dm.pickValues[addedPick];
                 }
@@ -3473,6 +3540,12 @@ namespace MaddenEditor.Core.Record
 
             PicksFromHigher = tempPicksFromHigher;
             PicksFromLower = tempPicksFromLower;
+
+            if (PicksFromLower.Count == 0)
+            {
+                MinAccept = 10000;
+                return 10000;
+            }
 
             double tempValue = 0;
 
