@@ -90,7 +90,11 @@ namespace MaddenEditor.Forms
             this.incrementPosition = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scoutingHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label6
@@ -486,6 +490,29 @@ namespace MaddenEditor.Forms
             this.button1.Text = "Advance to Next Scouting Stage";
             this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1028, 24);
+            this.menuStrip1.TabIndex = 57;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.scoutingHelpToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // scoutingHelpToolStripMenuItem
+            // 
+            this.scoutingHelpToolStripMenuItem.Name = "scoutingHelpToolStripMenuItem";
+            this.scoutingHelpToolStripMenuItem.Text = "Scouting Help";
+            this.scoutingHelpToolStripMenuItem.Click += new System.EventHandler(this.scoutingHelpToolStripMenuItem_Click);
+            // 
             // ScoutingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -530,10 +557,13 @@ namespace MaddenEditor.Forms
             this.Controls.Add(this.RookieGrid);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.RookiePositionFilter);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "ScoutingForm";
             this.Text = "Rookie Scouting";
             this.Load += new System.EventHandler(this.ScoutingForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -581,5 +611,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ComboBox incrementPosition;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scoutingHelpToolStripMenuItem;
     }
 }
