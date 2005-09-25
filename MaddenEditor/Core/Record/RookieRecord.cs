@@ -89,7 +89,7 @@ namespace MaddenEditor.Core.Record
         {
             double backupNeed = 0;
             double successorNeed = 0;
-            LocalMath math = new LocalMath();
+            LocalMath math = new LocalMath(dm.model.FileVersion);
 
             int numStarters = positionData[thePosition].Starters(team.DefensiveSystem);
 
