@@ -91,6 +91,9 @@ namespace MaddenEditor.Forms
 
 		#endregion
 
+		/// <summary>
+		/// This function should realy be in the DepthChartEditingModel
+		/// </summary>
 		private void LoadDepthChart()
 		{
 			this.Cursor = Cursors.WaitCursor;
