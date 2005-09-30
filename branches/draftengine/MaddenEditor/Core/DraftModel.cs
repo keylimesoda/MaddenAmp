@@ -408,6 +408,9 @@ namespace MaddenEditor.Core.Record
         
         public RookieRecord MakeSelection(int pickNumber, RookieRecord toDraft)
         {
+            //int Cardinals = model.TeamModel.GetTeamIdFromTeamName("Cardinals");
+            DateTime total = DateTime.Now;
+
             DraftPickRecord dpRecord = null;
 
             foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
@@ -429,8 +432,8 @@ namespace MaddenEditor.Core.Record
             
             /*
              * Some debugging/diagnostic code
-             */ 
-            
+             *              
+             * 
             Console.WriteLine("\n" + " " + pickNumber + " " + dpRecord.CurrentTeamId + " " + toDraft.Player.ToString() + " " + toDraft.Player.Overall + " " + toDraft.Player.Injury + "\n");
             int trash = 2 + 2;
 
@@ -443,6 +446,7 @@ namespace MaddenEditor.Core.Record
                     Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue +  " " + rook.values[dpRecord.CurrentTeamId][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(dpRecord.CurrentTeamId, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[dpRecord.CurrentTeamId] + rook.PostCombineScoutedHours[dpRecord.CurrentTeamId]));
                 }
             }
+             * */
             
             toDraft.DraftedTeam = dpRecord.CurrentTeamId;
             toDraft.DraftPickNumber = pickNumber;
@@ -472,13 +476,17 @@ namespace MaddenEditor.Core.Record
                 // Really only need to calculate within the same position grouping.
                 // Would be more efficient to skip players not in the grouping of the drafted player....
 
-                foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
+                if (dcr.awarenessAdjust[toDraft.Player.PositionId].ContainsKey(rook.Value.Player.PositionId)) 
                 {
-                    if (pair.Key > 20) { continue; }
-                    rook.Value.CalculateNeeds(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), depthChart[dpRecord.CurrentTeamId][pair.Key], depthChartValues[dpRecord.CurrentTeamId][pair.Key], positionData, pair.Key);
-                }            
+                    foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
+                    {
+                        if (pair.Key > 20) { continue; }
+                        rook.Value.CalculateNeeds(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), depthChart[dpRecord.CurrentTeamId][pair.Key], depthChartValues[dpRecord.CurrentTeamId][pair.Key], positionData, pair.Key);
+                    }
+                }
             }
 
+            Console.WriteLine("Total MakeSelection: " + total.Subtract(DateTime.Now));
             return toDraft;
         }
 
@@ -571,7 +579,7 @@ namespace MaddenEditor.Core.Record
 
             for (int i = 0; i < 21; i++)
             {
-                depthChartValues[TeamId].Add(new List<double>());
+                depthChartValues[TeamId][i].Clear();
 
                 for (int j = 0; j < depthChart[TeamId][i].Count; j++)
                 {
@@ -593,7 +601,7 @@ namespace MaddenEditor.Core.Record
             {
                 Dictionary<int, double> tempProbs = new Dictionary<int, double>();
                 TeamRecord team = model.TeamModel.GetTeamRecord(i);
-                RookieRecord favorite = GetFavoriteRookies(pickNumber)[i];
+                RookieRecord favorite = favorites[i];
                 double totalProb = 0;
 
                 if (favorite == null)
@@ -871,11 +879,11 @@ namespace MaddenEditor.Core.Record
 
             double minaccept = to.makeCounterOffer(offer, false);
 
-            if (LowerTeamId != HumanTeamId && to.HigherTeam != HumanTeamId && (to.offersFromLower.Count == 0 || to.offersFromLower[0] < 0.5 * to.MinAccept))
+            if (to.offersFromLower.Count == 0 || (LowerTeamId != HumanTeamId && to.HigherTeam != HumanTeamId && to.offersFromLower[0] < 0.5 * to.MinAccept))
             {
                 Console.WriteLine("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " after initial offer.\n");
                 to.status = (int)TradeOfferStatus.Rejected;
-                tradeOffers.Add(LowerTeamId, to);
+                tradeOffers[LowerTeamId] = to;
                 return null;
             }
             else if (LowerTeamId != HumanTeamId)
@@ -1405,6 +1413,7 @@ namespace MaddenEditor.Core.Record
         // with the pick; maximum offer for all other teams)
         public void SetTradeParameters(int pickNumber)
         {
+            DateTime total = DateTime.Now;
             tradeOffers = new Dictionary<int,TradeOffer>();
             BestOffers = new Dictionary<int,double>();
 
@@ -1412,6 +1421,9 @@ namespace MaddenEditor.Core.Record
             tradeUpForm = null;
             tradeDownForm = null;
             humanRejected = false;
+
+
+            // Could pass this to the function from DraftForm -- then wouldn't need to do this.
 
             int currentSelector = -1;
             foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
@@ -1425,7 +1437,10 @@ namespace MaddenEditor.Core.Record
                 }
             }
 
+            DateTime gp = DateTime.Now;
             GetProbabilities(pickNumber);
+            Console.WriteLine("Total GetProbabilities: " + gp.Subtract(DateTime.Now));
+
 
             for (int i = 0; i < 32; i++)
             {
@@ -1500,6 +1515,8 @@ namespace MaddenEditor.Core.Record
                     }
 
                     BestOffers[i] = favoriteEffectiveValue * wantfrac * probabilityTaken;
+
+                    /*
                     Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(i) + " " + Math.Round(BestOffers[i]) + " " + favorites[i].Player.ToString());
 
                     foreach (RookieRecord rook in GetDraftBoard(model.TeamModel.GetTeamRecord(i), pickNumber))
@@ -1508,8 +1525,11 @@ namespace MaddenEditor.Core.Record
                         Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue + " " + rook.values[i][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(i, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[i] + rook.PostCombineScoutedHours[i]));
                     }
                     Console.WriteLine("");
+                     * */
                 }
             }
+
+            Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
         }
 
         public void InitializeDraft(int htid)
@@ -1518,7 +1538,6 @@ namespace MaddenEditor.Core.Record
 
             InitializePositionData();
             InitializePickValues();
-
             dcr = new DepthChartRepairer(model, positionData);
 
             ExtractRookies();
@@ -1529,7 +1548,8 @@ namespace MaddenEditor.Core.Record
             {
                 RepairRookies();
             }
-            
+
+            // I'm not sure why I initialize this twice, but it doesn't hurt.
             dcr = new DepthChartRepairer(model, positionData);
             depthChart = dcr.ReorderDepthCharts(true);
 
@@ -1540,6 +1560,10 @@ namespace MaddenEditor.Core.Record
                 futureTradedPicks.Add(i, new Dictionary<int, int>());
 
                 depthChartValues.Add(new List<List<double>>());
+                for(int j = 0; j < 21; j++) 
+                {
+                    depthChartValues[i].Add(new List<double>());
+                }
                 CalculateDepthChartValues(i);
             }
 
@@ -2381,7 +2405,7 @@ namespace MaddenEditor.Core.Record
                     Math.Round(100 * (6.60 + 0.23 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.AGI]) / 10)) / 100;
 
                 rook.Value.CombineNumbers[(int)CombineStat.BenchPress] =
-                    (Math.Round(44 - 7 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.STR]) / 10));
+                    Math.Max((Math.Round(42 - 5.5 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.STR]) / 10)),0);
 
                 rook.Value.CombineNumbers[(int)CombineStat.Vertical] =
                     42 - 3 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.JMP]) / 10;
@@ -2389,10 +2413,8 @@ namespace MaddenEditor.Core.Record
                 rook.Value.CombineNumbers[(int)CombineStat.Doctor] =
                     9.9 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.INJ] / 10;
 
-
-
                 rook.Value.CombineNumbers[(int)CombineStat.RoundGrade] = RookieRanks[rook.Key];
-                rook.Value.CombineNumbers[(int)CombineStat.Wonderlic] = rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.AWR];
+                rook.Value.CombineNumbers[(int)CombineStat.Wonderlic] = Math.Max(Math.Round(rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.AWR]/2),0);
                 
                 rook.Value.CombineWords[(int)CombineStat.Vertical] = (Math.Round(rook.Value.CombineNumbers[(int)CombineStat.Vertical])).ToString() + "\"";
                 rook.Value.CombineWords[(int)CombineStat.Height] = Math.Floor((double)rook.Value.Player.Height / 12) + "'" + rook.Value.Player.Height % 12 + "\"";
@@ -3480,6 +3502,16 @@ namespace MaddenEditor.Core.Record
                 {
                     mintake *= 1.0 / Math.Sqrt(Math.Pow(1.0 - probabilityTaken, 2.0) + Math.Pow(1.0 - wantfrac, 2.0));
                 }
+
+                if (Double.IsNaN(mintake))
+                {
+                    mintake = 10000;
+                }
+            }
+
+            if (Double.IsNaN(mintake))
+            {
+                mintake = 10000;
             }
 
             if (mintake < dm.pickValues[pickNumber+1]+1)
@@ -3543,6 +3575,7 @@ namespace MaddenEditor.Core.Record
 
             if (PicksFromLower.Count == 0)
             {
+                offersFromLower.Clear();
                 MinAccept = 10000;
                 return 10000;
             }
