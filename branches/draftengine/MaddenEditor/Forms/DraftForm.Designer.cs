@@ -114,6 +114,7 @@ namespace MaddenEditor.Forms
             this.DraftResults.ShowEditingIcon = false;
             this.DraftResults.Size = new System.Drawing.Size(285, 265);
             this.DraftResults.TabIndex = 0;
+            this.DraftResults.TabStop = false;
             this.DraftResults.Text = "dataGridView1";
             // 
             // RookieGrid
@@ -134,6 +135,7 @@ namespace MaddenEditor.Forms
             this.RookieGrid.ShowEditingIcon = false;
             this.RookieGrid.Size = new System.Drawing.Size(975, 167);
             this.RookieGrid.TabIndex = 1;
+            this.RookieGrid.TabStop = false;
             this.RookieGrid.Text = "dataGridView1";
             this.RookieGrid.Sorted += new System.EventHandler(this.fixSort);
             this.RookieGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellClick);
@@ -227,6 +229,7 @@ namespace MaddenEditor.Forms
             this.DepthChartGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.DepthChartGrid.Size = new System.Drawing.Size(272, 110);
             this.DepthChartGrid.TabIndex = 10;
+            this.DepthChartGrid.TabStop = false;
             this.DepthChartGrid.Text = "dataGridView2";
             // 
             // DraftBoardGrid
@@ -244,6 +247,7 @@ namespace MaddenEditor.Forms
             this.DraftBoardGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.DraftBoardGrid.Size = new System.Drawing.Size(272, 106);
             this.DraftBoardGrid.TabIndex = 11;
+            this.DraftBoardGrid.TabStop = false;
             this.DraftBoardGrid.Text = "dataGridView2";
             this.DraftBoardGrid.Sorted += new System.EventHandler(this.fixSort);
             // 
@@ -292,6 +296,7 @@ namespace MaddenEditor.Forms
             this.PlayerToDraft.ReadOnly = true;
             this.PlayerToDraft.Size = new System.Drawing.Size(216, 26);
             this.PlayerToDraft.TabIndex = 16;
+            this.PlayerToDraft.TabStop = false;
             // 
             // draftButton
             // 
@@ -301,7 +306,7 @@ namespace MaddenEditor.Forms
             this.draftButton.Size = new System.Drawing.Size(62, 26);
             this.draftButton.TabIndex = 17;
             this.draftButton.Text = "Draft";
-            this.draftButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.draftButton_MouseClick);
+            this.draftButton.Click += new System.EventHandler(this.draftButton_Click);
             // 
             // clock
             // 
@@ -326,6 +331,11 @@ namespace MaddenEditor.Forms
             // 
             this.PicksToSkip.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PicksToSkip.Location = new System.Drawing.Point(517, 144);
+            this.PicksToSkip.Maximum = new decimal(new int[] {
+            224,
+            0,
+            0,
+            0});
             this.PicksToSkip.Name = "PicksToSkip";
             this.PicksToSkip.Size = new System.Drawing.Size(49, 26);
             this.PicksToSkip.TabIndex = 19;
@@ -342,7 +352,7 @@ namespace MaddenEditor.Forms
             this.SkipButton.Size = new System.Drawing.Size(49, 28);
             this.SkipButton.TabIndex = 20;
             this.SkipButton.Text = "Skip";
-            this.SkipButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SkipButton_MouseClick);
+            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
             // 
             // showDraftedPlayers
             // 
@@ -401,7 +411,6 @@ namespace MaddenEditor.Forms
             this.upButton.Size = new System.Drawing.Size(26, 19);
             this.upButton.TabIndex = 25;
             this.upButton.Text = "Up";
-            this.upButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.upButton_MouseClick);
             // 
             // downButton
             // 

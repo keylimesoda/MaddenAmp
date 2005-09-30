@@ -588,7 +588,7 @@ namespace MaddenEditor.Forms
             }            
         }
 
-        private void doSet_MouseClick(object sender, MouseEventArgs e)
+        private void doSet_Click(object sender, EventArgs e)
         {
             foreach(KeyValuePair<int, RookieRecord> rook in dm.GetRookies(setPosition.SelectedIndex - 1)) {
                 if (stage == 0) {
@@ -603,7 +603,7 @@ namespace MaddenEditor.Forms
             RefreshAllocations();
         }
 
-        private void doIncrement_MouseClick(object sender, MouseEventArgs e)
+        private void doIncrement_Click(object sender, EventArgs e)
         {
             foreach(KeyValuePair<int, RookieRecord> rook in dm.GetRookies(incrementPosition.SelectedIndex - 1)) {
                 if (stage == 0) {
@@ -636,7 +636,7 @@ namespace MaddenEditor.Forms
             RefreshAllocations();
         }
 
-        private void button1_MouseClick(object sender, MouseEventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             if (stage == 2)
             {
