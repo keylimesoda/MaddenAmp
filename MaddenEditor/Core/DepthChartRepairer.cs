@@ -125,9 +125,15 @@ namespace MaddenEditor.Core
                 {
                     for (int k = 0; k < positionData[j].Starters(defense); k++)
                     {
+                        // Assume you can always find a guy rated 75 or above at that position in
+                        // free agency.
                         if (k < depthChart[i][j].Count)
                         {
-                            numerator += positionData[j].Value(defense) * depthChart[i][j][k].Overall;
+                            numerator += positionData[j].Value(defense) * Math.Max(depthChart[i][j][k].Overall, 75);
+                        }
+                        else
+                        {
+                            numerator += positionData[j].Value(defense) * 75;
                         }
 
                         denominator += positionData[j].Value(defense);
@@ -137,9 +143,14 @@ namespace MaddenEditor.Core
 
                     for (int k = positionData[j].Starters(defense); k < 2*positionData[j].Starters(defense); k++)
                     {
+                        // For backups, assume we can always get a guy rated 70 or above in free agency.
                         if (k < depthChart[i][j].Count)
                         {
-                            numerator += 0.5 * positionData[j].BackupNeed * positionData[j].Value(defense) * depthChart[i][j][k].Overall;
+                            numerator += 0.5 * positionData[j].BackupNeed * positionData[j].Value(defense) * Math.Max(depthChart[i][j][k].Overall, 70);
+                        }
+                        else
+                        {
+                            numerator += 0.5 * positionData[j].BackupNeed * positionData[j].Value(defense) * 70;
                         }
 
                         denominator += 0.5 * positionData[j].BackupNeed * positionData[j].Value(defense);
