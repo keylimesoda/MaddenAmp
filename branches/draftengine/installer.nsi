@@ -64,6 +64,7 @@ Section "MainSection" SEC01
   File "readme.txt"
   File "MaddenEditor\Docs\contributions.txt"
   File "MaddenEditor\Docs\DBFileStructure.doc"
+  File "06files\MFE-2006-TEST-2.fra"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -107,6 +108,9 @@ Section Uninstall
   Delete "$INSTDIR\licence.txt"
   Delete "$INSTDIR\tdbaccess.dll"
   Delete "$INSTDIR\MaddenEditor-Draft.exe"
+  Delete "$INSTDIR\contributions.txt"
+  Delete "$INSTDIR\DBFileStructure.doc"
+  Delete "$INSTDIR\MFE-2006-TEST-2.fra"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\Gommo's Madden Editor - Draft Alpha 1.lnk"

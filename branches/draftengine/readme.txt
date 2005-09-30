@@ -3,9 +3,9 @@
 
                            GOMMO'S MADDEN EDITOR 1.1.1.0
 
-			        WITH DRAFT ENGINE
-
-                                  26th September 2005
+    			          WITH DRAFT ENGINE
+  
+                                 30th September 2005
 
                                      readme.txt
 
