@@ -187,6 +187,7 @@ namespace MaddenEditor.Forms
             this.RookieGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.RookieGrid.Size = new System.Drawing.Size(1028, 242);
             this.RookieGrid.TabIndex = 18;
+            this.RookieGrid.TabStop = false;
             this.RookieGrid.Text = "dataGridView1";
             this.RookieGrid.Sorted += new System.EventHandler(this.RookieGrid_Sorted);
             this.RookieGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellEndEdit);
@@ -434,7 +435,7 @@ namespace MaddenEditor.Forms
             this.doSet.Size = new System.Drawing.Size(31, 21);
             this.doSet.TabIndex = 50;
             this.doSet.Text = "Go";
-            this.doSet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.doSet_MouseClick);
+            this.doSet.Click += new System.EventHandler(this.doSet_Click);
             // 
             // doIncrement
             // 
@@ -443,7 +444,7 @@ namespace MaddenEditor.Forms
             this.doIncrement.Size = new System.Drawing.Size(31, 21);
             this.doIncrement.TabIndex = 55;
             this.doIncrement.Text = "Go";
-            this.doIncrement.MouseClick += new System.Windows.Forms.MouseEventHandler(this.doIncrement_MouseClick);
+            this.doIncrement.Click += new System.EventHandler(this.doIncrement_Click);
             // 
             // incrementHours
             // 
@@ -488,7 +489,7 @@ namespace MaddenEditor.Forms
             this.button1.Size = new System.Drawing.Size(197, 31);
             this.button1.TabIndex = 56;
             this.button1.Text = "Advance to Next Scouting Stage";
-            this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // menuStrip1
             // 

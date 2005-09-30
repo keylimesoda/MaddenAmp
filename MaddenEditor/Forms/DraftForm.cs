@@ -598,6 +598,8 @@ namespace MaddenEditor.Forms
             {
                 draftTimer.Stop();
                 SkipButton.Enabled = false;
+                MessageBox.Show("Draft complete.\n\nClose this form and save your file\nfrom the main editor screen.");
+                statusLabel.Text = "Done.";
             }
             else if (threadToDo == 4)
             {
@@ -641,12 +643,17 @@ namespace MaddenEditor.Forms
             {
                 progressBar.Value = e.ProgressPercentage;
             }
+            else if (threadToDo == 8)
+            {
+                tradeButton.Enabled = false;
+            }
 
         }
 
         private bool MakePick(RookieRecord drafted)
         {
-            // Stop the timer while we process
+            // Stop the timer while we process\
+            DateTime total = DateTime.Now;
 
             if (skipping)
             {
@@ -657,6 +664,7 @@ namespace MaddenEditor.Forms
             {
                 draftTimer.Stop();
             }
+
             drafted = dm.MakeSelection(CurrentPick, drafted);
 
             draftPickData.Rows[CurrentPick]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
@@ -696,7 +704,7 @@ namespace MaddenEditor.Forms
 
             CurrentPick++;
 
-            if (CurrentPick == 32 * 7)
+            if (CurrentPick >= 32 * 7)
             {
                 // End the draft.
                 if (skipping)
@@ -708,6 +716,8 @@ namespace MaddenEditor.Forms
                 {
                     draftTimer.Stop();
                     SkipButton.Enabled = false;
+                    MessageBox.Show("Draft Complete");
+                    statusLabel.Text = "Done.";
                 }
                 return false;
             }
@@ -751,6 +761,7 @@ namespace MaddenEditor.Forms
                 }
             }
 
+            Console.WriteLine("Total MakePick: " + total.Subtract(DateTime.Now));
             return true;
         }
 
@@ -989,6 +1000,15 @@ namespace MaddenEditor.Forms
                                         else
                                         {
                                             to.status = (int)TradeOfferStatus.Rejected;
+                                            if (skipping)
+                                            {
+                                                threadToDo = 8;
+                                                autoPickBackgroundWorker.ReportProgress(0);
+                                            }
+                                            else
+                                            {
+                                                tradeButton.Enabled = false;
+                                            }
                                         }
                                     }
                                 }
@@ -1087,7 +1107,7 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void draftButton_MouseClick(object sender, MouseEventArgs e)
+        private void draftButton_Click(object sender, EventArgs e)
         {
             if (PlayerToDraft.Text.Equals("")) {
                 return;
@@ -1104,7 +1124,7 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void SkipButton_MouseClick(object sender, MouseEventArgs e)
+        private void SkipButton_Click(object sender, EventArgs e)
         {
             progressBar.Value = 0;
             SkipButton.Enabled = false;
@@ -1181,7 +1201,10 @@ namespace MaddenEditor.Forms
                     }
                     else
                     {
-                        MakePick(null);
+                        if (!MakePick(null))
+                        {
+                            break;
+                        }
                     }
 
 //                    this.Invalidate(true);
@@ -1208,19 +1231,23 @@ namespace MaddenEditor.Forms
             {
                 MessageBox.Show(tradeLog.Trim(), "Trade Log", MessageBoxButtons.OK);
             }
+            tradeLog = "";
 
             noNotify = false;
 
-            SkipButton.Enabled = true;
-            PicksToSkip.Enabled = true;
-
-            if (!preventTrades)
+            if (CurrentPick < 32 * 7)
             {
-                tradeButton.Enabled = true;
+                SkipButton.Enabled = true;
+                PicksToSkip.Enabled = true;
+
+                if (!preventTrades)
+                {
+                    tradeButton.Enabled = true;
+                }
+
+                draftTimer.Start();
+                statusLabel.Text = "Ready.";
             }
-            
-            draftTimer.Start();
-            statusLabel.Text = "Ready.";
         }
 
         private void showDraftedPlayers_CheckedChanged(object sender, EventArgs e)
@@ -1247,11 +1274,6 @@ namespace MaddenEditor.Forms
 
             wishlistData.Rows.Add(dr);
              * */
-        }
-
-        private void upButton_MouseClick(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void tradeButton_Click(object sender, EventArgs e)
