@@ -146,9 +146,9 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("heightnumber", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Height", "System.String"));
             rookieData.Columns.Add(AddColumn("Weight", "System.Int16"));
-            rookieData.Columns.Add(AddColumn("40 Time", "System.Double"));
-            rookieData.Columns.Add(AddColumn("Shuttle", "System.Double"));
-            rookieData.Columns.Add(AddColumn("Cone", "System.Double"));
+            rookieData.Columns.Add(AddColumn("40 Time", "System.String"));
+            rookieData.Columns.Add(AddColumn("Shuttle", "System.String"));
+            rookieData.Columns.Add(AddColumn("Cone", "System.String"));
             rookieData.Columns.Add(AddColumn("Bench", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Vertical", "System.String"));
             rookieData.Columns.Add(AddColumn("Wonderlic", "System.Int16"));
@@ -394,9 +394,9 @@ namespace MaddenEditor.Forms
 
                 if (stage > 0)
                 {
-                    dr["40 Time"] = rook.Value.CombineNumbers[(int)CombineStat.Forty];
-                    dr["Shuttle"] = rook.Value.CombineNumbers[(int)CombineStat.Shuttle];
-                    dr["Cone"] = rook.Value.CombineNumbers[(int)CombineStat.Cone];
+                    dr["40 Time"] = rook.Value.CombineNumbers[(int)CombineStat.Forty].ToString("N2");
+                    dr["Shuttle"] = rook.Value.CombineNumbers[(int)CombineStat.Shuttle].ToString("N2");
+                    dr["Cone"] = rook.Value.CombineNumbers[(int)CombineStat.Cone].ToString("N2");
                     dr["Bench"] = rook.Value.CombineNumbers[(int)CombineStat.BenchPress];
                     dr["Vertical"] = rook.Value.CombineWords[(int)CombineStat.Vertical];
                     dr["Wonderlic"] = rook.Value.CombineNumbers[(int)CombineStat.Wonderlic];

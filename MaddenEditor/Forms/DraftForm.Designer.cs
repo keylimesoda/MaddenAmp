@@ -111,11 +111,13 @@ namespace MaddenEditor.Forms
             this.DraftResults.ReadOnly = true;
             this.DraftResults.RowTemplate.Height = 16;
             this.DraftResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.DraftResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DraftResults.ShowEditingIcon = false;
             this.DraftResults.Size = new System.Drawing.Size(285, 265);
             this.DraftResults.TabIndex = 0;
             this.DraftResults.TabStop = false;
             this.DraftResults.Text = "dataGridView1";
+            this.DraftResults.DoubleClick += new System.EventHandler(this.DraftResults_DoubleClick);
             // 
             // RookieGrid
             // 
@@ -139,6 +141,7 @@ namespace MaddenEditor.Forms
             this.RookieGrid.Text = "dataGridView1";
             this.RookieGrid.Sorted += new System.EventHandler(this.fixSort);
             this.RookieGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellClick);
+            this.RookieGrid.DoubleClick += new System.EventHandler(this.RookieGrid_DoubleClick);
             this.RookieGrid.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.RookieGrid_MouseDoubleClick);
             // 
             // label1
@@ -227,6 +230,7 @@ namespace MaddenEditor.Forms
             this.DepthChartGrid.ReadOnly = true;
             this.DepthChartGrid.RowTemplate.Height = 16;
             this.DepthChartGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.DepthChartGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DepthChartGrid.Size = new System.Drawing.Size(272, 110);
             this.DepthChartGrid.TabIndex = 10;
             this.DepthChartGrid.TabStop = false;
@@ -245,11 +249,13 @@ namespace MaddenEditor.Forms
             this.DraftBoardGrid.ReadOnly = true;
             this.DraftBoardGrid.RowTemplate.Height = 16;
             this.DraftBoardGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.DraftBoardGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DraftBoardGrid.Size = new System.Drawing.Size(272, 106);
             this.DraftBoardGrid.TabIndex = 11;
             this.DraftBoardGrid.TabStop = false;
             this.DraftBoardGrid.Text = "dataGridView2";
             this.DraftBoardGrid.Sorted += new System.EventHandler(this.fixSort);
+            this.DraftBoardGrid.DoubleClick += new System.EventHandler(this.DraftBoardGrid_DoubleClick);
             // 
             // draftBoardTeam
             // 
@@ -330,7 +336,7 @@ namespace MaddenEditor.Forms
             // PicksToSkip
             // 
             this.PicksToSkip.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PicksToSkip.Location = new System.Drawing.Point(517, 144);
+            this.PicksToSkip.Location = new System.Drawing.Point(528, 144);
             this.PicksToSkip.Maximum = new decimal(new int[] {
             224,
             0,
@@ -347,11 +353,11 @@ namespace MaddenEditor.Forms
             // 
             // SkipButton
             // 
-            this.SkipButton.Location = new System.Drawing.Point(462, 143);
+            this.SkipButton.Location = new System.Drawing.Point(449, 143);
             this.SkipButton.Name = "SkipButton";
-            this.SkipButton.Size = new System.Drawing.Size(49, 28);
+            this.SkipButton.Size = new System.Drawing.Size(69, 28);
             this.SkipButton.TabIndex = 20;
-            this.SkipButton.Text = "Skip";
+            this.SkipButton.Text = "Advance";
             this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
             // 
             // showDraftedPlayers
@@ -368,9 +374,9 @@ namespace MaddenEditor.Forms
             // 
             // tradeButton
             // 
-            this.tradeButton.Location = new System.Drawing.Point(449, 177);
+            this.tradeButton.Location = new System.Drawing.Point(449, 178);
             this.tradeButton.Name = "tradeButton";
-            this.tradeButton.Size = new System.Drawing.Size(128, 21);
+            this.tradeButton.Size = new System.Drawing.Size(128, 22);
             this.tradeButton.TabIndex = 22;
             this.tradeButton.Text = "Make Trade Offer";
             this.tradeButton.Click += new System.EventHandler(this.tradeButton_Click);
