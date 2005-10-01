@@ -585,10 +585,17 @@ namespace MaddenEditor.Core.Record
                 {
                     PlayerRecord rec = depthChart[TeamId][i][j];
 
-                    double tempOverall = (double)dcr.GetAdjustedOverall(rec, i) + math.theta(5.0 - rec.YearsPro) * (5.0 - (double)rec.YearsPro) * (5.0 - (double)model.TeamModel.GetTeamRecord(TeamId).CON) / 2.0
-                        + math.injury(rec.Injury, positionData[i].DurabilityNeed);
+                    if (rec.YearsPro > 0)
+                    {
+                        double tempOverall = (double)dcr.GetAdjustedOverall(rec, i) + math.theta(5.0 - rec.YearsPro) * (5.0 - (double)rec.YearsPro) * (5.0 - (double)model.TeamModel.GetTeamRecord(TeamId).CON) / 2.0
+                            + math.injury(rec.Injury, positionData[i].DurabilityNeed);
 
-                    depthChartValues[TeamId][i].Add(LocalMath.ValueScale * positionData[i].Value(model.TeamModel.GetTeamRecord(TeamId).DefensiveSystem) * math.valcurve(tempOverall));
+                        depthChartValues[TeamId][i].Add(LocalMath.ValueScale * positionData[i].Value(model.TeamModel.GetTeamRecord(TeamId).DefensiveSystem) * math.valcurve(tempOverall));
+                    }
+                    else
+                    {
+                        depthChartValues[TeamId][i].Add(rookies[rec.PlayerId].values[TeamId][i][(int)RookieRecord.ValueType.WithProg]);
+                    }
                 }
             }
         }
@@ -952,6 +959,15 @@ namespace MaddenEditor.Core.Record
                     to = t;
                     break;
                 }
+            }
+
+            if (to.HigherTeam == HumanTeamId)
+            {
+                to.lowerStrikes = Math.Min(to.offersFromLower.Count / 2,2);
+            }
+            else if (to.LowerTeam == HumanTeamId)
+            {
+                to.higherStrikes = Math.Min(to.offersFromHigher.Count / 2, 2);
             }
 
             if (to.status == (int)TradeOfferStatus.HigherResponsePending)

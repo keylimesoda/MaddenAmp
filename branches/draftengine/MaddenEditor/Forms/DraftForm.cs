@@ -51,6 +51,9 @@ namespace MaddenEditor.Forms
         bool preventTrades = false;
         string tradeLog;
 
+        bool stickyDraftBoard = false;
+        bool stickyDepthChart = false;
+
         LocalMath math;
 
         DataTable draftPickData = new DataTable();
@@ -79,6 +82,7 @@ namespace MaddenEditor.Forms
 
         public TradeUpForm tradeUpForm = null;
         public TradeDownForm tradeDownForm = null;
+        TradeOffer globalTradeOffer = null;
 
         int threadToDo = -1;
 
@@ -271,9 +275,9 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("heightnumber", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Height", "System.String"));
             rookieData.Columns.Add(AddColumn("Weight", "System.Int16"));
-            rookieData.Columns.Add(AddColumn("40 Time", "System.Double"));
-            rookieData.Columns.Add(AddColumn("Shuttle", "System.Double"));
-            rookieData.Columns.Add(AddColumn("Cone", "System.Double"));
+            rookieData.Columns.Add(AddColumn("40 Time", "System.String"));
+            rookieData.Columns.Add(AddColumn("Shuttle", "System.String"));
+            rookieData.Columns.Add(AddColumn("Cone", "System.String"));
             rookieData.Columns.Add(AddColumn("Bench", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Vertical", "System.String"));
             rookieData.Columns.Add(AddColumn("Wonderlic", "System.Int16"));
@@ -378,9 +382,9 @@ namespace MaddenEditor.Forms
                 dr["heightnumber"] = rook.Value.Player.Height;
                 dr["Height"] = rook.Value.CombineWords[(int)CombineStat.Height];
                 dr["Weight"] = rook.Value.Player.Weight + 160;
-                dr["40 Time"] = rook.Value.CombineNumbers[(int)CombineStat.Forty];
-                dr["Shuttle"] = rook.Value.CombineNumbers[(int)CombineStat.Shuttle];
-                dr["Cone"] = rook.Value.CombineNumbers[(int)CombineStat.Cone];
+                dr["40 Time"] = rook.Value.CombineNumbers[(int)CombineStat.Forty].ToString("N2");
+                dr["Shuttle"] = rook.Value.CombineNumbers[(int)CombineStat.Shuttle].ToString("N2");
+                dr["Cone"] = rook.Value.CombineNumbers[(int)CombineStat.Cone].ToString("N2");
                 dr["Bench"] = rook.Value.CombineNumbers[(int)CombineStat.BenchPress];
                 dr["Vertical"] = rook.Value.CombineWords[(int)CombineStat.Vertical];
                 dr["Wonderlic"] = rook.Value.CombineNumbers[(int)CombineStat.Wonderlic];
@@ -551,25 +555,32 @@ namespace MaddenEditor.Forms
                     DataRow dr = depthChartData.NewRow();
                     dr["Player"] = player.FirstName + " " + player.LastName;
 
-/*                    if (player.YearsPro > 0)
+                    if (player.YearsPro > 0)
                     {
-*/                        dr["Depth"] = depth;
-                        dr["OVR"] = player.Overall;
+                        dr["Depth"] = depth;
+                        dr["OVR"] = dm.dcr.GetAdjustedOverall(player,PositionId);
                         dr["AGE"] = player.Age;
                         dr["INJ"] = player.Injury;
                         depthChartData.Rows.Add(dr);
                         depth++;
-/*                    }
+                    }
                     else
                     {
-                        rookieRows.Add(row);
+                        //rookieRows.Add(row);
+                        dr["Depth"] = depth;
+                        dr["OVR"] = dm.rookies[player.PlayerId].GetAdjustedOverall(TeamId, (int)RookieRecord.RatingType.Final, PositionId, dm.dcr.awarenessAdjust);
+                        dr["AGE"] = dm.dcr.GetAdjustedOverall(player, PositionId);
+                        dr["INJ"] = player.Injury;
+                        /*
                         dr["Depth"] = DBNull.Value;
                         dr["OVR"] = DBNull.Value;
                         dr["AGE"] = DBNull.Value;
                         dr["INJ"] = DBNull.Value;
+                         * */
                         depthChartData.Rows.Add(dr);
+                        depth++; // COMMENT OUT LATER
                     }
-*/
+
                     row++;
                 }
 /*
@@ -591,6 +602,7 @@ namespace MaddenEditor.Forms
             }
             else if (threadToDo == 2)
             {
+                SkipButton.Enabled = true;
                 draftButton.Enabled = false;
                 PlayerToDraft.Text = "";
             }
@@ -610,6 +622,7 @@ namespace MaddenEditor.Forms
 
                 if (CurrentSelectingId == HumanTeamId)
                 {
+                    SkipButton.Enabled = false;
                     draftButton.Enabled = true;
                 }
 
@@ -645,6 +658,12 @@ namespace MaddenEditor.Forms
             }
             else if (threadToDo == 8)
             {
+                tradeButton.Enabled = false;
+            }
+            else if (threadToDo == 9)
+            {
+                tradeUpForm = new TradeUpForm(dm, this, globalTradeOffer);
+                tradeUpForm.Show();
                 tradeButton.Enabled = false;
             }
 
@@ -697,6 +716,7 @@ namespace MaddenEditor.Forms
                 }
                 else
                 {
+                    SkipButton.Enabled = true;
                     draftButton.Enabled = false;
                     PlayerToDraft.Text = "";
                 }
@@ -753,6 +773,7 @@ namespace MaddenEditor.Forms
                 if (CurrentSelectingId == HumanTeamId)
                 {
                     draftButton.Enabled = true;
+                    SkipButton.Enabled = false;
                 }
 
                 if (!noNotify)
@@ -772,6 +793,23 @@ namespace MaddenEditor.Forms
 
         public void DisableTradeButton() {
             tradeButton.Enabled = false;
+        }
+
+        private string suffix(int i)
+        {
+            int tens = i % 100;
+            int ones = i % 10;
+            if (tens == 11 || tens == 12 || tens == 13) { return "th"; }
+            else
+            {
+                switch (ones)
+                {
+                    case 1: return "st";
+                    case 2: return "nd";
+                    case 3: return "rd";
+                    default: return "th";
+                }
+            }
         }
 
         public void ProcessTrade(TradeOffer to)
@@ -795,13 +833,15 @@ namespace MaddenEditor.Forms
             {
                 if (to.PicksFromHigher.Contains(i))
                 {
+                    if (lowergets.Length > 0) { lowergets += ", "; }
                     draftPickData.Rows[i]["Team"] = model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam);
-                    lowergets += (i+1) + " (" + dm.pickValues[i] + ") ";
+                    lowergets += (i+1) + suffix(i+1) + " Overall Pick (" + dm.pickValues[i] + " value)";
                 }
                 else if (to.PicksFromLower.Contains(i))
                 {
+                    if (highergets.Length > 0) { highergets += ", "; }
                     draftPickData.Rows[i]["Team"] = model.TeamModel.GetTeamNameFromTeamId(to.HigherTeam);
-                    highergets += (i + 1) + " (" + dm.pickValues[i] + ") ";
+                    highergets += (i + 1) + suffix(i+1) + " Overall Pick (" + dm.pickValues[i] + " value)";
                 }
             }
 
@@ -809,7 +849,8 @@ namespace MaddenEditor.Forms
             {
                 if (pick > 1000)
                 {
-                    lowergets += pick + " (" + dm.futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.HigherTeam).CON) + ") ";
+                    if (lowergets.Length > 0) { lowergets += ", "; }
+                    lowergets += (pick - 1000) + suffix(pick - 1000) + " Round Pick Next Year (" + dm.futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.HigherTeam).CON) + " value)";
                 }
             }
 
@@ -817,7 +858,8 @@ namespace MaddenEditor.Forms
             {
                 if (pick > 1000)
                 {
-                    highergets += pick + " (" + dm.futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.LowerTeam).CON) + ") ";
+                    if (highergets.Length > 0) { highergets += ", "; }
+                    highergets += (pick - 1000) + suffix(pick - 1000) + " Round Pick Next Year (" + dm.futureValues(pick - 1000, model.TeamModel.GetTeamRecord(to.HigherTeam).CON) + " value)";
                 }
             }
 
@@ -979,6 +1021,7 @@ namespace MaddenEditor.Forms
                                     {
                                         tradeDownForm = new TradeDownForm(dm, this, to);
                                         tradeDownForm.Show();
+                                        tradeButton.Enabled = false;
                                     }
                                     else
                                     {
@@ -993,9 +1036,20 @@ namespace MaddenEditor.Forms
 
                                         if (dr == DialogResult.Yes)
                                         {
+                                            if (skipping)
+                                            {
+                                                threadToDo = 9;
+                                                globalTradeOffer = to;
+                                                autoPickBackgroundWorker.ReportProgress(0);
+                                            }
+                                            else
+                                            {
+                                                tradeUpForm = new TradeUpForm(dm, this, to);
+                                                tradeUpForm.Show();
+                                                tradeButton.Enabled = false;
+                                            }
+
                                             quitSkipping = true;
-                                            tradeUpForm = new TradeUpForm(dm, this, to);
-                                            tradeUpForm.Show();
                                         }
                                         else
                                         {
@@ -1237,7 +1291,10 @@ namespace MaddenEditor.Forms
 
             if (CurrentPick < 32 * 7)
             {
-                SkipButton.Enabled = true;
+                if (CurrentSelectingId != HumanTeamId)
+                {
+                    SkipButton.Enabled = true;
+                }
                 PicksToSkip.Enabled = true;
 
                 if (!preventTrades)
@@ -1288,12 +1345,20 @@ namespace MaddenEditor.Forms
 
                 string teamName = (string)DraftResults.Rows[pick].Cells["Team"].Value;
                 int teamId = dm.model.TeamModel.GetTeamIdFromTeamName(teamName);
+
+                if (dm.tradeExists(teamId))
+                {
+                    MessageBox.Show("You have already rejected a trade offer from this team.");
+                    return;
+                }
+
                 DialogResult dr = MessageBox.Show("Are you sure you want to make a trade offer to the " + teamName + "?  If you start, you can always cancel, but you can't restart after you've cancelled.  You WILL be able to scout rookies while you negotiate the trade.", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dr == DialogResult.Yes)
                 {
                     tradeDownForm = new TradeDownForm(dm, this, dm.setupTradeOffer(teamId, CurrentPick));
                     tradeDownForm.Show();
+                    tradeButton.Enabled = false;
                 }
             }
             else
@@ -1304,6 +1369,7 @@ namespace MaddenEditor.Forms
                 {
                     tradeUpForm = new TradeUpForm(dm, this, dm.setupTradeOffer(HumanTeamId, CurrentPick));
                     tradeUpForm.Show();
+                    tradeButton.Enabled = false;
                 }
             }
         }
@@ -1316,14 +1382,79 @@ namespace MaddenEditor.Forms
                 "click \"Make Trade Offer\".\n\n" +
                 "When the CPU is picking, you can make a trade offer to the current team by clicking\n" +
                 "\"Make Trade Offer\".  If they are interested, the CPU might offer you a trade as well.\n\n" +
-                "You can also skip a set number of picks by choosing a number in the \"Skip\" field,\n" +
-                "then clicking \"Skip\".  You will be asked if you want to still receive trade offers while\n" +
+                "You can also skip a set number of picks by choosing a number in the \"Advance\" field,\n" +
+                "then clicking \"Advance\".  You will be asked if you want to still receive trade offers while\n" +
                 "skipping.  If you choose \"No\", skipping will move faster.\n\n" +
                 "The top box on the right allows you to look at a team's draft board -- who that team is\n" +
                 "likely to draft.  The lower box on the right allows you to look at a team's depth chart\n" +
                 "at the position you choose.";
 
             MessageBox.Show(helpstring, "Help");
+        }
+
+        private void DraftResults_DoubleClick(object sender, EventArgs e)
+        {
+            if (DraftResults.SelectedRows.Count <= 0) 
+            {
+                return;
+            }
+
+            if (DraftResults.SelectedRows[0].Index > (CurrentPick-1) && !stickyDraftBoard)
+            {
+                draftBoardTeam.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Team"].Value;
+                UpdateDraftBoard(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value));
+            }
+            else if (!stickyDepthChart)
+            {
+                depthChartTeam.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Team"].Value;
+                depthChartPosition.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Position"].Value;
+                UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftResults.SelectedRows[0].Cells["Position"].Value, true));
+            }
+        }
+
+        private void DraftBoardGrid_DoubleClick(object sender, EventArgs e)
+        {
+            if (DraftBoardGrid.SelectedRows.Count <= 0)
+            {
+                return;
+            }
+
+            if (!stickyDepthChart)
+            {
+                depthChartTeam.SelectedItem = (string)draftBoardTeam.SelectedItem;
+                depthChartPosition.SelectedItem = (string)DraftBoardGrid.SelectedRows[0].Cells["Position"].Value;
+                UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)draftBoardTeam.SelectedItem), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftBoardGrid.SelectedRows[0].Cells["Position"].Value, true));
+            }
+        }
+
+        private void RookieGrid_DoubleClick(object sender, EventArgs e)
+        {
+            if (RookieGrid.SelectedRows.Count <= 0)
+            {
+                return;
+            }
+
+            if (!stickyDepthChart)
+            {
+                string draftedby;
+                try {draftedby = (string)RookieGrid.SelectedRows[0].Cells["Drafted By"].Value; }
+                catch { draftedby = ""; }
+
+                if (draftedby.Length > 0)
+                {
+                    draftedby = draftedby.Split(' ')[0];
+
+                    depthChartTeam.SelectedItem = draftedby;
+                    depthChartPosition.SelectedItem = (string)RookieGrid.SelectedRows[0].Cells["Position"].Value;
+                    UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName(draftedby), (int)Enum.Parse(typeof(MaddenPositions), (string)RookieGrid.SelectedRows[0].Cells["Position"].Value, true));
+                }
+                else
+                {
+                    depthChartTeam.SelectedItem = model.TeamModel.GetTeamNameFromTeamId(HumanTeamId);
+                    depthChartPosition.SelectedItem = (string)RookieGrid.SelectedRows[0].Cells["Position"].Value;
+                    UpdateDepthChart(HumanTeamId, (int)Enum.Parse(typeof(MaddenPositions), (string)RookieGrid.SelectedRows[0].Cells["Position"].Value, true));
+                }
+            }
         }
     }
 }

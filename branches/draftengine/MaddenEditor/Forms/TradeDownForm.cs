@@ -440,5 +440,35 @@ namespace MaddenEditor.Forms
                 FillTeamBoxes();
             }
         }
+
+        private void tradeHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string helpstring =
+                "This form lets you simultaneously negotiate a trade with any CPU team.\n\n" +
+                "The boxes on the left contain each team's name, along with the current status of\n" +
+                "your trade offer with them:  Waiting on their response, waiting on your response,\n" +
+                "no offer yet, and rejected.  Click on a team in one of these boxes to start or\n" +
+                "continue negotiating with them.  Occasionally, a CPU team will initiate trade talks\n" +
+                "itself by making an offer -- their team will then move from the \"No Offer Yet\" box to\n" +
+                "the \"Waiting on Your Response\" box.\n\n" +
+            "Listed in the boxes on the right are the picks that you and the CPU have\n" +
+            "available to trade, followed by the value of that pick in parentheses, according\n" +
+            "to the draft trade value charts used by real football teams.\n\n" +
+            "If you like the offer the CPU has proposed, click \"Accept\", and the trade will go through.\n\n" +
+            "You can also counter-offer by changing the picks in the list, then clicking the \"Offer\" button.\n" +
+            "If after changing some picks around, you want to revert to the CPU's last offer, then\nclick \"Reset\".  You can reject the current trade by clicking \"Reject\" at any time.";
+
+            MessageBox.Show(helpstring, "Help");
+        }
+
+        private void TradeDownForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            MessageBox.Show("Trade talks can not be resumed for the rest of this pick.", "Trade Talks Ending");
+
+            foreach (TradeOffer to in dm.tradeOffers.Values)
+            {
+                to.status = (int)TradeOfferStatus.Rejected;
+            }
+        }
     }
 }

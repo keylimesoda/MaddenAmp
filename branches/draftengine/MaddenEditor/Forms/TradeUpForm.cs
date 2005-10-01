@@ -335,6 +335,32 @@ namespace MaddenEditor.Forms
                 this.Close();
             }
         }
+
+        private void tradeHepToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string helpstring =
+                "This dialog lets you negotiate a trade with the currently drafting CPU team,\n" +
+                "while the CPU also negotiates with other teams in the background.\n\n" +
+                "Listed in the boxes at the top are the picks that you and the CPU have\n" +
+                "available to trade, followed by the value of that pick in parentheses, according\n" +
+                "to the draft trade value charts used by real football teams.\n\n" +
+                "If you like the offer the CPU has proposed, click \"Approve\".  They will then try to\n" +
+                "drive up the bidding by informing other teams that you have accepted their offer.  If no\n" +
+                "other team outbids you, the trade will go through.  If you get outbid, however, the CPU will\n" +
+                "tell you that you need to up the ante to get their pick.\n\n" +
+                "You can also counter-offer by changing the picks in the list, then clicking the \"Offer\" button.\n" +
+                "If after changing some picks around, you want to revert to the CPU's last offer, then\n" +
+                "click \"Reset\".  You can reject the current trade by clicking \"Reject\" at any time.";
+
+            MessageBox.Show(helpstring, "Help");
+        }
+
+        private void TradeUpForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            MessageBox.Show("Trade talks can not be resumed for the rest of this pick.", "Trade Talks Ending");
+
+            to.status = (int)TradeOfferStatus.Rejected;
+        }
     }
 
     public enum TradeResponse
