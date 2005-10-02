@@ -28,7 +28,7 @@ Page custom CheckDotNet
 ; Start menu page
 var ICONS_GROUP
 !define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Gommo's Madden Editor - Draft Alpha 1"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Gommo's Madden Editor - Draft Alpha 3"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_STARTMENU_REGVAL}"
@@ -50,7 +50,7 @@ var ICONS_GROUP
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "MaddenEditorDraftSetup_${PRODUCT_VERSION}.exe"
-InstallDir "$PROGRAMFILES\Gommo's Madden Editor - Draft Alpha 1"
+InstallDir "$PROGRAMFILES\Gommo's Madden Editor - Draft Alpha 3"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
