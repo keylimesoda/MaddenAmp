@@ -69,8 +69,9 @@ Section "MainSection" SEC01
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor - Draft Alpha 1 (${PRODUCT_VERSION}).lnk" "$INSTDIR\MaddenEditor-Draft.exe"
-  CreateShortCut "$DESKTOP\Gommo's Madden Editor - Draft Alpha 1.lnk" "$INSTDIR\MaddenEditor-Draft.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor - Draft Alpha 3 (${PRODUCT_VERSION}).lnk" "$INSTDIR\MaddenEditor-Draft.exe"
+
+  CreateShortCut "$DESKTOP\Gommo's Madden Editor - Draft Alpha 3.lnk" "$INSTDIR\MaddenEditor-Draft.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -113,8 +114,8 @@ Section Uninstall
   Delete "$INSTDIR\MFE-2006-TEST-2.fra"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
-  Delete "$DESKTOP\Gommo's Madden Editor - Draft Alpha 1.lnk"
-  Delete "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor - Draft Alpha 1 (${PRODUCT_VERSION}).lnk"
+  Delete "$DESKTOP\Gommo's Madden Editor - Draft Alpha 3.lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor - Draft Alpha 3 (${PRODUCT_VERSION}).lnk"
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
   RMDir "$INSTDIR"
