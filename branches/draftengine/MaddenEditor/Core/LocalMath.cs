@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Core
 {
@@ -36,6 +37,13 @@ namespace MaddenEditor.Core
         public LocalMath(MaddenFileVersion version)
         {
             mfv = version;
+        }
+
+        public double pointboost(PlayerRecord player, double con, double retireAge)
+        {
+            double conReverse = 5-con;
+            return theta(5-player.YearsPro)*(1.0 - 0.2*(double)player.YearsPro)*(0.5*conReverse + 0.1875*Math.Pow(conReverse,2.0)) -
+                theta(player.Age + 5.0 - retireAge)*0.2*Math.Min((double)player.Age + 5.0 - retireAge,5.0)*(0.5*conReverse + 0.1875*Math.Pow(conReverse,2.0));
         }
 
         public double bellcurve(double cv, double sigma, Random rand)

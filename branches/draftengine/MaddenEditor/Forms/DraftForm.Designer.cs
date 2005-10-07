@@ -464,6 +464,7 @@ namespace MaddenEditor.Forms
             // 
             this.selectingLabel.AutoSize = true;
             this.selectingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectingLabel.ForeColor = System.Drawing.Color.Red;
             this.selectingLabel.Location = new System.Drawing.Point(343, 31);
             this.selectingLabel.Name = "selectingLabel";
             this.selectingLabel.Size = new System.Drawing.Size(312, 31);

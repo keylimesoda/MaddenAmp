@@ -297,7 +297,7 @@ namespace MaddenEditor.Core
                         value = 1;
                     }
 
-                    valuesByPosition[pair.Key][player.PlayerId] = LocalMath.ValueScale * value * math.valcurve(GetAdjustedOverall(player, pair.Key) + math.theta(5 - player.YearsPro) * (5.0 - (double)player.YearsPro) * (5.0 - con) / 2.0 - math.theta(player.Age + 5.0 - positionData[player.PositionId].RetirementAge) * ((double)player.Age + 5.0 - (double)positionData[player.PositionId].RetirementAge) * (5.0 - con) / 2.0);
+                    valuesByPosition[pair.Key][player.PlayerId] = LocalMath.ValueScale * value * math.valcurve(GetAdjustedOverall(player, pair.Key) + math.pointboost(player,con,positionData[player.PositionId].RetirementAge));
                 }
 
                 switch (player.PositionId)
