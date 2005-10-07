@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using MaddenEditor.Forms;
 
 namespace MaddenEditor.Core.Record
@@ -82,6 +83,23 @@ namespace MaddenEditor.Core.Record
          * 
          * depthChartValues[teamId][PositionId][Depth] */
         private List<List<List<double>>> depthChartValues;
+
+        public void SavePicks(string saveFile)
+        {
+            FileStream fs = new FileStream(saveFile, FileMode.OpenOrCreate, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
+
+            foreach (KeyValuePair<int, Dictionary<int, int>> dick in futureTradedPicks)
+            {
+                foreach (KeyValuePair<int, int> innerdick in dick.Value)
+                {
+                    sw.WriteLine(innerdick.Key + " " + dick.Key + " " + innerdick.Value);
+                }
+            }
+
+            sw.Close();
+            fs.Close();
+        }
 
         private void RepairRookies()
         {
@@ -587,8 +605,8 @@ namespace MaddenEditor.Core.Record
 
                     if (rec.YearsPro > 0)
                     {
-                        double tempOverall = (double)dcr.GetAdjustedOverall(rec, i) + math.theta(5.0 - rec.YearsPro) * (5.0 - (double)rec.YearsPro) * (5.0 - (double)model.TeamModel.GetTeamRecord(TeamId).CON) / 2.0
-                            + math.injury(rec.Injury, positionData[i].DurabilityNeed);
+                        double tempOverall = (double)dcr.GetAdjustedOverall(rec, i) + /*math.theta(5.0 - rec.YearsPro) * (5.0 - (double)rec.YearsPro) * (5.0 - (double)model.TeamModel.GetTeamRecord(TeamId).CON) / 2.0 */
+                            math.pointboost(rec, model.TeamModel.GetTeamRecord(TeamId).CON, positionData[i].RetirementAge) + math.injury(rec.Injury, positionData[i].DurabilityNeed);
 
                         depthChartValues[TeamId][i].Add(LocalMath.ValueScale * positionData[i].Value(model.TeamModel.GetTeamRecord(TeamId).DefensiveSystem) * math.valcurve(tempOverall));
                     }
@@ -681,6 +699,23 @@ namespace MaddenEditor.Core.Record
                 }
             }
             return false;
+        }
+
+        public RookieRecord SkipHuman(int pickNumber, int humanBackedUp)
+        {
+            DraftPickRecord currentRecord = GetDraftPickByNumber(pickNumber);
+            DraftPickRecord nextRecord = GetDraftPickByNumber(pickNumber + humanBackedUp);
+
+            if (HumanTeamId != currentRecord.CurrentTeamId)
+            {
+            }
+
+            currentRecord.CurrentTeamId = nextRecord.CurrentTeamId;
+            nextRecord.CurrentTeamId = HumanTeamId;
+
+            Console.WriteLine("Backed Up: " + humanBackedUp + " Picking: " + model.TeamModel.GetTeamNameFromTeamId(currentRecord.CurrentTeamId));
+
+            return MakeSelection(pickNumber, null);
         }
 
         public void AcceptTrade(TradeOffer to)
@@ -2583,7 +2618,7 @@ namespace MaddenEditor.Core.Record
                             LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
 
                         rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.WithProg] =
-                            LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(5.0 * (5.0 - (double)team.Value.CON) / 2 + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
+                            LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(/*5.0 * (5.0 - (double)team.Value.CON) / 2*/ math.pointboost(rook.Value.Player,team.Value.CON,40) + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
                     }
                 }
             }

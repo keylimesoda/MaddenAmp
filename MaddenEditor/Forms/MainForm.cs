@@ -26,6 +26,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+// MADDEN DRAFT EDIT
+using System.IO;
+// MADDEN DRAFT EDIT
 using System.Windows.Forms;
 using MaddenEditor.ConSole;
 
@@ -483,6 +486,68 @@ namespace MaddenEditor.Forms
             DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 
             dcr.ReorderDepthCharts(true);
+        }
+
+        private void moveTradedDraftPicksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Dictionary<int, Dictionary<int, int>> tradedPicks = new Dictionary<int, Dictionary<int, int>>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                tradedPicks[i] = new Dictionary<int, int>();
+            }
+
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.DefaultExt = "dpd";
+			dialog.Filter = "Draft Pick Data (*.dpd)|*.dpd";
+			dialog.Multiselect = false;
+			dialog.ShowDialog();
+
+            if (dialog.FileNames.Length > 0)
+            {
+                FileStream fs = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
+                StreamReader sr = new StreamReader(fs);
+
+                string all = sr.ReadToEnd();
+
+                string[] lines = all.Split('\n');
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Length == 0)
+                    {
+                        break;
+                    }
+
+                    lines[i] = lines[i].Trim();
+                    string[] nums = lines[i].Split(' ');
+                    try
+                    {
+                        tradedPicks[Int32.Parse(nums[0])-1][Int32.Parse(nums[1])] = Int32.Parse(nums[2]);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Error processing file.");
+                        return;
+                    }
+                }
+
+                fs.Close();
+                sr.Close();
+
+                foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+                {
+                    DraftPickRecord dpr = (DraftPickRecord)rec;
+
+                    int round = dpr.PickNumber/32;
+                    if (tradedPicks[round].ContainsKey(dpr.OriginalTeamId))
+                    {
+                        dpr.CurrentTeamId = tradedPicks[round][dpr.OriginalTeamId];
+                    }
+                }
+
+                CheckSave();
+            }
         }
 
         // MADDEN DRAFT EDIT

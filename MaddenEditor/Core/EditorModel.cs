@@ -127,6 +127,13 @@ namespace MaddenEditor.Core
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
 		private SalaryCapRecord salaryCapRecord = null;
+
+        // MADDEN DRAFT EDIT
+        public string GetFileName()
+        {
+            return fileName;
+        }
+        // MADDEN DRAFT EDIT
 		
 		public EditorModel(string filename, MainForm form)
 		{

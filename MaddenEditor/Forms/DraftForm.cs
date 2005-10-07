@@ -43,8 +43,11 @@ namespace MaddenEditor.Forms
         bool quitSkipping = false;
         bool skipping = false;
         bool noNotify = false;
+        bool disableHumanPick = false;
+        int humanBackedUp = 0;
 
         double pickProb;
+        double fastPickProb = 0.2;
 
         double tradeProbPerm;
         double tradeProb;
@@ -129,6 +132,16 @@ namespace MaddenEditor.Forms
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
             selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
             selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+            if (CurrentSelectingId == HumanTeamId)
+            {
+                selectingLabel.ForeColor = System.Drawing.Color.Red;
+                SkipButton.Enabled = false;
+            }
+            else
+            {
+                selectingLabel.ForeColor = System.Drawing.Color.Black;
+            }
 
             random = new Random(unchecked((int)DateTime.Now.Ticks));
 
@@ -610,13 +623,42 @@ namespace MaddenEditor.Forms
             {
                 draftTimer.Stop();
                 SkipButton.Enabled = false;
-                MessageBox.Show("Draft complete.\n\nClose this form and save your file\nfrom the main editor screen.");
                 statusLabel.Text = "Done.";
+                string filename = model.GetFileName();
+                string path = filename.Substring(0, filename.LastIndexOf('\\'));
+                string file = filename.Substring(filename.LastIndexOf('\\') + 1);
+                string fileNoExt = file.Substring(0, file.LastIndexOf('.'));
+
+                MessageBox.Show("Draft complete.\n\nYou will now be prompted to save the file needed\nto transfer future draft picks.");
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.InitialDirectory = path + "\\";
+                sfd.FileName = fileNoExt + ".dpd";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = "dpd";
+                sfd.Filter = "Draft pick data files (*.dpd)|*.dpd";
+
+                DialogResult dr = sfd.ShowDialog();
+
+                Console.WriteLine(sfd.FileName);
+
+                dm.SavePicks(sfd.FileName);
+
+                MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
             }
             else if (threadToDo == 4)
             {
                 selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
                 selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Black;
+                }
 
                 clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
@@ -625,27 +667,26 @@ namespace MaddenEditor.Forms
                     SkipButton.Enabled = false;
                     draftButton.Enabled = true;
                 }
-
-                if (!noNotify)
-                {
-                    draftTimer.Start();
-                }
             }
             else if (threadToDo == 5)
             {
                 selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
                 selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
 
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Black;
+                }
+
                 clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
                 if (CurrentSelectingId == HumanTeamId)
                 {
                     draftButton.Enabled = true;
-                }
-
-                if (!noNotify)
-                {
-                    draftTimer.Start();
                 }
             }
             else if (threadToDo == 6)
@@ -707,7 +748,7 @@ namespace MaddenEditor.Forms
                 }
             }
 
-            if (CurrentSelectingId == HumanTeamId)
+            if (CurrentSelectingId == HumanTeamId && humanBackedUp <= 1)
             {
                 if (skipping)
                 {
@@ -736,16 +777,40 @@ namespace MaddenEditor.Forms
                 {
                     draftTimer.Stop();
                     SkipButton.Enabled = false;
-                    MessageBox.Show("Draft Complete");
                     statusLabel.Text = "Done.";
+                    string filename = model.GetFileName();
+                    string path = filename.Substring(0, filename.LastIndexOf('\\'));
+                    string file = filename.Substring(filename.LastIndexOf('\\') + 1);
+                    string fileNoExt = file.Substring(0, file.LastIndexOf('.'));
+
+                    MessageBox.Show("Draft complete.\n\nYou will now be prompted to save the file needed\nto transfer future draft picks.");
+
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.InitialDirectory = path + "\\";
+                    sfd.FileName = fileNoExt + ".dpd";
+                    sfd.AddExtension = true;
+                    sfd.DefaultExt = "dpd";
+                    sfd.Filter = "Draft pick data files (*.dpd)|*.dpd";
+
+                    DialogResult dr = sfd.ShowDialog();
+
+                    Console.WriteLine(sfd.FileName);
+
+                    dm.SavePicks(sfd.FileName);
+
+                    MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
                 }
+
                 return false;
             }
 
-            dm.SetTradeParameters(CurrentPick);
-            preventTrades = false;
+            if (humanBackedUp <= 1)
+            {
+                dm.SetTradeParameters(CurrentPick);
+                preventTrades = false;
+            }
 
-            if (!skipping)
+            if (!skipping && humanBackedUp <= 1)
             {
                 tradeButton.Enabled = true;
             }
@@ -756,7 +821,11 @@ namespace MaddenEditor.Forms
             }
 
             CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
-            timeRemaining = (int)secondsPerPick;
+
+            if (humanBackedUp <= 0)
+            {
+                timeRemaining = (int)secondsPerPick;
+            }
 
             if (skipping)
             {
@@ -768,6 +837,15 @@ namespace MaddenEditor.Forms
                 selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
                 selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
 
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Black;
+                }
+
                 clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
                 if (CurrentSelectingId == HumanTeamId)
@@ -776,10 +854,7 @@ namespace MaddenEditor.Forms
                     SkipButton.Enabled = false;
                 }
 
-                if (!noNotify)
-                {
-                    draftTimer.Start();
-                }
+                draftTimer.Start();
             }
 
             Console.WriteLine("Total MakePick: " + total.Subtract(DateTime.Now));
@@ -788,7 +863,13 @@ namespace MaddenEditor.Forms
 
         private void timerOnTick(object sender, EventArgs e)
         {
-            tick(false);
+            if (!skipping)
+            {
+                tick(false);
+            }
+            else
+            {
+            }
         }
 
         public void DisableTradeButton() {
@@ -891,6 +972,7 @@ namespace MaddenEditor.Forms
             if (CurrentSelectingId == HumanTeamId)
             {
                 draftButton.Enabled = false;
+                SkipButton.Enabled = true;
                 PlayerToDraft.Text = "";
             }
 
@@ -910,6 +992,15 @@ namespace MaddenEditor.Forms
                 selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
                 selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
 
+                if (CurrentSelectingId == HumanTeamId)
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    selectingLabel.ForeColor = System.Drawing.Color.Black;
+                }
+
                 clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
                 if (CurrentSelectingId == HumanTeamId)
@@ -917,16 +1008,91 @@ namespace MaddenEditor.Forms
                     draftButton.Enabled = true;
                 }
 
-                if (!noNotify)
-                {
-                    draftTimer.Start();
-                }
+                draftTimer.Start();
             }
         }
 
         private void tick(bool refresh)
         {
             timeRemaining--;
+
+            if (humanBackedUp > 0)
+            {
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+                if (timeRemaining % 2 == 0)
+                {
+                    selectingLabel.Text = "";
+                }
+                else
+                {
+                    selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                }
+
+                if (timeRemaining > 0 && (random.NextDouble() > fastPickProb || NextSelectingId() == HumanTeamId))
+                {
+                    return;
+                }
+                else if (timeRemaining <= 0 && NextSelectingId() == HumanTeamId)
+                {
+                    humanBackedUp++;
+
+                    timeRemaining = (int)secondsPerPick;
+                    return;
+                }
+
+                // (1) disable draft button
+
+                draftButton.Enabled = false;
+                disableHumanPick = true;
+                draftTimer.Stop();
+
+                // (2) force trade with next highest CPU team
+
+                RookieRecord drafted = dm.SkipHuman(CurrentPick, humanBackedUp);
+
+                string currentteam = (string)draftPickData.Rows[CurrentPick]["Team"];
+                string nextteam = (string)draftPickData.Rows[CurrentPick + humanBackedUp]["Team"];
+
+                draftPickData.Rows[CurrentPick]["Team"] = nextteam;
+                draftPickData.Rows[CurrentPick + humanBackedUp]["Team"] = currentteam;
+
+
+                // (3) CPU team makes pick
+
+                draftPickData.Rows[CurrentPick]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
+                draftPickData.Rows[CurrentPick]["Player"] = drafted.Player.FirstName + " " + drafted.Player.LastName;
+
+                for (int j = 0; j < rookieData.Rows.Count; j++)
+                {
+                    if (drafted.PlayerId == (int)rookieData.Rows[j]["PGID"])
+                    {
+                        if (showDraftedPlayers.Checked)
+                        {
+                            rookieData.Rows[j]["picknumber"] = CurrentPick;
+                            rookieData.Rows[j]["Drafted By"] = draftPickData.Rows[CurrentPick]["Team"] + " (" + (CurrentPick + 1) + ")";
+                        }
+                        else
+                        {
+                            rookieData.Rows.Remove(rookieData.Rows[j]);
+                        }
+
+                        break;
+                    }
+                }
+
+                CurrentPick++;
+
+                timeRemaining = (int)secondsPerPick;
+                clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+
+                // (4) enable draft button
+
+                CurrentSelectingId = HumanTeamId;
+                draftButton.Enabled = true;
+                disableHumanPick = false;
+                draftTimer.Start();
+            }
 
             if (skipping)
             {
@@ -945,6 +1111,29 @@ namespace MaddenEditor.Forms
             {
                 if (CurrentSelectingId == HumanTeamId)
                 {
+                    if (CurrentPick == 32 * 7 - 1) { return; }
+
+                    if (tradeDownForm != null)
+                    {
+                        draftTimer.Stop();
+                        tradeDownForm.Close();
+                        tradeDownForm = null;
+                        draftTimer.Start();
+                    }
+
+                    tradeButton.Enabled = false;
+
+                    humanBackedUp++;
+                    preventTrades = true;
+
+                    foreach (TradeOffer locTO in dm.tradeOffers.Values)
+                    {
+                        locTO.status = (int)TradeOfferStatus.Rejected;
+                    }
+
+                    timeRemaining = (int)secondsPerPick;
+                    clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+                    
                     return;
                 }
 
@@ -1173,8 +1362,35 @@ namespace MaddenEditor.Forms
 
             if (dr == DialogResult.Yes)
             {
-                MakePick(toDraft);
-                DraftResults.Invalidate();
+                draftTimer.Stop();
+
+                // We should only get caught in this loop if the human is
+                // getting skipped, and the CPU is in the middle of picking.
+
+                while (disableHumanPick)
+                {
+                }
+
+                if (!(toDraft.DraftedTeam < 32))
+                {
+                    MakePick(toDraft);
+                    if (humanBackedUp > 0)
+                    {
+                        humanBackedUp--;
+                    }
+
+                    if (humanBackedUp <= 0)
+                    {
+                        preventTrades = false;
+                        tradeButton.Enabled = true;
+                    }
+
+                    DraftResults.Invalidate();
+                }
+                else
+                {
+                    draftTimer.Start();
+                }
             }
         }
 
@@ -1297,7 +1513,7 @@ namespace MaddenEditor.Forms
                 }
                 PicksToSkip.Enabled = true;
 
-                if (!preventTrades)
+                if (!preventTrades && tradeUpForm == null)
                 {
                     tradeButton.Enabled = true;
                 }
@@ -1392,6 +1608,18 @@ namespace MaddenEditor.Forms
             MessageBox.Show(helpstring, "Help");
         }
 
+        private int NextSelectingId()
+        {
+            if (CurrentPick + humanBackedUp >= 32 * 7)
+            {
+                return HumanTeamId;
+            }
+            else
+            {
+                return model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick + humanBackedUp]["Team"]);
+            }
+        }
+
         private void DraftResults_DoubleClick(object sender, EventArgs e)
         {
             if (DraftResults.SelectedRows.Count <= 0) 
@@ -1399,7 +1627,7 @@ namespace MaddenEditor.Forms
                 return;
             }
 
-            if (DraftResults.SelectedRows[0].Index > (CurrentPick-1) && !stickyDraftBoard)
+            if ((short)DraftResults.SelectedRows[0].Cells["Pick"].Value > CurrentPick && !stickyDraftBoard)
             {
                 draftBoardTeam.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Team"].Value;
                 UpdateDraftBoard(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value));
@@ -1408,7 +1636,15 @@ namespace MaddenEditor.Forms
             {
                 depthChartTeam.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Team"].Value;
                 depthChartPosition.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Position"].Value;
-                UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftResults.SelectedRows[0].Cells["Position"].Value, true));
+
+                try
+                {
+                    UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftResults.SelectedRows[0].Cells["Position"].Value, true));
+                }
+                catch (ArgumentException ae)
+                {
+
+                }
             }
         }
 
