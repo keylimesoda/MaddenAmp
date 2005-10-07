@@ -56,10 +56,12 @@ namespace MaddenEditor.Forms
 
         private void startButton_Click(object sender, EventArgs e)
         {
+			Cursor.Current = Cursors.WaitCursor;
             int secs = (int)minutes.Value * 60 + (int)seconds.Value;
             int humanId = model.TeamModel.GetTeamIdFromTeamName((string)teamChooser.SelectedItem);
             ScoutingForm form = new ScoutingForm(model, humanId, secs);
             form.Show();
+			Cursor.Current = Cursors.Default;
             this.Close();
         }
 
@@ -67,5 +69,14 @@ namespace MaddenEditor.Forms
         {
             this.Close();
         }
+
+		private void teamChooser_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!teamChooser.SelectedItem.ToString().Equals(""))
+			{
+				startButton.Enabled = true;
+			}
+
+		}
     }
 }
