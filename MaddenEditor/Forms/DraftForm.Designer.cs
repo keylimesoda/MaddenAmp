@@ -76,25 +76,37 @@ namespace MaddenEditor.Forms
             this.showDraftedPlayers = new System.Windows.Forms.CheckBox();
             this.tradeButton = new System.Windows.Forms.Button();
             this.wishlistGrid = new System.Windows.Forms.DataGridView();
-            this.label7 = new System.Windows.Forms.Label();
             this.upButton = new System.Windows.Forms.Button();
             this.downButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.autoPickBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.statusLabel = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.selectingLabel = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.draftHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.stickyDraftBoards = new System.Windows.Forms.CheckBox();
+            this.stickyDepthCharts = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.DraftResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DepthChartGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DraftBoardGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PicksToSkip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wishlistGrid)).BeginInit();
+            this.statusStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // DraftResults
@@ -105,7 +117,7 @@ namespace MaddenEditor.Forms
             this.DraftResults.AllowUserToResizeRows = false;
             this.DraftResults.BackgroundColor = System.Drawing.Color.White;
             this.DraftResults.GridColor = System.Drawing.Color.White;
-            this.DraftResults.Location = new System.Drawing.Point(15, 70);
+            this.DraftResults.Location = new System.Drawing.Point(12, 53);
             this.DraftResults.MultiSelect = false;
             this.DraftResults.Name = "DraftResults";
             this.DraftResults.ReadOnly = true;
@@ -113,7 +125,7 @@ namespace MaddenEditor.Forms
             this.DraftResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.DraftResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DraftResults.ShowEditingIcon = false;
-            this.DraftResults.Size = new System.Drawing.Size(285, 265);
+            this.DraftResults.Size = new System.Drawing.Size(285, 308);
             this.DraftResults.TabIndex = 0;
             this.DraftResults.TabStop = false;
             this.DraftResults.Text = "dataGridView1";
@@ -128,26 +140,26 @@ namespace MaddenEditor.Forms
             this.RookieGrid.BackgroundColor = System.Drawing.Color.White;
             this.RookieGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.RookieGrid.GridColor = System.Drawing.Color.White;
-            this.RookieGrid.Location = new System.Drawing.Point(15, 380);
+            this.RookieGrid.Location = new System.Drawing.Point(11, 56);
             this.RookieGrid.Name = "RookieGrid";
             this.RookieGrid.ReadOnly = true;
             this.RookieGrid.RowTemplate.Height = 16;
             this.RookieGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.RookieGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.RookieGrid.ShowEditingIcon = false;
-            this.RookieGrid.Size = new System.Drawing.Size(975, 167);
+            this.RookieGrid.Size = new System.Drawing.Size(965, 167);
             this.RookieGrid.TabIndex = 1;
             this.RookieGrid.TabStop = false;
             this.RookieGrid.Text = "dataGridView1";
             this.RookieGrid.Sorted += new System.EventHandler(this.fixSort);
-            this.RookieGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellClick);
             this.RookieGrid.DoubleClick += new System.EventHandler(this.RookieGrid_DoubleClick);
-            this.RookieGrid.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.RookieGrid_MouseDoubleClick);
+            this.RookieGrid.Click += new System.EventHandler(this.RookieGrid_Click);
+            this.RookieGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellClick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 42);
+            this.label1.Location = new System.Drawing.Point(28, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 2;
@@ -156,7 +168,7 @@ namespace MaddenEditor.Forms
             // draftedTeamsFilter
             // 
             this.draftedTeamsFilter.FormattingEnabled = true;
-            this.draftedTeamsFilter.Location = new System.Drawing.Point(72, 38);
+            this.draftedTeamsFilter.Location = new System.Drawing.Point(69, 21);
             this.draftedTeamsFilter.Name = "draftedTeamsFilter";
             this.draftedTeamsFilter.Size = new System.Drawing.Size(108, 21);
             this.draftedTeamsFilter.TabIndex = 3;
@@ -165,7 +177,7 @@ namespace MaddenEditor.Forms
             // draftedPositionsFilter
             // 
             this.draftedPositionsFilter.FormattingEnabled = true;
-            this.draftedPositionsFilter.Location = new System.Drawing.Point(237, 38);
+            this.draftedPositionsFilter.Location = new System.Drawing.Point(234, 21);
             this.draftedPositionsFilter.Name = "draftedPositionsFilter";
             this.draftedPositionsFilter.Size = new System.Drawing.Size(63, 21);
             this.draftedPositionsFilter.TabIndex = 4;
@@ -174,7 +186,7 @@ namespace MaddenEditor.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(186, 42);
+            this.label2.Location = new System.Drawing.Point(183, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 5;
@@ -183,7 +195,7 @@ namespace MaddenEditor.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(877, 198);
+            this.label3.Location = new System.Drawing.Point(178, 202);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 9;
@@ -192,7 +204,7 @@ namespace MaddenEditor.Forms
             // depthChartPosition
             // 
             this.depthChartPosition.FormattingEnabled = true;
-            this.depthChartPosition.Location = new System.Drawing.Point(928, 194);
+            this.depthChartPosition.Location = new System.Drawing.Point(229, 198);
             this.depthChartPosition.Name = "depthChartPosition";
             this.depthChartPosition.Size = new System.Drawing.Size(63, 21);
             this.depthChartPosition.TabIndex = 8;
@@ -201,7 +213,7 @@ namespace MaddenEditor.Forms
             // depthChartTeam
             // 
             this.depthChartTeam.FormattingEnabled = true;
-            this.depthChartTeam.Location = new System.Drawing.Point(763, 194);
+            this.depthChartTeam.Location = new System.Drawing.Point(64, 198);
             this.depthChartTeam.Name = "depthChartTeam";
             this.depthChartTeam.Size = new System.Drawing.Size(108, 21);
             this.depthChartTeam.TabIndex = 7;
@@ -210,7 +222,7 @@ namespace MaddenEditor.Forms
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(722, 198);
+            this.label4.Location = new System.Drawing.Point(23, 202);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 6;
@@ -225,7 +237,7 @@ namespace MaddenEditor.Forms
             this.DepthChartGrid.BackgroundColor = System.Drawing.Color.White;
             this.DepthChartGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.DepthChartGrid.GridColor = System.Drawing.Color.White;
-            this.DepthChartGrid.Location = new System.Drawing.Point(718, 225);
+            this.DepthChartGrid.Location = new System.Drawing.Point(19, 229);
             this.DepthChartGrid.Name = "DepthChartGrid";
             this.DepthChartGrid.ReadOnly = true;
             this.DepthChartGrid.RowTemplate.Height = 16;
@@ -244,7 +256,7 @@ namespace MaddenEditor.Forms
             this.DraftBoardGrid.AllowUserToResizeRows = false;
             this.DraftBoardGrid.BackgroundColor = System.Drawing.Color.White;
             this.DraftBoardGrid.GridColor = System.Drawing.Color.White;
-            this.DraftBoardGrid.Location = new System.Drawing.Point(719, 70);
+            this.DraftBoardGrid.Location = new System.Drawing.Point(20, 54);
             this.DraftBoardGrid.Name = "DraftBoardGrid";
             this.DraftBoardGrid.ReadOnly = true;
             this.DraftBoardGrid.RowTemplate.Height = 16;
@@ -260,7 +272,7 @@ namespace MaddenEditor.Forms
             // draftBoardTeam
             // 
             this.draftBoardTeam.FormattingEnabled = true;
-            this.draftBoardTeam.Location = new System.Drawing.Point(763, 39);
+            this.draftBoardTeam.Location = new System.Drawing.Point(64, 23);
             this.draftBoardTeam.Name = "draftBoardTeam";
             this.draftBoardTeam.Size = new System.Drawing.Size(108, 21);
             this.draftBoardTeam.TabIndex = 13;
@@ -269,7 +281,7 @@ namespace MaddenEditor.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(722, 43);
+            this.label5.Location = new System.Drawing.Point(23, 27);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(35, 13);
             this.label5.TabIndex = 12;
@@ -278,7 +290,7 @@ namespace MaddenEditor.Forms
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(877, 357);
+            this.label6.Location = new System.Drawing.Point(862, 28);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(45, 13);
             this.label6.TabIndex = 15;
@@ -287,7 +299,7 @@ namespace MaddenEditor.Forms
             // RookiePositionFilter
             // 
             this.RookiePositionFilter.FormattingEnabled = true;
-            this.RookiePositionFilter.Location = new System.Drawing.Point(928, 353);
+            this.RookiePositionFilter.Location = new System.Drawing.Point(913, 24);
             this.RookiePositionFilter.Name = "RookiePositionFilter";
             this.RookiePositionFilter.Size = new System.Drawing.Size(63, 21);
             this.RookiePositionFilter.TabIndex = 14;
@@ -297,7 +309,7 @@ namespace MaddenEditor.Forms
             // 
             this.PlayerToDraft.BackColor = System.Drawing.Color.White;
             this.PlayerToDraft.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PlayerToDraft.Location = new System.Drawing.Point(15, 345);
+            this.PlayerToDraft.Location = new System.Drawing.Point(11, 19);
             this.PlayerToDraft.Name = "PlayerToDraft";
             this.PlayerToDraft.ReadOnly = true;
             this.PlayerToDraft.Size = new System.Drawing.Size(216, 26);
@@ -307,7 +319,7 @@ namespace MaddenEditor.Forms
             // draftButton
             // 
             this.draftButton.Enabled = false;
-            this.draftButton.Location = new System.Drawing.Point(238, 345);
+            this.draftButton.Location = new System.Drawing.Point(234, 19);
             this.draftButton.Name = "draftButton";
             this.draftButton.Size = new System.Drawing.Size(62, 26);
             this.draftButton.TabIndex = 17;
@@ -320,7 +332,7 @@ namespace MaddenEditor.Forms
             this.clock.Cursor = System.Windows.Forms.Cursors.Default;
             this.clock.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clock.ForeColor = System.Drawing.Color.Red;
-            this.clock.Location = new System.Drawing.Point(449, 70);
+            this.clock.Location = new System.Drawing.Point(67, 22);
             this.clock.Name = "clock";
             this.clock.ReadOnly = true;
             this.clock.Size = new System.Drawing.Size(129, 68);
@@ -336,7 +348,7 @@ namespace MaddenEditor.Forms
             // PicksToSkip
             // 
             this.PicksToSkip.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PicksToSkip.Location = new System.Drawing.Point(528, 144);
+            this.PicksToSkip.Location = new System.Drawing.Point(146, 96);
             this.PicksToSkip.Maximum = new decimal(new int[] {
             224,
             0,
@@ -353,7 +365,7 @@ namespace MaddenEditor.Forms
             // 
             // SkipButton
             // 
-            this.SkipButton.Location = new System.Drawing.Point(449, 143);
+            this.SkipButton.Location = new System.Drawing.Point(67, 95);
             this.SkipButton.Name = "SkipButton";
             this.SkipButton.Size = new System.Drawing.Size(69, 28);
             this.SkipButton.TabIndex = 20;
@@ -365,7 +377,7 @@ namespace MaddenEditor.Forms
             this.showDraftedPlayers.AutoSize = true;
             this.showDraftedPlayers.Checked = true;
             this.showDraftedPlayers.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showDraftedPlayers.Location = new System.Drawing.Point(718, 356);
+            this.showDraftedPlayers.Location = new System.Drawing.Point(703, 27);
             this.showDraftedPlayers.Name = "showDraftedPlayers";
             this.showDraftedPlayers.Size = new System.Drawing.Size(124, 17);
             this.showDraftedPlayers.TabIndex = 21;
@@ -374,7 +386,7 @@ namespace MaddenEditor.Forms
             // 
             // tradeButton
             // 
-            this.tradeButton.Location = new System.Drawing.Point(449, 178);
+            this.tradeButton.Location = new System.Drawing.Point(67, 130);
             this.tradeButton.Name = "tradeButton";
             this.tradeButton.Size = new System.Drawing.Size(128, 22);
             this.tradeButton.TabIndex = 22;
@@ -390,84 +402,78 @@ namespace MaddenEditor.Forms
             this.wishlistGrid.BackgroundColor = System.Drawing.Color.White;
             this.wishlistGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.wishlistGrid.GridColor = System.Drawing.Color.White;
-            this.wishlistGrid.Location = new System.Drawing.Point(449, 245);
+            this.wishlistGrid.Location = new System.Drawing.Point(12, 24);
             this.wishlistGrid.Name = "wishlistGrid";
             this.wishlistGrid.ReadOnly = true;
             this.wishlistGrid.RowTemplate.Height = 16;
             this.wishlistGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.wishlistGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.wishlistGrid.ShowEditingIcon = false;
-            this.wishlistGrid.Size = new System.Drawing.Size(129, 90);
+            this.wishlistGrid.Size = new System.Drawing.Size(241, 90);
             this.wishlistGrid.TabIndex = 23;
             this.wishlistGrid.Text = "dataGridView1";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(453, 225);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 13);
-            this.label7.TabIndex = 24;
-            this.label7.Text = "Draft Targets";
+            this.wishlistGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.wishlistGrid_CellDoubleClick);
+            this.wishlistGrid.Sorted += new System.EventHandler(this.wishlistFixSort);
+            this.wishlistGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.wishlistGrid_CellClick);
             // 
             // upButton
             // 
-            this.upButton.Location = new System.Drawing.Point(452, 341);
+            this.upButton.Location = new System.Drawing.Point(44, 120);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(26, 19);
             this.upButton.TabIndex = 25;
             this.upButton.Text = "Up";
+            this.upButton.Click += new System.EventHandler(this.upButton_Click);
             // 
             // downButton
             // 
-            this.downButton.Location = new System.Drawing.Point(482, 341);
+            this.downButton.Location = new System.Drawing.Point(74, 120);
             this.downButton.Name = "downButton";
-            this.downButton.Size = new System.Drawing.Size(26, 19);
+            this.downButton.Size = new System.Drawing.Size(36, 19);
             this.downButton.TabIndex = 26;
             this.downButton.Text = "Down";
+            this.downButton.Click += new System.EventHandler(this.downButton_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(517, 341);
+            this.button3.Location = new System.Drawing.Point(164, 120);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(57, 19);
             this.button3.TabIndex = 27;
             this.button3.Text = "Remove";
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.progressBar,
+            this.statusLabel});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.statusStrip.Location = new System.Drawing.Point(0, 561);
+            this.statusStrip.Location = new System.Drawing.Point(0, 673);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1002, 23);
+            this.statusStrip.Size = new System.Drawing.Size(1016, 23);
             this.statusStrip.TabIndex = 28;
             this.statusStrip.Text = "statusStrip1";
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(6, 567);
+            this.progressBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(121, 14);
-            this.progressBar.Step = 1;
-            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar.TabIndex = 29;
+            this.progressBar.Size = new System.Drawing.Size(100, 16);
+            this.progressBar.Text = "toolStripProgressBar1";
             // 
             // statusLabel
             // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(138, 567);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 0);
-            this.statusLabel.TabIndex = 30;
+            this.statusLabel.Text = "Ready.";
             // 
             // selectingLabel
             // 
-            this.selectingLabel.AutoSize = true;
             this.selectingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectingLabel.ForeColor = System.Drawing.Color.Red;
-            this.selectingLabel.Location = new System.Drawing.Point(343, 31);
+            this.selectingLabel.Location = new System.Drawing.Point(322, 31);
             this.selectingLabel.Name = "selectingLabel";
-            this.selectingLabel.Size = new System.Drawing.Size(312, 31);
+            this.selectingLabel.Size = new System.Drawing.Size(375, 31);
             this.selectingLabel.TabIndex = 31;
             this.selectingLabel.Text = "On the Clock:  XXXXXXX";
             this.selectingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -478,7 +484,7 @@ namespace MaddenEditor.Forms
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1002, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1016, 24);
             this.menuStrip1.TabIndex = 32;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -495,55 +501,143 @@ namespace MaddenEditor.Forms
             this.draftHelpToolStripMenuItem.Text = "Draft Help";
             this.draftHelpToolStripMenuItem.Click += new System.EventHandler(this.draftHelpToolStripMenuItem_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.stickyDraftBoards);
+            this.groupBox1.Controls.Add(this.stickyDepthCharts);
+            this.groupBox1.Controls.Add(this.draftBoardTeam);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.DraftBoardGrid);
+            this.groupBox1.Controls.Add(this.DepthChartGrid);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.depthChartPosition);
+            this.groupBox1.Controls.Add(this.depthChartTeam);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Location = new System.Drawing.Point(696, 42);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(308, 373);
+            this.groupBox1.TabIndex = 33;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Draft Boards and Depth Charts";
+            // 
+            // stickyDraftBoards
+            // 
+            this.stickyDraftBoards.AutoSize = true;
+            this.stickyDraftBoards.Checked = true;
+            this.stickyDraftBoards.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.stickyDraftBoards.Location = new System.Drawing.Point(140, 168);
+            this.stickyDraftBoards.Name = "stickyDraftBoards";
+            this.stickyDraftBoards.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.stickyDraftBoards.Size = new System.Drawing.Size(133, 17);
+            this.stickyDraftBoards.TabIndex = 15;
+            this.stickyDraftBoards.Text = "Auto-Load Draft Boards";
+            // 
+            // stickyDepthCharts
+            // 
+            this.stickyDepthCharts.AutoSize = true;
+            this.stickyDepthCharts.Checked = true;
+            this.stickyDepthCharts.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.stickyDepthCharts.Location = new System.Drawing.Point(140, 348);
+            this.stickyDepthCharts.Name = "stickyDepthCharts";
+            this.stickyDepthCharts.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.stickyDepthCharts.Size = new System.Drawing.Size(136, 17);
+            this.stickyDepthCharts.TabIndex = 14;
+            this.stickyDepthCharts.Text = "Auto-Load Depth Charts";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.showDraftedPlayers);
+            this.groupBox2.Controls.Add(this.draftButton);
+            this.groupBox2.Controls.Add(this.PlayerToDraft);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.RookiePositionFilter);
+            this.groupBox2.Controls.Add(this.RookieGrid);
+            this.groupBox2.Location = new System.Drawing.Point(13, 430);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(991, 233);
+            this.groupBox2.TabIndex = 34;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Rookies";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.draftedPositionsFilter);
+            this.groupBox3.Controls.Add(this.draftedTeamsFilter);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.DraftResults);
+            this.groupBox3.Location = new System.Drawing.Point(12, 42);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(312, 373);
+            this.groupBox3.TabIndex = 35;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Draft Results";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.button3);
+            this.groupBox4.Controls.Add(this.downButton);
+            this.groupBox4.Controls.Add(this.upButton);
+            this.groupBox4.Controls.Add(this.wishlistGrid);
+            this.groupBox4.Location = new System.Drawing.Point(378, 264);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(263, 151);
+            this.groupBox4.TabIndex = 36;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Our Draft Board";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.tradeButton);
+            this.groupBox5.Controls.Add(this.SkipButton);
+            this.groupBox5.Controls.Add(this.PicksToSkip);
+            this.groupBox5.Controls.Add(this.clock);
+            this.groupBox5.Location = new System.Drawing.Point(378, 80);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(263, 166);
+            this.groupBox5.TabIndex = 37;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Clock";
+            // 
             // DraftForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1002, 584);
+            this.ClientSize = new System.Drawing.Size(1016, 696);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.selectingLabel);
-            this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.progressBar);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.downButton);
-            this.Controls.Add(this.upButton);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.wishlistGrid);
-            this.Controls.Add(this.tradeButton);
-            this.Controls.Add(this.showDraftedPlayers);
-            this.Controls.Add(this.SkipButton);
-            this.Controls.Add(this.PicksToSkip);
-            this.Controls.Add(this.clock);
-            this.Controls.Add(this.draftButton);
-            this.Controls.Add(this.PlayerToDraft);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.RookiePositionFilter);
-            this.Controls.Add(this.draftBoardTeam);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.DraftBoardGrid);
-            this.Controls.Add(this.DepthChartGrid);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.depthChartPosition);
-            this.Controls.Add(this.depthChartTeam);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.draftedPositionsFilter);
-            this.Controls.Add(this.draftedTeamsFilter);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.RookieGrid);
-            this.Controls.Add(this.DraftResults);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1024, 730);
+            this.MinimumSize = new System.Drawing.Size(1024, 730);
             this.Name = "DraftForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Draft";
             this.Load += new System.EventHandler(this.DraftForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DraftForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.DraftResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DepthChartGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DraftBoardGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PicksToSkip)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wishlistGrid)).EndInit();
+            this.statusStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -576,18 +670,24 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.CheckBox showDraftedPlayers;
         private System.Windows.Forms.Button tradeButton;
         private System.Windows.Forms.DataGridView wishlistGrid;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button upButton;
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Button button3;
         private System.ComponentModel.BackgroundWorker autoPickBackgroundWorker;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Label selectingLabel;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem draftHelpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripProgressBar progressBar;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox stickyDepthCharts;
+        private System.Windows.Forms.CheckBox stickyDraftBoards;
+        private System.Windows.Forms.GroupBox groupBox5;
 
     }
 }
