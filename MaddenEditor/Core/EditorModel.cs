@@ -110,6 +110,7 @@ namespace MaddenEditor.Core
         // MADDEN DRAFT EDIT
         public const string DRAFT_PICK_TABLE = "DRPK";
         public const string DRAFTED_PLAYERS_TABLE = "DRPL";
+        public bool draftStarted = false;
         // MADDEN DRAFT EDIT
 
 		private bool dirty = false;
