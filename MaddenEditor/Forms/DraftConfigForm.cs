@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using MaddenEditor.Core;
@@ -56,12 +57,39 @@ namespace MaddenEditor.Forms
 
         private void startButton_Click(object sender, EventArgs e)
         {
-			Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor;
+
+            if (autoSave.Checked)
+            {
+                string fileName = model.GetFileName();
+                string backupFile = fileName.Substring(0, fileName.LastIndexOf('.')) + "-mfebak";
+                string newFile;
+
+                if (overwrite.Checked)
+                {
+                    File.Delete(backupFile + "0.fra");
+                }
+
+                int index = 0;
+                while (true)
+                {
+                    newFile = backupFile + index + ".fra";
+                    if (!File.Exists(newFile))
+                    {
+                        break;
+                    }
+                    index++;
+                }
+
+                File.Copy(fileName, newFile);
+            }
+
             int secs = (int)minutes.Value * 60 + (int)seconds.Value;
             int humanId = model.TeamModel.GetTeamIdFromTeamName((string)teamChooser.SelectedItem);
             ScoutingForm form = new ScoutingForm(model, humanId, secs);
             form.Show();
-			Cursor.Current = Cursors.Default;
+
+            Cursor.Current = Cursors.Arrow;
             this.Close();
         }
 
@@ -69,14 +97,5 @@ namespace MaddenEditor.Forms
         {
             this.Close();
         }
-
-		private void teamChooser_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (!teamChooser.SelectedItem.ToString().Equals(""))
-			{
-				startButton.Enabled = true;
-			}
-
-		}
     }
 }
