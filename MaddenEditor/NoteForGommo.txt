@@ -1,0 +1,7 @@
+Gommo,
+
+The latest upload is "Beta 1" -- mostly aesthetic improvements, but a few other changes as well.  Apparently you made a few changes to some files (DraftConfigForm and ScoutingForm in particular) that I didn't update before making these changes though.  So, it's possible those changes were lost...I'm still a notice when it comes to CVS.
+
+On my end everything seems alright, but it might be worth it for you to see if the build is successful for you before putting together a Beta 1 executable.
+
+Thanks for all your work on this!
