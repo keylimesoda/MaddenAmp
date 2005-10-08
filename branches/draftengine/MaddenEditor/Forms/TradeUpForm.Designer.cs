@@ -41,6 +41,10 @@ namespace MaddenEditor.Forms
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tradeHepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.humanValue = new System.Windows.Forms.Label();
+            this.CPUvalue = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +90,7 @@ namespace MaddenEditor.Forms
             // 
             this.conversation.AcceptsReturn = true;
             this.conversation.BackColor = System.Drawing.Color.White;
-            this.conversation.Location = new System.Drawing.Point(12, 321);
+            this.conversation.Location = new System.Drawing.Point(12, 351);
             this.conversation.Multiline = true;
             this.conversation.Name = "conversation";
             this.conversation.ReadOnly = true;
@@ -97,7 +101,7 @@ namespace MaddenEditor.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 301);
+            this.label3.Location = new System.Drawing.Point(15, 331);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(36, 13);
             this.label3.TabIndex = 5;
@@ -105,7 +109,7 @@ namespace MaddenEditor.Forms
             // 
             // approveButton
             // 
-            this.approveButton.Location = new System.Drawing.Point(22, 264);
+            this.approveButton.Location = new System.Drawing.Point(22, 294);
             this.approveButton.Name = "approveButton";
             this.approveButton.Size = new System.Drawing.Size(79, 24);
             this.approveButton.TabIndex = 6;
@@ -114,7 +118,7 @@ namespace MaddenEditor.Forms
             // 
             // offerButton
             // 
-            this.offerButton.Location = new System.Drawing.Point(117, 264);
+            this.offerButton.Location = new System.Drawing.Point(117, 294);
             this.offerButton.Name = "offerButton";
             this.offerButton.Size = new System.Drawing.Size(79, 24);
             this.offerButton.TabIndex = 7;
@@ -123,7 +127,7 @@ namespace MaddenEditor.Forms
             // 
             // resetButton
             // 
-            this.resetButton.Location = new System.Drawing.Point(211, 264);
+            this.resetButton.Location = new System.Drawing.Point(211, 294);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(79, 24);
             this.resetButton.TabIndex = 8;
@@ -132,7 +136,7 @@ namespace MaddenEditor.Forms
             // 
             // rejectButton
             // 
-            this.rejectButton.Location = new System.Drawing.Point(305, 264);
+            this.rejectButton.Location = new System.Drawing.Point(305, 294);
             this.rejectButton.Name = "rejectButton";
             this.rejectButton.Size = new System.Drawing.Size(79, 24);
             this.rejectButton.TabIndex = 9;
@@ -162,11 +166,53 @@ namespace MaddenEditor.Forms
             this.tradeHepToolStripMenuItem.Text = "Trade Help";
             this.tradeHepToolStripMenuItem.Click += new System.EventHandler(this.tradeHepToolStripMenuItem_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(77, 261);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Total Value:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(283, 261);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Total Value:";
+            // 
+            // humanValue
+            // 
+            this.humanValue.Location = new System.Drawing.Point(144, 261);
+            this.humanValue.Name = "humanValue";
+            this.humanValue.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.humanValue.Size = new System.Drawing.Size(35, 12);
+            this.humanValue.TabIndex = 13;
+            this.humanValue.Text = "8888";
+            this.humanValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // CPUvalue
+            // 
+            this.CPUvalue.Location = new System.Drawing.Point(350, 261);
+            this.CPUvalue.Name = "CPUvalue";
+            this.CPUvalue.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CPUvalue.Size = new System.Drawing.Size(35, 12);
+            this.CPUvalue.TabIndex = 14;
+            this.CPUvalue.Text = "8888";
+            this.CPUvalue.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // TradeUpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 429);
+            this.ClientSize = new System.Drawing.Size(406, 461);
+            this.Controls.Add(this.CPUvalue);
+            this.Controls.Add(this.humanValue);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.rejectButton);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.offerButton);
@@ -179,7 +225,10 @@ namespace MaddenEditor.Forms
             this.Controls.Add(this.myPicks);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximumSize = new System.Drawing.Size(414, 495);
+            this.MinimumSize = new System.Drawing.Size(414, 495);
             this.Name = "TradeUpForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Trade Dialog";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TradeUpForm_KeyPress);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TradeUpForm_FormClosing);
@@ -204,5 +253,9 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tradeHepToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label humanValue;
+        private System.Windows.Forms.Label CPUvalue;
     }
 }

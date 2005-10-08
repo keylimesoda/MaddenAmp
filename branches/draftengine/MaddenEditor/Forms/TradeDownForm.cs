@@ -36,6 +36,7 @@ namespace MaddenEditor.Forms
     {
         int activeTeam = -1;
         int HumanTeam;
+        bool kill = false;
 
         DraftModel dm;
         DraftForm df;
@@ -134,6 +135,8 @@ namespace MaddenEditor.Forms
             {
                 acceptButton.Enabled = true;
             }
+
+            refreshTotals();
         }
 
         private void RefreshPickBoxes()
@@ -152,6 +155,25 @@ namespace MaddenEditor.Forms
             }
 
             selectPrevious();
+        }
+
+        private void refreshTotals()
+        {
+            double humanTotal = 0;
+            double CPUtotal = 0;
+
+            foreach (int index in myPicks.SelectedIndices)
+            {
+                humanTotal += df.pickvalue(picksList[HumanTeam][index], cons[HumanTeam]);
+            }
+
+            foreach (int index in CPUpicks.SelectedIndices)
+            {
+                CPUtotal += df.pickvalue(picksList[dm.tradeOffers[activeTeam].LowerTeam][index], cons[dm.tradeOffers[activeTeam].LowerTeam]);
+            }
+
+            humanValue.Text = humanTotal.ToString();
+            CPUvalue.Text = CPUtotal.ToString();
         }
 
         private void FillPickLists(int TeamId)
@@ -301,6 +323,8 @@ namespace MaddenEditor.Forms
             acceptButton.Enabled = false;
             offerButton.Enabled = true;
             resetButton.Enabled = true;
+
+            refreshTotals();
         }
 
         private void offerButton_Click(object sender, EventArgs e)
@@ -418,6 +442,7 @@ namespace MaddenEditor.Forms
 
             if (dr == DialogResult.Yes)
             {
+                kill = true;
                 dm.AcceptTrade(dm.tradeOffers[activeTeam]);
                 df.ProcessTrade(dm.tradeOffers[activeTeam]);
                 this.Close();
@@ -463,7 +488,10 @@ namespace MaddenEditor.Forms
 
         private void TradeDownForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("Trade talks can not be resumed for the rest of this pick.", "Trade Talks Ending");
+            if (!kill)
+            {
+                MessageBox.Show("Trade talks can not be resumed for the rest of this pick.", "Trade Talks Ending");
+            }
 
             foreach (TradeOffer to in dm.tradeOffers.Values)
             {
