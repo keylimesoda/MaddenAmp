@@ -108,6 +108,8 @@ namespace MaddenEditor.Forms
 
                 offerButton.Enabled = false;
                 resetButton.Enabled = false;
+
+                refreshTotals();
         }
 
         private void selectPrevious()
@@ -176,6 +178,26 @@ namespace MaddenEditor.Forms
         private void resetButton_Click(object sender, EventArgs e)
         {
             selectPrevious();
+            refreshTotals();
+        }
+
+        private void refreshTotals()
+        {
+            double humanTotal = 0;
+            double CPUtotal = 0;
+
+            foreach (int index in myPicks.SelectedIndices)
+            {
+                humanTotal += df.pickvalue(myPicksList[index], LowerCON);
+            }
+
+            foreach (int index in CPUpicks.SelectedIndices)
+            {
+                CPUtotal += df.pickvalue(theirPicksList[index], HigherCON);
+            }
+
+            humanValue.Text = humanTotal.ToString();
+            CPUvalue.Text = CPUtotal.ToString();
         }
 
         private void myPicks_SelectedIndexChanged(object sender, EventArgs e)
@@ -185,6 +207,8 @@ namespace MaddenEditor.Forms
             approveButton.Enabled = false;
             offerButton.Enabled = true;
             resetButton.Enabled = true;
+
+            refreshTotals();
         }
 
         private void approveButton_Click(object sender, EventArgs e)
@@ -197,6 +221,7 @@ namespace MaddenEditor.Forms
         public void HigherOffer(int response)
         {
             selectPrevious();
+            refreshTotals();
 
             offerButton.Enabled = false;
             resetButton.Enabled = false;
@@ -257,10 +282,6 @@ namespace MaddenEditor.Forms
                     rejectButton.Enabled = false;
                     df.DisableTradeButton();
 
-                    lines.Add("");
-                    lines.Add("<<Press any key to close this window>>");
-                    lines.Add("");
-                    lines.Add("");
                     kill = true;
                 }
             }
@@ -357,7 +378,10 @@ namespace MaddenEditor.Forms
 
         private void TradeUpForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("Trade talks can not be resumed for the rest of this pick.", "Trade Talks Ending");
+            if (!kill)
+            {
+                MessageBox.Show("Trade talks can not be resumed for the rest of this pick.", "Trade Talks Ending");
+            }
 
             to.status = (int)TradeOfferStatus.Rejected;
         }
