@@ -135,14 +135,15 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("PGID", "System.Int32"));
             rookieData.Columns.Add(AddColumn("Player", "System.String"));
             rookieData.Columns.Add(AddColumn("Position", "System.String"));
-            rookieData.Columns.Add(AddColumn("actualproj", "System.Int16"));
-            rookieData.Columns.Add(AddColumn("Actual", "System.String"));
+/*            rookieData.Columns.Add(AddColumn("actualproj", "System.Int16"));
+            rookieData.Columns.Add(AddColumn("Actual", "System.String"));*/
             rookieData.Columns.Add(AddColumn("initproj", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Init. Proj.", "System.String"));
             rookieData.Columns.Add(AddColumn("currproj", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Curr. Proj.", "System.String"));
             rookieData.Columns.Add(AddColumn("ourgrade", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Our Grade", "System.String"));
+            rookieData.Columns.Add(AddColumn("Age", "System.Int16"));
             rookieData.Columns.Add(AddColumn("heightnumber", "System.Int16"));
             rookieData.Columns.Add(AddColumn("Height", "System.String"));
             rookieData.Columns.Add(AddColumn("Weight", "System.Int16"));
@@ -158,12 +159,12 @@ namespace MaddenEditor.Forms
             rookieData.Columns.Add(AddColumn("1st Skill", "System.String"));
             rookieData.Columns.Add(AddColumn("secondaryskill", "System.Double"));
             rookieData.Columns.Add(AddColumn("2nd Skill", "System.String"));
-            rookieData.Columns.Add(AddColumn("Hrs Scouted", "System.Int16"));
+            rookieData.Columns.Add(AddColumn("Hours", "System.Int16"));
 
             rookieBinding.DataSource = rookieData;
 
             RookieGrid.DataSource = rookieBinding;
-            RookieGrid.Columns["actualproj"].Visible = false;
+/*            RookieGrid.Columns["actualproj"].Visible = false;*/
             RookieGrid.Columns["initproj"].Visible = false;
             RookieGrid.Columns["currproj"].Visible = false;
             RookieGrid.Columns["ourgrade"].Visible = false;
@@ -173,12 +174,13 @@ namespace MaddenEditor.Forms
             RookieGrid.Columns["primaryskill"].Visible = false;
             RookieGrid.Columns["secondaryskill"].Visible = false;
 
-            RookieGrid.Columns["Player"].Width = 100;
+            RookieGrid.Columns["Player"].Width = 115;
             RookieGrid.Columns["Position"].Width = 45;
-            RookieGrid.Columns["Actual"].Width = 54;
+/*            RookieGrid.Columns["Actual"].Width = 54;*/
             RookieGrid.Columns["Init. Proj."].Width = 54;
             RookieGrid.Columns["Curr. Proj."].Width = 58;
             RookieGrid.Columns["Our Grade"].Width = 58;
+            RookieGrid.Columns["Age"].Width = 25;
             RookieGrid.Columns["Height"].Width = 40;
             RookieGrid.Columns["Weight"].Width = 42;
             RookieGrid.Columns["40 Time"].Width = 47;
@@ -190,7 +192,7 @@ namespace MaddenEditor.Forms
             RookieGrid.Columns["Doctor"].Width = 40;
             RookieGrid.Columns["1st Skill"].Width = 60;
             RookieGrid.Columns["2nd Skill"].Width = 63;
-            RookieGrid.Columns["Hrs Scouted"].Width = 70;
+            RookieGrid.Columns["Hours"].Width = 40;
             RookieGrid.Columns.Add(scoutingHours);
 
             RookieGrid.Columns["Player"].ReadOnly = true;
@@ -365,9 +367,9 @@ namespace MaddenEditor.Forms
                 dr["Player"] = rook.Value.Player.FirstName + " " + rook.Value.Player.LastName;
                 dr["Position"] = Enum.GetNames(typeof(MaddenPositions))[rook.Value.Player.PositionId].ToString();
 
-                dr["actualproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Actual];
+/*                dr["actualproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Actual];
                 dr["Actual"] = rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Actual];
-
+*/
                 dr["initproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Initial];
                 dr["Init. Proj."] = rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial];
 
@@ -388,6 +390,7 @@ namespace MaddenEditor.Forms
                     dr["Our Grade"] = rook.Value.CombineWords[(int)CombineStat.RoundGrade];
                 }
 
+                dr["Age"] = rook.Value.Player.Age;
                 dr["heightnumber"] = rook.Value.Player.Height;
                 dr["Height"] = rook.Value.CombineWords[(int)CombineStat.Height];
                 dr["Weight"] = rook.Value.Player.Weight + 160;
@@ -425,11 +428,11 @@ namespace MaddenEditor.Forms
 
                 if (stage == 1)
                 {
-                    dr["Hrs Scouted"] = rook.Value.PreCombineScoutedHours[HumanTeamId];
+                    dr["Hours"] = rook.Value.PreCombineScoutedHours[HumanTeamId];
                 }
                 else if (stage == 2)
                 {
-                    dr["Hrs Scouted"] = rook.Value.PreCombineScoutedHours[HumanTeamId] + rook.Value.PostCombineScoutedHours[HumanTeamId];
+                    dr["Hours"] = rook.Value.PreCombineScoutedHours[HumanTeamId] + rook.Value.PostCombineScoutedHours[HumanTeamId];
                 }
 
                 rookieData.Rows.Add(dr);
@@ -538,7 +541,7 @@ namespace MaddenEditor.Forms
             {
                 case -1:
                     RookieGrid.Columns["1st Skill"].HeaderText = "1st Skill";
-                    RookieGrid.Columns["2nd Skill"].HeaderText = "1st Skill";
+                    RookieGrid.Columns["2nd Skill"].HeaderText = "2nd Skill";
                     break;
                 case (int)MaddenPositions.QB:
                     RookieGrid.Columns["1st Skill"].HeaderText = "Power";
@@ -644,9 +647,11 @@ namespace MaddenEditor.Forms
 
                 if (dr == DialogResult.Yes)
                 {
-                    this.Close();
-
+                    Cursor.Current = Cursors.WaitCursor;
                     DraftForm form = new DraftForm(model, dm, HumanTeamId, SecondsPerPick);
+                    Cursor.Current = Cursors.Arrow;
+
+                    this.Close();
                     form.Show();
                 }
 
@@ -663,6 +668,10 @@ namespace MaddenEditor.Forms
 
                 if (dr == DialogResult.Yes)
                 {
+                    Cursor.Current = Cursors.WaitCursor;
+                    this.Invalidate(true);
+                    this.Update();
+
                     if (stage == 0)
                     {
                         dm.DoCombine();
@@ -682,12 +691,18 @@ namespace MaddenEditor.Forms
                     RefillRookieGrid();
                     FillHourData();
                     RefreshAllocations();
+
+                    Cursor.Current = Cursors.Arrow;
                 }
             } else {
                 DialogResult dr = MessageBox.Show("Continue to next stage of rookie scouting?", "Continue?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dr == DialogResult.Yes)
                 {
+                    Cursor.Current = Cursors.WaitCursor;
+                    this.Invalidate(true);
+                    this.Update();
+
                     if (stage == 0)
                     {
                         dm.DoCombine();
@@ -708,6 +723,8 @@ namespace MaddenEditor.Forms
                     RefillRookieGrid();
                     FillHourData();
                     RefreshAllocations();
+
+                    Cursor.Current = Cursors.Arrow;
                 }
             }
         }
