@@ -35,28 +35,28 @@ namespace MaddenEditor.Core.Record
         private PlayerRecord player;
         public DraftModel dm;
 
-        public Dictionary<int, int> EstimatedPickNumber = new Dictionary<int,int>();
-        public Dictionary<int, string> EstimatedRound = new Dictionary<int,string>();
+        public Dictionary<int, int> EstimatedPickNumber;
+        public Dictionary<int, string> EstimatedRound;
 
-        public Dictionary<int, double> PreCombineScoutedHours = new Dictionary<int,double>();
-        public Dictionary<int, double> PostCombineScoutedHours = new Dictionary<int,double>();
+        public Dictionary<int, double> PreCombineScoutedHours;
+        public Dictionary<int, double> PostCombineScoutedHours;
 
-        public Dictionary<int, double> CombineNumbers = new Dictionary<int, double>();
-        public Dictionary<int, string> CombineWords = new Dictionary<int, string>();
+        public Dictionary<int, double> CombineNumbers;
+        public Dictionary<int, string> CombineWords;
 
-        public Dictionary<int, double> ActualRatings = new Dictionary<int,double>();
+        public Dictionary<int, double> ActualRatings;
         public double ActualValue;
 
         private double power = 10;
 
         // Has structure ratings[TeamId][RatingType][Attribute]
-        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> ratings = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
+        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> ratings;
 
         // Has structure values[TeamId][PositionId][ValueType]
-        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> values = new Dictionary<int,Dictionary<int,Dictionary<int, double>>>();
+        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> values;
 
         // Has structure needs[TeamId][PositionId][NeedType]
-        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> needs = new Dictionary<int,Dictionary<int,Dictionary<int,double>>>();
+        public Dictionary<int, Dictionary<int, Dictionary<int, double>>> needs;
 
         public RookieRecord(int record, EditorModel EditorModel)
 			: base(record, EditorModel)
@@ -66,6 +66,21 @@ namespace MaddenEditor.Core.Record
 
         public void InitializeDictionaries(Dictionary<int, Dictionary<int, double>> awarenessAdjust) 
         {
+            EstimatedPickNumber = new Dictionary<int,int>();
+            EstimatedRound = new Dictionary<int,string>();
+
+            PreCombineScoutedHours = new Dictionary<int,double>();
+            PostCombineScoutedHours = new Dictionary<int,double>();
+
+            CombineNumbers = new Dictionary<int, double>();
+            CombineWords = new Dictionary<int, string>();
+
+            ActualRatings = new Dictionary<int,double>();
+
+            ratings = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
+            values = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
+            needs = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
+
             for (int i = 0; i < 32; i++)
             {
                 ratings.Add(i, new Dictionary<int, Dictionary<int, double>>());
@@ -329,6 +344,7 @@ namespace MaddenEditor.Core.Record
                 case (int)MaddenPositions.LE:
                 case (int)MaddenPositions.DT:
                 case (int)MaddenPositions.RE:
+                    return -1;
                 case (int)MaddenPositions.LOLB:
                 case (int)MaddenPositions.MLB:
                 case (int)MaddenPositions.ROLB:
