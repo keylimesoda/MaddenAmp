@@ -470,8 +470,15 @@ namespace MaddenEditor.Forms
         // MADDEN DRAFT EDIT
         private void enterDraftToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DraftConfigForm form = new DraftConfigForm(model);
-            form.Show(this);
+            if (!model.draftStarted)
+            {
+                DraftConfigForm form = new DraftConfigForm(model);
+                form.Show(this);
+            }
+            else
+            {
+                MessageBox.Show("You must reopen your file to restart the draft.");
+            }
         }
 
         private void depthChartMenuItem_Click(object sender, EventArgs e)
@@ -521,15 +528,31 @@ namespace MaddenEditor.Forms
 
                     lines[i] = lines[i].Trim();
                     string[] nums = lines[i].Split(' ');
+
+                    int round;
+                    int fromTeam;
+                    int toTeam;
+
                     try
                     {
-                        tradedPicks[Int32.Parse(nums[0])-1][Int32.Parse(nums[1])] = Int32.Parse(nums[2]);
+                        round = Int32.Parse(nums[0]);
+                        fromTeam = Int32.Parse(nums[1]);
+                        toTeam = Int32.Parse(nums[2]);
                     }
                     catch
                     {
-                        MessageBox.Show("Error processing file.");
+                        MessageBox.Show("Error processing file.  Incorrect format.");
+                        fs.Close();
+                        sr.Close();
                         return;
                     }
+
+                    if (!(round > 0 && round <= 7 && fromTeam >= 0 && fromTeam < 32 && toTeam >= 0 && toTeam < 32))
+                    {
+                        MessageBox.Show("Error processing file.  Incorrect ranges.");
+                    }
+
+                    tradedPicks[round-1][fromTeam] = toTeam;
                 }
 
                 fs.Close();
