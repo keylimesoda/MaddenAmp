@@ -71,6 +71,10 @@ namespace MaddenEditor.Core
 
         public string SkillToGrade(double skill)
         {
+            if (skill == -1)
+            {
+                return "";
+            }
             if (skill > 95)
             {
                 return "A+";

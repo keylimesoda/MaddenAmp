@@ -86,7 +86,8 @@ namespace MaddenEditor.Core.Record
 
         public void SavePicks(string saveFile)
         {
-            FileStream fs = new FileStream(saveFile, FileMode.OpenOrCreate, FileAccess.Write);
+            File.Delete(saveFile);
+            FileStream fs = new FileStream(saveFile, FileMode.Create, FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs);
 
             foreach (KeyValuePair<int, Dictionary<int, int>> dick in futureTradedPicks)
@@ -447,25 +448,22 @@ namespace MaddenEditor.Core.Record
                 favorites = GetFavoriteRookies(pickNumber);
                 toDraft = favorites[dpRecord.CurrentTeamId];
             }
-            
+
             /*
              * Some debugging/diagnostic code
              *              
-             * 
+             
             Console.WriteLine("\n" + " " + pickNumber + " " + dpRecord.CurrentTeamId + " " + toDraft.Player.ToString() + " " + toDraft.Player.Overall + " " + toDraft.Player.Injury + "\n");
-            int trash = 2 + 2;
 
-            if (true)
-            {
                 Console.WriteLine(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON);
                 foreach (RookieRecord rook in GetDraftBoard(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber))
                 {
                     if (rook.DraftedTeam < 32) { continue; }
                     Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue +  " " + rook.values[dpRecord.CurrentTeamId][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(dpRecord.CurrentTeamId, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[dpRecord.CurrentTeamId] + rook.PostCombineScoutedHours[dpRecord.CurrentTeamId]));
                 }
-            }
-             * */
-            
+            */
+
+
             toDraft.DraftedTeam = dpRecord.CurrentTeamId;
             toDraft.DraftPickNumber = pickNumber;
 
@@ -850,17 +848,19 @@ namespace MaddenEditor.Core.Record
                 to.allowFuturePicksFromHigher = false;
             }
 
-            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.3 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.7 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8)))
+            int defense = model.TeamModel.GetTeamRecord(LowerTeamId).DefensiveSystem;
+
+            if (LowerTeamId == HumanTeamId || ((favorites[LowerTeamId].PreCombineScoutedHours[LowerTeamId] + favorites[LowerTeamId].PostCombineScoutedHours[LowerTeamId]) >= 6 && to.MaxGive > 1.2 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.7 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8)))
             {
                 to.MaxPicksFromLower = 3;
             }
 
-            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.6 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.9)))
+            if (LowerTeamId == HumanTeamId || ((favorites[LowerTeamId].PreCombineScoutedHours[LowerTeamId] + favorites[LowerTeamId].PostCombineScoutedHours[LowerTeamId]) >= 7 && to.MaxGive > 1.4 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.8 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.9)))
             {
                 to.allowFutureHighPicks = true;
             }
 
-            if (LowerTeamId == HumanTeamId || (to.MaxGive > 1.8 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.9 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.95)))
+            if (LowerTeamId == HumanTeamId || ((favorites[LowerTeamId].PreCombineScoutedHours[LowerTeamId] + favorites[LowerTeamId].PostCombineScoutedHours[LowerTeamId]) >= 8 && to.MaxGive > 1.6 * pickValues[pickNumber] && (favorites[LowerTeamId].AverageStarterNeed(LowerTeamId, dcr.awarenessAdjust) > 0.9 || favorites[LowerTeamId].AverageSuccessorNeed(LowerTeamId, dcr.awarenessAdjust) > 0.95)))
             {
                 to.allowMultipleHighPicks = true;
             }
@@ -939,7 +939,7 @@ namespace MaddenEditor.Core.Record
 
                 if (to.HigherTeam == HumanTeamId)
                 {
-                    if (to.offersFromLower[0] < 0.6 * pickValues[pickNumber])
+                    if (to.offersFromLower[0] < 0.8 * pickValues[pickNumber])
                     {
                         tradeOffers.Remove(LowerTeamId);
                         return null;
@@ -1361,6 +1361,13 @@ namespace MaddenEditor.Core.Record
                         to.makeCounterOffer(attemptedOffer, false);
                         if (to.HigherTeam == HumanTeamId)
                         {
+                            if (to.offersFromLower.Count == 0 || to.offersFromLower[to.offersFromLower.Count - 1] < 0.5 * pickValues[to.pickNumber])
+                            {
+                                to.status = (int)TradeOfferStatus.Rejected;
+                                tradeDownForm.Message(to, (int)TradeResponse.Reject);
+                                return null;
+                            }
+
                             tradeDownForm.Message(to, (int)TradeResponse.CounterOffer);
                         }
                         Console.WriteLine("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
@@ -1376,6 +1383,13 @@ namespace MaddenEditor.Core.Record
                         to.makeCounterOffer(attemptedOffer, false);
                         if (to.HigherTeam == HumanTeamId)
                         {
+                            if (to.offersFromLower.Count == 0 || to.offersFromLower[to.offersFromLower.Count - 1] < 0.5 * pickValues[to.pickNumber])
+                            {
+                                to.status = (int)TradeOfferStatus.Rejected;
+                                tradeDownForm.Message(to, (int)TradeResponse.Reject);
+                                return null;
+                            }
+
                             tradeDownForm.Message(to, (int)TradeResponse.CounterOffer);
                         }
 
