@@ -1,7 +1,9 @@
-Gommo,
+Hey man,
 
-The latest upload is "Beta 1" -- mostly aesthetic improvements, but a few other changes as well.  Apparently you made a few changes to some files (DraftConfigForm and ScoutingForm in particular) that I didn't update before making these changes though.  So, it's possible those changes were lost...I'm still a notice when it comes to CVS.
+Thanks for noticing the note and getting everything into place.  It's a shame FF sees so much down time...
 
-On my end everything seems alright, but it might be worth it for you to see if the build is successful for you before putting together a Beta 1 executable.
+One thing I forgot to add.  If it's still alright with you, can you change the license on the install sequence to the standard GPL?  And can you either put a link to the new EXE in this file, or better yet, email it to me?
 
-Thanks for all your work on this!
+feedback@maddenwishlist.com
+
+Thanks again!
