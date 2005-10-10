@@ -35,6 +35,9 @@ namespace MaddenEditor.Forms
     public partial class DraftConfigForm : Form
     {
         EditorModel model;
+		ScoutingForm scoutingForm;
+		int secs;
+		int humanId;
 
         public DraftConfigForm(EditorModel em)
         {
@@ -57,45 +60,76 @@ namespace MaddenEditor.Forms
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
+			startButton.Enabled = false;
+			this.Cursor = Cursors.WaitCursor;
 
-            if (autoSave.Checked)
-            {
-                string fileName = model.GetFileName();
-                string backupFile = fileName.Substring(0, fileName.LastIndexOf('.')) + "-mfebak";
-                string newFile;
+			secs = (int)minutes.Value * 60 + (int)seconds.Value;
+			humanId = model.TeamModel.GetTeamIdFromTeamName((string)teamChooser.SelectedItem);
+			
+			progressBar.Visible = true;
 
-                if (overwrite.Checked)
-                {
-                    File.Delete(backupFile + "0.fra");
-                }
-
-                int index = 0;
-                while (true)
-                {
-                    newFile = backupFile + index + ".fra";
-                    if (!File.Exists(newFile))
-                    {
-                        break;
-                    }
-                    index++;
-                }
-
-                File.Copy(fileName, newFile);
-            }
-
-            int secs = (int)minutes.Value * 60 + (int)seconds.Value;
-            int humanId = model.TeamModel.GetTeamIdFromTeamName((string)teamChooser.SelectedItem);
-            ScoutingForm form = new ScoutingForm(model, humanId, secs);
-            form.Show();
-
-            Cursor.Current = Cursors.Arrow;
-            this.Close();
+			backgroundWorker.RunWorkerAsync();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+		private void teamChooser_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!teamChooser.SelectedItem.ToString().Equals(""))
+			{
+				startButton.Enabled = true;
+			}
+		}
+
+		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			if (autoSave.Checked)
+			{
+				string fileName = model.GetFileName();
+				string backupFile = fileName.Substring(0, fileName.LastIndexOf('.')) + "-mfebak";
+				string newFile;
+
+				if (overwrite.Checked)
+				{
+					File.Delete(backupFile + "0.fra");
+				}
+
+				int index = 0;
+				while (true)
+				{
+					newFile = backupFile + index + ".fra";
+					if (!File.Exists(newFile))
+					{
+						break;
+					}
+					index++;
+				}
+
+				File.Copy(fileName, newFile);
+			}
+				
+			scoutingForm = new ScoutingForm(model, humanId, secs, this);
+		}
+
+		private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			progressBar.Value = e.ProgressPercentage;
+		}
+
+		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			scoutingForm.Show();
+
+			this.Cursor = Cursors.Default;
+			this.Close();
+		}
+
+		public void ReportProgress(int percentage)
+		{
+			backgroundWorker.ReportProgress(percentage);
+		}
     }
 }

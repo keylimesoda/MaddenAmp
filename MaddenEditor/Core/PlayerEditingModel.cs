@@ -330,7 +330,7 @@ namespace MaddenEditor.Core
 			{
 				CurrentPlayerRecord.TeamId = newTeam.TeamId;
 				//Also have to ensure we update this players injuries in the injury table
-				//and remove this player form any depth charts
+				//and remove this player scoutingForm any depth charts
 				foreach (TableRecordModel record in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
 				{
 					if (record.Deleted)
@@ -352,7 +352,7 @@ namespace MaddenEditor.Core
 		/// <summary>
 		/// TODO:
 		/// This method should be put into the depth chart editing model at some stage.
-		/// The hole depth chart editing functionality has too much logic in the form objects
+		/// The hole depth chart editing functionality has too much logic in the scoutingForm objects
 		/// and it needs to be moved into the depth chart editing model
 		/// </summary>
 		/// <param name="playerId"></param>
