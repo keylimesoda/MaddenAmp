@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 
 // MADDEN DRAFT EDIT
-using MaddenEditor.ConSole;
+//using MaddenEditor.ConSole;
 // MADDEN DRAFT EDIT
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
@@ -258,7 +258,7 @@ namespace MaddenEditor.Core
 			set
 			{
 				dirty = value;
-				//Set the form into dirty view
+				//Set the scoutingForm into dirty view
 				view.Dirty = value;
 			}
 		}

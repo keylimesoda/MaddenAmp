@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConSole\ConSoleDraft.cs" />
+    <None Include="ConSole\ConSoleDraft.cs" />
     <Compile Include="Core\CoachEditingModel.cs" />
     <Compile Include="Core\DepthChartEditingModel.cs" />
     <Compile Include="Core\DepthChartRepairer.cs" />

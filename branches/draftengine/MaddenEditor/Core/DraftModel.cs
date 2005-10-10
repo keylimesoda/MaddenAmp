@@ -1597,7 +1597,7 @@ namespace MaddenEditor.Core.Record
             Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
         }
 
-        public void InitializeDraft(int htid)
+        public void InitializeDraft(int htid, DraftConfigForm draftConfigForm)
         {
             HumanTeamId = htid;
 
@@ -1605,21 +1605,23 @@ namespace MaddenEditor.Core.Record
             InitializePickValues();
             dcr = new DepthChartRepairer(model, positionData);
 
+			draftConfigForm.ReportProgress(25);
             ExtractRookies();
-
+			draftConfigForm.ReportProgress(35);
 //            DumpRookies();
 
             if (model.FileVersion == MaddenFileVersion.Ver2006)
             {
                 RepairRookies();
             }
-
+			draftConfigForm.ReportProgress(45);
             // I'm not sure why I initialize this twice, but it doesn't hurt.
             dcr = new DepthChartRepairer(model, positionData);
             depthChart = dcr.ReorderDepthCharts(true);
 
             depthChartValues = new List<List<List<double>>>();
 
+			//We'll say 50% of the loading is done in this part
             for (int i = 0; i < 32; i++)
             {
                 futureTradedPicks.Add(i, new Dictionary<int, int>());

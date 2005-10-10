@@ -30,7 +30,7 @@ using System.Text;
 using System.IO;
 // MADDEN DRAFT EDIT
 using System.Windows.Forms;
-using MaddenEditor.ConSole;
+//using MaddenEditor.ConSole;
 
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
@@ -38,7 +38,7 @@ using MaddenEditor.Core.Record;
 namespace MaddenEditor.Forms
 {
 	/// <summary>
-	/// This is the main form that is displayed to the user. It contains the tab control
+	/// This is the main scoutingForm that is displayed to the user. It contains the tab control
 	/// which contains most of the other user controls as well as the menu bar enabling
 	/// access into special functions.
 	/// </summary>
