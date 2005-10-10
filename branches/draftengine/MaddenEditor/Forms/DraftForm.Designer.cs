@@ -429,7 +429,7 @@ namespace MaddenEditor.Forms
             // 
             this.downButton.Location = new System.Drawing.Point(74, 120);
             this.downButton.Name = "downButton";
-            this.downButton.Size = new System.Drawing.Size(36, 19);
+            this.downButton.Size = new System.Drawing.Size(44, 19);
             this.downButton.TabIndex = 26;
             this.downButton.Text = "Down";
             this.downButton.Click += new System.EventHandler(this.downButton_Click);
