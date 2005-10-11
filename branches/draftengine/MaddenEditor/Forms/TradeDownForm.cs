@@ -414,8 +414,6 @@ namespace MaddenEditor.Forms
                 activeTeam = noOfferList[NoOfferBox.SelectedIndex];
                 dm.setupTradeOffer(activeTeam, df.CurrentPick);
 
-                FillTeamBoxes();
-
                 offerButton.Enabled = false;
                 acceptButton.Enabled = false;
                 resetButton.Enabled = false;

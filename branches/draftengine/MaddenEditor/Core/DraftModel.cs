@@ -872,8 +872,8 @@ namespace MaddenEditor.Core.Record
             }
             else if (currentSelector == HumanTeamId)
             {
-                to.status = (int)TradeOfferStatus.HigherResponsePending;
-                tradeOffers.Add(LowerTeamId, to);
+                to.status = -1;
+                tradeOffers[LowerTeamId] = to;
             }
 
             return to;
