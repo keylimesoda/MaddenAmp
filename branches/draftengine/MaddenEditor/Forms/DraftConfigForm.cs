@@ -110,7 +110,7 @@ namespace MaddenEditor.Forms
 
 				File.Copy(fileName, newFile);
 			}
-				
+
 			scoutingForm = new ScoutingForm(model, humanId, secs, this);
 		}
 

@@ -131,12 +131,13 @@ namespace MaddenEditor.Forms
 		private void Initialise()
 		{
 			dm = new DraftModel(model);
-			draftConfigForm.ReportProgress(15);
-			dm.InitializeDraft(HumanTeamId, draftConfigForm);
-			draftConfigForm.ReportProgress(55);
-			dm.FixDraftOrder();
+            
+            draftConfigForm.ReportProgress(15);
+            dm.InitializeDraft(HumanTeamId, draftConfigForm);
+            draftConfigForm.ReportProgress(55);
+            dm.FixDraftOrder();
 			draftConfigForm.ReportProgress(75);
-			dm.InitializeScouting();
+            dm.InitializeScouting();
 
 			draftConfigForm.ReportProgress(85);
 

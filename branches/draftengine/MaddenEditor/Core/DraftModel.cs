@@ -1614,7 +1614,7 @@ namespace MaddenEditor.Core.Record
             {
                 RepairRookies();
             }
-			draftConfigForm.ReportProgress(45);
+            draftConfigForm.ReportProgress(45);
             // I'm not sure why I initialize this twice, but it doesn't hurt.
             dcr = new DepthChartRepairer(model, positionData);
             depthChart = dcr.ReorderDepthCharts(true);
