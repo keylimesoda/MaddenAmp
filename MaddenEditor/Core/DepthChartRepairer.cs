@@ -464,19 +464,34 @@ namespace MaddenEditor.Core
                     groupstartersTemp.Remove(pair1.Key);
                 }
 
-                toReturn[(int)MaddenPositions.HB].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[0]));
-                toReturn[(int)MaddenPositions.HB].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[1]));
-                toReturn[(int)MaddenPositions.FB].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[2]));
-                toReturn[(int)MaddenPositions.TE].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[3]));
+                if (groupstarters.Count >= 4)
+                {
+                    toReturn[(int)MaddenPositions.HB].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[0]));
+                    toReturn[(int)MaddenPositions.HB].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[1]));
+                    toReturn[(int)MaddenPositions.FB].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[2]));
+                    toReturn[(int)MaddenPositions.TE].Add(model.PlayerModel.GetPlayerByPlayerId(groupstarters[3]));
 
-                starters.Add(groupstarters[0]);
-                starters.Add(groupstarters[2]);
-                starters.Add(groupstarters[3]);
+                    starters.Add(groupstarters[0]);
+                    starters.Add(groupstarters[2]);
+                    starters.Add(groupstarters[3]);
 
-                // Now fill the backups
-                SimpleFill(2, 3, (int)MaddenPositions.HB, -1, groupstarters, TeamToSort);
-                SimpleFill(1, 3, (int)MaddenPositions.FB, -1, groupstarters, TeamToSort);
-                SimpleFill(1, 3, (int)MaddenPositions.TE, -1, groupstarters, TeamToSort);
+                    // Now fill the backups
+                    SimpleFill(2, 3, (int)MaddenPositions.HB, -1, groupstarters, TeamToSort);
+                    SimpleFill(1, 3, (int)MaddenPositions.FB, -1, groupstarters, TeamToSort);
+                    SimpleFill(1, 3, (int)MaddenPositions.TE, -1, groupstarters, TeamToSort);
+                } 
+                else
+                {
+                    // It might be that they have nobody to play TE, or nobody to play HB -- if so, just do simple fills
+
+                    toReturn[(int)MaddenPositions.HB].Clear();
+                    toReturn[(int)MaddenPositions.FB].Clear();
+                    toReturn[(int)MaddenPositions.TE].Clear();
+
+                    SimpleFill(0, 3, (int)MaddenPositions.HB, (int)MaddenPositions.HB, empty, TeamToSort);
+                    SimpleFill(0, 3, (int)MaddenPositions.FB, (int)MaddenPositions.FB, empty, TeamToSort);
+                    SimpleFill(0, 3, (int)MaddenPositions.TE, (int)MaddenPositions.TE, empty, TeamToSort);
+                }
             }
 
 

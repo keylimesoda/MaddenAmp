@@ -291,7 +291,12 @@ namespace MaddenEditor.Forms
 		{
 			set
 			{
-				saveToolStripMenuItem.Enabled = value;
+                // This was causing an error if called during a background process.
+                try
+                {
+                    saveToolStripMenuItem.Enabled = value;
+                }
+                catch { }
 			}
 		}
 
