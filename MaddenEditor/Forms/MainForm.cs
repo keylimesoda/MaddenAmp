@@ -43,26 +43,28 @@ namespace MaddenEditor.Forms
 	/// access into special functions.
 	/// </summary>
 	/// <author>Colin Goudie</author>
-    public partial class MainForm : Form
-    {
+	public partial class MainForm : Form
+	{
 		private const string TITLE_STRING = "Gommo's Madden Editor";
-		private EditorModel model = null;	
+		private EditorModel model = null;
 		private string filePathToLoad;
 		private bool isInitialising = false;
-		
+
 		private SearchForm searchPlayerForm = null;
 		private SearchForm searchCoachForm = null;
 
 		private PlayerEditControl playerEditControl = null;
 		private CoachEditControl coachEditControl = null;
 		private TeamEditControl teamEditControl = null;
-		
+
+		private delegate void saveMenuDelegate(bool enabled);
+
 		/// <summary>
 		/// Constructor for the MainForm
 		/// </summary>
-        public MainForm()
-        {
-            InitializeComponent();
+		public MainForm()
+		{
+			InitializeComponent();
 
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 
@@ -72,15 +74,15 @@ namespace MaddenEditor.Forms
 			playerEditControl = new PlayerEditControl();
 			coachEditControl = new CoachEditControl();
 			teamEditControl = new TeamEditControl();
-			
+
 			playerPage.Controls.Add(playerEditControl);
 			coachPage.Controls.Add(coachEditControl);
 			teamPage.Controls.Add(teamEditControl);
-			
+
 			playerEditControl.Dock = DockStyle.Fill;
 			coachEditControl.Dock = DockStyle.Fill;
 			teamEditControl.Dock = DockStyle.Fill;
-									
+
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
@@ -88,15 +90,15 @@ namespace MaddenEditor.Forms
 			exportToolStripMenuItem.Enabled = false;
 
 			isInitialising = false;
-        }
+		}
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		{
 			if (CheckSave())
 			{
 				Application.Exit();
 			}
-        }
+		}
 
 		/// <summary>
 		/// Checks to see if our model is dirty and if so prompts the user to save the file.
@@ -122,7 +124,7 @@ namespace MaddenEditor.Forms
 			if (model != null)
 			{
 				model.Shutdown();
-			}	
+			}
 			model = null;
 
 			return true;
@@ -154,7 +156,7 @@ namespace MaddenEditor.Forms
 						statusStrip.Visible = true;
 
 						rosterFileLoaderThread.RunWorkerAsync();
-						
+
 						break;
 						//Now the model is opened.
 
@@ -175,7 +177,7 @@ namespace MaddenEditor.Forms
 			playerEditControl.Model = model;
 			coachEditControl.Model = model;
 			teamEditControl.Model = model;
-			
+
 		}
 
 		public void updateProgress(int percentage, string tablename)
@@ -186,11 +188,11 @@ namespace MaddenEditor.Forms
 		private void InitialiseUI()
 		{
 			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "  - " + System.IO.Path.GetFileName(filePathToLoad);
-						
+
 			playerEditControl.InitialiseUI();
 			coachEditControl.InitialiseUI();
 			teamEditControl.InitialiseUI();
-			
+
 			exportToolStripMenuItem.Enabled = true;
 			tabControl.Visible = true;
 			toolsToolStripMenuItem.Visible = true;
@@ -222,7 +224,7 @@ namespace MaddenEditor.Forms
 
 			this.Cursor = Cursors.Default;
 		}
-		
+
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			isInitialising = true;
@@ -233,7 +235,7 @@ namespace MaddenEditor.Forms
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 			rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
 			rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
-			
+
 
 			if (CheckSave())
 			{
@@ -250,7 +252,7 @@ namespace MaddenEditor.Forms
 			playerEditControl.CleanUI();
 			coachEditControl.CleanUI();
 			teamEditControl.CleanUI();
-			
+
 			exportToolStripMenuItem.Enabled = false;
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
@@ -270,7 +272,7 @@ namespace MaddenEditor.Forms
 			{
 				Console.WriteLine(err.ToString());
 			}
-			
+
 			isInitialising = false;
 		}
 
@@ -279,25 +281,33 @@ namespace MaddenEditor.Forms
 			toolStripProgressBar.Value = e.ProgressPercentage;
 			processingTableLabel.Text = "Loading Table: " + e.UserState.ToString();
 		}
-		
+
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			CheckSave();
 
 			Application.Exit();
 		}
-		
+
 		public bool Dirty
 		{
 			set
 			{
-                // This was causing an error if called during a background process.
-                try
-                {
-                    saveToolStripMenuItem.Enabled = value;
-                }
-                catch { }
+				if (InvokeRequired)
+				{
+					object[] args = { value };
+					Invoke(new saveMenuDelegate(SetSaveMenuEnabled), args);
+				}
+				else
+				{
+					saveToolStripMenuItem.Enabled = value;
+				}
 			}
+		}
+
+		private void SetSaveMenuEnabled(bool enabled)
+		{
+			saveToolStripMenuItem.Enabled = enabled;
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -317,7 +327,7 @@ namespace MaddenEditor.Forms
 				this.Cursor = Cursors.Default;
 			}
 		}
-						
+
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AboutBox form = new AboutBox();
@@ -342,7 +352,7 @@ namespace MaddenEditor.Forms
 				tabControl.SelectedIndex = 1;
 			}
 		}
-		
+
 		private void searchforPlayerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (searchPlayerForm == null)
@@ -362,13 +372,13 @@ namespace MaddenEditor.Forms
 				tabControl.SelectedIndex = 0;
 			}
 		}
-		
+
 		private void testButton_Click(object sender, EventArgs e)
 		{
 			if (testerWorkerThread.IsBusy)
 			{
 				testerWorkerThread.CancelAsync();
-				
+
 			}
 			else
 			{
@@ -460,7 +470,7 @@ namespace MaddenEditor.Forms
 			catch (ArgumentException err)
 			{
 				MessageBox.Show("The Schedule in this franchise file cannot be loaded for editing\r\nReport this to " + EditorModel.SUPPORT_EMAIL, "Error loading schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}			
+			}
 		}
 
 		private void setGameInjuriesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -472,42 +482,42 @@ namespace MaddenEditor.Forms
 
 			form.CleanUI();
 		}
-        // MADDEN DRAFT EDIT
-        private void enterDraftToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!model.draftStarted)
-            {
-                DraftConfigForm form = new DraftConfigForm(model);
-                form.Show(this);
-            }
-            else
-            {
-                MessageBox.Show("You must reopen your file to restart the draft.");
-            }
-        }
+		// MADDEN DRAFT EDIT
+		private void enterDraftToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (!model.draftStarted)
+			{
+				DraftConfigForm form = new DraftConfigForm(model);
+				form.Show(this);
+			}
+			else
+			{
+				MessageBox.Show("You must reopen your file to restart the draft.");
+			}
+		}
 
-        private void depthChartMenuItem_Click(object sender, EventArgs e)
-        {
-            DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+		private void depthChartMenuItem_Click(object sender, EventArgs e)
+		{
+			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 
-            dcr.ReorderDepthCharts(false);
-        }
+			dcr.ReorderDepthCharts(false);
+		}
 
-        private void depthChartProgMenuItem_Click(object sender, EventArgs e)
-        {
-            DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+		private void depthChartProgMenuItem_Click(object sender, EventArgs e)
+		{
+			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 
-            dcr.ReorderDepthCharts(true);
-        }
+			dcr.ReorderDepthCharts(true);
+		}
 
-        private void moveTradedDraftPicksToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Dictionary<int, Dictionary<int, int>> tradedPicks = new Dictionary<int, Dictionary<int, int>>();
+		private void moveTradedDraftPicksToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Dictionary<int, Dictionary<int, int>> tradedPicks = new Dictionary<int, Dictionary<int, int>>();
 
-            for (int i = 0; i < 7; i++)
-            {
-                tradedPicks[i] = new Dictionary<int, int>();
-            }
+			for (int i = 0; i < 7; i++)
+			{
+				tradedPicks[i] = new Dictionary<int, int>();
+			}
 
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.DefaultExt = "dpd";
@@ -515,70 +525,70 @@ namespace MaddenEditor.Forms
 			dialog.Multiselect = false;
 			dialog.ShowDialog();
 
-            if (dialog.FileNames.Length > 0)
-            {
-                FileStream fs = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
-                StreamReader sr = new StreamReader(fs);
+			if (dialog.FileNames.Length > 0)
+			{
+				FileStream fs = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
+				StreamReader sr = new StreamReader(fs);
 
-                string all = sr.ReadToEnd();
+				string all = sr.ReadToEnd();
 
-                string[] lines = all.Split('\n');
+				string[] lines = all.Split('\n');
 
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    if (lines[i].Length == 0)
-                    {
-                        break;
-                    }
+				for (int i = 0; i < lines.Length; i++)
+				{
+					if (lines[i].Length == 0)
+					{
+						break;
+					}
 
-                    lines[i] = lines[i].Trim();
-                    string[] nums = lines[i].Split(' ');
+					lines[i] = lines[i].Trim();
+					string[] nums = lines[i].Split(' ');
 
-                    int round;
-                    int fromTeam;
-                    int toTeam;
+					int round;
+					int fromTeam;
+					int toTeam;
 
-                    try
-                    {
-                        round = Int32.Parse(nums[0]);
-                        fromTeam = Int32.Parse(nums[1]);
-                        toTeam = Int32.Parse(nums[2]);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Error processing file.  Incorrect format.");
-                        fs.Close();
-                        sr.Close();
-                        return;
-                    }
+					try
+					{
+						round = Int32.Parse(nums[0]);
+						fromTeam = Int32.Parse(nums[1]);
+						toTeam = Int32.Parse(nums[2]);
+					}
+					catch
+					{
+						MessageBox.Show("Error processing file.  Incorrect format.");
+						fs.Close();
+						sr.Close();
+						return;
+					}
 
-                    if (!(round > 0 && round <= 7 && fromTeam >= 0 && fromTeam < 32 && toTeam >= 0 && toTeam < 32))
-                    {
-                        MessageBox.Show("Error processing file.  Incorrect ranges.");
-                    }
+					if (!(round > 0 && round <= 7 && fromTeam >= 0 && fromTeam < 32 && toTeam >= 0 && toTeam < 32))
+					{
+						MessageBox.Show("Error processing file.  Incorrect ranges.");
+					}
 
-                    tradedPicks[round-1][fromTeam] = toTeam;
-                }
+					tradedPicks[round - 1][fromTeam] = toTeam;
+				}
 
-                fs.Close();
-                sr.Close();
+				fs.Close();
+				sr.Close();
 
-                foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
-                {
-                    DraftPickRecord dpr = (DraftPickRecord)rec;
+				foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+				{
+					DraftPickRecord dpr = (DraftPickRecord)rec;
 
-                    int round = dpr.PickNumber/32;
-                    if (tradedPicks[round].ContainsKey(dpr.OriginalTeamId))
-                    {
-                        dpr.CurrentTeamId = tradedPicks[round][dpr.OriginalTeamId];
-                    }
-                }
+					int round = dpr.PickNumber / 32;
+					if (tradedPicks[round].ContainsKey(dpr.OriginalTeamId))
+					{
+						dpr.CurrentTeamId = tradedPicks[round][dpr.OriginalTeamId];
+					}
+				}
 
-                CheckSave();
-            }
-        }
+				CheckSave();
+			}
+		}
 
-        // MADDEN DRAFT EDIT
+		// MADDEN DRAFT EDIT
 
-    }
+	}
 }
