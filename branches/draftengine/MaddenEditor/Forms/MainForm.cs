@@ -293,6 +293,7 @@ namespace MaddenEditor.Forms
 		{
 			set
 			{
+				
 				if (InvokeRequired)
 				{
 					object[] args = { value };
