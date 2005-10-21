@@ -114,7 +114,7 @@ namespace MaddenEditor.Core
 
                 for (int i = 0; i < records.Count; i++)
                 {
-                    if (records[i].TeamType != 0)
+					if (records[i].TeamId >= 32)
                     {
                         records.RemoveAt(i);
                         i--;

@@ -2168,31 +2168,31 @@ namespace MaddenEditor.Core
 		}
 */
 
-				public void FixDraftOrder()
+		public void FixDraftOrder()
+		{
+			List<int> newDraftOrder = new List<int>();
+			List<int> finalDraftOrder = new List<int>();
+			Dictionary<int, List<TeamRecord>> Tiers = new Dictionary<int, List<TeamRecord>>();
+			Dictionary<int, Dictionary<int, int>> picksToMove = new Dictionary<int, Dictionary<int, int>>();
+
+			for (int i = 0; i < 7; i++)
+			{
+				picksToMove[i] = new Dictionary<int, int>();
+			}
+
+			for (int i = 0; i < model.TableModels[EditorModel.DRAFT_PICK_TABLE].RecordCount; i++)
+			{
+				DraftPickRecord currentPick = GetDraftPickByNumber(i);
+
+				if (currentPick.CurrentTeamId != currentPick.OriginalTeamId)
 				{
-						List<int> newDraftOrder = new List<int>();
-						List<int> finalDraftOrder = new List<int>();
-						Dictionary<int, List<TeamRecord>> Tiers = new Dictionary<int, List<TeamRecord>>();
-						Dictionary<int, Dictionary<int, int>> picksToMove = new Dictionary<int, Dictionary<int, int>>();
+					int round = (int)Math.Floor((decimal)(i / 32));
+					picksToMove[round].Add(currentPick.OriginalTeamId, currentPick.CurrentTeamId);
+				}
+			}
 
-						for (int i = 0; i < 7; i++)
-						{
-								picksToMove[i] = new Dictionary<int, int>();
-						}
-
-						for (int i = 0; i < model.TableModels[EditorModel.DRAFT_PICK_TABLE].RecordCount; i++)
-						{
-								DraftPickRecord currentPick = GetDraftPickByNumber(i);
-
-								if (currentPick.CurrentTeamId != currentPick.OriginalTeamId)
-								{
-										int round = (int)Math.Floor((decimal)(i / 32));
-										picksToMove[round].Add(currentPick.OriginalTeamId, currentPick.CurrentTeamId);
-								}
-						}
-
-						model.TeamModel.CalculateWins();
-						model.TeamModel.CalculateStrengthOfSchedule();
+			model.TeamModel.CalculateWins();
+			model.TeamModel.CalculateStrengthOfSchedule();
 
 			for (int i = 0; i <= 18; i++)
 			{
@@ -2202,7 +2202,7 @@ namespace MaddenEditor.Core
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
 				TeamRecord record = (TeamRecord)rec;
-				if (record.TeamType != 0) { continue; }
+				if (record.TeamId >= 32) { continue; }
 
 				if (record.PlayoffExit == 4)
 				{
@@ -2291,7 +2291,7 @@ namespace MaddenEditor.Core
 
 			foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 			{
-				if (team.Value.TeamType != 0) { continue; }
+				if (team.Value.TeamId >= 32) { continue; }
 
 				double HighestValue = 0;
 				RookieRecord BestPlayer = null;
@@ -2639,7 +2639,7 @@ namespace MaddenEditor.Core
 			{
 				foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 				{
-					if (team.Value.TeamType != 0) { continue; }
+					if (team.Value.TeamId >= 32) { continue; }
 					foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
 					{
 						if (pair.Key > 20) { continue; }
@@ -2657,7 +2657,7 @@ namespace MaddenEditor.Core
 
 				foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 				{
-					if (team.Value.TeamType != 0) { continue; }
+					if (team.Value.TeamId >= 32) { continue; }
 
 					foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
 					{
@@ -2685,13 +2685,13 @@ namespace MaddenEditor.Core
 
 					foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 					{
-						if (team.Value.TeamType != 0) { continue; }
+						if (team.Value.TeamId >= 32) { continue; }
 						totalAtPosition += rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.NoProg];
 					}
 
 					foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 					{
-						if (team.Value.TeamType != 0) { continue; }
+						if (team.Value.TeamId >= 32) { continue; }
 						rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.Perceived] = (totalAtPosition / 32.0)
 							* (0.9 + 0.2 * rand.NextDouble() + 0.02 * (double)(rook.Value.PreCombineScoutedHours[team.Key] + rook.Value.PostCombineScoutedHours[team.Key]) * rand.NextDouble());
 					}
