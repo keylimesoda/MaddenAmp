@@ -499,15 +499,31 @@ namespace MaddenEditor.Forms
 		private void depthChartMenuItem_Click(object sender, EventArgs e)
 		{
 			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+			//DialogResult dr = MessageBox.Show("This will save any changes you made to your file.  Proceed?", "Continue", MessageBoxButtons.YesNo);
 
-			dcr.ReorderDepthCharts(false);
+//			if (dr == DialogResult.Yes)
+//			{
+				this.Invalidate(true);
+				this.Update();
+				Cursor.Current = Cursors.WaitCursor;
+				dcr.ReorderDepthCharts(false);
+				Cursor.Current = Cursors.Arrow;
+//			}
 		}
 
 		private void depthChartProgMenuItem_Click(object sender, EventArgs e)
 		{
 			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+//			DialogResult dr = MessageBox.Show("This will save any changes you made to your file.  Proceed?", "Continue", MessageBoxButtons.YesNo);
 
-			dcr.ReorderDepthCharts(true);
+//			if (dr == DialogResult.Yes)
+//			{
+				this.Invalidate(true);
+				this.Update();
+				Cursor.Current = Cursors.WaitCursor;
+				dcr.ReorderDepthCharts(true);
+				Cursor.Current = Cursors.Arrow;
+//			}
 		}
 
 		private void moveTradedDraftPicksToolStripMenuItem_Click(object sender, EventArgs e)

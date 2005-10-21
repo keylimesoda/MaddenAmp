@@ -207,20 +207,46 @@ namespace MaddenEditor.Core
             return depthChart;
         }
 
+		//private DepthChartRecord GetDepthChartRecord(int team, int position, int depth) {
+
+
         public void SaveDepthChartList(List<List<List<PlayerRecord>>> depthChart)
         {
-            // First mark all existing depth chart entries for deletion
+			// Basically, I want to clear out all existing depth chart entries, 
+			// and refill the table with the entries from depthChart
+			//
+			// The problem is that I set the entries for deletion in this first
+			// block of code, but then these deletion flags seem to persist with the
+			// new records I create in the 2nd block of code, and all the new entries
+			// get deleted.  As a result, the depth charts are all empty when the 
+			// user loads it into Madden.
+			//
+			// If the depth charts start out empty, then the first block of code
+			// does nothing, and the 2nd block properly fills the charts.  So, to test
+			// that this bug is gone, you need to be sure you're starting with already
+			// filled depth charts.
+			//
+			// Also, as it is now, if you run this code with filled depth charts, it
+			// does seem to order them if you go into your depth chart editor.  But,
+			// if you open up the file in Madden, the depth charts are empty.  And,
+			// if you save the file then reopen it in the editor, the depth charts
+			// are empty.
+			//
+			// So, the question is, can you fix this so that you can open it up with
+			// depth charts filled, reorder using this function, close the editor
+			// then reopen the file and see that the depth charts remain filled
+			// and properly ordered?
 
             TableModel dcRecords = model.TableModels[EditorModel.DEPTH_CHART_TABLE];
 
-            foreach (TableRecordModel rec in dcRecords.GetRecords())
-            {
-                rec.SetDeleteFlag(true);
-            }
+			foreach (TableRecordModel rec in dcRecords.GetRecords())
+			{
+				rec.SetDeleteFlag(true);
+			}
 
             dcRecords.Save();
-
-            for (int team = 0; team < depthChart.Count; team++)
+			
+			for (int team = 0; team < depthChart.Count; team++)
             {
                 for (int pos = 0; pos < depthChart[team].Count; pos++)
                 {
@@ -236,7 +262,7 @@ namespace MaddenEditor.Core
                 }
             }
 
-            dcRecords.Save();
+			dcRecords.Save();
         }
 
         public List<List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies)
