@@ -25,8 +25,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using MaddenEditor.Forms;
+using MaddenEditor.Core.Record;
 
-namespace MaddenEditor.Core.Record
+namespace MaddenEditor.Core
 {
 	public class DraftModel
 	{

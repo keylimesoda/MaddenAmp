@@ -50,6 +50,7 @@ namespace MaddenEditor.Forms
         /// </summary>
         private void InitializeComponent()
         {
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.label6 = new System.Windows.Forms.Label();
 			this.RookiePositionFilter = new System.Windows.Forms.ComboBox();
 			this.scoutingHours = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -178,11 +179,14 @@ namespace MaddenEditor.Forms
 			// 
 			this.RookieGrid.AllowUserToAddRows = false;
 			this.RookieGrid.AllowUserToDeleteRows = false;
-			this.RookieGrid.AllowUserToResizeColumns = false;
 			this.RookieGrid.AllowUserToResizeRows = false;
+			dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(234)))));
+			dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+			this.RookieGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
 			this.RookieGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.RookieGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
 			this.RookieGrid.BackgroundColor = System.Drawing.Color.White;
 			this.RookieGrid.ColumnHeadersHeight = 18;
 			this.RookieGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -190,7 +194,6 @@ namespace MaddenEditor.Forms
 			this.RookieGrid.Location = new System.Drawing.Point(13, 67);
 			this.RookieGrid.Name = "RookieGrid";
 			this.RookieGrid.RowTemplate.Height = 16;
-			this.RookieGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.RookieGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.RookieGrid.Size = new System.Drawing.Size(991, 369);
 			this.RookieGrid.TabIndex = 18;
