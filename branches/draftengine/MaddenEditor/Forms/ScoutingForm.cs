@@ -39,8 +39,6 @@ namespace MaddenEditor.Forms
 
         EditorModel model;
         DraftModel dm;
-		//Reference to draft config form to report loading progress
-		DraftConfigForm draftConfigForm;
         int HumanTeamId;
         int stage=0;
         int SecondsPerPick;
@@ -54,7 +52,6 @@ namespace MaddenEditor.Forms
         public ScoutingForm(EditorModel em, int htId, int seconds, DraftModel dm)
         {
 			this.dm = dm;
-			this.draftConfigForm = draftConfigForm;
             math = new LocalMath(em.FileVersion);
             SecondsPerPick = seconds;
             HumanTeamId = htId;
@@ -702,8 +699,8 @@ namespace MaddenEditor.Forms
 			RookieGrid.Columns["doctornumber"].Visible = false;
 			RookieGrid.Columns["primaryskill"].Visible = false;
 			RookieGrid.Columns["secondaryskill"].Visible = false;
-
-			/*RookieGrid.Columns["Player"].Width = 115;
+			
+			RookieGrid.Columns["Player"].Width = 115;
 			RookieGrid.Columns["Position"].Width = 45;
 			//            RookieGrid.Columns["Actual"].Width = 54;
 			RookieGrid.Columns["Init. Proj."].Width = 54;
@@ -721,8 +718,10 @@ namespace MaddenEditor.Forms
 			RookieGrid.Columns["Doctor"].Width = 40;
 			RookieGrid.Columns["1st Skill"].Width = 60;
 			RookieGrid.Columns["2nd Skill"].Width = 63;
-			RookieGrid.Columns["Hours"].Width = 40;*/
+			RookieGrid.Columns["Hours"].Width = 40;
 			RookieGrid.Columns.Add(scoutingHours);
+			RookieGrid.Columns["Hours"].Resizable = DataGridViewTriState.False;
+			RookieGrid.Columns["scoutingHours"].Resizable = DataGridViewTriState.False;
 
 			RookieGrid.Columns["Player"].ReadOnly = true;
 			RookieGrid.Columns["Position"].ReadOnly = true;

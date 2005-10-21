@@ -179,6 +179,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.RookieGrid.AllowUserToAddRows = false;
 			this.RookieGrid.AllowUserToDeleteRows = false;
+			this.RookieGrid.AllowUserToResizeColumns = false;
 			this.RookieGrid.AllowUserToResizeRows = false;
 			dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(234)))));
 			dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
@@ -186,7 +187,6 @@ namespace MaddenEditor.Forms
 			this.RookieGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.RookieGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
 			this.RookieGrid.BackgroundColor = System.Drawing.Color.White;
 			this.RookieGrid.ColumnHeadersHeight = 18;
 			this.RookieGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
