@@ -51,8 +51,9 @@ namespace MaddenEditor.Forms
 
         LocalMath math;
 
-        public ScoutingForm(EditorModel em, int htId, int seconds, DraftConfigForm draftConfigForm)
+        public ScoutingForm(EditorModel em, int htId, int seconds, DraftModel dm)
         {
+			this.dm = dm;
 			this.draftConfigForm = draftConfigForm;
             math = new LocalMath(em.FileVersion);
             SecondsPerPick = seconds;
@@ -130,17 +131,6 @@ namespace MaddenEditor.Forms
 
 		private void Initialise()
 		{
-			dm = new DraftModel(model);
-            
-            draftConfigForm.ReportProgress(15);
-            dm.InitializeDraft(HumanTeamId, draftConfigForm);
-            draftConfigForm.ReportProgress(55);
-            dm.FixDraftOrder();
-			draftConfigForm.ReportProgress(75);
-            dm.InitializeScouting();
-
-			draftConfigForm.ReportProgress(85);
-
 			rookieData.Columns.Add(AddColumn("PGID", "System.Int32"));
 			rookieData.Columns.Add(AddColumn("Player", "System.String"));
 			rookieData.Columns.Add(AddColumn("Position", "System.String"));
@@ -173,9 +163,6 @@ namespace MaddenEditor.Forms
 			rookieBinding.DataSource = rookieData;
 
 			RookieGrid.DataSource = rookieBinding;
-			/*            RookieGrid.Columns["actualproj"].Visible = false;*/
-
-            draftConfigForm.ReportProgress(100);
         }
 
         private void RefreshAllocations()
@@ -705,61 +692,59 @@ namespace MaddenEditor.Forms
 
         private void ScoutingForm_Load(object sender, EventArgs e)
         {
-            stage = 0;
-            
-            RookieGrid.Columns["initproj"].Visible = false;
-            RookieGrid.Columns["currproj"].Visible = false;
-            RookieGrid.Columns["ourgrade"].Visible = false;
-            RookieGrid.Columns["PGID"].Visible = false;
-            RookieGrid.Columns["heightnumber"].Visible = false;
-            RookieGrid.Columns["doctornumber"].Visible = false;
-            RookieGrid.Columns["primaryskill"].Visible = false;
-            RookieGrid.Columns["secondaryskill"].Visible = false;
+			stage = 0;
 
-            RookieGrid.Columns["Player"].Width = 115;
-            RookieGrid.Columns["Position"].Width = 45;
-            /*            RookieGrid.Columns["Actual"].Width = 54;*/
-            RookieGrid.Columns["Init. Proj."].Width = 54;
-            RookieGrid.Columns["Curr. Proj."].Width = 58;
-            RookieGrid.Columns["Our Grade"].Width = 58;
-            RookieGrid.Columns["Age"].Width = 25;
-            RookieGrid.Columns["Height"].Width = 40;
-            RookieGrid.Columns["Weight"].Width = 42;
-            RookieGrid.Columns["40 Time"].Width = 47;
-            RookieGrid.Columns["Shuttle"].Width = 40;
-            RookieGrid.Columns["Cone"].Width = 32;
-            RookieGrid.Columns["Bench"].Width = 40;
-            RookieGrid.Columns["Vertical"].Width = 45;
-            RookieGrid.Columns["Wonderlic"].Width = 56;
-            RookieGrid.Columns["Doctor"].Width = 40;
-            RookieGrid.Columns["1st Skill"].Width = 60;
-            RookieGrid.Columns["2nd Skill"].Width = 63;
-            RookieGrid.Columns["Hours"].Width = 40;
-            RookieGrid.Columns.Add(scoutingHours);
+			RookieGrid.Columns["initproj"].Visible = false;
+			RookieGrid.Columns["currproj"].Visible = false;
+			RookieGrid.Columns["ourgrade"].Visible = false;
+			RookieGrid.Columns["PGID"].Visible = false;
+			RookieGrid.Columns["heightnumber"].Visible = false;
+			RookieGrid.Columns["doctornumber"].Visible = false;
+			RookieGrid.Columns["primaryskill"].Visible = false;
+			RookieGrid.Columns["secondaryskill"].Visible = false;
 
-            RookieGrid.Columns["Player"].ReadOnly = true;
-            RookieGrid.Columns["Position"].ReadOnly = true;
-            RookieGrid.Columns["Init. Proj."].ReadOnly = true;
-            RookieGrid.Columns["Curr. Proj."].ReadOnly = true;
-            RookieGrid.Columns["Our Grade"].ReadOnly = true;
-            RookieGrid.Columns["Height"].ReadOnly = true;
-            RookieGrid.Columns["Weight"].ReadOnly = true;
-            RookieGrid.Columns["40 Time"].ReadOnly = true;
-            RookieGrid.Columns["Shuttle"].ReadOnly = true;
-            RookieGrid.Columns["Cone"].ReadOnly = true;
-            RookieGrid.Columns["Bench"].ReadOnly = true;
-            RookieGrid.Columns["Vertical"].ReadOnly = true;
-            RookieGrid.Columns["Wonderlic"].ReadOnly = true;
-            RookieGrid.Columns["Doctor"].ReadOnly = true;
-            RookieGrid.Columns["1st Skill"].ReadOnly = true;
-            RookieGrid.Columns["2nd Skill"].ReadOnly = true;
+			/*RookieGrid.Columns["Player"].Width = 115;
+			RookieGrid.Columns["Position"].Width = 45;
+			//            RookieGrid.Columns["Actual"].Width = 54;
+			RookieGrid.Columns["Init. Proj."].Width = 54;
+			RookieGrid.Columns["Curr. Proj."].Width = 58;
+			RookieGrid.Columns["Our Grade"].Width = 58;
+			RookieGrid.Columns["Age"].Width = 25;
+			RookieGrid.Columns["Height"].Width = 40;
+			RookieGrid.Columns["Weight"].Width = 42;
+			RookieGrid.Columns["40 Time"].Width = 47;
+			RookieGrid.Columns["Shuttle"].Width = 40;
+			RookieGrid.Columns["Cone"].Width = 32;
+			RookieGrid.Columns["Bench"].Width = 40;
+			RookieGrid.Columns["Vertical"].Width = 45;
+			RookieGrid.Columns["Wonderlic"].Width = 56;
+			RookieGrid.Columns["Doctor"].Width = 40;
+			RookieGrid.Columns["1st Skill"].Width = 60;
+			RookieGrid.Columns["2nd Skill"].Width = 63;
+			RookieGrid.Columns["Hours"].Width = 40;*/
+			RookieGrid.Columns.Add(scoutingHours);
 
-            RookieGrid.RowHeadersVisible = false;
-            RefillRookieGrid();
+			RookieGrid.Columns["Player"].ReadOnly = true;
+			RookieGrid.Columns["Position"].ReadOnly = true;
+			RookieGrid.Columns["Init. Proj."].ReadOnly = true;
+			RookieGrid.Columns["Curr. Proj."].ReadOnly = true;
+			RookieGrid.Columns["Our Grade"].ReadOnly = true;
+			RookieGrid.Columns["Height"].ReadOnly = true;
+			RookieGrid.Columns["Weight"].ReadOnly = true;
+			RookieGrid.Columns["40 Time"].ReadOnly = true;
+			RookieGrid.Columns["Shuttle"].ReadOnly = true;
+			RookieGrid.Columns["Cone"].ReadOnly = true;
+			RookieGrid.Columns["Bench"].ReadOnly = true;
+			RookieGrid.Columns["Vertical"].ReadOnly = true;
+			RookieGrid.Columns["Wonderlic"].ReadOnly = true;
+			RookieGrid.Columns["Doctor"].ReadOnly = true;
+			RookieGrid.Columns["1st Skill"].ReadOnly = true;
+			RookieGrid.Columns["2nd Skill"].ReadOnly = true;
 
-            InitializeComboBoxes();
+			RookieGrid.RowHeadersVisible = false;
+			RefillRookieGrid();
 
-//            draftConfigForm.ReportProgress(100);
+			InitializeComboBoxes();
         }
     }
 }

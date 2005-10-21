@@ -36,6 +36,7 @@ namespace MaddenEditor.Forms
     {
         EditorModel model;
 		ScoutingForm scoutingForm;
+		DraftModel draftModel;
 		int secs;
 		int humanId;
 
@@ -111,7 +112,16 @@ namespace MaddenEditor.Forms
 				File.Copy(fileName, newFile);
 			}
 
-			scoutingForm = new ScoutingForm(model, humanId, secs, this);
+			draftModel = new DraftModel(model);
+
+			ReportProgress(15);
+			draftModel.InitializeDraft(humanId, this);
+			ReportProgress(55);
+			draftModel.FixDraftOrder();
+			ReportProgress(75);
+			draftModel.InitializeScouting();
+
+			ReportProgress(100);
 		}
 
 		private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -121,6 +131,7 @@ namespace MaddenEditor.Forms
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			scoutingForm = new ScoutingForm(model, humanId, secs, draftModel);
 			scoutingForm.Show();
 
 			this.Cursor = Cursors.Default;
