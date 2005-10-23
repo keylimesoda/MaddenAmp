@@ -237,12 +237,14 @@ namespace MaddenEditor.Core
 			// then reopen the file and see that the depth charts remain filled
 			// and properly ordered?
 
+			/*
             TableModel dcRecords = model.TableModels[EditorModel.DEPTH_CHART_TABLE];
 
 			foreach (TableRecordModel rec in dcRecords.GetRecords())
 			{
 				rec.SetDeleteFlag(true);
 			}
+			 * */
 
             //dcRecords.Save();
 
@@ -255,18 +257,40 @@ namespace MaddenEditor.Core
                     {
                         //DepthChartRecord newRecord = (DepthChartRecord)dcRecords.CreateNewRecord(false);
 
-						DepthChartRecord rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(index++);
+						//DepthChartRecord rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(index++);
+
+						DepthChartRecord rec;
+						if (index < model.TableModels[EditorModel.DEPTH_CHART_TABLE].RecordCount)
+						{
+							rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(index);
+						}
+						else
+						{
+							rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].CreateNewRecord(false);
+						}
 
 						rec.SetDeleteFlag(false);
 						rec.TeamId = team;
 						rec.PositionId = pos;
 						rec.DepthOrder = depth;
 						rec.PlayerId = depthChart[team][pos][depth].PlayerId;
+
+						index++;
+
+						if (team == 31 && pos == depthChart[team].Count - 1 && depth == depthChart[team][pos].Count - 1)
+						{
+							Console.WriteLine("Last Player: " + model.PlayerModel.GetPlayerByPlayerId(rec.PlayerId).ToString());
+						}
                     }
                 }
             }
 
-			//dcRecords.Save();
+			for (int i = index; i < model.TableModels[EditorModel.DEPTH_CHART_TABLE].RecordCount; i++)
+			{
+				model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(i).SetDeleteFlag(true);
+			}
+
+			model.TableModels[EditorModel.DEPTH_CHART_TABLE].Save();
         }
 
         public List<List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies)
@@ -313,7 +337,7 @@ namespace MaddenEditor.Core
             {
                 PlayerRecord player = (PlayerRecord)rec;
 
-                if (TeamToSort != player.TeamId) { continue; }
+                if (TeamToSort != player.TeamId || player.Deleted == true) { continue; }
                 
                 foreach (KeyValuePair<int, double> pair in awarenessAdjust[player.PositionId])
                 {
