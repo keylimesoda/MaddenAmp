@@ -244,25 +244,29 @@ namespace MaddenEditor.Core
 				rec.SetDeleteFlag(true);
 			}
 
-            dcRecords.Save();
-			
+            //dcRecords.Save();
+
+			int index = 0;
 			for (int team = 0; team < depthChart.Count; team++)
             {
                 for (int pos = 0; pos < depthChart[team].Count; pos++)
                 {
                     for (int depth = 0; depth < depthChart[team][pos].Count; depth++)
                     {
-                        DepthChartRecord newRecord = (DepthChartRecord)dcRecords.CreateNewRecord(false);
+                        //DepthChartRecord newRecord = (DepthChartRecord)dcRecords.CreateNewRecord(false);
 
-                        newRecord.TeamId = team;
-                        newRecord.PositionId = pos;
-                        newRecord.DepthOrder = depth;
-                        newRecord.PlayerId = depthChart[team][pos][depth].PlayerId;
+						DepthChartRecord rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(index++);
+
+						rec.SetDeleteFlag(false);
+						rec.TeamId = team;
+						rec.PositionId = pos;
+						rec.DepthOrder = depth;
+						rec.PlayerId = depthChart[team][pos][depth].PlayerId;
                     }
                 }
             }
 
-			dcRecords.Save();
+			//dcRecords.Save();
         }
 
         public List<List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies)
