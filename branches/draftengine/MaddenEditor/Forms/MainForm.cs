@@ -618,16 +618,16 @@ namespace MaddenEditor.Forms
 
             if (dmTemp.NumRooks > 257)
             {
-                MessageBox.Show("Rookie class has more than 257 players.  You must delete some rookies to export this class.");
+                MessageBox.Show("Rookie class has more than 256 players.  You must delete some rookies to export this class.");
                 return;
             }
             else if (dmTemp.NumRooks < 257)
             {
-                MessageBox.Show("Rookie class has less than 257 players.  You must create more rookies to export this class.");
+                MessageBox.Show("Rookie class has less than 256 players.  You must create more rookies to export this class.");
                 return;
             }
 
-            DialogResult dr = MessageBox.Show(classStats, "Export This Class?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr = MessageBox.Show(classStats, "Draft Class Diagnostics", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dr == DialogResult.Yes)
             {
@@ -645,6 +645,22 @@ namespace MaddenEditor.Forms
                 }
             }
         }
+
+		private void importDraftClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.DefaultExt = "mdc";
+			ofd.Filter = "Madden Draft Class (*.mdc)|*.mdc";
+			ofd.Multiselect = false;
+			ofd.ShowDialog();
+
+			if (ofd.FileName.Length > 0)
+			{
+				DraftModel dmTemp = new DraftModel(model);
+				dmTemp.ImportRookies(ofd.FileName);
+			}
+
+		}
 
 		// MADDEN DRAFT EDIT
 

@@ -1613,7 +1613,7 @@ namespace MaddenEditor.Core
 						Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
 				}
 
-        private void ImportRookies(string filename)
+        public void ImportRookies(string filename)
         {
             StreamReader sr = new StreamReader(filename);
 
@@ -2878,14 +2878,27 @@ namespace MaddenEditor.Core
 
 		public string AnalyzeDraftClass()
 		{
+			int totalOver80 = 0;
+			int totalOver75 = 0;
+			int totalOver70 = 0;
+			double injuryTotal = 0;
+
 			Dictionary<int, int> over75 = new Dictionary<int, int>();
 			Dictionary<int, int> over70 = new Dictionary<int, int>();
 			Dictionary<int, int> total = new Dictionary<int, int>();
-			Dictionary<int, int> injuryTotal = new Dictionary<int, int>();
-			List<int> values = new List<int>();
+			Dictionary<int, double> injury = new Dictionary<int, double>();
+			List<double> values = new List<double>();
 
 			InitializePositionData();
 			InitializePickValues();
+
+			for (int i = 0; i < 21; i++)
+			{
+				over70[i] = 0;
+				over75[i] = 0;
+				total[i] = 0;
+				injury[i] = 0;
+			}
 
 			numrooks = 0;
 
@@ -2899,21 +2912,64 @@ namespace MaddenEditor.Core
 					player.Overall = player.CalculateOverallRating(player.PositionId);
 					total[player.PositionId]++;
 
+					if (player.Overall > 80)
+					{
+						totalOver80++;
+					}
+
 					if (player.Overall > 75)
 					{
 						over75[player.PositionId]++;
+						totalOver75++;
 					}
 
 					if (player.Overall > 70)
 					{
 						over70[player.PositionId]++;
+						totalOver70++;
 					}
 
-					injuryTotal[player.PositionId] += player.Injury;
+					injury[player.PositionId] += player.Injury;
+					injuryTotal += player.Injury;
+
+					values.Add(LocalMath.ValueScale * positionData[player.PositionId].Value((int)TeamRecord.Defense.Front43) * math.valcurve(player.Overall + math.injury(player.Injury, positionData[player.PositionId].DurabilityNeed)));
 				}
 			}
 
-			return "";
+			values.Sort();
+			values.Reverse();
+
+			double variance = 0;
+			double varianceSquared = 0;
+
+			for (int i = 0; i < 32*7; i++)
+			{
+				Console.WriteLine(i + ": " + pickValues[i]+ " " + values[i]);
+				variance += (values[i] - pickValues[i]) / pickValues[i];
+				varianceSquared += Math.Pow((values[i] - pickValues[i]) / pickValues[i], 2);
+			}
+
+			double[] ideals = new double[21] {14, 16, 7, 22, 12, 11, 11, 11, 11, 11, 11, 11, 18, 11, 15, 11, 22, 11, 11, 6, 6};
+			string toReturn = "Number of players at each position, grouped by rating (This class / Average Class):\n\n";
+
+			for (int i = 0; i < 21; i++)
+			{
+				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
+				toReturn += "Over 75 (" + over75[i] + "/" + Math.Round(ideals[i] * 50.0 / 256.0, 1) + "), ";
+				toReturn += "Over 70 (" + over70[i] + "/" + Math.Round(ideals[i] * 110.0 / 256.0, 1) + "), ";
+				toReturn += "Total (" + total[i] + "/" + ideals[i] + "), ";
+				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 75.0)\n";
+			}
+
+			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 1) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 1) + "\n\n";
+			toReturn += "\"Value Variance\" indicates the general value of this class compared to the draft pick value chart.  A positive number means stronger than usual, negative number means weaker than usual.\n\n";
+			toReturn += "\"Value Variance Squared\" is a strictly positive number that tells you how far this draft class is (in absolute value) compared to the draft pick value chart.  The closer this value is to zero, the better.  Most classes will have this value less than 0.2.  Values greater than 0.5 are unacceptable.\n\n";
+
+			toReturn += "\nTotals:  Over 80 (" + totalOver80 + "/20), Over 75 (" + totalOver75 + "/75), Over 70 (" + totalOver70 + "/110), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/75)\n";
+
+			toReturn += "\nExport this draft class?";
+
+			return toReturn;
 		}
 
 		public DraftModel(EditorModel model)
@@ -3085,8 +3141,8 @@ namespace MaddenEditor.Core
 			positionData.Add((int)MaddenPositions.CB, new Position(80, 75, 60, 0.7, 32, 0.9, 0, 2, 2, 0.6));
 			positionData.Add((int)MaddenPositions.FS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
 			positionData.Add((int)MaddenPositions.SS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
-			positionData.Add((int)MaddenPositions.K, new Position(4, 4, 4, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
-			positionData.Add((int)MaddenPositions.P, new Position(1, 1, 1, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
+			positionData.Add((int)MaddenPositions.K, new Position(5, 5, 5, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
+			positionData.Add((int)MaddenPositions.P, new Position(2, 2, 2, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
 		}
 
 		public double futureValues(int round, int con)
