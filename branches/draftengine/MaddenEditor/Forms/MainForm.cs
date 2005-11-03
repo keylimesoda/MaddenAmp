@@ -605,6 +605,47 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+        private void exportDraftClassToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Count the number of rookies in the class.  Insist on 257 rookies,
+            // since that's the number of players in a Madden draft class, and we're
+            // just overwriting those players.  Plus, any more might disturb the overall
+            // pool of players in the long term.  This is enough for all drafted and the main
+            // undrafted rookies anyway.
+
+			DraftModel dmTemp = new DraftModel(model);
+			string classStats = dmTemp.AnalyzeDraftClass();
+
+            if (dmTemp.NumRooks > 257)
+            {
+                MessageBox.Show("Rookie class has more than 257 players.  You must delete some rookies to export this class.");
+                return;
+            }
+            else if (dmTemp.NumRooks < 257)
+            {
+                MessageBox.Show("Rookie class has less than 257 players.  You must create more rookies to export this class.");
+                return;
+            }
+
+            DialogResult dr = MessageBox.Show(classStats, "Export This Class?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.OverwritePrompt = true;
+                sfd.DefaultExt = "mdc";
+                sfd.AddExtension = true;
+                sfd.Filter = "Madden Draft Classes (*.mdc)|*.mdc";
+
+                sfd.ShowDialog();
+
+                if (!sfd.FileName.Equals(""))
+                {
+                    model.PlayerModel.ExportDraftClass(sfd.FileName);
+                }
+            }
+        }
+
 		// MADDEN DRAFT EDIT
 
 	}

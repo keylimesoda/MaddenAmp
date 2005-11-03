@@ -49,7 +49,7 @@ namespace MaddenEditor.Forms
 
         LocalMath math;
 
-        public ScoutingForm(EditorModel em, int htId, int seconds, DraftModel dm)
+        public ScoutingForm(EditorModel em, int htId, int seconds, DraftModel dm, bool customClass)
         {
 			this.dm = dm;
             math = new LocalMath(em.FileVersion);
