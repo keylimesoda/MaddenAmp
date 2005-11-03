@@ -39,6 +39,7 @@ namespace MaddenEditor.Forms
 		DraftModel draftModel;
 		int secs;
 		int humanId;
+        string customclass = null;
 
         public DraftConfigForm(EditorModel em)
         {
@@ -69,6 +70,20 @@ namespace MaddenEditor.Forms
 			
 			progressBar.Visible = true;
 
+            if (draftClass.Checked)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.DefaultExt = "mdc";
+                ofd.Filter = "Madden Draft Class (*.mdc)|*.mdc";
+                ofd.Multiselect = false;
+                ofd.ShowDialog();
+
+                if (ofd.FileName.Length > 0)
+                {
+                    customclass = ofd.FileName;
+                }
+            }
+
 			backgroundWorker.RunWorkerAsync();
         }
 
@@ -87,6 +102,9 @@ namespace MaddenEditor.Forms
 
 		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
+            // This method will run on a thread other than the UI thread.
+            // Be sure not to manipulate any Windows Forms controls created
+            // on the UI thread from this method.
 			if (autoSave.Checked)
 			{
 				string fileName = model.GetFileName();
@@ -115,7 +133,7 @@ namespace MaddenEditor.Forms
 			draftModel = new DraftModel(model);
 
 			ReportProgress(15);
-			draftModel.InitializeDraft(humanId, this);
+			draftModel.InitializeDraft(humanId, this, customclass);
 			ReportProgress(55);
 			draftModel.FixDraftOrder();
 			ReportProgress(75);
@@ -131,7 +149,7 @@ namespace MaddenEditor.Forms
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			scoutingForm = new ScoutingForm(model, humanId, secs, draftModel);
+			scoutingForm = new ScoutingForm(model, humanId, secs, draftModel, true);
 			scoutingForm.Show();
 
 			this.Cursor = Cursors.Default;

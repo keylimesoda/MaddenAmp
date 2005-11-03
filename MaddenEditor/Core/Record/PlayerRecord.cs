@@ -164,6 +164,36 @@ namespace MaddenEditor.Core.Record
 
 		}
 
+        // MADDEN DRAFT EDIT
+
+        public void ImportData(List<string> playerData)
+        {
+            List<string> strings = StringFields();
+            List<string> ints = IntFields();
+
+            strings.Sort();
+            ints.Sort();
+
+            int index = 0;
+            Console.Write("In: ");
+            foreach (string s in strings) 
+            {
+                SetField(s, playerData[index]);
+                Console.Write(playerData[index]+" ");
+                index++;
+            }
+            Console.WriteLine("");
+
+            foreach (string s in ints) 
+            {
+                SetField(s, Int32.Parse(playerData[index]));
+                index++;
+            }
+        }
+
+        // MADDEN DRAFT EDIT
+
+
 		public override string ToString()
 		{
 			return FirstName + " " + LastName + " (" + Enum.GetNames(typeof(MaddenPositions))[PositionId].ToString() + ")";

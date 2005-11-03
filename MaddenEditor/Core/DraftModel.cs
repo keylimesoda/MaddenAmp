@@ -47,6 +47,7 @@ namespace MaddenEditor.Core
 
 		private LocalMath math;
 		public DepthChartRepairer dcr;
+		int numrooks;
 
 		// true if the team just traded up; false otherwise.
 		private bool PreventTrade = false;
@@ -469,6 +470,8 @@ namespace MaddenEditor.Core
 
 			toDraft.DraftedTeam = dpRecord.CurrentTeamId;
 			toDraft.DraftPickNumber = pickNumber;
+			toDraft.Player.DraftRound = pickNumber / 32 + 1;
+			toDraft.Player.DraftRoundIndex = pickNumber % 32;
 
 
 
@@ -1610,20 +1613,54 @@ namespace MaddenEditor.Core
 						Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
 				}
 
-				public void InitializeDraft(int htid, DraftConfigForm draftConfigForm)
-				{
-						HumanTeamId = htid;
+        private void ImportRookies(string filename)
+        {
+            StreamReader sr = new StreamReader(filename);
 
-						InitializePositionData();
-						InitializePickValues();
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (sr.EndOfStream == true)
+                {
+                    break;
+                }
+
+                PlayerRecord player = (PlayerRecord)rec;
+
+                if (player.YearsPro > 0) { continue; }
+
+                Console.WriteLine("Out: " + player.FirstName + " " + player.LastName);
+
+                player.SetDeleteFlag(false);
+
+                string playerLine = sr.ReadLine();
+
+                List<string> playerData = new List<string>(playerLine.Split('\t'));
+
+                player.ImportData(playerData);
+            }
+
+            sr.Close();
+        }
+
+		public void InitializeDraft(int htid, DraftConfigForm draftConfigForm, string customclass)
+		{
+			HumanTeamId = htid;
+
+			InitializePositionData();
+			InitializePickValues();
 			dcr = new DepthChartRepairer(model, positionData);
+
+            if (customclass != null)
+            {
+                ImportRookies(customclass);
+            }
 
 			draftConfigForm.ReportProgress(25);
 			ExtractRookies();
 			draftConfigForm.ReportProgress(35);
 			//            DumpRookies();
 
-			if (model.FileVersion == MaddenFileVersion.Ver2006)
+			if (model.FileVersion == MaddenFileVersion.Ver2006 && customclass == null)
 			{
 				RepairRookies();
 			}
@@ -1681,15 +1718,15 @@ namespace MaddenEditor.Core
 
 			DumpProjections();
 			 * */
-				}
+    	}
 
-				private void DumpProjections()
-				{
-						foreach (KeyValuePair<int, RookieRecord> rook in rookies)
-						{
-								Console.WriteLine(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
-						}
-				}
+		private void DumpProjections()
+		{
+			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+			{
+				Console.WriteLine(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
+			}
+	    }
 
 				private void SetInitialRookieAttributes()
 				{
@@ -2829,6 +2866,54 @@ namespace MaddenEditor.Core
 			}
 
 			return toReturn;
+		}
+
+		public int NumRooks
+		{
+			get
+			{
+				return numrooks;
+			}
+		}
+
+		public string AnalyzeDraftClass()
+		{
+			Dictionary<int, int> over75 = new Dictionary<int, int>();
+			Dictionary<int, int> over70 = new Dictionary<int, int>();
+			Dictionary<int, int> total = new Dictionary<int, int>();
+			Dictionary<int, int> injuryTotal = new Dictionary<int, int>();
+			List<int> values = new List<int>();
+
+			InitializePositionData();
+			InitializePickValues();
+
+			numrooks = 0;
+
+			foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+			{
+				PlayerRecord player = (PlayerRecord)rec;
+
+				if (player.YearsPro == 0 && player.Deleted == false && !(player.FirstName == "New" && player.LastName == "Player"))
+				{
+					numrooks++;
+					player.Overall = player.CalculateOverallRating(player.PositionId);
+					total[player.PositionId]++;
+
+					if (player.Overall > 75)
+					{
+						over75[player.PositionId]++;
+					}
+
+					if (player.Overall > 70)
+					{
+						over70[player.PositionId]++;
+					}
+
+					injuryTotal[player.PositionId] += player.Injury;
+				}
+			}
+
+			return "";
 		}
 
 		public DraftModel(EditorModel model)

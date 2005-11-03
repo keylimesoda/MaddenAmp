@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 using MaddenEditor.Core.Record;
 
@@ -84,6 +85,45 @@ namespace MaddenEditor.Core
             }
         }
  * */
+        public void ExportDraftClass(string filename)
+        {
+            List<string> strings = null;
+            List<string> ints = null;
+
+            File.Delete(filename);
+            StreamWriter sw = new StreamWriter(filename);
+
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                PlayerRecord player = (PlayerRecord)rec;
+
+                if (player.YearsPro != 0 || player.Deleted == true || (player.FirstName == "New" && player.LastName == "Player")) { continue; }
+
+                if (strings == null || ints == null)
+                {
+                    strings = player.StringFields();
+                    ints = player.IntFields();
+
+                    strings.Sort();
+                    ints.Sort();
+                }
+
+                foreach (string s in strings)
+                {
+                    sw.Write(player.GetStringField(s) + "\t");
+                }
+
+                foreach (string s in ints)
+                {
+                    sw.Write(player.GetIntField(s) + "\t");
+                }
+
+                sw.Write("\n");
+            }
+
+            sw.Close();
+        }
+
         // MADDEN DRAFT EDIT
 		
 		public PlayerRecord GetPlayerRecord(int recno)

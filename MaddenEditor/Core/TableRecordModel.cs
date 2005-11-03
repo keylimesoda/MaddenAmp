@@ -53,7 +53,27 @@ namespace MaddenEditor.Core
 			backupStringFields = new Dictionary<string, string>();
 		}
 
-		public int RecNo
+        public List<string> StringFields()
+        {
+            List<string> toReturn = new List<string>();
+            foreach (string s in stringFields.Keys)
+            {
+                toReturn.Add(s);
+            }
+            return toReturn;
+        }
+
+        public List<string> IntFields()
+        {
+            List<string> toReturn = new List<string>();
+            foreach (string s in intFields.Keys)
+            {
+                toReturn.Add(s);
+            }
+            return toReturn;
+        }
+        
+        public int RecNo
 		{
 			get
 			{
