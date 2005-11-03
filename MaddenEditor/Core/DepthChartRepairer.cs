@@ -1501,9 +1501,9 @@ namespace MaddenEditor.Core
             positionData.Add((int)MaddenPositions.CB, new Position(80, 75, 60, 0.7, 32, 0.9, 0, 2, 2, 0.6));
             positionData.Add((int)MaddenPositions.FS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
             positionData.Add((int)MaddenPositions.SS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
-            positionData.Add((int)MaddenPositions.K, new Position(4, 4, 4, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
-            positionData.Add((int)MaddenPositions.P, new Position(1, 1, 1, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
+            positionData.Add((int)MaddenPositions.K, new Position(5, 5, 5, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
+            positionData.Add((int)MaddenPositions.P, new Position(2, 2, 2, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
         }
-
+		
     }
 }
