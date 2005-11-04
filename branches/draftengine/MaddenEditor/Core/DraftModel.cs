@@ -217,7 +217,7 @@ namespace MaddenEditor.Core
 
 		public double RookEOR(RookieRecord rook)
 		{
-			return rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed);
+			return rook.Player.CalculateOverallRating(rook.Player.PositionId, true) + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed);
 		}
 
 		public void DumpRookiesByPosition()
@@ -610,8 +610,11 @@ namespace MaddenEditor.Core
 
 					if (rec.YearsPro > 0)
 					{
+						// INJURY CHANGE
+						// Remove injury adjustment for depth chart values
+
 						double tempOverall = (double)dcr.GetAdjustedOverall(rec, i) + /*math.theta(5.0 - rec.YearsPro) * (5.0 - (double)rec.YearsPro) * (5.0 - (double)model.TeamModel.GetTeamRecord(TeamId).CON) / 2.0 */
-							math.pointboost(rec, model.TeamModel.GetTeamRecord(TeamId).CON, positionData[i].RetirementAge) + math.injury(rec.Injury, positionData[i].DurabilityNeed);
+							math.pointboost(rec, model.TeamModel.GetTeamRecord(TeamId).CON, positionData[i].RetirementAge)/* + math.injury(rec.Injury, positionData[i].DurabilityNeed) */;
 
 						depthChartValues[TeamId][i].Add(LocalMath.ValueScale * positionData[i].Value(model.TeamModel.GetTeamRecord(TeamId).DefensiveSystem) * math.valcurve(tempOverall));
 					}
@@ -2328,6 +2331,7 @@ namespace MaddenEditor.Core
 
 			foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 			{
+				Console.WriteLine(5 - pickNumber / 32);
 				if (team.Value.TeamId >= 32) { continue; }
 
 				double HighestValue = 0;
@@ -2351,7 +2355,7 @@ namespace MaddenEditor.Core
 					if (rook.Value.DraftedTeam < 32) { continue; }
 					if (rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust) > HighestValue &&
 						rook.Value.AverageNeed(team.Value, pickNumber, dcr.awarenessAdjust) > positionData[rook.Value.Player.PositionId].Threshold &&
-
+						(rook.Value.PreCombineScoutedHours[team.Value.TeamId] + rook.Value.PostCombineScoutedHours[team.Value.TeamId]) >= (5 - pickNumber / 32) &&
 						// replace with statement on league projected position
 						rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > 0.75 * pickValues[nextpick])
 					{
@@ -2700,11 +2704,16 @@ namespace MaddenEditor.Core
 					{
 						if (pair.Key > 20) { continue; }
 
+						// INJURY CHANGE
+						//
+						// For values with progression, take out injury boost -- a player's
+						// INJ should have no bearing on their likelihood of starting.
+
 						rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.NoProg] =
 							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
 
 						rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.WithProg] =
-							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(/*5.0 * (5.0 - (double)team.Value.CON) / 2*/ math.pointboost(rook.Value.Player, team.Value.CON, 40) + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
+							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(/*5.0 * (5.0 - (double)team.Value.CON) / 2*/ math.pointboost(rook.Value.Player, team.Value.CON, 40) + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) /*+  math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed) */);
 					}
 				}
 			}

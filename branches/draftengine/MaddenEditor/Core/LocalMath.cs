@@ -39,6 +39,74 @@ namespace MaddenEditor.Core
 			mfv = version;
 		}
 
+		public double HeightWeightAdjust(PlayerRecord player, int positionId)
+		{
+			double adjustment = 0;
+
+			switch (positionId)
+			{
+				case (int)MaddenPositions.HB:
+					adjustment += (player.Weight - 55) * 0.02;
+					break;
+				case (int)MaddenPositions.FB:
+					adjustment += (player.Weight - 90) * 0.03;
+					break;
+				case (int)MaddenPositions.WR:
+					adjustment += (player.Weight - 50) * 0.03;
+					adjustment += (player.Height - 74) * 0.8;
+					break;
+				case (int)MaddenPositions.TE:
+					adjustment += (player.Height - 76);
+					adjustment += (player.Weight - 100) * 0.08;
+					break;
+				case (int)MaddenPositions.LT:
+				case (int)MaddenPositions.LG:
+				case (int)MaddenPositions.RT:
+					adjustment += (player.Weight - 160) * 0.1;
+					break;
+				case (int)MaddenPositions.C:
+					adjustment += (player.Weight - 140) * 0.1;
+					break;
+				case (int)MaddenPositions.RG:
+					adjustment += (player.Weight - 145) * 0.1;
+					break;
+				case (int)MaddenPositions.LE:
+					adjustment += (player.Weight - 125) * 0.1;
+					break;
+				case (int)MaddenPositions.RE:
+					adjustment += (player.Weight - 115) * 0.1;
+					break;
+				case (int)MaddenPositions.DT:
+					adjustment += (player.Weight - 150) * 0.15;
+					break;
+				case (int)MaddenPositions.LOLB:
+					adjustment += (player.Height - 74) * 0.5;
+					adjustment += (player.Weight - 80) * 0.08;
+					break;
+				case (int)MaddenPositions.MLB:
+					adjustment += (player.Weight - 80) * 0.07;
+					break;
+				case (int)MaddenPositions.ROLB:
+					adjustment += (player.Weight - 80) * 0.05;
+					adjustment += (player.Height - 74) * 0.3;
+					break;
+				case (int)MaddenPositions.CB:
+					adjustment += (player.Height - 71) * 0.9;
+					adjustment += (player.Weight - 30) * 0.03;
+					break;
+				case (int)MaddenPositions.FS:
+					adjustment += (player.Weight - 50) * 0.04;
+					adjustment += (player.Height - 72) * 0.7;
+					break;
+				case (int)MaddenPositions.SS:
+					adjustment += (player.Weight - 55) * 0.05;
+					adjustment += (player.Height - 72) * 0.7;
+					break;
+			}
+
+			return adjustment;
+		}
+
 		public double pointboost(PlayerRecord player, double con, double retireAge)
 		{
 			double conReverse = 5 - con;
