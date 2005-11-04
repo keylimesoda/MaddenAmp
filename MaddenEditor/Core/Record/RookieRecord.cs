@@ -361,12 +361,16 @@ namespace MaddenEditor.Core.Record
         }
 
         public double GetAdjustedOverall(int TeamId, int type, int position, Dictionary<int, Dictionary<int, double>> awarenessAdjust)
-        {
-            double tempOverall = 0;
+		{
+			double tempOverall = 0;
+
+			LocalMath lmath = new LocalMath(MaddenFileVersion.Ver2006);
+			tempOverall += lmath.HeightWeightAdjust(Player, position);
+
             switch (position)
             {
                 case (int)MaddenPositions.QB:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.THP] - 50) / 10) * 4.9;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.THP] - 50) / 10) * 4.9;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.THA] - 50) / 10) * 5.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
@@ -375,7 +379,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 28;
                     break;
                 case (int)MaddenPositions.HB:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 0.33;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 0.33;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 3.3;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CAR] - 50) / 10) * 2.0;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 1.8;
@@ -387,7 +391,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 27;
                     break;
                 case (int)MaddenPositions.FB:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 1.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.PBK] - 50) / 10) * 1.0;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.RBK] - 50) / 10) * 7.2;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 1.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.CAR] - 50) / 10) * 1.8;
@@ -400,7 +404,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 39;
                     break;
                 case (int)MaddenPositions.WR:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.BTK] - 50) / 10) * 0.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.ACC] - 50) / 10) * 2.3;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 2.3;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 2.3;
@@ -411,7 +415,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 26;
                     break;
                 case (int)MaddenPositions.TE:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 2.65;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 2.65;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 2.65;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 2.65;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.25;
@@ -424,7 +428,7 @@ namespace MaddenEditor.Core.Record
                     break;
                 case (int)MaddenPositions.LT:
                 case (int)MaddenPositions.RT:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 0.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 0.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.3;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.3;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
@@ -436,7 +440,7 @@ namespace MaddenEditor.Core.Record
                 case (int)MaddenPositions.LG:
                 case (int)MaddenPositions.RG:
                 case (int)MaddenPositions.C:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.7;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.7;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.25;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.25;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 0.8;
@@ -447,7 +451,7 @@ namespace MaddenEditor.Core.Record
                     break;
                 case (int)MaddenPositions.LE:
                 case (int)MaddenPositions.RE:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.75;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 1.75;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.75;
@@ -456,7 +460,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 30;
                     break;
                 case (int)MaddenPositions.DT:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 1.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 5.5;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.8;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1;
@@ -466,7 +470,7 @@ namespace MaddenEditor.Core.Record
                     break;
                 case (int)MaddenPositions.LOLB:
                 case (int)MaddenPositions.ROLB:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.75;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 2.4;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.6;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 2.4;
@@ -476,7 +480,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 29;
                     break;
                 case (int)MaddenPositions.MLB:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 0.75;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 0.75;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 3.4;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 5.2;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.65;
@@ -485,7 +489,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 27;
                     break;
                 case (int)MaddenPositions.CB:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.85;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.85;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 0.9;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 3.85;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.55;
@@ -496,7 +500,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 28;
                     break;
                 case (int)MaddenPositions.FS:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.0;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.0;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 0.9;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 4.85;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.5;
@@ -507,7 +511,7 @@ namespace MaddenEditor.Core.Record
                     tempOverall += 30;
                     break;
                 case (int)MaddenPositions.SS:
-                    tempOverall = (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.2;
+                    tempOverall += (((double)ratings[TeamId][type][(int)Attribute.SPD] - 50) / 10) * 3.2;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.STR] - 50) / 10) * 1.7;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AWR]*awarenessAdjust[Player.PositionId][position] - 50) / 10) * 4.75;
                     tempOverall += (((double)ratings[TeamId][type][(int)Attribute.AGI] - 50) / 10) * 1.7;
@@ -529,9 +533,12 @@ namespace MaddenEditor.Core.Record
             {
                 tempOverall = 0;
             }
-            if (tempOverall > 99)
+
+			// No rookie should be rated over 85, so teams shouldn't 
+			// perceive them as higher than 85.
+            if (tempOverall > 85)
             {
-                tempOverall = 99;
+                tempOverall = 85;
             }
 
             return tempOverall;

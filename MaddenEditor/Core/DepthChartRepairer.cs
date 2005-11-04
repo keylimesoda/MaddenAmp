@@ -1181,10 +1181,12 @@ namespace MaddenEditor.Core
         {
             double tempOverall = 0;
 
+			tempOverall += math.HeightWeightAdjust(player, alternatePosition);
+
             switch (alternatePosition)
             {
                 case (int)MaddenPositions.QB:
-                    tempOverall = (((double)player.ThrowPower - 50) / 10) * 4.9;
+                    tempOverall += (((double)player.ThrowPower - 50) / 10) * 4.9;
                     tempOverall += (((double)player.ThrowAccuracy - 50) / 10) * 5.8;
                     tempOverall += (((double)player.BreakTackle - 50) / 10) * 0.8;
                     tempOverall += (((double)player.Agility - 50) / 10) * 0.8;
@@ -1193,7 +1195,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
                     break;
                 case (int)MaddenPositions.HB:
-                    tempOverall = (((double)player.PassBlocking - 50) / 10) * 0.33;
+                    tempOverall += (((double)player.PassBlocking - 50) / 10) * 0.33;
                     tempOverall += (((double)player.BreakTackle - 50) / 10) * 3.3;
                     tempOverall += (((double)player.Carrying - 50) / 10) * 2.0;
                     tempOverall += (((double)player.Acceleration - 50) / 10) * 1.8;
@@ -1205,7 +1207,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 27, 1);
                     break;
                 case (int)MaddenPositions.FB:
-                    tempOverall = (((double)player.PassBlocking - 50) / 10) * 1.0;
+                    tempOverall += (((double)player.PassBlocking - 50) / 10) * 1.0;
                     tempOverall += (((double)player.RunBlocking - 50) / 10) * 7.2;
                     tempOverall += (((double)player.BreakTackle - 50) / 10) * 1.8;
                     tempOverall += (((double)player.Carrying - 50) / 10) * 1.8;
@@ -1218,7 +1220,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 39, 1);
                     break;
                 case (int)MaddenPositions.WR:
-                    tempOverall = (((double)player.BreakTackle - 50) / 10) * 0.8;
+                    tempOverall += (((double)player.BreakTackle - 50) / 10) * 0.8;
                     tempOverall += (((double)player.Acceleration - 50) / 10) * 2.3;
                     tempOverall += (((double)player.Agility - 50) / 10) * 2.3;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 2.3;
@@ -1229,7 +1231,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 26, 1);
                     break;
                 case (int)MaddenPositions.TE:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 2.65;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 2.65;
                     tempOverall += (((double)player.Strength - 50) / 10) * 2.65;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 2.65;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1.25;
@@ -1242,7 +1244,7 @@ namespace MaddenEditor.Core
                     break;
                 case (int)MaddenPositions.LT:
                 case (int)MaddenPositions.RT:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 0.8;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 0.8;
                     tempOverall += (((double)player.Strength - 50) / 10) * 3.3;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 3.3;
                     tempOverall += (((double)player.Agility - 50) / 10) * 0.8;
@@ -1254,7 +1256,7 @@ namespace MaddenEditor.Core
                 case (int)MaddenPositions.LG:
                 case (int)MaddenPositions.RG:
                 case (int)MaddenPositions.C:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 1.7;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 1.7;
                     tempOverall += (((double)player.Strength - 50) / 10) * 3.25;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 3.25;
                     tempOverall += (((double)player.Agility - 50) / 10) * 0.8;
@@ -1265,7 +1267,7 @@ namespace MaddenEditor.Core
                     break;
                 case (int)MaddenPositions.LE:
                 case (int)MaddenPositions.RE:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 3.75;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 3.75;
                     tempOverall += (((double)player.Strength - 50) / 10) * 3.75;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 1.75;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1.75;
@@ -1274,7 +1276,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
                     break;
                 case (int)MaddenPositions.DT:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 1.8;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 1.8;
                     tempOverall += (((double)player.Strength - 50) / 10) * 5.5;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 3.8;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1;
@@ -1284,7 +1286,7 @@ namespace MaddenEditor.Core
                     break;
                 case (int)MaddenPositions.LOLB:
                 case (int)MaddenPositions.ROLB:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 3.75;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 3.75;
                     tempOverall += (((double)player.Strength - 50) / 10) * 2.4;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 3.6;
                     tempOverall += (((double)player.Agility - 50) / 10) * 2.4;
@@ -1294,7 +1296,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 29, 1);
                     break;
                 case (int)MaddenPositions.MLB:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 0.75;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 0.75;
                     tempOverall += (((double)player.Strength - 50) / 10) * 3.4;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 5.2;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1.65;
@@ -1303,7 +1305,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 27, 1);
                     break;
                 case (int)MaddenPositions.CB:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 3.85;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 3.85;
                     tempOverall += (((double)player.Strength - 50) / 10) * 0.9;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 3.85;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1.55;
@@ -1314,7 +1316,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
                     break;
                 case (int)MaddenPositions.FS:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 3.0;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 3.0;
                     tempOverall += (((double)player.Strength - 50) / 10) * 0.9;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 4.85;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1.5;
@@ -1325,7 +1327,7 @@ namespace MaddenEditor.Core
                     tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
                     break;
                 case (int)MaddenPositions.SS:
-                    tempOverall = (((double)player.Speed - 50) / 10) * 3.2;
+                    tempOverall += (((double)player.Speed - 50) / 10) * 3.2;
                     tempOverall += (((double)player.Strength - 50) / 10) * 1.7;
                     tempOverall += ((((double)player.Awareness)*awarenessAdjust[player.PositionId][alternatePosition] - 50) / 10) * 4.75;
                     tempOverall += (((double)player.Agility - 50) / 10) * 1.7;
