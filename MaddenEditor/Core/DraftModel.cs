@@ -1616,7 +1616,54 @@ namespace MaddenEditor.Core
 						Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
 				}
 
-        public void ImportRookies(string filename)
+		public string MDCVerify(string filename)
+		{
+			StreamReader sr = new StreamReader(filename);
+
+			List<string> stringFields = model.PlayerModel.GetNextPlayerRecord().StringFields();
+			List<string> intFields = model.PlayerModel.GetNextPlayerRecord().IntFields();
+
+			int linesread = 0;
+			while (sr.EndOfStream == false && linesread < 260)
+			{
+				string playerLine = sr.ReadLine();
+				linesread++;
+
+				List<string> playerData = new List<string>(playerLine.Split('\t'));
+
+				if (playerData[playerData.Count - 1] == "")
+				{
+					playerData.RemoveAt(playerData.Count - 1);
+				}
+
+				if (playerData.Count != (stringFields.Count + intFields.Count))
+				{
+					sr.Close();
+					return "Number of fields on line " + linesread + " is incorrect.  Was this MDC file generated with the same version of the Madden Editor as you are using?";
+				}
+
+				for (int i = stringFields.Count; i < playerData.Count; i++)
+				{
+					int test;
+					if (!Int32.TryParse(playerData[i], out test))
+					{
+						sr.Close();
+						return "Field number " + i + " on line " + linesread + " is not numeric.";
+					}
+				}				
+			}
+
+			sr.Close();
+
+			if (linesread != 257)
+			{
+				return "This file contains " + linesread + " rookies.  It needs to contain exactly 257.";
+			}
+
+			return null;
+		}
+
+		public void ImportRookies(string filename)
         {
             StreamReader sr = new StreamReader(filename);
 

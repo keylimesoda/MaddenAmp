@@ -68,8 +68,6 @@ namespace MaddenEditor.Forms
 			secs = (int)minutes.Value * 60 + (int)seconds.Value;
 			humanId = model.TeamModel.GetTeamIdFromTeamName((string)teamChooser.SelectedItem);
 			
-			progressBar.Visible = true;
-
             if (draftClass.Checked)
             {
                 OpenFileDialog ofd = new OpenFileDialog();
@@ -84,6 +82,22 @@ namespace MaddenEditor.Forms
                 }
             }
 
+			draftModel = new DraftModel(model);
+
+			if (customclass != null)
+			{
+				string response = draftModel.MDCVerify(customclass);
+
+				if (response != null) {
+					MessageBox.Show("Error reading custom draft class file.  " + response, "Error");
+					this.Cursor = Cursors.Arrow;
+					startButton.Enabled = true;
+					customclass = null;
+					return;
+				}
+			}
+
+			progressBar.Visible = true;
 			backgroundWorker.RunWorkerAsync();
         }
 
@@ -129,8 +143,6 @@ namespace MaddenEditor.Forms
 
 				File.Copy(fileName, newFile);
 			}
-
-			draftModel = new DraftModel(model);
 
 			ReportProgress(15);
 			draftModel.InitializeDraft(humanId, this, customclass);
