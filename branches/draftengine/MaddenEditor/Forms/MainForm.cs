@@ -657,9 +657,17 @@ namespace MaddenEditor.Forms
 			if (ofd.FileName.Length > 0)
 			{
 				DraftModel dmTemp = new DraftModel(model);
-				dmTemp.ImportRookies(ofd.FileName);
-			}
+				string response = dmTemp.MDCVerify(ofd.FileName);
 
+				if (response == null)
+				{
+					dmTemp.ImportRookies(ofd.FileName);
+				}
+				else
+				{
+					MessageBox.Show("Error reading file.  " + response, "Error");
+				}
+			}
 		}
 
 		// MADDEN DRAFT EDIT
