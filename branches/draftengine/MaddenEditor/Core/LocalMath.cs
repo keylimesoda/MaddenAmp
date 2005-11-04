@@ -46,18 +46,18 @@ namespace MaddenEditor.Core
 			switch (positionId)
 			{
 				case (int)MaddenPositions.HB:
-					adjustment += (player.Weight - 55) * 0.02;
+					adjustment += (player.Weight - 55) * 0.07;
 					break;
 				case (int)MaddenPositions.FB:
-					adjustment += (player.Weight - 90) * 0.03;
+					adjustment += (player.Weight - 90) * 0.04;
 					break;
 				case (int)MaddenPositions.WR:
-					adjustment += (player.Weight - 50) * 0.03;
+					adjustment += (player.Weight - 50) * 0.06;
 					adjustment += (player.Height - 74) * 0.8;
 					break;
 				case (int)MaddenPositions.TE:
 					adjustment += (player.Height - 76);
-					adjustment += (player.Weight - 100) * 0.08;
+					adjustment += (player.Weight - 100) * 0.1;
 					break;
 				case (int)MaddenPositions.LT:
 				case (int)MaddenPositions.LG:
@@ -81,25 +81,25 @@ namespace MaddenEditor.Core
 					break;
 				case (int)MaddenPositions.LOLB:
 					adjustment += (player.Height - 74) * 0.5;
-					adjustment += (player.Weight - 80) * 0.08;
+					adjustment += (player.Weight - 80) * 0.09;
 					break;
 				case (int)MaddenPositions.MLB:
-					adjustment += (player.Weight - 80) * 0.07;
+					adjustment += (player.Weight - 80) * 0.08;
 					break;
 				case (int)MaddenPositions.ROLB:
-					adjustment += (player.Weight - 80) * 0.05;
+					adjustment += (player.Weight - 80) * 0.06;
 					adjustment += (player.Height - 74) * 0.3;
 					break;
 				case (int)MaddenPositions.CB:
 					adjustment += (player.Height - 71) * 0.9;
-					adjustment += (player.Weight - 30) * 0.03;
+					adjustment += (player.Weight - 30) * 0.04;
 					break;
 				case (int)MaddenPositions.FS:
-					adjustment += (player.Weight - 50) * 0.04;
+					adjustment += (player.Weight - 50) * 0.05;
 					adjustment += (player.Height - 72) * 0.7;
 					break;
 				case (int)MaddenPositions.SS:
-					adjustment += (player.Weight - 55) * 0.05;
+					adjustment += (player.Weight - 55) * 0.06;
 					adjustment += (player.Height - 72) * 0.7;
 					break;
 			}
