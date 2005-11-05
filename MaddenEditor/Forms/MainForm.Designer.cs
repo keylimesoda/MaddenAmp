@@ -58,6 +58,7 @@ namespace MaddenEditor.Forms
 			this.depthChartProgMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.moveTradedDraftPicksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exportDraftClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.importDraftClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
@@ -71,7 +72,6 @@ namespace MaddenEditor.Forms
 			this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
 			this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-			this.importDraftClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.playerPage.SuspendLayout();
@@ -274,6 +274,12 @@ namespace MaddenEditor.Forms
 			this.exportDraftClassToolStripMenuItem.Text = "Export Draft Class";
 			this.exportDraftClassToolStripMenuItem.Click += new System.EventHandler(this.exportDraftClassToolStripMenuItem_Click);
 			// 
+			// importDraftClassToolStripMenuItem
+			// 
+			this.importDraftClassToolStripMenuItem.Name = "importDraftClassToolStripMenuItem";
+			this.importDraftClassToolStripMenuItem.Text = "Import Draft Class";
+			this.importDraftClassToolStripMenuItem.Click += new System.EventHandler(this.importDraftClassToolStripMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -379,12 +385,6 @@ namespace MaddenEditor.Forms
 			this.testerWorkerThread.WorkerSupportsCancellation = true;
 			this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
 			this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
-			// 
-			// importDraftClassToolStripMenuItem
-			// 
-			this.importDraftClassToolStripMenuItem.Name = "importDraftClassToolStripMenuItem";
-			this.importDraftClassToolStripMenuItem.Text = "Import Draft Class";
-			this.importDraftClassToolStripMenuItem.Click += new System.EventHandler(this.importDraftClassToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
