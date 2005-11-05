@@ -654,13 +654,13 @@ namespace MaddenEditor.Core
 				{
 					//                    if (rook.Value.DraftedTeam < 32) { continue; }
 
-					if (rook.Value.AverageNeed(team, pickNumber, dcr.awarenessAdjust) < positionData[rook.Value.Player.PositionId].Threshold || rook.Value.DraftedTeam < 32)
-					{
-						tempProbs[rook.Key] = 0;
-					}
-					else if (rook.Value.PlayerId == favorite.PlayerId)
+					if (rook.Value.PlayerId == favorite.PlayerId)
 					{
 						tempProbs[rook.Key] = 1;
+					}
+					else if (rook.Value.AverageNeed(team, pickNumber, dcr.awarenessAdjust) < positionData[rook.Value.Player.PositionId].Threshold || rook.Value.DraftedTeam < 32)
+					{
+						tempProbs[rook.Key] = 0;
 					}
 					else
 					{
@@ -3781,7 +3781,7 @@ namespace MaddenEditor.Core
 				}
 
 				double probabilityTaken = dm.probs[LowerTeam][dm.favorites[HigherTeam].PlayerId];
-				double probabilityRemaining = probabilityTaken;
+				double probabilityRemaining = 1-probabilityTaken;
 
 				foreach (TableRecordModel rec in dm.model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
 				{

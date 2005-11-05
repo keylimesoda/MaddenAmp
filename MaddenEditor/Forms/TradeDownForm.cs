@@ -51,6 +51,7 @@ namespace MaddenEditor.Forms
         Dictionary<int, int> cons = new Dictionary<int, int>();
         Dictionary<int, int> nextpicks = new Dictionary<int,int>();
         Dictionary<int, string> teamnames = new Dictionary<int,string>();
+		List<int> teamsByNextPick = new List<int>();
 
         Dictionary<int, List<string>> conversations = new Dictionary<int, List<string>>();
 
@@ -78,6 +79,25 @@ namespace MaddenEditor.Forms
 
                 conversations[i] = new List<string>();
             }
+
+			for (int i = 0; i < 32; i++)
+			{
+				if (i == HumanTeam) { continue; }
+
+				int lowestPick = 300;
+				int nextTeam = -1;
+
+				foreach (KeyValuePair<int, int> pick in nextpicks)
+				{
+					if (pick.Value < lowestPick && !teamsByNextPick.Contains(pick.Key))
+					{
+						lowestPick = pick.Value;
+						nextTeam = pick.Key;
+					}
+				}
+
+				teamsByNextPick.Add(nextTeam);
+			}
             
             myLabel.Text = teamnames[HumanTeam] + "' Picks";
             CPUlabel.Text = teamnames[activeTeam] + "' Picks";
@@ -215,6 +235,8 @@ namespace MaddenEditor.Forms
             noOfferList = new List<int>();
             rejectedList = new List<int>();
 
+			List<int> tempNoOfferList = new List<int>();
+
             Point higherScroll = HigherPendingBox.AutoScrollOffset;
             Point lowerScroll = LowerPendingBox.AutoScrollOffset;
             Point noofferScroll = NoOfferBox.AutoScrollOffset;
@@ -239,9 +261,17 @@ namespace MaddenEditor.Forms
                 }
                 else if (i != dm.HumanTeamId)
                 {
-                    noOfferList.Add(i);
+                    tempNoOfferList.Add(i);
                 }
             }
+
+			foreach (int teamId in teamsByNextPick)
+			{
+				if (tempNoOfferList.Contains(teamId))
+				{
+					noOfferList.Add(teamId);
+				}
+			}
 
             HigherPendingBox.Items.Clear();
             foreach (int teamId in higherPendingList)
