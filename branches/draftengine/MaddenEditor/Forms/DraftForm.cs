@@ -1776,6 +1776,11 @@ namespace MaddenEditor.Forms
 
         private void RookieGrid_DoubleClick(object sender, EventArgs e)
         {
+			if (dm.rookies[(int)((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["PGID"]].DraftedTeam < 32)
+			{
+				return;
+			}
+
             foreach (DataRow drd in wishlistData.Rows)
             {
                 if ((short)drd["PGID"] == (int)((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["PGID"])
