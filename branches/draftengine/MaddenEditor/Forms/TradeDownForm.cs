@@ -421,6 +421,11 @@ namespace MaddenEditor.Forms
 
             allowTeamRefresh = false;
 
+			if (dm.tradeOffers.ContainsKey(activeTeam) && dm.tradeOffers[activeTeam].offersFromHigher.Count == 0 && dm.tradeOffers[activeTeam].offersFromLower.Count == 0 && dm.tradeOffers[activeTeam].status == -1)
+			{
+				dm.tradeOffers.Remove(activeTeam);
+			}
+
             if (sender == HigherPendingBox)
             {
                 activeTeam = higherPendingList[HigherPendingBox.SelectedIndex];
