@@ -34,7 +34,8 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_ID = "TGID";
 		public const string INJURY_RSV = "INIR";
 
-		public InjuryRecord(int record, EditorModel EditorModel)	: base(record, EditorModel)
+		public InjuryRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

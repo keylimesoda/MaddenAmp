@@ -58,8 +58,8 @@ namespace MaddenEditor.Core.Record
         // Has structure needs[TeamId][PositionId][NeedType]
         public Dictionary<int, Dictionary<int, Dictionary<int, double>>> needs;
 
-        public RookieRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public RookieRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
         }

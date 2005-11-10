@@ -427,22 +427,25 @@ namespace MaddenEditor.Core
 			//Add the field list to the tablemodel
 			table.SetFieldList(fieldList);
 
-			int recordsFound = 0;
+			//int recordsFound = 0;
 			int index = 0;
 			float currentProgress = 0.0f;
 			float progressInterval = (1.0f / (float)tableProps.RecordCount) * 100.0f;
-			while (recordsFound != tableProps.RecordCount)
+			while (index != tableProps.RecordCount)
 			{
 				bool deleted = TDB.TDBTableRecordDeleted(dbIndex, tableProps.Name, index);
 
 				if (deleted)
 				{
 					//If this record is deleted advance the index only
+                    //What this means is that any initial records marked as deleted we will never
+                    //use unless the database is compacted.
+
 					index++;
 					continue;
 				}
 
-				TableRecordModel record = table.ConstructRecordModel(recordsFound);
+                TableRecordModel record = table.ConstructRecordModel(index);
 
 				if (record != null)
 				{
@@ -458,7 +461,7 @@ namespace MaddenEditor.Core
 								string val = new string((char)0, (fieldProps.Size / 8)+1);
 								try
 								{
-									TDB.TDBFieldGetValueAsString(dbIndex, tableProps.Name, fieldProps.Name, recordsFound, ref val);
+                                    TDB.TDBFieldGetValueAsString(dbIndex, tableProps.Name, fieldProps.Name, index, ref val);
 								}
 								catch (Exception err)
 								{
@@ -468,12 +471,12 @@ namespace MaddenEditor.Core
 								break;
 							case TdbFieldType.tdbUInt:
 								UInt32 intval;
-								intval = (UInt32)TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
+                                intval = (UInt32)TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, index);
 								record.RegisterField(fieldProps.Name, (int)intval);
 								break;
 							case TdbFieldType.tdbSInt:
 								Int32 signedval;
-								signedval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
+                                signedval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, index);
 								record.RegisterField(fieldProps.Name, signedval);
 								break;
 							default:
@@ -484,7 +487,7 @@ namespace MaddenEditor.Core
 				}
 
 				index++;
-				recordsFound++;
+				//recordsFound++;
 
 				currentProgress += progressInterval;
 				view.updateProgress((int)currentProgress, table.Name);
@@ -505,6 +508,9 @@ namespace MaddenEditor.Core
 				tmodel.Save();
 			}
 
+            //Now save to database
+            TDB.TDBSave(dbIndex);
+
 			this.Dirty = false;
 		}
 
@@ -512,6 +518,8 @@ namespace MaddenEditor.Core
 		{
 			try
 			{
+                //Before we shutdown compact the database ??
+                TDB.TDBDatabaseCompact(dbIndex);
 				TDB.TDBClose(dbIndex);
 			}
 			catch (DllNotFoundException e)

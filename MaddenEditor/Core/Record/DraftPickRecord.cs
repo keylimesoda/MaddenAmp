@@ -32,8 +32,8 @@ namespace MaddenEditor.Core.Record
         public const string CURRENT_PICK_OWNER = "DPID";
         public const string ORIGINAL_PICK_OWNER = "DPOD";
 
-        public DraftPickRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+        public DraftPickRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

@@ -94,8 +94,8 @@ namespace MaddenEditor.Core.Record
 
 		}
 
-		public ScheduleRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public ScheduleRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}
@@ -226,7 +226,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return parentModel.TeamModel.GetTeamRecord(GetIntField(AWAY_TEAM_ID));
+				return editorModel.TeamModel.GetTeamRecord(GetIntField(AWAY_TEAM_ID));
 			}
 			set
 			{
@@ -238,7 +238,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return parentModel.TeamModel.GetTeamRecord(GetIntField(HOME_TEAM_ID));
+				return editorModel.TeamModel.GetTeamRecord(GetIntField(HOME_TEAM_ID));
 			}
 			set
 			{

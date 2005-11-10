@@ -31,7 +31,10 @@ namespace MaddenEditor.Core
 {
 	public class TableModel
 	{
+		//Stores the active records
 		protected List<TableRecordModel> recordList = null;
+		//Stores the deleted records
+		protected List<TableRecordModel> deletedRecordList = null;
 		protected String name;
 		protected EditorModel parentModel = null;
 		List<TdbFieldProperties> fieldList = null;
@@ -44,6 +47,7 @@ namespace MaddenEditor.Core
 			parentModel = EditorModel;
 			this.name = name;
 			recordList = new List<TableRecordModel>();
+			deletedRecordList = new List<TableRecordModel>();
 		}
 
 		public void SetPrimaryKeyField(string key)
@@ -68,7 +72,7 @@ namespace MaddenEditor.Core
 		{
 			List<string> result = new List<string>();
 
-			foreach(TableRecordModel record in recordList)
+			foreach (TableRecordModel record in recordList)
 			{
 				result.Add(record.GetStringField(fieldName));
 			}
@@ -94,6 +98,34 @@ namespace MaddenEditor.Core
 			}
 		}
 
+		/// <summary>
+		/// This function checks to see that if the record is deleted that it is put
+		/// in the deleted list of records, and if not, that it is put in the regular
+		/// list
+		/// </summary>
+		/// <param name="record"></param>
+		public void ProcessRecordDeleteness(TableRecordModel record)
+		{
+			if (record.Dirty)
+			{
+				recordList.Remove(record);
+
+				if (!deletedRecordList.Contains(record))
+				{
+					deletedRecordList.Add(record);
+				}
+			}
+			else
+			{
+				deletedRecordList.Remove(record);
+
+				if (!recordList.Contains(record))
+				{
+					recordList.Add(record);
+				}
+			}
+		}
+
 		public TableRecordModel CreateNewRecord(bool allowExpand)
 		{
 			TableRecordModel result = null;
@@ -104,7 +136,7 @@ namespace MaddenEditor.Core
 				//Chuck an exception
 				throw new ApplicationException("Table " + name + " has reached max capacity");
 			}
-						
+
 			result = ConstructRecordModel(newRecNo);
 
 			result.Dirty = true;
@@ -143,49 +175,49 @@ namespace MaddenEditor.Core
 			switch (name)
 			{
 				case EditorModel.CITY_TABLE:
-					newRecord = new CityRecord(recno, parentModel);
+					newRecord = new CityRecord(recno, this, parentModel);
 					break;
 				case EditorModel.COACH_TABLE:
-					newRecord = new CoachRecord(recno, parentModel);
+					newRecord = new CoachRecord(recno, this, parentModel);
 					break;
 				case EditorModel.SALARY_CAP_TABLE:
-					newRecord = new SalaryCapRecord(recno, parentModel);
+					newRecord = new SalaryCapRecord(recno, this, parentModel);
 					break;
 				case EditorModel.COACH_SLIDER_TABLE:
-					newRecord = new CoachPrioritySliderRecord(recno, parentModel);
+					newRecord = new CoachPrioritySliderRecord(recno, this, parentModel);
 					break;
 				case EditorModel.TEAM_CAPTAIN_TABLE:
-					newRecord = new TeamCaptainRecord(recno, parentModel);
+					newRecord = new TeamCaptainRecord(recno, this, parentModel);
 					break;
 				case EditorModel.OWNER_TABLE:
-					newRecord = new OwnerRecord(recno, parentModel);
+					newRecord = new OwnerRecord(recno, this, parentModel);
 					break;
 				case EditorModel.DEPTH_CHART_TABLE:
-					newRecord = new DepthChartRecord(recno, parentModel);
+					newRecord = new DepthChartRecord(recno, this, parentModel);
 					break;
 				case EditorModel.INJURY_TABLE:
-					newRecord = new InjuryRecord(recno, parentModel);
+					newRecord = new InjuryRecord(recno, this, parentModel);
 					break;
 				case EditorModel.PLAYER_TABLE:
-					newRecord = new PlayerRecord(recno, parentModel);
+					newRecord = new PlayerRecord(recno, this, parentModel);
 					break;
 				case EditorModel.TEAM_TABLE:
-					newRecord = new TeamRecord(recno, parentModel);
+					newRecord = new TeamRecord(recno, this, parentModel);
 					break;
 				case EditorModel.SCHEDULE_TABLE:
-					newRecord = new ScheduleRecord(recno, parentModel);
+					newRecord = new ScheduleRecord(recno, this, parentModel);
 					break;
-                // MADDEN DRAFT EDIT
-                case EditorModel.DRAFT_PICK_TABLE:
-                    newRecord = new DraftPickRecord(recno, parentModel);
-                    break;
+				// MADDEN DRAFT EDIT
+				case EditorModel.DRAFT_PICK_TABLE:
+					newRecord = new DraftPickRecord(recno, this, parentModel);
+					break;
 
-                case EditorModel.DRAFTED_PLAYERS_TABLE:
-                    newRecord = new RookieRecord(recno, parentModel);
-                    break;
-                // MADDEN DRAFT EDIT
+				case EditorModel.DRAFTED_PLAYERS_TABLE:
+					newRecord = new RookieRecord(recno, this, parentModel);
+					break;
+				// MADDEN DRAFT EDIT
 				case EditorModel.GAME_OPTIONS_TABLE:
-					newRecord = new GameOptionRecord(recno, parentModel);
+					newRecord = new GameOptionRecord(recno, this, parentModel);
 					break;
 			}
 
@@ -195,49 +227,69 @@ namespace MaddenEditor.Core
 			return newRecord;
 		}
 
+		/// <summary>
+		/// This function saves the changes from the table record models to the database
+		/// 
+		/// These changes need to be made persistent by calling TDB.Save(). usually you don't
+		/// call this function directly. Instead call EditorModel.Save() which will
+		/// do it all for you.
+		/// </summary>
 		public void Save()
 		{
-			foreach (TableRecordModel record in recordList)
+			List<TableRecordModel> listToUse = null;
+
+			for (int j = 0; j < 2; j++)
 			{
-				if (record.Dirty)
+				if (j == 0)
 				{
-					//First check to see if this record is going to be deleted
-					if (record.Deleted)
+					listToUse = recordList;
+				}
+				else
+				{
+					listToUse = deletedRecordList;
+				}
+				foreach (TableRecordModel record in listToUse)
+				{
+					if (record.Dirty)
 					{
-						Console.Write("About to mark for deletion record " + record.RecNo);
-						//Mark record for deletion in DB
+						//First check to see if this record is going to be deleted
+						if (record.Deleted)
+						{
+							Console.Write("About to mark for deletion record " + record.RecNo);
+							//Mark record for deletion in DB
 
-						TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, false);
-						//TDB.TDBTableRecordRemove(dbIndex, name, record.RecNo);
-						continue;
+							TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, false);
+							//TDB.TDBTableRecordRemove(dbIndex, name, record.RecNo);
+							continue;
+						}
+
+						string[] keyArray = null;
+						int[] valueArray = null;
+						string[] stringValueArray = null;
+
+						record.GetChangedIntFields(ref keyArray, ref valueArray);
+
+						for (int i = 0; i < keyArray.Length; i++)
+						{
+							TDB.TDBFieldSetValueAsInteger(dbIndex, name, keyArray[i], record.RecNo, valueArray[i]);
+						}
+
+						keyArray = null;
+
+						record.GetChangedStringFields(ref keyArray, ref stringValueArray);
+
+						for (int i = 0; i < keyArray.Length; i++)
+						{
+							TDB.TDBFieldSetValueAsString(dbIndex, name, keyArray[i], record.RecNo, stringValueArray[i]);
+						}
+
+						record.DiscardBackups();
 					}
-
-					string[] keyArray = null;
-					int[] valueArray = null;
-					string[] stringValueArray = null;
-
-					record.GetChangedIntFields(ref keyArray, ref valueArray);
-
-					for (int i = 0; i < keyArray.Length; i++)
-					{
-						TDB.TDBFieldSetValueAsInteger(dbIndex, name, keyArray[i], record.RecNo, valueArray[i]);
-					}
-
-					keyArray = null;
-
-					record.GetChangedStringFields(ref keyArray, ref stringValueArray);
-
-					for (int i = 0; i < keyArray.Length; i++)
-					{
-						TDB.TDBFieldSetValueAsString(dbIndex, name, keyArray[i], record.RecNo, stringValueArray[i]);
-					}
-
-					record.DiscardBackups();
 				}
 			}
 
-			TDB.TDBDatabaseCompact(dbIndex);
-			TDB.TDBSave(dbIndex);
+			//TDB.TDBDatabaseCompact(dbIndex);
+			//TDB.TDBSave(dbIndex);
 		}
 	}
 }

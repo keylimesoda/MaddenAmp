@@ -31,8 +31,8 @@ namespace MaddenEditor.Core.Record
 		public const string CITY_ID = "CYID";
 		public const string CITY_NAME = "CYNM";
 
-		public CityRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public CityRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

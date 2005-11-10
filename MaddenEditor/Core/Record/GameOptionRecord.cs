@@ -33,8 +33,8 @@ namespace MaddenEditor.Core.Record
 		public const string INGAME_INJURY = "INGI";
 		public const string SIM_INJURY = "SIMI";
 
-		public GameOptionRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public GameOptionRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}
