@@ -38,8 +38,8 @@ namespace MaddenEditor.Core.Record
 		public const string COMPUTER_CONTROL_6 = "CFRR";
 		public const string COMPUTER_CONTROL_7 = "CFEX";
 
-		public OwnerRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public OwnerRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}
@@ -65,7 +65,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return parentModel.TeamModel.GetTeamNameFromTeamId(TeamId);
+				return editorModel.TeamModel.GetTeamNameFromTeamId(TeamId);
 			}
 		}
 

@@ -86,8 +86,8 @@ namespace MaddenEditor.Core.Record
         private int con;
         // MADDEN DRAFT EDIT
 
-		public TeamRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public TeamRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

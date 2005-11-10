@@ -41,11 +41,13 @@ namespace MaddenEditor.Core
 		private Dictionary<string, int> backupIntFields = null;
 		private Dictionary<string, string> backupStringFields = null;
 
-		protected EditorModel parentModel = null;
+		protected EditorModel editorModel = null;
+        protected TableModel tableModel = null;
 
-		public TableRecordModel(int recordNumber, EditorModel EditorModel)
+		public TableRecordModel(int recordNumber, TableModel tableModel, EditorModel editorModel)
 		{
-			parentModel = EditorModel;
+            this.tableModel = tableModel;
+            this.editorModel = editorModel;
 			this.recordNumber = recordNumber;
 			intFields = new Dictionary<string, int>();
 			stringFields = new Dictionary<string, string>();
@@ -161,7 +163,7 @@ namespace MaddenEditor.Core
 				return;
 			}
 			//Mark this record as dirty as well as the Full Roster Model
-			parentModel.Dirty = true;
+			editorModel.Dirty = true;
 			this.dirty = true;
 
 			//If the string backup dictionary already contains a key for
@@ -196,7 +198,7 @@ namespace MaddenEditor.Core
 			}
 
 			//Mark this record as dirty as well as the Full Roster Model
-			parentModel.Dirty = true;
+			editorModel.Dirty = true;
 			this.dirty = true;
 
 			//If the int backup dictionary already contains a key for
@@ -263,7 +265,8 @@ namespace MaddenEditor.Core
 		{
 			deleted = flag;
 			this.Dirty = true;
-			parentModel.Dirty = true;
+			editorModel.Dirty = true;
+			tableModel.ProcessRecordDeleteness(this);
 		}
 	}
 }

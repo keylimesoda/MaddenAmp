@@ -58,8 +58,8 @@ namespace MaddenEditor.Core.Record
 
 		public const int NUMBER_OF_COACHING_POSITIONS = 17;
 
-		public CoachPrioritySliderRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public CoachPrioritySliderRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

@@ -82,8 +82,8 @@ namespace MaddenEditor.Core.Record
 
 		public const string USER_CONTROLLED = "CFUC";
 
-		public CoachRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public CoachRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

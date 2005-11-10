@@ -35,8 +35,8 @@ namespace MaddenEditor.Core.Record
 		public const string CAPTAIN_3 = "CPT3";
 		public const string TEAM_ID = "TGID";
 
-		public TeamCaptainRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public TeamCaptainRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

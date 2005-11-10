@@ -36,8 +36,8 @@ namespace MaddenEditor.Core.Record
 		public const string RESTRICTED_FA_4 = "RFA4";
 		public const string SALARY_CAP = "SCAD";
 
-		public SalaryCapRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public SalaryCapRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

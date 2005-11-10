@@ -26,8 +26,8 @@ namespace MaddenEditor.Core.Record
 {
 	public class StadiumTable : TableRecordModel
 	{
-		public StadiumTable(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public StadiumTable(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}

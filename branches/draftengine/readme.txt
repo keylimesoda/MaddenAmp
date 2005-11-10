@@ -32,14 +32,16 @@ source and anyone is actively encouraged to develop it.
 
 2. REQUIREMENTS
 ===============
-The main requirement for this program is .NET Framework Runtime v2.0 Beta 2.
+The main requirement for this program is .NET Framework Runtime v2.0. 
+(NOTE: This is the official version now. Don't use the Beta 2 that this editor
+used to run from. Uninstall that, and install the official released one)
 You need to install this in order to run the program. Also NOTE, if you have a 
 previous .NET Framework Runtime v2.0 Beta installed, uninstall it first.
 
 This can be downloaded from 
-http://www.microsoft.com/downloads/details.aspx?FamilyID=7ABD8C8F-287E-4C7E-9A4A-A4ECFF40FC8E&displaylang=en
+http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=en
 
-The Actual package name is .NET Framework Version 2.0 Redistributable Package Beta 2 (x86).
+Microsoft .NET Framework Version 2.0 Redistributable Package (x86).
 
 3. FEATURES
 ===========

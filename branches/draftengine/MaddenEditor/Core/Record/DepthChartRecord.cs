@@ -33,8 +33,8 @@ namespace MaddenEditor.Core.Record
         public const string POSITION_ID = "PPOS";
         public const string DEPTH_ORDER = "ddep";
 
-		public DepthChartRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public DepthChartRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}
