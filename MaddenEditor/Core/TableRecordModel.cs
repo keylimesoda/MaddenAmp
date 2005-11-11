@@ -126,6 +126,7 @@ namespace MaddenEditor.Core
 			}
 			catch(KeyNotFoundException err)
 			{
+				err = err;
 				//Console.WriteLine("Error Getting StringField " + fieldName + " :" + err.ToString());
 				return "";
 			}
@@ -139,6 +140,7 @@ namespace MaddenEditor.Core
 			}
 			catch (KeyNotFoundException err)
 			{
+				err = err;
 				//Console.WriteLine("Error Getting IntField " + fieldName + " :" + err.ToString());
 				return 0;
 			}

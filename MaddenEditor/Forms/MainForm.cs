@@ -69,7 +69,7 @@ namespace MaddenEditor.Forms
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 
 
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
 
 			playerEditControl = new PlayerEditControl();
 			coachEditControl = new CoachEditControl();
@@ -470,6 +470,7 @@ namespace MaddenEditor.Forms
 			}
 			catch (ArgumentException err)
 			{
+				err = err;
 				MessageBox.Show("The Schedule in this franchise file cannot be loaded for editing\r\nReport this to " + EditorModel.SUPPORT_EMAIL, "Error loading schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}

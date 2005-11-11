@@ -103,48 +103,57 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
 			this.fileToolStripMenuItem.Text = "&File";
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.openToolStripMenuItem.Text = "&Open ...";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.closeToolStripMenuItem.Text = "&Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(167, 6);
 			// 
 			// exportToolStripMenuItem
 			// 
 			this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+			this.exportToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.exportToolStripMenuItem.Text = "&Export Players ...";
 			this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(167, 6);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.saveToolStripMenuItem.Text = "&Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -157,33 +166,39 @@ namespace MaddenEditor.Forms
             this.depthChartEditorToolStripMenuItem,
             this.globalPlayerAttrEditorToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.toolsToolStripMenuItem.Text = "Tools";
 			// 
 			// searchforPlayerToolStripMenuItem
 			// 
 			this.searchforPlayerToolStripMenuItem.Name = "searchforPlayerToolStripMenuItem";
+			this.searchforPlayerToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
 			this.searchforPlayerToolStripMenuItem.Text = "Search for Player ...";
 			this.searchforPlayerToolStripMenuItem.Click += new System.EventHandler(this.searchforPlayerToolStripMenuItem_Click);
 			// 
 			// searchforCoachesToolStripMenuItem
 			// 
 			this.searchforCoachesToolStripMenuItem.Name = "searchforCoachesToolStripMenuItem";
+			this.searchforCoachesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
 			this.searchforCoachesToolStripMenuItem.Text = "Search for Coaches ...";
 			this.searchforCoachesToolStripMenuItem.Click += new System.EventHandler(this.searchforCoachesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(212, 6);
 			// 
 			// depthChartEditorToolStripMenuItem
 			// 
 			this.depthChartEditorToolStripMenuItem.Name = "depthChartEditorToolStripMenuItem";
+			this.depthChartEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
 			this.depthChartEditorToolStripMenuItem.Text = "Depth Chart Editor ...";
 			this.depthChartEditorToolStripMenuItem.Click += new System.EventHandler(this.depthChartEditorToolStripMenuItem_Click);
 			// 
 			// globalPlayerAttrEditorToolStripMenuItem
 			// 
 			this.globalPlayerAttrEditorToolStripMenuItem.Name = "globalPlayerAttrEditorToolStripMenuItem";
+			this.globalPlayerAttrEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
 			this.globalPlayerAttrEditorToolStripMenuItem.Text = "Global Player Attr Editor ...";
 			this.globalPlayerAttrEditorToolStripMenuItem.Click += new System.EventHandler(this.globalPlayerAttrEditorToolStripMenuItem_Click);
 			// 
@@ -204,79 +219,93 @@ namespace MaddenEditor.Forms
             this.exportDraftClassToolStripMenuItem,
             this.importDraftClassToolStripMenuItem});
 			this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
+			this.franchiseToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
 			this.franchiseToolStripMenuItem.Text = "Franchise";
 			// 
 			// editScheduleToolStripMenuItem
 			// 
 			this.editScheduleToolStripMenuItem.Name = "editScheduleToolStripMenuItem";
+			this.editScheduleToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.editScheduleToolStripMenuItem.Text = "Edit Schedule ...";
 			this.editScheduleToolStripMenuItem.Click += new System.EventHandler(this.editScheduleToolStripMenuItem_Click);
 			// 
 			// editSalaryCapsToolStripMenuItem
 			// 
 			this.editSalaryCapsToolStripMenuItem.Name = "editSalaryCapsToolStripMenuItem";
+			this.editSalaryCapsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps ...";
 			this.editSalaryCapsToolStripMenuItem.Click += new System.EventHandler(this.editSalaryCapsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(237, 6);
 			// 
 			// setTeamCaptainsToolStripMenuItem
 			// 
 			this.setTeamCaptainsToolStripMenuItem.Name = "setTeamCaptainsToolStripMenuItem";
+			this.setTeamCaptainsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.setTeamCaptainsToolStripMenuItem.Text = "Set Team Captains ...";
 			this.setTeamCaptainsToolStripMenuItem.Click += new System.EventHandler(this.setTeamCaptainsToolStripMenuItem_Click);
 			// 
 			// setUserControlledTeamsToolStripMenuItem
 			// 
 			this.setUserControlledTeamsToolStripMenuItem.Name = "setUserControlledTeamsToolStripMenuItem";
+			this.setUserControlledTeamsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.setUserControlledTeamsToolStripMenuItem.Text = "Set User Controlled Teams ...";
 			this.setUserControlledTeamsToolStripMenuItem.Click += new System.EventHandler(this.setUserControlledTeamsToolStripMenuItem_Click);
 			// 
 			// setGameInjuriesToolStripMenuItem
 			// 
 			this.setGameInjuriesToolStripMenuItem.Name = "setGameInjuriesToolStripMenuItem";
+			this.setGameInjuriesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.setGameInjuriesToolStripMenuItem.Text = "Set Game Injuries ...";
 			this.setGameInjuriesToolStripMenuItem.Click += new System.EventHandler(this.setGameInjuriesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(237, 6);
 			// 
 			// draftMenuItem
 			// 
 			this.draftMenuItem.Name = "draftMenuItem";
+			this.draftMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.draftMenuItem.Text = "Enter Draft";
 			this.draftMenuItem.Click += new System.EventHandler(this.enterDraftToolStripMenuItem_Click);
 			// 
 			// depthChartMenuItem
 			// 
 			this.depthChartMenuItem.Name = "depthChartMenuItem";
+			this.depthChartMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.depthChartMenuItem.Text = "Reorder Depth Charts (No Prog)";
 			this.depthChartMenuItem.Click += new System.EventHandler(this.depthChartMenuItem_Click);
 			// 
 			// depthChartProgMenuItem
 			// 
 			this.depthChartProgMenuItem.Name = "depthChartProgMenuItem";
+			this.depthChartProgMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.depthChartProgMenuItem.Text = "Reorder Depth Charts (w/ Prog)";
 			this.depthChartProgMenuItem.Click += new System.EventHandler(this.depthChartProgMenuItem_Click);
 			// 
 			// moveTradedDraftPicksToolStripMenuItem
 			// 
 			this.moveTradedDraftPicksToolStripMenuItem.Name = "moveTradedDraftPicksToolStripMenuItem";
+			this.moveTradedDraftPicksToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.moveTradedDraftPicksToolStripMenuItem.Text = "Move Traded Draft Picks";
 			this.moveTradedDraftPicksToolStripMenuItem.Click += new System.EventHandler(this.moveTradedDraftPicksToolStripMenuItem_Click);
 			// 
 			// exportDraftClassToolStripMenuItem
 			// 
 			this.exportDraftClassToolStripMenuItem.Name = "exportDraftClassToolStripMenuItem";
+			this.exportDraftClassToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.exportDraftClassToolStripMenuItem.Text = "Export Draft Class";
 			this.exportDraftClassToolStripMenuItem.Click += new System.EventHandler(this.exportDraftClassToolStripMenuItem_Click);
 			// 
 			// importDraftClassToolStripMenuItem
 			// 
 			this.importDraftClassToolStripMenuItem.Name = "importDraftClassToolStripMenuItem";
+			this.importDraftClassToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.importDraftClassToolStripMenuItem.Text = "Import Draft Class";
 			this.importDraftClassToolStripMenuItem.Click += new System.EventHandler(this.importDraftClassToolStripMenuItem_Click);
 			// 
@@ -285,11 +314,13 @@ namespace MaddenEditor.Forms
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
 			this.helpToolStripMenuItem.Text = "&Help";
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
 			this.aboutToolStripMenuItem.Text = "About ...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -302,7 +333,7 @@ namespace MaddenEditor.Forms
 			this.tabControl.Location = new System.Drawing.Point(0, 24);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(792, 519);
+			this.tabControl.Size = new System.Drawing.Size(792, 520);
 			this.tabControl.TabIndex = 1;
 			// 
 			// playerPage
@@ -311,7 +342,7 @@ namespace MaddenEditor.Forms
 			this.playerPage.Location = new System.Drawing.Point(4, 22);
 			this.playerPage.Name = "playerPage";
 			this.playerPage.Padding = new System.Windows.Forms.Padding(3);
-			this.playerPage.Size = new System.Drawing.Size(784, 493);
+			this.playerPage.Size = new System.Drawing.Size(784, 494);
 			this.playerPage.TabIndex = 0;
 			this.playerPage.Text = "Player Editor";
 			// 
@@ -349,29 +380,28 @@ namespace MaddenEditor.Forms
             this.toolStripStatusLabel1,
             this.toolStripProgressBar,
             this.processingTableLabel});
-			this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-			this.statusStrip.Location = new System.Drawing.Point(0, 543);
+			this.statusStrip.Location = new System.Drawing.Point(0, 544);
 			this.statusStrip.Name = "statusStrip";
-			this.statusStrip.Size = new System.Drawing.Size(792, 23);
+			this.statusStrip.Size = new System.Drawing.Size(792, 22);
 			this.statusStrip.TabIndex = 2;
 			this.statusStrip.Text = "statusStrip1";
 			// 
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(67, 17);
 			this.toolStripStatusLabel1.Text = "Processing   ";
 			// 
 			// toolStripProgressBar
 			// 
 			this.toolStripProgressBar.AutoSize = false;
-			this.toolStripProgressBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
 			this.toolStripProgressBar.Name = "toolStripProgressBar";
 			this.toolStripProgressBar.Size = new System.Drawing.Size(250, 16);
-			this.toolStripProgressBar.Text = "toolStripProgressBar1";
 			// 
 			// processingTableLabel
 			// 
 			this.processingTableLabel.Name = "processingTableLabel";
+			this.processingTableLabel.Size = new System.Drawing.Size(0, 17);
 			// 
 			// rosterFileLoaderThread
 			// 
@@ -396,6 +426,7 @@ namespace MaddenEditor.Forms
 			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.menuStrip1);
+			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
@@ -403,9 +434,11 @@ namespace MaddenEditor.Forms
 			this.Text = "Gommo\'s Madden Editor";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.menuStrip1.ResumeLayout(false);
+			this.menuStrip1.PerformLayout();
 			this.tabControl.ResumeLayout(false);
 			this.playerPage.ResumeLayout(false);
 			this.statusStrip.ResumeLayout(false);
+			this.statusStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

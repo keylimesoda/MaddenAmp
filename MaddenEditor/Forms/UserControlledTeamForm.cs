@@ -153,6 +153,7 @@ namespace MaddenEditor.Forms
 					}
 					catch (NullReferenceException err)
 					{
+						err = err;
 						//A null reference exception happens when its trying to find teams that don't
 						//exist on the schedule, its ok
 						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
@@ -204,6 +205,7 @@ namespace MaddenEditor.Forms
 					}
 					catch (NullReferenceException err)
 					{
+						err = err;
 						//A null reference exception happens when its trying to find teams that don't
 						//exist on the schedule, its ok
 						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");

@@ -28,6 +28,7 @@ namespace MaddenEditor.Forms
 			this.model = model;
 			InitializeComponent();
 
+			dgScheduleView.DataError += new DataGridViewDataErrorEventHandler(dgScheduleView_DataError);
 			this.Cursor = Cursors.WaitCursor;
 			//Create our model
 			try
@@ -45,6 +46,11 @@ namespace MaddenEditor.Forms
 			LoadWeek(currentWeekNumber);
 
 			isInitialising = false;
+		}
+
+		void dgScheduleView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+		{
+			Console.WriteLine(e.Exception.ToString());
 		}
 
 		#region IEditorForm Members

@@ -145,6 +145,7 @@ namespace MaddenEditor.Forms
 				}
 				catch (Exception error)
 				{
+					error = error;
 					playerDraftRound.Value = 15;
 				}
 				try
@@ -153,6 +154,7 @@ namespace MaddenEditor.Forms
 				}
 				catch (Exception error)
 				{
+					error = error;
 					playerDraftRoundIndex.Value = 33;
 				}
 

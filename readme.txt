@@ -1,12 +1,11 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                           GOMMO'S MADDEN EDITOR 1.1.1.0
+                           GOMMO'S MADDEN EDITOR 2.0.0
 
-                              WITH DRAFT ENGINE Beta 4
+                              WITH DRAFT ENGINE Beta 5
 
-  
-                                 5th November 2005
+                                   5th November 2005
 
                                      readme.txt
 

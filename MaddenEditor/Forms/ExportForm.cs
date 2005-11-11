@@ -261,6 +261,7 @@ namespace MaddenEditor.Forms
 				}
 				catch(IOException err)
 				{
+					err = err;
 					MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}

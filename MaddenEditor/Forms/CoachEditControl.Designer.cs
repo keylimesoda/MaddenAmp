@@ -528,7 +528,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachDefAggression
 			// 
-			this.coachDefAggression.Location = new System.Drawing.Point(75, 398);
+			this.coachDefAggression.Location = new System.Drawing.Point(75, 404);
 			this.coachDefAggression.Name = "coachDefAggression";
 			this.coachDefAggression.Size = new System.Drawing.Size(42, 20);
 			this.coachDefAggression.TabIndex = 29;
@@ -554,7 +554,7 @@ namespace MaddenEditor.Forms
 			// 
 			// coachOffAggression
 			// 
-			this.coachOffAggression.Location = new System.Drawing.Point(75, 294);
+			this.coachOffAggression.Location = new System.Drawing.Point(75, 301);
 			this.coachOffAggression.Name = "coachOffAggression";
 			this.coachOffAggression.Size = new System.Drawing.Size(42, 20);
 			this.coachOffAggression.TabIndex = 24;
@@ -580,7 +580,7 @@ namespace MaddenEditor.Forms
 			// 
 			// rb2
 			// 
-			this.rb2.Location = new System.Drawing.Point(110, 457);
+			this.rb2.Location = new System.Drawing.Point(110, 458);
 			this.rb2.Name = "rb2";
 			this.rb2.Size = new System.Drawing.Size(55, 20);
 			this.rb2.TabIndex = 21;
@@ -593,7 +593,7 @@ namespace MaddenEditor.Forms
 			// 
 			// rb1
 			// 
-			this.rb1.Location = new System.Drawing.Point(28, 457);
+			this.rb1.Location = new System.Drawing.Point(28, 458);
 			this.rb1.Maximum = new decimal(new int[] {
             99,
             0,
@@ -616,7 +616,7 @@ namespace MaddenEditor.Forms
 			// label42
 			// 
 			this.label42.AutoSize = true;
-			this.label42.Location = new System.Drawing.Point(123, 340);
+			this.label42.Location = new System.Drawing.Point(123, 339);
 			this.label42.Name = "label42";
 			this.label42.Size = new System.Drawing.Size(30, 13);
 			this.label42.TabIndex = 18;
@@ -625,7 +625,7 @@ namespace MaddenEditor.Forms
 			// label43
 			// 
 			this.label43.AutoSize = true;
-			this.label43.Location = new System.Drawing.Point(40, 340);
+			this.label43.Location = new System.Drawing.Point(40, 339);
 			this.label43.Name = "label43";
 			this.label43.Size = new System.Drawing.Size(27, 13);
 			this.label43.TabIndex = 17;
@@ -670,7 +670,7 @@ namespace MaddenEditor.Forms
 			// label41
 			// 
 			this.label41.AutoSize = true;
-			this.label41.Location = new System.Drawing.Point(123, 234);
+			this.label41.Location = new System.Drawing.Point(123, 233);
 			this.label41.Name = "label41";
 			this.label41.Size = new System.Drawing.Size(30, 13);
 			this.label41.TabIndex = 14;
@@ -679,7 +679,7 @@ namespace MaddenEditor.Forms
 			// label40
 			// 
 			this.label40.AutoSize = true;
-			this.label40.Location = new System.Drawing.Point(40, 234);
+			this.label40.Location = new System.Drawing.Point(40, 233);
 			this.label40.Name = "label40";
 			this.label40.Size = new System.Drawing.Size(27, 13);
 			this.label40.TabIndex = 13;
