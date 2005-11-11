@@ -144,6 +144,22 @@ namespace MaddenEditor.Core
 			}
 		}
 
+		protected bool ContainsStringField(string fieldName)
+		{
+			if (stringFields.ContainsKey(fieldName))
+				return true;
+
+			return false;
+		}
+
+		protected bool ContainsIntField(string fieldName)
+		{
+			if (intFields.ContainsKey(fieldName))
+				return true;
+
+			return false;
+		}
+
 		protected bool ContainsField(string fieldName)
 		{
 			if (intFields.ContainsKey(fieldName))
