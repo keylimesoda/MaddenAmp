@@ -1238,21 +1238,10 @@ namespace MaddenEditor.Forms
 
                     if (skipping || test < tradeProb)
                     {
-                        if (dm.tradePending(i))
-                        {
-                            Console.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
-                            TradeOffer to = dm.tradeCounterOffer(i);
-
-                            if (to != null && CurrentSelectingId != HumanTeamId)
-                            {
-                                ProcessTrade(to);
-                                return;
-                            }
-                        }
-                        else if (!dm.tradeExists(i))
+                        if (!dm.tradeExists(i))
                         {
                             Console.WriteLine("Initiating trade talks with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
-                            TradeOffer to = dm.tradeInitialOffer(i, CurrentPick);
+                            TradeOffer to = dm.tradeInitialOffer(i, CurrentPick, (double)timeRemaining / (double)secondsPerPick);
 
                             if (to != null)
                             {
@@ -1314,6 +1303,36 @@ namespace MaddenEditor.Forms
                                 }
                             }
                         }
+                        else if (dm.tradePending(i))
+                        {
+                            Console.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            TradeOffer to = dm.tradeCounterOffer(i, (double)timeRemaining / (double)secondsPerPick);
+
+                            if (to != null && CurrentSelectingId != HumanTeamId)
+                            {
+                                ProcessTrade(to);
+                                return;
+                            }
+						}
+						else if (dm.tradeOffers[i].status == (int)TradeOfferStatus.PendingAccept && ((double)timeRemaining / (double)secondsPerPick < 0.5 || skipping))
+						{
+							bool otherOffer = false;
+							for (int k = 0; k < 32; k++)
+							{
+								if (dm.tradePending(k))
+								{
+									otherOffer = true;
+									break;
+								}
+							}
+
+							if (!otherOffer)
+							{
+								dm.AcceptTrade(dm.tradeOffers[i]);
+								ProcessTrade(dm.tradeOffers[i]);
+								return;
+							}
+						}
                     }
 
                     i++;

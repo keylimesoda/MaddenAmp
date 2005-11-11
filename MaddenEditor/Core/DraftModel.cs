@@ -107,6 +107,8 @@ namespace MaddenEditor.Core
 		private void RepairRookies()
 		{
 			List<int> found = new List<int>();
+			int randMax = 0;
+
 			for (int i = 0; i < rookies.Count; i++)
 			{
 				double bestEOR = 0;
@@ -130,22 +132,41 @@ namespace MaddenEditor.Core
 					continue;
 				}
 
-				int randMax = (int)((i + 10) / 15) + 5;
-				rook.Player.Speed -= rand.Next(randMax / 3);
-				rook.Player.Agility -= rand.Next(randMax / 3);
-				rook.Player.Acceleration -= rand.Next(randMax / 3);
-				rook.Player.Strength -= rand.Next(randMax / 2);
-				rook.Player.Jumping -= rand.Next(randMax / 2);
+				if (i < 25)
+				{
+					randMax = 3;
+				}
+				else if (i < 40)
+				{
+					randMax = 5;
+				}
+				else
+				{
+					randMax = (int)((i - 40) / 10) + 5;
+				}
+
+				// Subtract some random value, or the current value, whichever is less.
+				// Prevents players from having negative attributes, which I think will
+				// show up in the high 120's since it's probably an unsigned quantity.
+
+				rook.Player.Speed -= Math.Min(rand.Next(randMax / 3), rook.Player.Speed);
+				rook.Player.Agility -= Math.Min(rand.Next(randMax / 3), rook.Player.Agility);
+				rook.Player.Acceleration -= Math.Min(rand.Next(randMax / 3), rook.Player.Acceleration);
+				rook.Player.Strength -= Math.Min(rand.Next(randMax / 2), rook.Player.Strength);
+				rook.Player.Jumping -= Math.Min(rand.Next(randMax / 2), rook.Player.Jumping);
 
 				// FS's, ROLB's, TE's and MLB's get hammered by these adjustments, and so make
 				// some allowances for them.
 				int factor = 1;
 				if ((rook.Player.PositionId == (int)MaddenPositions.FS)
-					|| (rook.Player.PositionId == (int)MaddenPositions.MLB)
-					|| (rook.Player.PositionId == (int)MaddenPositions.ROLB)
-					|| (rook.Player.PositionId == (int)MaddenPositions.TE))
+					|| (rook.Player.PositionId == (int)MaddenPositions.ROLB))
 				{
 					factor = 2;
+				}
+				else if ((rook.Player.PositionId == (int)MaddenPositions.MLB)
+					|| (rook.Player.PositionId == (int)MaddenPositions.TE))
+				{
+					factor = 4;
 				}
 
 				int ssfactor = 1;
@@ -154,60 +175,37 @@ namespace MaddenEditor.Core
 					ssfactor = 2;
 				}
 
-				rook.Player.Awareness -= rand.Next(ssfactor * randMax / factor);
+				int extrafactor = 0;
+				switch (rook.Player.PositionId)
+				{
+					case (int)MaddenPositions.QB:
+						extrafactor = 3;
+						break;
+					case (int)MaddenPositions.HB:
+						extrafactor = 3;
+						break;
+					case (int)MaddenPositions.C:
+					case (int)MaddenPositions.RG:
+					case (int)MaddenPositions.LE:
+					case (int)MaddenPositions.LG:
+						extrafactor = 2;
+						break;
+				}
 
-				rook.Player.Catching -= rand.Next(randMax / factor);
-				rook.Player.Carrying -= rand.Next(randMax / 2);
-				rook.Player.BreakTackle -= rand.Next(randMax);
-				rook.Player.Tackle -= rand.Next(ssfactor * randMax / factor);
-				rook.Player.ThrowAccuracy -= rand.Next(randMax);
-				rook.Player.ThrowPower -= rand.Next(randMax);
-				rook.Player.PassBlocking -= rand.Next(randMax);
-				rook.Player.RunBlocking -= rand.Next(randMax);
+				rook.Player.Awareness -= Math.Min(rand.Next(ssfactor * randMax / factor), rook.Player.Awareness);
+				rook.Player.Tackle -= Math.Min(rand.Next(ssfactor * randMax / factor), rook.Player.Tackle);
 
-				rook.Player.KickAccuracy -= rand.Next(randMax / 3);
-				rook.Player.KickPower -= rand.Next(randMax / 3);
+				rook.Player.Catching -= Math.Min(rand.Next(randMax / factor), rook.Player.Catching);
+				rook.Player.Carrying -= Math.Min(rand.Next(randMax / 2), rook.Player.Carrying);
+				rook.Player.BreakTackle -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.BreakTackle);
+				rook.Player.ThrowAccuracy -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.ThrowAccuracy);
+				rook.Player.ThrowPower -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.ThrowPower);
+				rook.Player.PassBlocking -= Math.Min(rand.Next(randMax+extrafactor+2), rook.Player.PassBlocking);
+				rook.Player.RunBlocking -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.RunBlocking);
 
-				/*
-								rook.Player.Speed -= rand.Next(3);
-								rook.Player.Agility -= rand.Next(4);
-								rook.Player.Acceleration -= rand.Next(3);
-								rook.Player.Strength -= rand.Next(5);
-								rook.Player.Jumping -= rand.Next(4);
+				rook.Player.KickAccuracy -= Math.Min(rand.Next(randMax / 5), rook.Player.KickAccuracy);
+				rook.Player.KickPower -= Math.Min(rand.Next(randMax / 5), rook.Player.KickPower);
 
-								rook.Player.Awareness -= rand.Next(11);
-
-								rook.Player.Catching -= rand.Next(11);
-								rook.Player.Carrying -= rand.Next(6);
-								rook.Player.BreakTackle -= rand.Next(11);
-								rook.Player.Tackle -= rand.Next(11);
-								rook.Player.ThrowAccuracy -= rand.Next(11);
-								rook.Player.ThrowPower -= rand.Next(11);
-								rook.Player.PassBlocking -= rand.Next(11);
-								rook.Player.RunBlocking -= rand.Next(11);
-								rook.Player.KickAccuracy -= rand.Next(11);
-								rook.Player.KickPower -= rand.Next(11);
-
-
-								rook.Player.Speed -= (int)Math.Pow(rand.Next(3), 2);
-								rook.Player.Agility -= (int)Math.Pow(rand.Next(3), 2);
-								rook.Player.Acceleration -= (int)Math.Pow(rand.Next(3),2);
-								rook.Player.Strength -= (int)Math.Pow(rand.Next(3),2);
-								rook.Player.Jumping -= (int)Math.Pow(rand.Next(3),2);
-
-								int j = 2;
-								rook.Player.Catching -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.Carrying -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.BreakTackle -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.Tackle -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.ThrowAccuracy -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.ThrowPower -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.PassBlocking -= (int)Math.Pow(rand.Next(4),2)-j;
-								rook.Player.RunBlocking -= (int)Math.Pow(rand.Next(4),2)-j;
-
-								rook.Player.KickAccuracy -= (int)Math.Pow(rand.Next(3),2)-j;
-								rook.Player.KickPower -= (int)Math.Pow(rand.Next(3),2)-j;
-				*/
 				rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
 				Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
@@ -217,7 +215,7 @@ namespace MaddenEditor.Core
 
 		public double RookEOR(RookieRecord rook)
 		{
-			return rook.Player.CalculateOverallRating(rook.Player.PositionId, true) + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed);
+			return rook.Player.CalculateOverallRating(rook.Player.PositionId, true) /*+ math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed)*/;
 		}
 
 		public void DumpRookiesByPosition()
@@ -890,7 +888,7 @@ namespace MaddenEditor.Core
 			return to;
 		}
 
-		public TradeOffer tradeInitialOffer(int LowerTeamId, int pickNumber)
+		public TradeOffer tradeInitialOffer(int LowerTeamId, int pickNumber, double fracTimeLeft)
 		{
 			if (LowerTeamId == HumanTeamId && humanRejected)
 			{
@@ -981,7 +979,7 @@ namespace MaddenEditor.Core
 				to.status = (int)TradeOfferStatus.HigherResponsePending;
 
 				tradeOffers[LowerTeamId] = to;
-				tradeCounterOffer(LowerTeamId);
+				tradeCounterOffer(LowerTeamId, fracTimeLeft);
 
 				if (to.status == (int)TradeOfferStatus.Rejected)
 				{
@@ -996,7 +994,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public TradeOffer tradeCounterOffer(int LowerTeamId)
+		public TradeOffer tradeCounterOffer(int LowerTeamId, double fracTimeLeft)
 		{
 			TradeOffer to = null;
 
@@ -1053,6 +1051,27 @@ namespace MaddenEditor.Core
 				// First determine if we like this offer or if we should counteroffer
 				if (theirCurrentOffer == ourPreviousOffer || (theirCurrentOffer > (1.1 - 0.05 * to.higherStrikes) * to.MinAccept) || (to.biddingWar && theirCurrentOffer > to.MinAccept))
 				{
+					// First see if there's a higher offer out there that we haven't yet replied to.
+					// If so, process that one instead, and return whatever it returns.
+
+					int highestTeam = to.LowerTeam;
+					double highestOffer = theirCurrentOffer;
+					foreach (TradeOffer locTO in tradeOffers.Values)
+					{
+						if (locTO.LowerTeam == to.LowerTeam || locTO.status == (int)TradeOfferStatus.Rejected || locTO.offersFromLower.Count == 0) { continue; }
+
+						if (locTO.offersFromLower[locTO.offersFromLower.Count - 1] > highestOffer)
+						{
+							highestTeam = locTO.LowerTeam;
+							highestOffer = locTO.offersFromLower[locTO.offersFromLower.Count - 1];
+						}
+					}
+
+					if (highestTeam != to.LowerTeam)
+					{
+						return tradeCounterOffer(highestTeam, fracTimeLeft);
+					}
+
 					// We'll take the offer.  Let's see if we can drive up the bidding first though.
 
 					Console.WriteLine("Accepting offer...");
@@ -1104,7 +1123,7 @@ namespace MaddenEditor.Core
 
 					// If there's no other offer now, might as well take this one
 					// Could improve to wait if there's a lot of time left on the clock
-					if (!anotherOffer)
+					if (!anotherOffer && fracTimeLeft < 0.5)
 					{
 						Console.WriteLine("No other offer around.  Accepting this one.  Returning...\n");
 
@@ -1332,7 +1351,7 @@ namespace MaddenEditor.Core
 
 						// If there's no other offer now, might as well take this one
 						// Could improve to wait if there's a lot of time left on the clock
-						if (!anotherOffer)
+						if (!anotherOffer && fracTimeLeft < 0.5)
 						{
 							Console.WriteLine("No other offer around.  Accepting this one.  Returning...\n");
 
@@ -1438,7 +1457,7 @@ namespace MaddenEditor.Core
 					}
 				}
 
-				if (!anotherOffer)
+				if (!anotherOffer && fracTimeLeft < 0.5)
 				{
 					Console.WriteLine("No other trade around -- accept this one.  Returning...\n");
 
@@ -2968,18 +2987,18 @@ namespace MaddenEditor.Core
 					player.Overall = player.CalculateOverallRating(player.PositionId);
 					total[player.PositionId]++;
 
-					if (player.Overall > 80)
+					if (player.Overall >= 80)
 					{
 						totalOver80++;
 					}
 
-					if (player.Overall > 75)
+					if (player.Overall >= 75)
 					{
 						over75[player.PositionId]++;
 						totalOver75++;
 					}
 
-					if (player.Overall > 70)
+					if (player.Overall >= 70)
 					{
 						over70[player.PositionId]++;
 						totalOver70++;
@@ -3011,8 +3030,8 @@ namespace MaddenEditor.Core
 			for (int i = 0; i < 21; i++)
 			{
 				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
-				toReturn += "Over 75 (" + over75[i] + "/" + Math.Round(ideals[i] * 50.0 / 256.0, 1) + "), ";
-				toReturn += "Over 70 (" + over70[i] + "/" + Math.Round(ideals[i] * 110.0 / 256.0, 1) + "), ";
+				toReturn += "75+ (" + over75[i] + "/" + Math.Round(ideals[i] * 50.0 / 256.0, 1) + "), ";
+				toReturn += "70+ (" + over70[i] + "/" + Math.Round(ideals[i] * 110.0 / 256.0, 1) + "), ";
 				toReturn += "Total (" + total[i] + "/" + ideals[i] + "), ";
 				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 75.0)\n";
 			}
@@ -3021,7 +3040,7 @@ namespace MaddenEditor.Core
 			toReturn += "\"Value Variance\" indicates the general value of this class compared to the draft pick value chart.  A positive number means stronger than usual, negative number means weaker than usual.\n\n";
 			toReturn += "\"Value Variance Squared\" is a strictly positive number that tells you how far this draft class is (in absolute value) compared to the draft pick value chart.  The closer this value is to zero, the better.  Most classes will have this value less than 0.2.  Values greater than 0.5 are unacceptable.\n\n";
 
-			toReturn += "\nTotals:  Over 80 (" + totalOver80 + "/20), Over 75 (" + totalOver75 + "/75), Over 70 (" + totalOver70 + "/110), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/75)\n";
+			toReturn += "\nTotals:  80+ (" + totalOver80 + "/20), 75+ (" + totalOver75 + "/50), 70+ (" + totalOver70 + "/110), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/75)\n";
 
 			toReturn += "\nExport this draft class?";
 
@@ -3882,6 +3901,24 @@ namespace MaddenEditor.Core
 				MinAccept = 10000;
 				return 10000;
 			}
+
+			if (PicksFromLower.Count == 1 && PicksFromLower[0] < 1000)
+			{
+				// Only offering one pick from this draft.  Remove it, make another
+				// counter offer, put it back at the top of the stack, and 
+				// return whatever the alternate counter offer is.
+
+				lowerAvailable.Sort();
+				int pickToPush = lowerAvailable[0];
+				lowerAvailable.RemoveAt(0);
+
+				double toReturn = makeCounterOffer(value, fromHigher);
+
+				lowerAvailable.Insert(0, pickToPush);
+				return toReturn;
+			}
+
+
 
 			double tempValue = 0;
 
