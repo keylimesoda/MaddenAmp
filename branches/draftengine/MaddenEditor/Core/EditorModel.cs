@@ -138,14 +138,14 @@ namespace MaddenEditor.Core
             return fileName;
         }
 
-		public string DraftClassFields
+		/*public string DraftClassFields
 		{
 			get
 			{
 				return draftClassFields;
 			}
 		}
-        // MADDEN DRAFT EDIT
+*/        // MADDEN DRAFT EDIT
 		
 		public EditorModel(string filename, MainForm form)
 		{
