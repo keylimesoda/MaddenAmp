@@ -87,9 +87,6 @@ namespace MaddenEditor.Core
  * */
         public void ExportDraftClass(string filename)
         {
-            List<string> strings = null;
-            List<string> ints = null;
-
             File.Delete(filename);
             StreamWriter sw = new StreamWriter(filename);
 
@@ -99,24 +96,21 @@ namespace MaddenEditor.Core
 
                 if (player.YearsPro != 0 || player.Deleted == true || (player.FirstName == "New" && player.LastName == "Player")) { continue; }
 
-                if (strings == null || ints == null)
-                {
-                    strings = player.StringFields();
-                    ints = player.IntFields();
-
-                    strings.Sort();
-                    ints.Sort();
-                }
-
-                foreach (string s in strings)
-                {
-                    sw.Write(player.GetStringField(s) + "\t");
-                }
-
-                foreach (string s in ints)
-                {
-                    sw.Write(player.GetIntField(s) + "\t");
-                }
+				foreach (string s in model.DraftClassFields)
+				{
+					if (player.ContainsIntField(s))
+					{
+						sw.Write(player.GetIntField(s) + "\t");
+					}
+					else if (player.ContainsStringField(s))
+					{
+						sw.Write(player.ContainsStringField(s) + "\t");
+					}
+					else
+					{
+						Console.WriteLine("Severe Error!  Returning...");
+					}
+				}
 
                 sw.Write("\n");
             }

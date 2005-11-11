@@ -146,7 +146,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		protected bool ContainsStringField(string fieldName)
+		public bool ContainsStringField(string fieldName)
 		{
 			if (stringFields.ContainsKey(fieldName))
 				return true;
@@ -154,7 +154,7 @@ namespace MaddenEditor.Core
 			return false;
 		}
 
-		protected bool ContainsIntField(string fieldName)
+		public bool ContainsIntField(string fieldName)
 		{
 			if (intFields.ContainsKey(fieldName))
 				return true;
