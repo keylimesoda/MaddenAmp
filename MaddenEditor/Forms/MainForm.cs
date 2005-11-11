@@ -619,12 +619,12 @@ namespace MaddenEditor.Forms
 
             if (dmTemp.NumRooks > 257)
             {
-                MessageBox.Show("Rookie class has more than 256 players.  You must delete some rookies to export this class.");
+                MessageBox.Show("Rookie class has more than 257 players.  You must delete some rookies to export this class.");
                 return;
             }
             else if (dmTemp.NumRooks < 257)
             {
-                MessageBox.Show("Rookie class has less than 256 players.  You must create more rookies to export this class.");
+                MessageBox.Show("Rookie class has less than 257 players.  You must create more rookies to export this class.");
                 return;
             }
 

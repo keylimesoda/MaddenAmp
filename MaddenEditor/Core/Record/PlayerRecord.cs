@@ -162,29 +162,27 @@ namespace MaddenEditor.Core.Record
 
         // MADDEN DRAFT EDIT
 
-        public void ImportData(List<string> playerData)
+        public void ImportData(List<string> playerData, int version)
         {
-            List<string> strings = StringFields();
-            List<string> ints = IntFields();
+			int index = 0;
+			foreach (string s in editorModel.DraftClassFields[version])
+			{
+				if (ContainsStringField(s))
+				{
+					SetField(s, playerData[index]);
+				}
+				else if (ContainsIntField(s))
+				{
+					SetField(s, Int32.Parse(playerData[index]));
+				}
+				else
+				{
+					Console.WriteLine("Severe Error!  Returning...");
+					return;
+				}
 
-            strings.Sort();
-            ints.Sort();
-
-            int index = 0;
-            Console.Write("In: ");
-            foreach (string s in strings) 
-            {
-                SetField(s, playerData[index]);
-                Console.Write(playerData[index]+" ");
-                index++;
-            }
-            Console.WriteLine("");
-
-            foreach (string s in ints) 
-            {
-                SetField(s, Int32.Parse(playerData[index]));
-                index++;
-            }
+				index++;
+			}
         }
 
         // MADDEN DRAFT EDIT
