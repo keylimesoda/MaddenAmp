@@ -147,13 +147,13 @@ Function CheckDotNet
 FunctionEnd
 
 Function GetDotNet
-  IfFileExists "$WINDIR\Microsoft.NET\Framework\v2.0.50215\installUtil.exe" NextStep
+  IfFileExists "$WINDIR\Microsoft.NET\Framework\v2.0.50727\installUtil.exe" NextStep
   MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION "You must have the Microsoft .NET \
-Framework 2.0 Beta 2 Installed to use this application. $\n$\nClick 'Yes' to open your browser \
+Framework 2.0 Installed to use this application. $\n$\nClick 'Yes' to open your browser \
 to the download page. $\nClick 'No' to ignore and install anyway. $\nClick 'Cancel' to cancel installation" IDYES yes IDNO no
   Quit
 yes:
-  ExecShell Open "http://www.microsoft.com/downloads/details.aspx?FamilyID=7ABD8C8F-287E-4C7E-9A4A-A4ECFF40FC8E&displaylang=en" SW_SHOWNORMAL
+  ExecShell Open "http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=en" SW_SHOWNORMAL
   MessageBox MB_OK|MB_ICONEXCLAMATION "Click 'OK' when your download and install is complete. $\n$\n After \
 you click 'OK' this installation will continue"
 no:

@@ -33,7 +33,7 @@ namespace MaddenEditor.Core
 		public const int NUMBER_OF_WEEKS = 17;
 		// Reference to our editor model
 		private EditorModel model = null;
-		// This collection holds our schedule
+		// This collection holds our schedule (the index is week number)
 		private Dictionary<int, SortedList<int, ScheduleRecord>> schedule = null;
 
 		public ScheduleEditingModel(EditorModel model)
@@ -51,13 +51,15 @@ namespace MaddenEditor.Core
 			//Now add the records to these collections
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
 			{
-				if (rec.Deleted)
-					continue;
-
+				ScheduleRecord scheduleRecord = (ScheduleRecord)rec;
 				try
 				{
-					ScheduleRecord scheduleRecord = (ScheduleRecord)rec;
-					
+					//Check to ensure we aren't adding records with higher than 17 weeks
+					if (scheduleRecord.WeekNumber >= schedule.Count)
+					{
+						//Don't add this week
+						return;
+					}
 					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber+1];
 					try
 					{

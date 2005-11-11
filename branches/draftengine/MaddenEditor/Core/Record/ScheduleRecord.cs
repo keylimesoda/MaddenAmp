@@ -74,6 +74,7 @@ namespace MaddenEditor.Core.Record
 			gameDayTypeList.Add(new GenericRecord("Saturday", 2));
 			gameDayTypeList.Add(new GenericRecord("Sunday", 3));
 			gameDayTypeList.Add(new GenericRecord("Monday", 4));
+			gameDayTypeList.Add(new GenericRecord("Unknown Day(5)", 5));
 
 			// Initialise the Game States
 			gameStateList = new List<GenericRecord>();
