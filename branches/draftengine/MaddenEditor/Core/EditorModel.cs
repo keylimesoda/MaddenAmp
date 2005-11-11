@@ -138,7 +138,7 @@ namespace MaddenEditor.Core
             return fileName;
         }
 
-		public string DraftClassFields
+		public List<string[]> DraftClassFields
 		{
 			get
 			{

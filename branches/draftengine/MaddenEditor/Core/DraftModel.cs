@@ -1638,9 +1638,14 @@ namespace MaddenEditor.Core
 		public string MDCVerify(string filename)
 		{
 			StreamReader sr = new StreamReader(filename);
+			PlayerRecord record = model.PlayerModel.GetNextPlayerRecord();
 
-			List<string> stringFields = model.PlayerModel.GetNextPlayerRecord().StringFields();
-			List<string> intFields = model.PlayerModel.GetNextPlayerRecord().IntFields();
+			int version;
+			if (!Int32.TryParse(sr.ReadLine().Split(':')[1].Trim(), out version))
+			{
+				sr.Close();
+				return "Version line incorrectly formatted.";
+			}
 
 			int linesread = 0;
 			while (sr.EndOfStream == false && linesread < 260)
@@ -1655,11 +1660,31 @@ namespace MaddenEditor.Core
 					playerData.RemoveAt(playerData.Count - 1);
 				}
 
-				if (playerData.Count != (stringFields.Count + intFields.Count))
+				if (playerData.Count != (model.DraftClassFields[version].GetLength(1)))
 				{
 					sr.Close();
-					return "Number of fields on line " + linesread + " is incorrect.  Was this MDC file generated with the same version of the Madden Editor as you are using?";
+					return "Number of fields on line " + (linesread+1) + " is incorrect.  Was this MDC file generated with the same version of the Madden Editor as you are using?";
 				}
+
+				for (int i = 0; i < playerData.Count; i++)
+				{
+					if (record.ContainsIntField(model.DraftClassFields[version][i]))
+					{
+						int test;
+						if (!Int32.TryParse(playerData[i], out test))
+						{
+							sr.Close();
+							return "Field number " + (i+1) + " on line " + (linesread + 1) + " is not an integer.";
+						}
+					}
+					else if (!record.ContainsStringField(model.DraftClassFields[version][i]))
+					{
+						// This should never happen -- it's more debugging code for us.
+						sr.Close();
+						return "Field " + model.DraftClassFields[version][i] + " does not appear in player record.";
+					}
+				}
+
 
 				for (int i = stringFields.Count; i < playerData.Count; i++)
 				{
@@ -1686,6 +1711,8 @@ namespace MaddenEditor.Core
         {
             StreamReader sr = new StreamReader(filename);
 
+			int versionNumber = Int32.Parse(sr.ReadLine().Split(':')[1].Trim());
+
             foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
             {
                 if (sr.EndOfStream == true)
@@ -1699,13 +1726,14 @@ namespace MaddenEditor.Core
 
                 Console.WriteLine("Out: " + player.FirstName + " " + player.LastName);
 
+				// This should be false already, so this shouldn't hurt.
                 player.SetDeleteFlag(false);
 
                 string playerLine = sr.ReadLine();
 
                 List<string> playerData = new List<string>(playerLine.Split('\t'));
 
-                player.ImportData(playerData);
+				player.ImportData(playerData, versionNumber);
             }
 
             sr.Close();
