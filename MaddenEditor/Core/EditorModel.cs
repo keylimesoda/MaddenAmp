@@ -110,6 +110,9 @@ namespace MaddenEditor.Core
         // MADDEN DRAFT EDIT
         public const string DRAFT_PICK_TABLE = "DRPK";
         public const string DRAFTED_PLAYERS_TABLE = "DRPL";
+
+		private List<string[]> draftClassFields;
+
         public bool draftStarted = false;
         // MADDEN DRAFT EDIT
 
@@ -134,12 +137,37 @@ namespace MaddenEditor.Core
         {
             return fileName;
         }
+
+		public string DraftClassFields
+		{
+			get
+			{
+				return draftClassFields;
+			}
+		}
         // MADDEN DRAFT EDIT
 		
 		public EditorModel(string filename, MainForm form)
 		{
 			view = form;
 			this.fileName = filename;
+
+			// MADDEN DRAFT EDIT
+			draftClassFields = new List<string[]>();
+			draftClassFields.Add(new string[] { "PFNA", "PLNA", "PPOS", 
+				"PCOL", "PAGE", "PWGT", "PHGT", "PHAN", "POVR", "PSPD",
+				"PSTR", "PAWR", "PAGI", "PACC", "PCTH", "PCAR", "PJMP",
+				"PBTK", "PTAK", "PTHP", "PTHA", "PPBK", "PRBK",	"PKPR",
+				"PKAC", "PKRT", "PSTA", "PINJ", "PTGH", "PSTY", "PMOR", 
+				"PSBS", "PTPS", "PMTS", "PUTS", "PFTS", "PLSS", "PTSS",
+				"PWSS", "PCHS", "PQTS", "PMAS", "PFAS", "PMHS", "PFHS", 
+				"PMCS", "PFCS", "PMGS", "PQGS", "PSKI", "PHCL", "PHED", 
+				"PEYE", "PNEK", "PVIS", "PMPC", "PLHA", "TLHA", "PRHA",
+				"TRHA", "PLSH", "PRSH", "PLTH", "PRTH", "PLEL", "TLEL",
+				"PREL", "TREL", "PGSL", "PTSL", "PLWR", "TLWR", "PRWR",
+				"TRWR", "PBRE", "PTAL", "PTAR", "PHLM", "PFMK", "PFEx" });
+			// MADDEN DRAFT EDIT
+
 
 			//Try and open the file
 			try
