@@ -1660,7 +1660,7 @@ namespace MaddenEditor.Core
 					playerData.RemoveAt(playerData.Count - 1);
 				}
 
-				if (playerData.Count != (model.DraftClassFields[version].GetLength(1)))
+				if (playerData.Count != (model.DraftClassFields[version-1].GetLength(0)))
 				{
 					sr.Close();
 					return "Number of fields on line " + (linesread+1) + " is incorrect.  Was this MDC file generated with the same version of the Madden Editor as you are using?";
@@ -1668,7 +1668,7 @@ namespace MaddenEditor.Core
 
 				for (int i = 0; i < playerData.Count; i++)
 				{
-					if (record.ContainsIntField(model.DraftClassFields[version][i]))
+					if (record.ContainsIntField(model.DraftClassFields[version-1][i]))
 					{
 						int test;
 						if (!Int32.TryParse(playerData[i], out test))
@@ -1677,24 +1677,13 @@ namespace MaddenEditor.Core
 							return "Field number " + (i+1) + " on line " + (linesread + 1) + " is not an integer.";
 						}
 					}
-					else if (!record.ContainsStringField(model.DraftClassFields[version][i]))
+					else if (!record.ContainsStringField(model.DraftClassFields[version-1][i]))
 					{
 						// This should never happen -- it's more debugging code for us.
 						sr.Close();
 						return "Field " + model.DraftClassFields[version][i] + " does not appear in player record.";
 					}
 				}
-
-
-				for (int i = stringFields.Count; i < playerData.Count; i++)
-				{
-					int test;
-					if (!Int32.TryParse(playerData[i], out test))
-					{
-						sr.Close();
-						return "Field number " + i + " on line " + linesread + " is not numeric.";
-					}
-				}				
 			}
 
 			sr.Close();
@@ -1722,12 +1711,12 @@ namespace MaddenEditor.Core
 
                 PlayerRecord player = (PlayerRecord)rec;
 
-                if (player.YearsPro > 0) { continue; }
+				if (player.YearsPro != 0 || (player.FirstName == "New" && player.LastName == "Player")) { continue; }
 
                 Console.WriteLine("Out: " + player.FirstName + " " + player.LastName);
 
 				// This should be false already, so this shouldn't hurt.
-                player.SetDeleteFlag(false);
+                //player.SetDeleteFlag(false);
 
                 string playerLine = sr.ReadLine();
 

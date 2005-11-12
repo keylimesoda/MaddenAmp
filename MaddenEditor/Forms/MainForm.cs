@@ -617,6 +617,7 @@ namespace MaddenEditor.Forms
 			DraftModel dmTemp = new DraftModel(model);
 			string classStats = dmTemp.AnalyzeDraftClass();
 
+			
             if (dmTemp.NumRooks > 257)
             {
                 MessageBox.Show("Rookie class has more than 257 players.  You must delete some rookies to export this class.");
@@ -627,6 +628,7 @@ namespace MaddenEditor.Forms
                 MessageBox.Show("Rookie class has less than 257 players.  You must create more rookies to export this class.");
                 return;
             }
+			
 
             DialogResult dr = MessageBox.Show(classStats, "Draft Class Diagnostics", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
