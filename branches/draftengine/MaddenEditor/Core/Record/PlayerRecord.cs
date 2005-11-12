@@ -165,7 +165,7 @@ namespace MaddenEditor.Core.Record
         public void ImportData(List<string> playerData, int version)
         {
 			int index = 0;
-			foreach (string s in editorModel.DraftClassFields[version])
+			foreach (string s in editorModel.DraftClassFields[version-1])
 			{
 				if (ContainsStringField(s))
 				{
@@ -177,7 +177,7 @@ namespace MaddenEditor.Core.Record
 				}
 				else
 				{
-					Console.WriteLine("Severe Error!  Returning...");
+					Console.WriteLine("Severe Error!  Player does not contain field " + s + "!  Returning...");
 					return;
 				}
 
