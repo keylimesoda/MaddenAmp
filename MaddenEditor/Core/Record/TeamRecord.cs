@@ -168,11 +168,11 @@ namespace MaddenEditor.Core.Record
 
 		public void SimulateMinicamp()
 		{
-			bool foundWR;
-			bool foundDB;
-			bool foundLB;
-			bool foundDL;
-			bool foundHB;
+			bool foundWR = false;
+			bool foundDB = false;
+			bool foundLB = false;
+			bool foundDL = false;
+			bool foundHB = false;
 
 			List<int> skip = new List<int>();
 			PlayerRecord player;
@@ -254,7 +254,7 @@ namespace MaddenEditor.Core.Record
 				}
 			}
 
-			// Field Goal
+			// Coffin Corner
 			player = bestEORInRange((int)MaddenPositions.P, (int)MaddenPositions.P, skip);
 
 			if (player != null)
@@ -279,7 +279,347 @@ namespace MaddenEditor.Core.Record
 				}
 			}
 
-			// After this we've got multiple 
+
+
+			// Chase and Tackle
+			player = bestEORInRange((int)MaddenPositions.LOLB, (int)MaddenPositions.ROLB, skip);
+
+			if (player != null)
+			{
+				foundLB = true;
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double AWRProb = 99 - player.Awareness;
+				double TAKProb = 99 - player.Tackle;
+				double AGIProb = 99 - player.Agility;
+
+				double test = rand.NextDouble();
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (test < 4 * TAKProb / (4 * TAKProb + 3 * AWRProb + 2 * AGIProb))
+					{
+						player.Tackle = player.Tackle + 1;
+					}
+					else if (test < (3 * AWRProb + 4 * TAKProb) / (4 * TAKProb + 3 * AWRProb + 2 * AGIProb))
+					{
+						player.Awareness = player.Awareness + 1;
+					}
+					else
+					{
+						player.Agility = player.Agility + 1;
+					}
+				}
+			}
+
+			// Swat Ball -- first check CB's, SS's are overinflated anyway.
+			player = bestEORInRange((int)MaddenPositions.CB, (int)MaddenPositions.CB, skip);
+
+			if (player != null)
+			{
+				foundDB = true;
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double CTHProb = 99 - player.Catching;
+				double JMPProb = 99 - player.Jumping;
+				double ACCProb = 99 - player.Acceleration;
+
+				double test = rand.NextDouble();
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (test < 4 * ACCProb / (4 * ACCProb + 3 * JMPProb + 2 * CTHProb))
+					{
+						player.Acceleration = player.Acceleration + 1;
+					}
+					else if (test < (3 * JMPProb + 4 * ACCProb) / (4 * TAKProb + 3 * JMPProb + 2 * CTHProb))
+					{
+						player.Jumping = player.Jumping + 1;
+					}
+					else
+					{
+						player.Catching = player.Catching + 1;
+					}
+				}
+			}
+
+			// Ground Attack
+			player = bestEORInRange((int)MaddenPositions.HB, (int)MaddenPositions.HB, skip);
+
+			if (player != null)
+			{
+				foundHB = true;
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double CARProb = 99 - player.Carrying;
+				double BTKProb = 99 - player.BreakTackle;
+				double AGIProb = 99 - player.Agility;
+
+				double test = rand.NextDouble();
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (test < 4 * BTKProb / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+					{
+						player.BreakTackle = player.BreakTackle + 1;
+					}
+					else if (test < (3 * AGIProb + 4 * ACCProb) / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+					{
+						player.Agility = player.Agility + 1;
+					}
+					else
+					{
+						player.Carrying = player.Carrying + 1;
+					}
+				}
+			}
+
+			// Catch Ball
+			player = bestEORInRange((int)MaddenPositions.WR, (int)MaddenPositions.WR, skip);
+
+			if (player != null)
+			{
+				foundWR = true;
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double CTHProb = 99 - player.Catching;
+				double JMPProb = 99 - player.Jumping;
+				double ACCProb = 99 - player.Acceleration;
+
+				double test = rand.NextDouble();
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (test < ACCProb / (ACCProb + JMPProb + CTHProb))
+					{
+						player.Acceleration = player.Acceleration + 1;
+					}
+					else if (test < (JMPProb + ACCProb) / (ACCProb + JMPProb + CTHProb))
+					{
+						player.Jumping = player.Jumping + 1;
+					}
+					else
+					{
+						player.Catching = player.Catching + 1;
+					}
+				}
+			}
+
+			// Trench Fight
+			player = bestEORInRange((int)MaddenPositions.LE, (int)MaddenPositions.DT, skip);
+
+			if (player != null)
+			{
+				foundDL = true;
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double STRProb = 99 - player.Strength;
+				double ACCProb = 99 - player.Acceleration;
+
+				double test = rand.NextDouble();
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (test < ACCProb / (ACCProb + 2 * STRProb))
+					{
+						player.Acceleration = player.Acceleration + 1;
+					}
+					else
+					{
+						player.Strength = player.Strength + 1;
+					}
+				}
+			}
+
+
+
+
+
+			// Use a player at a different position if the primary position is unavailable.
+
+			// Swat Ball
+			if (foundDB == false)
+			{
+				player = bestEORInRange((int)MaddenPositions.LOLB, (int)MaddenPositions.SS, skip);
+
+				if (player != null)
+				{
+					skip.Add(player.PlayerId);
+
+					toAdd = pointsToAdd(false, rand);
+
+					double CTHProb = 99 - player.Catching;
+					double JMPProb = 99 - player.Jumping;
+					double ACCProb = 99 - player.Acceleration;
+
+					double test = rand.NextDouble();
+
+					for (int i = 0; i < toAdd; i++)
+					{
+						if (test < 4 * ACCProb / (4 * ACCProb + 3 * JMPProb + 2 * CTHProb))
+						{
+							player.Acceleration = player.Acceleration + 1;
+						}
+						else if (test < (3 * JMPProb + 4 * ACCProb) / (4 * TAKProb + 3 * JMPProb + 2 * CTHProb))
+						{
+							player.Jumping = player.Jumping + 1;
+						}
+						else
+						{
+							player.Catching = player.Catching + 1;
+						}
+					}
+				}
+			}
+
+			// Chase and Tackle
+			if (foundLB == false)
+			{
+				player = bestEORInRange((int)MaddenPositions.CB, (int)MaddenPositions.SS, skip);
+
+				if (player != null)
+				{
+					foundLB = true;
+					skip.Add(player.PlayerId);
+
+					toAdd = pointsToAdd(false, rand);
+
+					double AWRProb = 99 - player.Awareness;
+					double TAKProb = 99 - player.Tackle;
+					double AGIProb = 99 - player.Agility;
+
+					double test = rand.NextDouble();
+
+					for (int i = 0; i < toAdd; i++)
+					{
+						if (test < 4 * TAKProb / (4 * TAKProb + 3 * AWRProb + 2 * AGIProb))
+						{
+							player.Tackle = player.Tackle + 1;
+						}
+						else if (test < (3 * AWRProb + 4 * TAKProb) / (4 * TAKProb + 3 * AWRProb + 2 * AGIProb))
+						{
+							player.Awareness = player.Awareness + 1;
+						}
+						else
+						{
+							player.Agility = player.Agility + 1;
+						}
+					}
+				}
+			}
+
+			// Ground Attack
+			if (foundHB == false)
+			{
+				player = bestEORInRange((int)MaddenPositions.TE, (int)MaddenPositions.WR, skip);
+
+				if (player != null)
+				{
+					foundHB = true;
+					skip.Add(player.PlayerId);
+
+					toAdd = pointsToAdd(false, rand);
+
+					double CARProb = 99 - player.Carrying;
+					double BTKProb = 99 - player.BreakTackle;
+					double AGIProb = 99 - player.Agility;
+
+					double test = rand.NextDouble();
+
+					for (int i = 0; i < toAdd; i++)
+					{
+						if (test < 4 * BTKProb / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+						{
+							player.BreakTackle = player.BreakTackle + 1;
+						}
+						else if (test < (3 * AGIProb + 4 * ACCProb) / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+						{
+							player.Agility = player.Agility + 1;
+						}
+						else
+						{
+							player.Carrying = player.Carrying + 1;
+						}
+					}
+				}
+			}
+
+			// Catch Ball
+			if (foundWR == false)
+			{
+				player = bestEORInRange((int)MaddenPositions.HB, (int)MaddenPositions.TE, skip);
+
+				if (player != null)
+				{
+					foundWR = true;
+					skip.Add(player.PlayerId);
+
+					toAdd = pointsToAdd(false, rand);
+
+					double CTHProb = 99 - player.Catching;
+					double JMPProb = 99 - player.Jumping;
+					double ACCProb = 99 - player.Acceleration;
+
+					double test = rand.NextDouble();
+
+					for (int i = 0; i < toAdd; i++)
+					{
+						if (test < ACCProb / (ACCProb + JMPProb + CTHProb))
+						{
+							player.Acceleration = player.Acceleration + 1;
+						}
+						else if (test < (JMPProb + ACCProb) / (ACCProb + JMPProb + CTHProb))
+						{
+							player.Jumping = player.Jumping + 1;
+						}
+						else
+						{
+							player.Catching = player.Catching + 1;
+						}
+					}
+				}
+			}
+
+			// Trench Fight
+			if (foundDL == false)
+			{
+				player = bestEORInRange((int)MaddenPositions.LT, (int)MaddenPositions.ROLB, skip);
+
+				if (player != null)
+				{
+					foundDL = true;
+					skip.Add(player.PlayerId);
+
+					toAdd = pointsToAdd(false, rand);
+
+					double STRProb = 99 - player.Strength;
+					double ACCProb = 99 - player.Acceleration;
+
+					double test = rand.NextDouble();
+
+					for (int i = 0; i < toAdd; i++)
+					{
+						if (test < ACCProb / (ACCProb + 2 * STRProb))
+						{
+							player.Acceleration = player.Acceleration + 1;
+						}
+						else
+						{
+							player.Strength = player.Strength + 1;
+						}
+					}
+				}
+			}
 		}
 
 		private int pointsToAdd(bool native, Random rand) 
@@ -336,7 +676,7 @@ namespace MaddenEditor.Core.Record
 			{
 				PlayerRecord player = (PlayerRecord)record;
 
-				if (player.TeamId == TEAM_ID && player.PositionId >= StartPosition && player.PositionId <= EndPosition
+				if (player.TeamId == TeamId && player.PositionId >= StartPosition && player.PositionId <= EndPosition
 					&& !skip.Contains(player.PlayerId) && player.YearsPro < 3 && (player.Overall + lmath.pointboost(player, CON, 35)) > bestEOR)
 				{
 					bestPlayer = player;
