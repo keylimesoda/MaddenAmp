@@ -501,31 +501,43 @@ namespace MaddenEditor.Forms
 		private void depthChartMenuItem_Click(object sender, EventArgs e)
 		{
 			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
-			//DialogResult dr = MessageBox.Show("This will save any changes you made to your file.  Proceed?", "Continue", MessageBoxButtons.YesNo);
 
-//			if (dr == DialogResult.Yes)
-//			{
-				this.Invalidate(true);
-				this.Update();
-				Cursor.Current = Cursors.WaitCursor;
-				dcr.ReorderDepthCharts(false);
-				Cursor.Current = Cursors.Arrow;
-//			}
+			this.Invalidate(true);
+			this.Update();
+			Cursor.Current = Cursors.WaitCursor;
+
+			List<int> toSkip = new List<int>();
+			foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
+			{
+				if (team.UserControlled)
+				{
+					toSkip.Add(team.TeamId);
+				}
+			}
+
+			dcr.ReorderDepthCharts(false, toSkip);
+			Cursor.Current = Cursors.Arrow;
 		}
 
 		private void depthChartProgMenuItem_Click(object sender, EventArgs e)
 		{
 			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
-//			DialogResult dr = MessageBox.Show("This will save any changes you made to your file.  Proceed?", "Continue", MessageBoxButtons.YesNo);
 
-//			if (dr == DialogResult.Yes)
-//			{
-				this.Invalidate(true);
-				this.Update();
-				Cursor.Current = Cursors.WaitCursor;
-				dcr.ReorderDepthCharts(true);
-				Cursor.Current = Cursors.Arrow;
-//			}
+			this.Invalidate(true);
+			this.Update();
+			Cursor.Current = Cursors.WaitCursor;
+
+			List<int> toSkip = new List<int>();
+			foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
+			{
+				if (team.UserControlled)
+				{
+					toSkip.Add(team.TeamId);
+				}
+			}
+
+			dcr.ReorderDepthCharts(true, toSkip);
+			Cursor.Current = Cursors.Arrow;
 		}
 
 		private void moveTradedDraftPicksToolStripMenuItem_Click(object sender, EventArgs e)
@@ -627,8 +639,7 @@ namespace MaddenEditor.Forms
             {
                 MessageBox.Show("Rookie class has less than 257 players.  You must create more rookies to export this class.");
                 return;
-            }
-			
+            }			
 
             DialogResult dr = MessageBox.Show(classStats, "Draft Class Diagnostics", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -671,6 +682,36 @@ namespace MaddenEditor.Forms
 					MessageBox.Show("Error reading file.  " + response, "Error");
 				}
 			}
+		}
+
+		private void simulateCPUMinicampsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.Invalidate(true);
+			this.Update();
+			Cursor.Current = Cursors.WaitCursor;
+
+			List<int> toSkip = new List<int>();
+			foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
+			{
+				if (team.UserControlled)
+				{
+					toSkip.Add(team.TeamId);
+				}
+			}
+
+			dcr.ReorderDepthCharts(true, toSkip); 
+			
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				TeamRecord team = (TeamRecord)record;
+
+				if (team.TeamId < 32 && !toSkip.Contains(team.TeamId))
+				{
+					team.SimulateMinicamp();
+				}
+			}
+
+			Cursor.Current = Cursors.Arrow;
 		}
 
 		// MADDEN DRAFT EDIT

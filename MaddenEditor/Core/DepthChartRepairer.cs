@@ -183,13 +183,42 @@ namespace MaddenEditor.Core
             }
         }
 
-        public List<List<List<PlayerRecord>>> ReorderDepthCharts(bool withProgression)
+		public List<List<List<PlayerRecord>>> ReorderDepthCharts(bool withProgression)
+		{
+			return ReorderDepthCharts(withProgression, new List<int>());
+		}
+
+		public List<List<PlayerRecord>> Existing(int teamId)
+		{
+			DepthChartEditingModel dcmodel = new DepthChartEditingModel(model);
+			List<List<PlayerRecord>> toReturn = new List<List<PlayerRecord>>();
+
+			for (int i = 0; i < 21; i++)
+			{
+				toReturn.Add(new List<PlayerRecord>());
+				foreach (DepthPlayerValueObject dp in dcmodel.GetPlayers(teamId, i).Values)
+				{
+					toReturn[i].Add(dp.playerObject);
+				}
+			}
+
+			return toReturn;
+		}
+
+        public List<List<List<PlayerRecord>>> ReorderDepthCharts(bool withProgression, List<int> toSkip)
         {
             List<List<List<PlayerRecord>>> depthChart = new List<List<List<PlayerRecord>>>();
 
             for (int i = 0; i < 32; i++)
             {
-                depthChart.Add(SortDepthChart(i, false, null));
+				if (toSkip.Contains(i))
+				{
+					depthChart.Add(Existing(i));
+				}
+				else
+				{
+					depthChart.Add(SortDepthChart(i, false, null));
+				}
             }
 
             if (withProgression)
@@ -199,7 +228,14 @@ namespace MaddenEditor.Core
 
                 for (int i = 0; i < 32; i++)
                 {
-                    depthChart.Add(SortDepthChart(i, true, null));
+					if (toSkip.Contains(i)) 
+					{
+						depthChart.Add(Existing(i));
+					} 
+					else 
+					{
+						depthChart.Add(SortDepthChart(i, true, null));
+					}
                 }
             }
             
