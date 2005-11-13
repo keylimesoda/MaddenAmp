@@ -699,6 +699,7 @@ namespace MaddenEditor.Forms
 				}
 			}
 
+			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 			dcr.ReorderDepthCharts(true, toSkip); 
 			
 			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
