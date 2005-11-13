@@ -166,6 +166,186 @@ namespace MaddenEditor.Core.Record
             return OverallRating;
         }
 
+		public void SimulateMinicamp()
+		{
+			bool foundWR;
+			bool foundDB;
+			bool foundLB;
+			bool foundDL;
+			bool foundHB;
+
+			List<int> skip = new List<int>();
+			PlayerRecord player;
+			Random rand = new Random();
+			int toAdd;
+
+			// Pocket Presence
+			player = bestEORInRange((int)MaddenPositions.QB, (int)MaddenPositions.QB, skip);
+
+			if (player != null)
+			{
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double AWRProb = 99 - player.Awareness;
+				double THAProb = 99 - player.ThrowAccuracy;
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (rand.NextDouble() < AWRProb / (AWRProb + THAProb))
+					{
+						player.Awareness = player.Awareness + 1;
+					}
+					else
+					{
+						player.ThrowAccuracy = player.ThrowAccuracy + 1;
+					}
+				}
+			}
+
+			// Precision Passing
+			player = bestEORInRange((int)MaddenPositions.QB, (int)MaddenPositions.QB, skip);
+
+			if (player != null)
+			{
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double THPProb = 99 - player.ThrowPower;
+				double THAProb = 99 - player.ThrowAccuracy;
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (rand.NextDouble() < THPProb / (THPProb + THAProb))
+					{
+						player.ThrowPower = player.ThrowPower + 1;
+					}
+					else
+					{
+						player.ThrowAccuracy = player.ThrowAccuracy + 1;
+					}
+				}
+			}
+
+			// Field Goal
+			player = bestEORInRange((int)MaddenPositions.K, (int)MaddenPositions.K, skip);
+
+			if (player != null)
+			{
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double KACProb = 99 - player.KickAccuracy;
+				double KPRProb = 99 - player.KickPower;
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (rand.NextDouble() < KACProb / (KACProb + KPRProb))
+					{
+						player.KickAccuracy = player.KickAccuracy + 1;
+					}
+					else
+					{
+						player.KickPower = player.KickPower + 1;
+					}
+				}
+			}
+
+			// Field Goal
+			player = bestEORInRange((int)MaddenPositions.P, (int)MaddenPositions.P, skip);
+
+			if (player != null)
+			{
+				skip.Add(player.PlayerId);
+
+				toAdd = pointsToAdd(true, rand);
+
+				double KACProb = 99 - player.KickAccuracy;
+				double KPRProb = 99 - player.KickPower;
+
+				for (int i = 0; i < toAdd; i++)
+				{
+					if (rand.NextDouble() < KACProb / (KACProb + KPRProb))
+					{
+						player.KickAccuracy = player.KickAccuracy + 1;
+					}
+					else
+					{
+						player.KickPower = player.KickPower + 1;
+					}
+				}
+			}
+
+			// After this we've got multiple 
+		}
+
+		private int pointsToAdd(bool native, Random rand) 
+		{
+			double test = rand.NextDouble();
+
+			if (native)
+			{
+				if (test < 0.1)
+				{
+					return 2;
+				}
+				else if (test < 0.5)
+				{
+					return 4;
+				}
+				else if (test < 0.9)
+				{
+					return 5;
+				}
+				else
+				{
+					return 7;
+				}
+			}
+			else
+			{
+				if (test < 0.4)
+				{
+					return 2;
+				}
+				else if (test < 0.8)
+				{
+					return 4;
+				}
+				else if (test < 0.95)
+				{
+					return 5;
+				}
+				else
+				{
+					return 7;
+				}
+			}
+		}
+
+		private PlayerRecord bestEORInRange(int StartPosition, int EndPosition, List<int> skip)
+		{
+			PlayerRecord bestPlayer = null;
+			double bestEOR = 0;
+			LocalMath lmath = new LocalMath(editorModel.FileVersion);
+
+			foreach (TableRecordModel record in editorModel.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+			{
+				PlayerRecord player = (PlayerRecord)record;
+
+				if (player.TeamId == TEAM_ID && player.PositionId >= StartPosition && player.PositionId <= EndPosition
+					&& !skip.Contains(player.PlayerId) && player.YearsPro < 3 && (player.Overall + lmath.pointboost(player, CON, 35)) > bestEOR)
+				{
+					bestPlayer = player;
+					bestEOR = player.Overall + lmath.pointboost(player, CON, 35);
+				}
+			}
+
+			return bestPlayer;
+		}
 
         public void ComputeWins(EditorModel model)
         {
