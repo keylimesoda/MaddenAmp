@@ -281,6 +281,12 @@ namespace MaddenEditor.Core
 
 		public void SetDeleteFlag(bool flag)
 		{
+			// I think this should be alright.
+			if (flag == deleted)
+			{
+				return;
+			}
+
 			deleted = flag;
 			this.Dirty = true;
 			editorModel.Dirty = true;

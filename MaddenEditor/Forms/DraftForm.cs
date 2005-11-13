@@ -1741,7 +1741,7 @@ namespace MaddenEditor.Forms
                 {
                     UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftResults.SelectedRows[0].Cells["Position"].Value, true));
                 }
-                catch (ArgumentException ae)
+                catch
                 {
 
                 }

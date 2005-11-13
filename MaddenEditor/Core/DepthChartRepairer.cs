@@ -269,7 +269,7 @@ namespace MaddenEditor.Core
 							rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].CreateNewRecord(false);
 						}
 
-						rec.SetDeleteFlag(false);
+						//rec.SetDeleteFlag(false);
 						rec.TeamId = team;
 						rec.PositionId = pos;
 						rec.DepthOrder = depth;

@@ -132,17 +132,17 @@ namespace MaddenEditor.Core
 					continue;
 				}
 
-				if (i < 25)
+				if (i < 15)
 				{
 					randMax = 3;
 				}
-				else if (i < 40)
+				else if (i < 25)
 				{
 					randMax = 5;
 				}
 				else
 				{
-					randMax = (int)((i - 40) / 10) + 5;
+					randMax = (int)((i - 15) / 10) + 5;
 				}
 
 				// Subtract some random value, or the current value, whichever is less.
@@ -152,7 +152,6 @@ namespace MaddenEditor.Core
 				rook.Player.Speed -= Math.Min(rand.Next(randMax / 3), rook.Player.Speed);
 				rook.Player.Agility -= Math.Min(rand.Next(randMax / 3), rook.Player.Agility);
 				rook.Player.Acceleration -= Math.Min(rand.Next(randMax / 3), rook.Player.Acceleration);
-				rook.Player.Strength -= Math.Min(rand.Next(randMax / 2), rook.Player.Strength);
 				rook.Player.Jumping -= Math.Min(rand.Next(randMax / 2), rook.Player.Jumping);
 
 				// FS's, ROLB's, TE's and MLB's get hammered by these adjustments, and so make
@@ -182,25 +181,46 @@ namespace MaddenEditor.Core
 						extrafactor = 3;
 						break;
 					case (int)MaddenPositions.HB:
-						extrafactor = 3;
+						extrafactor = 7;
+						break;
+					case (int)MaddenPositions.WR:
+						extrafactor = 4;
 						break;
 					case (int)MaddenPositions.C:
 					case (int)MaddenPositions.RG:
-					case (int)MaddenPositions.LE:
 					case (int)MaddenPositions.LG:
+						extrafactor = 3;
+						break;
+					case (int)MaddenPositions.LT:
+						extrafactor = 2;
+						break;
+					case (int)MaddenPositions.RT:
+					case (int)MaddenPositions.DT:
+						extrafactor = 1;
+						break;
+					case (int)MaddenPositions.LE:
+						extrafactor = 6;
+						break;
+					case (int)MaddenPositions.RE:
+						extrafactor = 5;
+						break;
+					case (int)MaddenPositions.FS:
+					case (int)MaddenPositions.SS:
 						extrafactor = 2;
 						break;
 				}
 
-				rook.Player.Awareness -= Math.Min(rand.Next(ssfactor * randMax / factor), rook.Player.Awareness);
-				rook.Player.Tackle -= Math.Min(rand.Next(ssfactor * randMax / factor), rook.Player.Tackle);
+				rook.Player.Strength -= Math.Min(rand.Next(randMax / 2+extrafactor), rook.Player.Strength);
+
+				rook.Player.Awareness -= Math.Min(rand.Next(ssfactor * randMax / factor + extrafactor), rook.Player.Awareness);
+				rook.Player.Tackle -= Math.Min(rand.Next(ssfactor * randMax / factor + extrafactor), rook.Player.Tackle);
 
 				rook.Player.Catching -= Math.Min(rand.Next(randMax / factor), rook.Player.Catching);
-				rook.Player.Carrying -= Math.Min(rand.Next(randMax / 2), rook.Player.Carrying);
+				rook.Player.Carrying -= Math.Min(rand.Next(randMax / 2 + extrafactor), rook.Player.Carrying);
 				rook.Player.BreakTackle -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.BreakTackle);
-				rook.Player.ThrowAccuracy -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.ThrowAccuracy);
+				rook.Player.ThrowAccuracy -= Math.Min(rand.Next(randMax+extrafactor+2), rook.Player.ThrowAccuracy);
 				rook.Player.ThrowPower -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.ThrowPower);
-				rook.Player.PassBlocking -= Math.Min(rand.Next(randMax+extrafactor+2), rook.Player.PassBlocking);
+				rook.Player.PassBlocking -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.PassBlocking);
 				rook.Player.RunBlocking -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.RunBlocking);
 
 				rook.Player.KickAccuracy -= Math.Min(rand.Next(randMax / 5), rook.Player.KickAccuracy);
@@ -1706,6 +1726,7 @@ namespace MaddenEditor.Core
             {
                 if (sr.EndOfStream == true)
                 {
+					Console.WriteLine("End of stream.  Breaking...");
                     break;
                 }
 
@@ -1724,6 +1745,12 @@ namespace MaddenEditor.Core
 
 				player.ImportData(playerData, versionNumber);
             }
+
+			if (!sr.EndOfStream)
+			{
+				Console.WriteLine("Not at end of file!");
+				Console.WriteLine(sr.ReadToEnd());
+			}
 
             sr.Close();
         }
@@ -2975,6 +3002,7 @@ namespace MaddenEditor.Core
 			int totalOver70 = 0;
 			double injuryTotal = 0;
 
+			Dictionary<int, int> over80 = new Dictionary<int, int>();
 			Dictionary<int, int> over75 = new Dictionary<int, int>();
 			Dictionary<int, int> over70 = new Dictionary<int, int>();
 			Dictionary<int, int> total = new Dictionary<int, int>();
@@ -2988,6 +3016,7 @@ namespace MaddenEditor.Core
 			{
 				over70[i] = 0;
 				over75[i] = 0;
+				over80[i] = 0;
 				total[i] = 0;
 				injury[i] = 0;
 			}
@@ -3006,6 +3035,7 @@ namespace MaddenEditor.Core
 
 					if (player.Overall >= 80)
 					{
+						over80[player.PositionId]++;
 						totalOver80++;
 					}
 
@@ -3046,9 +3076,12 @@ namespace MaddenEditor.Core
 
 			for (int i = 0; i < 21; i++)
 			{
+				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i] * 50.0 / 256.0, 1) + "\t" + over75[i]);
+				Console.WriteLine(over75[i]);
 				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
-				toReturn += "75+ (" + over75[i] + "/" + Math.Round(ideals[i] * 50.0 / 256.0, 1) + "), ";
-				toReturn += "70+ (" + over70[i] + "/" + Math.Round(ideals[i] * 110.0 / 256.0, 1) + "), ";
+				toReturn += "80+ (" + over80[i] + "/" + Math.Round(ideals[i] * 10.0 / 257.0, 1) + "), ";
+				toReturn += "75+ (" + over75[i] + "/" + Math.Round(ideals[i] * 40.0 / 257.0, 1) + "), ";
+				toReturn += "70+ (" + over70[i] + "/" + Math.Round(ideals[i] * 100.0 / 257.0, 1) + "), ";
 				toReturn += "Total (" + total[i] + "/" + ideals[i] + "), ";
 				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 75.0)\n";
 			}
@@ -3057,7 +3090,7 @@ namespace MaddenEditor.Core
 			toReturn += "\"Value Variance\" indicates the general value of this class compared to the draft pick value chart.  A positive number means stronger than usual, negative number means weaker than usual.\n\n";
 			toReturn += "\"Value Variance Squared\" is a strictly positive number that tells you how far this draft class is (in absolute value) compared to the draft pick value chart.  The closer this value is to zero, the better.  Most classes will have this value less than 0.2.  Values greater than 0.5 are unacceptable.\n\n";
 
-			toReturn += "\nTotals:  80+ (" + totalOver80 + "/20), 75+ (" + totalOver75 + "/50), 70+ (" + totalOver70 + "/110), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/75)\n";
+			toReturn += "\nTotals:  80+ (" + totalOver80 + "/10), 75+ (" + totalOver75 + "/40), 70+ (" + totalOver70 + "/100), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/75)\n";
 
 			toReturn += "\nExport this draft class?";
 
