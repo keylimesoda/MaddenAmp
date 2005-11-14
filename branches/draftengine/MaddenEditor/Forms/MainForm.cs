@@ -686,33 +686,41 @@ namespace MaddenEditor.Forms
 
 		private void simulateCPUMinicampsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.Invalidate(true);
-			this.Update();
-			Cursor.Current = Cursors.WaitCursor;
+            DialogResult dr = MessageBox.Show("This tool will simulate minicamps for CPU players with less than three years of experience.  Human controlled teams will automatically be skipped.  Proceed?", "Simulate CPU Minicamps", MessageBoxButtons.YesNo);
 
-			List<int> toSkip = new List<int>();
-			foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
-			{
-				if (team.UserControlled)
-				{
-					toSkip.Add(team.TeamId);
-				}
-			}
+            if (dr == DialogResult.Yes)
+            {
 
-			DepthChartRepairer dcr = new DepthChartRepairer(model, null);
-			dcr.ReorderDepthCharts(true, toSkip); 
-			
-			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-			{
-				TeamRecord team = (TeamRecord)record;
+                this.Invalidate(true);
+                this.Update();
+                Cursor.Current = Cursors.WaitCursor;
 
-				if (team.TeamId < 32 && !toSkip.Contains(team.TeamId))
-				{
-					team.SimulateMinicamp();
-				}
-			}
+                List<int> toSkip = new List<int>();
+                foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
+                {
+                    if (team.UserControlled)
+                    {
+                        toSkip.Add(team.TeamId);
+                    }
+                }
 
-			Cursor.Current = Cursors.Arrow;
+                DepthChartRepairer dcr = new DepthChartRepairer(model, null);
+                dcr.ReorderDepthCharts(true, toSkip);
+
+                foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+                {
+                    TeamRecord team = (TeamRecord)record;
+
+                    if (team.TeamId < 32 && !toSkip.Contains(team.TeamId))
+                    {
+                        Console.WriteLine(team.Name + ":");
+                        team.SimulateMinicamp();
+                        Console.WriteLine("");
+                    }
+                }
+
+                Cursor.Current = Cursors.Arrow;
+            }
 		}
 
 		// MADDEN DRAFT EDIT

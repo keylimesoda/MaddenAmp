@@ -202,6 +202,10 @@ namespace MaddenEditor.Core.Record
 						player.ThrowAccuracy = player.ThrowAccuracy + 1;
 					}
 				}
+
+                Console.Write("Pocket Presence: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
 			}
 
 			// Precision Passing
@@ -227,7 +231,11 @@ namespace MaddenEditor.Core.Record
 						player.ThrowAccuracy = player.ThrowAccuracy + 1;
 					}
 				}
-			}
+                
+                Console.Write("Precision Passing: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 			// Field Goal
 			player = bestEORInRange((int)MaddenPositions.K, (int)MaddenPositions.K, skip);
@@ -252,7 +260,11 @@ namespace MaddenEditor.Core.Record
 						player.KickPower = player.KickPower + 1;
 					}
 				}
-			}
+
+                Console.Write("Field Goal: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 			// Coffin Corner
 			player = bestEORInRange((int)MaddenPositions.P, (int)MaddenPositions.P, skip);
@@ -277,7 +289,11 @@ namespace MaddenEditor.Core.Record
 						player.KickPower = player.KickPower + 1;
 					}
 				}
-			}
+
+                Console.Write("Coffin Corner: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 
 
@@ -312,7 +328,11 @@ namespace MaddenEditor.Core.Record
 						player.Agility = player.Agility + 1;
 					}
 				}
-			}
+
+                Console.Write("Chase and Tackle: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 			// Swat Ball -- first check CB's, SS's are overinflated anyway.
 			player = bestEORInRange((int)MaddenPositions.CB, (int)MaddenPositions.CB, skip);
@@ -336,7 +356,7 @@ namespace MaddenEditor.Core.Record
 					{
 						player.Acceleration = player.Acceleration + 1;
 					}
-					else if (test < (3 * JMPProb + 4 * ACCProb) / (4 * TAKProb + 3 * JMPProb + 2 * CTHProb))
+                    else if (test < (3 * JMPProb + 4 * ACCProb) / (4 * ACCProb + 3 * JMPProb + 2 * CTHProb))
 					{
 						player.Jumping = player.Jumping + 1;
 					}
@@ -345,7 +365,11 @@ namespace MaddenEditor.Core.Record
 						player.Catching = player.Catching + 1;
 					}
 				}
-			}
+
+                Console.Write("Swat Ball: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 			// Ground Attack
 			player = bestEORInRange((int)MaddenPositions.HB, (int)MaddenPositions.HB, skip);
@@ -365,11 +389,11 @@ namespace MaddenEditor.Core.Record
 
 				for (int i = 0; i < toAdd; i++)
 				{
-					if (test < 4 * BTKProb / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+                    if (test < 4 * BTKProb / (4 * BTKProb + 3 * AGIProb + 2 * CARProb))
 					{
 						player.BreakTackle = player.BreakTackle + 1;
 					}
-					else if (test < (3 * AGIProb + 4 * ACCProb) / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+                    else if (test < (3 * AGIProb + 4 * BTKProb) / (4 * BTKProb + 3 * AGIProb + 2 * CARProb))
 					{
 						player.Agility = player.Agility + 1;
 					}
@@ -378,7 +402,11 @@ namespace MaddenEditor.Core.Record
 						player.Carrying = player.Carrying + 1;
 					}
 				}
-			}
+
+                Console.Write("Ground Attack: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 			// Catch Ball
 			player = bestEORInRange((int)MaddenPositions.WR, (int)MaddenPositions.WR, skip);
@@ -411,7 +439,11 @@ namespace MaddenEditor.Core.Record
 						player.Catching = player.Catching + 1;
 					}
 				}
-			}
+
+                Console.Write("WR Catch: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 			// Trench Fight
 			player = bestEORInRange((int)MaddenPositions.LE, (int)MaddenPositions.DT, skip);
@@ -439,7 +471,11 @@ namespace MaddenEditor.Core.Record
 						player.Strength = player.Strength + 1;
 					}
 				}
-			}
+
+                Console.Write("Trench Fight: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                player.Overall = player.CalculateOverallRating(player.PositionId);
+                Console.WriteLine(", Updated OVR: " + player.Overall);
+            }
 
 
 
@@ -470,7 +506,7 @@ namespace MaddenEditor.Core.Record
 						{
 							player.Acceleration = player.Acceleration + 1;
 						}
-						else if (test < (3 * JMPProb + 4 * ACCProb) / (4 * TAKProb + 3 * JMPProb + 2 * CTHProb))
+                        else if (test < (3 * JMPProb + 4 * ACCProb) / (4 * ACCProb + 3 * JMPProb + 2 * CTHProb))
 						{
 							player.Jumping = player.Jumping + 1;
 						}
@@ -479,8 +515,12 @@ namespace MaddenEditor.Core.Record
 							player.Catching = player.Catching + 1;
 						}
 					}
-				}
-			}
+
+                    Console.Write("Swat Ball: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                    player.Overall = player.CalculateOverallRating(player.PositionId);
+                    Console.WriteLine(", Updated OVR: " + player.Overall);
+                }
+            }
 
 			// Chase and Tackle
 			if (foundLB == false)
@@ -515,8 +555,12 @@ namespace MaddenEditor.Core.Record
 							player.Agility = player.Agility + 1;
 						}
 					}
-				}
-			}
+
+                    Console.Write("Chase and Tackle: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                    player.Overall = player.CalculateOverallRating(player.PositionId);
+                    Console.WriteLine(", Updated OVR: " + player.Overall);
+                }
+            }
 
 			// Ground Attack
 			if (foundHB == false)
@@ -538,11 +582,11 @@ namespace MaddenEditor.Core.Record
 
 					for (int i = 0; i < toAdd; i++)
 					{
-						if (test < 4 * BTKProb / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+                        if (test < 4 * BTKProb / (4 * BTKProb + 3 * AGIProb + 2 * CARProb))
 						{
 							player.BreakTackle = player.BreakTackle + 1;
 						}
-						else if (test < (3 * AGIProb + 4 * ACCProb) / (4 * BTKProb + 3 * AGIProb + 2 * CTHProb))
+                        else if (test < (3 * AGIProb + 4 * BTKProb) / (4 * BTKProb + 3 * AGIProb + 2 * CARProb))
 						{
 							player.Agility = player.Agility + 1;
 						}
@@ -551,8 +595,12 @@ namespace MaddenEditor.Core.Record
 							player.Carrying = player.Carrying + 1;
 						}
 					}
-				}
-			}
+
+                    Console.Write("Ground Attack: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                    player.Overall = player.CalculateOverallRating(player.PositionId);
+                    Console.WriteLine(", Updated OVR: " + player.Overall);
+                }
+            }
 
 			// Catch Ball
 			if (foundWR == false)
@@ -587,8 +635,12 @@ namespace MaddenEditor.Core.Record
 							player.Catching = player.Catching + 1;
 						}
 					}
-				}
-			}
+
+                    Console.Write("WR Catch: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                    player.Overall = player.CalculateOverallRating(player.PositionId);
+                    Console.WriteLine(", Updated OVR: " + player.Overall);
+                }
+            }
 
 			// Trench Fight
 			if (foundDL == false)
@@ -618,8 +670,12 @@ namespace MaddenEditor.Core.Record
 							player.Strength = player.Strength + 1;
 						}
 					}
-				}
-			}
+
+                    Console.Write("Trench Fight: " + player.FirstName + " " + player.LastName + ", Original OVR: " + player.Overall);
+                    player.Overall = player.CalculateOverallRating(player.PositionId);
+                    Console.WriteLine(", Updated OVR: " + player.Overall);
+                }
+            }
 		}
 
 		private int pointsToAdd(bool native, Random rand) 
