@@ -107,7 +107,7 @@ namespace MaddenEditor.Core
 		private void RepairRookies()
 		{
 			List<int> found = new List<int>();
-			int randMax = 0;
+			double randMax = 0;
 
 			for (int i = 0; i < rookies.Count; i++)
 			{
@@ -132,6 +132,7 @@ namespace MaddenEditor.Core
 					continue;
 				}
 
+
 				if (i < 15)
 				{
 					randMax = 3;
@@ -142,20 +143,22 @@ namespace MaddenEditor.Core
 				}
 				else
 				{
-					randMax = (int)((i - 15) / 10) + 5;
+					randMax = ((i - 13.0) / 12.0) + 5.0;
 				}
 
 				// Subtract some random value, or the current value, whichever is less.
 				// Prevents players from having negative attributes, which I think will
 				// show up in the high 120's since it's probably an unsigned quantity.
 
-				rook.Player.Speed -= Math.Min(rand.Next(randMax / 3), rook.Player.Speed);
-				rook.Player.Agility -= Math.Min(rand.Next(randMax / 3), rook.Player.Agility);
-				rook.Player.Acceleration -= Math.Min(rand.Next(randMax / 3), rook.Player.Acceleration);
-				rook.Player.Jumping -= Math.Min(rand.Next(randMax / 2), rook.Player.Jumping);
+				rook.Player.Speed -= Math.Min(rand.Next((int)Math.Round(randMax / 3)), rook.Player.Speed);
+				rook.Player.Agility -= Math.Min(rand.Next((int)Math.Round(randMax / 3)), rook.Player.Agility);
+				rook.Player.Acceleration -= Math.Min(rand.Next((int)Math.Round(randMax / 3)), rook.Player.Acceleration);
+				rook.Player.Jumping -= Math.Min(rand.Next((int)Math.Round(randMax / 2)), rook.Player.Jumping);
 
 				// FS's, ROLB's, TE's and MLB's get hammered by these adjustments, and so make
 				// some allowances for them.
+
+				/*
 				int factor = 1;
 				if ((rook.Player.PositionId == (int)MaddenPositions.FS)
 					|| (rook.Player.PositionId == (int)MaddenPositions.ROLB))
@@ -208,23 +211,28 @@ namespace MaddenEditor.Core
 					case (int)MaddenPositions.SS:
 						extrafactor = 2;
 						break;
-				}
+				} */
 
-				rook.Player.Strength -= Math.Min(rand.Next(randMax / 2+extrafactor), rook.Player.Strength);
 
-				rook.Player.Awareness -= Math.Min(rand.Next(ssfactor * randMax / factor + extrafactor), rook.Player.Awareness);
-				rook.Player.Tackle -= Math.Min(rand.Next(ssfactor * randMax / factor + extrafactor), rook.Player.Tackle);
+				/*                                     QB,  HB, FB, WR, TE, LT, LG,C,RG, RT,  LE,RE,DT,LL, ML,   RL, CB, FS,  SS,   K, P */
+				double[] slopes     = new double[21] { 1.2, 1.2, 1, 1, 0.25, 1, 1, 1, 1, 1,    1, 1, 1, 1, 0.25, 0.5, 1, 0.5, 1.5, 0.2, 0.3 };
+				double[] intercepts = new double[21] {-0.5,   5, 1, 1, 1,  0.5, 3, 4, 3, -.75, 8, 9, 2, 0, -0.75,  0, 0,   2,   3,   0, 1 };
 
-				rook.Player.Catching -= Math.Min(rand.Next(randMax / factor), rook.Player.Catching);
-				rook.Player.Carrying -= Math.Min(rand.Next(randMax / 2 + extrafactor), rook.Player.Carrying);
-				rook.Player.BreakTackle -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.BreakTackle);
-				rook.Player.ThrowAccuracy -= Math.Min(rand.Next(randMax+extrafactor+2), rook.Player.ThrowAccuracy);
-				rook.Player.ThrowPower -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.ThrowPower);
-				rook.Player.PassBlocking -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.PassBlocking);
-				rook.Player.RunBlocking -= Math.Min(rand.Next(randMax+extrafactor), rook.Player.RunBlocking);
+				rook.Player.Strength -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId]*randMax + intercepts[rook.Player.PositionId])), rook.Player.Strength);
 
-				rook.Player.KickAccuracy -= Math.Min(rand.Next(randMax / 5), rook.Player.KickAccuracy);
-				rook.Player.KickPower -= Math.Min(rand.Next(randMax / 5), rook.Player.KickPower);
+				rook.Player.Awareness -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Awareness);
+				rook.Player.Tackle -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Tackle);
+
+				rook.Player.Catching -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Catching);
+				rook.Player.Carrying -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax/2.0 + intercepts[rook.Player.PositionId])), rook.Player.Carrying);
+				rook.Player.BreakTackle -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.BreakTackle);
+				rook.Player.ThrowAccuracy -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId]) + 2), rook.Player.ThrowAccuracy);
+				rook.Player.ThrowPower -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.ThrowPower);
+				rook.Player.PassBlocking -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.PassBlocking);
+				rook.Player.RunBlocking -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.RunBlocking);
+
+				rook.Player.KickAccuracy -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.KickAccuracy);
+				rook.Player.KickPower -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.KickPower);
 
 				rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
 				Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
@@ -2539,7 +2547,7 @@ namespace MaddenEditor.Core
 
 			for (int i = 0; i < rookies.Count; i++)
 			{
-				double bestRating = 0;
+				double bestRating = -1;
 				int bestId = -1;
 
 								foreach (KeyValuePair<int, double> val in AverageValues)
@@ -2624,7 +2632,7 @@ namespace MaddenEditor.Core
 
 			for (int i = 0; i < rookies.Count; i++)
 			{
-				double bestRating = 0;
+				double bestRating = -1;
 				int bestId = -1;
 
 				foreach (KeyValuePair<int, RookieRecord> rook in rookies)
@@ -3072,25 +3080,31 @@ namespace MaddenEditor.Core
 			}
 
 			double[] ideals = new double[21] {14, 16, 7, 22, 12, 11, 11, 11, 11, 11, 11, 11, 18, 11, 15, 11, 22, 11, 11, 6, 6};
+
+			// There's an assumption here that guys will go through minicamps to 
+			// improve their ratings.  But, that doesn't apply to FB, TE, and OL's.
+			// So, we should have on average higher ratings for them coming out.
+			double[] extras = new double[21] {1, 1, 1.1, 1, 1, 1.2, 1.2, 1.2, 1.2, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
 			string toReturn = "Number of players at each position, grouped by rating (This class / Average Class):\n\n";
 
 			for (int i = 0; i < 21; i++)
 			{
-				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i] * 50.0 / 256.0, 1) + "\t" + over75[i]);
-				Console.WriteLine(over75[i]);
+				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i] * 10.0 / 256.0, 1) + "\t" + over80[i]);
+				Console.WriteLine(over80[i]);
 				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
-				toReturn += "80+ (" + over80[i] + "/" + Math.Round(ideals[i] * 10.0 / 257.0, 1) + "), ";
-				toReturn += "75+ (" + over75[i] + "/" + Math.Round(ideals[i] * 40.0 / 257.0, 1) + "), ";
-				toReturn += "70+ (" + over70[i] + "/" + Math.Round(ideals[i] * 100.0 / 257.0, 1) + "), ";
+				toReturn += "80+ (" + over80[i] + "/" + Math.Round(extras[i] * ideals[i] * 10.0 / 257.0, 1) + "), ";
+				toReturn += "75+ (" + over75[i] + "/" + Math.Round(extras[i] * ideals[i] * 40.0 / 257.0, 1) + "), ";
+				toReturn += "70+ (" + over70[i] + "/" + Math.Round(extras[i] * ideals[i] * 100.0 / 257.0, 1) + "), ";
 				toReturn += "Total (" + total[i] + "/" + ideals[i] + "), ";
-				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 75.0)\n";
+				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 80.0)\n";
 			}
 
 			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 1) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 1) + "\n\n";
 			toReturn += "\"Value Variance\" indicates the general value of this class compared to the draft pick value chart.  A positive number means stronger than usual, negative number means weaker than usual.\n\n";
 			toReturn += "\"Value Variance Squared\" is a strictly positive number that tells you how far this draft class is (in absolute value) compared to the draft pick value chart.  The closer this value is to zero, the better.  Most classes will have this value less than 0.2.  Values greater than 0.5 are unacceptable.\n\n";
 
-			toReturn += "\nTotals:  80+ (" + totalOver80 + "/10), 75+ (" + totalOver75 + "/40), 70+ (" + totalOver70 + "/100), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/75)\n";
+			toReturn += "\nTotals:  80+ (" + totalOver80 + "/10), 75+ (" + totalOver75 + "/40), 70+ (" + totalOver70 + "/100), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/80)\n";
 
 			toReturn += "\nExport this draft class?";
 
