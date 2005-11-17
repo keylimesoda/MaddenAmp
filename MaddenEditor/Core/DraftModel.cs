@@ -143,7 +143,7 @@ namespace MaddenEditor.Core
 				}
 				else
 				{
-					randMax = ((i - 13.0) / 12.0) + 5.0;
+					randMax = ((i - 9.0) / 16.0) + 5.0;
 				}
 
 				// Subtract some random value, or the current value, whichever is less.
@@ -213,10 +213,13 @@ namespace MaddenEditor.Core
 						break;
 				} */
 
-
-				/*                                     QB,  HB, FB, WR, TE, LT, LG,C,RG, RT,  LE,RE,DT,LL, ML,   RL, CB, FS,  SS,   K, P */
-				double[] slopes     = new double[21] { 1.2, 1.2, 1, 1, 0.25, 1, 1, 1, 1, 1,    1, 1, 1, 1, 0.25, 0.5, 1, 0.5, 1.5, 0.2, 0.3 };
-				double[] intercepts = new double[21] {-0.5,   5, 1, 1, 1,  0.5, 3, 4, 3, -.75, 8, 9, 2, 0, -0.75,  0, 0,   2,   3,   0, 1 };
+				/*                                     QB,  HB, FB, WR, TE, LT, LG,C,RG, RT,  LE,RE,DT,LL, ML,   RL, CB, FS,  SS,   K, P 
+				double[] slopes =     new double[21] { 1.2, 1.2, 1, 1, 0.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 0.5, 1, 0.5, 1.5, 0.2, 0.3 };
+				double[] intercepts = new double[21] { 0, 5, 1, 1, 0, 0.5, 3, 4, 3, -.75, 8, 9, 2, 0, -0.75, 0, 0, 2, 3, 0, 1 };*/
+ 
+				/*                                     QB, HB, FB, WR,  TE,   LT,  LG,   C,  RG,  RT,  LE,  RE,   DT,  LL,   ML,  RL,  CB,  FS,  SS,   K, P */
+				double[] slopes     = new double[21] {2.4, 2.2, 1, 1.35, 0.8, 1.1, 0.5, 0.6, 0.6, 0.2, 0.7, 0.5,  0.6, 0.9,  0.35, 0.8, 1.2, 0.9, 1.2, 0.3, 0.3 };
+				double[] intercepts = new double[21] {-3.6,  2, 1, -.05,-1.2,   0, 4.5, 4.2, 4.2, 5.3, 8.9, 10.5, 3.2, 0.3, -1.05, -.9, -.6, 0.8, 3.9, -.3, 1 };
 
 				rook.Player.Strength -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId]*randMax + intercepts[rook.Player.PositionId])), rook.Player.Strength);
 
@@ -497,7 +500,7 @@ namespace MaddenEditor.Core
 			toDraft.DraftedTeam = dpRecord.CurrentTeamId;
 			toDraft.DraftPickNumber = pickNumber;
 			toDraft.Player.DraftRound = pickNumber / 32 + 1;
-			toDraft.Player.DraftRoundIndex = pickNumber % 32;
+			toDraft.Player.DraftRoundIndex = pickNumber % 32 + 1;
 
 
 
@@ -3090,8 +3093,8 @@ namespace MaddenEditor.Core
 
 			for (int i = 0; i < 21; i++)
 			{
-				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i] * 10.0 / 256.0, 1) + "\t" + over80[i]);
-				Console.WriteLine(over80[i]);
+				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i]*extras[i] * 40.0 / 256.0, 1) + "\t" + over75[i]);
+				Console.WriteLine(over75[i]);
 				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
 				toReturn += "80+ (" + over80[i] + "/" + Math.Round(extras[i] * ideals[i] * 10.0 / 257.0, 1) + "), ";
 				toReturn += "75+ (" + over75[i] + "/" + Math.Round(extras[i] * ideals[i] * 40.0 / 257.0, 1) + "), ";
