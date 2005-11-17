@@ -514,8 +514,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				int val = GetIntField(PASS_BLOCKING);
-				return (val > 99 ? 99 : val);
+				return GetIntField(PASS_BLOCKING);
 			}
 			set
 			{
@@ -527,8 +526,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				int val = GetIntField(RUN_BLOCKING);
-				return (val > 99 ? 99 : val);
+				return GetIntField(RUN_BLOCKING);
 			}
 			set
 			{

@@ -96,6 +96,7 @@ namespace MaddenEditor.Forms
 		{
 			if (CheckSave())
 			{
+				CloseModel();
 				Application.Exit();
 			}
 		}
@@ -121,13 +122,16 @@ namespace MaddenEditor.Forms
 				}
 			}
 
+			return true;
+		}
+
+		private void CloseModel()
+		{
 			if (model != null)
 			{
 				model.Shutdown();
 			}
 			model = null;
-
-			return true;
 		}
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -239,6 +243,7 @@ namespace MaddenEditor.Forms
 
 			if (CheckSave())
 			{
+				CloseModel();
 				CleanUI();
 			}
 		}
@@ -285,6 +290,7 @@ namespace MaddenEditor.Forms
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			CheckSave();
+			CloseModel();
 
 			Application.Exit();
 		}

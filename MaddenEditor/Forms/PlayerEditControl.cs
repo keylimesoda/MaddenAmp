@@ -50,6 +50,42 @@ namespace MaddenEditor.Forms
 			isInitialising = false;
 		}
 
+		private void SetNumericUpDown(NumericUpDown control, int value, string fieldname)
+		{
+			try
+			{
+				control.Value = value;
+			}
+			catch
+			{
+				string message = "Player's " + fieldname + " (" + value + ") is outside of the allowed range.\n\n";
+
+				if (value > 120)
+				{
+					message += "We recommend resetting the value to " + control.Minimum + ".";
+				}
+				else
+				{
+					message += "We recommend resetting the value to " + control.Maximum + ".";
+				}
+
+				message += "\n\nHit \"Yes\" to reset to " + control.Maximum + "; hit \"No\" to reset to " + control.Minimum + ".";
+
+				DialogResult dr = MessageBox.Show(message, "Repair Value", MessageBoxButtons.YesNo);
+
+				isInitialising = false;
+				if (dr == DialogResult.Yes)
+				{
+					control.Value = control.Maximum;
+				}
+				else
+				{
+					control.Value = control.Minimum;
+				}
+				isInitialising = true;
+			}
+		}
+
 		public void LoadPlayerInfo(PlayerRecord record)
 		{
 			if (record == null)
@@ -72,7 +108,9 @@ namespace MaddenEditor.Forms
 				positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 				collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
 
-				playerAge.Value = record.Age;
+				SetNumericUpDown(playerAge, record.Age, "Age");
+				//playerAge.Value = record.Age;
+
 				if (record.JerseyNumber > 99)
 				{
 					//Must be a draft class, disable jersey number editing
@@ -82,6 +120,42 @@ namespace MaddenEditor.Forms
 				{
 					playerJerseyNumber.Value = record.JerseyNumber;
 				}
+
+				SetNumericUpDown(playerYearsPro, record.YearsPro, "Years Pro");
+				SetNumericUpDown(playerWeight, record.Weight + 160, "Weight");
+
+				playerHeightComboBox.SelectedIndex = record.Height - 65;
+				playerDominantHand.Checked = record.DominantHand;
+
+				SetNumericUpDown(playerOverall, record.Overall, "Overall");
+				SetNumericUpDown(playerSpeed, record.Speed, "Speed");
+				SetNumericUpDown(playerStrength, record.Strength, "Strength");
+				SetNumericUpDown(playerAwareness, record.Awareness, "Awareness");
+				SetNumericUpDown(playerAgility, record.Agility, "Agility");
+				SetNumericUpDown(playerAcceleration, record.Acceleration, "Acceleration");
+				SetNumericUpDown(playerCatching, record.Catching, "Catching");
+				SetNumericUpDown(playerCarrying, record.Carrying, "Carrying");
+				SetNumericUpDown(playerJumping, record.Jumping, "Jumping");
+				SetNumericUpDown(playerBreakTackle, record.BreakTackle, "Break Tackle");
+				SetNumericUpDown(playerTackle, record.Tackle, "Tackle");
+				SetNumericUpDown(playerThrowPower, record.ThrowPower, "Throw Power");
+				SetNumericUpDown(playerThrowAccuracy, record.ThrowAccuracy, "Throw Accuracy");
+				SetNumericUpDown(playerPassBlocking, record.PassBlocking, "Pass Blocking");
+				SetNumericUpDown(playerRunBlocking, record.RunBlocking, "Run Blocking");
+				SetNumericUpDown(playerKickPower, record.KickPower, "Kick Power");
+				SetNumericUpDown(playerKickAccuracy, record.KickAccuracy, "Kick Accuracy");
+				SetNumericUpDown(playerKickReturn, record.KickReturn, "Kick Return");
+				SetNumericUpDown(playerStamina, record.Stamina, "Stamina");
+				SetNumericUpDown(playerInjury, record.Injury, "Injury");
+				SetNumericUpDown(playerToughness, record.Toughness, "Toughness");
+				SetNumericUpDown(playerMorale, record.Morale, "Morale");
+				SetNumericUpDown(playerImportance, record.Importance, "Importance");
+
+				playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
+
+				playerNFLIcon.Checked = record.NFLIcon;
+
+				/*
 				playerYearsPro.Value = record.YearsPro;
 				playerWeight.Value = record.Weight + 160;
 				playerHeightComboBox.SelectedIndex = record.Height - 65;
@@ -113,8 +187,9 @@ namespace MaddenEditor.Forms
 				playerMorale.Value = record.Morale;
 				playerNFLIcon.Checked = record.NFLIcon;
 
-				playerImportance.Value = record.Importance;
+				playerImportance.Value = record.Importance; */
 
+				
 				if (model.FileVersion >= MaddenFileVersion.Ver2005)
 				{
 					//Load the player tendancy and reinitialise the combo
