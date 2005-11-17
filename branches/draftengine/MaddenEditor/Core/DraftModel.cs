@@ -125,13 +125,38 @@ namespace MaddenEditor.Core
 
 				Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
-				// For whatever reason, at certain positions, the ratings
-				// are more or less fine as they are.
+				// FB's are way too low.  INCREASE their ratings./
 				if (rook.Player.PositionId == (int)MaddenPositions.FB)
 				{
+					int bump = 3;
+
+					rook.Player.Speed += Math.Min(rand.Next(bump), 99 - rook.Player.Speed);
+					rook.Player.Agility += Math.Min(rand.Next(bump), 99 - rook.Player.Agility);
+					rook.Player.Acceleration += Math.Min(rand.Next(bump), 99 - rook.Player.Acceleration);
+					rook.Player.Jumping += Math.Min(rand.Next(bump), 99 - rook.Player.Jumping);
+
+					rook.Player.Strength += Math.Min(rand.Next(bump), 99 - rook.Player.Strength);
+
+					rook.Player.Awareness += Math.Min(rand.Next(bump), 99 - rook.Player.Awareness);
+					rook.Player.Tackle += Math.Min(rand.Next(bump), 99 - rook.Player.Tackle);
+
+					rook.Player.Catching += Math.Min(rand.Next(bump), 99 - rook.Player.Catching);
+					rook.Player.Carrying += Math.Min(rand.Next(bump), 99 - rook.Player.Carrying);
+					rook.Player.BreakTackle += Math.Min(rand.Next(bump), 99 - rook.Player.BreakTackle);
+					rook.Player.ThrowAccuracy += Math.Min(rand.Next(bump + 2), 99 - rook.Player.ThrowAccuracy);
+					rook.Player.ThrowPower += Math.Min(rand.Next(bump), 99 - rook.Player.ThrowPower);
+					rook.Player.PassBlocking += Math.Min(rand.Next(bump), 99 - rook.Player.PassBlocking);
+					rook.Player.RunBlocking += Math.Min(rand.Next(bump), 99 - rook.Player.RunBlocking);
+
+					rook.Player.KickAccuracy += Math.Min(rand.Next(bump), 99 - rook.Player.KickAccuracy);
+					rook.Player.KickPower += Math.Min(rand.Next(bump), 99 - rook.Player.KickPower);
+
+					rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
+					Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+
+					rook.ActualValue = LocalMath.ValueScale * positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) * math.valcurve(rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed));
 					continue;
 				}
-
 
 				if (i < 15)
 				{
@@ -3074,12 +3099,19 @@ namespace MaddenEditor.Core
 
 			double variance = 0;
 			double varianceSquared = 0;
+			double weightedVariance = 0;
+			double weightedVarianceSquared = 0;
+			double weightedDenominator = 0;
 
 			for (int i = 0; i < 32*7; i++)
 			{
 				Console.WriteLine(i + ": " + pickValues[i]+ " " + values[i]);
 				variance += (values[i] - pickValues[i]) / pickValues[i];
 				varianceSquared += Math.Pow((values[i] - pickValues[i]) / pickValues[i], 2);
+
+				weightedVariance += Math.Log(pickValues[i])*(values[i] - pickValues[i]) / pickValues[i];
+				weightedVarianceSquared += Math.Log(pickValues[i]) * Math.Pow((values[i] - pickValues[i]) / pickValues[i], 2);
+				weightedDenominator += Math.Log(pickValues[i]);
 			}
 
 			double[] ideals = new double[21] {14, 16, 7, 22, 12, 11, 11, 11, 11, 11, 11, 11, 18, 11, 15, 11, 22, 11, 11, 6, 6};
@@ -3094,7 +3126,7 @@ namespace MaddenEditor.Core
 			for (int i = 0; i < 21; i++)
 			{
 				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i]*extras[i] * 40.0 / 256.0, 1) + "\t" + over75[i]);
-				Console.WriteLine(over75[i]);
+				//Console.WriteLine(over75[i]);
 				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
 				toReturn += "80+ (" + over80[i] + "/" + Math.Round(extras[i] * ideals[i] * 10.0 / 257.0, 1) + "), ";
 				toReturn += "75+ (" + over75[i] + "/" + Math.Round(extras[i] * ideals[i] * 40.0 / 257.0, 1) + "), ";
@@ -3103,9 +3135,11 @@ namespace MaddenEditor.Core
 				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 80.0)\n";
 			}
 
-			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 1) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 1) + "\n\n";
+			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 2) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 2) + "\n";
+			toReturn += "\nWeighted Value Variance: " + Math.Round(weightedVariance / weightedDenominator, 2) + ", Weighted Value Variance Squared: " + Math.Round(Math.Pow(weightedVarianceSquared / weightedDenominator, 0.5), 2) + "\n\n";
 			toReturn += "\"Value Variance\" indicates the general value of this class compared to the draft pick value chart.  A positive number means stronger than usual, negative number means weaker than usual.\n\n";
 			toReturn += "\"Value Variance Squared\" is a strictly positive number that tells you how far this draft class is (in absolute value) compared to the draft pick value chart.  The closer this value is to zero, the better.  Most classes will have this value less than 0.2.  Values greater than 0.5 are unacceptable.\n\n";
+			toReturn += "Weighted quantities are analogously defined, with added weight given to picks at the top of the draft.\n\n";
 
 			toReturn += "\nTotals:  80+ (" + totalOver80 + "/10), 75+ (" + totalOver75 + "/40), 70+ (" + totalOver70 + "/100), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/80)\n";
 
