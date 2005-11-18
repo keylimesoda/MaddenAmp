@@ -60,7 +60,7 @@ namespace MaddenEditor.Core
 					DepthPlayerValueObject valObject = new DepthPlayerValueObject();
 					valObject.depthObject = (DepthChartRecord)record;
 					valObject.playerObject = model.PlayerModel.GetPlayerByPlayerId(valObject.depthObject.PlayerId);
-					playerIdList.Add(valObject.depthObject.DepthOrder, valObject);	
+					playerIdList.Add(valObject.depthObject.DepthOrder, valObject);
 				}
 			}
 

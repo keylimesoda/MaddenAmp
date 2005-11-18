@@ -60,7 +60,7 @@ namespace MaddenEditor.Core
 						//Don't add this week
 						return;
 					}
-					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber+1];
+					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber + 1];
 					try
 					{
 						list.Add(scheduleRecord.GameNumber, scheduleRecord);
@@ -68,7 +68,7 @@ namespace MaddenEditor.Core
 					catch (ArgumentException err2)
 					{
 						//Something is wrong with this schedule
-						throw err2;						
+						throw err2;
 					}
 				}
 				catch (KeyNotFoundException err)
@@ -76,7 +76,7 @@ namespace MaddenEditor.Core
 					Console.WriteLine(err.ToString());
 				}
 			}
-			
+
 		}
 
 		public IList<ScheduleRecord> GetWeek(int weeknumber)
@@ -86,7 +86,7 @@ namespace MaddenEditor.Core
 				return null;
 			}
 
-			return schedule[weeknumber].Values;			
+			return schedule[weeknumber].Values;
 		}
 	}
 }

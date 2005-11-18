@@ -241,18 +241,18 @@ namespace MaddenEditor.Core
 				/*                                     QB,  HB, FB, WR, TE, LT, LG,C,RG, RT,  LE,RE,DT,LL, ML,   RL, CB, FS,  SS,   K, P 
 				double[] slopes =     new double[21] { 1.2, 1.2, 1, 1, 0.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 0.5, 1, 0.5, 1.5, 0.2, 0.3 };
 				double[] intercepts = new double[21] { 0, 5, 1, 1, 0, 0.5, 3, 4, 3, -.75, 8, 9, 2, 0, -0.75, 0, 0, 2, 3, 0, 1 };*/
- 
-				/*                                     QB, HB, FB, WR,  TE,   LT,  LG,   C,  RG,  RT,  LE,  RE,   DT,  LL,   ML,  RL,  CB,  FS,  SS,   K, P */
-				double[] slopes     = new double[21] {2.4, 2.2, 1, 1.35, 0.8, 1.1, 0.5, 0.6, 0.6, 0.2, 0.7, 0.5,  0.6, 0.9,  0.35, 0.8, 1.2, 0.9, 1.2, 0.3, 0.3 };
-				double[] intercepts = new double[21] {-3.6,  2, 1, -.05,-1.2,   0, 4.5, 4.2, 4.2, 5.3, 8.9, 10.5, 3.2, 0.3, -1.05, -.9, -.6, 0.8, 3.9, -.3, 1 };
 
-				rook.Player.Strength -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId]*randMax + intercepts[rook.Player.PositionId])), rook.Player.Strength);
+				/*                                     QB, HB, FB, WR,  TE,   LT,  LG,   C,  RG,  RT,  LE,  RE,   DT,  LL,   ML,  RL,  CB,  FS,  SS,   K, P */
+				double[] slopes = new double[21] { 2.4, 2.2, 1, 1.35, 0.8, 1.1, 0.5, 0.6, 0.6, 0.2, 0.7, 0.5, 0.6, 0.9, 0.35, 0.8, 1.2, 0.9, 1.2, 0.3, 0.3 };
+				double[] intercepts = new double[21] { -3.6, 2, 1, -.05, -1.2, 0, 4.5, 4.2, 4.2, 5.3, 8.9, 10.5, 3.2, 0.3, -1.05, -.9, -.6, 0.8, 3.9, -.3, 1 };
+
+				rook.Player.Strength -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Strength);
 
 				rook.Player.Awareness -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Awareness);
 				rook.Player.Tackle -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Tackle);
 
 				rook.Player.Catching -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.Catching);
-				rook.Player.Carrying -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax/2.0 + intercepts[rook.Player.PositionId])), rook.Player.Carrying);
+				rook.Player.Carrying -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax / 2.0 + intercepts[rook.Player.PositionId])), rook.Player.Carrying);
 				rook.Player.BreakTackle -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.BreakTackle);
 				rook.Player.ThrowAccuracy -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId]) + 2), rook.Player.ThrowAccuracy);
 				rook.Player.ThrowPower -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.ThrowPower);
@@ -547,7 +547,7 @@ namespace MaddenEditor.Core
 			depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId] = SortByEffectiveOVR(depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId], dpRecord.CurrentTeamId, toDraft.Player.PositionId);
 			 */
 
-						foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 			{
 				// Really only need to calculate within the same position grouping.
 				// Would be more efficient to skip players not in the grouping of the drafted player....
@@ -1688,8 +1688,8 @@ namespace MaddenEditor.Core
 				}
 			}
 
-						Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
-				}
+			Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
+		}
 
 		public string MDCVerify(string filename)
 		{
@@ -1716,24 +1716,24 @@ namespace MaddenEditor.Core
 					playerData.RemoveAt(playerData.Count - 1);
 				}
 
-				if (playerData.Count != (model.DraftClassFields[version-1].GetLength(0)))
+				if (playerData.Count != (model.DraftClassFields[version - 1].GetLength(0)))
 				{
 					sr.Close();
-					return "Number of fields on line " + (linesread+1) + " is incorrect.  Was this MDC file generated with the same version of the Madden Editor as you are using?";
+					return "Number of fields on line " + (linesread + 1) + " is incorrect.  Was this MDC file generated with the same version of the Madden Editor as you are using?";
 				}
 
 				for (int i = 0; i < playerData.Count; i++)
 				{
-					if (record.ContainsIntField(model.DraftClassFields[version-1][i]))
+					if (record.ContainsIntField(model.DraftClassFields[version - 1][i]))
 					{
 						int test;
 						if (!Int32.TryParse(playerData[i], out test))
 						{
 							sr.Close();
-							return "Field number " + (i+1) + " on line " + (linesread + 1) + " is not an integer.";
+							return "Field number " + (i + 1) + " on line " + (linesread + 1) + " is not an integer.";
 						}
 					}
-					else if (!record.ContainsStringField(model.DraftClassFields[version-1][i]))
+					else if (!record.ContainsStringField(model.DraftClassFields[version - 1][i]))
 					{
 						// This should never happen -- it's more debugging code for us.
 						sr.Close();
@@ -1753,34 +1753,34 @@ namespace MaddenEditor.Core
 		}
 
 		public void ImportRookies(string filename)
-        {
-            StreamReader sr = new StreamReader(filename);
+		{
+			StreamReader sr = new StreamReader(filename);
 
 			int versionNumber = Int32.Parse(sr.ReadLine().Split(':')[1].Trim());
 
-            foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
-            {
-                if (sr.EndOfStream == true)
-                {
+			foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+			{
+				if (sr.EndOfStream == true)
+				{
 					Console.WriteLine("End of stream.  Breaking...");
-                    break;
-                }
+					break;
+				}
 
-                PlayerRecord player = (PlayerRecord)rec;
+				PlayerRecord player = (PlayerRecord)rec;
 
 				if (player.YearsPro != 0 || (player.FirstName == "New" && player.LastName == "Player")) { continue; }
 
-                Console.WriteLine("Out: " + player.FirstName + " " + player.LastName);
+				Console.WriteLine("Out: " + player.FirstName + " " + player.LastName);
 
 				// This should be false already, so this shouldn't hurt.
-                //player.SetDeleteFlag(false);
+				//player.SetDeleteFlag(false);
 
-                string playerLine = sr.ReadLine();
+				string playerLine = sr.ReadLine();
 
-                List<string> playerData = new List<string>(playerLine.Split('\t'));
+				List<string> playerData = new List<string>(playerLine.Split('\t'));
 
 				player.ImportData(playerData, versionNumber);
-            }
+			}
 
 			if (!sr.EndOfStream)
 			{
@@ -1788,8 +1788,8 @@ namespace MaddenEditor.Core
 				Console.WriteLine(sr.ReadToEnd());
 			}
 
-            sr.Close();
-        }
+			sr.Close();
+		}
 
 		public void InitializeDraft(int htid, DraftConfigForm draftConfigForm, string customclass)
 		{
@@ -1799,10 +1799,10 @@ namespace MaddenEditor.Core
 			InitializePickValues();
 			dcr = new DepthChartRepairer(model, positionData);
 
-            if (customclass != null)
-            {
-                ImportRookies(customclass);
-            }
+			if (customclass != null)
+			{
+				ImportRookies(customclass);
+			}
 
 			draftConfigForm.ReportProgress(25);
 			ExtractRookies();
@@ -1867,7 +1867,7 @@ namespace MaddenEditor.Core
 
 			DumpProjections();
 			 * */
-    	}
+		}
 
 		private void DumpProjections()
 		{
@@ -1875,10 +1875,10 @@ namespace MaddenEditor.Core
 			{
 				Console.WriteLine(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
 			}
-	    }
+		}
 
-				private void SetInitialRookieAttributes()
-				{
+		private void SetInitialRookieAttributes()
+		{
 			Dictionary<int, int> initialErrors = new Dictionary<int, int>();
 			initialErrors[(int)RookieRecord.Attribute.INJ] = 40;
 			initialErrors[(int)RookieRecord.Attribute.SPD] = 20;
@@ -2037,10 +2037,10 @@ namespace MaddenEditor.Core
 					// general need at positions, then multiply by
 					// the log of value to determine scouting priority.
 					//
-										// This was done because taking a lot of something like
-										// RookieRecord.EffectiveValue essentially
-										// penalizes low-rated guys twice -- once
-										// for low value, and once more since low value
+					// This was done because taking a lot of something like
+					// RookieRecord.EffectiveValue essentially
+					// penalizes low-rated guys twice -- once
+					// for low value, and once more since low value
 					// translates into low need.
 					//
 					// With the ability now to draft a guy for a position
@@ -2578,9 +2578,9 @@ namespace MaddenEditor.Core
 				double bestRating = -1;
 				int bestId = -1;
 
-								foreach (KeyValuePair<int, double> val in AverageValues)
-								{
-										if (val.Value > bestRating && !SortedAverageValues.Contains(val.Key))
+				foreach (KeyValuePair<int, double> val in AverageValues)
+				{
+					if (val.Value > bestRating && !SortedAverageValues.Contains(val.Key))
 					{
 						bestId = val.Key;
 						bestRating = val.Value;
@@ -2977,41 +2977,41 @@ namespace MaddenEditor.Core
 		}
 */
 
-				// Set rookie drafted teams to 1023, add to rookies dictionary, 
-				// assign corresponding PlayerRecord to RookieRecord
-				private void ExtractRookies()
-				{
-						foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFTED_PLAYERS_TABLE].GetRecords())
+		// Set rookie drafted teams to 1023, add to rookies dictionary, 
+		// assign corresponding PlayerRecord to RookieRecord
+		private void ExtractRookies()
+		{
+			foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFTED_PLAYERS_TABLE].GetRecords())
 			{
-								RookieRecord record = (RookieRecord)rec;
+				RookieRecord record = (RookieRecord)rec;
 
-								record.DraftedTeam = 1023;
-								record.DraftPickNumber = 255;
-								record.dm = this;
-								record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerId));
+				record.DraftedTeam = 1023;
+				record.DraftPickNumber = 255;
+				record.dm = this;
+				record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerId));
 
-								record.InitializeDictionaries(dcr.awarenessAdjust);
-								rookies.Add(record.PlayerId, record);
-						}
-				}
+				record.InitializeDictionaries(dcr.awarenessAdjust);
+				rookies.Add(record.PlayerId, record);
+			}
+		}
 
-				// This is an incredibly inefficient sort, but we'll only be sorting 4-5 element
-				// in general.  I didn't overload the operator because we may want to use that
-				// for something more useful, like TEAM OVR or something.
+		// This is an incredibly inefficient sort, but we'll only be sorting 4-5 element
+		// in general.  I didn't overload the operator because we may want to use that
+		// for something more useful, like TEAM OVR or something.
 
-				private List<TeamRecord> SortByEffectiveSOS(List<TeamRecord> tier)
-				{
-						List<TeamRecord> toReturn = new List<TeamRecord>();
-						while (tier.Count > 0)
+		private List<TeamRecord> SortByEffectiveSOS(List<TeamRecord> tier)
+		{
+			List<TeamRecord> toReturn = new List<TeamRecord>();
+			while (tier.Count > 0)
 			{
-								int leastESOS = 10000;
-								int leastTeamIndex = -1;
+				int leastESOS = 10000;
+				int leastTeamIndex = -1;
 
-								for (int j = 0; j < tier.Count; j++)
+				for (int j = 0; j < tier.Count; j++)
 				{
-										if (tier[j].EffectiveSOS < leastESOS)
+					if (tier[j].EffectiveSOS < leastESOS)
 					{
-												leastESOS = tier[j].EffectiveSOS;
+						leastESOS = tier[j].EffectiveSOS;
 						leastTeamIndex = j;
 					}
 				}
@@ -3103,23 +3103,23 @@ namespace MaddenEditor.Core
 			double weightedVarianceSquared = 0;
 			double weightedDenominator = 0;
 
-			for (int i = 0; i < 32*7; i++)
+			for (int i = 0; i < 32 * 7; i++)
 			{
-				Console.WriteLine(i + ": " + pickValues[i]+ " " + values[i]);
+				Console.WriteLine(i + ": " + pickValues[i] + " " + values[i]);
 				variance += (values[i] - pickValues[i]) / pickValues[i];
 				varianceSquared += Math.Pow((values[i] - pickValues[i]) / pickValues[i], 2);
 
-				weightedVariance += Math.Log(pickValues[i])*(values[i] - pickValues[i]) / pickValues[i];
+				weightedVariance += Math.Log(pickValues[i]) * (values[i] - pickValues[i]) / pickValues[i];
 				weightedVarianceSquared += Math.Log(pickValues[i]) * Math.Pow((values[i] - pickValues[i]) / pickValues[i], 2);
 				weightedDenominator += Math.Log(pickValues[i]);
 			}
 
-			double[] ideals = new double[21] {14, 16, 7, 22, 12, 11, 11, 11, 11, 11, 11, 11, 18, 11, 15, 11, 22, 11, 11, 6, 6};
+			double[] ideals = new double[21] { 14, 16, 7, 22, 12, 11, 11, 11, 11, 11, 11, 11, 18, 11, 15, 11, 22, 11, 11, 6, 6 };
 
 			// There's an assumption here that guys will go through minicamps to 
 			// improve their ratings.  But, that doesn't apply to FB, TE, and OL's.
 			// So, we should have on average higher ratings for them coming out.
-			double[] extras = new double[21] {1, 1, 1.1, 1, 1, 1.2, 1.2, 1.2, 1.2, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			double[] extras = new double[21] { 1, 1, 1.1, 1, 1, 1.2, 1.2, 1.2, 1.2, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 			string toReturn = "Number of players at each position, grouped by rating (This class / Average Class):\n\n";
 
@@ -3648,31 +3648,31 @@ namespace MaddenEditor.Core
 		public double MinAccept;
 		public double MaxGive;
 
-				public bool lastWasStrike = false;
+		public bool lastWasStrike = false;
 
-				public int higherStrikes = 0;
-				public int lowerStrikes = 0;
+		public int higherStrikes = 0;
+		public int lowerStrikes = 0;
 
-				public bool biddingWar = false;
-				public bool allowFutureHighPicks = false;
-				public bool allowFuturePicksFromLower = true;
-				public bool allowFuturePicksFromHigher = true;
-				public bool allowMultipleHighPicks = false;
-				public int MaxPicksFromLower = 2;
+		public bool biddingWar = false;
+		public bool allowFutureHighPicks = false;
+		public bool allowFuturePicksFromLower = true;
+		public bool allowFuturePicksFromHigher = true;
+		public bool allowMultipleHighPicks = false;
+		public int MaxPicksFromLower = 2;
 
-				private DraftModel dm;
+		private DraftModel dm;
 
-				public List<int> PicksFromLower = new List<int>();
-				public List<int> PicksFromHigher = new List<int>();
+		public List<int> PicksFromLower = new List<int>();
+		public List<int> PicksFromHigher = new List<int>();
 
-				public List<double> offersFromHigher = new List<double>();
-				public List<double> offersFromLower = new List<double>();
+		public List<double> offersFromHigher = new List<double>();
+		public List<double> offersFromLower = new List<double>();
 
-				public List<int> higherAvailable = new List<int>();
-				public List<int> lowerAvailable = new List<int>();
+		public List<int> higherAvailable = new List<int>();
+		public List<int> lowerAvailable = new List<int>();
 
-				List<int> tempPicksFromLower;
-				List<int> tempPicksFromHigher;
+		List<int> tempPicksFromLower;
+		List<int> tempPicksFromHigher;
 
 		double target;
 
@@ -3901,7 +3901,7 @@ namespace MaddenEditor.Core
 				}
 
 				double probabilityTaken = dm.probs[LowerTeam][dm.favorites[HigherTeam].PlayerId];
-				double probabilityRemaining = 1-probabilityTaken;
+				double probabilityRemaining = 1 - probabilityTaken;
 
 				foreach (TableRecordModel rec in dm.model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
 				{
