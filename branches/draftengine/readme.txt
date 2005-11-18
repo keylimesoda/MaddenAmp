@@ -5,7 +5,7 @@
 
                               WITH DRAFT ENGINE Beta 5
 
-                                   5th November 2005
+                                   18th November 2005
 
                                      readme.txt
 
