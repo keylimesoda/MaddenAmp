@@ -67,6 +67,11 @@ namespace MaddenEditor.Forms
             this.loadRecommendedSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.revertRatingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeAdjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.reorderDepthCharts = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accuracyUpDown)).BeginInit();
@@ -90,6 +95,7 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.speedSpreadUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedSpreadSlider)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // fumbleSlider
@@ -241,7 +247,7 @@ namespace MaddenEditor.Forms
             this.groupBox1.Controls.Add(this.fumbleSlider);
             this.groupBox1.Location = new System.Drawing.Point(12, 37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(316, 383);
+            this.groupBox1.Size = new System.Drawing.Size(316, 249);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extra Sliders";
@@ -533,7 +539,10 @@ namespace MaddenEditor.Forms
             // actionsToolStripMenuItem
             // 
             this.actionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem1,
             this.loadRecommendedSettingsToolStripMenuItem,
+            this.toolStripSeparator1,
             this.revertRatingsToolStripMenuItem,
             this.makeAdjustmentsToolStripMenuItem});
             this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
@@ -545,24 +554,67 @@ namespace MaddenEditor.Forms
             this.loadRecommendedSettingsToolStripMenuItem.Name = "loadRecommendedSettingsToolStripMenuItem";
             this.loadRecommendedSettingsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.loadRecommendedSettingsToolStripMenuItem.Text = "Load Recommended Settings";
+            this.loadRecommendedSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadRecommendedSettingsToolStripMenuItem_Click);
             // 
             // revertRatingsToolStripMenuItem
             // 
             this.revertRatingsToolStripMenuItem.Name = "revertRatingsToolStripMenuItem";
             this.revertRatingsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.revertRatingsToolStripMenuItem.Text = "Revert Ratings";
+            this.revertRatingsToolStripMenuItem.Click += new System.EventHandler(this.revertRatingsToolStripMenuItem_Click);
             // 
             // makeAdjustmentsToolStripMenuItem
             // 
             this.makeAdjustmentsToolStripMenuItem.Name = "makeAdjustmentsToolStripMenuItem";
             this.makeAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.makeAdjustmentsToolStripMenuItem.Text = "Make Adjustments";
+            this.makeAdjustmentsToolStripMenuItem.Click += new System.EventHandler(this.makeAdjustmentsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(220, 6);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 22);
+            this.toolStripMenuItem1.Text = "Load Last Saved Settings";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 22);
+            this.toolStripMenuItem2.Text = "Save Settings";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.reorderDepthCharts);
+            this.groupBox3.Location = new System.Drawing.Point(12, 298);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(315, 122);
+            this.groupBox3.TabIndex = 22;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Other Maintenance";
+            // 
+            // reorderDepthCharts
+            // 
+            this.reorderDepthCharts.AutoSize = true;
+            this.reorderDepthCharts.Location = new System.Drawing.Point(16, 27);
+            this.reorderDepthCharts.Name = "reorderDepthCharts";
+            this.reorderDepthCharts.Size = new System.Drawing.Size(179, 17);
+            this.reorderDepthCharts.TabIndex = 0;
+            this.reorderDepthCharts.Text = "Auto-Reorder CPU Depth Charts";
+            this.reorderDepthCharts.UseVisualStyleBackColor = true;
             // 
             // WeeklyMaintenanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(697, 432);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
@@ -595,6 +647,8 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.speedSpreadSlider)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -641,5 +695,10 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem loadRecommendedSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem revertRatingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem makeAdjustmentsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox reorderDepthCharts;
     }
 }
