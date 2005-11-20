@@ -731,7 +731,7 @@ namespace MaddenEditor.Forms
 
         private void weeklyMaintenanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WeeklyMaintenanceForm wm = new WeeklyMaintenanceForm();
+            WeeklyMaintenanceForm wm = new WeeklyMaintenanceForm(model);
             wm.Show();
         }
 

@@ -162,6 +162,33 @@ namespace MaddenEditor.Core.Record
 
         // MADDEN DRAFT EDIT
 
+        public string RatingsLine(string[] attributes)
+        {
+            string toReturn = "";
+            string last = attributes[attributes.Length - 1];
+            foreach (string s in attributes)
+            {
+                toReturn += GetIntField(s);
+
+                if (s != last)
+                {
+                    toReturn += "\t";
+                }
+            }
+            return toReturn;
+        }
+
+        public void ImportWeeklyData(string[] attributes, string[] ratings)
+        {
+            int index = 0;
+            foreach (string s in attributes)
+            {
+                if (s == "PGID") { index++;  continue; }
+                SetField(s, Int32.Parse(ratings[index]));
+                index++;
+            }
+        }
+
         public void ImportData(List<string> playerData, int version)
         {
 			int index = 0;

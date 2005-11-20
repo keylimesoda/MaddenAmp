@@ -159,6 +159,12 @@
     <Compile Include="Forms\PlayerEditControl.Designer.cs">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProfileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProfileDialog.Designer.cs">
+      <DependentUpon>ProfileDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SalaryCapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -262,6 +268,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PlayerEditControl.resx">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProfileDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProfileDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SalaryCapForm.resx">
       <DependentUpon>SalaryCapForm.cs</DependentUpon>
