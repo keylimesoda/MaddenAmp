@@ -729,6 +729,12 @@ namespace MaddenEditor.Forms
             }
 		}
 
+        private void weeklyMaintenanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WeeklyMaintenanceForm wm = new WeeklyMaintenanceForm();
+            wm.Show();
+        }
+
 		// MADDEN DRAFT EDIT
 
 	}
