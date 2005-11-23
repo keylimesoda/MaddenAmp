@@ -166,6 +166,7 @@ namespace MaddenEditor.Core.Record
         {
             string toReturn = "";
             string last = attributes[attributes.Length - 1];
+
             foreach (string s in attributes)
             {
                 toReturn += GetIntField(s);
@@ -175,6 +176,7 @@ namespace MaddenEditor.Core.Record
                     toReturn += "\t";
                 }
             }
+
             return toReturn;
         }
 

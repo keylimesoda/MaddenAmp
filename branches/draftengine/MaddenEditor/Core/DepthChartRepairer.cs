@@ -332,6 +332,19 @@ namespace MaddenEditor.Core
 
 		public List<List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies)
 		{
+            // Find a list of injured players
+            List<int> injuredPlayers = new List<int>();
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
+            {
+                InjuryRecord ir = (InjuryRecord)record;
+
+                if (ir.InjuryLength >= 24 || ir.InjuryReserve)
+                {
+                    injuredPlayers.Add(ir.PlayerId);
+                }
+            }
+
 			toReturn = new List<List<PlayerRecord>>();
 			starters = new List<int>();
 
@@ -374,7 +387,7 @@ namespace MaddenEditor.Core
 			{
 				PlayerRecord player = (PlayerRecord)rec;
 
-				if (TeamToSort != player.TeamId || player.Deleted == true) { continue; }
+				if (TeamToSort != player.TeamId || player.Deleted == true || injuredPlayers.Contains(player.PlayerId)) { continue; }
 
 				foreach (KeyValuePair<int, double> pair in awarenessAdjust[player.PositionId])
 				{

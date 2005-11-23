@@ -527,7 +527,7 @@ namespace MaddenEditor.Core
 			return true;
 		}
 
-		public void Save()
+        public void Save()
 		{
 			//To save we have to go through every record in our models and
 			//save the dirty ones
@@ -546,16 +546,15 @@ namespace MaddenEditor.Core
 		{
 			try
 			{
-                //Before we shutdown compact the database ??
+                //Before we shutdown compact the database
                 TDB.TDBDatabaseCompact(dbIndex);
-				TDB.TDBClose(dbIndex);
+                TDB.TDBSave(dbIndex);
+                TDB.TDBClose(dbIndex);
 			}
 			catch (DllNotFoundException e)
 			{
 				Console.WriteLine(e.ToString());
 			}
 		}
-
-		
 	}
 }
