@@ -111,6 +111,8 @@ namespace MaddenEditor.Forms
                 return;
             }
 
+            dirty = true;
+
             NumericUpDown UpDownToChange = null;
             TrackBar sender = (TrackBar)s;
 
@@ -166,6 +168,8 @@ namespace MaddenEditor.Forms
             {
                 return;
             }
+
+            dirty = true;
 
             NumericUpDown sender = (NumericUpDown)s;
             TrackBar sliderToChange = null;
@@ -311,6 +315,8 @@ namespace MaddenEditor.Forms
             sw.WriteLine("WeightSpread\t" + weightSpreadSlider.Value);
             sw.WriteLine("FixedWeight\t" + fixedWeightSlider.Value);
             sw.Close();
+
+            dirty = false;
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -320,16 +326,33 @@ namespace MaddenEditor.Forms
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            LoadSettings();
+            DialogResult dr = MessageBox.Show("Load previous settings?");
+
+            if (dr == DialogResult.Yes)
+            {
+                LoadSettings();
+            }
         }
 
         private void revertRatingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RevertRatings();
+            DialogResult dr = MessageBox.Show("Revert to previous ratings?");
+
+            if (dr == DialogResult.Yes)
+            {
+                RevertRatings();
+            }
         }
 
         private void makeAdjustmentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DialogResult dr = MessageBox.Show("Do weekly maintenance?");
+
+            if (dr == DialogResult.No)
+            {
+                return;
+            }
+
             this.Invalidate(true);
             this.Update();
             Cursor.Current = Cursors.WaitCursor;
@@ -380,6 +403,20 @@ namespace MaddenEditor.Forms
                 {
                     toAdjust.Add(record.AwayTeam.TeamId);
                     toAdjust.Add(record.HomeTeam.TeamId);
+                }
+            }
+
+            List<int> leftTackles = new List<int>();
+            if (useSliders.Checked)
+            {
+                foreach (TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+                {
+                    DepthChartRecord dcr = (DepthChartRecord)record;
+
+                    if (dcr.DepthOrder == 0 && dcr.PositionId == (int)MaddenPositions.LT && toAdjust.Contains(dcr.TeamId))
+                    {
+                        leftTackles.Add(dcr.PlayerId);
+                    }
                 }
             }
 
@@ -445,7 +482,7 @@ namespace MaddenEditor.Forms
                         }
                     }
 
-                    if (player.PositionId == (int)MaddenPositions.LT)
+                    if (leftTackles.Contains(player.PlayerId))
                     {
                         if (reSacksSlider.Value > 50)
                         {
@@ -503,6 +540,19 @@ namespace MaddenEditor.Forms
 
             sw.Close();
             Cursor.Current = Cursors.Arrow;
+        }
+
+        private void WeeklyMaintenanceForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (dirty)
+            {
+                DialogResult dr = MessageBox.Show("Do you want to save the changes to your settings?", "Save?");
+
+                if (dr == DialogResult.Yes)
+                {
+                    SaveSettings();
+                }
+            }
         }
     }
 }

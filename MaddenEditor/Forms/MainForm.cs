@@ -115,12 +115,12 @@ namespace MaddenEditor.Forms
 				if (result == DialogResult.Yes)
 				{
 					model.Save();
-				}
-				else if (result == DialogResult.Cancel)
-				{
-					return false;
-				}
-			}
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
 
 			return true;
 		}
@@ -146,8 +146,14 @@ namespace MaddenEditor.Forms
 			dialog.Filter = "Madden files (*.ros;*.fra)|*.ros;*.fra";
 			dialog.Multiselect = false;
 			dialog.ShowDialog();
+
 			if (dialog.FileNames.Length > 0)
 			{
+                // If they saved above, then reverting does nothing.
+                // If not, then reverting is what they wanted.
+
+                CloseModel();
+
 				foreach (string filename in dialog.FileNames)
 				{
 					filePathToLoad = filename;
@@ -181,7 +187,6 @@ namespace MaddenEditor.Forms
 			playerEditControl.Model = model;
 			coachEditControl.Model = model;
 			teamEditControl.Model = model;
-
 		}
 
 		public void updateProgress(int percentage, string tablename)
@@ -692,11 +697,10 @@ namespace MaddenEditor.Forms
 
 		private void simulateCPUMinicampsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-            DialogResult dr = MessageBox.Show("This tool will simulate minicamps for CPU players with less than three years of experience.  Human controlled teams will automatically be skipped.  Proceed?", "Simulate CPU Minicamps", MessageBoxButtons.YesNo);
+            DialogResult dr = MessageBox.Show("This tool will simulate minicamps for CPU players with less than three years of experience.  Do you want to skip human controlled teams?", "Simulate CPU Minicamps", MessageBoxButtons.YesNoCancel);
 
-            if (dr == DialogResult.Yes)
+            if (dr != DialogResult.Cancel)
             {
-
                 this.Invalidate(true);
                 this.Update();
                 Cursor.Current = Cursors.WaitCursor;
@@ -712,6 +716,11 @@ namespace MaddenEditor.Forms
 
                 DepthChartRepairer dcr = new DepthChartRepairer(model, null);
                 dcr.ReorderDepthCharts(true, toSkip);
+
+                if (dr == DialogResult.No)
+                {
+                    toSkip = new List<int>();
+                }
 
                 foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
                 {

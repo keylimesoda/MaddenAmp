@@ -64,12 +64,12 @@ namespace MaddenEditor.Forms
             this.speedSpreadSlider = new System.Windows.Forms.TrackBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadRecommendedSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.revertRatingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeAdjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.reorderDepthCharts = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleSlider)).BeginInit();
@@ -549,12 +549,31 @@ namespace MaddenEditor.Forms
             this.actionsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.actionsToolStripMenuItem.Text = "Actions";
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 22);
+            this.toolStripMenuItem2.Text = "Save Settings";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 22);
+            this.toolStripMenuItem1.Text = "Load Last Saved Settings";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // loadRecommendedSettingsToolStripMenuItem
             // 
             this.loadRecommendedSettingsToolStripMenuItem.Name = "loadRecommendedSettingsToolStripMenuItem";
             this.loadRecommendedSettingsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.loadRecommendedSettingsToolStripMenuItem.Text = "Load Recommended Settings";
             this.loadRecommendedSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadRecommendedSettingsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(220, 6);
             // 
             // revertRatingsToolStripMenuItem
             // 
@@ -569,25 +588,6 @@ namespace MaddenEditor.Forms
             this.makeAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.makeAdjustmentsToolStripMenuItem.Text = "Make Adjustments";
             this.makeAdjustmentsToolStripMenuItem.Click += new System.EventHandler(this.makeAdjustmentsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(220, 6);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 22);
-            this.toolStripMenuItem1.Text = "Load Last Saved Settings";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 22);
-            this.toolStripMenuItem2.Text = "Save Settings";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // groupBox3
             // 
@@ -621,6 +621,7 @@ namespace MaddenEditor.Forms
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "WeeklyMaintenanceForm";
             this.Text = "Weekly Maintenance";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WeeklyMaintenanceForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.fumbleSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accuracyUpDown)).EndInit();
