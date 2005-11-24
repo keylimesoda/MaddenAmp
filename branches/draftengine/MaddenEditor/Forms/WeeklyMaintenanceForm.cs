@@ -232,6 +232,10 @@ namespace MaddenEditor.Forms
                 return;
             }
 
+            useSliders.Checked = false;
+            usePhysicalSliders.Checked = false;
+            reorderDepthCharts.Checked = false;
+
             StreamReader sr = new StreamReader(installDirectory + "\\settings\\" + profile);
 
             while (!sr.EndOfStream)
@@ -239,7 +243,19 @@ namespace MaddenEditor.Forms
                 string line = sr.ReadLine();
                 string[] splitLine = line.Split('\t');
 
-                if (splitLine[0] == "Fumbles")
+                if (splitLine[0] == "UseSliders")
+                {
+                    useSliders.Checked = true;
+                }
+                else if (splitLine[0] == "UsePhysicalSliders")
+                {
+                    usePhysicalSliders.Checked = true;
+                }
+                else if (splitLine[0] == "ReorderDepthCharts")
+                {
+                    reorderDepthCharts.Checked = true;
+                }
+                else if (splitLine[0] == "Fumbles")
                 {
                     fumbleSlider.Value = Int32.Parse(splitLine[1]);
                 }
@@ -303,6 +319,21 @@ namespace MaddenEditor.Forms
                 sw = new StreamWriter(installDirectory + "\\settings\\" + profile, false);
             }
 
+            if (useSliders.Checked)
+            {
+                sw.WriteLine("UseSliders");
+            }
+
+            if (usePhysicalSliders.Checked)
+            {
+                sw.WriteLine("UsePhysicalSliders");
+            }
+
+            if (reorderDepthCharts.Checked)
+            {
+                sw.WriteLine("ReorderDepthCharts");
+            }
+
             sw.WriteLine("Fumbles\t" + fumbleSlider.Value);
             sw.WriteLine("QBAccuracy\t" + accuracySlider.Value);
             sw.WriteLine("QBInjury\t" + qbInjurySlider.Value);
@@ -326,7 +357,7 @@ namespace MaddenEditor.Forms
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Load previous settings?");
+            DialogResult dr = MessageBox.Show("Load previous settings?", "Continue?", MessageBoxButtons.YesNo);
 
             if (dr == DialogResult.Yes)
             {
@@ -336,7 +367,7 @@ namespace MaddenEditor.Forms
 
         private void revertRatingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Revert to previous ratings?");
+            DialogResult dr = MessageBox.Show("Revert to previous ratings?", "Continue?", MessageBoxButtons.YesNo);
 
             if (dr == DialogResult.Yes)
             {
@@ -346,7 +377,7 @@ namespace MaddenEditor.Forms
 
         private void makeAdjustmentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Do weekly maintenance?");
+            DialogResult dr = MessageBox.Show("Do weekly maintenance?", "Continue?", MessageBoxButtons.YesNo);
 
             if (dr == DialogResult.No)
             {
@@ -378,6 +409,7 @@ namespace MaddenEditor.Forms
             // Find the teams that need adjustments
 
             List<int> toAdjust = new List<int>();
+            Dictionary<int, int> opponents = new Dictionary<int, int>();
 
             int currentWeek = -1;
             foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
@@ -403,19 +435,61 @@ namespace MaddenEditor.Forms
                 {
                     toAdjust.Add(record.AwayTeam.TeamId);
                     toAdjust.Add(record.HomeTeam.TeamId);
+
+                    opponents.Add(record.HomeTeam.TeamId, record.AwayTeam.TeamId);
+                    opponents.Add(record.AwayTeam.TeamId, record.HomeTeam.TeamId);
                 }
             }
 
             List<int> leftTackles = new List<int>();
+            Dictionary<int, double> rightEnds = new Dictionary<int,double>();
+
             if (useSliders.Checked)
             {
                 foreach (TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
                 {
                     DepthChartRecord dcr = (DepthChartRecord)record;
 
-                    if (dcr.DepthOrder == 0 && dcr.PositionId == (int)MaddenPositions.LT && toAdjust.Contains(dcr.TeamId))
+                    if (dcr.DepthOrder == 0 && toAdjust.Contains(dcr.TeamId))
                     {
-                        leftTackles.Add(dcr.PlayerId);
+                        if (dcr.PositionId == (int)MaddenPositions.LT)
+                        {
+                            leftTackles.Add(dcr.PlayerId);
+                        }
+                        else if (dcr.PositionId == (int)MaddenPositions.RE)
+                        {
+                            // Measure the extent to which the guy's a speed rusher
+                            PlayerRecord RE = model.PlayerModel.GetPlayerByPlayerId(dcr.PlayerId);
+                            int awareness = RE.Awareness;
+                            bool REdirty = RE.Dirty;
+
+                            switch (RE.PositionId) {
+                                case (int)MaddenPositions.RE:
+                                    RE.Awareness *= 1;
+                                    break;
+                                case (int)MaddenPositions.LE:
+                                    RE.Awareness = (int)Math.Round(0.9*RE.Awareness);
+                                    break;
+                                case (int)MaddenPositions.DT:
+                                    RE.Awareness = (int)Math.Round(0.8 * RE.Awareness);
+                                    break;
+                                case (int)MaddenPositions.LOLB:
+                                case (int)MaddenPositions.MLB:
+                                case (int)MaddenPositions.ROLB:
+                                    RE.Awareness = (int)Math.Round(0.5 * RE.Awareness);
+                                    break;
+                                default:
+                                    RE.Awareness = 0;
+                                    break;
+                            }
+
+                            rightEnds[dcr.TeamId] = ((double)RE.CalculateOverallRating((int)MaddenPositions.RE,true)/100.0)*(0.7 * Math.Max(0, Math.Min(1, (85.0 - (double)RE.Strength) / 15.0)) + 0.3 * Math.Max(0, Math.Min(1, (130.0 - (double)RE.Weight) / 30.0))) * Math.Max(0, Math.Min(1, ((double)RE.Speed - 65.0) / 15.0));
+                            Console.WriteLine(RE.ToString() + " " + rightEnds[dcr.TeamId]);
+
+                            // Put this guy back as he was
+                            RE.Awareness = awareness;
+                            RE.Dirty = REdirty;
+                        }
                     }
                 }
             }
@@ -486,7 +560,9 @@ namespace MaddenEditor.Forms
                     {
                         if (reSacksSlider.Value > 50)
                         {
-                            player.PassBlocking -= (int)Math.Round(((double)reSacksSlider.Value - 50.0) * ((double)player.PassBlocking / 50.0));
+                            // Subtract pass blocking depending on the extent
+                            // to which the RE is a "speed rusher".
+                            player.PassBlocking -= (int)Math.Round(rightEnds[opponents[player.TeamId]]*((double)reSacksSlider.Value - 50.0) * ((double)player.PassBlocking / 50.0));
                         }
                         else
                         {
@@ -546,13 +622,18 @@ namespace MaddenEditor.Forms
         {
             if (dirty)
             {
-                DialogResult dr = MessageBox.Show("Do you want to save the changes to your settings?", "Save?");
+                DialogResult dr = MessageBox.Show("Do you want to save the changes to your settings?", "Save?", MessageBoxButtons.YesNo);
 
                 if (dr == DialogResult.Yes)
                 {
                     SaveSettings();
                 }
             }
+        }
+
+        private void CheckedChanged(object sender, EventArgs e)
+        {
+            dirty = true;
         }
     }
 }

@@ -340,6 +340,7 @@
   <ItemGroup>
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
+    <Content Include="Notes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
