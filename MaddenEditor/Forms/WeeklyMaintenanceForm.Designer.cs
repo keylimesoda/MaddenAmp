@@ -263,6 +263,7 @@ namespace MaddenEditor.Forms
             this.useSliders.TabIndex = 19;
             this.useSliders.Text = "Use Extra In-Game Sliders";
             this.useSliders.UseVisualStyleBackColor = true;
+            this.useSliders.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // groupBox2
             // 
@@ -381,6 +382,7 @@ namespace MaddenEditor.Forms
             this.usePhysicalSliders.TabIndex = 19;
             this.usePhysicalSliders.Text = "Use Physical In-Game Sliders";
             this.usePhysicalSliders.UseVisualStyleBackColor = true;
+            this.usePhysicalSliders.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // fixedHeightUpDown
             // 
@@ -602,12 +604,15 @@ namespace MaddenEditor.Forms
             // reorderDepthCharts
             // 
             this.reorderDepthCharts.AutoSize = true;
+            this.reorderDepthCharts.Checked = true;
+            this.reorderDepthCharts.CheckState = System.Windows.Forms.CheckState.Checked;
             this.reorderDepthCharts.Location = new System.Drawing.Point(16, 27);
             this.reorderDepthCharts.Name = "reorderDepthCharts";
             this.reorderDepthCharts.Size = new System.Drawing.Size(179, 17);
             this.reorderDepthCharts.TabIndex = 0;
             this.reorderDepthCharts.Text = "Auto-Reorder CPU Depth Charts";
             this.reorderDepthCharts.UseVisualStyleBackColor = true;
+            this.reorderDepthCharts.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // WeeklyMaintenanceForm
             // 
