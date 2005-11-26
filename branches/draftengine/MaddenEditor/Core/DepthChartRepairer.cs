@@ -290,6 +290,11 @@ namespace MaddenEditor.Core
 			{
 				for (int pos = 0; pos < depthChart[team].Count; pos++)
 				{
+                    if (team == 19 && pos == 18)
+                    {
+
+                    }
+
 					for (int depth = 0; depth < depthChart[team][pos].Count; depth++)
 					{
 						//DepthChartRecord newRecord = (DepthChartRecord)dcRecords.CreateNewRecord(false);
@@ -322,10 +327,10 @@ namespace MaddenEditor.Core
 				}
 			}
 
-			for (int i = index; i < model.TableModels[EditorModel.DEPTH_CHART_TABLE].RecordCount; i++)
-			{
-				model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(i).SetDeleteFlag(true);
-			}
+            while (index < model.TableModels[EditorModel.DEPTH_CHART_TABLE].RecordCount) 
+            {
+                model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecord(index).SetDeleteFlag(true);
+            }
 
 			model.TableModels[EditorModel.DEPTH_CHART_TABLE].Save();
 		}
