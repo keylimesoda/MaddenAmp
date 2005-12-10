@@ -48,6 +48,7 @@ namespace MaddenEditor.Core
 		private LocalMath math;
 		public DepthChartRepairer dcr;
 		int numrooks;
+        private int recommendation;
 
 		// true if the team just traded up; false otherwise.
 		private bool PreventTrade = false;
@@ -1804,16 +1805,34 @@ namespace MaddenEditor.Core
 				ImportRookies(customclass);
 			}
 
+            string analysis = AnalyzeDraftClass(true);
+            bool repairRooks = false;
+
+            if (recommendation <= 0)
+            {
+                int action = draftConfigForm.promptFix(analysis, recommendation);
+
+                if (action == -1)
+                {
+                    return;
+                }
+                else if (action == 1)
+                {
+                    repairRooks = true;
+                }
+            }
+                
 			draftConfigForm.ReportProgress(25);
 			ExtractRookies();
 			draftConfigForm.ReportProgress(35);
+
+            if (repairRooks)
+            {
+                RepairRookies();
+            }
+            draftConfigForm.ReportProgress(45);
 			//            DumpRookies();
 
-			if (model.FileVersion == MaddenFileVersion.Ver2006 && customclass == null)
-			{
-				RepairRookies();
-			}
-			draftConfigForm.ReportProgress(45);
 			// I'm not sure why I initialize this twice, but it doesn't hurt.
 			dcr = new DepthChartRepairer(model, positionData);
 			depthChart = dcr.ReorderDepthCharts(true);
@@ -3031,7 +3050,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public string AnalyzeDraftClass()
+		public string AnalyzeDraftClass(bool brief)
 		{
 			int totalOver80 = 0;
 			int totalOver75 = 0;
@@ -3121,19 +3140,78 @@ namespace MaddenEditor.Core
 			// So, we should have on average higher ratings for them coming out.
 			double[] extras = new double[21] { 1, 1, 1.1, 1, 1, 1.2, 1.2, 1.2, 1.2, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-			string toReturn = "Number of players at each position, grouped by rating (This class / Average Class):\n\n";
+            string toReturn = "";
 
-			for (int i = 0; i < 21; i++)
-			{
-				//Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i]*extras[i] * 40.0 / 256.0, 1) + "\t" + over75[i]);
-				//Console.WriteLine(over75[i]);
-				toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
-				toReturn += "80+ (" + over80[i] + "/" + Math.Round(extras[i] * ideals[i] * 10.0 / 257.0, 1) + "), ";
-				toReturn += "75+ (" + over75[i] + "/" + Math.Round(extras[i] * ideals[i] * 40.0 / 257.0, 1) + "), ";
-				toReturn += "70+ (" + over70[i] + "/" + Math.Round(extras[i] * ideals[i] * 100.0 / 257.0, 1) + "), ";
-				toReturn += "Total (" + total[i] + "/" + ideals[i] + "), ";
-				toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 80.0)\n";
-			}
+            if (!brief)
+            {
+                toReturn += "Number of players at each position, grouped by rating (This class / Average Class):\n\n";
+
+                for (int i = 0; i < 21; i++)
+                {
+                    //Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i]*extras[i] * 40.0 / 256.0, 1) + "\t" + over75[i]);
+                    //Console.WriteLine(over75[i]);
+                    toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
+                    toReturn += "80+ (" + over80[i] + "/" + Math.Round(extras[i] * ideals[i] * 10.0 / 257.0, 1) + "), ";
+                    toReturn += "75+ (" + over75[i] + "/" + Math.Round(extras[i] * ideals[i] * 40.0 / 257.0, 1) + "), ";
+                    toReturn += "70+ (" + over70[i] + "/" + Math.Round(extras[i] * ideals[i] * 100.0 / 257.0, 1) + "), ";
+                    toReturn += "Total (" + total[i] + "/" + ideals[i] + "), ";
+                    toReturn += "Injury Average (" + Math.Round(injury[i] / total[i], 1) + "/ 80.0)\n";
+                }
+            } 
+            else
+            {
+                int toRec = 0;
+
+                if (variance < 257.0 * 0.2)
+                {
+                    toRec++;
+                }
+                else if (variance > 257.0 * 3.5 && variance < 257.0 * 5.0)
+                {
+                    toRec--;
+                }
+
+                if (varianceSquared < 257.0 * 0.25)
+                {
+                    toRec++;
+                }
+                else if (varianceSquared > 257.0 * 20.25 && varianceSquared < 257.0 * 25.0)
+                {
+                    toRec--;
+                }
+            
+
+                if (weightedVariance < weightedDenominator * 0.2)
+                {
+                    toRec++;
+                }
+                else if (weightedVariance > weightedDenominator * 3.25 && weightedVariance < 4.75)
+                {
+                    toRec--;
+                }
+                
+                if (weightedVarianceSquared < weightedDenominator * 0.25)
+                {
+                    toRec++;
+                }
+                else if (weightedVarianceSquared < weightedDenominator * 16 && weightedVarianceSquared < weightedDenominator * 30.25)
+                {
+                    toRec--;
+                }
+
+                if (toRec >= 3)
+                {
+                    recommendation = 1; // Do not adjust, and use
+                }
+                else if (toRec <= -3)
+                {
+                    recommendation = -1; // Auto-adjust
+                }
+                else
+                {
+                    recommendation = 0; // Do not use
+                }
+            }
 
 			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 2) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 2) + "\n";
 			toReturn += "\nWeighted Value Variance: " + Math.Round(weightedVariance / weightedDenominator, 2) + ", Weighted Value Variance Squared: " + Math.Round(Math.Pow(weightedVarianceSquared / weightedDenominator, 0.5), 2) + "\n\n";
@@ -3143,7 +3221,10 @@ namespace MaddenEditor.Core
 
 			toReturn += "\nTotals:  80+ (" + totalOver80 + "/10), 75+ (" + totalOver75 + "/40), 70+ (" + totalOver70 + "/100), Injury Average (" + Math.Round(injuryTotal / 256.0, 1) + "/80)\n";
 
-			toReturn += "\nExport this draft class?";
+            if (!brief)
+            {
+                toReturn += "\nExport this draft class?";
+            }
 
 			return toReturn;
 		}

@@ -638,7 +638,7 @@ namespace MaddenEditor.Forms
             // undrafted rookies anyway.
 
 			DraftModel dmTemp = new DraftModel(model);
-			string classStats = dmTemp.AnalyzeDraftClass();
+			string classStats = dmTemp.AnalyzeDraftClass(false);
 
 			
             if (dmTemp.NumRooks > 257)

@@ -41,6 +41,8 @@ namespace MaddenEditor.Forms
 		int humanId;
         string customclass = null;
 
+        bool continueLoading = true;
+
         public DraftConfigForm(EditorModel em)
         {
             model = em;
@@ -114,6 +116,54 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+        public int promptFix(string analysis, int recommendation)
+        {
+            if (recommendation == 0)
+            {
+                DialogResult dr = MessageBox.Show(analysis + "\nThis class is not a good candidate for auto-repair.\n\nIt is recommended that you do NOT use this draft class, and answer \"NO\" below.\n\nDo you want to continue to use this class anyway?", "Draft Class Analysis", MessageBoxButtons.YesNo);
+
+                if (dr == DialogResult.Yes)
+                {
+                    dr = MessageBox.Show("Are you sure you want to continue?  Using this class could adversely affect your franchise.", "Confirm", MessageBoxButtons.YesNo);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        return 0;
+                    }
+                }
+
+                continueLoading = false;
+                return -1;
+            }
+            else
+            {
+                DialogResult dr = MessageBox.Show(analysis + "\nThis class can probably be auto-repaired, to give the players more realistic ratings.\n\nIt is recommended that you do this, and answer \"YES\" below.\n\nChoose \"YES\" to auto-repair and continue. (Recommended)\nChoose \"No\" to continue without auto-repairing.\nChoose \"Cancel\" to exit the draft.", "Draft Class Analysis", MessageBoxButtons.YesNoCancel);
+
+                if (dr == DialogResult.Yes)
+                {
+                    return 1;
+                }
+                else if (dr == DialogResult.No)
+                {
+                    dr = MessageBox.Show("Are you sure you want to continue?  Using this draft class could adversely affect your franchise.", "Confirm", MessageBoxButtons.YesNo);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    continueLoading = false;
+                    return -1;
+                }
+            }
+        }
+
 		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
             // This method will run on a thread other than the UI thread.
@@ -146,13 +196,19 @@ namespace MaddenEditor.Forms
 
 			ReportProgress(15);
 			draftModel.InitializeDraft(humanId, this, customclass);
-			ReportProgress(55);
-			draftModel.FixDraftOrder();
-			ReportProgress(75);
-			draftModel.InitializeScouting();
 
-			ReportProgress(100);
+            if (continueLoading)
+            {
+                ReportProgress(55);
+                draftModel.FixDraftOrder();
+                ReportProgress(75);
+                draftModel.InitializeScouting();
+
+                ReportProgress(100);
+            }
 		}
+
+
 
 		private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
@@ -161,8 +217,11 @@ namespace MaddenEditor.Forms
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			scoutingForm = new ScoutingForm(model, humanId, secs, draftModel, true);
-			scoutingForm.Show();
+            if (continueLoading)
+            {
+                scoutingForm = new ScoutingForm(model, humanId, secs, draftModel, true);
+                scoutingForm.Show();
+            }
 
 			this.Cursor = Cursors.Default;
 			this.Close();
