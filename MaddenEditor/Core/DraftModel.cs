@@ -1795,11 +1795,11 @@ namespace MaddenEditor.Core
 		public void InitializeDraft(int htid, DraftConfigForm draftConfigForm, string customclass)
 		{
 			HumanTeamId = htid;
-
+/*
 			InitializePositionData();
 			InitializePickValues();
 			dcr = new DepthChartRepairer(model, positionData);
-
+*/
 			if (customclass != null)
 			{
 				ImportRookies(customclass);
@@ -1821,8 +1821,10 @@ namespace MaddenEditor.Core
                     repairRooks = true;
                 }
             }
-                
-			draftConfigForm.ReportProgress(25);
+
+            dcr = new DepthChartRepairer(model, positionData);
+
+            draftConfigForm.ReportProgress(25);
 			ExtractRookies();
 			draftConfigForm.ReportProgress(35);
 
@@ -1833,8 +1835,6 @@ namespace MaddenEditor.Core
             draftConfigForm.ReportProgress(45);
 			//            DumpRookies();
 
-			// I'm not sure why I initialize this twice, but it doesn't hurt.
-			dcr = new DepthChartRepairer(model, positionData);
 			depthChart = dcr.ReorderDepthCharts(true);
 
 			depthChartValues = new List<List<List<double>>>();
@@ -3168,6 +3168,7 @@ namespace MaddenEditor.Core
                 }
                 else if (variance > 257.0 * 3.5 && variance < 257.0 * 5.0)
                 {
+                    Console.WriteLine("line 3171");
                     toRec--;
                 }
 
@@ -3177,6 +3178,7 @@ namespace MaddenEditor.Core
                 }
                 else if (varianceSquared > 257.0 * 20.25 && varianceSquared < 257.0 * 25.0)
                 {
+                    Console.WriteLine("line 3181");
                     toRec--;
                 }
             
@@ -3185,8 +3187,9 @@ namespace MaddenEditor.Core
                 {
                     toRec++;
                 }
-                else if (weightedVariance > weightedDenominator * 3.25 && weightedVariance < 4.75)
+                else if (weightedVariance > weightedDenominator * 3.25 && weightedVariance < 4.75 * weightedDenominator)
                 {
+                    Console.WriteLine("line 3192");
                     toRec--;
                 }
                 
@@ -3194,8 +3197,9 @@ namespace MaddenEditor.Core
                 {
                     toRec++;
                 }
-                else if (weightedVarianceSquared < weightedDenominator * 16 && weightedVarianceSquared < weightedDenominator * 30.25)
+                else if (weightedVarianceSquared > weightedDenominator * 16 && weightedVarianceSquared < weightedDenominator * 30.25)
                 {
+                    Console.WriteLine("line 3202");
                     toRec--;
                 }
 
@@ -3211,6 +3215,8 @@ namespace MaddenEditor.Core
                 {
                     recommendation = 0; // Do not use
                 }
+
+                Console.WriteLine("Recommendation: " + recommendation);
             }
 
 			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 2) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 2) + "\n";
