@@ -72,6 +72,9 @@ namespace MaddenEditor.Forms
             this.makeAdjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.reorderDepthCharts = new System.Windows.Forms.CheckBox();
+            this.staminaUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.staminaSlider = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accuracyUpDown)).BeginInit();
@@ -96,6 +99,8 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.speedSpreadSlider)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.staminaUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.staminaSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // fumbleSlider
@@ -232,6 +237,9 @@ namespace MaddenEditor.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.staminaUpDown);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.staminaSlider);
             this.groupBox1.Controls.Add(this.useSliders);
             this.groupBox1.Controls.Add(this.reSacksUpDown);
             this.groupBox1.Controls.Add(this.label3);
@@ -247,7 +255,7 @@ namespace MaddenEditor.Forms
             this.groupBox1.Controls.Add(this.fumbleSlider);
             this.groupBox1.Location = new System.Drawing.Point(12, 37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(316, 249);
+            this.groupBox1.Size = new System.Drawing.Size(316, 290);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extra Sliders";
@@ -594,9 +602,9 @@ namespace MaddenEditor.Forms
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.reorderDepthCharts);
-            this.groupBox3.Location = new System.Drawing.Point(12, 298);
+            this.groupBox3.Location = new System.Drawing.Point(12, 333);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(315, 122);
+            this.groupBox3.Size = new System.Drawing.Size(315, 87);
             this.groupBox3.TabIndex = 22;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Other Maintenance";
@@ -606,13 +614,46 @@ namespace MaddenEditor.Forms
             this.reorderDepthCharts.AutoSize = true;
             this.reorderDepthCharts.Checked = true;
             this.reorderDepthCharts.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.reorderDepthCharts.Location = new System.Drawing.Point(16, 27);
+            this.reorderDepthCharts.Location = new System.Drawing.Point(16, 31);
             this.reorderDepthCharts.Name = "reorderDepthCharts";
             this.reorderDepthCharts.Size = new System.Drawing.Size(179, 17);
             this.reorderDepthCharts.TabIndex = 0;
             this.reorderDepthCharts.Text = "Auto-Reorder CPU Depth Charts";
             this.reorderDepthCharts.UseVisualStyleBackColor = true;
             this.reorderDepthCharts.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // staminaUpDown
+            // 
+            this.staminaUpDown.Location = new System.Drawing.Point(261, 243);
+            this.staminaUpDown.Name = "staminaUpDown";
+            this.staminaUpDown.Size = new System.Drawing.Size(40, 20);
+            this.staminaUpDown.TabIndex = 22;
+            this.staminaUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.staminaUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 246);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 13);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "Stamina";
+            // 
+            // staminaSlider
+            // 
+            this.staminaSlider.Location = new System.Drawing.Point(83, 242);
+            this.staminaSlider.Maximum = 100;
+            this.staminaSlider.Name = "staminaSlider";
+            this.staminaSlider.Size = new System.Drawing.Size(168, 45);
+            this.staminaSlider.TabIndex = 20;
+            this.staminaSlider.TickFrequency = 5;
+            this.staminaSlider.Value = 50;
+            this.staminaSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // WeeklyMaintenanceForm
             // 
@@ -655,6 +696,8 @@ namespace MaddenEditor.Forms
             this.menuStrip1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.staminaUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.staminaSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -706,5 +749,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox reorderDepthCharts;
+        private System.Windows.Forms.NumericUpDown staminaUpDown;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar staminaSlider;
     }
 }
