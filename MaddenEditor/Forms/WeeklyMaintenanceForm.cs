@@ -411,27 +411,18 @@ namespace MaddenEditor.Forms
             List<int> toAdjust = new List<int>();
             Dictionary<int, int> opponents = new Dictionary<int, int>();
 
-            int currentWeek = -1;
+            int currentWeek = 30;
             foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
             {
-                if (record.State.Id == 1)
+                if (record.State.Id == 1 && record.WeekNumber < currentWeek)
                 {
-                    if (currentWeek == -1)
-                    {
-                        currentWeek = record.WeekNumber;
-                    }
+                    currentWeek = record.WeekNumber;
                 }
-                else
-                {
-                    continue;
-                }
+            }
 
-                if (currentWeek != record.WeekNumber)
-                {
-                    break;
-                }
-
-                if (record.HumanControlled)
+            foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+            {
+                if (record.WeekNumber == currentWeek && record.HumanControlled)
                 {
                     toAdjust.Add(record.AwayTeam.TeamId);
                     toAdjust.Add(record.HomeTeam.TeamId);

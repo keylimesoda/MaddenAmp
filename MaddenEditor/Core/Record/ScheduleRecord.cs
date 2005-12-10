@@ -33,6 +33,7 @@ namespace MaddenEditor.Core.Record
 		public const string GAME_NUMBER = "SGNM";
 		public const string WEEK_NUMBER = "SEWN";
 		// Gamestates
+        // 0 - unscheduled playoff game
 		// 1 - not played
 		// 2 - away win
 		// 3 - home win
@@ -78,6 +79,7 @@ namespace MaddenEditor.Core.Record
 
 			// Initialise the Game States
 			gameStateList = new List<GenericRecord>();
+            gameStateList.Add(new GenericRecord("Unscheduled Playoff Game", 0));
 			gameStateList.Add(new GenericRecord("Not Played", 1));
 			gameStateList.Add(new GenericRecord("Away Team Win", 2));
 			gameStateList.Add(new GenericRecord("Home Team Win", 3));
