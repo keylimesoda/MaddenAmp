@@ -36,6 +36,10 @@ namespace MaddenEditor.Forms
             ratingsVersions = new List<string[]>();
             ratingsVersions.Add(new string[] { "PGID", "PCAR", "PTHA", "PINJ", 
                 "PPBK", "PSPD", "PHGT", "PWGT" });
+            ratingsVersions.Add(new string[] { "PGID", "PCAR", "PTHA", "PINJ", 
+                "PPBK", "PSPD", "PHGT", "PWGT", "PSTA" });
+
+            dirty = false;
         }
 
         private void RevertRatings()
@@ -132,6 +136,10 @@ namespace MaddenEditor.Forms
             {
                 UpDownToChange = reSacksUpDown;
             }
+            else if (sender == staminaSlider)
+            {
+                UpDownToChange = staminaUpDown;
+            }
             else if (sender == speedSpreadSlider)
             {
                 UpDownToChange = speedSpreadUpDown;
@@ -189,6 +197,10 @@ namespace MaddenEditor.Forms
             else if (sender == reSacksUpDown)
             {
                 sliderToChange = reSacksSlider;
+            }
+            else if (sender == staminaUpDown)
+            {
+                sliderToChange = staminaSlider;
             }
             else if (sender == speedSpreadUpDown)
             {
@@ -271,6 +283,10 @@ namespace MaddenEditor.Forms
                 {
                     reSacksSlider.Value = Int32.Parse(splitLine[1]);
                 }
+                else if (splitLine[0] == "Stamina")
+                {
+                    staminaSlider.Value = Int32.Parse(splitLine[1]);
+                }
                 else if (splitLine[0] == "SpeedSpread")
                 {
                     speedSpreadSlider.Value = Int32.Parse(splitLine[1]);
@@ -338,6 +354,7 @@ namespace MaddenEditor.Forms
             sw.WriteLine("QBAccuracy\t" + accuracySlider.Value);
             sw.WriteLine("QBInjury\t" + qbInjurySlider.Value);
             sw.WriteLine("RESacks\t" + reSacksSlider.Value);
+            sw.WriteLine("Stamina\t" + staminaSlider.Value);
 
             sw.WriteLine("SpeedSpread\t" + speedSpreadSlider.Value);
             sw.WriteLine("FixedSpeed\t" + fixedSpeedSlider.Value);
@@ -545,6 +562,15 @@ namespace MaddenEditor.Forms
                         {
                             player.Injury += (int)Math.Min((99 - player.Injury), Math.Round((50.0 - (double)qbInjurySlider.Value) * ((double)player.Injury / 50.0)));
                         }
+                    }
+
+                    if (staminaSlider.Value < 50)
+                    {
+                        player.Stamina -= (int)Math.Round((50.0 - (double)staminaSlider.Value) * ((double)player.Stamina / 50.0));
+                    }
+                    else
+                    {
+                        player.Stamina += (int)Math.Min((99 - player.Stamina), Math.Round(((double)staminaSlider.Value - 50.0) * ((double)player.Stamina / 50.0)));
                     }
 
                     if (leftTackles.Contains(player.PlayerId))
