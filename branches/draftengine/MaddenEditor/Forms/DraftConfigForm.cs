@@ -120,9 +120,9 @@ namespace MaddenEditor.Forms
         {
             if (recommendation == 0)
             {
-                DialogResult dr = MessageBox.Show(analysis + "\nThis class is not a good candidate for auto-repair.\n\nIt is recommended that you do NOT use this draft class, and answer \"NO\" below.\n\nDo you want to continue to use this class anyway?", "Draft Class Analysis", MessageBoxButtons.YesNo);
+                DialogResult dr = MessageBox.Show("This class is not a good candidate for auto-repair.\n\nIt is recommended that you do NOT use this draft class, and answer \"Cancel\" below.  However, if you know that this is a Madden generated draft class, you may use auto-repair.\n\nChoose \"YES\" to auto-repair and continue.\nChoose \"No\" to continue without auto-repairing.\nChoose \"Cancel\" to exit the draft. (Recommended)\n\n---------------------------------\n\nDraft Class Analysis:\n" + analysis, "Draft Class Analysis", MessageBoxButtons.YesNoCancel);
 
-                if (dr == DialogResult.Yes)
+                if (dr != DialogResult.Cancel)
                 {
                     dr = MessageBox.Show("Are you sure you want to continue?  Using this class could adversely affect your franchise.", "Confirm", MessageBoxButtons.YesNo);
 
@@ -131,13 +131,10 @@ namespace MaddenEditor.Forms
                         return 0;
                     }
                 }
-
-                continueLoading = false;
-                return -1;
             }
             else
             {
-                DialogResult dr = MessageBox.Show(analysis + "\nThis class can probably be auto-repaired, to give the players more realistic ratings.\n\nIt is recommended that you do this, and answer \"YES\" below.\n\nChoose \"YES\" to auto-repair and continue. (Recommended)\nChoose \"No\" to continue without auto-repairing.\nChoose \"Cancel\" to exit the draft.", "Draft Class Analysis", MessageBoxButtons.YesNoCancel);
+                DialogResult dr = MessageBox.Show("This class can probably be auto-repaired, to give the players more realistic ratings.\n\nIt is recommended that you do this, and answer \"YES\" below.\n\nChoose \"YES\" to auto-repair and continue. (Recommended)\nChoose \"No\" to continue without auto-repairing.\nChoose \"Cancel\" to exit the draft.\n\n---------------------------------\n\nDraft Class Analysis:\n" + analysis, "Draft Class Analysis", MessageBoxButtons.YesNoCancel);
 
                 if (dr == DialogResult.Yes)
                 {
@@ -151,17 +148,11 @@ namespace MaddenEditor.Forms
                     {
                         return 0;
                     }
-                    else
-                    {
-                        return 1;
-                    }
-                }
-                else
-                {
-                    continueLoading = false;
-                    return -1;
                 }
             }
+
+            continueLoading = false;
+            return -1;
         }
 
 		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
