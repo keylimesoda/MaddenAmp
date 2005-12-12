@@ -62,6 +62,10 @@ namespace MaddenEditor.Forms
                 {
                     model.PlayerModel.GetPlayerByPlayerId(Int32.Parse(splitLine[0])).ImportWeeklyData(ratingsVersions[version - 1], splitLine);
                 }
+                catch
+                {
+
+                }
             }
 
             sr.Close();
