@@ -161,7 +161,7 @@ namespace MaddenEditor.Forms
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(28, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Teams";
             // 
@@ -188,7 +188,7 @@ namespace MaddenEditor.Forms
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(183, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Positions";
             // 
@@ -197,7 +197,7 @@ namespace MaddenEditor.Forms
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(178, 202);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "Positions";
             // 
@@ -224,7 +224,7 @@ namespace MaddenEditor.Forms
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(23, 202);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Teams";
             // 
@@ -283,7 +283,7 @@ namespace MaddenEditor.Forms
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(23, 27);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.Size = new System.Drawing.Size(39, 13);
             this.label5.TabIndex = 12;
             this.label5.Text = "Teams";
             // 
@@ -292,7 +292,7 @@ namespace MaddenEditor.Forms
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(862, 28);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(45, 13);
+            this.label6.Size = new System.Drawing.Size(49, 13);
             this.label6.TabIndex = 15;
             this.label6.Text = "Positions";
             // 
@@ -379,7 +379,7 @@ namespace MaddenEditor.Forms
             this.showDraftedPlayers.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showDraftedPlayers.Location = new System.Drawing.Point(703, 27);
             this.showDraftedPlayers.Name = "showDraftedPlayers";
-            this.showDraftedPlayers.Size = new System.Drawing.Size(124, 17);
+            this.showDraftedPlayers.Size = new System.Drawing.Size(128, 17);
             this.showDraftedPlayers.TabIndex = 21;
             this.showDraftedPlayers.Text = "Show Drafted Players";
             this.showDraftedPlayers.CheckedChanged += new System.EventHandler(this.showDraftedPlayers_CheckedChanged);
@@ -412,15 +412,15 @@ namespace MaddenEditor.Forms
             this.wishlistGrid.Size = new System.Drawing.Size(241, 90);
             this.wishlistGrid.TabIndex = 23;
             this.wishlistGrid.Text = "dataGridView1";
+            this.wishlistGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.wishlistGrid_CellClick);
             this.wishlistGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.wishlistGrid_CellDoubleClick);
             this.wishlistGrid.Sorted += new System.EventHandler(this.wishlistFixSort);
-            this.wishlistGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.wishlistGrid_CellClick);
             // 
             // upButton
             // 
-            this.upButton.Location = new System.Drawing.Point(44, 120);
+            this.upButton.Location = new System.Drawing.Point(40, 120);
             this.upButton.Name = "upButton";
-            this.upButton.Size = new System.Drawing.Size(26, 19);
+            this.upButton.Size = new System.Drawing.Size(30, 23);
             this.upButton.TabIndex = 25;
             this.upButton.Text = "Up";
             this.upButton.Click += new System.EventHandler(this.upButton_Click);
@@ -429,7 +429,7 @@ namespace MaddenEditor.Forms
             // 
             this.downButton.Location = new System.Drawing.Point(74, 120);
             this.downButton.Name = "downButton";
-            this.downButton.Size = new System.Drawing.Size(44, 19);
+            this.downButton.Size = new System.Drawing.Size(44, 23);
             this.downButton.TabIndex = 26;
             this.downButton.Text = "Down";
             this.downButton.Click += new System.EventHandler(this.downButton_Click);
@@ -438,7 +438,7 @@ namespace MaddenEditor.Forms
             // 
             this.button3.Location = new System.Drawing.Point(164, 120);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(57, 19);
+            this.button3.Size = new System.Drawing.Size(57, 25);
             this.button3.TabIndex = 27;
             this.button3.Text = "Remove";
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -448,23 +448,21 @@ namespace MaddenEditor.Forms
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.progressBar,
             this.statusLabel});
-            this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.statusStrip.Location = new System.Drawing.Point(0, 673);
+            this.statusStrip.Location = new System.Drawing.Point(0, 674);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1016, 23);
+            this.statusStrip.Size = new System.Drawing.Size(1016, 22);
             this.statusStrip.TabIndex = 28;
             this.statusStrip.Text = "statusStrip1";
             // 
             // progressBar
             // 
-            this.progressBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(100, 16);
-            this.progressBar.Text = "toolStripProgressBar1";
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(42, 17);
             this.statusLabel.Text = "Ready.";
             // 
             // selectingLabel
@@ -493,11 +491,13 @@ namespace MaddenEditor.Forms
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.draftHelpToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(40, 20);
             this.toolStripMenuItem1.Text = "Help";
             // 
             // draftHelpToolStripMenuItem
             // 
             this.draftHelpToolStripMenuItem.Name = "draftHelpToolStripMenuItem";
+            this.draftHelpToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.draftHelpToolStripMenuItem.Text = "Draft Help";
             this.draftHelpToolStripMenuItem.Click += new System.EventHandler(this.draftHelpToolStripMenuItem_Click);
             // 
@@ -528,7 +528,7 @@ namespace MaddenEditor.Forms
             this.stickyDraftBoards.Location = new System.Drawing.Point(140, 168);
             this.stickyDraftBoards.Name = "stickyDraftBoards";
             this.stickyDraftBoards.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.stickyDraftBoards.Size = new System.Drawing.Size(133, 17);
+            this.stickyDraftBoards.Size = new System.Drawing.Size(137, 17);
             this.stickyDraftBoards.TabIndex = 15;
             this.stickyDraftBoards.Text = "Auto-Load Draft Boards";
             // 
@@ -540,7 +540,7 @@ namespace MaddenEditor.Forms
             this.stickyDepthCharts.Location = new System.Drawing.Point(140, 348);
             this.stickyDepthCharts.Name = "stickyDepthCharts";
             this.stickyDepthCharts.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.stickyDepthCharts.Size = new System.Drawing.Size(136, 17);
+            this.stickyDepthCharts.Size = new System.Drawing.Size(140, 17);
             this.stickyDepthCharts.TabIndex = 14;
             this.stickyDepthCharts.Text = "Auto-Load Depth Charts";
             // 
@@ -615,12 +615,12 @@ namespace MaddenEditor.Forms
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1024, 730);
-            this.MinimumSize = new System.Drawing.Size(1024, 730);
+            this.MinimumSize = new System.Drawing.Size(1022, 730);
             this.Name = "DraftForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Draft";
-            this.Load += new System.EventHandler(this.DraftForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DraftForm_FormClosing);
+            this.Load += new System.EventHandler(this.DraftForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DraftResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DepthChartGrid)).EndInit();
@@ -628,7 +628,9 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.PicksToSkip)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wishlistGrid)).EndInit();
             this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

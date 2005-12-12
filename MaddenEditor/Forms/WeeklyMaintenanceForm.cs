@@ -630,7 +630,17 @@ namespace MaddenEditor.Forms
                 // Let's leave OVR's where they're at.
                 //player.Overall = player.CalculateOverallRating(player.PositionId, true);
             }
+            /*
+            foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+            {
+                CoachRecord coach = (CoachRecord)record;
 
+                coach.OffensiveStrategy = 59;
+                coach.OffensiveAggression = 58;
+                coach.DefensiveStrategy = 40;
+                coach.DefensiveAggression = 30;
+            }
+            */
             sw.Close();
             Cursor.Current = Cursors.Arrow;
         }
