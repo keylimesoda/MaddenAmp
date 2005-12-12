@@ -58,7 +58,10 @@ namespace MaddenEditor.Forms
                 string line = sr.ReadLine();
                 string[] splitLine = line.Split('\t');
 
-                model.PlayerModel.GetPlayerByPlayerId(Int32.Parse(splitLine[0])).ImportWeeklyData(ratingsVersions[version-1], splitLine);
+                try
+                {
+                    model.PlayerModel.GetPlayerByPlayerId(Int32.Parse(splitLine[0])).ImportWeeklyData(ratingsVersions[version - 1], splitLine);
+                }
             }
 
             sr.Close();
@@ -640,7 +643,8 @@ namespace MaddenEditor.Forms
                 coach.DefensiveStrategy = 40;
                 coach.DefensiveAggression = 30;
             }
-            */
+             * */
+            
             sw.Close();
             Cursor.Current = Cursors.Arrow;
         }
