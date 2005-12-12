@@ -71,6 +71,7 @@ namespace MaddenEditor.Forms
 
 		DataTable wishlistData = new DataTable();
 		BindingSource wishlistBinding = new BindingSource();
+        DataRow rowToRemove;
 
 		public int CurrentPick = 0;
 		public int CurrentSelectingId;
@@ -107,6 +108,7 @@ namespace MaddenEditor.Forms
 
 
 			autoPickBackgroundWorker.WorkerReportsProgress = true;
+            autoPickBackgroundWorker.WorkerSupportsCancellation = true;
 
 			autoPickBackgroundWorker.DoWork += new DoWorkEventHandler(SkipButton_Thread);
 			autoPickBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(skippingFinished);
@@ -215,8 +217,8 @@ namespace MaddenEditor.Forms
 
 			draftPickBinding.DataSource = draftPickData;
 			DraftResults.DataSource = draftPickBinding;
-			DraftResults.Columns["Pick"].Width = 30;
-			DraftResults.Columns["Position"].Width = 45;
+			DraftResults.Columns["Pick"].Width = 34;
+			DraftResults.Columns["Position"].Width = 47;
 			DraftResults.Columns["Team"].Width = 75;
 			DraftResults.Columns["Player"].Width = DraftResults.Width - DraftResults.Columns["Position"].Width
 				- DraftResults.Columns["Team"].Width - DraftResults.Columns["Pick"].Width;
@@ -254,7 +256,7 @@ namespace MaddenEditor.Forms
 
 			wishlistGrid.DataSource = wishlistBinding;
 			wishlistGrid.Columns["PGID"].Visible = false;
-			wishlistGrid.Columns["Rank"].Width = 35;
+			wishlistGrid.Columns["Rank"].Width = 38;
 			wishlistGrid.Columns["Pos"].Width = 38;
 			wishlistGrid.Columns["ourgrade"].Visible = false;
 			wishlistGrid.Columns["Grade"].Width = 45;
@@ -272,8 +274,8 @@ namespace MaddenEditor.Forms
 			draftBoardBinding.DataSource = draftBoardData;
 
 			DraftBoardGrid.DataSource = draftBoardBinding;
-			DraftBoardGrid.Columns["Rank"].Width = 34;
-			DraftBoardGrid.Columns["Position"].Width = 45;
+			DraftBoardGrid.Columns["Rank"].Width = 38;
+			DraftBoardGrid.Columns["Position"].Width = 47;
 			DraftBoardGrid.Columns["projectedpick"].Visible = false;
 			DraftBoardGrid.Columns["Proj. Rd."].Width = 60;
 			DraftBoardGrid.Columns["Player"].Width = DraftBoardGrid.Width - DraftBoardGrid.Columns["Rank"].Width
@@ -321,24 +323,24 @@ namespace MaddenEditor.Forms
 			RookieGrid.Columns["primaryskill"].Visible = false;
 			RookieGrid.Columns["secondaryskill"].Visible = false;
 
-			RookieGrid.Columns["Player"].Width = 100;
-			RookieGrid.Columns["Position"].Width = 45;
+			RookieGrid.Columns["Player"].Width = 86;
+			RookieGrid.Columns["Position"].Width = 47;
 			RookieGrid.Columns["Drafted By"].Width = 89;
-			RookieGrid.Columns["Hrs Scouted"].Width = 70;
-			RookieGrid.Columns["All Proj."].Width = 54;
-			RookieGrid.Columns["Our Grade"].Width = 58;
+			RookieGrid.Columns["Hrs Scouted"].Width = 74;
+			RookieGrid.Columns["All Proj."].Width = 50;
+			RookieGrid.Columns["Our Grade"].Width = 62;
 			RookieGrid.Columns["Age"].Width = 30;
 			RookieGrid.Columns["Height"].Width = 40;
-			RookieGrid.Columns["Weight"].Width = 42;
-			RookieGrid.Columns["40 Time"].Width = 47;
-			RookieGrid.Columns["Shuttle"].Width = 40;
-			RookieGrid.Columns["Cone"].Width = 32;
+			RookieGrid.Columns["Weight"].Width = 43;
+			RookieGrid.Columns["40 Time"].Width = 52;
+			RookieGrid.Columns["Shuttle"].Width = 42;
+			RookieGrid.Columns["Cone"].Width = 34;
 			RookieGrid.Columns["Bench"].Width = 40;
 			RookieGrid.Columns["Vertical"].Width = 45;
-			RookieGrid.Columns["Wonderlic"].Width = 56;
-			RookieGrid.Columns["Doctor"].Width = 40;
-			RookieGrid.Columns["1st Skill"].Width = 60;
-			RookieGrid.Columns["2nd Skill"].Width = 63;
+			RookieGrid.Columns["Wonderlic"].Width = 58;
+			RookieGrid.Columns["Doctor"].Width = 41;
+			RookieGrid.Columns["1st Skill"].Width = 62;
+			RookieGrid.Columns["2nd Skill"].Width = 65;
 
 			RookieGrid.RowHeadersVisible = false;
 
@@ -743,9 +745,17 @@ namespace MaddenEditor.Forms
 			}
 			else if (threadToDo == 10)
 			{
-				wishlistGrid.Invalidate(true);
+                wishlistData.Rows.Remove(rowToRemove);
+                rerankBoard();
+                
+                wishlistGrid.Invalidate(true);
 				wishlistGrid.Update();
 			}
+            else if (threadToDo == 11)
+            {
+                RookieGrid.Invalidate(true);
+                RookieGrid.Update();
+            }
 		}
 
 		private bool MakePick(RookieRecord drafted)
@@ -780,26 +790,51 @@ namespace MaddenEditor.Forms
 					else
 					{
 						rookieData.Rows.Remove(rookieData.Rows[j]);
-					}
+
+                        if (skipping)
+                        {
+                            threadToDo = 11;
+                            autoPickBackgroundWorker.ReportProgress(0);
+                        }
+                        else
+                        {
+                            RookieGrid.Invalidate(true);
+                            RookieGrid.Update();
+                        }
+                    }
 
 					break;
 				}
 			}
 
-			DataRow wishrow = wishlistRow(drafted.PlayerId);
-			if (wishrow != null)
-			{
-				wishlistData.Rows.Remove(wishrow);
-				rerankBoard();
+            /*
+            DataRow wishrow;
+            try
+            {
+                wishrow = wishlistRow(drafted.PlayerId);
+            }
+            catch
+            {
+                Console.WriteLine("Line 796");
+                while (true)
+                { }
+            }
+             * */
 
+            rowToRemove = wishlistRow(drafted.PlayerId);
+            if (rowToRemove != null)
+			{
 				if (skipping)
 				{
-					threadToDo = 10;
-					autoPickBackgroundWorker.ReportProgress(0);
+                    threadToDo = 10;
+                    autoPickBackgroundWorker.ReportProgress(0);
 				}
 				else
 				{
-					wishlistGrid.Invalidate(true);
+                    wishlistData.Rows.Remove(rowToRemove);
+                    rerankBoard();
+
+                    wishlistGrid.Invalidate(true);
 					wishlistGrid.Update();
 				}
 			}
@@ -1510,6 +1545,7 @@ namespace MaddenEditor.Forms
 			SkipButton.Enabled = false;
 			PicksToSkip.Enabled = false;
 			tradeButton.Enabled = false;
+            
 			draftTimer.Stop();
 			statusLabel.Text = "Skipping Picks...";
 
@@ -1530,7 +1566,7 @@ namespace MaddenEditor.Forms
 
 			DialogResult dr = MessageBox.Show("Interrupt skipping to receive trade offers?", "Interupt?", MessageBoxButtons.YesNoCancel);
 
-			while (dr != DialogResult.Cancel && !quitSkipping && CurrentPick < initialPick + PicksToSkip.Value && CurrentSelectingId != HumanTeamId && CurrentPick < 32 * 7)
+			while (dr != DialogResult.Cancel && !autoPickBackgroundWorker.CancellationPending && !quitSkipping && CurrentPick < initialPick + PicksToSkip.Value && CurrentSelectingId != HumanTeamId && CurrentPick < 32 * 7)
 			{
 				if (dr == DialogResult.No)
 				{
@@ -1836,6 +1872,24 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+        private void removeWishlistRow(DataRow toRemove)
+        {
+            DataTable newDataTable = wishlistData.Copy();
+            newDataTable.Clear();
+
+            foreach (DataRow dr in wishlistData.Rows)
+            {
+                if (dr != toRemove)
+                {
+                    DataRow newRow = newDataTable.NewRow();
+                    dr.ItemArray.CopyTo(newRow.ItemArray, 0);
+                    newDataTable.Rows.Add(newRow);
+                }
+            }
+
+            wishlistBinding.DataSource = newDataTable;
+        }
+
 		private void rerankBoard()
 		{
 			int i = 1;
@@ -1930,6 +1984,7 @@ namespace MaddenEditor.Forms
 
 		private void DraftForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
+            autoPickBackgroundWorker.CancelAsync();
 			if (!done)
 			{
 				MessageBox.Show("You must reopen this file if you want to restart the draft.\n\nYou should NOT save this file before reopening.");
