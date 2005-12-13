@@ -69,6 +69,7 @@ namespace MaddenEditor.Forms
             }
 
             sr.Close();
+            File.Delete(installDirectory + "\\ratings\\" + profile);
         }
 
         private void GetProfile()
