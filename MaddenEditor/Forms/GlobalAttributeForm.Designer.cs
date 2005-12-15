@@ -85,7 +85,7 @@ namespace MaddenEditor.Forms
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(5, 94);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(82, 13);
+			this.label1.Size = new System.Drawing.Size(86, 13);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Change Attribute";
 			// 
@@ -120,7 +120,7 @@ namespace MaddenEditor.Forms
 			this.attributeCombo.Location = new System.Drawing.Point(93, 91);
 			this.attributeCombo.Name = "attributeCombo";
 			this.attributeCombo.Size = new System.Drawing.Size(119, 21);
-			this.attributeCombo.TabIndex = 1;
+			this.attributeCombo.TabIndex = 0;
 			// 
 			// groupBox1
 			// 
@@ -143,7 +143,7 @@ namespace MaddenEditor.Forms
 			this.groupBox1.Location = new System.Drawing.Point(268, 52);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(235, 144);
-			this.groupBox1.TabIndex = 3;
+			this.groupBox1.TabIndex = 1;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Filter Settings";
 			// 
@@ -152,9 +152,8 @@ namespace MaddenEditor.Forms
 			this.rbYearsProLessThan.AutoSize = true;
 			this.rbYearsProLessThan.Location = new System.Drawing.Point(169, 120);
 			this.rbYearsProLessThan.Name = "rbYearsProLessThan";
-			this.rbYearsProLessThan.Size = new System.Drawing.Size(27, 17);
-			this.rbYearsProLessThan.TabIndex = 13;
-			this.rbYearsProLessThan.TabStop = false;
+			this.rbYearsProLessThan.Size = new System.Drawing.Size(31, 17);
+			this.rbYearsProLessThan.TabIndex = 12;
 			this.rbYearsProLessThan.Text = "<";
 			// 
 			// rbYearsProEqualTo
@@ -162,9 +161,8 @@ namespace MaddenEditor.Forms
 			this.rbYearsProEqualTo.AutoSize = true;
 			this.rbYearsProEqualTo.Location = new System.Drawing.Point(202, 120);
 			this.rbYearsProEqualTo.Name = "rbYearsProEqualTo";
-			this.rbYearsProEqualTo.Size = new System.Drawing.Size(27, 17);
-			this.rbYearsProEqualTo.TabIndex = 12;
-			this.rbYearsProEqualTo.TabStop = false;
+			this.rbYearsProEqualTo.Size = new System.Drawing.Size(31, 17);
+			this.rbYearsProEqualTo.TabIndex = 13;
 			this.rbYearsProEqualTo.Text = "=";
 			// 
 			// rbYearsProGreaterThan
@@ -173,8 +171,9 @@ namespace MaddenEditor.Forms
 			this.rbYearsProGreaterThan.Checked = true;
 			this.rbYearsProGreaterThan.Location = new System.Drawing.Point(136, 119);
 			this.rbYearsProGreaterThan.Name = "rbYearsProGreaterThan";
-			this.rbYearsProGreaterThan.Size = new System.Drawing.Size(27, 17);
+			this.rbYearsProGreaterThan.Size = new System.Drawing.Size(31, 17);
 			this.rbYearsProGreaterThan.TabIndex = 11;
+			this.rbYearsProGreaterThan.TabStop = true;
 			this.rbYearsProGreaterThan.Text = ">";
 			// 
 			// nudYearsProFilter
@@ -189,9 +188,8 @@ namespace MaddenEditor.Forms
 			this.rbAgeLessThan.AutoSize = true;
 			this.rbAgeLessThan.Location = new System.Drawing.Point(169, 87);
 			this.rbAgeLessThan.Name = "rbAgeLessThan";
-			this.rbAgeLessThan.Size = new System.Drawing.Size(27, 17);
-			this.rbAgeLessThan.TabIndex = 9;
-			this.rbAgeLessThan.TabStop = false;
+			this.rbAgeLessThan.Size = new System.Drawing.Size(31, 17);
+			this.rbAgeLessThan.TabIndex = 7;
 			this.rbAgeLessThan.Text = "<";
 			// 
 			// rbAgeEqualTo
@@ -199,9 +197,8 @@ namespace MaddenEditor.Forms
 			this.rbAgeEqualTo.AutoSize = true;
 			this.rbAgeEqualTo.Location = new System.Drawing.Point(202, 87);
 			this.rbAgeEqualTo.Name = "rbAgeEqualTo";
-			this.rbAgeEqualTo.Size = new System.Drawing.Size(27, 17);
+			this.rbAgeEqualTo.Size = new System.Drawing.Size(31, 17);
 			this.rbAgeEqualTo.TabIndex = 8;
-			this.rbAgeEqualTo.TabStop = false;
 			this.rbAgeEqualTo.Text = "=";
 			// 
 			// rbAgeGreaterThan
@@ -210,8 +207,9 @@ namespace MaddenEditor.Forms
 			this.rbAgeGreaterThan.Checked = true;
 			this.rbAgeGreaterThan.Location = new System.Drawing.Point(136, 86);
 			this.rbAgeGreaterThan.Name = "rbAgeGreaterThan";
-			this.rbAgeGreaterThan.Size = new System.Drawing.Size(27, 17);
-			this.rbAgeGreaterThan.TabIndex = 7;
+			this.rbAgeGreaterThan.Size = new System.Drawing.Size(31, 17);
+			this.rbAgeGreaterThan.TabIndex = 6;
+			this.rbAgeGreaterThan.TabStop = true;
 			this.rbAgeGreaterThan.Text = ">";
 			// 
 			// nudAgeFilter
@@ -219,15 +217,15 @@ namespace MaddenEditor.Forms
 			this.nudAgeFilter.Location = new System.Drawing.Point(81, 84);
 			this.nudAgeFilter.Name = "nudAgeFilter";
 			this.nudAgeFilter.Size = new System.Drawing.Size(46, 20);
-			this.nudAgeFilter.TabIndex = 6;
+			this.nudAgeFilter.TabIndex = 5;
 			// 
 			// chkAgeFilter
 			// 
 			this.chkAgeFilter.AutoSize = true;
 			this.chkAgeFilter.Location = new System.Drawing.Point(7, 87);
 			this.chkAgeFilter.Name = "chkAgeFilter";
-			this.chkAgeFilter.Size = new System.Drawing.Size(41, 17);
-			this.chkAgeFilter.TabIndex = 5;
+			this.chkAgeFilter.Size = new System.Drawing.Size(45, 17);
+			this.chkAgeFilter.TabIndex = 4;
 			this.chkAgeFilter.Text = "Age";
 			// 
 			// chkYearsProFilter
@@ -235,8 +233,8 @@ namespace MaddenEditor.Forms
 			this.chkYearsProFilter.AutoSize = true;
 			this.chkYearsProFilter.Location = new System.Drawing.Point(7, 121);
 			this.chkYearsProFilter.Name = "chkYearsProFilter";
-			this.chkYearsProFilter.Size = new System.Drawing.Size(68, 17);
-			this.chkYearsProFilter.TabIndex = 4;
+			this.chkYearsProFilter.Size = new System.Drawing.Size(72, 17);
+			this.chkYearsProFilter.TabIndex = 9;
 			this.chkYearsProFilter.Text = "Years Pro";
 			// 
 			// filterPositionComboBox
@@ -265,7 +263,7 @@ namespace MaddenEditor.Forms
 			this.chkPositionFilter.AutoSize = true;
 			this.chkPositionFilter.Location = new System.Drawing.Point(7, 54);
 			this.chkPositionFilter.Name = "chkPositionFilter";
-			this.chkPositionFilter.Size = new System.Drawing.Size(59, 17);
+			this.chkPositionFilter.Size = new System.Drawing.Size(63, 17);
 			this.chkPositionFilter.TabIndex = 2;
 			this.chkPositionFilter.Text = "Position";
 			// 
@@ -274,7 +272,7 @@ namespace MaddenEditor.Forms
 			this.chkTeamFilter.AutoSize = true;
 			this.chkTeamFilter.Location = new System.Drawing.Point(7, 24);
 			this.chkTeamFilter.Name = "chkTeamFilter";
-			this.chkTeamFilter.Size = new System.Drawing.Size(49, 17);
+			this.chkTeamFilter.Size = new System.Drawing.Size(53, 17);
 			this.chkTeamFilter.TabIndex = 0;
 			this.chkTeamFilter.Text = "Team";
 			// 
@@ -283,7 +281,7 @@ namespace MaddenEditor.Forms
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(218, 94);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(44, 13);
+			this.label2.Size = new System.Drawing.Size(48, 13);
 			this.label2.TabIndex = 2;
 			this.label2.Text = "with filter";
 			// 
@@ -293,7 +291,7 @@ namespace MaddenEditor.Forms
 			this.applyButton.Location = new System.Drawing.Point(356, 334);
 			this.applyButton.Name = "applyButton";
 			this.applyButton.Size = new System.Drawing.Size(75, 23);
-			this.applyButton.TabIndex = 5;
+			this.applyButton.TabIndex = 3;
 			this.applyButton.Text = "Apply";
 			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
 			// 
@@ -303,7 +301,7 @@ namespace MaddenEditor.Forms
 			this.cancelButton.Location = new System.Drawing.Point(437, 334);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
-			this.cancelButton.TabIndex = 6;
+			this.cancelButton.TabIndex = 4;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
 			// 
@@ -321,7 +319,7 @@ namespace MaddenEditor.Forms
 			this.groupBox2.Location = new System.Drawing.Point(12, 203);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(491, 125);
-			this.groupBox2.TabIndex = 4;
+			this.groupBox2.TabIndex = 2;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Change by";
 			// 
@@ -366,9 +364,8 @@ namespace MaddenEditor.Forms
 			this.incrementCheckBox.AutoSize = true;
 			this.incrementCheckBox.Location = new System.Drawing.Point(18, 93);
 			this.incrementCheckBox.Name = "incrementCheckBox";
-			this.incrementCheckBox.Size = new System.Drawing.Size(82, 17);
+			this.incrementCheckBox.Size = new System.Drawing.Size(86, 17);
 			this.incrementCheckBox.TabIndex = 4;
-			this.incrementCheckBox.TabStop = false;
 			this.incrementCheckBox.Text = "Increment by";
 			// 
 			// decrementCheckBox
@@ -377,8 +374,9 @@ namespace MaddenEditor.Forms
 			this.decrementCheckBox.Checked = true;
 			this.decrementCheckBox.Location = new System.Drawing.Point(18, 60);
 			this.decrementCheckBox.Name = "decrementCheckBox";
-			this.decrementCheckBox.Size = new System.Drawing.Size(87, 17);
+			this.decrementCheckBox.Size = new System.Drawing.Size(91, 17);
 			this.decrementCheckBox.TabIndex = 2;
+			this.decrementCheckBox.TabStop = true;
 			this.decrementCheckBox.Text = "Decrement by";
 			// 
 			// setCheckBox
@@ -386,9 +384,8 @@ namespace MaddenEditor.Forms
 			this.setCheckBox.AutoSize = true;
 			this.setCheckBox.Location = new System.Drawing.Point(18, 28);
 			this.setCheckBox.Name = "setCheckBox";
-			this.setCheckBox.Size = new System.Drawing.Size(49, 17);
+			this.setCheckBox.Size = new System.Drawing.Size(53, 17);
 			this.setCheckBox.TabIndex = 0;
-			this.setCheckBox.TabStop = false;
 			this.setCheckBox.Text = "Set to";
 			// 
 			// GlobalAttributeForm

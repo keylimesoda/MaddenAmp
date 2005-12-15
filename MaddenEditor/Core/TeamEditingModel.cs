@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -53,6 +53,117 @@ namespace MaddenEditor.Core
 		private IList<GenericRecord> teamTypeList = null;
 		/** Add the city list here for the time being */
 		private IList<GenericRecord> cityList = null;
+
+        // MADDEN DRAFT EDIT
+        public void ComputeCONs() {
+            List<TeamRecord> teamsTemp = new List<TeamRecord>();
+		    foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				TeamRecord tr = (TeamRecord)record;
+				teamsTemp.Add(tr);
+			}
+
+            teamsTemp = SortByOverall(teamsTemp);
+
+            List<int> conCutoffs = new List<int>();
+            conCutoffs.Add(teamsTemp[28].GetOverall());
+            conCutoffs.Add(teamsTemp[22].GetOverall());
+            conCutoffs.Add(teamsTemp[14].GetOverall());
+            conCutoffs.Add(teamsTemp[6].GetOverall());
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+            {
+                TeamRecord tr = (TeamRecord)record;
+
+                if (tr.GetOverall() < conCutoffs[0])
+                {
+                    tr.CON = 1;
+                }
+                else if (tr.GetOverall() < conCutoffs[1])
+                {
+                    tr.CON = 2;
+                }
+                else if (tr.GetOverall() < conCutoffs[2])
+                {
+                    tr.CON = 3;
+                }
+                else if (tr.GetOverall() < conCutoffs[3])
+                {
+                    tr.CON = 4;
+                }
+                else
+                {
+                    tr.CON = 5;
+                }
+                
+                // Should add code here that increases CON if they've got an old QB
+                // who's above 90 or so and about to retire.
+            }
+        }
+
+        // Another inefficient sort.  But damn it, I can't figure out this IComparer shit.
+        // So, again, we're only sorting 32 items, so N^2 isn't a big deal...
+        private List<TeamRecord> SortByOverall(List<TeamRecord> records)
+        {
+            List<TeamRecord> newList = new List<TeamRecord>();
+
+            while (records.Count > 0)
+            {
+                int bestOverall = 0;
+                int bestTeamIndex = -1;
+
+                for (int i = 0; i < records.Count; i++)
+                {
+					if (records[i].TeamId >= 32)
+                    {
+                        records.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+
+                    if (records[i].GetOverall() > bestOverall)
+                    {
+                        bestOverall = records[i].GetOverall();
+                        bestTeamIndex = i;
+                    }
+                }
+
+                newList.Add(records[bestTeamIndex]);
+                records.RemoveAt(bestTeamIndex);
+            }
+
+            return newList;
+        }
+
+        public void CalculateWins() {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords()) 
+            {
+                ((TeamRecord)record).ComputeWins(model);
+            }
+
+        }
+
+        public void CalculateStrengthOfSchedule() {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+            {
+                ((TeamRecord)record).ComputeStrengthOfSchedule(model);
+            }
+        }
+
+        public SortedList<int, TeamRecord> GetTeamRecords()
+        {
+
+            if (teamRecords == null)
+            {
+				CreateTeamRecords();
+            }
+
+            return teamRecords;
+        }
+
+
+        // MADDEN DRAFT EDIT
+
 
 		public TeamEditingModel(EditorModel model)
 		{

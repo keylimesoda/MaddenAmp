@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50215</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C3E9F92E-BECB-4AC3-84E7-3AC4C3F2717F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>1717,0414</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,6 +43,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>1717,0414</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -52,14 +54,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ConSole\ConSoleDraft.cs" />
     <Compile Include="Core\CoachEditingModel.cs" />
     <Compile Include="Core\DepthChartEditingModel.cs" />
+    <Compile Include="Core\DepthChartRepairer.cs" />
     <Compile Include="Core\EditorModel.cs" />
+    <Compile Include="Core\LocalMath.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
     <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
+    <Compile Include="Core\DraftModel.cs" />
+    <Compile Include="Core\Record\DraftPickRecord.cs" />
     <Compile Include="Core\Record\GameOptionRecord.cs" />
     <Compile Include="Core\Record\GenericRecord.cs" />
     <Compile Include="Core\Record\OwnerRecord.cs" />
+    <Compile Include="Core\Record\RookieRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\Record\ScheduleRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
@@ -108,6 +116,18 @@
     <Compile Include="Forms\DepthChartEditorForm.Designer.cs">
       <DependentUpon>DepthChartEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DraftConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DraftConfigForm.Designer.cs">
+      <DependentUpon>DraftConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DraftForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DraftForm.Designer.cs">
+      <DependentUpon>DraftForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,6 +159,12 @@
     <Compile Include="Forms\PlayerEditControl.Designer.cs">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProfileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProfileDialog.Designer.cs">
+      <DependentUpon>ProfileDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SalaryCapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +176,12 @@
     </Compile>
     <Compile Include="Forms\ScheduleEditingForm.Designer.cs">
       <DependentUpon>ScheduleEditingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScoutingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScoutingForm.Designer.cs">
+      <DependentUpon>ScoutingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchForm.cs">
       <SubType>Form</SubType>
@@ -175,11 +207,29 @@
     <Compile Include="Forms\TeamEditControl.Designer.cs">
       <DependentUpon>TeamEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TradeDownForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TradeDownForm.Designer.cs">
+      <DependentUpon>TradeDownForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TradeUpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TradeUpForm.Designer.cs">
+      <DependentUpon>TradeUpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\UserControlledTeamForm.Designer.cs">
       <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WeeklyMaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WeeklyMaintenanceForm.Designer.cs">
+      <DependentUpon>WeeklyMaintenanceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,6 +248,12 @@
     <EmbeddedResource Include="Forms\DepthChartEditorForm.resx">
       <DependentUpon>DepthChartEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DraftConfigForm.resx">
+      <DependentUpon>DraftConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DraftForm.resx">
+      <DependentUpon>DraftForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -213,11 +269,18 @@
     <EmbeddedResource Include="Forms\PlayerEditControl.resx">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProfileDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProfileDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SalaryCapForm.resx">
       <DependentUpon>SalaryCapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScheduleEditingForm.resx">
       <DependentUpon>ScheduleEditingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScoutingForm.resx">
+      <DependentUpon>ScoutingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
@@ -231,8 +294,18 @@
     <EmbeddedResource Include="Forms\TeamEditControl.resx">
       <DependentUpon>TeamEditControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TradeDownForm.resx">
+      <DependentUpon>TradeDownForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TradeUpForm.resx">
+      <DependentUpon>TradeUpForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserControlledTeamForm.resx">
       <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WeeklyMaintenanceForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WeeklyMaintenanceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -259,10 +332,15 @@
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <InProject>False</InProject>
-      <ProductName>.NET Framework 2.0 Beta</ProductName>
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="draft.txt" />
+    <Content Include="GUI.txt" />
+    <Content Include="Notes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

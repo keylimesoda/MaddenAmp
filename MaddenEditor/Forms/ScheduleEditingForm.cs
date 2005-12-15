@@ -28,6 +28,7 @@ namespace MaddenEditor.Forms
 			this.model = model;
 			InitializeComponent();
 
+			dgScheduleView.DataError += new DataGridViewDataErrorEventHandler(dgScheduleView_DataError);
 			this.Cursor = Cursors.WaitCursor;
 			//Create our model
 			try
@@ -45,6 +46,11 @@ namespace MaddenEditor.Forms
 			LoadWeek(currentWeekNumber);
 
 			isInitialising = false;
+		}
+
+		void dgScheduleView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+		{
+			Console.WriteLine(e.Exception.ToString());
 		}
 
 		#region IEditorForm Members
@@ -70,6 +76,11 @@ namespace MaddenEditor.Forms
 
 		#endregion
 
+        // This would be better implemented if weeknumber wasn't an argument, but
+        // rather it loaded according to currentWeekNumber.  I can't imagine a
+        // scenario in which you'd want to load something different from
+        // currentWeekNumber.  This was what was causing the previous bug with
+        // edits in one week showing up in another.
 		private void LoadWeek(int weeknumber)
 		{
 			isInitialising = true;
@@ -124,7 +135,8 @@ namespace MaddenEditor.Forms
 			{
 				homeCell.Items.Add(rec.ToString());
 			}
-			homeCell.Value = record.HomeTeam;
+//			homeCell.Value = record.HomeTeam;
+            homeCell.Value = record.HomeTeam.Name;
 
 			DataGridViewTextBoxCell homeScoreCell = new DataGridViewTextBoxCell();
 			homeScoreCell.Value = record.HomeTeamScore;
@@ -134,7 +146,8 @@ namespace MaddenEditor.Forms
 			{
 				awayCell.Items.Add(rec.ToString());
 			}
-			awayCell.Value = record.AwayTeam;
+//			awayCell.Value = record.AwayTeam;
+            awayCell.Value = record.AwayTeam.Name;
 
 			DataGridViewTextBoxCell awayScoreCell = new DataGridViewTextBoxCell();
 			awayScoreCell.Value = record.AwayTeamScore;
@@ -147,14 +160,16 @@ namespace MaddenEditor.Forms
 			{
 				dayTypeCell.Items.Add(val.ToString());
 			}
-			dayTypeCell.Value = record.DayType;
+//			dayTypeCell.Value = record.DayType;
+            dayTypeCell.Value = record.DayType.ToString();
 
 			DataGridViewComboBoxCell weightingCell = new DataGridViewComboBoxCell();
 			foreach (GenericRecord val in record.GameWeightings)
 			{
 				weightingCell.Items.Add(val.ToString());
 			}
-			weightingCell.Value = record.Weighting;
+//			weightingCell.Value = record.Weighting;
+            weightingCell.Value = record.Weighting.ToString();
 			
 			viewRow.Cells.Add(stateCell);
 			viewRow.Cells.Add(homeCell);
@@ -190,6 +205,7 @@ namespace MaddenEditor.Forms
 
 		private void cbWeekSelector_SelectedIndexChanged(object sender, EventArgs e)
 		{
+            currentWeekNumber = cbWeekSelector.SelectedIndex + 1;
 			LoadWeek(cbWeekSelector.SelectedIndex + 1);
 		}
 

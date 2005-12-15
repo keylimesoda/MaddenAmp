@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Gommo's Madden Editor"
-!define PRODUCT_VERSION "1.1.2.0"
+!define PRODUCT_VERSION "2.0.0"
 !define PRODUCT_PUBLISHER "Tributech"
 !define PRODUCT_WEB_SITE "http://gommo.homelinux.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\MaddenEditor.exe"
@@ -49,7 +49,7 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "MaddenEditorSetup_${PRODUCT_VERSION}.exe"
+OutFile "MaddenEditorSetup-${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\Gommo's Madden Editor"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -64,11 +64,13 @@ Section "MainSection" SEC01
   File "readme.txt"
   File "MaddenEditor\Docs\contributions.txt"
   File "MaddenEditor\Docs\DBFileStructure.doc"
+  File "06files\MFE-2006-TEST-2.fra"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor (${PRODUCT_VERSION}).lnk" "$INSTDIR\MaddenEditor.exe"
+
   CreateShortCut "$DESKTOP\Gommo's Madden Editor.lnk" "$INSTDIR\MaddenEditor.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
@@ -107,6 +109,9 @@ Section Uninstall
   Delete "$INSTDIR\licence.txt"
   Delete "$INSTDIR\tdbaccess.dll"
   Delete "$INSTDIR\MaddenEditor.exe"
+  Delete "$INSTDIR\contributions.txt"
+  Delete "$INSTDIR\DBFileStructure.doc"
+  Delete "$INSTDIR\MFE-2006-TEST-2.fra"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\Gommo's Madden Editor.lnk"
@@ -142,13 +147,13 @@ Function CheckDotNet
 FunctionEnd
 
 Function GetDotNet
-  IfFileExists "$WINDIR\Microsoft.NET\Framework\v2.0.50215\installUtil.exe" NextStep
+  IfFileExists "$WINDIR\Microsoft.NET\Framework\v2.0.50727\installUtil.exe" NextStep
   MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION "You must have the Microsoft .NET \
-Framework 2.0 Beta 2 Installed to use this application. $\n$\nClick 'Yes' to open your browser \
+Framework 2.0 Installed to use this application. $\n$\nClick 'Yes' to open your browser \
 to the download page. $\nClick 'No' to ignore and install anyway. $\nClick 'Cancel' to cancel installation" IDYES yes IDNO no
   Quit
 yes:
-  ExecShell Open "http://www.microsoft.com/downloads/details.aspx?FamilyID=7ABD8C8F-287E-4C7E-9A4A-A4ECFF40FC8E&displaylang=en" SW_SHOWNORMAL
+  ExecShell Open "http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=en" SW_SHOWNORMAL
   MessageBox MB_OK|MB_ICONEXCLAMATION "Click 'OK' when your download and install is complete. $\n$\n After \
 you click 'OK' this installation will continue"
 no:

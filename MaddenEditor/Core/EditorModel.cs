@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -24,6 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+// MADDEN DRAFT EDIT
+//using MaddenEditor.ConSole;
+// MADDEN DRAFT EDIT
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
 using MaddenEditor.Core.Record;
@@ -104,6 +107,14 @@ namespace MaddenEditor.Core
 		public const string SCHEDULE_TABLE = "SCHD";
 		// Madden 2006 specific tables
 		public const string GAME_OPTIONS_TABLE = "GOPT";
+        // MADDEN DRAFT EDIT
+        public const string DRAFT_PICK_TABLE = "DRPK";
+        public const string DRAFTED_PLAYERS_TABLE = "DRPL";
+
+		private List<string[]> draftClassFields;
+
+        public bool draftStarted = false;
+        // MADDEN DRAFT EDIT
 
 		private bool dirty = false;
 		private int dbIndex = -1;
@@ -120,11 +131,43 @@ namespace MaddenEditor.Core
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
 		private SalaryCapRecord salaryCapRecord = null;
+
+        // MADDEN DRAFT EDIT
+        public string GetFileName()
+        {
+            return fileName;
+        }
+
+		public List<string[]> DraftClassFields
+		{
+			get
+			{
+				return draftClassFields;
+			}
+		}
+       // MADDEN DRAFT EDIT
 		
 		public EditorModel(string filename, MainForm form)
 		{
 			view = form;
 			this.fileName = filename;
+
+			// MADDEN DRAFT EDIT
+			draftClassFields = new List<string[]>();
+			draftClassFields.Add(new string[] { "PFNA", "PLNA", "PPOS", 
+				"PCOL", "PAGE", "PWGT", "PHGT", "PHAN", "POVR", "PSPD",
+				"PSTR", "PAWR", "PAGI", "PACC", "PCTH", "PCAR", "PJMP",
+				"PBTK", "PTAK", "PTHP", "PTHA", "PPBK", "PRBK",	"PKPR",
+				"PKAC", "PKRT", "PSTA", "PINJ", "PTGH", "PSTY", "PMOR", 
+				"PSBS", /*"PTPS",*/ "PMTS", "PUTS", "PFTS", "PLSS", "PTSS",
+				"PWSS", "PCHS", "PQTS", "PMAS", "PFAS", "PMHS", "PFHS", 
+				"PMCS", "PFCS", /*"PMGS", "PQGS",*/ "PSKI", "PHCL", "PHED", 
+				"PEYE", "PNEK", "PVIS", "PMPC", "PLHA", "TLHA", "PRHA",
+				"TRHA", "PLSH", "PRSH", "PLTH", "PRTH", "PLEL", "TLEL",
+				"PREL", "TREL", "PGSL", "PTSL", "PLWR", "TLWR", "PRWR",
+				"TRWR", "PBRE", "PTAL", "PTAR", "PHLM", "PFMK", "PFEx" });
+			// MADDEN DRAFT EDIT
+
 
 			//Try and open the file
 			try
@@ -243,7 +286,7 @@ namespace MaddenEditor.Core
 			set
 			{
 				dirty = value;
-				//Set the form into dirty view
+				//Set the scoutingForm into dirty view
 				view.Dirty = value;
 			}
 		}
@@ -304,6 +347,10 @@ namespace MaddenEditor.Core
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
 					tableOrder.Add(SCHEDULE_TABLE, -1);
+                    // MADDEN DRAFT EDIT
+                    tableOrder.Add(DRAFT_PICK_TABLE, -1);
+                    tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);
+                    // MADDEN DRAFT EDIT
 					if (fileVersion >= MaddenFileVersion.Ver2005)
 					{
 						tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
@@ -408,22 +455,25 @@ namespace MaddenEditor.Core
 			//Add the field list to the tablemodel
 			table.SetFieldList(fieldList);
 
-			int recordsFound = 0;
+			//int recordsFound = 0;
 			int index = 0;
 			float currentProgress = 0.0f;
 			float progressInterval = (1.0f / (float)tableProps.RecordCount) * 100.0f;
-			while (recordsFound != tableProps.RecordCount)
+			while (index != tableProps.RecordCount)
 			{
 				bool deleted = TDB.TDBTableRecordDeleted(dbIndex, tableProps.Name, index);
 
 				if (deleted)
 				{
 					//If this record is deleted advance the index only
+                    //What this means is that any initial records marked as deleted we will never
+                    //use unless the database is compacted.
+
 					index++;
 					continue;
 				}
 
-				TableRecordModel record = table.ConstructRecordModel(recordsFound);
+                TableRecordModel record = table.ConstructRecordModel(index);
 
 				if (record != null)
 				{
@@ -439,7 +489,7 @@ namespace MaddenEditor.Core
 								string val = new string((char)0, (fieldProps.Size / 8)+1);
 								try
 								{
-									TDB.TDBFieldGetValueAsString(dbIndex, tableProps.Name, fieldProps.Name, recordsFound, ref val);
+                                    TDB.TDBFieldGetValueAsString(dbIndex, tableProps.Name, fieldProps.Name, index, ref val);
 								}
 								catch (Exception err)
 								{
@@ -449,12 +499,12 @@ namespace MaddenEditor.Core
 								break;
 							case TdbFieldType.tdbUInt:
 								UInt32 intval;
-								intval = (UInt32)TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
+                                intval = (UInt32)TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, index);
 								record.RegisterField(fieldProps.Name, (int)intval);
 								break;
 							case TdbFieldType.tdbSInt:
 								Int32 signedval;
-								signedval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, recordsFound);
+                                signedval = TDB.TDBFieldGetValueAsInteger(dbIndex, tableProps.Name, fieldProps.Name, index);
 								record.RegisterField(fieldProps.Name, signedval);
 								break;
 							default:
@@ -465,7 +515,7 @@ namespace MaddenEditor.Core
 				}
 
 				index++;
-				recordsFound++;
+				//recordsFound++;
 
 				currentProgress += progressInterval;
 				view.updateProgress((int)currentProgress, table.Name);
@@ -477,7 +527,7 @@ namespace MaddenEditor.Core
 			return true;
 		}
 
-		public void Save()
+        public void Save()
 		{
 			//To save we have to go through every record in our models and
 			//save the dirty ones
@@ -486,6 +536,9 @@ namespace MaddenEditor.Core
 				tmodel.Save();
 			}
 
+            //Now save to database
+            TDB.TDBSave(dbIndex);
+
 			this.Dirty = false;
 		}
 
@@ -493,14 +546,15 @@ namespace MaddenEditor.Core
 		{
 			try
 			{
-				TDB.TDBClose(dbIndex);
+                //Before we shutdown compact the database
+                TDB.TDBDatabaseCompact(dbIndex);
+                TDB.TDBSave(dbIndex);
+                TDB.TDBClose(dbIndex);
 			}
 			catch (DllNotFoundException e)
 			{
 				Console.WriteLine(e.ToString());
 			}
 		}
-
-		
 	}
 }

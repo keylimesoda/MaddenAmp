@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -33,6 +33,7 @@ namespace MaddenEditor.Core.Record
 		public const string GAME_NUMBER = "SGNM";
 		public const string WEEK_NUMBER = "SEWN";
 		// Gamestates
+        // 0 - unscheduled playoff game
 		// 1 - not played
 		// 2 - away win
 		// 3 - home win
@@ -74,9 +75,11 @@ namespace MaddenEditor.Core.Record
 			gameDayTypeList.Add(new GenericRecord("Saturday", 2));
 			gameDayTypeList.Add(new GenericRecord("Sunday", 3));
 			gameDayTypeList.Add(new GenericRecord("Monday", 4));
+			gameDayTypeList.Add(new GenericRecord("Unknown Day(5)", 5));
 
 			// Initialise the Game States
 			gameStateList = new List<GenericRecord>();
+            gameStateList.Add(new GenericRecord("Unscheduled Playoff Game", 0));
 			gameStateList.Add(new GenericRecord("Not Played", 1));
 			gameStateList.Add(new GenericRecord("Away Team Win", 2));
 			gameStateList.Add(new GenericRecord("Home Team Win", 3));
@@ -94,12 +97,47 @@ namespace MaddenEditor.Core.Record
 
 		}
 
-		public ScheduleRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public ScheduleRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}
 
+        // MADDEN DRAFT EDIT
+        public int Winner()
+        {
+            // I key this off of scores rather than game states in
+            // case EA changes the GAME_STATE to 'int' correspondence
+            if (GetIntField(AWAY_SCORE) > GetIntField(HOME_SCORE))
+            {
+                return GetIntField(AWAY_TEAM_ID);
+            }
+            else if (GetIntField(AWAY_SCORE) < GetIntField(HOME_SCORE))
+            {
+                return GetIntField(HOME_TEAM_ID);
+            }
+
+            // Game resulted in a tie
+            return -1;
+        }
+
+        public int Loser()
+        {
+            // I key this off of scores rather than game states in
+            // case EA changes the GAME_STATE to 'int' correspondence
+            if (GetIntField(AWAY_SCORE) < GetIntField(HOME_SCORE))
+            {
+                return GetIntField(AWAY_TEAM_ID);
+            }
+            else if (GetIntField(AWAY_SCORE) > GetIntField(HOME_SCORE))
+            {
+                return GetIntField(HOME_TEAM_ID);
+            }
+
+            // Game resulted in a tie
+            return -1;
+        }
+        // MADDEN DRAFT EDIT
 		public IList<GenericRecord> GameStates
 		{
 			get
@@ -191,7 +229,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return parentModel.TeamModel.GetTeamRecord(GetIntField(AWAY_TEAM_ID));
+				return editorModel.TeamModel.GetTeamRecord(GetIntField(AWAY_TEAM_ID));
 			}
 			set
 			{
@@ -203,7 +241,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return parentModel.TeamModel.GetTeamRecord(GetIntField(HOME_TEAM_ID));
+				return editorModel.TeamModel.GetTeamRecord(GetIntField(HOME_TEAM_ID));
 			}
 			set
 			{

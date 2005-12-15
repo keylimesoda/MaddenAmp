@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -33,7 +33,7 @@ namespace MaddenEditor.Core
 		public const int NUMBER_OF_WEEKS = 17;
 		// Reference to our editor model
 		private EditorModel model = null;
-		// This collection holds our schedule
+		// This collection holds our schedule (the index is week number)
 		private Dictionary<int, SortedList<int, ScheduleRecord>> schedule = null;
 
 		public ScheduleEditingModel(EditorModel model)
@@ -51,14 +51,16 @@ namespace MaddenEditor.Core
 			//Now add the records to these collections
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
 			{
-				if (rec.Deleted)
-					continue;
-
+				ScheduleRecord scheduleRecord = (ScheduleRecord)rec;
 				try
 				{
-					ScheduleRecord scheduleRecord = (ScheduleRecord)rec;
-					
-					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber+1];
+					//Check to ensure we aren't adding records with higher than 17 weeks
+					if (scheduleRecord.WeekNumber >= schedule.Count)
+					{
+						//Don't add this week
+						return;
+					}
+					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber + 1];
 					try
 					{
 						list.Add(scheduleRecord.GameNumber, scheduleRecord);
@@ -66,7 +68,7 @@ namespace MaddenEditor.Core
 					catch (ArgumentException err2)
 					{
 						//Something is wrong with this schedule
-						throw err2;						
+						throw err2;
 					}
 				}
 				catch (KeyNotFoundException err)
@@ -74,7 +76,7 @@ namespace MaddenEditor.Core
 					Console.WriteLine(err.ToString());
 				}
 			}
-			
+
 		}
 
 		public IList<ScheduleRecord> GetWeek(int weeknumber)
@@ -84,7 +86,7 @@ namespace MaddenEditor.Core
 				return null;
 			}
 
-			return schedule[weeknumber].Values;			
+			return schedule[weeknumber].Values;
 		}
 	}
 }

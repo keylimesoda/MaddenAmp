@@ -1,0 +1,9 @@
+Hey man,
+
+Thanks for noticing the note and getting everything into place.  It's a shame FF sees so much down time...
+
+One thing I forgot to add.  If it's still alright with you, can you change the license on the install sequence to the standard GPL?  And can you either put a link to the new EXE in this file, or better yet, email it to me?
+
+feedback@maddenwishlist.com
+
+Thanks again!
