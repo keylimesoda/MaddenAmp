@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -41,11 +41,13 @@ namespace MaddenEditor.Core
 		private Dictionary<string, int> backupIntFields = null;
 		private Dictionary<string, string> backupStringFields = null;
 
-		protected EditorModel parentModel = null;
+		protected EditorModel editorModel = null;
+        protected TableModel tableModel = null;
 
-		public TableRecordModel(int recordNumber, EditorModel EditorModel)
+		public TableRecordModel(int recordNumber, TableModel tableModel, EditorModel editorModel)
 		{
-			parentModel = EditorModel;
+            this.tableModel = tableModel;
+            this.editorModel = editorModel;
 			this.recordNumber = recordNumber;
 			intFields = new Dictionary<string, int>();
 			stringFields = new Dictionary<string, string>();
@@ -53,7 +55,27 @@ namespace MaddenEditor.Core
 			backupStringFields = new Dictionary<string, string>();
 		}
 
-		public int RecNo
+        public List<string> StringFields()
+        {
+            List<string> toReturn = new List<string>();
+            foreach (string s in stringFields.Keys)
+            {
+                toReturn.Add(s);
+            }
+            return toReturn;
+        }
+
+        public List<string> IntFields()
+        {
+            List<string> toReturn = new List<string>();
+            foreach (string s in intFields.Keys)
+            {
+                toReturn.Add(s);
+            }
+            return toReturn;
+        }
+        
+        public int RecNo
 		{
 			get
 			{
@@ -104,6 +126,7 @@ namespace MaddenEditor.Core
 			}
 			catch(KeyNotFoundException err)
 			{
+				err = err;
 				//Console.WriteLine("Error Getting StringField " + fieldName + " :" + err.ToString());
 				return "";
 			}
@@ -117,9 +140,26 @@ namespace MaddenEditor.Core
 			}
 			catch (KeyNotFoundException err)
 			{
+				err = err;
 				//Console.WriteLine("Error Getting IntField " + fieldName + " :" + err.ToString());
 				return 0;
 			}
+		}
+
+		public bool ContainsStringField(string fieldName)
+		{
+			if (stringFields.ContainsKey(fieldName))
+				return true;
+
+			return false;
+		}
+
+		public bool ContainsIntField(string fieldName)
+		{
+			if (intFields.ContainsKey(fieldName))
+				return true;
+
+			return false;
 		}
 
 		protected bool ContainsField(string fieldName)
@@ -141,7 +181,7 @@ namespace MaddenEditor.Core
 				return;
 			}
 			//Mark this record as dirty as well as the Full Roster Model
-			parentModel.Dirty = true;
+			editorModel.Dirty = true;
 			this.dirty = true;
 
 			//If the string backup dictionary already contains a key for
@@ -176,7 +216,7 @@ namespace MaddenEditor.Core
 			}
 
 			//Mark this record as dirty as well as the Full Roster Model
-			parentModel.Dirty = true;
+			editorModel.Dirty = true;
 			this.dirty = true;
 
 			//If the int backup dictionary already contains a key for
@@ -241,9 +281,16 @@ namespace MaddenEditor.Core
 
 		public void SetDeleteFlag(bool flag)
 		{
+			// I think this should be alright.
+			if (flag == deleted)
+			{
+				return;
+			}
+
 			deleted = flag;
 			this.Dirty = true;
-			parentModel.Dirty = true;
+			editorModel.Dirty = true;
+			tableModel.ProcessRecordDeleteness(this);
 		}
 	}
 }

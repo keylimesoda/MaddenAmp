@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -155,11 +155,68 @@ namespace MaddenEditor.Core.Record
 		double[] estYearlySalary = new double[7];
 		double[] estSigningBonusArray = new double[7];
 
-		public PlayerRecord(int record, EditorModel EditorModel)
-			: base(record, EditorModel)
+		public PlayerRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
 		{
 
 		}
+
+        // MADDEN DRAFT EDIT
+
+        public string RatingsLine(string[] attributes)
+        {
+            string toReturn = "";
+            string last = attributes[attributes.Length - 1];
+
+            foreach (string s in attributes)
+            {
+                toReturn += GetIntField(s);
+
+                if (s != last)
+                {
+                    toReturn += "\t";
+                }
+            }
+
+            return toReturn;
+        }
+
+        public void ImportWeeklyData(string[] attributes, string[] ratings)
+        {
+            int index = 0;
+            foreach (string s in attributes)
+            {
+                if (s == "PGID") { index++;  continue; }
+                SetField(s, Int32.Parse(ratings[index]));
+                index++;
+            }
+        }
+
+        public void ImportData(List<string> playerData, int version)
+        {
+			int index = 0;
+			foreach (string s in editorModel.DraftClassFields[version-1])
+			{
+				if (ContainsStringField(s))
+				{
+					SetField(s, playerData[index]);
+				}
+				else if (ContainsIntField(s))
+				{
+					SetField(s, Int32.Parse(playerData[index]));
+				}
+				else
+				{
+					Console.WriteLine("Severe Error!  Player does not contain field " + s + "!  Returning...");
+					return;
+				}
+
+				index++;
+			}
+        }
+
+        // MADDEN DRAFT EDIT
+
 
 		public override string ToString()
 		{
@@ -1253,12 +1310,23 @@ namespace MaddenEditor.Core.Record
 
 		public int CalculateOverallRating(int positionId)
 		{
+			return CalculateOverallRating(positionId, false);
+		}
+
+		public int CalculateOverallRating(int positionId, bool withHeightAndWeight)
+		{
 			double tempOverall = 0;
+
+			if (withHeightAndWeight)
+			{
+				LocalMath lmath = new LocalMath(MaddenFileVersion.Ver2006);
+				tempOverall += lmath.HeightWeightAdjust(this, positionId);
+			}
 
 			switch (positionId)
 			{
 				case (int)MaddenPositions.QB:
-					tempOverall = (((double)ThrowPower - 50) / 10) * 4.9;
+					tempOverall += (((double)ThrowPower - 50) / 10) * 4.9;
 					tempOverall += (((double)ThrowAccuracy - 50) / 10) * 5.8;
 					tempOverall += (((double)BreakTackle - 50) / 10) * 0.8;
 					tempOverall += (((double)Agility - 50) / 10) * 0.8;
@@ -1267,7 +1335,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
 					break;
 				case (int)MaddenPositions.HB:
-					tempOverall = (((double)PassBlocking - 50) / 10) * 0.33;
+					tempOverall += (((double)PassBlocking - 50) / 10) * 0.33;
 					tempOverall += (((double)BreakTackle - 50) / 10) * 3.3;
 					tempOverall += (((double)Carrying - 50) / 10) * 2.0;
 					tempOverall += (((double)Acceleration - 50) / 10) * 1.8;
@@ -1279,7 +1347,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 27,1);
 					break;
 				case (int)MaddenPositions.FB:
-					tempOverall= (((double)PassBlocking - 50) / 10) * 1.0;
+					tempOverall+= (((double)PassBlocking - 50) / 10) * 1.0;
 					tempOverall+= (((double)RunBlocking - 50) / 10) * 7.2;
 					tempOverall+= (((double)BreakTackle - 50) / 10) * 1.8;
 					tempOverall+= (((double)Carrying - 50) / 10) * 1.8;
@@ -1292,7 +1360,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall= (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 39,1);
 					break;
 				case (int)MaddenPositions.WR:
-					tempOverall = (((double)BreakTackle - 50) / 10) * 0.8;
+					tempOverall += (((double)BreakTackle - 50) / 10) * 0.8;
 					tempOverall += (((double)Acceleration - 50) / 10) * 2.3;
 					tempOverall += (((double)Agility - 50) / 10) * 2.3;
 					tempOverall += (((double)Awareness - 50) / 10) * 2.3;
@@ -1303,7 +1371,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 26, 1);
 					break;
 				case (int)MaddenPositions.TE:
-					tempOverall = (((double)Speed - 50) / 10) * 2.65;
+					tempOverall += (((double)Speed - 50) / 10) * 2.65;
 					tempOverall += (((double)Strength - 50) / 10) * 2.65;
 					tempOverall += (((double)Awareness - 50) / 10) * 2.65;
 					tempOverall += (((double)Agility - 50) / 10) * 1.25;
@@ -1316,7 +1384,7 @@ namespace MaddenEditor.Core.Record
 					break;
 				case (int)MaddenPositions.LT:
 				case (int)MaddenPositions.RT:
-					tempOverall = (((double)Speed - 50) / 10) * 0.8;
+					tempOverall += (((double)Speed - 50) / 10) * 0.8;
 					tempOverall += (((double)Strength - 50) / 10) * 3.3;
 					tempOverall += (((double)Awareness - 50) / 10) * 3.3;
 					tempOverall += (((double)Agility - 50) / 10) * 0.8;
@@ -1328,7 +1396,7 @@ namespace MaddenEditor.Core.Record
 				case (int)MaddenPositions.LG:
 				case (int)MaddenPositions.RG:
 				case (int)MaddenPositions.C:
-					tempOverall = (((double)Speed - 50) / 10) * 1.7;
+					tempOverall += (((double)Speed - 50) / 10) * 1.7;
 					tempOverall += (((double)Strength - 50) / 10) * 3.25;
 					tempOverall += (((double)Awareness - 50) / 10) * 3.25;
 					tempOverall += (((double)Agility - 50) / 10) * 0.8;
@@ -1339,7 +1407,7 @@ namespace MaddenEditor.Core.Record
 					break;
 				case (int)MaddenPositions.LE:
 				case (int)MaddenPositions.RE:
-					tempOverall = (((double)Speed - 50) / 10) * 3.75;
+					tempOverall += (((double)Speed - 50) / 10) * 3.75;
 					tempOverall += (((double)Strength - 50) / 10) * 3.75;
 					tempOverall += (((double)Awareness - 50) / 10) * 1.75;
 					tempOverall += (((double)Agility - 50) / 10) * 1.75;
@@ -1348,7 +1416,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
 					break;
 				case (int)MaddenPositions.DT:
-					tempOverall = (((double)Speed - 50) / 10) * 1.8;
+					tempOverall += (((double)Speed - 50) / 10) * 1.8;
 					tempOverall += (((double)Strength - 50) / 10) * 5.5;
 					tempOverall += (((double)Awareness - 50) / 10) * 3.8;
 					tempOverall += (((double)Agility - 50) / 10) * 1;
@@ -1358,7 +1426,7 @@ namespace MaddenEditor.Core.Record
 					break;
 				case (int)MaddenPositions.LOLB:
 				case (int)MaddenPositions.ROLB:
-					tempOverall = (((double)Speed - 50) / 10) * 3.75;
+					tempOverall += (((double)Speed - 50) / 10) * 3.75;
 					tempOverall += (((double)Strength - 50) / 10) * 2.4;
 					tempOverall += (((double)Awareness - 50) / 10) * 3.6;
 					tempOverall += (((double)Agility - 50) / 10) * 2.4;
@@ -1368,7 +1436,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 29, 1);
 					break;
 				case (int)MaddenPositions.MLB:
-					tempOverall = (((double)Speed - 50) / 10) * 0.75;
+					tempOverall += (((double)Speed - 50) / 10) * 0.75;
 					tempOverall += (((double)Strength - 50) / 10) * 3.4;
 					tempOverall += (((double)Awareness - 50) / 10) * 5.2;
 					tempOverall += (((double)Agility - 50) / 10) * 1.65;
@@ -1377,7 +1445,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 27, 1);
 					break;
 				case (int)MaddenPositions.CB:
-					tempOverall = (((double)Speed - 50) / 10) * 3.85;
+					tempOverall += (((double)Speed - 50) / 10) * 3.85;
 					tempOverall += (((double)Strength - 50) / 10) * 0.9;
 					tempOverall += (((double)Awareness - 50) / 10) * 3.85;
 					tempOverall += (((double)Agility - 50) / 10) * 1.55;
@@ -1388,7 +1456,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 28, 1);
 					break;
 				case (int)MaddenPositions.FS:
-					tempOverall = (((double)Speed - 50) / 10) * 3.0;
+					tempOverall += (((double)Speed - 50) / 10) * 3.0;
 					tempOverall += (((double)Strength - 50) / 10) * 0.9;
 					tempOverall += (((double)Awareness - 50) / 10) * 4.85;
 					tempOverall += (((double)Agility - 50) / 10) * 1.5;
@@ -1399,7 +1467,7 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall) + 30, 1);
 					break;
 				case (int)MaddenPositions.SS:
-					tempOverall = (((double)Speed - 50) / 10) * 3.2;
+					tempOverall += (((double)Speed - 50) / 10) * 3.2;
 					tempOverall += (((double)Strength - 50) / 10) * 1.7;
 					tempOverall += (((double)Awareness - 50) / 10) * 4.75;
 					tempOverall += (((double)Agility - 50) / 10) * 1.7;
@@ -1417,8 +1485,6 @@ namespace MaddenEditor.Core.Record
 					tempOverall = (double)(-177 + 0.218*Awareness + 1.28 * KickPower + 1.47 * KickAccuracy);
 					tempOverall = (int)Math.Round((decimal)Convert.ToInt32(tempOverall));
 					break;
-
-
 			}
 
 			if (tempOverall < 0)

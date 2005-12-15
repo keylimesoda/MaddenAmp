@@ -1,0 +1,55 @@
+Things you need to know to write a GUI:
+
+draftModel is the main class for the draft engine.  It's got many functions 
+and properties but here are the only ones you need to know:
+
+draftModel(EditorModel model)
+-- Constructor, needs the general EditorModel for the application
+
+void draftModel.InitializeDraft(int HumanTeamId)
+-- Sets up the draft.  Run before anything else.  Needs the TeamId of the team
+   used by the human.
+
+void draftModel.FixDraftOrder()
+-- Makes the draft order consistent with NFL rules.  Run after InitializeDraft.
+   Could have been put into InitializeDraft, but we may want to have it as an 
+   optional component.
+
+RookieRecord draftModel.MakeSelection(int pickNumber, RookieRecord draftChoice)
+-- Makes a selection, and returns the record of the selected player.
+   pickNumber is the number of the current selection.
+   If it's a CPU selection, draftChoice should be passed 'null'; otherwise
+   draftChoice is the record of the human chosen player.
+   
+List<PlayerRecord> draftModel.GetDepthChart(int TeamId, int PositionId)
+-- Returns the depth chart listing of the specified team at the specified position
+
+List<RookieRecord> draftModel.GetDraftBoard(TeamRecord team, int pickNumber)
+-- Returns the list of players that team specified is likely to take with
+   the pick number specified.
+   
+Dictionary<int, RookieRecord> draftModel.GetRookies(int PositionId)
+-- Returns all rookies (including those already drafted) at the specified position
+   Returns a dictionary indexed by the rookie's PGID.
+   
+----------------------
+
+RookieRecord also has the following methods/properties that could be of use:
+
+RookieRecord.Player
+-- The PlayerRecord corresponding to this rookie.
+
+Dictionary<int, double> CombineNumbers
+-- Combine stats (40, Cone, Shuttle, etc.).  To be used for sorting.
+
+Dictionary<int, string> CombineWords
+-- Combine stats to be used for displaying.
+
+public enum CombineStat
+    {
+         RoundGrade = 0, Forty, Shuttle, Cone, BenchPress, Doctor, Vertical, Wonderlic
+    }
+    
+-- global enum to be given as first argument of CombineNumbers/CombineWords.
+
+None of the other methods/properties of RookieRecord should be of use.f the formats listed below.

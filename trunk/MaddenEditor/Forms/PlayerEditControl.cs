@@ -1,20 +1,20 @@
 /******************************************************************************
  * Gommo's Madden Editor
  * Copyright (C) 2005 Colin Goudie
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
  * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
  * 
  * maddeneditor@tributech.com.au
@@ -50,6 +50,42 @@ namespace MaddenEditor.Forms
 			isInitialising = false;
 		}
 
+		private void SetNumericUpDown(NumericUpDown control, int value, string fieldname)
+		{
+			try
+			{
+				control.Value = value;
+			}
+			catch
+			{
+				string message = "Player's " + fieldname + " (" + value + ") is outside of the allowed range.\n\n";
+
+				if (value > 120)
+				{
+					message += "We recommend resetting the value to " + control.Minimum + ".";
+				}
+				else
+				{
+					message += "We recommend resetting the value to " + control.Maximum + ".";
+				}
+
+				message += "\n\nHit \"Yes\" to reset to " + control.Maximum + "; hit \"No\" to reset to " + control.Minimum + ".";
+
+				DialogResult dr = MessageBox.Show(message, "Repair Value", MessageBoxButtons.YesNo);
+
+				isInitialising = false;
+				if (dr == DialogResult.Yes)
+				{
+					control.Value = control.Maximum;
+				}
+				else
+				{
+					control.Value = control.Minimum;
+				}
+				isInitialising = true;
+			}
+		}
+
 		public void LoadPlayerInfo(PlayerRecord record)
 		{
 			if (record == null)
@@ -72,7 +108,9 @@ namespace MaddenEditor.Forms
 				positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 				collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
 
-				playerAge.Value = record.Age;
+				SetNumericUpDown(playerAge, record.Age, "Age");
+				//playerAge.Value = record.Age;
+
 				if (record.JerseyNumber > 99)
 				{
 					//Must be a draft class, disable jersey number editing
@@ -82,6 +120,42 @@ namespace MaddenEditor.Forms
 				{
 					playerJerseyNumber.Value = record.JerseyNumber;
 				}
+
+				SetNumericUpDown(playerYearsPro, record.YearsPro, "Years Pro");
+				SetNumericUpDown(playerWeight, record.Weight + 160, "Weight");
+
+				playerHeightComboBox.SelectedIndex = record.Height - 65;
+				playerDominantHand.Checked = record.DominantHand;
+
+				SetNumericUpDown(playerOverall, record.Overall, "Overall");
+				SetNumericUpDown(playerSpeed, record.Speed, "Speed");
+				SetNumericUpDown(playerStrength, record.Strength, "Strength");
+				SetNumericUpDown(playerAwareness, record.Awareness, "Awareness");
+				SetNumericUpDown(playerAgility, record.Agility, "Agility");
+				SetNumericUpDown(playerAcceleration, record.Acceleration, "Acceleration");
+				SetNumericUpDown(playerCatching, record.Catching, "Catching");
+				SetNumericUpDown(playerCarrying, record.Carrying, "Carrying");
+				SetNumericUpDown(playerJumping, record.Jumping, "Jumping");
+				SetNumericUpDown(playerBreakTackle, record.BreakTackle, "Break Tackle");
+				SetNumericUpDown(playerTackle, record.Tackle, "Tackle");
+				SetNumericUpDown(playerThrowPower, record.ThrowPower, "Throw Power");
+				SetNumericUpDown(playerThrowAccuracy, record.ThrowAccuracy, "Throw Accuracy");
+				SetNumericUpDown(playerPassBlocking, record.PassBlocking, "Pass Blocking");
+				SetNumericUpDown(playerRunBlocking, record.RunBlocking, "Run Blocking");
+				SetNumericUpDown(playerKickPower, record.KickPower, "Kick Power");
+				SetNumericUpDown(playerKickAccuracy, record.KickAccuracy, "Kick Accuracy");
+				SetNumericUpDown(playerKickReturn, record.KickReturn, "Kick Return");
+				SetNumericUpDown(playerStamina, record.Stamina, "Stamina");
+				SetNumericUpDown(playerInjury, record.Injury, "Injury");
+				SetNumericUpDown(playerToughness, record.Toughness, "Toughness");
+				SetNumericUpDown(playerMorale, record.Morale, "Morale");
+				SetNumericUpDown(playerImportance, record.Importance, "Importance");
+
+				playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
+
+				playerNFLIcon.Checked = record.NFLIcon;
+
+				/*
 				playerYearsPro.Value = record.YearsPro;
 				playerWeight.Value = record.Weight + 160;
 				playerHeightComboBox.SelectedIndex = record.Height - 65;
@@ -113,8 +187,9 @@ namespace MaddenEditor.Forms
 				playerMorale.Value = record.Morale;
 				playerNFLIcon.Checked = record.NFLIcon;
 
-				playerImportance.Value = record.Importance;
+				playerImportance.Value = record.Importance; */
 
+				
 				if (model.FileVersion >= MaddenFileVersion.Ver2005)
 				{
 					//Load the player tendancy and reinitialise the combo
@@ -145,6 +220,7 @@ namespace MaddenEditor.Forms
 				}
 				catch (Exception error)
 				{
+					error = error;
 					playerDraftRound.Value = 15;
 				}
 				try
@@ -153,6 +229,7 @@ namespace MaddenEditor.Forms
 				}
 				catch (Exception error)
 				{
+					error = error;
 					playerDraftRoundIndex.Value = 33;
 				}
 
