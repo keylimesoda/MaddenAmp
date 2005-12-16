@@ -124,11 +124,14 @@ namespace MaddenEditor.Forms
 
                 if (dr != DialogResult.Cancel)
                 {
-                    dr = MessageBox.Show("Are you sure you want to continue?  Using this class could adversely affect your franchise.", "Confirm", MessageBoxButtons.YesNo);
+                    DialogResult dr2 = MessageBox.Show("Are you sure you want to continue?  Using this class could adversely affect your franchise.", "Confirm", MessageBoxButtons.YesNo);
 
-                    if (dr == DialogResult.Yes)
+                    if (dr2 == DialogResult.Yes)
                     {
-                        return 0;
+                        if (dr == DialogResult.Yes)
+                            return 1;
+                        else if (dr == DialogResult.No)
+                            return 0;
                     }
                 }
             }

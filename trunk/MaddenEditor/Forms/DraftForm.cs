@@ -641,7 +641,19 @@ namespace MaddenEditor.Forms
 			if (threadToDo == 1)
 			{
 				draftTimer.Stop();
-			}
+
+                if (tradeDownForm != null)
+                {
+                    tradeDownForm.Close();
+                    tradeDownForm = null;
+                }
+
+                if (tradeUpForm != null)
+                {
+                    tradeUpForm.Close();
+                    tradeUpForm = null;
+                }
+            }
 			else if (threadToDo == 2)
 			{
 				SkipButton.Enabled = true;
@@ -771,7 +783,19 @@ namespace MaddenEditor.Forms
 			else
 			{
 				draftTimer.Stop();
-			}
+
+                if (tradeDownForm != null)
+                {
+                    tradeDownForm.Close();
+                    tradeDownForm = null;
+                }
+
+                if (tradeUpForm != null)
+                {
+                    tradeUpForm.Close();
+                    tradeUpForm = null;
+                }
+            }
 
 			drafted = dm.MakeSelection(CurrentPick, drafted);
 
