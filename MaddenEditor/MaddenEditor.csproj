@@ -195,6 +195,12 @@
     <Compile Include="Forms\CoachEditControl.Designer.cs">
       <DependentUpon>CoachEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Slider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Slider.Designer.cs">
+      <DependentUpon>Slider.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TeamCaptainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -287,6 +293,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CoachEditControl.resx">
       <DependentUpon>CoachEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Slider.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Slider.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TeamCaptainForm.resx">
       <DependentUpon>TeamCaptainForm.cs</DependentUpon>

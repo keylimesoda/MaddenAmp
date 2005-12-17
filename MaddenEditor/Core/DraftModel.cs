@@ -124,7 +124,7 @@ namespace MaddenEditor.Core
 				}
 				found.Add(rook.PlayerId);
 
-				Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+				//Console.Writeline(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
 				// FB's are way too low.  INCREASE their ratings./
 				if (rook.Player.PositionId == (int)MaddenPositions.FB)
@@ -153,7 +153,7 @@ namespace MaddenEditor.Core
 					rook.Player.KickPower += Math.Min(rand.Next(bump), 99 - rook.Player.KickPower);
 
 					rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
-					Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+					//Console.Writeline(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
 					rook.ActualValue = LocalMath.ValueScale * positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) * math.valcurve(rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed));
 					continue;
@@ -264,7 +264,7 @@ namespace MaddenEditor.Core
 				rook.Player.KickPower -= Math.Min(rand.Next((int)Math.Round(slopes[rook.Player.PositionId] * randMax + intercepts[rook.Player.PositionId])), rook.Player.KickPower);
 
 				rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
-				Console.WriteLine(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+				//Console.Writeline(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
 				rook.ActualValue = LocalMath.ValueScale * positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) * math.valcurve(rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed));
 			}
@@ -277,7 +277,7 @@ namespace MaddenEditor.Core
 
 		public void DumpRookiesByPosition()
 		{
-			Console.WriteLine("\n");
+			//Console.Writeline("\n");
 			for (int j = 0; j < 21; j++)
 			{
 				List<int> found = new List<int>();
@@ -301,18 +301,18 @@ namespace MaddenEditor.Core
 
 					found.Add(bestId);
 
-					Console.WriteLine(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
+					//Console.Writeline(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
 				}
 
-				Console.WriteLine("");
+				//Console.Writeline("");
 			}
 
-			Console.WriteLine("");
+			//Console.Writeline("");
 		}
 
 		public void DumpRookies()
 		{
-			Console.WriteLine("\n");
+			//Console.Writeline("\n");
 
 			List<int> found = new List<int>();
 			string points = "";
@@ -338,14 +338,14 @@ namespace MaddenEditor.Core
 
 				points += "{" + RookEOR(rook) + ", " + Math.Log(1.2 * pickValues[i] / positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43)) + "}, ";
 
-				Console.WriteLine(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
+				//Console.Writeline(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
 			}
 
-			Console.WriteLine("");
-			Console.WriteLine("");
-			Console.WriteLine(points);
-			Console.WriteLine("");
-			Console.WriteLine("");
+			//Console.Writeline("");
+			//Console.Writeline("");
+			//Console.Writeline(points);
+			//Console.Writeline("");
+			//Console.Writeline("");
 		}
 
 		public List<RookieRecord> GetDraftBoard(TeamRecord team, int pickNumber)
@@ -508,17 +508,19 @@ namespace MaddenEditor.Core
 				toDraft = favorites[dpRecord.CurrentTeamId];
 			}
 
+            Console.WriteLine(pickNumber + " " + toDraft.Player.ToString());
+
 			/*
              * Some debugging/diagnostic code
              *              
              
-			Console.WriteLine("\n" + " " + pickNumber + " " + dpRecord.CurrentTeamId + " " + toDraft.Player.ToString() + " " + toDraft.Player.Overall + " " + toDraft.Player.Injury + "\n");
+			//Console.Writeline("\n" + " " + pickNumber + " " + dpRecord.CurrentTeamId + " " + toDraft.Player.ToString() + " " + toDraft.Player.Overall + " " + toDraft.Player.Injury + "\n");
 
-				Console.WriteLine(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON);
+				//Console.Writeline(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON);
 				foreach (RookieRecord rook in GetDraftBoard(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber))
 				{
 					if (rook.DraftedTeam < 32) { continue; }
-					Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue +  " " + rook.values[dpRecord.CurrentTeamId][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(dpRecord.CurrentTeamId, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[dpRecord.CurrentTeamId] + rook.PostCombineScoutedHours[dpRecord.CurrentTeamId]));
+					//Console.Writeline(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue +  " " + rook.values[dpRecord.CurrentTeamId][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(dpRecord.CurrentTeamId, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[dpRecord.CurrentTeamId] + rook.PostCombineScoutedHours[dpRecord.CurrentTeamId]));
 				}
 			*/
 
@@ -563,7 +565,7 @@ namespace MaddenEditor.Core
 				}
 			}
 
-			Console.WriteLine("Total MakeSelection: " + total.Subtract(DateTime.Now));
+			//Console.Writeline("Total MakeSelection: " + total.Subtract(DateTime.Now));
 			return toDraft;
 		}
 
@@ -589,7 +591,7 @@ namespace MaddenEditor.Core
 
 				if (rookieRecord == null)
 				{
-					Console.WriteLine("Oops!");
+					//Console.Writeline("Oops!");
 				}
 
 				Console.Write(i + " " + rookieRecord.PlayerId + " ");
@@ -598,7 +600,7 @@ namespace MaddenEditor.Core
 				Console.Write(model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).Overall + " " + model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).Injury + " ");
 				if (pickValues.Count > 100)
 				{
-					//                    Console.WriteLine(Math.Round(rookieRecord.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.NoProg]) + " " + pickValues[i]);
+					//                    //Console.Writeline(Math.Round(rookieRecord.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.NoProg]) + " " + pickValues[i]);
 
 				}
 				else
@@ -777,7 +779,7 @@ namespace MaddenEditor.Core
 			currentRecord.CurrentTeamId = nextRecord.CurrentTeamId;
 			nextRecord.CurrentTeamId = HumanTeamId;
 
-			Console.WriteLine("Backed Up: " + humanBackedUp + " Picking: " + model.TeamModel.GetTeamNameFromTeamId(currentRecord.CurrentTeamId));
+			//Console.Writeline("Backed Up: " + humanBackedUp + " Picking: " + model.TeamModel.GetTeamNameFromTeamId(currentRecord.CurrentTeamId));
 
 			return MakeSelection(pickNumber, null);
 		}
@@ -858,7 +860,7 @@ namespace MaddenEditor.Core
 			}
 
 			to.MaxGive = BestOffers[LowerTeamId];
-			Console.WriteLine("Maximum to give is " + to.MaxGive);
+			//Console.Writeline("Maximum to give is " + to.MaxGive);
 
 			// Only allow trading of future picks if they've got at least 6 picks left for next year.
 			// Could be better about this -- could allow it if the *net* number of picks for next year
@@ -958,7 +960,7 @@ namespace MaddenEditor.Core
 			{
 				if (to.HigherTeam != HumanTeamId)
 				{
-					Console.WriteLine("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " outright.\n");
+					//Console.Writeline("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " outright.\n");
 					to.status = (int)TradeOfferStatus.Rejected;
 					tradeOffers.Add(LowerTeamId, to);
 				}
@@ -975,7 +977,7 @@ namespace MaddenEditor.Core
 			{
 				double initialStart = Math.Min(to.MaxGive, pickValues[pickNumber]);
 				offer = (5.0 / 6.0 - (1.0 / 6.0) * rand.NextDouble()) * initialStart;
-				Console.WriteLine("Initial attempted offer: " + offer);
+				//Console.Writeline("Initial attempted offer: " + offer);
 			}
 			else
 			{
@@ -989,19 +991,19 @@ namespace MaddenEditor.Core
 
 			if (to.offersFromLower.Count == 0 || (LowerTeamId != HumanTeamId && to.HigherTeam != HumanTeamId && to.offersFromLower[0] < 0.5 * to.MinAccept))
 			{
-				Console.WriteLine("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " after initial offer.\n");
+				//Console.Writeline("Rejecting trade from " + model.TeamModel.GetTeamNameFromTeamId(LowerTeamId) + " after initial offer.\n");
 				to.status = (int)TradeOfferStatus.Rejected;
 				tradeOffers[LowerTeamId] = to;
 				return null;
 			}
 			else if (LowerTeamId != HumanTeamId)
 			{
-				Console.WriteLine("Initial actual offer:    " + to.offersFromLower[0]);
-				Console.WriteLine("Minimum to take: " + to.MinAccept);
+				//Console.Writeline("Initial actual offer:    " + to.offersFromLower[0]);
+				//Console.Writeline("Minimum to take: " + to.MinAccept);
 
 				to.status = (int)TradeOfferStatus.HigherResponsePending;
 				tradeOffers[LowerTeamId] = to;
-				Console.WriteLine("");
+				//Console.Writeline("");
 
 				if (to.HigherTeam == HumanTeamId)
 				{
@@ -1029,8 +1031,8 @@ namespace MaddenEditor.Core
 					return null;
 				}
 
-				Console.WriteLine("Initial actual offer:    " + to.offersFromLower[0]);
-				Console.WriteLine("Minimum to take: " + to.MinAccept);
+				//Console.Writeline("Initial actual offer:    " + to.offersFromLower[0]);
+				//Console.Writeline("Minimum to take: " + to.MinAccept);
 				to.offersFromLower = new List<double>();
 
 				to.status = (int)TradeOfferStatus.HigherResponsePending;
@@ -1102,8 +1104,8 @@ namespace MaddenEditor.Core
 					ourPreviousOffer = to.offersFromHigher[to.offersFromHigher.Count - 1];
 				}
 
-				Console.WriteLine("Higher Team responding...");
-				Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer + " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
+				//Console.Writeline("Higher Team responding...");
+				//Console.Writeline("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer + " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
 
 				// First determine if we like this offer or if we should counteroffer
 				if (theirCurrentOffer == ourPreviousOffer || (theirCurrentOffer > (1.1 - 0.05 * to.higherStrikes) * to.MinAccept) || (to.biddingWar && theirCurrentOffer > to.MinAccept))
@@ -1131,7 +1133,7 @@ namespace MaddenEditor.Core
 
 					// We'll take the offer.  Let's see if we can drive up the bidding first though.
 
-					Console.WriteLine("Accepting offer...");
+					//Console.Writeline("Accepting offer...");
 
 					bool anotherOffer = false;
 					to.status = (int)TradeOfferStatus.PendingAccept;
@@ -1142,7 +1144,7 @@ namespace MaddenEditor.Core
 					{
 						if (locTO.LowerTeam == to.LowerTeam || locTO.status == (int)TradeOfferStatus.Rejected) { continue; }
 
-						Console.WriteLine("Bidding war with " + model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + "...");
+						//Console.Writeline("Bidding war with " + model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + "...");
 
 						if (locTO.MinAccept < to.MinAccept)
 						{
@@ -1157,7 +1159,7 @@ namespace MaddenEditor.Core
 						// still can't get near the minimum acceptance value.
 						if (locTO.offersFromHigher[locTO.offersFromHigher.Count - 1] < locTO.MinAccept && locTO.PicksFromHigher.Count == 0)
 						{
-							Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + " can't match offer.  Ending trade talks.");
+							//Console.Writeline(model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + " can't match offer.  Ending trade talks.");
 
 							locTO.status = (int)TradeOfferStatus.Rejected;
 
@@ -1182,7 +1184,7 @@ namespace MaddenEditor.Core
 					// Could improve to wait if there's a lot of time left on the clock
 					if (!anotherOffer && fracTimeLeft < 0.5)
 					{
-						Console.WriteLine("No other offer around.  Accepting this one.  Returning...\n");
+						//Console.Writeline("No other offer around.  Accepting this one.  Returning...\n");
 
 						if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
 						{
@@ -1207,7 +1209,7 @@ namespace MaddenEditor.Core
 					// If they didn't come increase at least 20 percent toward our
 					// MinAccept, add a strike, and don't move quite as far.
 
-					Console.WriteLine("Didn't like last offer...");
+					//Console.Writeline("Didn't like last offer...");
 
 					if (to.offersFromLower.Count >= 2 && to.offersFromLower[to.offersFromLower.Count - 2] + (to.MinAccept - to.offersFromLower[to.offersFromLower.Count - 2]) / 5.0
 						> theirCurrentOffer && !to.lastWasStrike)
@@ -1215,11 +1217,11 @@ namespace MaddenEditor.Core
 						to.lowerStrikes = to.lowerStrikes + 1;
 						to.lastWasStrike = true;
 
-						Console.WriteLine("Offer too low.  Strike " + to.lowerStrikes + ".");
+						//Console.Writeline("Offer too low.  Strike " + to.lowerStrikes + ".");
 
 						if (to.lowerStrikes >= 3)
 						{
-							Console.WriteLine("Lower team strikes out.  Returning...\n");
+							//Console.Writeline("Lower team strikes out.  Returning...\n");
 
 							// they struck out
 							to.status = (int)TradeOfferStatus.Rejected;
@@ -1233,10 +1235,10 @@ namespace MaddenEditor.Core
 
 						double attemptedOffer = ourPreviousOffer - (3.0 - (double)to.lowerStrikes) * rand.NextDouble() / 20.0 * (ourPreviousOffer - to.MinAccept);
 
-						Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+						//Console.Writeline("Attempted counter-offer: " + attemptedOffer);
 
 						to.makeCounterOffer(attemptedOffer, true);
-						Console.WriteLine("Actual counter-offer: " + to.offersFromHigher[to.offersFromHigher.Count - 1]);
+						//Console.Writeline("Actual counter-offer: " + to.offersFromHigher[to.offersFromHigher.Count - 1]);
 
 						if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
 						{
@@ -1249,17 +1251,17 @@ namespace MaddenEditor.Core
 						to.lastWasStrike = false;
 
 						double attemptedOffer = ourPreviousOffer - (0.2 + 0.2 * rand.NextDouble()) * (ourPreviousOffer - to.MinAccept);
-						Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+						//Console.Writeline("Attempted counter-offer: " + attemptedOffer);
 
 						to.makeCounterOffer(attemptedOffer, true);
-						Console.WriteLine("Actual counter-offer: " + to.offersFromHigher[to.offersFromHigher.Count - 1]);
+						//Console.Writeline("Actual counter-offer: " + to.offersFromHigher[to.offersFromHigher.Count - 1]);
 					}
 
 					// This should only happen if the top three picks from the lower team
 					// still can't get near the minimum acceptance value.
 					if (to.offersFromHigher[to.offersFromHigher.Count - 1] < to.MinAccept && to.PicksFromHigher.Count == 0)
 					{
-						Console.WriteLine("Lower team can't get up to our minimum acceptance level.  Rejecting offer.");
+						//Console.Writeline("Lower team can't get up to our minimum acceptance level.  Rejecting offer.");
 						to.status = (int)TradeOfferStatus.Rejected;
 
 						if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
@@ -1277,7 +1279,7 @@ namespace MaddenEditor.Core
 						}
 					}
 
-					Console.WriteLine("Returning...\n");
+					//Console.Writeline("Returning...\n");
 					return null;
 				}
 			}
@@ -1341,8 +1343,8 @@ namespace MaddenEditor.Core
 					}
 				}
 
-				Console.WriteLine("Lower Team responding...");
-				Console.WriteLine("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer + " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
+				//Console.Writeline("Lower Team responding...");
+				//Console.Writeline("Our last: " + ourPreviousOffer + " Their last: " + theirCurrentOffer + " Min Accept: " + to.MinAccept + " Max Give: " + to.MaxGive);
 
 				// First determine if we like this offer or if we should counteroffer
 				if (!fail && (theirCurrentOffer <= ourPreviousOffer || theirCurrentOffer < (0.9 + 0.05 * to.lowerStrikes) * to.MaxGive))
@@ -1359,7 +1361,7 @@ namespace MaddenEditor.Core
 						// Lower teams don't get final authority on accepting offers.
 						// They accept conditionally, and the higher team has final say.
 
-						Console.WriteLine("Accepting offer...");
+						//Console.Writeline("Accepting offer...");
 
 						bool anotherOffer = false;
 						to.status = (int)TradeOfferStatus.PendingAccept;
@@ -1370,7 +1372,7 @@ namespace MaddenEditor.Core
 						{
 							if (locTO.LowerTeam == to.LowerTeam || locTO.status == (int)TradeOfferStatus.Rejected) { continue; }
 
-							Console.WriteLine("Bidding war with " + model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + "...");
+							//Console.Writeline("Bidding war with " + model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + "...");
 
 							if (locTO.MinAccept < to.MinAccept)
 							{
@@ -1385,7 +1387,7 @@ namespace MaddenEditor.Core
 							// still can't get near the minimum acceptance value.
 							if (locTO.offersFromHigher[locTO.offersFromHigher.Count - 1] < locTO.MinAccept && locTO.PicksFromHigher.Count == 0)
 							{
-								Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + " can't match offer.  Ending trade talks.");
+								//Console.Writeline(model.TeamModel.GetTeamNameFromTeamId(locTO.LowerTeam) + " can't match offer.  Ending trade talks.");
 
 								locTO.status = (int)TradeOfferStatus.Rejected;
 
@@ -1410,13 +1412,13 @@ namespace MaddenEditor.Core
 						// Could improve to wait if there's a lot of time left on the clock
 						if (!anotherOffer && fracTimeLeft < 0.5)
 						{
-							Console.WriteLine("No other offer around.  Accepting this one.  Returning...\n");
+							//Console.Writeline("No other offer around.  Accepting this one.  Returning...\n");
 
 							AcceptTrade(to);
 							return to;
 						}
 
-						Console.WriteLine("Returning...\n");
+						//Console.Writeline("Returning...\n");
 						return null;
 					}
 				}
@@ -1427,7 +1429,7 @@ namespace MaddenEditor.Core
 					// If they didn't come increase at least 20 percent toward our
 					// MaxGive, add a strike, and don't move quite as far.
 
-					Console.WriteLine("Didn't like last offer...");
+					//Console.Writeline("Didn't like last offer...");
 
 					if (to.offersFromHigher.Count > 1 && to.offersFromHigher[to.offersFromHigher.Count - 2] + (to.MaxGive - to.offersFromHigher[to.offersFromHigher.Count - 2]) / 5.0
 						< theirCurrentOffer && !to.lastWasStrike)
@@ -1435,11 +1437,11 @@ namespace MaddenEditor.Core
 						to.higherStrikes = to.higherStrikes + 1;
 						to.lastWasStrike = true;
 
-						Console.WriteLine("Offer too low.  Strike " + to.higherStrikes + ".");
+						//Console.Writeline("Offer too low.  Strike " + to.higherStrikes + ".");
 
 						if (to.higherStrikes >= 3)
 						{
-							Console.WriteLine("Higher team strikes out.  Returning...\n");
+							//Console.Writeline("Higher team strikes out.  Returning...\n");
 							// they struck out
 							to.status = (int)TradeOfferStatus.Rejected;
 							if (to.HigherTeam == HumanTeamId)
@@ -1450,7 +1452,7 @@ namespace MaddenEditor.Core
 						}
 
 						double attemptedOffer = ourPreviousOffer - (3.0 - (double)to.higherStrikes) * rand.NextDouble() / 20.0 * (ourPreviousOffer - to.MaxGive);
-						Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+						//Console.Writeline("Attempted counter-offer: " + attemptedOffer);
 
 						to.makeCounterOffer(attemptedOffer, false);
 						if (to.HigherTeam == HumanTeamId)
@@ -1464,7 +1466,7 @@ namespace MaddenEditor.Core
 
 							tradeDownForm.Message(to, (int)TradeResponse.CounterOffer);
 						}
-						Console.WriteLine("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
+						//Console.Writeline("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
 					}
 					else
 					{
@@ -1472,7 +1474,7 @@ namespace MaddenEditor.Core
 						to.lastWasStrike = false;
 
 						double attemptedOffer = ourPreviousOffer - (0.2 + 0.2 * rand.NextDouble()) * (ourPreviousOffer - to.MaxGive);
-						Console.WriteLine("Attempted counter-offer: " + attemptedOffer);
+						//Console.Writeline("Attempted counter-offer: " + attemptedOffer);
 
 						to.makeCounterOffer(attemptedOffer, false);
 						if (to.HigherTeam == HumanTeamId)
@@ -1487,12 +1489,12 @@ namespace MaddenEditor.Core
 							tradeDownForm.Message(to, (int)TradeResponse.CounterOffer);
 						}
 
-						Console.WriteLine("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
+						//Console.Writeline("Actual counter-offer: " + to.offersFromLower[to.offersFromLower.Count - 1]);
 					}
 
 					to.status = (int)TradeOfferStatus.HigherResponsePending;
 
-					Console.WriteLine("Returning...\n");
+					//Console.Writeline("Returning...\n");
 					return null;
 				}
 			}
@@ -1504,7 +1506,7 @@ namespace MaddenEditor.Core
 				// to accept this one, just accept it and move on.
 				bool anotherOffer = false;
 
-				Console.WriteLine("Processing pending acceptance...");
+				//Console.Writeline("Processing pending acceptance...");
 
 				foreach (TradeOffer locTO in tradeOffers.Values)
 				{
@@ -1516,7 +1518,7 @@ namespace MaddenEditor.Core
 
 				if (!anotherOffer && fracTimeLeft < 0.5)
 				{
-					Console.WriteLine("No other trade around -- accept this one.  Returning...\n");
+					//Console.Writeline("No other trade around -- accept this one.  Returning...\n");
 
 					if (to.LowerTeam == HumanTeamId && tradeUpForm != null)
 					{
@@ -1528,7 +1530,7 @@ namespace MaddenEditor.Core
 				}
 			}
 
-			Console.WriteLine("Continue waiting.  Returning...\n");
+			//Console.Writeline("Continue waiting.  Returning...\n");
 			return null;
 		}
 
@@ -1599,7 +1601,7 @@ namespace MaddenEditor.Core
 
 			DateTime gp = DateTime.Now;
 			GetProbabilities(pickNumber);
-			Console.WriteLine("Total GetProbabilities: " + gp.Subtract(DateTime.Now));
+			//Console.Writeline("Total GetProbabilities: " + gp.Subtract(DateTime.Now));
 
 
 			for (int i = 0; i < 32; i++)
@@ -1653,19 +1655,19 @@ namespace MaddenEditor.Core
 
 						if (favoriteEffectiveValue < 0)
 						{
-							Console.WriteLine("FEV");
+							//Console.Writeline("FEV");
 						}
 						else if (probs[record.CurrentTeamId][favorites[i].PlayerId] > 1)
 						{
-							Console.WriteLine(probs[record.CurrentTeamId][favorites[i].PlayerId]);
+							//Console.Writeline(probs[record.CurrentTeamId][favorites[i].PlayerId]);
 						}
 						else if (wantfrac < 0)
 						{
-							Console.WriteLine("wantfrac");
+							//Console.Writeline("wantfrac");
 						}
 						else if (probabilityTaken < 0)
 						{
-							Console.WriteLine("probtaken");
+							//Console.Writeline("probtaken");
 						}
 
 						if (pickfactor == 0)
@@ -1677,19 +1679,19 @@ namespace MaddenEditor.Core
 					BestOffers[i] = favoriteEffectiveValue * wantfrac * probabilityTaken;
 
 					/*
-                    Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(i) + " " + Math.Round(BestOffers[i]) + " " + favorites[i].Player.ToString());
+                    //Console.Writeline(model.TeamModel.GetTeamNameFromTeamId(i) + " " + Math.Round(BestOffers[i]) + " " + favorites[i].Player.ToString());
 
                     foreach (RookieRecord rook in GetDraftBoard(model.TeamModel.GetTeamRecord(i), pickNumber))
                     {
                         if (rook.DraftedTeam < 32) { continue; }
-                        Console.WriteLine(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue + " " + rook.values[i][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(i, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[i] + rook.PostCombineScoutedHours[i]));
+                        //Console.Writeline(rook.Player.PlayerId + " " + rook.Player.ToString() + " " + rook.EffectiveValue(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) + " " + rook.ActualValue + " " + rook.values[i][rook.Player.PositionId][(int)RookieRecord.ValueType.NoProg] + " " + rook.Player.Overall + " " + rook.GetAdjustedOverall(i, (int)RookieRecord.RatingType.Final, rook.Player.PositionId, dcr.awarenessAdjust) + " " + (rook.PreCombineScoutedHours[i] + rook.PostCombineScoutedHours[i]));
                     }
-                    Console.WriteLine("");
+                    //Console.Writeline("");
                      * */
 				}
 			}
 
-			Console.WriteLine("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
+			//Console.Writeline("Total SetTradeParameters: " + total.Subtract(DateTime.Now));
 		}
 
 		public string MDCVerify(string filename)
@@ -1763,7 +1765,7 @@ namespace MaddenEditor.Core
 			{
 				if (sr.EndOfStream == true)
 				{
-					Console.WriteLine("End of stream.  Breaking...");
+					//Console.Writeline("End of stream.  Breaking...");
 					break;
 				}
 
@@ -1771,7 +1773,7 @@ namespace MaddenEditor.Core
 
 				if (player.YearsPro != 0 || (player.FirstName == "New" && player.LastName == "Player")) { continue; }
 
-				Console.WriteLine("Out: " + player.FirstName + " " + player.LastName);
+				//Console.Writeline("Out: " + player.FirstName + " " + player.LastName);
 
 				// This should be false already, so this shouldn't hurt.
 				//player.SetDeleteFlag(false);
@@ -1785,8 +1787,8 @@ namespace MaddenEditor.Core
 
 			if (!sr.EndOfStream)
 			{
-				Console.WriteLine("Not at end of file!");
-				Console.WriteLine(sr.ReadToEnd());
+				//Console.Writeline("Not at end of file!");
+				//Console.Writeline(sr.ReadToEnd());
 			}
 
 			sr.Close();
@@ -1892,7 +1894,7 @@ namespace MaddenEditor.Core
 		{
 			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 			{
-				Console.WriteLine(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
+				//Console.Writeline(rook.Value.Player.ToString() + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Initial] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Combine] + " " + rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Final]);
 			}
 		}
 
@@ -2170,7 +2172,7 @@ namespace MaddenEditor.Core
 					TotalToPrint += scoutingHours[pair.Key];
 				}
 
-				Console.WriteLine(TotalToPrint);
+				//Console.Writeline(TotalToPrint);
 
 				foreach (KeyValuePair<int, int> pair in scoutingHours)
 				{
@@ -2183,7 +2185,7 @@ namespace MaddenEditor.Core
 						rookies[pair.Key].PostCombineScoutedHours[team.TeamId] = pair.Value;
 					}
 
-					//                    Console.WriteLine(i + " " + rookies[pair.Key].Player + " " + pair.Key + " " + pair.Value);
+					//                    //Console.Writeline(i + " " + rookies[pair.Key].Player + " " + pair.Key + " " + pair.Value);
 				}
 			}
 		}
@@ -2478,7 +2480,7 @@ namespace MaddenEditor.Core
 				DraftPickRecord record = (DraftPickRecord)rec;
 				if (count != record.PickNumber)
 				{
-					Console.WriteLine("SEVERE ERROR!  LINE 115 of DraftModel.cs");
+					//Console.Writeline("SEVERE ERROR!  LINE 115 of DraftModel.cs");
 				}
 
 				record.CurrentTeamId = finalDraftOrder[count];
@@ -2496,7 +2498,7 @@ namespace MaddenEditor.Core
 
 			foreach (KeyValuePair<int, TeamRecord> team in model.TeamModel.GetTeamRecords())
 			{
-				Console.WriteLine(5 - pickNumber / 32);
+				//Console.Writeline(5 - pickNumber / 32);
 				if (team.Value.TeamId >= 32) { continue; }
 
 				double HighestValue = 0;
@@ -2569,7 +2571,7 @@ namespace MaddenEditor.Core
 			}
 			/*
             foreach(KeyValuePair<int,RookieRecord> rook in favorites) {
-                Console.WriteLine(rook.Key + " " + rook.Value.Player.ToString());
+                //Console.Writeline(rook.Key + " " + rook.Value.Player.ToString());
             }
             */
 			return toReturn;
@@ -2959,12 +2961,12 @@ namespace MaddenEditor.Core
 
             
 			int team = 10;
-			Console.WriteLine(model.TeamModel.GetTeamRecord(team).CON);
+			//Console.Writeline(model.TeamModel.GetTeamRecord(team).CON);
 
 			for (int i = 0; i < depthChart[team].Count; i++) {
 				for(int j = 0; j < depthChart[team][i].Count; j++) {
 					PlayerRecord rec = depthChart[team][i][j];
-					Console.WriteLine(rec.PositionId + " " + j + " " + rec.EffectiveOVR + " " + rec.Overall + " " + rec.Injury + " " + math.injury(rec.Injury) + " " + rec.YearsPro);
+					//Console.Writeline(rec.PositionId + " " + j + " " + rec.EffectiveOVR + " " + rec.Overall + " " + rec.Injury + " " + math.injury(rec.Injury) + " " + rec.YearsPro);
 				}
 			}
             
@@ -3124,7 +3126,7 @@ namespace MaddenEditor.Core
 
 			for (int i = 0; i < 32 * 7; i++)
 			{
-				Console.WriteLine(i + ": " + pickValues[i] + " " + values[i]);
+				//Console.Writeline(i + ": " + pickValues[i] + " " + values[i]);
 				variance += (values[i] - pickValues[i]) / pickValues[i];
 				varianceSquared += Math.Pow((values[i] - pickValues[i]) / pickValues[i], 2);
 
@@ -3148,8 +3150,8 @@ namespace MaddenEditor.Core
 
                 for (int i = 0; i < 21; i++)
                 {
-                    //Console.WriteLine(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i]*extras[i] * 40.0 / 256.0, 1) + "\t" + over75[i]);
-                    //Console.WriteLine(over75[i]);
+                    ////Console.Writeline(Enum.GetNames(typeof(MaddenPositions))[i] + "\t" + Math.Round(ideals[i]*extras[i] * 40.0 / 256.0, 1) + "\t" + over75[i]);
+                    ////Console.Writeline(over75[i]);
                     toReturn += Enum.GetNames(typeof(MaddenPositions))[i].ToString() + ":  ";
                     toReturn += "80+ (" + over80[i] + "/" + Math.Round(extras[i] * ideals[i] * 10.0 / 257.0, 1) + "), ";
                     toReturn += "75+ (" + over75[i] + "/" + Math.Round(extras[i] * ideals[i] * 40.0 / 257.0, 1) + "), ";
@@ -3168,7 +3170,7 @@ namespace MaddenEditor.Core
                 }
                 else if (variance > 257.0 * 3.5 && variance < 257.0 * 5.0)
                 {
-                    Console.WriteLine("line 3171");
+                    //Console.Writeline("line 3171");
                     toRec--;
                 }
 
@@ -3178,7 +3180,7 @@ namespace MaddenEditor.Core
                 }
                 else if (varianceSquared > 257.0 * 20.25 && varianceSquared < 257.0 * 25.0)
                 {
-                    Console.WriteLine("line 3181");
+                    //Console.Writeline("line 3181");
                     toRec--;
                 }
             
@@ -3189,7 +3191,7 @@ namespace MaddenEditor.Core
                 }
                 else if (weightedVariance > weightedDenominator * 3.25 && weightedVariance < 4.75 * weightedDenominator)
                 {
-                    Console.WriteLine("line 3192");
+                    //Console.Writeline("line 3192");
                     toRec--;
                 }
                 
@@ -3199,7 +3201,7 @@ namespace MaddenEditor.Core
                 }
                 else if (weightedVarianceSquared > weightedDenominator * 16 && weightedVarianceSquared < weightedDenominator * 30.25)
                 {
-                    Console.WriteLine("line 3202");
+                    //Console.Writeline("line 3202");
                     toRec--;
                 }
 
@@ -3216,7 +3218,7 @@ namespace MaddenEditor.Core
                     recommendation = 0; // Do not use
                 }
 
-                Console.WriteLine("Recommendation: " + recommendation);
+                //Console.Writeline("Recommendation: " + recommendation);
             }
 
 			toReturn += "\nValue Variance: " + Math.Round(variance / 257.0, 2) + ", Value Variance Squared: " + Math.Round(Math.Pow(varianceSquared / 257.0, 0.5), 2) + "\n";
@@ -3947,7 +3949,7 @@ namespace MaddenEditor.Core
 					}
 				}
 
-				Console.WriteLine("\n\nSEVERE ERROR!\n\n");
+				//Console.Writeline("\n\nSEVERE ERROR!\n\n");
 				return -1;
 			}
 
