@@ -1,0 +1,14 @@
+To add a new table to the internal database:
+
+(1) Add the table name to the top of EditorModel.
+(2) Add table name to list of tables to process in EditorModel.ProcessFile().
+(3) Create a ___Record class with needed field names and other attributes.
+(4) Add table name and appropriate Record class to switch in TableModel.ConstructRecordModel.
+
+------------------------
+
+TO DO
+
+(1) Improve Depth Chart sorting algorithm in DraftModel.GenerateDepthChart
+
+COWBOYS POSITION 9
