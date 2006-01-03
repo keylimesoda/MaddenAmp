@@ -72,12 +72,13 @@
     <Compile Include="Core\Record\ScheduleRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreTeamRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsOffenseRecord.cs" />
     <Compile Include="Core\Record\FranchiseStateRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
-    <Compile Include="Core\Record\Stats\TeamStatsRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsTeamRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
     <Compile Include="Core\ScheduleEditingModel.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
@@ -358,6 +359,7 @@
   <ItemGroup>
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
+    <Content Include="How to Add a Table.txt" />
     <Content Include="Notes.txt" />
   </ItemGroup>
   <ItemGroup>

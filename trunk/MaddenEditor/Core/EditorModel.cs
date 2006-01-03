@@ -121,6 +121,7 @@ namespace MaddenEditor.Core
         public const string CAREER_STATS_OFFENSE_TABLE = "PCOF";
         public const string CAREER_STATS_DEFENSE_TABLE = "PCDE";
         public const string TEAM_STATS_TABLE = "TSSE";
+        public const string BOXSCORE_TEAM_TABLE = "BTES";
 
 		private List<string[]> draftClassFields;
 
@@ -376,6 +377,7 @@ namespace MaddenEditor.Core
                     tableOrder.Add(CAREER_STATS_DEFENSE_TABLE, -1);
                     tableOrder.Add(CAREER_STATS_OFFENSE_TABLE, -1);
                     tableOrder.Add(TEAM_STATS_TABLE, -1);
+                    tableOrder.Add(BOXSCORE_TEAM_TABLE, -1);
                     tableOrder.Add(FRANCHISE_STATE_TABLE, -1);
                     // MADDEN DRAFT EDIT
 					if (fileVersion >= MaddenFileVersion.Ver2005)

@@ -235,10 +235,13 @@ namespace MaddenEditor.Core
                     newRecord = new SeasonStatsOffenseRecord(recno, this, parentModel);
                     break;
                 case EditorModel.TEAM_STATS_TABLE:
-                    newRecord = new TeamStatsRecord(recno, this, parentModel);
+                    newRecord = new SeasonStatsTeamRecord(recno, this, parentModel);
                     break;
                 case EditorModel.FRANCHISE_STATE_TABLE:
                     newRecord = new FranchiseStateRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.BOXSCORE_TEAM_TABLE:
+                    newRecord = new BoxScoreTeamRecord(recno, this, parentModel);
                     break;
 				// MADDEN DRAFT EDIT
 				case EditorModel.GAME_OPTIONS_TABLE:

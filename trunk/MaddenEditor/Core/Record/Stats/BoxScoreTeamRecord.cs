@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.Stats
 {
-    public class TeamStatsRecord : TableRecordModel
+    class BoxScoreTeamRecord : TableRecordModel
     {
         public const string TOTAL_YARDS = "tsTy";
         public const string TOTAL_OFFENSE = "tsoy";
@@ -12,7 +12,12 @@ namespace MaddenEditor.Core.Record.Stats
         public const string RUSHING_YARDS = "tsor";
         public const string PASSING_TDS = "tdPt";
         public const string RUSHING_TDS = "tsrt";
+        public const string RUSHING_ATTEMPTS = "tsra";
         public const string FIRST_DOWNS = "ts1d";
+        public const string THIRD_DOWN_ATTEMPTS = "ts3d";
+        public const string THIRD_DOWN_CONVERSIONS = "ts3c";
+        public const string FOURTH_DOWN_ATTEMPTS = "ts4d";
+        public const string FOURTH_DOWN_CONVERSIONS = "ts4c";
         public const string SACKS_ALLOWED = "tssa";
         public const string PASSING_YARDS_ALLOWED = "tsdp";
         public const string RUSHING_YARDS_ALLOWED = "tsdy";
@@ -23,8 +28,10 @@ namespace MaddenEditor.Core.Record.Stats
         public const string FUMBLES_LOST = "tsfl";
 
         public const string TEAM_ID = "TGID";
+        public const string SEASON = "SEYR";
+        public const string WEEK = "SEWN";
 
-        public TeamStatsRecord(int record, TableModel tableModel, EditorModel EditorModel)
+        public BoxScoreTeamRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
@@ -39,6 +46,30 @@ namespace MaddenEditor.Core.Record.Stats
             set
             {
                 SetField(TEAM_ID, value);
+            }
+        }
+
+        public int Season
+        {
+            get
+            {
+                return GetIntField(SEASON);
+            }
+            set
+            {
+                SetField(SEASON, value);
+            }
+        }
+
+        public int Week
+        {
+            get
+            {
+                return GetIntField(WEEK);
+            }
+            set
+            {
+                SetField(WEEK, value);
             }
         }
 
@@ -63,6 +94,18 @@ namespace MaddenEditor.Core.Record.Stats
             set
             {
                 SetField(RUSHING_YARDS, value);
+            }
+        }
+
+        public int RushingAttempts
+        {
+            get
+            {
+                return GetIntField(RUSHING_ATTEMPTS);
+            }
+            set
+            {
+                SetField(RUSHING_ATTEMPTS, value);
             }
         }
 
@@ -183,6 +226,54 @@ namespace MaddenEditor.Core.Record.Stats
             set
             {
                 SetField(FIRST_DOWNS, value);
+            }
+        }
+
+        public int ThirdDownAttempts
+        {
+            get
+            {
+                return GetIntField(THIRD_DOWN_ATTEMPTS);
+            }
+            set
+            {
+                SetField(THIRD_DOWN_ATTEMPTS, value);
+            }
+        }
+
+        public int ThirdDownConversions
+        {
+            get
+            {
+                return GetIntField(THIRD_DOWN_CONVERSIONS);
+            }
+            set
+            {
+                SetField(THIRD_DOWN_CONVERSIONS, value);
+            }
+        }
+
+        public int FourthDownAttempts
+        {
+            get
+            {
+                return GetIntField(FOURTH_DOWN_ATTEMPTS);
+            }
+            set
+            {
+                SetField(FOURTH_DOWN_ATTEMPTS, value);
+            }
+        }
+
+        public int FourthDownConversions
+        {
+            get
+            {
+                return GetIntField(FOURTH_DOWN_CONVERSIONS);
+            }
+            set
+            {
+                SetField(FOURTH_DOWN_CONVERSIONS, value);
             }
         }
 
