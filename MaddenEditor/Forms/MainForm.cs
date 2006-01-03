@@ -744,6 +744,15 @@ namespace MaddenEditor.Forms
             wm.Show();
         }
 
+       
+        private void trainingCampToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampOffSeason tcos = new TrainingCampOffSeason(model);
+            tcos.initialiseUI();
+            //  form.Show(this);
+            tcos.Show();
+        }
+
 		// MADDEN DRAFT EDIT
 
 	}
