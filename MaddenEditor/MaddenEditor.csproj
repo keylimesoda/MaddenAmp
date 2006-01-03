@@ -70,6 +70,14 @@
     <Compile Include="Core\Record\RookieRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\Record\ScheduleRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreDefenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerStatsDefenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerStatsOffenseRecord.cs" />
+    <Compile Include="Core\Record\FranchiseStateRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\TeamStatsRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
     <Compile Include="Core\ScheduleEditingModel.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
@@ -195,6 +203,12 @@
     <Compile Include="Forms\CoachEditControl.Designer.cs">
       <DependentUpon>CoachEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Slider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Slider.Designer.cs">
+      <DependentUpon>Slider.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TeamCaptainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -287,6 +301,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CoachEditControl.resx">
       <DependentUpon>CoachEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Slider.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Slider.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TeamCaptainForm.resx">
       <DependentUpon>TeamCaptainForm.cs</DependentUpon>

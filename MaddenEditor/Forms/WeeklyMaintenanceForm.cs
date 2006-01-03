@@ -9,11 +9,24 @@ using System.IO;
 
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.Record.Stats;
 
 namespace MaddenEditor.Forms
 {
     public partial class WeeklyMaintenanceForm : Form
     {
+        const double sackProbability = 0.725;
+        const double passingYardsMultiplier = 1.104;
+        const double rushingYardsMultiplier = 1.0;
+        const double sackedYardsMultiplier = 0.903;
+        const double rushingAttemptsMultiplier = 0.9285;
+        const double interceptionsProbability = 0.86;
+        const double fumbleProbability = 1;
+        const double fumbleForcedProbability = 1;
+        const double fumbleRecoveredProbability = 1;
+
+        Random rand = new Random();
+
         private bool triggerChangedEvent = true;
         private bool dirty = false;
         private EditorModel model;
@@ -313,6 +326,7 @@ namespace MaddenEditor.Forms
             reorderDepthCharts.Checked = false;
             coachSim.Checked = false;
             coachGame.Checked = false;
+            fixSimEngine.Checked = false;
 
             StreamReader sr = new StreamReader(installDirectory + "\\settings\\" + profile);
 
@@ -332,6 +346,10 @@ namespace MaddenEditor.Forms
                 else if (splitLine[0] == "ReorderDepthCharts")
                 {
                     reorderDepthCharts.Checked = true;
+                }
+                else if (splitLine[0] == "FixSimEngine")
+                {
+                    fixSimEngine.Checked = true;
                 }
                 else if (splitLine[0] == "Fumbles")
                 {
@@ -462,6 +480,11 @@ namespace MaddenEditor.Forms
                 sw.WriteLine("UseCoachSim");
             }
 
+            if (fixSimEngine.Checked)
+            {
+                sw.WriteLine("FixSimEngine");
+            }
+
             sw.WriteLine("Fumbles\t" + fumbleSlider.Value);
             sw.WriteLine("QBAccuracy\t" + accuracySlider.Value);
             sw.WriteLine("QBInjury\t" + qbInjurySlider.Value);
@@ -515,6 +538,42 @@ namespace MaddenEditor.Forms
 
         private void makeAdjustmentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+/*
+            int HCOffRP = 0;
+            int HCOffAgg = 0;
+            int HCDefRP = 0;
+            int HCDefAgg = 0;
+
+            int OffRP = 0;
+            int OffAgg = 0;
+            int DefRP = 0;
+            int DefAgg = 0;
+
+            int numCoaches = 0;
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+            {
+                CoachRecord coach = (CoachRecord)record;
+
+                if (!(coach.TeamId >= 0 && coach.TeamId < 32))
+                    continue;
+                
+                numCoaches++;
+
+                OffRP += coach.OffensiveStrategy;
+                OffAgg += coach.OffensiveAggression;
+                DefRP += coach.DefensiveStrategy;
+                DefAgg += coach.DefensiveAggression;
+
+                if (coach.Position == 0)
+                {
+                    HCOffRP += coach.OffensiveStrategy;
+                    HCOffAgg += coach.OffensiveAggression;
+                    HCDefRP += coach.DefensiveStrategy;
+                    HCDefAgg += coach.DefensiveAggression;
+                }
+            }
+*/
             DialogResult dr = MessageBox.Show("Do weekly maintenance?", "Continue?", MessageBoxButtons.YesNo);
 
             if (dr == DialogResult.No)
@@ -526,12 +585,321 @@ namespace MaddenEditor.Forms
             this.Update();
             Cursor.Current = Cursors.WaitCursor;
             
+            int currentWeek = model.FranchiseState.Week;
+
+            /*
+            int currentWeek = 30;
+            foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+            {
+                if (record.State.Id == 1 && record.WeekNumber < currentWeek)
+                {
+                    currentWeek = record.WeekNumber;
+                }
+            }
+             */
+
+
+            // Fix the previous week's statistics if so desired
+            if (fixSimEngine.Checked && currentWeek > 0)
+                RepairWeek(currentWeek);
+
+            /*
+                Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
+                Random rand = new Random();
+                List<int> humanControlled = new List<int>();
+                int currentSeason = model.FranchiseState.Season;
+
+                // season and career stats indexed by PGID
+                Dictionary<int, SeasonStatsOffenseRecord> seasonStatsOffense = new Dictionary<int, SeasonStatsOffenseRecord>();
+                Dictionary<int, SeasonStatsDefenseRecord> seasonStatsDefense = new Dictionary<int, SeasonStatsDefenseRecord>();
+                Dictionary<int, CareerStatsOffenseRecord> careerStatsOffense = new Dictionary<int, CareerStatsOffenseRecord>();
+                Dictionary<int, CareerStatsDefenseRecord> careerStatsDefense = new Dictionary<int, CareerStatsDefenseRecord>();
+                Dictionary<int, TeamStatsRecord> teamStats = new Dictionary<int, TeamStatsRecord>();
+
+                foreach (SeasonStatsDefenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_DEFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Season == currentSeason)
+                        seasonStatsDefense[stat.PlayerId] = stat;
+                }
+
+                foreach (SeasonStatsOffenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Season == currentSeason)
+                        seasonStatsOffense[stat.PlayerId] = stat;
+                }
+
+                foreach (CareerStatsDefenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_DEFENSE_TABLE].GetRecords())
+                    careerStatsDefense[stat.PlayerId] = stat;
+
+                foreach (CareerStatsOffenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].GetRecords())
+                    careerStatsOffense[stat.PlayerId] = stat;
+
+                foreach (TeamStatsRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
+                    teamStats[stat.TeamId] = stat;
+
+                foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+                {
+                    if (record.WeekNumber == currentWeek - 1 && record.HumanControlled)
+                    {
+                        humanControlled.Add(record.AwayTeam.TeamId);
+                        humanControlled.Add(record.HomeTeam.TeamId);
+                        continue;
+                    }
+
+                    if (record.WeekNumber == currentWeek - 1)
+                    {
+                        previousOpponents[record.AwayTeam.TeamId] = record.HomeTeam.TeamId;
+                        previousOpponents[record.HomeTeam.TeamId] = record.AwayTeam.TeamId;
+                    }
+                }
+
+                Dictionary<int, List<BoxScoreOffenseRecord>> interceptees = new Dictionary<int,List<BoxScoreOffenseRecord>>();
+                Dictionary<int, List<BoxScoreOffenseRecord>> sackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+                Dictionary<int, List<BoxScoreOffenseRecord>> OLsackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+                Dictionary<int, List<BoxScoreOffenseRecord>> fumblers = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+                
+                Dictionary<int, BoxScoreOffenseRecord> maxPassers = new Dictionary<int, BoxScoreOffenseRecord>();
+                Dictionary<int, BoxScoreOffenseRecord> startingRBs = new Dictionary<int, BoxScoreOffenseRecord>();
+                Dictionary<int, BoxScoreOffenseRecord> backupRBs = new Dictionary<int, BoxScoreOffenseRecord>();
+
+                Dictionary<int, int> startingRBIDs = new Dictionary<int, int>();
+                Dictionary<int, int> backupRBIDs = new Dictionary<int, int>();
+
+                foreach (DepthChartRecord dcr in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+                {
+                    if (dcr.PositionId == (int)MaddenPositions.HB)
+                    {
+                        if (dcr.DepthOrder == 0)
+                            startingRBIDs[dcr.TeamId] = dcr.PlayerId;
+                        else if (dcr.DepthOrder == 1)
+                            backupRBIDs[dcr.TeamId] = dcr.PlayerId;
+                    }
+                }
+
+                for (int i = 0; i < 32; i++)
+                {
+                    interceptees[i] = new List<BoxScoreOffenseRecord>();
+                    fumblers[i] = new List<BoxScoreOffenseRecord>();
+                    sackees[i] = new List<BoxScoreOffenseRecord>();
+                }
+
+                foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId) && stat.Season == currentSeason)
+                    {
+                        if (startingRBIDs.ContainsValue(stat.PlayerId))
+                            startingRBs[stat.TeamId] = stat;
+                        else if (backupRBIDs.ContainsValue(stat.PlayerId))
+                            backupRBs[stat.TeamId] = stat;
+
+                        if (stat.Interceptions > 0)
+                            interceptees[stat.TeamId].Add(stat);
+
+                        if (stat.Fumbles > 0)
+                            fumblers[stat.TeamId].Add(stat);
+
+                        if (stat.Sacks > 0)
+                            sackees[stat.TeamId].Add(stat);
+
+                        if (stat.PassingYards > 0)
+                        {
+                            if (!maxPassers.ContainsKey(stat.TeamId) || maxPassers[stat.TeamId].PassingYards < stat.PassingYards)
+                                maxPassers[stat.TeamId] = stat;
+                        }
+                    }
+                }
+
+                /*
+                 * // fix sack yardage lost
+                for (int i = 0; i < 32; i++)
+                {
+                    for (int j = 0; j < sackees[i].Count; j++)
+                    {
+                        int yardsToSubtract = (int)Math.Round((double)sackees[i][j]
+                    }
+                }
+                 * */
+            /*
+                // fix defense
+                foreach (BoxScoreDefenseRecord stat in model.TableModels[EditorModel.BOXSCORE_DEFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week != currentWeek - 1 || humanControlled.Contains(stat.TeamId) || stat.Season != currentSeason)
+                        continue;
+
+                    for (int i = 0; i < stat.Interceptions; i++)
+                    {
+                        if (rand.NextDouble() > interceptionsProbability)
+                        {
+                            // should also subtract from int yards, long int, defensive TDs?
+                            stat.Interceptions--;
+                            seasonStatsDefense[stat.PlayerId].Interceptions--;
+                            careerStatsDefense[stat.PlayerId].Interceptions--;
+                            
+                            int subtractFrom = rand.Next(interceptees[previousOpponents[stat.TeamId]].Count);
+                            int QBPGID = interceptees[previousOpponents[stat.TeamId]][subtractFrom].PlayerId;
+                            interceptees[previousOpponents[stat.TeamId]][subtractFrom].Interceptions--;
+
+                            if (interceptees[previousOpponents[stat.TeamId]][subtractFrom].Interceptions == 0)
+                                interceptees[previousOpponents[stat.TeamId]].RemoveAt(subtractFrom);
+
+                            seasonStatsOffense[QBPGID].Interceptions--;
+                            careerStatsOffense[QBPGID].Interceptions--;
+
+                            teamStats[stat.TeamId].InterceptionsCaught--;
+                            teamStats[previousOpponents[stat.TeamId]].InterceptionsThrown--;
+                        }
+                    }
+
+                    for (int i = 0; i < stat.Sacks; i++)
+                    {
+                        if (rand.NextDouble() > sackProbability)
+                        {
+                            stat.Sacks--;
+                            seasonStatsDefense[stat.PlayerId].Sacks--;
+                            careerStatsDefense[stat.PlayerId].Sacks--;
+
+
+                            int subtractFrom = rand.Next(sackees[previousOpponents[stat.TeamId]].Count);
+                            int QBPGID = sackees[previousOpponents[stat.TeamId]][subtractFrom].PlayerId;
+
+                            sackees[previousOpponents[stat.TeamId]][subtractFrom].Sacks--;
+                            if (sackees[previousOpponents[stat.TeamId]][subtractFrom].Sacks == 0)
+                                sackees[previousOpponents[stat.TeamId]].RemoveAt(subtractFrom);
+
+                            seasonStatsOffense[QBPGID].Sacks--;
+                            careerStatsOffense[QBPGID].Sacks--;
+
+                            teamStats[stat.TeamId].Sacks--;
+                            teamStats[previousOpponents[stat.TeamId]].SacksAllowed--;
+
+                            // we need to add back about 9 yards for every sack we take away.
+                            teamStats[previousOpponents[stat.TeamId]].PassingYards += 9;
+                            teamStats[previousOpponents[stat.TeamId]].TotalOffense += 9;
+                            teamStats[previousOpponents[stat.TeamId]].TotalYards += 9;
+                        }
+                    }
+                }
+
+                // fix passing yards and rushing yards / attempts
+                foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week != currentWeek - 1 || humanControlled.Contains(stat.TeamId) || stat.Season != currentSeason ||
+                        model.PlayerModel.GetPlayerByPlayerId(stat.PlayerId).PositionId < (int)MaddenPositions.HB ||
+                        model.PlayerModel.GetPlayerByPlayerId(stat.PlayerId).PositionId > (int)MaddenPositions.TE)
+                        continue;
+
+                    int yardsToAdd = (int)Math.Round((double)stat.ReceivingYards * (passingYardsMultiplier - 1.0));
+                    stat.ReceivingYards += yardsToAdd;
+                    seasonStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+                    careerStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+
+                    maxPassers[stat.TeamId].PassingYards += yardsToAdd;
+                    seasonStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+                    careerStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+
+                    teamStats[stat.TeamId].TotalYards += yardsToAdd;
+                    teamStats[stat.TeamId].TotalOffense += yardsToAdd;
+                    teamStats[stat.TeamId].PassingYards += yardsToAdd;
+                    teamStats[previousOpponents[stat.TeamId]].PassingYardsAllowed += yardsToAdd;
+
+                    int rushAttemptsSubtracted = (int)Math.Round((double)stat.RushingAttempts * (1.0 - rushingAttemptsMultiplier));
+                    stat.RushingAttempts -= rushAttemptsSubtracted;
+                    seasonStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
+                    careerStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
+
+                    int rushYardsToAdd = (int)Math.Round((double)stat.RushingYards * (rushingYardsMultiplier - 1.0));
+                    stat.RushingYards += rushYardsToAdd;
+                    seasonStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
+                    careerStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
+
+                    teamStats[stat.TeamId].TotalYards += rushYardsToAdd;
+                    teamStats[stat.TeamId].TotalOffense += rushYardsToAdd;
+                    teamStats[stat.TeamId].RushingYards += rushYardsToAdd;
+                    teamStats[previousOpponents[stat.TeamId]].RushingYards += rushYardsToAdd;
+                }
+
+                // fix RB stats
+                for (int i = 0; i < 32; i++)
+                {
+                    // this shouldn't really happen if they're using Weekly
+                    // Maintenance properly, but this at least prevents
+                    // an exception.
+                    if (!startingRBs.ContainsKey(i))
+                        continue;
+
+                    double HB2frac = 1.0 - ((double)RBSlider(i)) / 100.0;
+                    double yardageMultipler = ((double)model.PlayerModel.GetPlayerByPlayerId(backupRBIDs[i]).Overall / (double)model.PlayerModel.GetPlayerByPlayerId(startingRBIDs[i]).Overall);
+
+                    int carries = (int)Math.Round(HB2frac * (double)startingRBs[i].RushingAttempts);
+                    int yards = (int)Math.Round(HB2frac * (double)startingRBs[i].RushingYards);
+
+                    startingRBs[i].RushingAttempts -= carries;
+                    startingRBs[i].RushingYards -= yards;
+                    seasonStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
+                    seasonStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+                    careerStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
+                    careerStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+
+                    teamStats[i].TotalYards -= yards;
+                    teamStats[i].TotalOffense -= yards;
+                    teamStats[i].RushingYards -= yards;
+                    teamStats[previousOpponents[i]].RushingYardsAllowed -= yards;
+
+                    BoxScoreOffenseRecord backupRBBox = null;
+                    SeasonStatsOffenseRecord backupRBSeason = null;
+                    CareerStatsOffenseRecord backupRBCareer = null;
+                    
+                    if (backupRBs.ContainsKey(i))
+                        backupRBBox = backupRBs[i];
+                    else
+                    {
+                        backupRBBox = (BoxScoreOffenseRecord)model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].CreateNewRecord(true);
+                        backupRBBox.PlayerId = backupRBIDs[i];
+                        backupRBBox.TeamId = i;
+                        backupRBBox.Week = currentWeek - 1;
+                        backupRBBox.Season = currentSeason;
+                    }
+
+                    if (seasonStatsOffense.ContainsKey(backupRBIDs[i]))
+                        backupRBSeason = seasonStatsOffense[backupRBIDs[i]];
+                    else
+                    {
+                        backupRBSeason = (SeasonStatsOffenseRecord)model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].CreateNewRecord(true);
+                        backupRBSeason.PlayerId = backupRBIDs[i];
+                        backupRBSeason.Season = currentSeason;
+                    }
+
+                    if (careerStatsOffense.ContainsKey(backupRBIDs[i]))
+                        backupRBCareer = careerStatsOffense[backupRBIDs[i]];
+                    else
+                    {
+                        backupRBCareer = (CareerStatsOffenseRecord)model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].CreateNewRecord(true);
+                        backupRBCareer.PlayerId = backupRBIDs[i];
+                    }
+
+                    backupRBBox.RushingAttempts += carries;
+                    backupRBSeason.RushingAttempts += carries;
+                    backupRBCareer.RushingAttempts += carries;
+
+                    int backupYards = (int)Math.Round((double)yards * yardageMultipler);
+                    backupRBBox.RushingYards += backupYards;
+                    backupRBSeason.RushingYards += backupYards;
+                    backupRBCareer.RushingYards += backupYards;
+
+                    teamStats[i].TotalYards += backupYards;
+                    teamStats[i].TotalOffense += backupYards;
+                    teamStats[i].RushingYards += backupYards;
+                    teamStats[previousOpponents[i]].RushingYardsAllowed += backupYards;
+                }
+            }
+            */
+
             RevertRatings();
 
             if (reorderDepthCharts.Checked)
             {
                 DepthChartRepairer dcr = new DepthChartRepairer(model, null);
-                
+
                 List<int> toSkip = new List<int>();
                 foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
                 {
@@ -549,24 +917,63 @@ namespace MaddenEditor.Forms
             List<int> toAdjust = new List<int>();
             Dictionary<int, int> opponents = new Dictionary<int, int>();
 
-            int currentWeek = 30;
             foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
             {
-                if (record.State.Id == 1 && record.WeekNumber < currentWeek)
+                if (record.WeekNumber == currentWeek)
                 {
-                    currentWeek = record.WeekNumber;
-                }
-            }
-
-            foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
-            {
-                if (record.WeekNumber == currentWeek && record.HumanControlled)
-                {
-                    toAdjust.Add(record.AwayTeam.TeamId);
-                    toAdjust.Add(record.HomeTeam.TeamId);
+                    if (record.HumanControlled)
+                    {
+                        toAdjust.Add(record.AwayTeam.TeamId);
+                        toAdjust.Add(record.HomeTeam.TeamId);
+                    }
 
                     opponents.Add(record.HomeTeam.TeamId, record.AwayTeam.TeamId);
                     opponents.Add(record.AwayTeam.TeamId, record.HomeTeam.TeamId);
+                }
+            }
+
+            List<List<double>> squadRatings = null;
+            if (coachGame.Checked || coachSim.Checked)
+            {
+                squadRatings = CalculateSquadRatings();
+
+                for (int j = 0; j < 4; j++)
+                {
+                    double max=0;
+                    double min=0;
+
+                    /*
+                    for (int i = 0; i < 32; i++)
+                    {
+                        max = Math.Max(squadRatings[i][j], max);
+                        min = Math.Min(squadRatings[i][j], min);
+                    }
+                    */
+
+                    switch (j)
+                    {
+                        case 0:
+                            max = 2340;
+                            min = 2040;
+                            break;
+                        case 1:
+                            max = 2320;
+                            min = 2080;
+                            break;
+                        case 2:
+                            max = 2730;
+                            min = 2430;
+                            break;
+                        case 3:
+                            max = 2400;
+                            min = 2060;
+                            break;
+                    }
+
+                    for (int i = 0; i < 32; i++)
+                    {
+                        squadRatings[i][j] = Math.Min(Math.Max(10 * (squadRatings[i][j] - min) / (max - min), 0), 10);
+                    }
                 }
             }
 
@@ -756,18 +1163,43 @@ namespace MaddenEditor.Forms
 
                 sw.Close();
             }
-            
-            foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
-            {
-                CoachRecord coach = (CoachRecord)record;
 
-                coach.OffensiveStrategy = 60;
-                coach.OffensiveAggression = 60;
-                coach.DefensiveStrategy = 40;
-                coach.DefensiveAggression = 30;
+            if (coachSim.Checked)
+            {
+                foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+                {
+                    CoachRecord coach = (CoachRecord)record;
+                    /*
+                    coach.OffensiveStrategy = (int)Math.Round(Math.Max(Math.Min((double)simOffRPSlider.Value + ((double)offMaxAdjustSlider.Value)*(squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensivePassing] - squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensiveRunning] - squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensivePassing] + squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensiveRunning]) / 20.0, 79), 21));
+                    coach.DefensiveStrategy = Math.Max(Math.Min(simDefRPSlider.Value, 79), 21);
+
+                    coach.OffensiveAggression = simOffAggSlider.Value;
+                    coach.DefensiveAggression = simDefAggSlider.Value;
+                     * */
+
+                    coach.OffensiveStrategy = 53;
+                    coach.OffensiveAggression = 53;
+                    coach.DefensiveStrategy = 50;
+                    coach.DefensiveAggression = 51;
+
+                    Console.Write(coach.RunningBack2Sub + " ");
+                    coach.RunningBack2Sub = 60 + (int)Math.Min(Math.Max(40 * Math.Tanh((squadRatings[coach.TeamId][4] - squadRatings[coach.TeamId][5]) / 18), 0), 30);
+                    Console.WriteLine(coach.RunningBack2Sub);
+                }
             }
 
             Cursor.Current = Cursors.Arrow;
+        }
+
+        int RBSlider(int TeamId)
+        {
+            foreach (CoachRecord coach in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+            {
+                if (coach.TeamId == TeamId && coach.Position == (int)MaddenCoachPosition.HeadCoach)
+                    return coach.RunningBack2Sub;
+            }
+
+            return -1;
         }
 
         private void WeeklyMaintenanceForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -783,9 +1215,599 @@ namespace MaddenEditor.Forms
             }
         }
 
+        List<List<double>> CalculateSquadRatings()
+        {
+            List<List<double>> toReturn = new List<List<double>>();
+
+            for (int i = 0; i < 32; i++)
+            {
+                toReturn.Add(new List<double>());
+
+                for (int j = 0; j < 6; j++)
+                {
+                    toReturn[i].Add(0);
+                }
+            }
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+            {
+                DepthChartRecord dcrecord = (DepthChartRecord)record;
+
+                if (dcrecord.TeamId > 31 || (dcrecord.DepthOrder > 0 &&
+                    !(dcrecord.PositionId == (int)MaddenPositions.HB ||
+                    dcrecord.PositionId == (int)MaddenPositions.WR ||
+                    dcrecord.PositionId == (int)MaddenPositions.CB)))
+                    continue;
+
+                PlayerRecord player = model.PlayerModel.GetPlayerByPlayerId(dcrecord.PlayerId);
+
+                if (dcrecord.PositionId == (int)MaddenPositions.HB)
+                {
+                    if (dcrecord.DepthOrder > 1)
+                        continue;
+
+                    toReturn[dcrecord.TeamId][dcrecord.DepthOrder + 4] = player.Overall;
+                }
+
+                switch (dcrecord.PositionId)
+                {
+                    case (int)MaddenPositions.QB:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensivePassing] += 5.0 * (double)player.Overall;
+                        break;
+                    case (int)MaddenPositions.HB:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensivePassing] += (double)player.Overall / Math.Pow((1.0 + (double)dcrecord.DepthOrder), 2);
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensiveRunning] += 5.0 * (double)player.Overall / (1.0 + (double)dcrecord.DepthOrder);
+                        break;
+                    case (int)MaddenPositions.FB:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensiveRunning] += 2.0 * (double)player.Overall;
+                        break;
+                    case (int)MaddenPositions.WR:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensivePassing] += 3.0 * (double)player.Overall / Math.Pow(Math.Max(1.0, (double)dcrecord.DepthOrder), 2);
+                        break;
+                    case (int)MaddenPositions.TE:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensivePassing] += 2.0 * ((double)player.Overall - 5 + (player.Tendancy == 1 ? 10.0 : 0) - (player.Tendancy == 0 ? 5.0 : 0));
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensiveRunning] += ((double)player.Overall - (player.Tendancy == 1 ? 5.0 : 0) + (player.Tendancy == 0 ? 5.0 : 0));
+                        break;
+                    case (int)MaddenPositions.LT:
+                    case (int)MaddenPositions.LG:
+                    case (int)MaddenPositions.C:
+                    case (int)MaddenPositions.RG:
+                    case (int)MaddenPositions.RT:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensivePassing] += 2.0 * ((double)player.Overall + (player.Tendancy == 1 ? 5.0 : 0) - (player.Tendancy == 0 ? 5.0 : 0));
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.OffensiveRunning] += 3.0 * ((double)player.Overall - (player.Tendancy == 1 ? 5.0 : 0) + (player.Tendancy == 0 ? 5.0 : 0));
+                        break;
+                    case (int)MaddenPositions.LE:
+                    case (int)MaddenPositions.RE:
+                    case (int)MaddenPositions.DT:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensiveRunning] += 4.0 * ((double)player.Overall + (player.Tendancy == 1 ? 10.0 : 0) - (player.Tendancy == 0 ? 10.0 : 0));
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensivePassing] += 3.0 * ((double)player.Overall - (player.Tendancy == 1 ? 10.0 : 0) + (player.Tendancy == 0 ? 10.0 : 0));
+                        break;
+                    case (int)MaddenPositions.LOLB:
+                    case (int)MaddenPositions.MLB:
+                    case (int)MaddenPositions.ROLB:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensiveRunning] += 4.0 * ((double)player.Overall + (player.Tendancy == 1 ? 5.0 : 0) - (player.Tendancy == 0 ? 5.0 : 0));
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensivePassing] += ((double)player.Overall - (player.Tendancy == 1 ? 5.0 : 0) + (player.Tendancy == 0 ? 5.0 : 0));
+                        break;
+                    case (int)MaddenPositions.CB:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensivePassing] += 5.0 * (double)player.Overall / Math.Pow(Math.Max(1.0, (double)dcrecord.DepthOrder), 2);
+                        break;
+                    case (int)MaddenPositions.FS:
+                    case (int)MaddenPositions.SS:
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensiveRunning] += (double)player.Overall;
+                        toReturn[dcrecord.TeamId][(int)MaddenSquadRatings.DefensivePassing] += 3.0 * (double)player.Overall;
+                        break;
+                }
+            }
+
+            return toReturn;
+        }
+
         private void CheckedChanged(object sender, EventArgs e)
         {
             dirty = true;
         }
+
+        private void dumpStatsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int currentSeason = model.FranchiseState.Season;
+
+            int passingOffense = 0;
+            int rushingOffense = 0;
+            int passingYards = 0;
+            int sacks = 0;
+            int interceptions = 0;
+            int passingAttempts = 0;
+            int rushingAttempts = 0;
+            int fumbles = 0;
+            int fumblesRecovered = 0;
+            int firstDowns = 0;
+
+            List<int> top10passingYards = new List<int>();
+            List<int> top10rushingYards = new List<int>();
+            List<int> top10rushingAttempts = new List<int>();
+            List<double> top10rushingAverage = new List<double>();
+            List<int> top10teamSacks = new List<int>();
+
+            foreach (TeamStatsRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
+            {
+                passingOffense += stat.PassingYards;
+                rushingOffense += stat.RushingYards;
+                sacks += stat.Sacks;
+                interceptions += stat.InterceptionsCaught;
+                fumblesRecovered += stat.FumblesRecovered;
+                firstDowns += stat.FirstDowns;
+
+                if (top10teamSacks.Count < 10)
+                {
+                    top10teamSacks.Add(stat.Sacks);
+                    top10teamSacks.Sort();
+                }
+                else if (top10teamSacks[0] < stat.Sacks)
+                {
+                    top10teamSacks.Add(stat.Sacks);
+                    top10teamSacks.Sort();
+                    top10teamSacks.RemoveAt(0);
+                }
+            }
+
+            foreach (SeasonStatsOffenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].GetRecords())
+            {
+                if (stat.Season != currentSeason)
+                    continue;
+
+                passingYards += stat.PassingYards;
+                passingAttempts += stat.PassingAttempts;
+                rushingAttempts += stat.RushingAttempts;
+                fumbles += stat.Fumbles;
+
+                if (top10passingYards.Count < 10)
+                {
+                    top10passingYards.Add(stat.PassingYards);
+                    top10passingYards.Sort();
+                }
+                else if (top10passingYards[0] < stat.PassingYards)
+                {
+                    top10passingYards.Add(stat.PassingYards);
+                    top10passingYards.Sort();
+                    top10passingYards.RemoveAt(0);
+                }
+
+                if (top10rushingYards.Count < 10)
+                {
+                    top10rushingYards.Add(stat.RushingYards);
+                    top10rushingYards.Sort();
+                }
+                else if (top10rushingYards[0] < stat.RushingYards)
+                {
+                    top10rushingYards.Add(stat.RushingYards);
+                    top10rushingYards.Sort();
+                    top10rushingYards.RemoveAt(0);
+                }
+
+                if (top10rushingAttempts.Count < 10)
+                {
+                    top10rushingAttempts.Add(stat.RushingAttempts);
+                    top10rushingAttempts.Sort();
+                }
+                else if (top10rushingAttempts[0] < stat.RushingAttempts)
+                {
+                    top10rushingAttempts.Add(stat.RushingAttempts);
+                    top10rushingAttempts.Sort();
+                    top10rushingAttempts.RemoveAt(0);
+                }
+
+                if (stat.PassingAttempts < 25 && stat.RushingAttempts > 100 && top10rushingAverage.Count < 10)
+                {
+                    top10rushingAverage.Add((double)stat.RushingYards / (double)stat.RushingAttempts);
+                    top10rushingAverage.Sort();
+                }
+                else if (stat.PassingAttempts < 25 && stat.RushingAttempts > 100 && top10rushingAverage[0] < (double)stat.RushingYards / (double)stat.RushingAttempts)
+                {
+                    top10rushingAverage.Add((double)stat.RushingYards / (double)stat.RushingAttempts);
+                    top10rushingAverage.Sort();
+                    top10rushingAverage.RemoveAt(0);
+                }
+            }
+
+            StreamWriter sw = new StreamWriter(installDirectory + "\\stats_output.txt");
+
+            sw.WriteLine("Total Offense: " + (passingOffense + rushingOffense));
+            sw.WriteLine("\tPassing Offense: " + passingOffense);
+            sw.WriteLine("\tRushing Offense: " + rushingOffense);
+            sw.WriteLine("First Downs: " + firstDowns);
+            sw.WriteLine("Passing Attempts: " + passingAttempts);
+            sw.WriteLine("Rushing Attempts: " + rushingAttempts);
+            sw.WriteLine("Passing Yards: " + passingYards);
+            sw.WriteLine("Sacks: " + sacks);
+            sw.WriteLine("Sack Yards Lost: " + (passingYards - passingOffense));
+            sw.WriteLine("Interceptions: " + interceptions);
+            sw.WriteLine("Fumbles: " + fumbles);
+            sw.WriteLine("Fumbles Recovered: " + fumblesRecovered);
+
+            sw.WriteLine("\nTop 10 Passers:\n");
+            for (int i = 9; i >= 0; i--)
+                sw.WriteLine((10-i) + ". " + top10passingYards[i]);
+
+            sw.WriteLine("\nTop 10 Rushing Attempts:\n");
+            for (int i = 9; i >= 0; i--)
+                sw.WriteLine((10 - i) + ". " + top10rushingAttempts[i]);
+
+            sw.WriteLine("\nTop 10 Rushing Yards:\n");
+            for (int i = 9; i >= 0; i--)
+                sw.WriteLine((10 - i) + ". " + top10rushingYards[i]);
+
+            sw.WriteLine("\nTop 10 Rushing Average:\n");
+            for (int i = top10rushingAverage.Count-1; i >= 0; i--)
+                sw.WriteLine((10 - i) + ". " + Math.Round(top10rushingAverage[i], 2));
+
+            sw.WriteLine("\nTop 10 Team Sacks:\n");
+            for (int i = 9; i >= 0; i--)
+                sw.WriteLine((10 - i) + ". " + top10teamSacks[i]);
+
+            sw.Close();
+        }
+
+        private void fixAllStatsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 1; i < model.FranchiseState.Week; i++)
+                RepairWeek(i);
+        }
+
+        private void RepairWeek(int currentWeek)
+        {
+            int currentSeason = model.FranchiseState.Season;
+
+                Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
+                List<int> humanControlled = new List<int>();
+
+                // season and career stats indexed by PGID
+                Dictionary<int, SeasonStatsOffenseRecord> seasonStatsOffense = new Dictionary<int, SeasonStatsOffenseRecord>();
+                Dictionary<int, SeasonStatsDefenseRecord> seasonStatsDefense = new Dictionary<int, SeasonStatsDefenseRecord>();
+                Dictionary<int, CareerStatsOffenseRecord> careerStatsOffense = new Dictionary<int, CareerStatsOffenseRecord>();
+                Dictionary<int, CareerStatsDefenseRecord> careerStatsDefense = new Dictionary<int, CareerStatsDefenseRecord>();
+                Dictionary<int, TeamStatsRecord> teamStats = new Dictionary<int, TeamStatsRecord>();
+
+                foreach (SeasonStatsDefenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_DEFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Season == currentSeason)
+                        seasonStatsDefense[stat.PlayerId] = stat;
+                }
+
+                foreach (SeasonStatsOffenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Season == currentSeason)
+                        seasonStatsOffense[stat.PlayerId] = stat;
+                }
+
+                foreach (CareerStatsDefenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_DEFENSE_TABLE].GetRecords())
+                    careerStatsDefense[stat.PlayerId] = stat;
+
+                foreach (CareerStatsOffenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].GetRecords())
+                    careerStatsOffense[stat.PlayerId] = stat;
+
+                foreach (TeamStatsRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
+                    teamStats[stat.TeamId] = stat;
+
+                foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+                {
+                    if (record.WeekNumber == currentWeek - 1 && record.HumanControlled)
+                    {
+                        humanControlled.Add(record.AwayTeam.TeamId);
+                        humanControlled.Add(record.HomeTeam.TeamId);
+                        continue;
+                    }
+
+                    if (record.WeekNumber == currentWeek - 1)
+                    {
+                        previousOpponents[record.AwayTeam.TeamId] = record.HomeTeam.TeamId;
+                        previousOpponents[record.HomeTeam.TeamId] = record.AwayTeam.TeamId;
+                    }
+                }
+
+                Dictionary<int, List<BoxScoreOffenseRecord>> interceptees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+                Dictionary<int, List<BoxScoreOffenseRecord>> sackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+                Dictionary<int, List<BoxScoreOffenseRecord>> OLsackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+
+            Dictionary<int, List<BoxScoreDefenseRecord>> forcers = new Dictionary<int, List<BoxScoreDefenseRecord>>();
+            Dictionary<int, List<BoxScoreDefenseRecord>> recoverers = new Dictionary<int, List<BoxScoreDefenseRecord>>();
+
+                Dictionary<int, BoxScoreOffenseRecord> maxPassers = new Dictionary<int, BoxScoreOffenseRecord>();
+                Dictionary<int, BoxScoreOffenseRecord> startingRBs = new Dictionary<int, BoxScoreOffenseRecord>();
+                Dictionary<int, BoxScoreOffenseRecord> backupRBs = new Dictionary<int, BoxScoreOffenseRecord>();
+
+                Dictionary<int, int> startingRBIDs = new Dictionary<int, int>();
+                Dictionary<int, int> backupRBIDs = new Dictionary<int, int>();
+
+                foreach (DepthChartRecord dcr in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+                {
+                    if (dcr.PositionId == (int)MaddenPositions.HB)
+                    {
+                        if (dcr.DepthOrder == 0)
+                            startingRBIDs[dcr.TeamId] = dcr.PlayerId;
+                        else if (dcr.DepthOrder == 1)
+                            backupRBIDs[dcr.TeamId] = dcr.PlayerId;
+                    }
+                }
+
+                for (int i = 0; i < 32; i++)
+                {
+                    interceptees[i] = new List<BoxScoreOffenseRecord>();
+                    sackees[i] = new List<BoxScoreOffenseRecord>();
+                }
+
+                foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId) && stat.Season == currentSeason)
+                    {
+                        if (startingRBIDs.ContainsValue(stat.PlayerId))
+                            startingRBs[stat.TeamId] = stat;
+                        else if (backupRBIDs.ContainsValue(stat.PlayerId))
+                            backupRBs[stat.TeamId] = stat;
+
+                        if (stat.Interceptions > 0)
+                            interceptees[stat.TeamId].Add(stat);
+
+                        if (stat.Sacks > 0)
+                            sackees[stat.TeamId].Add(stat);
+
+                        if (stat.PassingYards > 0)
+                        {
+                            if (!maxPassers.ContainsKey(stat.TeamId) || maxPassers[stat.TeamId].PassingYards < stat.PassingYards)
+                                maxPassers[stat.TeamId] = stat;
+                        }
+                    }
+                }
+
+                foreach (BoxScoreDefenseRecord stat in model.TableModels[EditorModel.BOXSCORE_DEFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId) && stat.Season == currentSeason)
+                    {
+                        if (stat.FumblesForced > 0)
+                            forcers[stat.TeamId].Add(stat);
+
+                        if (stat.FumblesRecovered > 0)
+                            recoverers[stat.TeamId].Add(stat);
+                    }
+                }
+
+                /*
+                 * // fix sack yardage lost
+                for (int i = 0; i < 32; i++)
+                {
+                    for (int j = 0; j < sackees[i].Count; j++)
+                    {
+                        int yardsToSubtract = (int)Math.Round((double)sackees[i][j]
+                    }
+                }
+                 * */
+
+                // fix defense
+                foreach (BoxScoreDefenseRecord stat in model.TableModels[EditorModel.BOXSCORE_DEFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week != currentWeek - 1 || humanControlled.Contains(stat.TeamId) || stat.Season != currentSeason)
+                        continue;
+
+                    for (int i = 0; i < stat.Interceptions; i++)
+                    {
+                        if (rand.NextDouble() > interceptionsProbability)
+                        {
+                            // should also subtract from int yards, long int, defensive TDs?
+                            stat.Interceptions--;
+
+                            if (currentWeek < 19)
+                            {
+                                seasonStatsDefense[stat.PlayerId].Interceptions--;
+                                careerStatsDefense[stat.PlayerId].Interceptions--;
+                            }
+
+                            int subtractFrom = rand.Next(interceptees[previousOpponents[stat.TeamId]].Count);
+                            int QBPGID = interceptees[previousOpponents[stat.TeamId]][subtractFrom].PlayerId;
+                            interceptees[previousOpponents[stat.TeamId]][subtractFrom].Interceptions--;
+
+                            if (interceptees[previousOpponents[stat.TeamId]][subtractFrom].Interceptions == 0)
+                                interceptees[previousOpponents[stat.TeamId]].RemoveAt(subtractFrom);
+
+                            if (currentWeek < 19)
+                            {
+                                seasonStatsOffense[QBPGID].Interceptions--;
+                                careerStatsOffense[QBPGID].Interceptions--;
+
+                                teamStats[stat.TeamId].InterceptionsCaught--;
+                                teamStats[previousOpponents[stat.TeamId]].InterceptionsThrown--;
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < stat.Sacks; i++)
+                    {
+                        if (rand.NextDouble() > sackProbability)
+                        {
+                            stat.Sacks--;
+
+                            if (currentWeek < 19)
+                            {
+                                seasonStatsDefense[stat.PlayerId].Sacks--;
+                                careerStatsDefense[stat.PlayerId].Sacks--;
+                            }
+
+                            int subtractFrom = rand.Next(sackees[previousOpponents[stat.TeamId]].Count);
+                            int QBPGID = sackees[previousOpponents[stat.TeamId]][subtractFrom].PlayerId;
+
+                            sackees[previousOpponents[stat.TeamId]][subtractFrom].Sacks--;
+                            if (sackees[previousOpponents[stat.TeamId]][subtractFrom].Sacks == 0)
+                                sackees[previousOpponents[stat.TeamId]].RemoveAt(subtractFrom);
+
+                            if (currentWeek < 19)
+                            {
+                                seasonStatsOffense[QBPGID].Sacks--;
+                                careerStatsOffense[QBPGID].Sacks--;
+
+                                teamStats[stat.TeamId].Sacks--;
+                                teamStats[previousOpponents[stat.TeamId]].SacksAllowed--;
+
+                                // we need to add back about 9 yards for every sack we take away.
+                                teamStats[previousOpponents[stat.TeamId]].PassingYards += 9;
+                                teamStats[previousOpponents[stat.TeamId]].TotalOffense += 9;
+                                teamStats[previousOpponents[stat.TeamId]].TotalYards += 9;
+                            }
+                        }
+                    }
+                }
+
+                // fix fumbles, passing yards and rushing yards / attempts
+                foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
+                {
+                    if (stat.Week != currentWeek - 1 || humanControlled.Contains(stat.TeamId) || stat.Season != currentSeason)
+                        continue;
+
+//                    if (stat.Fumbles > 0)
+
+                    // if it's a receiver of some kind, then continue so we can increase their rushing/receiving yards
+                    if (model.PlayerModel.GetPlayerByPlayerId(stat.PlayerId).PositionId < (int)MaddenPositions.HB ||
+                        model.PlayerModel.GetPlayerByPlayerId(stat.PlayerId).PositionId > (int)MaddenPositions.TE)
+                        continue;
+
+                    int yardsToAdd = (int)Math.Round((double)stat.ReceivingYards * (passingYardsMultiplier - 1.0));
+                    stat.ReceivingYards += yardsToAdd;
+
+                    if (currentWeek < 19)
+                    {
+                        seasonStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+                        careerStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+                    }
+
+                    maxPassers[stat.TeamId].PassingYards += yardsToAdd;
+
+                    if (currentWeek < 19)
+                    {
+                        seasonStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+                        careerStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+
+                        teamStats[stat.TeamId].TotalYards += yardsToAdd;
+                        teamStats[stat.TeamId].TotalOffense += yardsToAdd;
+                        teamStats[stat.TeamId].PassingYards += yardsToAdd;
+                        teamStats[previousOpponents[stat.TeamId]].PassingYardsAllowed += yardsToAdd;
+                    }
+
+                    int rushAttemptsSubtracted = (int)Math.Round((double)stat.RushingAttempts * (1.0 - rushingAttemptsMultiplier));
+                    stat.RushingAttempts -= rushAttemptsSubtracted;
+
+                    if (currentWeek < 19)
+                    {
+                        seasonStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
+                        careerStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
+                    }
+
+                    int rushYardsToAdd = (int)Math.Round((double)stat.RushingYards * (rushingYardsMultiplier - 1.0));
+                    stat.RushingYards += rushYardsToAdd;
+
+                    if (currentWeek < 19)
+                    {
+                        seasonStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
+                        careerStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
+
+                        teamStats[stat.TeamId].TotalYards += rushYardsToAdd;
+                        teamStats[stat.TeamId].TotalOffense += rushYardsToAdd;
+                        teamStats[stat.TeamId].RushingYards += rushYardsToAdd;
+                        teamStats[previousOpponents[stat.TeamId]].RushingYards += rushYardsToAdd;
+                    }
+                }
+
+                // fix RB stats
+                for (int i = 0; i < 32; i++)
+                {
+                    // this shouldn't really happen if they're using Weekly
+                    // Maintenance properly, but this at least prevents
+                    // an exception.
+                    if (!startingRBs.ContainsKey(i) || !previousOpponents.ContainsKey(i))
+                        continue;
+
+                    double HB2frac = 1.0 - ((double)RBSlider(i)) / 100.0;
+                    double yardageMultipler = ((double)model.PlayerModel.GetPlayerByPlayerId(backupRBIDs[i]).Overall / (double)model.PlayerModel.GetPlayerByPlayerId(startingRBIDs[i]).Overall);
+
+                    int carries = (int)Math.Round(HB2frac * (double)startingRBs[i].RushingAttempts);
+                    int yards = (int)Math.Round(HB2frac * (double)startingRBs[i].RushingYards);
+
+                    startingRBs[i].RushingAttempts -= carries;
+                    startingRBs[i].RushingYards -= yards;
+
+                    if (currentWeek < 19)
+                    {
+                        seasonStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
+                        seasonStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+                        careerStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
+                        careerStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+
+                        teamStats[i].TotalYards -= yards;
+                        teamStats[i].TotalOffense -= yards;
+                        teamStats[i].RushingYards -= yards;
+                        teamStats[previousOpponents[i]].RushingYardsAllowed -= yards;
+                    }
+
+                    BoxScoreOffenseRecord backupRBBox = null;
+                    SeasonStatsOffenseRecord backupRBSeason = null;
+                    CareerStatsOffenseRecord backupRBCareer = null;
+
+                    if (backupRBs.ContainsKey(i))
+                        backupRBBox = backupRBs[i];
+                    else
+                    {
+                        backupRBBox = (BoxScoreOffenseRecord)model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].CreateNewRecord(true);
+                        backupRBBox.PlayerId = backupRBIDs[i];
+                        backupRBBox.TeamId = i;
+                        backupRBBox.Week = currentWeek - 1;
+                        backupRBBox.Season = currentSeason;
+                    }
+
+                    if (seasonStatsOffense.ContainsKey(backupRBIDs[i]))
+                        backupRBSeason = seasonStatsOffense[backupRBIDs[i]];
+                    else
+                    {
+                        backupRBSeason = (SeasonStatsOffenseRecord)model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].CreateNewRecord(true);
+                        backupRBSeason.PlayerId = backupRBIDs[i];
+                        backupRBSeason.Season = currentSeason;
+                    }
+
+                    if (careerStatsOffense.ContainsKey(backupRBIDs[i]))
+                        backupRBCareer = careerStatsOffense[backupRBIDs[i]];
+                    else
+                    {
+                        backupRBCareer = (CareerStatsOffenseRecord)model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].CreateNewRecord(true);
+                        backupRBCareer.PlayerId = backupRBIDs[i];
+                    }
+
+                    backupRBBox.RushingAttempts += carries;
+
+                    if (currentWeek < 19)
+                    {
+                        backupRBSeason.RushingAttempts += carries;
+                        backupRBCareer.RushingAttempts += carries;
+                    }
+
+                    int backupYards = (int)Math.Round((double)yards * yardageMultipler);
+                    backupRBBox.RushingYards += backupYards;
+
+                    if (currentWeek < 19)
+                    {
+                        backupRBSeason.RushingYards += backupYards;
+                        backupRBCareer.RushingYards += backupYards;
+
+                        teamStats[i].TotalYards += backupYards;
+                        teamStats[i].TotalOffense += backupYards;
+                        teamStats[i].RushingYards += backupYards;
+                        teamStats[previousOpponents[i]].RushingYardsAllowed += backupYards;
+                    }
+                }
+        }
+    }
+
+    public enum MaddenSquadRatings
+    {
+        OffensivePassing = 0,
+        OffensiveRunning,
+        DefensivePassing,
+        DefensiveRunning,
+        HB1,
+        HB2
     }
 }

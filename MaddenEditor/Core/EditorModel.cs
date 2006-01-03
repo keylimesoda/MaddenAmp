@@ -111,6 +111,17 @@ namespace MaddenEditor.Core
         public const string DRAFT_PICK_TABLE = "DRPK";
         public const string DRAFTED_PLAYERS_TABLE = "DRPL";
 
+        public const string FRANCHISE_STATE_TABLE = "SEAI";
+
+        // stats
+        public const string BOXSCORE_DEFENSE_TABLE = "BDEF";
+        public const string BOXSCORE_OFFENSE_TABLE = "BOFF";
+        public const string SEASON_STATS_OFFENSE_TABLE = "PSOF";
+        public const string SEASON_STATS_DEFENSE_TABLE = "PSDE";
+        public const string CAREER_STATS_OFFENSE_TABLE = "PCOF";
+        public const string CAREER_STATS_DEFENSE_TABLE = "PCDE";
+        public const string TEAM_STATS_TABLE = "TSSE";
+
 		private List<string[]> draftClassFields;
 
         public bool draftStarted = false;
@@ -145,6 +156,14 @@ namespace MaddenEditor.Core
 				return draftClassFields;
 			}
 		}
+
+        public FranchiseStateRecord FranchiseState
+        {
+            get
+            {
+                return (FranchiseStateRecord)tableModels[EditorModel.FRANCHISE_STATE_TABLE].GetRecord(0);
+            }
+        }
        // MADDEN DRAFT EDIT
 		
 		public EditorModel(string filename, MainForm form)
@@ -350,6 +369,14 @@ namespace MaddenEditor.Core
                     // MADDEN DRAFT EDIT
                     tableOrder.Add(DRAFT_PICK_TABLE, -1);
                     tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);
+                    tableOrder.Add(BOXSCORE_OFFENSE_TABLE, -1);
+                    tableOrder.Add(BOXSCORE_DEFENSE_TABLE, -1);
+                    tableOrder.Add(SEASON_STATS_DEFENSE_TABLE, -1);
+                    tableOrder.Add(SEASON_STATS_OFFENSE_TABLE, -1);
+                    tableOrder.Add(CAREER_STATS_DEFENSE_TABLE, -1);
+                    tableOrder.Add(CAREER_STATS_OFFENSE_TABLE, -1);
+                    tableOrder.Add(TEAM_STATS_TABLE, -1);
+                    tableOrder.Add(FRANCHISE_STATE_TABLE, -1);
                     // MADDEN DRAFT EDIT
 					if (fileVersion >= MaddenFileVersion.Ver2005)
 					{
