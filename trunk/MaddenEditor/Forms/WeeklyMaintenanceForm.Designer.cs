@@ -39,6 +39,7 @@ namespace MaddenEditor.Forms
             this.PlayersTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.fixSimEngine = new System.Windows.Forms.CheckBox();
             this.reorderDepthCharts = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.fixedWeightUpDown = new System.Windows.Forms.NumericUpDown();
@@ -78,6 +79,23 @@ namespace MaddenEditor.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.fumbleSlider = new System.Windows.Forms.TrackBar();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.gameHBUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gameHBSlider = new System.Windows.Forms.TrackBar();
+            this.coachGame = new System.Windows.Forms.CheckBox();
+            this.gameDefAggUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gameDefAggSlider = new System.Windows.Forms.TrackBar();
+            this.gameDefRPUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gameDefRPSlider = new System.Windows.Forms.TrackBar();
+            this.gameOffAggUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gameOffAggSlider = new System.Windows.Forms.TrackBar();
+            this.gameOffRPUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gameOffRPSlider = new System.Windows.Forms.TrackBar();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -102,23 +120,9 @@ namespace MaddenEditor.Forms
             this.simOffAggSlider = new System.Windows.Forms.TrackBar();
             this.simOffRPUpDown = new System.Windows.Forms.NumericUpDown();
             this.simOffRPSlider = new System.Windows.Forms.TrackBar();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.gameHBUpDown = new System.Windows.Forms.NumericUpDown();
-            this.gameHBSlider = new System.Windows.Forms.TrackBar();
-            this.coachGame = new System.Windows.Forms.CheckBox();
-            this.gameDefAggUpDown = new System.Windows.Forms.NumericUpDown();
-            this.gameDefAggSlider = new System.Windows.Forms.TrackBar();
-            this.gameDefRPUpDown = new System.Windows.Forms.NumericUpDown();
-            this.gameDefRPSlider = new System.Windows.Forms.TrackBar();
-            this.gameOffAggUpDown = new System.Windows.Forms.NumericUpDown();
-            this.gameOffAggSlider = new System.Windows.Forms.TrackBar();
-            this.gameOffRPUpDown = new System.Windows.Forms.NumericUpDown();
-            this.gameOffRPSlider = new System.Windows.Forms.TrackBar();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.dumpStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixAllStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.PlayersTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -148,6 +152,17 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.fumbleUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleSlider)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gameHBUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameHBSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPSlider)).BeginInit();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.defMaxAdjustUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.defMaxAdjustSlider)).BeginInit();
@@ -164,17 +179,6 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.simOffAggSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPSlider)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gameHBUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameHBSlider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggSlider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPSlider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggSlider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -195,7 +199,10 @@ namespace MaddenEditor.Forms
             this.loadRecommendedSettingsToolStripMenuItem,
             this.toolStripSeparator1,
             this.revertRatingsToolStripMenuItem,
-            this.makeAdjustmentsToolStripMenuItem});
+            this.makeAdjustmentsToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.dumpStatsToolStripMenuItem,
+            this.fixAllStatsToolStripMenuItem});
             this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
             this.actionsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.actionsToolStripMenuItem.Text = "Actions";
@@ -265,6 +272,7 @@ namespace MaddenEditor.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.fixSimEngine);
             this.groupBox3.Controls.Add(this.reorderDepthCharts);
             this.groupBox3.Location = new System.Drawing.Point(8, 308);
             this.groupBox3.Name = "groupBox3";
@@ -272,6 +280,19 @@ namespace MaddenEditor.Forms
             this.groupBox3.TabIndex = 25;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Other Maintenance";
+            // 
+            // fixSimEngine
+            // 
+            this.fixSimEngine.AutoSize = true;
+            this.fixSimEngine.Checked = true;
+            this.fixSimEngine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.fixSimEngine.Location = new System.Drawing.Point(16, 58);
+            this.fixSimEngine.Name = "fixSimEngine";
+            this.fixSimEngine.Size = new System.Drawing.Size(171, 17);
+            this.fixSimEngine.TabIndex = 1;
+            this.fixSimEngine.Text = "Fix Simulation Engine Statistics";
+            this.fixSimEngine.UseVisualStyleBackColor = true;
+            this.fixSimEngine.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // reorderDepthCharts
             // 
@@ -765,6 +786,253 @@ namespace MaddenEditor.Forms
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Coaches";
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.label18);
+            this.groupBox5.Controls.Add(this.label19);
+            this.groupBox5.Controls.Add(this.label20);
+            this.groupBox5.Controls.Add(this.label21);
+            this.groupBox5.Controls.Add(this.gameHBUpDown);
+            this.groupBox5.Controls.Add(this.gameHBSlider);
+            this.groupBox5.Controls.Add(this.coachGame);
+            this.groupBox5.Controls.Add(this.gameDefAggUpDown);
+            this.groupBox5.Controls.Add(this.gameDefAggSlider);
+            this.groupBox5.Controls.Add(this.gameDefRPUpDown);
+            this.groupBox5.Controls.Add(this.gameDefRPSlider);
+            this.groupBox5.Controls.Add(this.gameOffAggUpDown);
+            this.groupBox5.Controls.Add(this.gameOffAggSlider);
+            this.groupBox5.Controls.Add(this.gameOffRPUpDown);
+            this.groupBox5.Controls.Add(this.gameOffRPSlider);
+            this.groupBox5.Location = new System.Drawing.Point(348, 11);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(333, 312);
+            this.groupBox5.TabIndex = 3;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Base In-game Coaching Strategies";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(5, 266);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(102, 13);
+            this.label13.TabIndex = 27;
+            this.label13.Text = "Defense Aggression";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(5, 219);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(98, 13);
+            this.label18.TabIndex = 26;
+            this.label18.Text = "Defense Run/Pass";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(5, 150);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(54, 13);
+            this.label19.TabIndex = 25;
+            this.label19.Text = "HB1/HB2";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(5, 103);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(99, 13);
+            this.label20.TabIndex = 24;
+            this.label20.Text = "Offense Aggression";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(5, 56);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(95, 13);
+            this.label21.TabIndex = 23;
+            this.label21.Text = "Offense Run/Pass";
+            // 
+            // gameHBUpDown
+            // 
+            this.gameHBUpDown.Enabled = false;
+            this.gameHBUpDown.Location = new System.Drawing.Point(282, 147);
+            this.gameHBUpDown.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+            this.gameHBUpDown.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.gameHBUpDown.Name = "gameHBUpDown";
+            this.gameHBUpDown.Size = new System.Drawing.Size(40, 20);
+            this.gameHBUpDown.TabIndex = 22;
+            this.gameHBUpDown.Value = new decimal(new int[] {
+            75,
+            0,
+            0,
+            0});
+            this.gameHBUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
+            // 
+            // gameHBSlider
+            // 
+            this.gameHBSlider.Enabled = false;
+            this.gameHBSlider.Location = new System.Drawing.Point(104, 146);
+            this.gameHBSlider.Maximum = 90;
+            this.gameHBSlider.Minimum = 50;
+            this.gameHBSlider.Name = "gameHBSlider";
+            this.gameHBSlider.Size = new System.Drawing.Size(168, 45);
+            this.gameHBSlider.TabIndex = 21;
+            this.gameHBSlider.TickFrequency = 2;
+            this.gameHBSlider.Value = 75;
+            this.gameHBSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
+            // 
+            // coachGame
+            // 
+            this.coachGame.AutoSize = true;
+            this.coachGame.Checked = true;
+            this.coachGame.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.coachGame.Location = new System.Drawing.Point(29, 25);
+            this.coachGame.Name = "coachGame";
+            this.coachGame.Size = new System.Drawing.Size(219, 17);
+            this.coachGame.TabIndex = 20;
+            this.coachGame.Text = "Adjust In-game CPU Coaching Strategies";
+            this.coachGame.UseVisualStyleBackColor = true;
+            this.coachGame.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // gameDefAggUpDown
+            // 
+            this.gameDefAggUpDown.Enabled = false;
+            this.gameDefAggUpDown.Location = new System.Drawing.Point(282, 263);
+            this.gameDefAggUpDown.Name = "gameDefAggUpDown";
+            this.gameDefAggUpDown.Size = new System.Drawing.Size(40, 20);
+            this.gameDefAggUpDown.TabIndex = 11;
+            this.gameDefAggUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.gameDefAggUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
+            // 
+            // gameDefAggSlider
+            // 
+            this.gameDefAggSlider.Enabled = false;
+            this.gameDefAggSlider.Location = new System.Drawing.Point(104, 262);
+            this.gameDefAggSlider.Maximum = 100;
+            this.gameDefAggSlider.Name = "gameDefAggSlider";
+            this.gameDefAggSlider.Size = new System.Drawing.Size(168, 45);
+            this.gameDefAggSlider.TabIndex = 10;
+            this.gameDefAggSlider.TickFrequency = 5;
+            this.gameDefAggSlider.Value = 50;
+            this.gameDefAggSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
+            // 
+            // gameDefRPUpDown
+            // 
+            this.gameDefRPUpDown.Enabled = false;
+            this.gameDefRPUpDown.Location = new System.Drawing.Point(282, 216);
+            this.gameDefRPUpDown.Name = "gameDefRPUpDown";
+            this.gameDefRPUpDown.Size = new System.Drawing.Size(40, 20);
+            this.gameDefRPUpDown.TabIndex = 9;
+            this.gameDefRPUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.gameDefRPUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
+            // 
+            // gameDefRPSlider
+            // 
+            this.gameDefRPSlider.Enabled = false;
+            this.gameDefRPSlider.Location = new System.Drawing.Point(104, 215);
+            this.gameDefRPSlider.Maximum = 80;
+            this.gameDefRPSlider.Minimum = 20;
+            this.gameDefRPSlider.Name = "gameDefRPSlider";
+            this.gameDefRPSlider.Size = new System.Drawing.Size(168, 45);
+            this.gameDefRPSlider.TabIndex = 8;
+            this.gameDefRPSlider.TickFrequency = 3;
+            this.gameDefRPSlider.Value = 50;
+            this.gameDefRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
+            // 
+            // gameOffAggUpDown
+            // 
+            this.gameOffAggUpDown.Enabled = false;
+            this.gameOffAggUpDown.Location = new System.Drawing.Point(282, 100);
+            this.gameOffAggUpDown.Maximum = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            this.gameOffAggUpDown.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.gameOffAggUpDown.Name = "gameOffAggUpDown";
+            this.gameOffAggUpDown.Size = new System.Drawing.Size(40, 20);
+            this.gameOffAggUpDown.TabIndex = 7;
+            this.gameOffAggUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.gameOffAggUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
+            // 
+            // gameOffAggSlider
+            // 
+            this.gameOffAggSlider.Enabled = false;
+            this.gameOffAggSlider.Location = new System.Drawing.Point(104, 99);
+            this.gameOffAggSlider.Maximum = 80;
+            this.gameOffAggSlider.Minimum = 20;
+            this.gameOffAggSlider.Name = "gameOffAggSlider";
+            this.gameOffAggSlider.Size = new System.Drawing.Size(168, 45);
+            this.gameOffAggSlider.TabIndex = 6;
+            this.gameOffAggSlider.TickFrequency = 3;
+            this.gameOffAggSlider.Value = 50;
+            this.gameOffAggSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
+            // 
+            // gameOffRPUpDown
+            // 
+            this.gameOffRPUpDown.Enabled = false;
+            this.gameOffRPUpDown.Location = new System.Drawing.Point(282, 53);
+            this.gameOffRPUpDown.Maximum = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            this.gameOffRPUpDown.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.gameOffRPUpDown.Name = "gameOffRPUpDown";
+            this.gameOffRPUpDown.Size = new System.Drawing.Size(40, 20);
+            this.gameOffRPUpDown.TabIndex = 5;
+            this.gameOffRPUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.gameOffRPUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
+            // 
+            // gameOffRPSlider
+            // 
+            this.gameOffRPSlider.Enabled = false;
+            this.gameOffRPSlider.Location = new System.Drawing.Point(104, 52);
+            this.gameOffRPSlider.Maximum = 80;
+            this.gameOffRPSlider.Minimum = 20;
+            this.gameOffRPSlider.Name = "gameOffRPSlider";
+            this.gameOffRPSlider.Size = new System.Drawing.Size(168, 45);
+            this.gameOffRPSlider.TabIndex = 4;
+            this.gameOffRPSlider.TickFrequency = 3;
+            this.gameOffRPSlider.Value = 50;
+            this.gameOffRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label22);
@@ -1102,252 +1370,24 @@ namespace MaddenEditor.Forms
             this.simOffRPSlider.Value = 50;
             this.simOffRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
-            // groupBox5
+            // toolStripSeparator2
             // 
-            this.groupBox5.Controls.Add(this.label13);
-            this.groupBox5.Controls.Add(this.label18);
-            this.groupBox5.Controls.Add(this.label19);
-            this.groupBox5.Controls.Add(this.label20);
-            this.groupBox5.Controls.Add(this.label21);
-            this.groupBox5.Controls.Add(this.gameHBUpDown);
-            this.groupBox5.Controls.Add(this.gameHBSlider);
-            this.groupBox5.Controls.Add(this.coachGame);
-            this.groupBox5.Controls.Add(this.gameDefAggUpDown);
-            this.groupBox5.Controls.Add(this.gameDefAggSlider);
-            this.groupBox5.Controls.Add(this.gameDefRPUpDown);
-            this.groupBox5.Controls.Add(this.gameDefRPSlider);
-            this.groupBox5.Controls.Add(this.gameOffAggUpDown);
-            this.groupBox5.Controls.Add(this.gameOffAggSlider);
-            this.groupBox5.Controls.Add(this.gameOffRPUpDown);
-            this.groupBox5.Controls.Add(this.gameOffRPSlider);
-            this.groupBox5.Location = new System.Drawing.Point(348, 11);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(333, 312);
-            this.groupBox5.TabIndex = 3;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Base In-game Coaching Strategies";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
             // 
-            // label13
+            // dumpStatsToolStripMenuItem
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(5, 266);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(102, 13);
-            this.label13.TabIndex = 27;
-            this.label13.Text = "Defense Aggression";
+            this.dumpStatsToolStripMenuItem.Name = "dumpStatsToolStripMenuItem";
+            this.dumpStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.dumpStatsToolStripMenuItem.Text = "Stat Output";
+            this.dumpStatsToolStripMenuItem.Click += new System.EventHandler(this.dumpStatsToolStripMenuItem_Click);
             // 
-            // label18
+            // fixAllStatsToolStripMenuItem
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(5, 219);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(98, 13);
-            this.label18.TabIndex = 26;
-            this.label18.Text = "Defense Run/Pass";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(5, 150);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(54, 13);
-            this.label19.TabIndex = 25;
-            this.label19.Text = "HB1/HB2";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(5, 103);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(99, 13);
-            this.label20.TabIndex = 24;
-            this.label20.Text = "Offense Aggression";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(5, 56);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(95, 13);
-            this.label21.TabIndex = 23;
-            this.label21.Text = "Offense Run/Pass";
-            // 
-            // gameHBUpDown
-            // 
-            this.gameHBUpDown.Enabled = false;
-            this.gameHBUpDown.Location = new System.Drawing.Point(282, 147);
-            this.gameHBUpDown.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
-            this.gameHBUpDown.Minimum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.gameHBUpDown.Name = "gameHBUpDown";
-            this.gameHBUpDown.Size = new System.Drawing.Size(40, 20);
-            this.gameHBUpDown.TabIndex = 22;
-            this.gameHBUpDown.Value = new decimal(new int[] {
-            75,
-            0,
-            0,
-            0});
-            this.gameHBUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
-            // 
-            // gameHBSlider
-            // 
-            this.gameHBSlider.Enabled = false;
-            this.gameHBSlider.Location = new System.Drawing.Point(104, 146);
-            this.gameHBSlider.Maximum = 90;
-            this.gameHBSlider.Minimum = 50;
-            this.gameHBSlider.Name = "gameHBSlider";
-            this.gameHBSlider.Size = new System.Drawing.Size(168, 45);
-            this.gameHBSlider.TabIndex = 21;
-            this.gameHBSlider.TickFrequency = 2;
-            this.gameHBSlider.Value = 75;
-            this.gameHBSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
-            // 
-            // coachGame
-            // 
-            this.coachGame.AutoSize = true;
-            this.coachGame.Checked = true;
-            this.coachGame.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.coachGame.Location = new System.Drawing.Point(29, 25);
-            this.coachGame.Name = "coachGame";
-            this.coachGame.Size = new System.Drawing.Size(219, 17);
-            this.coachGame.TabIndex = 20;
-            this.coachGame.Text = "Adjust In-game CPU Coaching Strategies";
-            this.coachGame.UseVisualStyleBackColor = true;
-            this.coachGame.CheckedChanged += new System.EventHandler(this.CheckedChanged);
-            // 
-            // gameDefAggUpDown
-            // 
-            this.gameDefAggUpDown.Enabled = false;
-            this.gameDefAggUpDown.Location = new System.Drawing.Point(282, 263);
-            this.gameDefAggUpDown.Name = "gameDefAggUpDown";
-            this.gameDefAggUpDown.Size = new System.Drawing.Size(40, 20);
-            this.gameDefAggUpDown.TabIndex = 11;
-            this.gameDefAggUpDown.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.gameDefAggUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
-            // 
-            // gameDefAggSlider
-            // 
-            this.gameDefAggSlider.Enabled = false;
-            this.gameDefAggSlider.Location = new System.Drawing.Point(104, 262);
-            this.gameDefAggSlider.Maximum = 100;
-            this.gameDefAggSlider.Name = "gameDefAggSlider";
-            this.gameDefAggSlider.Size = new System.Drawing.Size(168, 45);
-            this.gameDefAggSlider.TabIndex = 10;
-            this.gameDefAggSlider.TickFrequency = 5;
-            this.gameDefAggSlider.Value = 50;
-            this.gameDefAggSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
-            // 
-            // gameDefRPUpDown
-            // 
-            this.gameDefRPUpDown.Enabled = false;
-            this.gameDefRPUpDown.Location = new System.Drawing.Point(282, 216);
-            this.gameDefRPUpDown.Name = "gameDefRPUpDown";
-            this.gameDefRPUpDown.Size = new System.Drawing.Size(40, 20);
-            this.gameDefRPUpDown.TabIndex = 9;
-            this.gameDefRPUpDown.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.gameDefRPUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
-            // 
-            // gameDefRPSlider
-            // 
-            this.gameDefRPSlider.Enabled = false;
-            this.gameDefRPSlider.Location = new System.Drawing.Point(104, 215);
-            this.gameDefRPSlider.Maximum = 80;
-            this.gameDefRPSlider.Minimum = 20;
-            this.gameDefRPSlider.Name = "gameDefRPSlider";
-            this.gameDefRPSlider.Size = new System.Drawing.Size(168, 45);
-            this.gameDefRPSlider.TabIndex = 8;
-            this.gameDefRPSlider.TickFrequency = 3;
-            this.gameDefRPSlider.Value = 50;
-            this.gameDefRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
-            // 
-            // gameOffAggUpDown
-            // 
-            this.gameOffAggUpDown.Enabled = false;
-            this.gameOffAggUpDown.Location = new System.Drawing.Point(282, 100);
-            this.gameOffAggUpDown.Maximum = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            this.gameOffAggUpDown.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.gameOffAggUpDown.Name = "gameOffAggUpDown";
-            this.gameOffAggUpDown.Size = new System.Drawing.Size(40, 20);
-            this.gameOffAggUpDown.TabIndex = 7;
-            this.gameOffAggUpDown.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.gameOffAggUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
-            // 
-            // gameOffAggSlider
-            // 
-            this.gameOffAggSlider.Enabled = false;
-            this.gameOffAggSlider.Location = new System.Drawing.Point(104, 99);
-            this.gameOffAggSlider.Maximum = 80;
-            this.gameOffAggSlider.Minimum = 20;
-            this.gameOffAggSlider.Name = "gameOffAggSlider";
-            this.gameOffAggSlider.Size = new System.Drawing.Size(168, 45);
-            this.gameOffAggSlider.TabIndex = 6;
-            this.gameOffAggSlider.TickFrequency = 3;
-            this.gameOffAggSlider.Value = 50;
-            this.gameOffAggSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
-            // 
-            // gameOffRPUpDown
-            // 
-            this.gameOffRPUpDown.Enabled = false;
-            this.gameOffRPUpDown.Location = new System.Drawing.Point(282, 53);
-            this.gameOffRPUpDown.Maximum = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            this.gameOffRPUpDown.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.gameOffRPUpDown.Name = "gameOffRPUpDown";
-            this.gameOffRPUpDown.Size = new System.Drawing.Size(40, 20);
-            this.gameOffRPUpDown.TabIndex = 5;
-            this.gameOffRPUpDown.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.gameOffRPUpDown.ValueChanged += new System.EventHandler(this.UpDown_ValueChanged);
-            // 
-            // gameOffRPSlider
-            // 
-            this.gameOffRPSlider.Enabled = false;
-            this.gameOffRPSlider.Location = new System.Drawing.Point(104, 52);
-            this.gameOffRPSlider.Maximum = 80;
-            this.gameOffRPSlider.Minimum = 20;
-            this.gameOffRPSlider.Name = "gameOffRPSlider";
-            this.gameOffRPSlider.Size = new System.Drawing.Size(168, 45);
-            this.gameOffRPSlider.TabIndex = 4;
-            this.gameOffRPSlider.TickFrequency = 3;
-            this.gameOffRPSlider.Value = 50;
-            this.gameOffRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
+            this.fixAllStatsToolStripMenuItem.Name = "fixAllStatsToolStripMenuItem";
+            this.fixAllStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.fixAllStatsToolStripMenuItem.Text = "Fix All Stats";
+            this.fixAllStatsToolStripMenuItem.Click += new System.EventHandler(this.fixAllStatsToolStripMenuItem_Click);
             // 
             // WeeklyMaintenanceForm
             // 
@@ -1393,6 +1433,18 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.fumbleUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fumbleSlider)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gameHBUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameHBSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPSlider)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.defMaxAdjustUpDown)).EndInit();
@@ -1411,18 +1463,6 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.simOffAggSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPSlider)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gameHBUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameHBSlider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefAggSlider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDefRPSlider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffAggSlider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameOffRPSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1521,5 +1561,9 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.TrackBar gameOffAggSlider;
         private System.Windows.Forms.NumericUpDown gameOffRPUpDown;
         private System.Windows.Forms.TrackBar gameOffRPSlider;
+        private System.Windows.Forms.CheckBox fixSimEngine;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem dumpStatsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fixAllStatsToolStripMenuItem;
     }
 }

@@ -194,7 +194,7 @@ namespace MaddenEditor.Core
 			DepthChartEditingModel dcmodel = new DepthChartEditingModel(model);
 			List<List<PlayerRecord>> toReturn = new List<List<PlayerRecord>>();
 
-			for (int i = 0; i < 21; i++)
+			for (int i = 0; i < 26; i++)
 			{
 				toReturn.Add(new List<PlayerRecord>());
 				foreach (DepthPlayerValueObject dp in dcmodel.GetPlayers(teamId, i).Values)

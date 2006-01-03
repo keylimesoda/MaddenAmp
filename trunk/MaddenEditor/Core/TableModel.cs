@@ -26,6 +26,7 @@ using System.Text;
 
 using MaddenEditor.Db;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.Record.Stats;
 
 namespace MaddenEditor.Core
 {
@@ -215,6 +216,30 @@ namespace MaddenEditor.Core
 				case EditorModel.DRAFTED_PLAYERS_TABLE:
 					newRecord = new RookieRecord(recno, this, parentModel);
 					break;
+                case EditorModel.BOXSCORE_DEFENSE_TABLE:
+                    newRecord = new BoxScoreDefenseRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.BOXSCORE_OFFENSE_TABLE:
+                    newRecord = new BoxScoreOffenseRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.CAREER_STATS_DEFENSE_TABLE:
+                    newRecord = new CareerStatsDefenseRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.CAREER_STATS_OFFENSE_TABLE:
+                    newRecord = new CareerStatsOffenseRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.SEASON_STATS_DEFENSE_TABLE:
+                    newRecord = new SeasonStatsDefenseRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.SEASON_STATS_OFFENSE_TABLE:
+                    newRecord = new SeasonStatsOffenseRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.TEAM_STATS_TABLE:
+                    newRecord = new TeamStatsRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.FRANCHISE_STATE_TABLE:
+                    newRecord = new FranchiseStateRecord(recno, this, parentModel);
+                    break;
 				// MADDEN DRAFT EDIT
 				case EditorModel.GAME_OPTIONS_TABLE:
 					newRecord = new GameOptionRecord(recno, this, parentModel);
