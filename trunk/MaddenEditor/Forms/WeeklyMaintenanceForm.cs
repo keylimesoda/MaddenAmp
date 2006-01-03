@@ -29,10 +29,17 @@ namespace MaddenEditor.Forms
         const double fumbleRecoveredProbability = .8833;
 
         const double firstDownMultiplier = 1.145;
-        const double thirdDownAttemptsMultiplier = 0.8645;
-        const double thirdDownConversionsMultiplier = 0.7579;
-        const double fourthDownAttemptsMultiplier = 0.5764;
-        const double fourthDownConversionsMultiplier = 0.5859;
+        const double thirdDownAttemptsProbability = 0.83;
+
+        const double thirdDownConversionsProbability = 0.175;
+        const double fourthDownAttemptsProbability = 0.41;
+        const double fourthDownConversionsProbability = 0.8;
+
+        /* These numbers look correct, but for some reason they don't give
+         * accurate stats
+         * 
+        const double fourthDownAttemptsProbability = 0.5764;
+         * */
 
         Random rand = new Random();
 
@@ -1175,25 +1182,21 @@ namespace MaddenEditor.Forms
 
             if (coachSim.Checked)
             {
-                foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+                foreach (CoachRecord coach in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
                 {
-                    CoachRecord coach = (CoachRecord)record;
-                    /*
                     coach.OffensiveStrategy = (int)Math.Round(Math.Max(Math.Min((double)simOffRPSlider.Value + ((double)offMaxAdjustSlider.Value)*(squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensivePassing] - squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensiveRunning] - squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensivePassing] + squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensiveRunning]) / 20.0, 79), 21));
                     coach.DefensiveStrategy = Math.Max(Math.Min(simDefRPSlider.Value, 79), 21);
 
                     coach.OffensiveAggression = simOffAggSlider.Value;
                     coach.DefensiveAggression = simDefAggSlider.Value;
-                     * */
+                    coach.RunningBack2Sub = 60 + (int)Math.Min(Math.Max(40 * Math.Tanh((squadRatings[coach.TeamId][4] - squadRatings[coach.TeamId][5]) / 18), 0), 30);
 
+                    /*
                     coach.OffensiveStrategy = 53;
                     coach.OffensiveAggression = 53;
                     coach.DefensiveStrategy = 50;
                     coach.DefensiveAggression = 51;
-
-                    Console.Write(coach.RunningBack2Sub + " ");
-                    coach.RunningBack2Sub = 60 + (int)Math.Min(Math.Max(40 * Math.Tanh((squadRatings[coach.TeamId][4] - squadRatings[coach.TeamId][5]) / 18), 0), 30);
-                    Console.WriteLine(coach.RunningBack2Sub);
+                    */
                 }
             }
 
@@ -1491,86 +1494,86 @@ namespace MaddenEditor.Forms
         {
             int currentSeason = model.FranchiseState.Season;
 
-                Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
-                List<int> humanControlled = new List<int>();
+            Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
+            List<int> humanControlled = new List<int>();
 
-                // season and career stats indexed by PGID
-                Dictionary<int, SeasonStatsOffenseRecord> seasonStatsOffense = new Dictionary<int, SeasonStatsOffenseRecord>();
-                Dictionary<int, SeasonStatsDefenseRecord> seasonStatsDefense = new Dictionary<int, SeasonStatsDefenseRecord>();
-                Dictionary<int, CareerStatsOffenseRecord> careerStatsOffense = new Dictionary<int, CareerStatsOffenseRecord>();
-                Dictionary<int, CareerStatsDefenseRecord> careerStatsDefense = new Dictionary<int, CareerStatsDefenseRecord>();
-                Dictionary<int, SeasonStatsTeamRecord> teamStats = new Dictionary<int, SeasonStatsTeamRecord>();
-                Dictionary<int, BoxScoreTeamRecord> teamBoxScores = new Dictionary<int, BoxScoreTeamRecord>();
+            // season and career stats indexed by PGID
+            Dictionary<int, SeasonStatsOffenseRecord> seasonStatsOffense = new Dictionary<int, SeasonStatsOffenseRecord>();
+            Dictionary<int, SeasonStatsDefenseRecord> seasonStatsDefense = new Dictionary<int, SeasonStatsDefenseRecord>();
+            Dictionary<int, CareerStatsOffenseRecord> careerStatsOffense = new Dictionary<int, CareerStatsOffenseRecord>();
+            Dictionary<int, CareerStatsDefenseRecord> careerStatsDefense = new Dictionary<int, CareerStatsDefenseRecord>();
+            Dictionary<int, SeasonStatsTeamRecord> teamStats = new Dictionary<int, SeasonStatsTeamRecord>();
+            Dictionary<int, BoxScoreTeamRecord> teamBoxScores = new Dictionary<int, BoxScoreTeamRecord>();
 
-                foreach (SeasonStatsDefenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_DEFENSE_TABLE].GetRecords())
+            foreach (SeasonStatsDefenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_DEFENSE_TABLE].GetRecords())
+            {
+                if (stat.Season == currentSeason)
+                    seasonStatsDefense[stat.PlayerId] = stat;
+            }
+
+            foreach (SeasonStatsOffenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].GetRecords())
+            {
+                if (stat.Season == currentSeason)
+                    seasonStatsOffense[stat.PlayerId] = stat;
+            }
+
+            foreach (CareerStatsDefenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_DEFENSE_TABLE].GetRecords())
+                careerStatsDefense[stat.PlayerId] = stat;
+
+            foreach (CareerStatsOffenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].GetRecords())
+                careerStatsOffense[stat.PlayerId] = stat;
+
+            foreach (SeasonStatsTeamRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
+                teamStats[stat.TeamId] = stat;
+
+            foreach (BoxScoreTeamRecord stat in model.TableModels[EditorModel.BOXSCORE_TEAM_TABLE].GetRecords())
+            {
+                if (stat.Season == currentSeason && stat.Week == currentWeek - 1)
+                    teamBoxScores[stat.TeamId] = stat;
+            }
+
+            foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+            {
+                if (record.WeekNumber == currentWeek - 1 && record.HumanControlled)
                 {
-                    if (stat.Season == currentSeason)
-                        seasonStatsDefense[stat.PlayerId] = stat;
+                    humanControlled.Add(record.AwayTeam.TeamId);
+                    humanControlled.Add(record.HomeTeam.TeamId);
+                    continue;
                 }
 
-                foreach (SeasonStatsOffenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].GetRecords())
+                if (record.WeekNumber == currentWeek - 1)
                 {
-                    if (stat.Season == currentSeason)
-                        seasonStatsOffense[stat.PlayerId] = stat;
+                    previousOpponents[record.AwayTeam.TeamId] = record.HomeTeam.TeamId;
+                    previousOpponents[record.HomeTeam.TeamId] = record.AwayTeam.TeamId;
                 }
+            }
 
-                foreach (CareerStatsDefenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_DEFENSE_TABLE].GetRecords())
-                    careerStatsDefense[stat.PlayerId] = stat;
-
-                foreach (CareerStatsOffenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].GetRecords())
-                    careerStatsOffense[stat.PlayerId] = stat;
-
-                foreach (SeasonStatsTeamRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
-                    teamStats[stat.TeamId] = stat;
-
-                foreach (BoxScoreTeamRecord stat in model.TableModels[EditorModel.BOXSCORE_TEAM_TABLE].GetRecords())
-                {
-                    if (stat.Season == currentSeason && stat.Week == currentWeek - 1)
-                        teamBoxScores[stat.TeamId] = stat;
-                }
-
-                foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
-                {
-                    if (record.WeekNumber == currentWeek - 1 && record.HumanControlled)
-                    {
-                        humanControlled.Add(record.AwayTeam.TeamId);
-                        humanControlled.Add(record.HomeTeam.TeamId);
-                        continue;
-                    }
-
-                    if (record.WeekNumber == currentWeek - 1)
-                    {
-                        previousOpponents[record.AwayTeam.TeamId] = record.HomeTeam.TeamId;
-                        previousOpponents[record.HomeTeam.TeamId] = record.AwayTeam.TeamId;
-                    }
-                }
-
-                Dictionary<int, List<BoxScoreOffenseRecord>> interceptees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
-                Dictionary<int, List<BoxScoreOffenseRecord>> sackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
-                Dictionary<int, List<BoxScoreOffenseRecord>> OLsackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+            Dictionary<int, List<BoxScoreOffenseRecord>> interceptees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+            Dictionary<int, List<BoxScoreOffenseRecord>> sackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+            Dictionary<int, List<BoxScoreOffenseRecord>> OLsackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
 
             /*
             Dictionary<int, List<BoxScoreDefenseRecord>> forcers = new Dictionary<int, List<BoxScoreDefenseRecord>>();
             Dictionary<int, List<BoxScoreDefenseRecord>> recoverers = new Dictionary<int, List<BoxScoreDefenseRecord>>();
             */
 
-                Dictionary<int, BoxScoreOffenseRecord> maxPassers = new Dictionary<int, BoxScoreOffenseRecord>();
-                Dictionary<int, BoxScoreOffenseRecord> startingRBs = new Dictionary<int, BoxScoreOffenseRecord>();
-                Dictionary<int, BoxScoreOffenseRecord> backupRBs = new Dictionary<int, BoxScoreOffenseRecord>();
+            Dictionary<int, BoxScoreOffenseRecord> maxPassers = new Dictionary<int, BoxScoreOffenseRecord>();
+            Dictionary<int, BoxScoreOffenseRecord> startingRBs = new Dictionary<int, BoxScoreOffenseRecord>();
+            Dictionary<int, BoxScoreOffenseRecord> backupRBs = new Dictionary<int, BoxScoreOffenseRecord>();
 
-                Dictionary<int, int> startingRBIDs = new Dictionary<int, int>();
-                Dictionary<int, int> backupRBIDs = new Dictionary<int, int>();
+            Dictionary<int, int> startingRBIDs = new Dictionary<int, int>();
+            Dictionary<int, int> backupRBIDs = new Dictionary<int, int>();
 
-                foreach (DepthChartRecord dcr in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+            foreach (DepthChartRecord dcr in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+            {
+                if (dcr.PositionId == (int)MaddenPositions.HB)
                 {
-                    if (dcr.PositionId == (int)MaddenPositions.HB)
-                    {
-                        if (dcr.DepthOrder == 0)
-                            startingRBIDs[dcr.TeamId] = dcr.PlayerId;
-                        else if (dcr.DepthOrder == 1)
-                            backupRBIDs[dcr.TeamId] = dcr.PlayerId;
-                    }
+                    if (dcr.DepthOrder == 0)
+                        startingRBIDs[dcr.TeamId] = dcr.PlayerId;
+                    else if (dcr.DepthOrder == 1)
+                        backupRBIDs[dcr.TeamId] = dcr.PlayerId;
                 }
+            }
 
                 for (int i = 0; i < 32; i++)
                 {
@@ -1629,24 +1632,49 @@ namespace MaddenEditor.Forms
                 foreach (int i in teamBoxScores.Keys)
                 {
                     int firstDownsAdd = (int)Math.Round((double)teamBoxScores[i].FirstDowns * (firstDownMultiplier - 1.0));
-                    int thirdDownAttemptsSubtract = (int)Math.Round((double)teamBoxScores[i].ThirdDownAttempts * (1.0 - thirdDownAttemptsMultiplier));
-                    int thirdDownConversionsSubtract = (int)Math.Round((double)teamBoxScores[i].ThirdDownConversions * (1.0 - thirdDownConversionsMultiplier));
-                    int fourthDownAttemptsSubtract = (int)Math.Round((double)teamBoxScores[i].FourthDownAttempts * (1.0 - fourthDownAttemptsMultiplier));
-                    int fourthDownConversionsSubtract = (int)Math.Round((double)teamBoxScores[i].FourthDownConversions * (1.0 - fourthDownConversionsMultiplier));
-
                     teamBoxScores[i].FirstDowns += firstDownsAdd;
-                    teamBoxScores[i].ThirdDownAttempts -= thirdDownAttemptsSubtract;
-                    teamBoxScores[i].ThirdDownConversions -= thirdDownConversionsSubtract;
-                    teamBoxScores[i].FourthDownAttempts -= fourthDownAttemptsSubtract;
-                    teamBoxScores[i].FourthDownConversions -= fourthDownConversionsSubtract;
 
                     if (currentWeek < 19)
-                    {
-                        teamStats[i].FourthDownConversions -= fourthDownConversionsSubtract;
                         teamStats[i].FirstDowns += firstDownsAdd;
-                        teamStats[i].ThirdDownAttempts -= thirdDownAttemptsSubtract;
-                        teamStats[i].ThirdDownConversions -= thirdDownConversionsSubtract;
-                        teamStats[i].FourthDownAttempts -= fourthDownAttemptsSubtract;
+
+                    for (int j = 0; j < teamBoxScores[i].ThirdDownAttempts; j++)
+                    {
+                        if (rand.NextDouble() > thirdDownAttemptsProbability)
+                        {
+                            teamBoxScores[i].ThirdDownAttempts--;
+
+                            if (currentWeek < 19)
+                                teamStats[i].ThirdDownAttempts--;
+
+                            if (teamBoxScores[i].ThirdDownAttempts < teamBoxScores[i].ThirdDownConversions ||
+                                rand.NextDouble() > thirdDownConversionsProbability)
+                            {
+                                teamBoxScores[i].ThirdDownConversions--;
+
+                                if (currentWeek < 19)
+                                    teamStats[i].ThirdDownConversions--;
+                            }
+                        }
+                    }
+
+                    for (int j = 0; j < teamBoxScores[i].FourthDownAttempts; j++)
+                    {
+                        if (rand.NextDouble() > fourthDownAttemptsProbability)
+                        {
+                            teamBoxScores[i].FourthDownAttempts--;
+
+                            if (currentWeek < 19)
+                                teamStats[i].FourthDownAttempts--;
+
+                            if (teamBoxScores[i].FourthDownAttempts < teamBoxScores[i].FourthDownConversions ||
+                                rand.NextDouble() > fourthDownConversionsProbability)
+                            {
+                                teamBoxScores[i].FourthDownConversions--;
+
+                                if (currentWeek < 19)
+                                    teamStats[i].FourthDownConversions--;
+                            }
+                        }
                     }
                 }
 
@@ -1742,7 +1770,7 @@ namespace MaddenEditor.Forms
                         {
                             stat.Sacks--;
                             teamBoxScores[stat.TeamId].Sacks--;
-                            teamBoxScores[previousOpponents[stat.TeamId]].SacksAllowed--;
+                            //teamBoxScores[previousOpponents[stat.TeamId]].SacksAllowed--;
 
                             if (currentWeek < 19)
                             {
@@ -1790,7 +1818,6 @@ namespace MaddenEditor.Forms
                     int yardsToAdd = (int)Math.Round((double)stat.ReceivingYards * (passingYardsMultiplier - 1.0));
                     stat.ReceivingYards += yardsToAdd;
                     teamBoxScores[stat.TeamId].PassingYards += yardsToAdd;
-                    teamBoxScores[previousOpponents[stat.TeamId]].PassingYardsAllowed += yardsToAdd;
 
                     if (currentWeek < 19)
                     {
@@ -1824,7 +1851,7 @@ namespace MaddenEditor.Forms
                     int rushYardsToAdd = (int)Math.Round((double)stat.RushingYards * (rushingYardsMultiplier - 1.0));
                     stat.RushingYards += rushYardsToAdd;
                     teamBoxScores[stat.TeamId].RushingYards += rushYardsToAdd;
-                    teamBoxScores[previousOpponents[stat.TeamId]].RushingYardsAllowed += rushYardsToAdd;
+//                    teamBoxScores[previousOpponents[stat.TeamId]].RushingYardsAllowed += rushYardsToAdd;
 
                     if (currentWeek < 19)
                     {
@@ -1857,7 +1884,7 @@ namespace MaddenEditor.Forms
                     startingRBs[i].RushingYards -= yards;
                     teamBoxScores[i].RushingAttempts -= carries;
                     teamBoxScores[i].RushingYards -= yards;
-                    teamBoxScores[previousOpponents[i]].RushingYardsAllowed -= yards;
+                    //teamBoxScores[previousOpponents[i]].RushingYardsAllowed -= yards;
 
                     if (currentWeek < 19)
                     {
@@ -1916,7 +1943,7 @@ namespace MaddenEditor.Forms
                     int backupYards = (int)Math.Round((double)yards * yardageMultipler);
                     backupRBBox.RushingYards += backupYards;
                     teamBoxScores[backupRBBox.TeamId].RushingYards += backupYards;
-                    teamBoxScores[previousOpponents[backupRBBox.TeamId]].RushingYardsAllowed += backupYards;
+                    //teamBoxScores[previousOpponents[backupRBBox.TeamId]].RushingYardsAllowed += backupYards;
 
                     if (currentWeek < 19)
                     {
