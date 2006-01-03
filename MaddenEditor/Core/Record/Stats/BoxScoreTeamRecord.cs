@@ -19,8 +19,6 @@ namespace MaddenEditor.Core.Record.Stats
         public const string FOURTH_DOWN_ATTEMPTS = "ts4d";
         public const string FOURTH_DOWN_CONVERSIONS = "ts4c";
         public const string SACKS_ALLOWED = "tssa";
-        public const string PASSING_YARDS_ALLOWED = "tsdp";
-        public const string RUSHING_YARDS_ALLOWED = "tsdy";
         public const string SACKS = "tssk";
         public const string INTERCEPTIONS_CAUGHT = "tsDi";
         public const string FUMBLES_RECOVERED = "tsfr";
@@ -118,30 +116,6 @@ namespace MaddenEditor.Core.Record.Stats
             set
             {
                 SetField(INTERCEPTIONS_THROWN, value);
-            }
-        }
-
-        public int PassingYardsAllowed
-        {
-            get
-            {
-                return GetIntField(PASSING_YARDS_ALLOWED);
-            }
-            set
-            {
-                SetField(PASSING_YARDS_ALLOWED, value);
-            }
-        }
-
-        public int RushingYardsAllowed
-        {
-            get
-            {
-                return GetIntField(RUSHING_YARDS_ALLOWED);
-            }
-            set
-            {
-                SetField(RUSHING_YARDS_ALLOWED, value);
             }
         }
 
