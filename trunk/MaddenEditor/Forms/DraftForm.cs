@@ -1140,6 +1140,12 @@ namespace MaddenEditor.Forms
 		{
 			timeRemaining--;
 
+            if (CurrentSelectingId == HumanTeamId)
+            {
+                SkipButton.Enabled = false;
+                draftButton.Enabled = true;
+            }
+
 			if (humanBackedUp > 0)
 			{
 				clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
@@ -1167,9 +1173,9 @@ namespace MaddenEditor.Forms
 
 				// (1) disable draft button
 
+                draftTimer.Stop();
 				draftButton.Enabled = false;
 				disableHumanPick = true;
-				draftTimer.Stop();
 
 				// (2) force trade with next highest CPU team
 

@@ -229,6 +229,26 @@ namespace MaddenEditor.Forms
             {
                 UpDownToChange = defMaxAdjustUpDown;
             }
+            else if (sender == gameOffRPSlider)
+            {
+                UpDownToChange = gameOffRPUpDown;
+            }
+            else if (sender == gameOffAggSlider)
+            {
+                UpDownToChange = gameOffAggUpDown;
+            }
+            else if (sender == gameHBSlider)
+            {
+                UpDownToChange = gameHBUpDown;
+            }
+            else if (sender == gameDefRPSlider)
+            {
+                UpDownToChange = gameDefRPUpDown;
+            }
+            else if (sender == gameDefAggSlider)
+            {
+                UpDownToChange = gameDefAggUpDown;
+            }
 
             triggerChangedEvent = false;
             UpDownToChange.Value = sender.Value;
@@ -318,6 +338,26 @@ namespace MaddenEditor.Forms
             else if (sender == offMaxAdjustUpDown)
             {
                 sliderToChange = offMaxAdjustSlider;
+            }
+            else if (sender == gameOffRPUpDown)
+            {
+                sliderToChange = gameOffRPSlider;
+            }
+            else if (sender == gameOffAggUpDown)
+            {
+                sliderToChange = gameOffAggSlider;
+            }
+            else if (sender == gameHBUpDown)
+            {
+                sliderToChange = gameHBSlider;
+            }
+            else if (sender == gameDefRPUpDown)
+            {
+                sliderToChange = gameDefRPSlider;
+            }
+            else if (sender == gameDefAggUpDown)
+            {
+                sliderToChange = gameDefAggSlider;
             }
 
             triggerChangedEvent = false;
@@ -423,21 +463,41 @@ namespace MaddenEditor.Forms
                 {
                     simOffRPSlider.Value = Int32.Parse(splitLine[1]);
                 }
+                else if (splitLine[0] == "GameOffRP")
+                {
+                    gameOffRPSlider.Value = Int32.Parse(splitLine[1]);
+                }
                 else if (splitLine[0] == "SimOffAgg")
                 {
                     simOffAggSlider.Value = Int32.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "GameOffAgg")
+                {
+                    gameOffAggSlider.Value = Int32.Parse(splitLine[1]);
                 }
                 else if (splitLine[0] == "SimHB")
                 {
                     simHBSlider.Value = Int32.Parse(splitLine[1]);
                 }
+                else if (splitLine[0] == "GameHB")
+                {
+                    gameHBSlider.Value = Int32.Parse(splitLine[1]);
+                }
                 else if (splitLine[0] == "SimDefRP")
                 {
                     simDefRPSlider.Value = Int32.Parse(splitLine[1]);
                 }
+                else if (splitLine[0] == "GameDefRP")
+                {
+                    gameDefRPSlider.Value = Int32.Parse(splitLine[1]);
+                }
                 else if (splitLine[0] == "SimDefAgg")
                 {
                     simDefAggSlider.Value = Int32.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "GameDefAgg")
+                {
+                    gameDefAggSlider.Value = Int32.Parse(splitLine[1]);
                 }
                 else if (splitLine[0] == "MaxOffAdjust")
                 {
@@ -521,6 +581,12 @@ namespace MaddenEditor.Forms
             sw.WriteLine("SimDefAgg\t" + simDefAggSlider.Value);
             sw.WriteLine("MaxOffAdjust\t" + offMaxAdjustSlider.Value);
             sw.WriteLine("MaxDefAdjust\t" + defMaxAdjustSlider.Value);
+
+            sw.WriteLine("GameOffRP\t" + gameOffRPSlider.Value);
+            sw.WriteLine("GameOffAgg\t" + gameOffAggSlider.Value);
+            sw.WriteLine("GameHB\t" + gameHBSlider.Value);
+            sw.WriteLine("GameDefRP\t" + gameDefRPSlider.Value);
+            sw.WriteLine("GameDefAgg\t" + gameDefAggSlider.Value);
 
             sw.Close();
 
@@ -1180,15 +1246,42 @@ namespace MaddenEditor.Forms
                 sw.Close();
             }
 
-            if (coachSim.Checked)
+            Console.WriteLine("OP: " + squadRatings[19][(int)MaddenSquadRatings.OffensivePassing]);
+            Console.WriteLine("OR: " + squadRatings[19][(int)MaddenSquadRatings.OffensiveRunning]);
+            Console.WriteLine("DP: " + squadRatings[19][(int)MaddenSquadRatings.DefensivePassing]);
+            Console.WriteLine("DR: " + squadRatings[19][(int)MaddenSquadRatings.DefensiveRunning]);
+
+            if (coachSim.Checked || coachGame.Checked)
             {
                 foreach (CoachRecord coach in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
                 {
-                    coach.OffensiveStrategy = (int)Math.Round(Math.Max(Math.Min((double)simOffRPSlider.Value + ((double)offMaxAdjustSlider.Value)*(squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensivePassing] - squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensiveRunning] - squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensivePassing] + squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensiveRunning]) / 20.0, 79), 21));
-                    coach.DefensiveStrategy = Math.Max(Math.Min(simDefRPSlider.Value, 79), 21);
+                    int offRPbase;
+                    int offAggbase;
+                    int defRPbase;
+                    int defAggbase;
 
-                    coach.OffensiveAggression = simOffAggSlider.Value;
-                    coach.DefensiveAggression = simDefAggSlider.Value;
+                    if (toAdjust.Contains(coach.TeamId) && coachGame.Checked)
+                    {
+                        offRPbase = gameOffRPSlider.Value;
+                        offAggbase = gameOffAggSlider.Value;
+                        defRPbase = gameDefRPSlider.Value;
+                        defAggbase = gameDefAggSlider.Value;
+                    }
+                    else if (!toAdjust.Contains(coach.TeamId) && coachSim.Checked)
+                    {
+                        offRPbase = simOffRPSlider.Value;
+                        offAggbase = simOffAggSlider.Value;
+                        defRPbase = simDefRPSlider.Value;
+                        defAggbase = simDefAggSlider.Value;
+                    }
+                    else
+                        continue;
+
+                    coach.OffensiveStrategy = (int)Math.Round(Math.Max(Math.Min((double)offRPbase + ((double)offMaxAdjustSlider.Value)*(squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensivePassing] - squadRatings[coach.TeamId][(int)MaddenSquadRatings.OffensiveRunning] - squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensivePassing] + squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.DefensiveRunning]) / 20.0, 79), 21));
+                    coach.DefensiveStrategy = (int)Math.Round(Math.Max(Math.Min((double)defRPbase + ((double)defMaxAdjustSlider.Value)*(squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.OffensivePassing] - squadRatings[opponents[coach.TeamId]][(int)MaddenSquadRatings.OffensiveRunning]) / 20.0, 79), 21));
+
+                    coach.OffensiveAggression = offAggbase;
+                    coach.DefensiveAggression = defAggbase;
                     coach.RunningBack2Sub = 60 + (int)Math.Min(Math.Max(40 * Math.Tanh((squadRatings[coach.TeamId][4] - squadRatings[coach.TeamId][5]) / 18), 0), 30);
 
                     /*
@@ -1526,12 +1619,6 @@ namespace MaddenEditor.Forms
             foreach (SeasonStatsTeamRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
                 teamStats[stat.TeamId] = stat;
 
-            foreach (BoxScoreTeamRecord stat in model.TableModels[EditorModel.BOXSCORE_TEAM_TABLE].GetRecords())
-            {
-                if (stat.Season == currentSeason && stat.Week == currentWeek - 1)
-                    teamBoxScores[stat.TeamId] = stat;
-            }
-
             foreach (ScheduleRecord record in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
             {
                 if (record.WeekNumber == currentWeek - 1 && record.HumanControlled)
@@ -1546,6 +1633,12 @@ namespace MaddenEditor.Forms
                     previousOpponents[record.AwayTeam.TeamId] = record.HomeTeam.TeamId;
                     previousOpponents[record.HomeTeam.TeamId] = record.AwayTeam.TeamId;
                 }
+            }
+
+            foreach (BoxScoreTeamRecord stat in model.TableModels[EditorModel.BOXSCORE_TEAM_TABLE].GetRecords())
+            {
+                if (stat.Season == currentSeason && stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId))
+                    teamBoxScores[stat.TeamId] = stat;
             }
 
             Dictionary<int, List<BoxScoreOffenseRecord>> interceptees = new Dictionary<int, List<BoxScoreOffenseRecord>>();

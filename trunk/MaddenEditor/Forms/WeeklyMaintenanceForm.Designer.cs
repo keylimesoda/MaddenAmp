@@ -36,6 +36,9 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.revertRatingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeAdjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.dumpStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixAllStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PlayersTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -120,9 +123,6 @@ namespace MaddenEditor.Forms
             this.simOffAggSlider = new System.Windows.Forms.TrackBar();
             this.simOffRPUpDown = new System.Windows.Forms.NumericUpDown();
             this.simOffRPSlider = new System.Windows.Forms.TrackBar();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.dumpStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fixAllStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.PlayersTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -246,6 +246,25 @@ namespace MaddenEditor.Forms
             this.makeAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.makeAdjustmentsToolStripMenuItem.Text = "Make Adjustments";
             this.makeAdjustmentsToolStripMenuItem.Click += new System.EventHandler(this.makeAdjustmentsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+            // 
+            // dumpStatsToolStripMenuItem
+            // 
+            this.dumpStatsToolStripMenuItem.Name = "dumpStatsToolStripMenuItem";
+            this.dumpStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.dumpStatsToolStripMenuItem.Text = "Stat Output";
+            this.dumpStatsToolStripMenuItem.Click += new System.EventHandler(this.dumpStatsToolStripMenuItem_Click);
+            // 
+            // fixAllStatsToolStripMenuItem
+            // 
+            this.fixAllStatsToolStripMenuItem.Name = "fixAllStatsToolStripMenuItem";
+            this.fixAllStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.fixAllStatsToolStripMenuItem.Text = "Fix All Stats";
+            this.fixAllStatsToolStripMenuItem.Click += new System.EventHandler(this.fixAllStatsToolStripMenuItem_Click);
             // 
             // PlayersTab
             // 
@@ -858,7 +877,6 @@ namespace MaddenEditor.Forms
             // 
             // gameHBUpDown
             // 
-            this.gameHBUpDown.Enabled = false;
             this.gameHBUpDown.Location = new System.Drawing.Point(282, 147);
             this.gameHBUpDown.Maximum = new decimal(new int[] {
             90,
@@ -882,7 +900,6 @@ namespace MaddenEditor.Forms
             // 
             // gameHBSlider
             // 
-            this.gameHBSlider.Enabled = false;
             this.gameHBSlider.Location = new System.Drawing.Point(104, 146);
             this.gameHBSlider.Maximum = 90;
             this.gameHBSlider.Minimum = 50;
@@ -908,7 +925,6 @@ namespace MaddenEditor.Forms
             // 
             // gameDefAggUpDown
             // 
-            this.gameDefAggUpDown.Enabled = false;
             this.gameDefAggUpDown.Location = new System.Drawing.Point(282, 263);
             this.gameDefAggUpDown.Name = "gameDefAggUpDown";
             this.gameDefAggUpDown.Size = new System.Drawing.Size(40, 20);
@@ -922,7 +938,6 @@ namespace MaddenEditor.Forms
             // 
             // gameDefAggSlider
             // 
-            this.gameDefAggSlider.Enabled = false;
             this.gameDefAggSlider.Location = new System.Drawing.Point(104, 262);
             this.gameDefAggSlider.Maximum = 100;
             this.gameDefAggSlider.Name = "gameDefAggSlider";
@@ -934,7 +949,6 @@ namespace MaddenEditor.Forms
             // 
             // gameDefRPUpDown
             // 
-            this.gameDefRPUpDown.Enabled = false;
             this.gameDefRPUpDown.Location = new System.Drawing.Point(282, 216);
             this.gameDefRPUpDown.Name = "gameDefRPUpDown";
             this.gameDefRPUpDown.Size = new System.Drawing.Size(40, 20);
@@ -948,7 +962,6 @@ namespace MaddenEditor.Forms
             // 
             // gameDefRPSlider
             // 
-            this.gameDefRPSlider.Enabled = false;
             this.gameDefRPSlider.Location = new System.Drawing.Point(104, 215);
             this.gameDefRPSlider.Maximum = 80;
             this.gameDefRPSlider.Minimum = 20;
@@ -961,7 +974,6 @@ namespace MaddenEditor.Forms
             // 
             // gameOffAggUpDown
             // 
-            this.gameOffAggUpDown.Enabled = false;
             this.gameOffAggUpDown.Location = new System.Drawing.Point(282, 100);
             this.gameOffAggUpDown.Maximum = new decimal(new int[] {
             80,
@@ -985,7 +997,6 @@ namespace MaddenEditor.Forms
             // 
             // gameOffAggSlider
             // 
-            this.gameOffAggSlider.Enabled = false;
             this.gameOffAggSlider.Location = new System.Drawing.Point(104, 99);
             this.gameOffAggSlider.Maximum = 80;
             this.gameOffAggSlider.Minimum = 20;
@@ -998,7 +1009,6 @@ namespace MaddenEditor.Forms
             // 
             // gameOffRPUpDown
             // 
-            this.gameOffRPUpDown.Enabled = false;
             this.gameOffRPUpDown.Location = new System.Drawing.Point(282, 53);
             this.gameOffRPUpDown.Maximum = new decimal(new int[] {
             80,
@@ -1022,7 +1032,6 @@ namespace MaddenEditor.Forms
             // 
             // gameOffRPSlider
             // 
-            this.gameOffRPSlider.Enabled = false;
             this.gameOffRPSlider.Location = new System.Drawing.Point(104, 52);
             this.gameOffRPSlider.Maximum = 80;
             this.gameOffRPSlider.Minimum = 20;
@@ -1078,7 +1087,7 @@ namespace MaddenEditor.Forms
             this.defMaxAdjustUpDown.Size = new System.Drawing.Size(40, 20);
             this.defMaxAdjustUpDown.TabIndex = 31;
             this.defMaxAdjustUpDown.Value = new decimal(new int[] {
-            15,
+            20,
             0,
             0,
             0});
@@ -1092,7 +1101,7 @@ namespace MaddenEditor.Forms
             this.defMaxAdjustSlider.Size = new System.Drawing.Size(168, 45);
             this.defMaxAdjustSlider.TabIndex = 30;
             this.defMaxAdjustSlider.TickFrequency = 3;
-            this.defMaxAdjustSlider.Value = 15;
+            this.defMaxAdjustSlider.Value = 20;
             this.defMaxAdjustSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // offMaxAdjustUpDown
@@ -1107,7 +1116,7 @@ namespace MaddenEditor.Forms
             this.offMaxAdjustUpDown.Size = new System.Drawing.Size(40, 20);
             this.offMaxAdjustUpDown.TabIndex = 29;
             this.offMaxAdjustUpDown.Value = new decimal(new int[] {
-            15,
+            20,
             0,
             0,
             0});
@@ -1121,7 +1130,7 @@ namespace MaddenEditor.Forms
             this.offMaxAdjustSlider.Size = new System.Drawing.Size(168, 45);
             this.offMaxAdjustSlider.TabIndex = 28;
             this.offMaxAdjustSlider.TickFrequency = 3;
-            this.offMaxAdjustSlider.Value = 15;
+            this.offMaxAdjustSlider.Value = 20;
             this.offMaxAdjustSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // groupBox4
@@ -1254,7 +1263,7 @@ namespace MaddenEditor.Forms
             this.simDefAggUpDown.Size = new System.Drawing.Size(40, 20);
             this.simDefAggUpDown.TabIndex = 11;
             this.simDefAggUpDown.Value = new decimal(new int[] {
-            45,
+            50,
             0,
             0,
             0});
@@ -1268,7 +1277,7 @@ namespace MaddenEditor.Forms
             this.simDefAggSlider.Size = new System.Drawing.Size(168, 45);
             this.simDefAggSlider.TabIndex = 10;
             this.simDefAggSlider.TickFrequency = 5;
-            this.simDefAggSlider.Value = 45;
+            this.simDefAggSlider.Value = 50;
             this.simDefAggSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // simDefRPUpDown
@@ -1318,7 +1327,7 @@ namespace MaddenEditor.Forms
             this.simOffAggUpDown.Size = new System.Drawing.Size(40, 20);
             this.simOffAggUpDown.TabIndex = 7;
             this.simOffAggUpDown.Value = new decimal(new int[] {
-            45,
+            53,
             0,
             0,
             0});
@@ -1332,7 +1341,7 @@ namespace MaddenEditor.Forms
             this.simOffAggSlider.Size = new System.Drawing.Size(168, 45);
             this.simOffAggSlider.TabIndex = 6;
             this.simOffAggSlider.TickFrequency = 5;
-            this.simOffAggSlider.Value = 45;
+            this.simOffAggSlider.Value = 53;
             this.simOffAggSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // simOffRPUpDown
@@ -1352,7 +1361,7 @@ namespace MaddenEditor.Forms
             this.simOffRPUpDown.Size = new System.Drawing.Size(40, 20);
             this.simOffRPUpDown.TabIndex = 5;
             this.simOffRPUpDown.Value = new decimal(new int[] {
-            50,
+            53,
             0,
             0,
             0});
@@ -1367,27 +1376,8 @@ namespace MaddenEditor.Forms
             this.simOffRPSlider.Size = new System.Drawing.Size(168, 45);
             this.simOffRPSlider.TabIndex = 4;
             this.simOffRPSlider.TickFrequency = 3;
-            this.simOffRPSlider.Value = 50;
+            this.simOffRPSlider.Value = 53;
             this.simOffRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
-            // 
-            // dumpStatsToolStripMenuItem
-            // 
-            this.dumpStatsToolStripMenuItem.Name = "dumpStatsToolStripMenuItem";
-            this.dumpStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
-            this.dumpStatsToolStripMenuItem.Text = "Stat Output";
-            this.dumpStatsToolStripMenuItem.Click += new System.EventHandler(this.dumpStatsToolStripMenuItem_Click);
-            // 
-            // fixAllStatsToolStripMenuItem
-            // 
-            this.fixAllStatsToolStripMenuItem.Name = "fixAllStatsToolStripMenuItem";
-            this.fixAllStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
-            this.fixAllStatsToolStripMenuItem.Text = "Fix All Stats";
-            this.fixAllStatsToolStripMenuItem.Click += new System.EventHandler(this.fixAllStatsToolStripMenuItem_Click);
             // 
             // WeeklyMaintenanceForm
             // 
