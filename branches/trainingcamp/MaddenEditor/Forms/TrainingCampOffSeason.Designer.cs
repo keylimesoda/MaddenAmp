@@ -30,7 +30,7 @@ namespace MaddenEditor.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainingCampOffSeason));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SelectHumanTeam = new System.Windows.Forms.ComboBox();
@@ -130,6 +130,7 @@ namespace MaddenEditor.Forms
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Skip Offseason Conditioning...";
+            this.groupBox2.Visible = false;
             // 
             // label3
             // 
@@ -146,7 +147,7 @@ namespace MaddenEditor.Forms
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Enabled = false;
             this.groupBox3.ForeColor = System.Drawing.Color.Black;
-            this.groupBox3.Location = new System.Drawing.Point(12, 214);
+            this.groupBox3.Location = new System.Drawing.Point(12, 224);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(404, 50);
             this.groupBox3.TabIndex = 8;
@@ -180,21 +181,21 @@ namespace MaddenEditor.Forms
             this.depthChartDataGrid.AllowUserToResizeColumns = false;
             this.depthChartDataGrid.AllowUserToResizeRows = false;
             this.depthChartDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle7;
-            this.depthChartDataGrid.Location = new System.Drawing.Point(12, 270);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            this.depthChartDataGrid.Location = new System.Drawing.Point(12, 280);
             this.depthChartDataGrid.MultiSelect = false;
             this.depthChartDataGrid.Name = "depthChartDataGrid";
             this.depthChartDataGrid.ReadOnly = true;
             this.depthChartDataGrid.RowTemplate.Height = 28;
             this.depthChartDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.depthChartDataGrid.Size = new System.Drawing.Size(1068, 362);
+            this.depthChartDataGrid.Size = new System.Drawing.Size(1068, 352);
             this.depthChartDataGrid.TabIndex = 9;
             // 
             // groupBox4
@@ -206,7 +207,7 @@ namespace MaddenEditor.Forms
             this.groupBox4.Controls.Add(this.radioButton1);
             this.groupBox4.Location = new System.Drawing.Point(536, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(539, 145);
+            this.groupBox4.Size = new System.Drawing.Size(539, 161);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Offseason Scenario...";
@@ -225,7 +226,7 @@ namespace MaddenEditor.Forms
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(6, 121);
+            this.radioButton4.Location = new System.Drawing.Point(6, 123);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(14, 13);
             this.radioButton4.TabIndex = 4;
@@ -269,9 +270,10 @@ namespace MaddenEditor.Forms
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(535, 165);
+            this.textBox1.Location = new System.Drawing.Point(536, 179);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(539, 95);
             this.textBox1.TabIndex = 11;

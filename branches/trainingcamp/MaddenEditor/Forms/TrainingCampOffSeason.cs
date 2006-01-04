@@ -56,6 +56,7 @@ namespace MaddenEditor.Forms
         int InjMean = 0;
         double PosWgtMod = 0;
         bool NegativeScenario1 = false;
+        bool NegativeScenario2 = false;
         //Variables used for random scenario
         string ScenarioFirstName = "";
         string ScenarioLastName = "";
@@ -70,18 +71,19 @@ namespace MaddenEditor.Forms
         bool GoodNews = false;
         bool HorribleNews = false;
         bool GreatNews = false;
+        string Captain1 = "";
+        string Captain2 = "";
+        string Captain3 = "";       
+        int NewCaptain = 0;
+        string OldCaptain = "";
 
+        int Diff = 0; //This is any modifier applied to an ability if random scenario = true
+        private TeamCaptainRecord teamCaptainRecord = null;
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
 
         Random random = new Random();  
-
-        public MaddenEditor.Core.EditorModel Model
-        {
-            set { this.model = value; }
-        }
-
-                
+           
         public TrainingCampOffSeason(EditorModel model)
         { 
             this.model = model;
@@ -299,7 +301,14 @@ namespace MaddenEditor.Forms
                 }
 
                double RandomWeight = Math.Round((DetermineWeight * random.NextDouble()) - TempCmot);
-               if ((RandomWeight <= TotalWeightGainMod) & (FirstName != ScenarioFirstName) & (LastName != ScenarioLastName))
+               string CaptainFirst = "";
+               string CaptainLast = "";               
+               if (OldCaptain != "")
+               {
+                   CaptainFirst = OldCaptain.Split(' ')[0];
+                   CaptainLast = OldCaptain.Split(' ')[1];
+               }  
+               if ((RandomWeight <= TotalWeightGainMod) & (FirstName != ScenarioFirstName) & (LastName != ScenarioLastName) || (GoodNews == true) & (FirstName == CaptainFirst) & (LastName == CaptainLast))
                 {
                     WeightGain = true;
                 }
@@ -495,14 +504,21 @@ namespace MaddenEditor.Forms
             double DetermineLoss = 0;
             if (i == 0)
             {
-                DetermineLoss = Math.Round(((60 * random.NextDouble() + 80) - j) * (2 - PosWgtMod));             
+                DetermineLoss = Math.Round(((60 * random.NextDouble() + 85) - j) * (2 - PosWgtMod));             
             }
             else if (i == 1)
             {
-                DetermineLoss = Math.Round(((60 * random.NextDouble() + 80) + j) * (2 - PosWgtMod)); 
+                DetermineLoss = Math.Round(((60 * random.NextDouble() + 85) + j) * (2 - PosWgtMod)); 
             }
+            string CaptainFirst = "";
+            string CaptainLast = "";
+            if (OldCaptain != "")
+            {
+                CaptainFirst = OldCaptain.Split(' ')[0];
+                CaptainLast = OldCaptain.Split(' ')[1];
+            }  
             double RandomLoss = Math.Round((DetermineLoss * random.NextDouble()) + TempCmot);
-            if ((RandomLoss <= TotalLossMod) & (FirstName != ScenarioFirstName) & (LastName != ScenarioLastName))
+            if ((RandomLoss <= TotalLossMod) & (FirstName != ScenarioFirstName) & (LastName != ScenarioLastName) || (BadNews == true) & (FirstName == CaptainFirst) & (LastName == CaptainLast))
             {
                 WeightLoss = true;
             }
@@ -513,6 +529,7 @@ namespace MaddenEditor.Forms
         }
         private void AttributeMeans(int PosId)
         {
+            PosStr = "";
             SpdMean = 0;
             AccMean = 0;
             AgiMean = 0;
@@ -799,6 +816,7 @@ namespace MaddenEditor.Forms
                     dr["Pos"] = PosStr;
                     dr["Age"] = valObject.Age;
                     dr["Exp"] = valObject.YearsPro;
+                    valObject.Overall = valObject.CalculateOverallRating(valObject.PositionId);
                     dr["Ovr"] = valObject.Overall;
                     // Would like to include feet/inches
                     dr["Hgt"] = valObject.Height;
@@ -1077,28 +1095,49 @@ namespace MaddenEditor.Forms
                     {
                         if ((BadNews == true) & (HorribleNews == false))
                         {
-                            Rating = (valObject.Morale - (int)(11 * random.NextDouble() + 10));
+                            Rating = (valObject.Morale - (int)(11 * random.NextDouble() + (10 + Diff)));
                             HighLowCheck(Rating);
                             valObject.Morale = Rating;
                         }
                         else if (HorribleNews == true)
                         {
-                            Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + 20)));
+                            Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + (20 + Diff))));
                             HighLowCheck(Rating);
                             valObject.Morale = Rating;
                         }
-                        if ((GoodNews == true) & (GreatNews == false))
+                        if ((GoodNews == true) & (GreatNews == false) & (valObject.Morale != 100))
                         {
-                            Rating = (valObject.Morale + ((int)(11 * random.NextDouble() + 5)));
+                            Rating = (valObject.Morale + ((int)(11 * random.NextDouble() + (5 + Diff))));
                             HighLowCheck(Rating);
                             valObject.Morale = Rating;
                         }
-                        else if (GreatNews == true)
+                        else if ((GreatNews == true) & (valObject.Morale != 100))
                         {
-                            Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + 20)));
+                            Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + (15 + Diff))));
                             HighLowCheck(Rating);
                             valObject.Morale = Rating;
                         }
+                    }
+                    string CaptainFirst = "";
+                    string CaptainLast = "";
+                    if (OldCaptain != "")
+                    {
+                        CaptainFirst = OldCaptain.Split(' ')[0];
+                        CaptainLast = OldCaptain.Split(' ')[1];
+                    }  
+                    if ((GoodNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
+                    {
+                        Diff = (((model.CoachModel.CurrentCoachRecord.Chemistry - 70) / 6) * -1);
+                        Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + (15 + Diff))));
+                        HighLowCheck(Rating);
+                        valObject.Morale = Rating;
+                    }
+                    if ((BadNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
+                    {
+                        Diff = ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 6);
+                        Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + (10 + Diff))));
+                        HighLowCheck(Rating);
+                        valObject.Morale = Rating;
                     }
                     //Add modified datarow to view before/after changes 
                     DataRow ac = RosterView.NewRow();
@@ -1215,12 +1254,12 @@ namespace MaddenEditor.Forms
             //Neutrel
             if (MuscleCounter == FatCoutner)
             {
-                double NeutralRoll = (1 * random.NextDouble()) + 1;
+                double NeutralRoll = (2 * random.NextDouble()) + 1;
                 if (NeutralRoll == 1)
                 {
                     OwnerFeedback = ("Message from ownership...We need more motivational spark out of " + model.CoachModel.CurrentCoachRecord.Name + ".But at least it's a wash in terms of loss/gain. We won't have to spend that much camp time working them back into shape...");
                 }
-                else if (NeutralRoll == 2)
+                else
                 {
                     OwnerFeedback = ("Message from ownership...The number of players reporting to camp heavier than last year equals those that " + model.CoachModel.CurrentCoachRecord.Name + " reached out to this past offseason.\nWe'd like better Motivation next year to get a jump on our division..");
                 }
@@ -1275,9 +1314,6 @@ namespace MaddenEditor.Forms
                 sw.Write(sw.NewLine);
             }
             sw.Close();
-
-
-
         }
 
         private void HighLowCheck(int Skill)
@@ -1315,7 +1351,7 @@ namespace MaddenEditor.Forms
             double Issue = Math.Round((100 * random.NextDouble()) + 1);            
             bool ScenarioTrue = false;
             
-            if (Issue >= 0)
+            if (Issue <= 20)
             {  
                 SelectHumanTeam.Enabled = false;
                 checkBox1.Enabled = false;
@@ -1326,9 +1362,15 @@ namespace MaddenEditor.Forms
                 int teamId = ((TeamRecord)SelectHumanTeam.SelectedItem).TeamId;
                 int positionId = 0;
                 int OverallRating = 99;
-
-                List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);                
+                List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
                 int PlayerCounter = 0;
+
+                double GoodBad = Math.Round((10 * random.NextDouble()) + 1);//Determine which scenario is true
+
+                if (GoodBad <= 6) //Scenario 1; player slacking
+                {
+
+                
 
                 while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 16))
             {
@@ -1353,9 +1395,7 @@ namespace MaddenEditor.Forms
             ScenarioOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
            // ScenarioPos = model.PlayerModel.CurrentPlayerRecord.PositionId.ToString();
 
-                double GoodBad = Math.Round((10 * random.NextDouble()) + 1);                
-                if (GoodBad <= 11)
-                {
+                
                     NegativeScenario1 = true;
                     ScenarioTrue = true;
                     Scenario = ("\n...Sometime during the offseason...\n\n\nLocation...\n\n" + SelectHumanTeam.SelectedItem.ToString() + " Training Camp facility...\n\nYou're approached by a member of the " + SelectHumanTeam.SelectedItem.ToString() + " board of directors.\n''I'm hearing whispers that a certain player on our team has been less than enthusiastic in his\nworkouts.'' He nervously glances around ensuring you're alone...\n\n\n''" + ScenarioFirstName + " " + ScenarioLastName + " (" + ScenarioOvr + " Ovr) he says. You need to address this before it gets out of control.''\n\nRefer to the upper Right corner of this form ('Offseason Scenario...') for further instruction...");
@@ -1367,10 +1407,138 @@ namespace MaddenEditor.Forms
                     radioButton4.Checked = true;
                     textBox1.Text = "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
                 }
-              //  else if (GoodBad <= 5)
-              //  {
+                else if (GoodBad <= 11) //Scenario 2; Captains
+                {
+                    NegativeScenario2 = true;
+                    ScenarioTrue = true;
+                    teamCaptainRecord = null;
+                    SortedList<string, PlayerRecord> list = new SortedList<string, PlayerRecord>();
+                    foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+                    {
+                        if (record.Deleted)
+                        {
+                            continue;
+                        }
+                        PlayerRecord player = (PlayerRecord)record;
 
-              //  }
+                        if (player.TeamId == teamId)
+                        {
+                            try
+                            {
+                                list.Add(player.ToString(), player);
+                            }
+                            catch (ArgumentException e)
+                            {
+                                Console.WriteLine(e.ToString());
+                            }
+                        }
+                    }
+                    foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_CAPTAIN_TABLE].GetRecords())
+                    {
+                        if (((TeamCaptainRecord)record).TeamId == teamId)
+                        {
+                            teamCaptainRecord = (TeamCaptainRecord)record;
+
+                            break;
+                        }
+                    }
+                    if (teamCaptainRecord != null)
+                    {
+                        foreach (PlayerRecord player in list.Values)
+                        {
+                            if (player.PlayerId == teamCaptainRecord.Captain1)
+                            {
+                                Captain1 = player.ToString();
+                            }
+                            if (player.PlayerId == teamCaptainRecord.Captain2)
+                            {
+                                Captain2 = player.ToString();
+                            }
+                            if (player.PlayerId == teamCaptainRecord.Captain3)
+                            {
+                                Captain3 = player.ToString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Captain1 = "";
+                        Captain2 = "";
+                        Captain3 = "";
+                    }
+                    while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain1.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain1.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain2.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain2.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain3.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain3.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20))
+                    {
+                        model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
+                        model.PlayerModel.GetNextPlayerRecord();
+                        PlayerCounter++;
+                        if (PlayerCounter == teamPlayers.Count)
+                        {
+                            PlayerCounter = 0;
+                            OverallRating = OverallRating - 3;
+                            model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
+                            model.PlayerModel.GetNextPlayerRecord();
+                        }
+                    }
+                    groupBox4.Visible = true;
+                    model.CoachModel.SetPositionFilter(0);
+                    model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
+                    model.CoachModel.GetNextCoachRecord();
+                    CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
+                    ScenarioFirstName = model.PlayerModel.CurrentPlayerRecord.FirstName;
+                    ScenarioLastName = model.PlayerModel.CurrentPlayerRecord.LastName;
+                    ScenarioOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
+                    NewCaptain = model.PlayerModel.CurrentPlayerRecord.PlayerId;                    
+                    if ((model.PlayerModel.CurrentPlayerRecord.PositionId == 0) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 1) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 2) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 4) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 5) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 6) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 7) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 8) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 9))
+                    {
+                        PosStr = "Offensive";
+                        OldCaptain = Captain1;
+                    }
+                    else
+                    {
+                        PosStr = "Defensive";
+                        OldCaptain = Captain2;
+                    }
+                    Scenario = ("\n...Sometime during the offseason...\n\n\nLocation...\n\n" + SelectHumanTeam.SelectedItem.ToString() + " Training Camp facility...\n\nYou're enjoying your morning cup of coffee while going over your plans for running\nthis year's training camp when the door to your office suddenly bursts open.\nStorming into the room is " + ScenarioFirstName + " " + ScenarioLastName + " (" + ScenarioOvr + " Ovr), one of your better players.\nHe doesn't look happy...\n''Coach, I feel...I feel that I deserve to be named " + PosStr + " Captain.''");
+                    if ((PosStr == "Offensive") & (Captain1 == ""))
+                    {
+                        Scenario = Scenario + ("\n\n''I mean we don't even currently have an offensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
+                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
+                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisapointed though Motivation/Chemistry will alter effects...";
+                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+                    }
+                    else if ((PosStr == "Defensive") & (Captain2 == ""))
+                    {
+                        Scenario = Scenario + ("\n\n''I mean we don't even currently have an defensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
+                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
+                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisapointed though Motivation/Chemistry will alter effects...";
+                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+
+                    }
+                    else if ((PosStr == "Offensive") & (Captain1 != ""))
+                    {
+                        Scenario = Scenario + ("\n\n''I've worked so hard to get to the point I'm at but I still don't feel\nthe " + SelectHumanTeam.SelectedItem.ToString() + " respect me. I want to be a leader and feel I can be more\neffective than our current offensive captain, " + Captain1 + "''");
+                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain. Be prepared for a negative\nreaction from your current " + PosStr + " Captain " + Captain1 + "...";
+                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have full confidence in your current\n" + PosStr + " Captain " + Captain1 + ". " + ScenarioLastName + " will likely be angry...";
+                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+
+                    }
+                    else if ((PosStr == "Defensive") & (Captain2 != ""))
+                    {
+                        Scenario = Scenario + ("\n\n''I've worked so hard to get to the point I'm at but I still don't feel\nthe " + SelectHumanTeam.SelectedItem.ToString() + " respect me. I want to be a leader and feel I can be more\neffective than our current defensive captain, " + Captain2 + ".''");
+                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain. Be prepared for a negative\nreaction from your current " + PosStr + " Captain " + Captain2 + "...";
+                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have full confidence in your current\n" + PosStr + " Captain " + Captain2 + ". " + ScenarioLastName + " will likely be angry...";
+                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+                    
+                    }
+                    Scenario = Scenario + ("\n\nYou have a decision to make. Please refer to the 'Offseason scenario' section\nof this form for further instruction, located in the upper right hand corner.");
+                    radioButton1.Visible = false; 
+                    radioButton2.Checked = true;
+                    textBox1.Text = "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + " and a Team Chemistry rating of " + model.CoachModel.CurrentCoachRecord.Chemistry + "...\r\n...Motivation as well as Team Chemistry will alter the effects of your decision accordingly...";
+
+                
+                
+                
+                }
                    MessageBox.Show(Scenario);            
                   
             }
@@ -1612,7 +1780,7 @@ namespace MaddenEditor.Forms
                 if (radioButton1.Checked == true)
                 {                    
                     Timer1TextDelay(7);
-                    textBox1.Text = textBox1.Text + "\r\n...Attempting to phone " + model.PlayerModel.CurrentPlayerRecord.LastName + "'s agent...\r\n...Please standby...";
+                    textBox1.Text = textBox1.Text + "\r\n...Attempting to phone " + ScenarioLastName + "'s agent...\r\n...Please standby...";
                     textBox1.SelectionStart = textBox1.Text.Length;
                     textBox1.SelectionLength = 0;
                     textBox1.ScrollToCaret();
@@ -1723,7 +1891,7 @@ namespace MaddenEditor.Forms
                     else
                     {
                         Timer1TextDelay(30);
-                        textBox1.Text = textBox1.Text + "\r\n\r\n\r\n\r\n...Five days later your office phone rings...\r\n...''Hello?''...''Yea coach, it's " + ScenarioFirstName + " " + ScenarioLastName + ". I saw the article about me. That's BULLSHIT and you know it. Callin' out your star player and embarrasing the HELL out of me. I won't forget this. And don't expect me to bust my ass in the offseason either. I'll get into shape on " + SelectHumanTeam.SelectedItem.ToString() + " time. Not my time.''\r\n...Well that backfired you think to yourself...\r\n...Please wait while Offseason Conditioning is simulated..."; 
+                        textBox1.Text = textBox1.Text + "\r\n\r\n\r\n\r\n...Five days later your office phone rings...\r\n...''Hello?''...''Yea coach, it's " + ScenarioFirstName + " " + ScenarioLastName + ". I saw the article about me. That's BULLSH$T and you know it. Callin' out your star player and embarrasing the HELL out of me. I won't forget this. And don't expect me to bust my ass in the offseason either. I'll get into shape on " + SelectHumanTeam.SelectedItem.ToString() + " time. Not my time.''\r\n...Well that backfired you think to yourself...\r\n...Please wait while Offseason Conditioning is simulated..."; 
                         textBox1.SelectionStart = textBox1.Text.Length;
                         textBox1.SelectionLength = 0;
                         textBox1.ScrollToCaret();
@@ -1908,7 +2076,314 @@ namespace MaddenEditor.Forms
 
                 
             }//End Negative Scen. 1 
+            else if (NegativeScenario2 == true)
+            {
+                if ((radioButton2.Checked == true) & (PosStr == "Offensive") & (Captain1 == "") || (radioButton2.Checked == true) & (PosStr == "Defensive") & (Captain2 == ""))
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...Waiting on his response...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...''Thanks coach! I won't let you down. I'll work hard this offseason to report to camp in better shape then I'm in now...\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    if (PosStr == "Offensive")
+                    {
+                        teamCaptainRecord.Captain1 = NewCaptain;
+                    }
+                    else
+                    {
+                        teamCaptainRecord.Captain2 = NewCaptain;
 
+                    }
+                    int Diff = 0;
+                    Diff = (((model.CoachModel.CurrentCoachRecord.Motivation - 50) / 8) + ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 8));
+                    if (Diff >= 1)
+                    {
+                        Diff = (int)Math.Round(Diff * random.NextDouble());
+                    }
+                    else
+                    {
+                        Diff = 0;
+                    }
+                    GoodNews = true;
+                    CurrentDialog = "\r\n..." + ScenarioFirstName + " " + ScenarioLastName + " is in good spirits since his promotion to " + PosStr + " Captain this offseason...";
+                    Captain1 = "";
+                    Captain2 = "";
+                    PhaseOne();
+                    return;
+                }
+                else if ((radioButton2.Checked == true) & (PosStr == "Offensive") & (Captain1 != ""))
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...Waiting on player responses...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(15);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Email from " + ScenarioFirstName + " " + ScenarioLastName + "...''Thanks coach! I won't let you down. I'll work hard this offseason to report to camp in better shape then I'm in now...\r\n...Email from " + Captain1 + "...What was that?! Stripping me of my Captain status? I'm sick of the head games coach...\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    if (PosStr == "Offensive")
+                    {
+                        teamCaptainRecord.Captain1 = NewCaptain;
+                    }
+                    else
+                    {
+                        teamCaptainRecord.Captain2 = NewCaptain;
+
+                    }
+                    int Diff = 0;
+                    Diff = (((model.CoachModel.CurrentCoachRecord.Motivation - 50) / 8) + ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 8));
+                    if (Diff >= 1)
+                    {
+                        Diff = (int)Math.Round(Diff * random.NextDouble());
+                    }
+                    else
+                    {
+                        Diff = 0;
+                    }
+                    GoodNews = true;
+                    GreatNews = true;
+                    CurrentDialog = "\r\n..." + ScenarioFirstName + " " + ScenarioLastName + " is in good spirits since his promotion to " + PosStr + " Captain this offseason, but " + Captain1 + " looks very unhappy...";
+                    Captain2 = "";
+                    PhaseOne();
+                    return;
+                }
+                else if ((radioButton2.Checked == true) & (PosStr == "Defensive") & (Captain2 != ""))
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...Waiting on player responses...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(15);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Email from " + ScenarioFirstName + " " + ScenarioLastName + "...''Thanks coach! I won't let you down. I'll work hard this offseason to report to camp in better shape then I'm in now...\r\n...Email from " + Captain2 + "...What was that?! Stripping me of my Captain status? I'm sick of the head games coach...\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    if (PosStr == "Offensive")
+                    {
+                        teamCaptainRecord.Captain1 = NewCaptain;
+                    }
+                    else
+                    {
+                        teamCaptainRecord.Captain2 = NewCaptain;
+
+                    }
+                    int Diff = 0;
+                    Diff = (((model.CoachModel.CurrentCoachRecord.Motivation - 50) / 8) + ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 8));
+                    if (Diff >= 1)
+                    {
+                        Diff = (int)Math.Round(Diff * random.NextDouble());
+                    }
+                    else
+                    {
+                        Diff = 0;
+                    }
+                    GoodNews = true;
+                    GreatNews = true;
+                    CurrentDialog = "\r\n..." + ScenarioFirstName + " " + ScenarioLastName + " is in good spirits since his promotion to " + PosStr + " Captain this offseason, but " + Captain2 + " looks very unhappy...";
+                    Captain1 = "";
+                    PhaseOne();
+                    return;
+                }
+
+
+                else if ((radioButton3.Checked == true) & (PosStr == "Offensive") & (Captain1 == "") || (radioButton2.Checked == true) & (PosStr == "Defensive") & (Captain2 == ""))
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...Waiting on player response...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(15);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...What?! You have someone else in mind? Doesn't my telling you I want to be a leader show I'm serious? The position is vacant! Whatever, I really didn't want to be a captain anyway. Screw this, I'm outta here...\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    int Diff = 0;
+                    Diff = (((model.CoachModel.CurrentCoachRecord.Motivation - 50) / 8) + ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 8));
+                    if (Diff >= 1)
+                    {
+                        Diff = (int)Math.Round(Diff * random.NextDouble());
+                    }
+                    else
+                    {
+                        Diff = 0;
+                    }
+                    BadNews = true;
+                    Captain1 = "";
+                    Captain2 = "";
+                    PhaseOne();
+                    CurrentDialog = "\r\n...We're receiving reports that " + ScenarioFirstName + " " + ScenarioLastName + " is very unhappy with not being named a team captain...";
+                    return;
+                }
+                else if ((radioButton3.Checked == true) & (PosStr == "Offensive") & (Captain1 != ""))
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...Waiting on player responses...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(15);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...What?! " + Captain1 + " isn't a leader. I'm a leader. I won't forget this. It's a long offseason...\r\n\r\n...Email from " + Captain1 + "...Coach, I heard that you stuck with me as captain. It feels great to know you've got so much confidence in me. Thanks\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    int Diff = 0;
+                    Diff = (((model.CoachModel.CurrentCoachRecord.Motivation - 50) / 8) + ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 8));
+                    if (Diff >= 1)
+                    {
+                        Diff = (int)Math.Round(Diff * random.NextDouble());
+                    }
+                    else
+                    {
+                        Diff = 0;
+                    }
+                    BadNews = true;
+                    HorribleNews = true;
+                    CurrentDialog = "\r\n...We're receiving reports that " + ScenarioFirstName + " " + ScenarioLastName + " is very unhappy with not being named a team captain...";
+                    Captain2 = "";
+                    PhaseOne();
+                    return;
+                }
+                else if ((radioButton3.Checked == true) & (PosStr == "Defensive") & (Captain2 != ""))
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...Waiting on player responses...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(15);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...What?! " + Captain2 + " isn't a leader. I'm a leader. I won't forget this. It's a long offseason...\r\n\r\n...Email from " + Captain2 + "...Coach, I heard that you stuck with me as captain. It feels great to know you've got so much confidence in me. Thanks\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    int Diff = 0;
+                    Diff = (((model.CoachModel.CurrentCoachRecord.Motivation - 50) / 8) + ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 8));
+                    if (Diff >= 1)
+                    {
+                        Diff = (int)Math.Round(Diff * random.NextDouble());
+                    }
+                    else
+                    {
+                        Diff = 0;
+                    }
+                    BadNews = true;
+                    HorribleNews = true;
+                    CurrentDialog = "\r\n...We're receiving reports that " + ScenarioFirstName + " " + ScenarioLastName + " is very unhappy with not being named a team captain...";
+                    Captain1 = "";
+                    PhaseOne();
+                    return;
+                }
+                else if (radioButton4.Checked == true)
+                {
+                    Timer1TextDelay(8);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Please hold...\r\n\r\n...You're getting very, very angry...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Timer1TextDelay(20);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...You lash out at " + ScenarioFirstName + ", ''Who the hell do you think you are barging into MY office, telling ME how to run MY team. You'll be lucky if I don't give your walking papers NOW.''\r\n...''But coa...''\r\n...''Don't BUT me " + ScenarioLastName + ". Get the hell out of my face...''\r\n...Please stand by while Offseason Conditioning is simulated...";
+                    textBox1.SelectionStart = textBox1.Text.Length;
+                    textBox1.SelectionLength = 0;
+                    textBox1.ScrollToCaret();
+                    while (isTrue == true)
+                    {
+                        Application.DoEvents();
+                    }
+                    Roll = Math.Round((60 * random.NextDouble() + 40));
+                    if (Roll <= CoachMotivation)
+                    {
+                        Diff = (((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 6) + 5);
+                        if (Diff <= 0)
+                        {
+                            Diff = 1;
+                        }
+                        GoodNews = true;
+                        GreatNews = true;
+                        CurrentDialog = "\r\n...We're receiving reports that " + ScenarioFirstName + " " + ScenarioLastName + " really stepped up his conditioning since the altercation in your office. It seems you made quite an impression on him...";
+                        Captain1 = "";
+                        Captain2 = "";
+                        OldCaptain = "";
+                        PhaseOne();
+                        return;
+                    }
+                    else
+                    {
+                        Diff = (((model.CoachModel.CurrentCoachRecord.Chemistry - 70) / 6) * -1);
+                        BadNews = true;
+                        HorribleNews = true;
+                        CurrentDialog = "\r\n...We're receiving reports that " + ScenarioFirstName + " " + ScenarioLastName + " might not show up to training camp due to your verbal abuse...";
+                        Captain1 = "";
+                        Captain2 = "";
+                        OldCaptain = "";
+                        PhaseOne();
+                        return;
+                    }
+                   
+                }
+
+
+
+            }//End Negative Scen. 2
 
         }
         private void Timer1TextDelay(int SleepValue)
