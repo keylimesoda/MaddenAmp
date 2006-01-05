@@ -375,16 +375,13 @@ namespace MaddenEditor.Forms
 			rookieData.Clear();
 			foreach (KeyValuePair<int, RookieRecord> rook in dm.GetRookies(-1))
 			{
+                if ((rook.Value.DraftedTeam < 32 && showDraftedPlayers.Checked == false) ||
+                    (rook.Value.PreCombineScoutedHours[HumanTeamId] == 0 && rook.Value.PostCombineScoutedHours[HumanTeamId] == 0 && listScoutedOnly.Checked == true))
+                    continue;
+
 				DataRow dr = rookieData.NewRow();
 				if (rook.Value.DraftedTeam < 32)
-				{
 					dr["Drafted By"] = model.TeamModel.GetTeamNameFromTeamId(rook.Value.DraftedTeam) + " (" + (rook.Value.DraftPickNumber + 1) + ")";
-
-					if (showDraftedPlayers.Checked == false)
-					{
-						continue;
-					}
-				}
 
 				dr["picknumber"] = rook.Value.DraftPickNumber;
 				dr["PGID"] = rook.Key;
