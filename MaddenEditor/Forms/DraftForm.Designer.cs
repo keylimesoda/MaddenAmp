@@ -94,6 +94,7 @@ namespace MaddenEditor.Forms
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.listScoutedOnly = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DraftResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DepthChartGrid)).BeginInit();
@@ -546,6 +547,7 @@ namespace MaddenEditor.Forms
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.listScoutedOnly);
             this.groupBox2.Controls.Add(this.showDraftedPlayers);
             this.groupBox2.Controls.Add(this.draftButton);
             this.groupBox2.Controls.Add(this.PlayerToDraft);
@@ -598,6 +600,17 @@ namespace MaddenEditor.Forms
             this.groupBox5.TabIndex = 37;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Clock";
+            // 
+            // listScoutedOnly
+            // 
+            this.listScoutedOnly.AutoSize = true;
+            this.listScoutedOnly.Location = new System.Drawing.Point(529, 27);
+            this.listScoutedOnly.Name = "listScoutedOnly";
+            this.listScoutedOnly.Size = new System.Drawing.Size(157, 17);
+            this.listScoutedOnly.TabIndex = 22;
+            this.listScoutedOnly.Text = "Show Only Scouted Players";
+            this.listScoutedOnly.UseVisualStyleBackColor = true;
+            this.listScoutedOnly.CheckedChanged += new System.EventHandler(this.showDraftedPlayers_CheckedChanged);
             // 
             // DraftForm
             // 
@@ -690,6 +703,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.CheckBox stickyDepthCharts;
         private System.Windows.Forms.CheckBox stickyDraftBoards;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox listScoutedOnly;
 
     }
 }
