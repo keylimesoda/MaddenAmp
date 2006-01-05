@@ -70,8 +70,9 @@ namespace MaddenEditor.Forms
                     foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
                     {
                         filterPositionComboBox.Items.Add(pos);
-                    }  
-                                                          
+                    }
+                  
+                     
                     isInitialising = false;
 
                    
@@ -285,6 +286,7 @@ namespace MaddenEditor.Forms
 
            
             //Set Team combo box to record 0
+
             selectHumanTeam.SelectedIndex = 0;
             filterPositionComboBox.SelectedIndex = 0;
 
