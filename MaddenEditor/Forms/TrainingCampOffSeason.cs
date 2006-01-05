@@ -57,7 +57,21 @@ namespace MaddenEditor.Forms
         double PosWgtMod = 0;
         bool NegativeScenario1 = false;
         bool NegativeScenario2 = false;
-        //Variables used for random scenario
+        int HoursLeft = 0;
+        int knw = 0;
+        int mot = 0;
+        int chm = 0;
+        int eth = 0;
+        int qb = 0;
+        int rb = 0;
+        int wr = 0;
+        int ol = 0;
+        int dl = 0;
+        int lb = 0;
+        int db = 0;
+        int k = 0;
+        int p = 0;
+        //Variables used for random scenarios
         string ScenarioFirstName = "";
         string ScenarioLastName = "";
         int ScenarioOvr = 0;
@@ -289,15 +303,15 @@ namespace MaddenEditor.Forms
                     TotalWeightGainMod = 1;
                 }
                 int i = (int)(2 * random.NextDouble());
-                int j = (int)(16 * random.NextDouble());
+                int j = (int)(11 * random.NextDouble());
                 double DetermineWeight = 0;
                 if (i == 0)
                 {
-                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 40) - j) * PosWgtMod);
+                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 30) - j) * PosWgtMod);
                 }
                 else if (i == 1)
                 {
-                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 40) + j) * PosWgtMod);
+                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 30) + j) * PosWgtMod);
                 }
 
                double RandomWeight = Math.Round((DetermineWeight * random.NextDouble()) - TempCmot);
@@ -500,15 +514,15 @@ namespace MaddenEditor.Forms
             }
             //Add variance to random roll 
             int i = (int)(2 * random.NextDouble());
-            int j = (int)(16 * random.NextDouble());
+            int j = (int)(11 * random.NextDouble());
             double DetermineLoss = 0;
             if (i == 0)
             {
-                DetermineLoss = Math.Round(((60 * random.NextDouble() + 85) - j) * (2 - PosWgtMod));             
+                DetermineLoss = Math.Round(((60 * random.NextDouble() + 100) - j) * (2 - PosWgtMod));             
             }
             else if (i == 1)
             {
-                DetermineLoss = Math.Round(((60 * random.NextDouble() + 85) + j) * (2 - PosWgtMod)); 
+                DetermineLoss = Math.Round(((60 * random.NextDouble() + 100) + j) * (2 - PosWgtMod)); 
             }
             string CaptainFirst = "";
             string CaptainLast = "";
@@ -1222,11 +1236,11 @@ namespace MaddenEditor.Forms
             {
                 if ((Math.Abs(FatCoutner - MuscleCounter) <= (int)1))
                 {
-                    OwnerFeedback = ("Message from ownership...We're a little disapointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s inability to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight isn't too bad but we'd like to see better next offseason.");
+                    OwnerFeedback = ("Message from ownership...We're a little disappointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s inability to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight isn't too bad but we'd like to see better next offseason.");
                 }
                 else if ((Math.Abs(FatCoutner - MuscleCounter) <= (int)3))
                 {
-                    OwnerFeedback = ("Message from ownership...We're disapointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is unacceptable.");
+                    OwnerFeedback = ("Message from ownership...We're disappointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is unacceptable.");
                 }
                 else if ((Math.Abs(FatCoutner - MuscleCounter) > (int)3))
                 {
@@ -1350,7 +1364,20 @@ namespace MaddenEditor.Forms
         {
             double Issue = Math.Round((100 * random.NextDouble()) + 1);            
             bool ScenarioTrue = false;
-            
+            knwUpDown.Enabled = false;
+            motUpDown.Enabled = false;
+            chmUpDown.Enabled = false;
+            ethUpDown.Enabled = false;
+            qbUpDown.Enabled = false;
+            rbUpDown.Enabled = false;
+            wrUpDown.Enabled = false;
+            olUpDown.Enabled = false;
+            dlUpDown.Enabled = false;
+            lbUpDown.Enabled = false;
+            dbUpDown.Enabled = false;
+            kUpDown.Enabled = false;
+            pUpDown.Enabled = false;
+
             if (Issue <= 20)
             {  
                 SelectHumanTeam.Enabled = false;
@@ -1503,14 +1530,14 @@ namespace MaddenEditor.Forms
                     {
                         Scenario = Scenario + ("\n\n''I mean we don't even currently have an offensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
                         radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
-                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisapointed though Motivation/Chemistry will alter effects...";
+                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisappointed though Motivation/Chemistry will alter effects...";
                         radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
                     }
                     else if ((PosStr == "Defensive") & (Captain2 == ""))
                     {
                         Scenario = Scenario + ("\n\n''I mean we don't even currently have an defensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
                         radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
-                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisapointed though Motivation/Chemistry will alter effects...";
+                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisappointed though Motivation/Chemistry will alter effects...";
                         radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
 
                     }
@@ -1544,7 +1571,10 @@ namespace MaddenEditor.Forms
             }
 
             if (ScenarioTrue == false)
-            { PhaseOne(); }
+            {
+            textBox1.Text = "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
+             PhaseOne(); 
+            }
             
         }
 
@@ -1688,29 +1718,268 @@ namespace MaddenEditor.Forms
             InitializeDataGrids();
         }
         private void SelectHumanTeam_SelectedIndexChanged(object sender, EventArgs e)
+        {           
+            textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much\ntime for you, as coach, to prepare for the seemingly endless\narray of tasks, meetings and film study you're\nroutinely bombarded with.\n\nYou must begin preparing for Training Camp even though its still months away.\nUsing what precious few hours of time you have let's get started\non your Training Camp planning.\nPlease allocate the alloted time to your Head Coach as all\n listed coaching ratings play into Training Camp\nplayer development including the positional ratings.");
+            PopulateCoach();
+            button4.Enabled = true;            
+
+        }
+        private void PopulateCoach()
         {
+            model.CoachModel.SetPositionFilter(0);
+            model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
+            model.CoachModel.GetNextCoachRecord();
+            HoursLeft = 20;
+            HoursLeftlbl.Text = HoursLeft.ToString();
+            hcname.Text = model.CoachModel.CurrentCoachRecord.Name;
+            hcage.Text = model.CoachModel.CurrentCoachRecord.Age.ToString();
+            hcknw.Text = model.CoachModel.CurrentCoachRecord.Knowledge.ToString();
+            hcmot.Text = model.CoachModel.CurrentCoachRecord.Motivation.ToString();
+            hcchm.Text = model.CoachModel.CurrentCoachRecord.Chemistry.ToString();
+            hceth.Text = model.CoachModel.CurrentCoachRecord.Ethics.ToString();
+            hcqb.Text = model.CoachModel.CurrentCoachRecord.QuarterbackRating.ToString();
+            hcrb.Text = model.CoachModel.CurrentCoachRecord.RunningbackRating.ToString();
+            hcwr.Text = model.CoachModel.CurrentCoachRecord.WideReceiverRating.ToString();
+            hcol.Text = model.CoachModel.CurrentCoachRecord.OffensiveLineRating.ToString();
+            hcdl.Text = model.CoachModel.CurrentCoachRecord.DefensiveLineRating.ToString();
+            hclb.Text = model.CoachModel.CurrentCoachRecord.LinebackerRating.ToString();
+            hcdb.Text = model.CoachModel.CurrentCoachRecord.DefensiveBackRating.ToString();
+            hck.Text = model.CoachModel.CurrentCoachRecord.KickerRating.ToString();
+            hcp.Text = model.CoachModel.CurrentCoachRecord.PuntRating.ToString();
+            AddCoachingHours(knwUpDown);
+            knwUpDown.Enabled = true;
+            AddCoachingHours(motUpDown);
+            motUpDown.Enabled = true;
+            AddCoachingHours(chmUpDown);
+            chmUpDown.Enabled = true;
+            AddCoachingHours(ethUpDown);
+            ethUpDown.Enabled = true;
+            AddCoachingHours(qbUpDown);
+            qbUpDown.Enabled = true;
+            AddCoachingHours(rbUpDown);
+            rbUpDown.Enabled = true;
+            AddCoachingHours(wrUpDown);
+            wrUpDown.Enabled = true;
+            AddCoachingHours(olUpDown);
+            olUpDown.Enabled = true;
+            AddCoachingHours(dlUpDown);
+            dlUpDown.Enabled = true;
+            AddCoachingHours(lbUpDown);
+            lbUpDown.Enabled = true;
+            AddCoachingHours(dbUpDown);
+            dbUpDown.Enabled = true;
+            AddCoachingHours(kUpDown);
+            kUpDown.Enabled = true;
+            AddCoachingHours(pUpDown);
+            pUpDown.Enabled = true;
 
-            DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for the selected team?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+        }
+        private void CoachProgression()
+        {
+            int Wins = model.CoachModel.CurrentCoachRecord.CareerLoses;
+            int Losses = model.CoachModel.CurrentCoachRecord.CareerWins;            
+            int SeasonsExp = (int)((Wins + Losses) / 16);
+            double CoachProgMod = 0.0;
+            decimal AttributeDeviation = 0;
+            decimal RankExp = 0;
+            int oldKnw = model.CoachModel.CurrentCoachRecord.Knowledge;
+            int OldMot = model.CoachModel.CurrentCoachRecord.Motivation;
+            int oldChm = model.CoachModel.CurrentCoachRecord.Chemistry;
+            int OldEth = model.CoachModel.CurrentCoachRecord.Ethics;
+            int oldqb = model.CoachModel.CurrentCoachRecord.QuarterbackRating;
+            int Oldrb = model.CoachModel.CurrentCoachRecord.RunningbackRating;
+            int oldwr = model.CoachModel.CurrentCoachRecord.WideReceiverRating;
+            int Oldol = model.CoachModel.CurrentCoachRecord.OffensiveLineRating;
+            int olddl = model.CoachModel.CurrentCoachRecord.DefensiveLineRating;
+            int Oldlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
+            int olddb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
+            int Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
+            int Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
 
-            if (dr == DialogResult.Yes)
+            if (SeasonsExp <= 2)
             {
-                Cursor.Current = Cursors.WaitCursor;
-
-                RandomIssue();
-                              
-
-              //  TrainingCampForm form = new TrainingCampForm(model);
-                Cursor.Current = Cursors.Arrow;
-
-              //  this.Close();
-              //  form.initialiseUI();
-              //  form.Show();
+                CoachProgMod = (1.3);
+            }
+            else if (SeasonsExp <= 5)
+            {
+                CoachProgMod = (1.1);
+            }
+            else if (SeasonsExp <= 10)
+            {
+                CoachProgMod = (0.7);
+            }
+            else if (SeasonsExp <= 15)
+            {
+                CoachProgMod = (0.35);
+            }
+            else if (SeasonsExp <= 20)
+            {
+                CoachProgMod = (0.15);
+            }
+            else if (SeasonsExp > 20)
+            {
+                CoachProgMod = (.05);
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) * 10),3); //Knw
+            RankExp = ((decimal)knwUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Knowledge = model.CoachModel.CurrentCoachRecord.Knowledge + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Motivation)) * 10), 3); //Knw
+            RankExp = ((decimal)motUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Motivation = model.CoachModel.CurrentCoachRecord.Motivation + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Chemistry)) * 10), 3); //Knw
+            RankExp = ((decimal)chmUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Chemistry = model.CoachModel.CurrentCoachRecord.Chemistry + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Ethics)) * 10), 3); //Knw
+            RankExp = ((decimal)ethUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Ethics = model.CoachModel.CurrentCoachRecord.Ethics + ((int)(RankExp) - (int)(AttributeDeviation));
             }
 
-            return;
-         
-        }
+            //Pos ratings
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) * 10), 3); //Knw
+            RankExp = ((decimal)qbUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) * 10), 3); //Knw
+            RankExp = ((decimal)rbUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) * 10), 3); //Knw
+            RankExp = ((decimal)wrUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.OffensiveAggression)) * 10), 3); //Knw
+            RankExp = ((decimal)olUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) * 10), 3); //Knw
+            RankExp = ((decimal)dlUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) * 10), 3); //Knw
+            RankExp = ((decimal)lbUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) * 10), 3); //Knw
+            RankExp = ((decimal)dbUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) * 10), 3); //Knw
+            RankExp = ((decimal)kUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) * 10), 3); //Knw
+            RankExp = ((decimal)pUpDown.Value * (decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            string Changes = "";
+            if (model.CoachModel.CurrentCoachRecord.Knowledge > oldKnw)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = "Knw increased +" + (model.CoachModel.CurrentCoachRecord.Knowledge - oldKnw) + " from " + oldKnw + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.Motivation > OldMot)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "Mot increased +" + (model.CoachModel.CurrentCoachRecord.Motivation - OldMot) + " from " + OldMot + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.Chemistry > oldChm)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "Chm increased +" + (model.CoachModel.CurrentCoachRecord.Chemistry - oldChm) + " from " + oldChm + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.Ethics > OldEth)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "Eth increased +" + (model.CoachModel.CurrentCoachRecord.Ethics - OldEth) + " from " + OldEth + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.QuarterbackRating > oldqb)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "qb increased +" + (model.CoachModel.CurrentCoachRecord.QuarterbackRating - oldqb) + " from " + oldqb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.RunningbackRating > Oldrb)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "rb increased +" + (model.CoachModel.CurrentCoachRecord.RunningbackRating - Oldrb) + " from " + Oldrb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.WideReceiverRating > oldwr)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "wr increased +" + (model.CoachModel.CurrentCoachRecord.WideReceiverRating - oldwr) + " from " + oldwr + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.OffensiveLineRating > Oldol)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "ol increased +" + (model.CoachModel.CurrentCoachRecord.OffensiveLineRating - Oldol) + " from " + Oldol + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.DefensiveLineRating > olddl)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "dl increased +" + (model.CoachModel.CurrentCoachRecord.DefensiveLineRating - olddl) + " from " + olddl + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.LinebackerRating > Oldlb)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "Lb increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldlb) + " from " + Oldlb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.DefensiveBackRating > olddb)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "db increased +" + (model.CoachModel.CurrentCoachRecord.DefensiveBackRating - olddb) + " from " + olddb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.KickerRating > Oldk)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "k increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldk) + " from " + Oldk + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.PuntRating > Oldp)
+            {
+                hcknw.ForeColor = Color.Blue;
+                Changes = Changes + "p increased +" + (model.CoachModel.CurrentCoachRecord.PuntRating - Oldp) + " from " + Oldp + ", ";
+            }
 
+            Timer1TextDelay(8);//pause to allow user to view coach progression
+            textBox1.Text = textBox1.Text + Changes + "...Now simming Conditioning...";
+            textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.SelectionLength = 0;
+            textBox1.ScrollToCaret();
+
+        }
+        private void AddCoachingHours(NumericUpDown control)
+        {
+            control.Value = 0;
+            control.Maximum = 5;
+            control.Minimum = 0;
+        }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked == true)
@@ -1722,6 +1991,20 @@ namespace MaddenEditor.Forms
             {
                 SelectHumanTeam.Enabled = false;
                 button1.Enabled = true;
+                knwUpDown.Enabled = false;
+                motUpDown.Enabled = false;
+                chmUpDown.Enabled = false;
+                ethUpDown.Enabled = false;
+                qbUpDown.Enabled = false;
+                rbUpDown.Enabled = false;
+                wrUpDown.Enabled = false;
+                olUpDown.Enabled = false;
+                dlUpDown.Enabled = false;
+                lbUpDown.Enabled = false;
+                dbUpDown.Enabled = false;
+                kUpDown.Enabled = false;
+                pUpDown.Enabled = false;
+                button4.Enabled = false;
             }
         }
 
@@ -2381,8 +2664,6 @@ namespace MaddenEditor.Forms
                    
                 }
 
-
-
             }//End Negative Scen. 2
 
         }
@@ -2407,7 +2688,7 @@ namespace MaddenEditor.Forms
         private void InitializeDataGrids()
         {
             isInitialising = true;
-
+            
             RosterView.Columns.Add(AddColumn("Name", "System.String"));
             RosterView.Columns.Add(AddColumn("Pos", "System.String"));
             RosterView.Columns.Add(AddColumn("Age", "System.Int16"));
@@ -2476,6 +2757,269 @@ namespace MaddenEditor.Forms
             isInitialising = false;
         }
 
+        private void OffSeasonHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {         
+            string helpstring = "This utility simulates the effects that age has on a player's ability to\n" +
+                "maintain weight. Simply click the 'Enable' checkbox and select your team to\n" +
+                "proceed.\n\n" +
+                "Occasionally you'll be presented with certain offseason scenarios that will require you\n" +
+                "to make some choices. Follow the simple on screen prompts when this occurs.\n" +
+                "Your head coach's Motivation rating is heavily referenced in determing not only the\n" +
+                "frequency of weight gains/losses, but also in exaggerating/reducing the effects of\n" +
+                "weight changes.\n\n" +
+                "Every position has it's own listing of positional attribute means so if, for example,\n" +
+                "a LT with a 49 speed looses 10 lbs his chances of gaining anything in Speed are slim\n" +
+                "since the LT positional speed mean is 50. In contrast, a LT with a 35 speed who looses\n" +
+                "10 lbs. will have a greater chance of seeing his speed slightly increase.\n\n" +
+                "All of the aethestic player appearance categories are modified according to the change\n" +
+                "in weight in proporion to the variance of weight gained/lost so significant weight\n" +
+                "changes are noticable in-game.\n\n" +
+                "All saves are simply handled by Gommo's save on the utilities startup form.\n\n" +
+                "A .txt file of your teams changes is generated in the Gommo install directory\n" +
+                "within the \\Conditioning folder.\n\n" +
+                "This utility is the precursor for the Training Camp utility that is still under development.\n";
+
+            MessageBox.Show(helpstring, "Help");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("A .txt copy of your team's changes has been generated in\nthe \\Conditioning folder within the Gommo install directory.");
+            TrainingCampForm form = new TrainingCampForm(model);
+            form.InitialiseUI();
+            this.Close();            
+            form.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for the selected team?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+
+            if (dr == DialogResult.Yes)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                CoachProgression();
+                RandomIssue();
+                Cursor.Current = Cursors.Arrow;
+                groupBox5.Visible = true;
+                button4.Enabled = false;    
+            }
+
+            return;
+        }
+
+        private void knwUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (knwUpDown.Value > knw)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)knwUpDown.Value) - knw) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                knw = (int)knwUpDown.Value;
+            }
+            else if (knwUpDown.Value < knw)
+            {
+                HoursLeft = ((int)HoursLeft + (knw - ((int)knwUpDown.Value)) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                knw = (int)knwUpDown.Value;
+            }
+        }
+
+        private void motUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (motUpDown.Value > mot)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)motUpDown.Value) - mot) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                mot = (int)motUpDown.Value;
+            }
+            else if (motUpDown.Value < mot)
+            {
+                HoursLeft = ((int)HoursLeft + (mot - ((int)motUpDown.Value)) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                mot = (int)motUpDown.Value;
+            } 
+        }
+
+        private void chmUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (chmUpDown.Value > chm)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)chmUpDown.Value) - chm) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                chm = (int)chmUpDown.Value;
+            }
+            else if (chmUpDown.Value < chm)
+            {
+                HoursLeft = ((int)HoursLeft + (chm - ((int)chmUpDown.Value)) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                chm = (int)chmUpDown.Value;
+            }
+        }
+
+        private void ethUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (ethUpDown.Value > eth)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)ethUpDown.Value) - eth) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                eth = (int)ethUpDown.Value;
+            }
+            else if (ethUpDown.Value < eth)
+            {
+                HoursLeft = ((int)HoursLeft + (eth - ((int)ethUpDown.Value)) * 2);
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                eth = (int)ethUpDown.Value;
+            }
+        }
+
+        private void qbUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (qbUpDown.Value > qb)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)qbUpDown.Value) - qb) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                qb = (int)qbUpDown.Value;
+            }
+            else if (qbUpDown.Value < qb)
+            {
+                HoursLeft = ((int)HoursLeft + (qb - ((int)qbUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                qb = (int)qbUpDown.Value;
+            }  
+        }
+
+        private void rbUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (rbUpDown.Value > rb)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)rbUpDown.Value) - rb) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                rb = (int)rbUpDown.Value;
+            }
+            else if (rbUpDown.Value < rb)
+            {
+                HoursLeft = ((int)HoursLeft + (rb - ((int)rbUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                rb = (int)rbUpDown.Value;
+            }
+        }
+
+        private void wrUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (wrUpDown.Value > wr)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)wrUpDown.Value) - wr) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                wr = (int)wrUpDown.Value;
+            }
+            else if (wrUpDown.Value < wr)
+            {
+                HoursLeft = ((int)HoursLeft + (wr - ((int)wrUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                wr = (int)wrUpDown.Value;
+            }    
+            
+        }
+
+        private void olUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (olUpDown.Value > ol)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)olUpDown.Value) - ol));
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                ol = (int)olUpDown.Value;
+            }
+            else if (olUpDown.Value < ol)
+            {
+                HoursLeft = ((int)HoursLeft + (ol - ((int)olUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                ol = (int)olUpDown.Value;
+            }
+        }
+
+        private void dlUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (dlUpDown.Value > dl)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)dlUpDown.Value) - dl) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                dl = (int)dlUpDown.Value;
+            }
+            else if (dlUpDown.Value < dl)
+            {
+                HoursLeft = ((int)HoursLeft + (dl - ((int)dlUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                dl = (int)dlUpDown.Value;
+            }
+        }
+
+        private void lbUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (lbUpDown.Value > lb)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)lbUpDown.Value) - lb) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                lb = (int)lbUpDown.Value;
+            }
+            else if (lbUpDown.Value < lb)
+            {
+                HoursLeft = ((int)HoursLeft + (lb - ((int)lbUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                lb = (int)lbUpDown.Value;
+            }
+        }
+
+        private void dbUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (dbUpDown.Value > db)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)dbUpDown.Value) - db) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                db = (int)dbUpDown.Value;
+            }
+            else if (dbUpDown.Value < db)
+            {
+                HoursLeft = ((int)HoursLeft + (db - ((int)dbUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                db = (int)dbUpDown.Value;
+            }   
+        }
+
+        private void kUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (kUpDown.Value > k)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)kUpDown.Value) - k) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                k = (int)kUpDown.Value;
+            }
+            else if (kUpDown.Value < k)
+            {
+                HoursLeft = ((int)HoursLeft + (k - ((int)kUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                k = (int)kUpDown.Value;
+            }    
+        }
+
+        private void pUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (pUpDown.Value > p)
+            {
+                HoursLeft = ((int)HoursLeft - (((int)pUpDown.Value) - p));
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                p = (int)pUpDown.Value;
+            }
+            else if (pUpDown.Value < p)
+            {
+                HoursLeft = ((int)HoursLeft + (p - ((int)pUpDown.Value)) );
+                HoursLeftlbl.Text = HoursLeft.ToString();
+                p = (int)pUpDown.Value;
+            }
+        }
+
+      
+
+      
        
        
     }
