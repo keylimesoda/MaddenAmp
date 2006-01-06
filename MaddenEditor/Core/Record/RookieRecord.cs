@@ -536,12 +536,55 @@ namespace MaddenEditor.Core.Record
 
 			// No rookie should be rated over 85, so teams shouldn't 
 			// perceive them as higher than 85.
+            /*
             if (tempOverall > 85)
             {
                 tempOverall = 85;
             }
+             * */
 
-            return tempOverall;
+            double absMin = 85;
+            switch (position)
+            {
+                case (int)MaddenPositions.QB:
+                    absMin = 84; break;
+                case (int)MaddenPositions.HB:
+                    absMin = 88; break;
+                case (int)MaddenPositions.FB:
+                    absMin = 87; break;
+                case (int)MaddenPositions.WR:
+                    absMin = 85; break;
+                case (int)MaddenPositions.TE:
+                    absMin = 87; break;
+                case (int)MaddenPositions.LT:
+                case (int)MaddenPositions.RT:
+                    absMin = 86; break;
+                case (int)MaddenPositions.LG:
+                case (int)MaddenPositions.RG:
+                    absMin = 87; break;
+                case (int)MaddenPositions.C:
+                    absMin = 85; break;
+                case (int)MaddenPositions.LE:
+                case (int)MaddenPositions.RE:
+                    absMin = 86; break;
+                case (int)MaddenPositions.DT:
+                    absMin = 85; break;
+                case (int)MaddenPositions.LOLB:
+                case (int)MaddenPositions.ROLB:
+                    absMin = 87; break;
+                case (int)MaddenPositions.MLB:
+                    absMin = 87; break;
+                case (int)MaddenPositions.CB:
+                    absMin = 83; break;
+                case (int)MaddenPositions.FS:
+                case (int)MaddenPositions.SS:
+                    absMin = 85; break;
+                case (int)MaddenPositions.K:
+                case (int)MaddenPositions.P:
+                    absMin = 87; break;                   
+            }
+
+            return Math.Min(absMin, tempOverall);
         }
 
         /*

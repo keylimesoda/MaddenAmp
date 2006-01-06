@@ -759,7 +759,7 @@ namespace MaddenEditor.Core
 		{
 			foreach (TradeOffer to in tradeOffers.Values)
 			{
-				if (to.status != (int)TradeOfferStatus.Rejected && (to.status == (int)TradeOfferStatus.HigherResponsePending || to.status == (int)TradeOfferStatus.LowerResponsePending) && (teamId == -1 || teamId == to.LowerTeam))
+				if (to.status != (int)TradeOfferStatus.Rejected && (to.status == (int)TradeOfferStatus.HigherResponsePending || to.status == (int)TradeOfferStatus.LowerResponsePending || to.status == (int)TradeOfferStatus.PendingAccept) && (teamId == -1 || teamId == to.LowerTeam))
 				{
 					return true;
 				}
