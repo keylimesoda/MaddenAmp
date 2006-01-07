@@ -89,9 +89,9 @@ namespace MaddenEditor.Forms
 
 		int threadToDo = -1;
 
-        List<int> initialWishlist;
+        Dictionary<short, short> initialWishlist;
 
-		public DraftForm(EditorModel ParentModel, DraftModel draftmodel, int humanId, int seconds, List<int> iW)
+		public DraftForm(EditorModel ParentModel, DraftModel draftmodel, int humanId, int seconds, Dictionary<short, short> iW)
 		{
 			dm = draftmodel;
 			dm.df = this;
@@ -268,8 +268,9 @@ namespace MaddenEditor.Forms
 
 			wishlistGrid.RowHeadersVisible = false;
 
-            foreach (int pgid in initialWishlist)
-                AddRookieToWishlist(dm.rookies[pgid]);
+            for (short i = 1; i <= initialWishlist.Count; i++)
+                AddRookieToWishlist(dm.rookies[initialWishlist[i]]);
+            wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
 
 			draftBoardData.Columns.Add(AddColumn("Rank", "System.Int16"));
 			draftBoardData.Columns.Add(AddColumn("Player", "System.String"));
@@ -2052,39 +2053,51 @@ namespace MaddenEditor.Forms
 
 		private void downButton_Click(object sender, EventArgs e)
 		{
-			if (wishlistGrid.SelectedRows.Count > 0)
-			{
-				int index = wishlistGrid.SelectedRows[0].Index;
+            if (wishlistGrid.SelectedRows.Count > 0)
+            {
+                short rank = (short)wishlistGrid.SelectedRows[0].Cells["Rank"].Value;
 
-				if (index + 1 >= wishlistGrid.RowCount) { return; }
+                if (rank == wishlistGrid.Rows.Count) { return; }
 
-				int currentid = (short)((DataRowView)wishlistGrid.SelectedRows[0].DataBoundItem).Row["PGID"];
-				int lowerid = (short)((DataRowView)wishlistGrid.Rows[index + 1].DataBoundItem).Row["PGID"];
+                DataRow moveDown = null;
+                DataRow moveUp = null;
 
-				wishlistRow(currentid)["Rank"] = index + 2;
-				wishlistRow(lowerid)["Rank"] = index + 1;
-			}
+                foreach (DataRow drd in wishlistData.Rows)
+                {
+                    if ((short)drd["Rank"] == rank)
+                        moveDown = drd;
+                    else if ((short)drd["Rank"] == rank + 1)
+                        moveUp = drd;
+                }
 
-			wishlistGrid.Sort(wishlistGrid.Columns[1], ListSortDirection.Ascending);
-		}
+                moveDown["Rank"] = rank + 1;
+                moveUp["Rank"] = rank;
+            }
+        }
 
 		private void upButton_Click(object sender, EventArgs e)
 		{
-			if (wishlistGrid.SelectedRows.Count > 0)
-			{
-				int index = wishlistGrid.SelectedRows[0].Index;
+            if (wishlistGrid.SelectedRows.Count > 0)
+            {
+                short rank = (short)wishlistGrid.SelectedRows[0].Cells["Rank"].Value;
 
-				if (index == 0) { return; }
+                if (rank == 1) { return; }
 
-				int currentid = (short)((DataRowView)wishlistGrid.SelectedRows[0].DataBoundItem).Row["PGID"];
-				int higherid = (short)((DataRowView)wishlistGrid.Rows[index - 1].DataBoundItem).Row["PGID"];
+                DataRow moveUp = null;
+                DataRow moveDown = null;
 
-				wishlistRow(currentid)["Rank"] = index;
-				wishlistRow(higherid)["Rank"] = index + 1;
-			}
+                foreach (DataRow drd in wishlistData.Rows)
+                {
+                    if ((short)drd["Rank"] == rank)
+                        moveUp = drd;
+                    else if ((short)drd["Rank"] == rank - 1)
+                        moveDown = drd;
+                }
 
-			wishlistGrid.Sort(wishlistGrid.Columns[1], ListSortDirection.Ascending);
-		}
+                moveUp["Rank"] = rank - 1;
+                moveDown["Rank"] = rank;
+            }
+        }
 
 		private void wishlistGrid_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
