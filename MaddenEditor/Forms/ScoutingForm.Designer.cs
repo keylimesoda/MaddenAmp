@@ -50,7 +50,7 @@ namespace MaddenEditor.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label6 = new System.Windows.Forms.Label();
             this.RookiePositionFilter = new System.Windows.Forms.ComboBox();
             this.scoutingHours = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -104,6 +104,8 @@ namespace MaddenEditor.Forms
             this.label15 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SetIncrement = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.picks = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -116,10 +118,10 @@ namespace MaddenEditor.Forms
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(872, 43);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(886, 43);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 17);
+            this.label6.Size = new System.Drawing.Size(49, 13);
             this.label6.TabIndex = 17;
             this.label6.Text = "Positions";
             // 
@@ -128,7 +130,7 @@ namespace MaddenEditor.Forms
             this.RookiePositionFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.RookiePositionFilter.FormattingEnabled = true;
-            this.RookiePositionFilter.Location = new System.Drawing.Point(937, 40);
+            this.RookiePositionFilter.Location = new System.Drawing.Point(941, 38);
             this.RookiePositionFilter.Name = "RookiePositionFilter";
             this.RookiePositionFilter.Size = new System.Drawing.Size(63, 21);
             this.RookiePositionFilter.TabIndex = 16;
@@ -143,50 +145,51 @@ namespace MaddenEditor.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(13, 43);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(123, 17);
+            this.label1.Size = new System.Drawing.Size(93, 13);
             this.label1.TabIndex = 19;
             this.label1.Text = "Total Hours Used:";
             // 
             // TotalLabel
             // 
             this.TotalLabel.AutoSize = true;
-            this.TotalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TotalLabel.Location = new System.Drawing.Point(127, 43);
+            this.TotalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TotalLabel.Location = new System.Drawing.Point(106, 43);
             this.TotalLabel.Name = "TotalLabel";
-            this.TotalLabel.Size = new System.Drawing.Size(52, 17);
+            this.TotalLabel.Size = new System.Drawing.Size(42, 13);
             this.TotalLabel.TabIndex = 20;
             this.TotalLabel.Text = "0 / 500";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(190, 43);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(165, 43);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(155, 17);
+            this.label3.Size = new System.Drawing.Size(118, 13);
             this.label3.TabIndex = 21;
             this.label3.Text = "Breakdown by Position:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(340, 43);
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(283, 43);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 17);
+            this.label4.Size = new System.Drawing.Size(22, 13);
             this.label4.TabIndex = 22;
             this.label4.Text = "QB";
             // 
             // QBhoursLabel
             // 
             this.QBhoursLabel.AutoSize = true;
-            this.QBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.QBhoursLabel.Location = new System.Drawing.Point(363, 43);
+            this.QBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.QBhoursLabel.Location = new System.Drawing.Point(304, 43);
             this.QBhoursLabel.Name = "QBhoursLabel";
-            this.QBhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.QBhoursLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.QBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.QBhoursLabel.TabIndex = 23;
             this.QBhoursLabel.Text = "0,";
             // 
@@ -196,16 +199,16 @@ namespace MaddenEditor.Forms
             this.RookieGrid.AllowUserToDeleteRows = false;
             this.RookieGrid.AllowUserToResizeColumns = false;
             this.RookieGrid.AllowUserToResizeRows = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(234)))));
-            dataGridViewCellStyle6.FormatProvider = new System.Globalization.CultureInfo("en-AU");
-            this.RookieGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(234)))));
+            dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
+            this.RookieGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.RookieGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.RookieGrid.BackgroundColor = System.Drawing.Color.White;
             this.RookieGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.RookieGrid.GridColor = System.Drawing.Color.White;
-            this.RookieGrid.Location = new System.Drawing.Point(13, 67);
+            this.RookieGrid.Location = new System.Drawing.Point(10, 67);
             this.RookieGrid.Name = "RookieGrid";
             this.RookieGrid.RowTemplate.Height = 16;
             this.RookieGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -221,200 +224,200 @@ namespace MaddenEditor.Forms
             // RBhoursLabel
             // 
             this.RBhoursLabel.AutoSize = true;
-            this.RBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RBhoursLabel.Location = new System.Drawing.Point(407, 43);
+            this.RBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RBhoursLabel.Location = new System.Drawing.Point(343, 43);
             this.RBhoursLabel.Name = "RBhoursLabel";
-            this.RBhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.RBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.RBhoursLabel.TabIndex = 25;
             this.RBhoursLabel.Text = "0,";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(383, 43);
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(323, 43);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(27, 17);
+            this.label8.Size = new System.Drawing.Size(22, 13);
             this.label8.TabIndex = 24;
             this.label8.Text = "RB";
             // 
             // WRhoursLabel
             // 
             this.WRhoursLabel.AutoSize = true;
-            this.WRhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WRhoursLabel.Location = new System.Drawing.Point(458, 43);
+            this.WRhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WRhoursLabel.Location = new System.Drawing.Point(391, 43);
             this.WRhoursLabel.Name = "WRhoursLabel";
-            this.WRhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.WRhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.WRhoursLabel.TabIndex = 29;
             this.WRhoursLabel.Text = "0,";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(431, 43);
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(366, 43);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(31, 17);
+            this.label12.Size = new System.Drawing.Size(26, 13);
             this.label12.TabIndex = 28;
             this.label12.Text = "WR";
             // 
             // OLhoursLabel
             // 
             this.OLhoursLabel.AutoSize = true;
-            this.OLhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OLhoursLabel.Location = new System.Drawing.Point(551, 43);
+            this.OLhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OLhoursLabel.Location = new System.Drawing.Point(472, 43);
             this.OLhoursLabel.Name = "OLhoursLabel";
-            this.OLhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.OLhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.OLhoursLabel.TabIndex = 33;
             this.OLhoursLabel.Text = "0,";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(530, 43);
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(453, 43);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(27, 17);
+            this.label14.Size = new System.Drawing.Size(21, 13);
             this.label14.TabIndex = 32;
             this.label14.Text = "OL";
             // 
             // TEhoursLabel
             // 
             this.TEhoursLabel.AutoSize = true;
-            this.TEhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TEhoursLabel.Location = new System.Drawing.Point(504, 43);
+            this.TEhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TEhoursLabel.Location = new System.Drawing.Point(434, 43);
             this.TEhoursLabel.Name = "TEhoursLabel";
-            this.TEhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.TEhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.TEhoursLabel.TabIndex = 31;
             this.TEhoursLabel.Text = "0,";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(483, 43);
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(415, 43);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(26, 17);
+            this.label16.Size = new System.Drawing.Size(21, 13);
             this.label16.TabIndex = 30;
             this.label16.Text = "TE";
             // 
             // PhoursLabel
             // 
             this.PhoursLabel.AutoSize = true;
-            this.PhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PhoursLabel.Location = new System.Drawing.Point(811, 43);
+            this.PhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PhoursLabel.Location = new System.Drawing.Point(704, 43);
             this.PhoursLabel.Name = "PhoursLabel";
-            this.PhoursLabel.Size = new System.Drawing.Size(16, 17);
+            this.PhoursLabel.Size = new System.Drawing.Size(13, 13);
             this.PhoursLabel.TabIndex = 45;
             this.PhoursLabel.Text = "0";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(798, 43);
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(693, 43);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(17, 17);
+            this.label20.Size = new System.Drawing.Size(14, 13);
             this.label20.TabIndex = 44;
             this.label20.Text = "P";
             // 
             // KhoursLabel
             // 
             this.KhoursLabel.AutoSize = true;
-            this.KhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KhoursLabel.Location = new System.Drawing.Point(777, 43);
+            this.KhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KhoursLabel.Location = new System.Drawing.Point(672, 43);
             this.KhoursLabel.Name = "KhoursLabel";
-            this.KhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.KhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.KhoursLabel.TabIndex = 43;
             this.KhoursLabel.Text = "0,";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(764, 43);
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(661, 43);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(17, 17);
+            this.label22.Size = new System.Drawing.Size(14, 13);
             this.label22.TabIndex = 42;
             this.label22.Text = "K";
             // 
             // ShoursLabel
             // 
             this.ShoursLabel.AutoSize = true;
-            this.ShoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShoursLabel.Location = new System.Drawing.Point(739, 43);
+            this.ShoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShoursLabel.Location = new System.Drawing.Point(638, 43);
             this.ShoursLabel.Name = "ShoursLabel";
-            this.ShoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.ShoursLabel.Size = new System.Drawing.Size(16, 13);
             this.ShoursLabel.TabIndex = 41;
             this.ShoursLabel.Text = "0,";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(725, 43);
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(626, 43);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(17, 17);
+            this.label24.Size = new System.Drawing.Size(14, 13);
             this.label24.TabIndex = 40;
             this.label24.Text = "S";
             // 
             // CBhoursLabel
             // 
             this.CBhoursLabel.AutoSize = true;
-            this.CBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CBhoursLabel.Location = new System.Drawing.Point(700, 43);
+            this.CBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CBhoursLabel.Location = new System.Drawing.Point(601, 43);
             this.CBhoursLabel.Name = "CBhoursLabel";
-            this.CBhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.CBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.CBhoursLabel.TabIndex = 39;
             this.CBhoursLabel.Text = "0,";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(672, 43);
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(582, 43);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(26, 17);
+            this.label26.Size = new System.Drawing.Size(21, 13);
             this.label26.TabIndex = 38;
             this.label26.Text = "CB";
             // 
             // LBhoursLabel
             // 
             this.LBhoursLabel.AutoSize = true;
-            this.LBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBhoursLabel.Location = new System.Drawing.Point(646, 43);
+            this.LBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LBhoursLabel.Location = new System.Drawing.Point(558, 43);
             this.LBhoursLabel.Name = "LBhoursLabel";
-            this.LBhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.LBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.LBhoursLabel.TabIndex = 37;
             this.LBhoursLabel.Text = "0,";
             // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(625, 43);
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.Location = new System.Drawing.Point(541, 43);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(25, 17);
+            this.label28.Size = new System.Drawing.Size(20, 13);
             this.label28.TabIndex = 36;
             this.label28.Text = "LB";
             // 
             // DLhoursLabel
             // 
             this.DLhoursLabel.AutoSize = true;
-            this.DLhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DLhoursLabel.Location = new System.Drawing.Point(599, 43);
+            this.DLhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DLhoursLabel.Location = new System.Drawing.Point(515, 43);
             this.DLhoursLabel.Name = "DLhoursLabel";
-            this.DLhoursLabel.Size = new System.Drawing.Size(20, 17);
+            this.DLhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.DLhoursLabel.TabIndex = 35;
             this.DLhoursLabel.Text = "0,";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(577, 43);
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(497, 43);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(26, 17);
+            this.label10.Size = new System.Drawing.Size(21, 13);
             this.label10.TabIndex = 34;
             this.label10.Text = "DL";
             // 
@@ -647,8 +650,10 @@ namespace MaddenEditor.Forms
             this.projectionFilter.FormattingEnabled = true;
             this.projectionFilter.Items.AddRange(new object[] {
             "Any Projection",
+            "All Projections",
             "Initial Projection",
-            "Middle Projection"});
+            "Middle Projection",
+            "Our Current Grade"});
             this.projectionFilter.Location = new System.Drawing.Point(37, 53);
             this.projectionFilter.Name = "projectionFilter";
             this.projectionFilter.Size = new System.Drawing.Size(116, 21);
@@ -683,11 +688,31 @@ namespace MaddenEditor.Forms
             this.SetIncrement.Size = new System.Drawing.Size(103, 21);
             this.SetIncrement.TabIndex = 0;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(732, 43);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(33, 13);
+            this.label5.TabIndex = 61;
+            this.label5.Text = "Picks";
+            // 
+            // picks
+            // 
+            this.picks.FormattingEnabled = true;
+            this.picks.Location = new System.Drawing.Point(766, 39);
+            this.picks.Name = "picks";
+            this.picks.Size = new System.Drawing.Size(114, 21);
+            this.picks.TabIndex = 62;
+            // 
             // ScoutingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 702);
+            this.Controls.Add(this.picks);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox4);
@@ -798,5 +823,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox projectionLevel;
         private System.Windows.Forms.ComboBox projectionCondition;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox picks;
     }
 }

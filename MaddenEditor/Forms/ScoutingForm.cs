@@ -107,7 +107,18 @@ namespace MaddenEditor.Forms
 			setHours.Items.Add(5);
 			setHours.SelectedItem = 0;
             */
-            
+
+            foreach (DraftPickRecord dpr in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+            {
+                if (dpr.CurrentTeamId == HumanTeamId)
+                {
+                    int round = dpr.PickNumber / 32 + 1;
+                    int pickInRound = dpr.PickNumber % 32 + 1;
+
+                    picks.Items.Add("Round " + round + ", Pick " + pickInRound);
+                }
+            }
+
 			incrementHours.Items.Add("5");
 			incrementHours.Items.Add("4");
 			incrementHours.Items.Add("3");
@@ -665,7 +676,7 @@ namespace MaddenEditor.Forms
 		{
             if (incrementPosition.SelectedIndex == 22 || 
                 (SetIncrement.SelectedIndex == 0 && incrementHours.SelectedIndex > 5) ||
-                (projectionFilter.SelectedIndex > stage+1 && projectionLevel.SelectedIndex != 0))
+                (stage == 0 && projectionLevel.SelectedIndex != 0 && projectionFilter.SelectedIndex > 2))
                 return;
 
 			foreach (RookieRecord rook in dm.GetRookies(-1).Values)
@@ -675,43 +686,82 @@ namespace MaddenEditor.Forms
                     math.InPositionGroup(rook.Player.PositionId, incrementPosition.SelectedIndex-23)))
                     continue;
 
-                if (projectionLevel.SelectedIndex != 0 && 
-                    (projectionFilter.SelectedIndex == 0 || projectionFilter.SelectedIndex <= stage+1) &&
+                if (projectionLevel.SelectedIndex != 0 &&
+                    (projectionFilter.SelectedIndex < 3 || stage > 0) &&
                     !(projectionLevel.SelectedIndex == 1 && projectionCondition.SelectedIndex == 2) &&
-                    !(projectionLevel.SelectedIndex == projectionLevel.Items.Count-1 && projectionCondition.SelectedIndex == 0))
+                    !(projectionLevel.SelectedIndex == projectionLevel.Items.Count - 1 && projectionCondition.SelectedIndex == 0))
                 {
-                    if (projectionFilter.SelectedIndex == 0)
-                    {
+                    int proj;
 
+                    if (projectionFilter.SelectedIndex < 2)
+                    {
+                        List<int> projects = new List<int>();
+                        projects.Add(rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Initial]);
+                        if (stage > 0)
+                        {
+                            projects.Add(rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Combine]);
+                            projects.Add((int)rook.CombineNumbers[(int)CombineStat.RoundGrade]);
+                            projects.Sort();
+                        }
+
+                        if (projectionCondition.SelectedIndex == 1)
+                        {
+                            if (projectionFilter.SelectedIndex == 0)
+                            {
+                                // give proj a failing grade, then try to make it pass
+                                proj = 300;
+                                foreach (int p in projects)
+                                {
+                                    if ((projectionLevel.SelectedIndex == 1 ||
+                                        p >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]]) &&
+                                        p < projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]])
+                                        proj = p;
+                                }
+                            }
+                            else
+                            {
+                                // give proj a passing grade, then try to make it fail
+                                proj = projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]] - 1;
+                                foreach (int p in projects)
+                                {
+                                    if (!((projectionLevel.SelectedIndex == 1 ||
+                                        p >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]]) &&
+                                        p < projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]]))
+                                        proj = p;
+                                }
+                            }
+                        }
+                        else if ((projectionCondition.SelectedIndex == 0 &&
+                            projectionFilter.SelectedIndex == 0) || 
+                            (projectionCondition.SelectedIndex == 2 &&
+                            projectionFilter.SelectedIndex == 1))
+                            proj = projects[0];
+                        else
+                            proj = projects[projects.Count-1];
+                    }
+                    else if (projectionFilter.SelectedIndex == 2)
+                        proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Initial];
+                    else if (projectionFilter.SelectedIndex == 3)
+                        proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Combine];
+                    else
+                        proj = (int)rook.CombineNumbers[(int)CombineStat.RoundGrade];
+
+                    if (projectionCondition.SelectedIndex == 0)
+                    {
+                        if (proj >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]])
+                            continue;
+                    }
+                    else if (projectionCondition.SelectedIndex == 1)
+                    {
+                        if (!((projectionLevel.SelectedIndex == 1 ||
+                            proj >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]]) &&
+                            proj < projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]]))
+                            continue;
                     }
                     else
                     {
-                        int proj;
-
-                        if (projectionFilter.SelectedIndex == 1)
-                            proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Initial];
-                        else if (projectionFilter.SelectedIndex == 2)
-                            proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Combine];
-                        else
-                            proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Final];
-
-                        if (projectionCondition.SelectedIndex == 0)
-                        {
-                            if (proj >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]])
-                                continue;
-                        }
-                        else if (projectionCondition.SelectedIndex == 1)
-                        {
-                            if (!((projectionLevel.SelectedIndex == 1 || 
-                                proj >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]]) &&
-                                proj <  projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]]))
-                                continue;
-                        }
-                        else
-                        {
-                            if (proj <  projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]])
-                                continue;
-                        }
+                        if (proj < projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]])
+                            continue;
                     }
                 }
 
@@ -805,10 +855,10 @@ namespace MaddenEditor.Forms
 
 				if (dr == DialogResult.Yes)
 				{
-                    List<int> initialWishlist = new List<int>();
+                    Dictionary<short, short> initialWishlist = new Dictionary<short,short>();
 
                     foreach (DataRow drd in wishlistData.Rows)
-                        initialWishlist.Add((int)(short)(drd["PGID"]));
+                        initialWishlist.Add((short)drd["Rank"], (short)(drd["PGID"]));
 
 					Cursor.Current = Cursors.WaitCursor;
 					DraftForm form = new DraftForm(model, dm, HumanTeamId, SecondsPerPick, initialWishlist);
@@ -1023,51 +1073,50 @@ namespace MaddenEditor.Forms
 
         private void downButton_Click(object sender, EventArgs e)
         {
-            DataGridViewColumn dgvc = wishlistGrid.SortedColumn;
-            ListSortDirection lsd = ListSortDirection.Ascending;
-            if (wishlistGrid.SortOrder == SortOrder.Ascending)
-                lsd = ListSortDirection.Ascending;
-            else if (wishlistGrid.SortOrder == SortOrder.Descending)
-                lsd = ListSortDirection.Descending;
-            else
-                dgvc = null;
-
             if (wishlistGrid.SelectedRows.Count > 0)
             {
-                int index = wishlistGrid.SelectedRows[0].Index;
-                wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
+                short rank = (short)wishlistGrid.SelectedRows[0].Cells["Rank"].Value;
 
-                if (index + 1 >= wishlistGrid.RowCount) { return; }
+                if (rank == wishlistGrid.Rows.Count) { return; }
 
-                int currentid = (short)((DataRowView)wishlistGrid.Rows[index].DataBoundItem).Row["PGID"];
-                int lowerid = (short)((DataRowView)wishlistGrid.Rows[index + 1].DataBoundItem).Row["PGID"];
+                DataRow moveDown = null;
+                DataRow moveUp = null;
 
-                wishlistRow(currentid)["Rank"] = index + 2;
-                wishlistRow(lowerid)["Rank"] = index + 1;
+                foreach (DataRow drd in wishlistData.Rows)
+                {
+                    if ((short)drd["Rank"] == rank)
+                        moveDown = drd;
+                    else if ((short)drd["Rank"] == rank + 1)
+                        moveUp = drd;
+                }
+
+                moveDown["Rank"] = rank + 1;
+                moveUp["Rank"] = rank;
             }
-
-            if (dgvc != null)
-                wishlistGrid.Sort(dgvc, lsd);
         }
 
         private void upButton_Click(object sender, EventArgs e)
         {
-            wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
-
             if (wishlistGrid.SelectedRows.Count > 0)
             {
-                int index = wishlistGrid.SelectedRows[0].Index;
+                short rank = (short)wishlistGrid.SelectedRows[0].Cells["Rank"].Value;
 
-                if (index == 0) { return; }
+                if (rank == 1) { return; }
 
-                int currentid = (short)((DataRowView)wishlistGrid.SelectedRows[0].DataBoundItem).Row["PGID"];
-                int higherid = (short)((DataRowView)wishlistGrid.Rows[index - 1].DataBoundItem).Row["PGID"];
+                DataRow moveUp = null;
+                DataRow moveDown = null;
 
-                wishlistRow(currentid)["Rank"] = index;
-                wishlistRow(higherid)["Rank"] = index + 1;
+                foreach (DataRow drd in wishlistData.Rows)
+                {
+                    if ((short)drd["Rank"] == rank)
+                        moveUp = drd;
+                    else if ((short)drd["Rank"] == rank - 1)
+                        moveDown = drd;
+                }
+
+                moveUp["Rank"] = rank - 1;
+                moveDown["Rank"] = rank;
             }
-
-            wishlistGrid.Sort(wishlistGrid.Columns[1], ListSortDirection.Ascending);
         }
 
         private void remove_Click(object sender, EventArgs e)
@@ -1148,7 +1197,7 @@ namespace MaddenEditor.Forms
             wishlistGrid.Columns["Player"].Width = wishlistGrid.Width - wishlistGrid.Columns["Pos"].Width;
 
             wishlistGrid.RowHeadersVisible = false;
-
+            wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
             
             
             RookieGrid.Columns["initproj"].Visible = false;
