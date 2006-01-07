@@ -35,7 +35,13 @@ namespace MaddenEditor.Forms
 	public partial class ScoutingForm : Form
 	{
 		DataTable rookieData = new DataTable();
-		BindingSource rookieBinding = new BindingSource();
+        BindingSource rookieBinding = new BindingSource();
+
+        DataTable depthChartData = new DataTable();
+        BindingSource depthChartBinding = new BindingSource();
+
+        DataTable wishlistData = new DataTable();
+        BindingSource wishlistBinding = new BindingSource();
 
 		EditorModel model;
 		DraftModel dm;
@@ -48,6 +54,7 @@ namespace MaddenEditor.Forms
 		int previousSortedColumn = -1;
 
 		LocalMath math;
+        Dictionary<string, int> projections = new Dictionary<string,int>();
 
 		public ScoutingForm(EditorModel em, int htId, int seconds, DraftModel dm, bool customClass)
 		{
@@ -58,6 +65,20 @@ namespace MaddenEditor.Forms
 			model = em;
 			InitializeComponent();
 			stage = 0;
+
+            projections["Top 5"] = 5;
+            projections["Top 10"] = 10;
+            projections["1st"] = 28;
+            projections["1st-2nd"] = 36;
+            projections["2nd"] = 60;
+            projections["2nd-3rd"] = 68;
+            projections["3rd"] = 92;
+            projections["3rd-4th"] = 100;
+            projections["4th"] = 128;
+            projections["5th"] = 160;
+            projections["6th"] = 192;
+            projections["7th"] = 224;
+            projections["Undrafted"] = 1000;
 
 			Initialise();
 		}
@@ -77,6 +98,7 @@ namespace MaddenEditor.Forms
 				RookieGrid.Rows[i].Cells["scoutingHours"].Value = 0;
 			}
 
+            /*
 			setHours.Items.Add(0);
 			setHours.Items.Add(1);
 			setHours.Items.Add(2);
@@ -84,32 +106,51 @@ namespace MaddenEditor.Forms
 			setHours.Items.Add(4);
 			setHours.Items.Add(5);
 			setHours.SelectedItem = 0;
-
-			incrementHours.Items.Add("+5");
-			incrementHours.Items.Add("+4");
-			incrementHours.Items.Add("+3");
-			incrementHours.Items.Add("+2");
-			incrementHours.Items.Add("+1");
+            */
+            
+			incrementHours.Items.Add("5");
+			incrementHours.Items.Add("4");
+			incrementHours.Items.Add("3");
+			incrementHours.Items.Add("2");
+			incrementHours.Items.Add("1");
 			incrementHours.Items.Add("0");
 			incrementHours.Items.Add("-1");
 			incrementHours.Items.Add("-2");
 			incrementHours.Items.Add("-3");
 			incrementHours.Items.Add("-4");
 			incrementHours.Items.Add("-5");
-			incrementHours.SelectedItem = 0;
+			incrementHours.SelectedIndex = 0;
 
 			RookiePositionFilter.Items.Add("All");
-			setPosition.Items.Add("All");
+//			setPosition.Items.Add("All");
 			incrementPosition.Items.Add("All");
 
 			for (int i = 0; i < 21; i++)
 			{
 				RookiePositionFilter.Items.Add(Enum.GetNames(typeof(MaddenPositions))[i].ToString());
-				setPosition.Items.Add(Enum.GetNames(typeof(MaddenPositions))[i].ToString());
+//				setPosition.Items.Add(Enum.GetNames(typeof(MaddenPositions))[i].ToString());
 				incrementPosition.Items.Add(Enum.GetNames(typeof(MaddenPositions))[i].ToString());
-			}
+                depthChartPosition.Items.Add(Enum.GetNames(typeof(MaddenPositions))[i].ToString());
+            }
 
-		}
+            incrementPosition.Items.Add("");
+            RookiePositionFilter.Items.Add("");
+            foreach (string s in Enum.GetNames(typeof(MaddenPositionGroups)))
+            {
+                RookiePositionFilter.Items.Add(s);
+                incrementPosition.Items.Add(s);
+            }
+
+            incrementPosition.SelectedIndex = 0;
+            SetIncrement.SelectedIndex = 0;
+            projectionFilter.SelectedIndex = 0;
+            projectionCondition.SelectedIndex = 0;
+
+            projectionLevel.Items.Add("Any");
+            foreach (string s in projections.Keys)
+                projectionLevel.Items.Add(s);
+            projectionLevel.SelectedIndex = 0;
+        }
 
 		private void FillHourData()
 		{
@@ -131,6 +172,8 @@ namespace MaddenEditor.Forms
 			rookieData.Columns.Add(AddColumn("PGID", "System.Int32"));
 			rookieData.Columns.Add(AddColumn("Player", "System.String"));
 			rookieData.Columns.Add(AddColumn("Position", "System.String"));
+            rookieData.Columns.Add(AddColumn("group", "System.String"));
+            rookieData.Columns.Add(AddColumn("subgroup", "System.String"));
 			/*            rookieData.Columns.Add(AddColumn("actualproj", "System.Int16"));
 						rookieData.Columns.Add(AddColumn("Actual", "System.String"));*/
 			rookieData.Columns.Add(AddColumn("initproj", "System.Int16"));
@@ -301,7 +344,6 @@ namespace MaddenEditor.Forms
 
 		private void RefillRookieGrid()
 		{
-
 			rookieData.Clear();
 			foreach (KeyValuePair<int, RookieRecord> rook in dm.GetRookies(-1))
 			{
@@ -310,6 +352,47 @@ namespace MaddenEditor.Forms
 				dr["PGID"] = rook.Key;
 				dr["Player"] = rook.Value.Player.FirstName + " " + rook.Value.Player.LastName;
 				dr["Position"] = Enum.GetNames(typeof(MaddenPositions))[rook.Value.Player.PositionId].ToString();
+
+                dr["group"] = "";
+                dr["subgroup"] = "";
+
+                switch (rook.Value.Player.PositionId)
+                {
+                    case (int)MaddenPositions.LT:
+                    case (int)MaddenPositions.RT:
+                        dr["group"] = "OL";
+                        dr["subgroup"] = "OT";
+                        break;
+                    case (int)MaddenPositions.LG:
+                    case (int)MaddenPositions.RG:
+                        dr["group"] = "OL";
+                        dr["subgroup"] = "OG";
+                        break;
+                    case (int)MaddenPositions.LE:
+                    case (int)MaddenPositions.RE:
+                        dr["group"] = "DL";
+                        dr["subgroup"] = "DE";
+                        break;
+                    case (int)MaddenPositions.DT:
+                        dr["group"] = "DL";
+                        break;
+                    case (int)MaddenPositions.LOLB:
+                    case (int)MaddenPositions.ROLB:
+                        dr["group"] = "LB";
+                        dr["subgroup"] = "OLB";
+                        break;
+                    case (int)MaddenPositions.MLB:
+                        dr["group"] = "LB";
+                        break;
+                    case (int)MaddenPositions.CB:
+                        dr["group"] = "DB";
+                        break;
+                    case (int)MaddenPositions.FS:
+                    case (int)MaddenPositions.SS:
+                        dr["group"] = "DB";
+                        dr["subgroup"] = "S";
+                        break;
+                }
 
 				/*                dr["actualproj"] = rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Actual];
 								dr["Actual"] = rook.Value.EstimatedRound[(int)RookieRecord.RatingType.Actual];
@@ -390,8 +473,9 @@ namespace MaddenEditor.Forms
 			{
 				RookieGrid.Sort(RookieGrid.Columns["ourgrade"], ListSortDirection.Ascending);
 			}
-
-			RookieGrid.CurrentCell = RookieGrid[1, 0];
+            
+            if (RookieGrid.Rows.Count > 0)
+    			RookieGrid.CurrentCell = RookieGrid[1, 0];
 		}
 
 		private DataColumn AddColumn(string ColName, string ColType)
@@ -437,7 +521,9 @@ namespace MaddenEditor.Forms
 			if (column.Equals("Init. Proj.") || column.Equals("Curr. Proj.") || column.Equals("Doctor")
 				|| column.Equals("Height") || column.Equals("Actual") || column.Equals("Our Grade") || column.Equals("1st Skill") || column.Equals("2nd Skill"))
 			{
-				if ((sortDirection && !((previousSortedColumn + 1) != columnindex && columnindex > 22)) || ((previousSortedColumn + 1) != columnindex && columnindex < 22))
+                // no idea why 23 is correct here -- it seems like the "Doctor" column should
+                // behave as same as the skills, but this is what works.
+				if ((sortDirection && !((previousSortedColumn + 1) != columnindex && columnindex > 23)) || ((previousSortedColumn + 1) != columnindex && columnindex < 23))
 				{
 					RookieGrid.Sort(RookieGrid.Columns[columnindex - 1], System.ComponentModel.ListSortDirection.Ascending);
 					sortDirection = false;
@@ -468,16 +554,56 @@ namespace MaddenEditor.Forms
 						}
 			*/
 			FillHourData();
-			RookieGrid.CurrentCell = RookieGrid[1, 0];
+
+            if (RookieGrid.Rows.Count > 0)
+    			RookieGrid.CurrentCell = RookieGrid[1, 0];
 		}
 
 		private void RookiePositionFilter_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			rookieBinding.RemoveFilter();
-			if (!(RookiePositionFilter.SelectedItem.Equals("All")))
+
+            if (RookiePositionFilter.SelectedIndex > 0 && RookiePositionFilter.SelectedIndex != 22)
 			{
-				rookieBinding.Filter = "Position='" + RookiePositionFilter.SelectedItem + "'";
+                if (RookiePositionFilter.SelectedIndex < 22)
+                    rookieBinding.Filter = "Position='" + RookiePositionFilter.SelectedItem + "'";
+                else
+                {
+                    int group = RookiePositionFilter.SelectedIndex - 23;
+
+                    switch (group)
+                    {
+                        case (int)MaddenPositionGroups.DB:
+                            rookieBinding.Filter = "group='DB'";
+                            break;
+                        case (int)MaddenPositionGroups.LB:
+                            rookieBinding.Filter = "group='LB'";
+                            break;
+                        case (int)MaddenPositionGroups.DL:
+                            rookieBinding.Filter = "group='DL'";
+                            break;
+                        case (int)MaddenPositionGroups.OL:
+                            rookieBinding.Filter = "group='OL'";
+                            break;
+                        case (int)MaddenPositionGroups.OT:
+                            rookieBinding.Filter = "subgroup='OT'";
+                            break;
+                        case (int)MaddenPositionGroups.OG:
+                            rookieBinding.Filter = "subgroup='OG'";
+                            break;
+                        case (int)MaddenPositionGroups.DE:
+                            rookieBinding.Filter = "subgroup='DE'";
+                            break;
+                        case (int)MaddenPositionGroups.OLB:
+                            rookieBinding.Filter = "subgroup='OLB'";
+                            break;
+                        case (int)MaddenPositionGroups.S:
+                            rookieBinding.Filter = "subgroup='S'";
+                            break;
+                    }
+                }
 			}
+
 			FillHourData();
 			int pos = (int)RookiePositionFilter.SelectedIndex - 1;
 
@@ -537,16 +663,98 @@ namespace MaddenEditor.Forms
 
 		private void doSet_Click(object sender, EventArgs e)
 		{
-			foreach (KeyValuePair<int, RookieRecord> rook in dm.GetRookies(setPosition.SelectedIndex - 1))
+            if (incrementPosition.SelectedIndex == 22 || 
+                (SetIncrement.SelectedIndex == 0 && incrementHours.SelectedIndex > 5) ||
+                (projectionFilter.SelectedIndex > stage+1 && projectionLevel.SelectedIndex != 0))
+                return;
+
+			foreach (RookieRecord rook in dm.GetRookies(-1).Values)
 			{
-				if (stage == 0)
-				{
-					rook.Value.PreCombineScoutedHours[HumanTeamId] = (int)setHours.SelectedItem;
-				}
-				else if (stage == 1)
-				{
-					rook.Value.PostCombineScoutedHours[HumanTeamId] = (int)setHours.SelectedItem;
-				}
+                if (!(incrementPosition.SelectedIndex == 0 ||
+                    (incrementPosition.SelectedIndex-1) == rook.Player.PositionId ||
+                    math.InPositionGroup(rook.Player.PositionId, incrementPosition.SelectedIndex-23)))
+                    continue;
+
+                if (projectionLevel.SelectedIndex != 0 && 
+                    (projectionFilter.SelectedIndex == 0 || projectionFilter.SelectedIndex <= stage+1) &&
+                    !(projectionLevel.SelectedIndex == 1 && projectionCondition.SelectedIndex == 2) &&
+                    !(projectionLevel.SelectedIndex == projectionLevel.Items.Count-1 && projectionCondition.SelectedIndex == 0))
+                {
+                    if (projectionFilter.SelectedIndex == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        int proj;
+
+                        if (projectionFilter.SelectedIndex == 1)
+                            proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Initial];
+                        else if (projectionFilter.SelectedIndex == 2)
+                            proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Combine];
+                        else
+                            proj = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Final];
+
+                        if (projectionCondition.SelectedIndex == 0)
+                        {
+                            if (proj >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]])
+                                continue;
+                        }
+                        else if (projectionCondition.SelectedIndex == 1)
+                        {
+                            if (!((projectionLevel.SelectedIndex == 1 || 
+                                proj >= projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]]) &&
+                                proj <  projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex]]))
+                                continue;
+                        }
+                        else
+                        {
+                            if (proj <  projections[(string)projectionLevel.Items[projectionLevel.SelectedIndex - 1]])
+                                continue;
+                        }
+                    }
+                }
+
+                if (SetIncrement.SelectedIndex == 0)
+                {
+                    if (stage == 0)
+                    {
+                        rook.PreCombineScoutedHours[HumanTeamId] = 5 - (int)incrementHours.SelectedIndex;
+                    }
+                    else if (stage == 1)
+                    {
+                        rook.PostCombineScoutedHours[HumanTeamId] = 5 - (int)incrementHours.SelectedIndex;
+                    }
+                }
+                else
+                {
+                    if (stage == 0)
+                    {
+                        rook.PreCombineScoutedHours[HumanTeamId] = rook.PreCombineScoutedHours[HumanTeamId] + (5 - incrementHours.SelectedIndex);
+
+                        if (rook.PreCombineScoutedHours[HumanTeamId] > 5)
+                        {
+                            rook.PreCombineScoutedHours[HumanTeamId] = 5;
+                        }
+                        else if (rook.PreCombineScoutedHours[HumanTeamId] < 0)
+                        {
+                            rook.PreCombineScoutedHours[HumanTeamId] = 0;
+                        }
+                    }
+                    else if (stage == 1)
+                    {
+                        rook.PostCombineScoutedHours[HumanTeamId] = rook.PostCombineScoutedHours[HumanTeamId] + (5 - incrementHours.SelectedIndex);
+
+                        if (rook.PreCombineScoutedHours[HumanTeamId] > 5)
+                        {
+                            rook.PreCombineScoutedHours[HumanTeamId] = 5;
+                        }
+                        else if (rook.PreCombineScoutedHours[HumanTeamId] < 0)
+                        {
+                            rook.PreCombineScoutedHours[HumanTeamId] = 0;
+                        }
+                    }
+                }
 			}
 
 			FillHourData();
@@ -597,8 +805,13 @@ namespace MaddenEditor.Forms
 
 				if (dr == DialogResult.Yes)
 				{
+                    List<int> initialWishlist = new List<int>();
+
+                    foreach (DataRow drd in wishlistData.Rows)
+                        initialWishlist.Add((int)(short)(drd["PGID"]));
+
 					Cursor.Current = Cursors.WaitCursor;
-					DraftForm form = new DraftForm(model, dm, HumanTeamId, SecondsPerPick);
+					DraftForm form = new DraftForm(model, dm, HumanTeamId, SecondsPerPick, initialWishlist);
 					Cursor.Current = Cursors.Arrow;
 
 					this.Close();
@@ -639,6 +852,12 @@ namespace MaddenEditor.Forms
 
 					stage++;
 
+                    foreach (DataRow drd in wishlistData.Rows)
+                    {
+                        drd["ourgrade"] = dm.rookies[(int)(short)drd["PGID"]].CombineNumbers[(int)CombineStat.RoundGrade];
+                        drd["Grade"] = dm.rookies[(int)(short)drd["PGID"]].CombineWords[(int)CombineStat.RoundGrade];
+                    }
+
 					RefillRookieGrid();
 					FillHourData();
 					RefreshAllocations();
@@ -671,7 +890,13 @@ namespace MaddenEditor.Forms
 						button1.Text = "Advance to Draft";
 					}
 
-					stage++;
+                    foreach (DataRow drd in wishlistData.Rows)
+                    {
+                        drd["ourgrade"] = dm.rookies[(int)(short)drd["PGID"]].CombineNumbers[(int)CombineStat.RoundGrade];
+                        drd["Grade"] = dm.rookies[(int)(short)drd["PGID"]].CombineWords[(int)CombineStat.RoundGrade];
+                    }
+
+                    stage++;
 
 					RefillRookieGrid();
 					FillHourData();
@@ -695,11 +920,238 @@ namespace MaddenEditor.Forms
 			MessageBox.Show(helpstring, "Help");
 		}
 
-		private void ScoutingForm_Load(object sender, EventArgs e)
+        private void depthChartFilterChanged(object sender, EventArgs e)
+        {
+            UpdateDepthChart(depthChartPosition.SelectedIndex);
+        }
+
+        private void UpdateDepthChart(int PositionId)
+        {
+            if (PositionId >= 0 && PositionId < 21)
+            {
+                List<PlayerRecord> dc = dm.GetDepthChart(HumanTeamId, PositionId);
+                depthChartData.Clear();
+
+                int depth = 1;
+                foreach (PlayerRecord player in dc)
+                {
+                    DataRow dr = depthChartData.NewRow();
+                    dr["Player"] = player.FirstName + " " + player.LastName;
+
+                    dr["Depth"] = depth;
+                    dr["OVR"] = dm.dcr.GetAdjustedOverall(player, PositionId);
+                    dr["AGE"] = player.Age;
+                    dr["INJ"] = player.Injury;
+                    depthChartData.Rows.Add(dr);
+                    depth++;
+               }
+
+                DepthChartGrid.Sort(DepthChartGrid.Columns["Depth"], ListSortDirection.Ascending);
+            }
+        }
+
+        private void RookieGrid_DoubleClick(object sender, EventArgs e)
+        {
+            if (dm.rookies[(int)((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["PGID"]].DraftedTeam < 32)
+                return;
+
+            foreach (DataRow drd in wishlistData.Rows)
+            {
+                if ((short)drd["PGID"] == (int)((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["PGID"])
+                    return;
+            }
+
+            DataRow dr = wishlistData.NewRow();
+
+            dr["PGID"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["PGID"];
+            dr["Rank"] = wishlistGrid.RowCount + 1;
+            dr["Pos"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["Position"];
+
+            if (stage == 0)
+            {
+                dr["ourgrade"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["initproj"];
+                dr["Grade"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["Init. Proj."];
+            }
+            else
+            {
+                dr["ourgrade"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["ourgrade"];
+                dr["Grade"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["Our Grade"];
+            }
+            
+            dr["Player"] = ((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["Player"];
+
+            wishlistData.Rows.Add(dr);
+        }
+
+        private void RookieGrid_Click(object sender, EventArgs e)
+        {
+            if (RookieGrid.SelectedRows.Count <= 0 || stickyDepthCharts.Checked == false)
+            {
+                return;
+            }
+
+            string pos = (string)RookieGrid.SelectedRows[0].Cells["Position"].Value;
+
+            if (pos != null)
+            {
+                depthChartPosition.SelectedItem = pos;
+                UpdateDepthChart((int)Enum.Parse(typeof(MaddenPositions), (string)pos, true));
+            }
+        }
+        
+        private void rerankBoard()
+        {
+            int i = 1;
+            foreach (DataGridViewRow row in wishlistGrid.Rows)
+            {
+                ((DataRowView)row.DataBoundItem).Row["Rank"] = i;
+                i++;
+            }
+        }
+
+        private DataRow wishlistRow(int PGID)
+        {
+            foreach (DataRow dr in wishlistData.Rows)
+            {
+                if ((short)dr["PGID"] == PGID)
+                {
+                    return dr;
+                }
+            }
+            return null;
+        }
+
+        private void downButton_Click(object sender, EventArgs e)
+        {
+            DataGridViewColumn dgvc = wishlistGrid.SortedColumn;
+            ListSortDirection lsd = ListSortDirection.Ascending;
+            if (wishlistGrid.SortOrder == SortOrder.Ascending)
+                lsd = ListSortDirection.Ascending;
+            else if (wishlistGrid.SortOrder == SortOrder.Descending)
+                lsd = ListSortDirection.Descending;
+            else
+                dgvc = null;
+
+            if (wishlistGrid.SelectedRows.Count > 0)
+            {
+                int index = wishlistGrid.SelectedRows[0].Index;
+                wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
+
+                if (index + 1 >= wishlistGrid.RowCount) { return; }
+
+                int currentid = (short)((DataRowView)wishlistGrid.Rows[index].DataBoundItem).Row["PGID"];
+                int lowerid = (short)((DataRowView)wishlistGrid.Rows[index + 1].DataBoundItem).Row["PGID"];
+
+                wishlistRow(currentid)["Rank"] = index + 2;
+                wishlistRow(lowerid)["Rank"] = index + 1;
+            }
+
+            if (dgvc != null)
+                wishlistGrid.Sort(dgvc, lsd);
+        }
+
+        private void upButton_Click(object sender, EventArgs e)
+        {
+            wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
+
+            if (wishlistGrid.SelectedRows.Count > 0)
+            {
+                int index = wishlistGrid.SelectedRows[0].Index;
+
+                if (index == 0) { return; }
+
+                int currentid = (short)((DataRowView)wishlistGrid.SelectedRows[0].DataBoundItem).Row["PGID"];
+                int higherid = (short)((DataRowView)wishlistGrid.Rows[index - 1].DataBoundItem).Row["PGID"];
+
+                wishlistRow(currentid)["Rank"] = index;
+                wishlistRow(higherid)["Rank"] = index + 1;
+            }
+
+            wishlistGrid.Sort(wishlistGrid.Columns[1], ListSortDirection.Ascending);
+        }
+
+        private void remove_Click(object sender, EventArgs e)
+        {
+            wishlistGrid.Sort(wishlistGrid.Columns["Rank"], ListSortDirection.Ascending);
+            if (wishlistGrid.SelectedRows.Count > 0)
+            {
+                wishlistData.Rows.Remove(((DataRowView)wishlistGrid.SelectedRows[0].DataBoundItem).Row);
+            }
+
+            rerankBoard();
+        }
+
+        private void wishlistFixSort(object sender, EventArgs e)
+        {
+            /*
+            if (preventSortLoop)
+            {
+                return;
+            }
+            preventSortLoop = true;
+            */
+
+            string column = wishlistGrid.SortedColumn.Name;
+
+            if (column.Equals("Grade"))
+            {
+                wishlistGrid.Sort(wishlistGrid.Columns["ourgrade"], ListSortDirection.Ascending);
+            }
+            else if (!column.Equals("PGID"))
+            {
+                wishlistGrid.Sort(wishlistGrid.Columns[1], ListSortDirection.Ascending);
+            }
+
+            rerankBoard();
+//          preventSortLoop = false;
+        }
+
+        private void ScoutingForm_Load(object sender, EventArgs e)
 		{
 			stage = 0;
 
-			RookieGrid.Columns["initproj"].Visible = false;
+            depthChartData.Columns.Add(AddColumn("Player", "System.String"));
+            depthChartData.Columns.Add(AddColumn("Depth", "System.Int16"));
+            depthChartData.Columns.Add(AddColumn("OVR", "System.Int16"));
+            depthChartData.Columns.Add(AddColumn("AGE", "System.Int16"));
+            depthChartData.Columns.Add(AddColumn("INJ", "System.Int16"));
+
+            depthChartBinding.DataSource = depthChartData;
+
+            DepthChartGrid.DataSource = depthChartBinding;
+            DepthChartGrid.Columns["Depth"].Width = 40;
+            DepthChartGrid.Columns["OVR"].Width = 35;
+            DepthChartGrid.Columns["AGE"].Width = 35;
+            DepthChartGrid.Columns["INJ"].Width = 35;
+            DepthChartGrid.Columns["Player"].Width = DepthChartGrid.Width - DepthChartGrid.Columns["Depth"].Width - DepthChartGrid.Columns["OVR"].Width
+                - DepthChartGrid.Columns["AGE"].Width - DepthChartGrid.Columns["INJ"].Width - 15;
+
+            DepthChartGrid.RowHeadersVisible = false;
+
+
+
+            wishlistData.Columns.Add(AddColumn("PGID", "System.Int16"));
+            wishlistData.Columns.Add(AddColumn("Rank", "System.Int16"));
+            wishlistData.Columns.Add(AddColumn("Pos", "System.String"));
+            wishlistData.Columns.Add(AddColumn("ourgrade", "System.Int16"));
+            wishlistData.Columns.Add(AddColumn("Grade", "System.String"));
+            wishlistData.Columns.Add(AddColumn("Player", "System.String"));
+
+            wishlistBinding.DataSource = wishlistData;
+
+            wishlistGrid.DataSource = wishlistBinding;
+            wishlistGrid.Columns["PGID"].Visible = false;
+            wishlistGrid.Columns["Rank"].Width = 38;
+            wishlistGrid.Columns["Pos"].Width = 38;
+            wishlistGrid.Columns["ourgrade"].Visible = false;
+            wishlistGrid.Columns["Grade"].Width = 45;
+            wishlistGrid.Columns["Player"].Width = wishlistGrid.Width - wishlistGrid.Columns["Pos"].Width;
+
+            wishlistGrid.RowHeadersVisible = false;
+
+            
+            
+            RookieGrid.Columns["initproj"].Visible = false;
 			RookieGrid.Columns["currproj"].Visible = false;
 			RookieGrid.Columns["ourgrade"].Visible = false;
 			RookieGrid.Columns["PGID"].Visible = false;
@@ -707,6 +1159,8 @@ namespace MaddenEditor.Forms
 			RookieGrid.Columns["doctornumber"].Visible = false;
 			RookieGrid.Columns["primaryskill"].Visible = false;
 			RookieGrid.Columns["secondaryskill"].Visible = false;
+            RookieGrid.Columns["group"].Visible = false;
+            RookieGrid.Columns["subgroup"].Visible = false;
 
 			RookieGrid.Columns["Player"].Width = 100;
 			RookieGrid.Columns["Position"].Width = 47;

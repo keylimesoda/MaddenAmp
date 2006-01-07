@@ -39,6 +39,60 @@ namespace MaddenEditor.Core
 			mfv = version;
 		}
 
+        public bool InPositionGroup(int positionId, int groupId)
+        {
+            switch (groupId)
+            {
+                case (int)MaddenPositionGroups.DB:
+                    if (positionId >= (int)MaddenPositions.CB &&
+                        positionId <= (int)MaddenPositions.SS)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.DE:
+                    if (positionId == (int)MaddenPositions.LE ||
+                        positionId == (int)MaddenPositions.RE)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.DL:
+                    if (positionId >= (int)MaddenPositions.LE &&
+                        positionId <= (int)MaddenPositions.DT)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.LB:
+                    if (positionId >= (int)MaddenPositions.LOLB &&
+                        positionId <= (int)MaddenPositions.ROLB)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.OG:
+                    if (positionId == (int)MaddenPositions.LG ||
+                        positionId == (int)MaddenPositions.RG)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.OL:
+                    if (positionId >= (int)MaddenPositions.LT &&
+                        positionId <= (int)MaddenPositions.RT)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.OLB:
+                    if (positionId == (int)MaddenPositions.LOLB ||
+                        positionId == (int)MaddenPositions.ROLB)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.OT:
+                    if (positionId == (int)MaddenPositions.LT ||
+                        positionId == (int)MaddenPositions.RT)
+                        return true;
+                    break;
+                case (int)MaddenPositionGroups.S:
+                    if (positionId == (int)MaddenPositions.FS ||
+                        positionId == (int)MaddenPositions.SS)
+                        return true;
+                    break;
+            }
+
+            return false;
+        }
+
 		public double HeightWeightAdjust(PlayerRecord player, int positionId)
 		{
 			double adjustment = 0;
