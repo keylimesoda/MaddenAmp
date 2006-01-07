@@ -4149,6 +4149,19 @@ namespace MaddenEditor.Core
 		}
 	}
 
+    public enum MaddenPositionGroups
+    {
+        OL=0,
+        OT,
+        OG,
+        DL,
+        DE,
+        LB,
+        OLB,
+        DB,
+        S
+    }
+
 	public enum TradeOfferStatus
 	{
 		HigherResponsePending = 0,
