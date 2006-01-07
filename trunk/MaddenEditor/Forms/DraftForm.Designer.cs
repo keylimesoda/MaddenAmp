@@ -91,10 +91,11 @@ namespace MaddenEditor.Forms
             this.stickyDraftBoards = new System.Windows.Forms.CheckBox();
             this.stickyDepthCharts = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.listScoutedOnly = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.listScoutedOnly = new System.Windows.Forms.CheckBox();
+            this.pickLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DraftResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DepthChartGrid)).BeginInit();
@@ -333,7 +334,7 @@ namespace MaddenEditor.Forms
             this.clock.Cursor = System.Windows.Forms.Cursors.Default;
             this.clock.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clock.ForeColor = System.Drawing.Color.Red;
-            this.clock.Location = new System.Drawing.Point(67, 22);
+            this.clock.Location = new System.Drawing.Point(67, 19);
             this.clock.Name = "clock";
             this.clock.ReadOnly = true;
             this.clock.Size = new System.Drawing.Size(129, 68);
@@ -349,7 +350,7 @@ namespace MaddenEditor.Forms
             // PicksToSkip
             // 
             this.PicksToSkip.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PicksToSkip.Location = new System.Drawing.Point(146, 96);
+            this.PicksToSkip.Location = new System.Drawing.Point(146, 93);
             this.PicksToSkip.Maximum = new decimal(new int[] {
             224,
             0,
@@ -366,7 +367,7 @@ namespace MaddenEditor.Forms
             // 
             // SkipButton
             // 
-            this.SkipButton.Location = new System.Drawing.Point(67, 95);
+            this.SkipButton.Location = new System.Drawing.Point(67, 92);
             this.SkipButton.Name = "SkipButton";
             this.SkipButton.Size = new System.Drawing.Size(69, 28);
             this.SkipButton.TabIndex = 20;
@@ -387,7 +388,7 @@ namespace MaddenEditor.Forms
             // 
             // tradeButton
             // 
-            this.tradeButton.Location = new System.Drawing.Point(67, 130);
+            this.tradeButton.Location = new System.Drawing.Point(67, 127);
             this.tradeButton.Name = "tradeButton";
             this.tradeButton.Size = new System.Drawing.Size(128, 22);
             this.tradeButton.TabIndex = 22;
@@ -469,8 +470,8 @@ namespace MaddenEditor.Forms
             // selectingLabel
             // 
             this.selectingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectingLabel.ForeColor = System.Drawing.Color.Red;
-            this.selectingLabel.Location = new System.Drawing.Point(322, 31);
+            this.selectingLabel.ForeColor = System.Drawing.Color.Black;
+            this.selectingLabel.Location = new System.Drawing.Point(322, 32);
             this.selectingLabel.Name = "selectingLabel";
             this.selectingLabel.Size = new System.Drawing.Size(375, 31);
             this.selectingLabel.TabIndex = 31;
@@ -561,6 +562,17 @@ namespace MaddenEditor.Forms
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rookies";
             // 
+            // listScoutedOnly
+            // 
+            this.listScoutedOnly.AutoSize = true;
+            this.listScoutedOnly.Location = new System.Drawing.Point(529, 27);
+            this.listScoutedOnly.Name = "listScoutedOnly";
+            this.listScoutedOnly.Size = new System.Drawing.Size(157, 17);
+            this.listScoutedOnly.TabIndex = 22;
+            this.listScoutedOnly.Text = "Show Only Scouted Players";
+            this.listScoutedOnly.UseVisualStyleBackColor = true;
+            this.listScoutedOnly.CheckedChanged += new System.EventHandler(this.showDraftedPlayers_CheckedChanged);
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label2);
@@ -594,29 +606,30 @@ namespace MaddenEditor.Forms
             this.groupBox5.Controls.Add(this.SkipButton);
             this.groupBox5.Controls.Add(this.PicksToSkip);
             this.groupBox5.Controls.Add(this.clock);
-            this.groupBox5.Location = new System.Drawing.Point(378, 80);
+            this.groupBox5.Location = new System.Drawing.Point(378, 95);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(263, 166);
+            this.groupBox5.Size = new System.Drawing.Size(263, 160);
             this.groupBox5.TabIndex = 37;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Clock";
             // 
-            // listScoutedOnly
+            // pickLabel
             // 
-            this.listScoutedOnly.AutoSize = true;
-            this.listScoutedOnly.Location = new System.Drawing.Point(529, 27);
-            this.listScoutedOnly.Name = "listScoutedOnly";
-            this.listScoutedOnly.Size = new System.Drawing.Size(157, 17);
-            this.listScoutedOnly.TabIndex = 22;
-            this.listScoutedOnly.Text = "Show Only Scouted Players";
-            this.listScoutedOnly.UseVisualStyleBackColor = true;
-            this.listScoutedOnly.CheckedChanged += new System.EventHandler(this.showDraftedPlayers_CheckedChanged);
+            this.pickLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pickLabel.ForeColor = System.Drawing.Color.Black;
+            this.pickLabel.Location = new System.Drawing.Point(322, 66);
+            this.pickLabel.Name = "pickLabel";
+            this.pickLabel.Size = new System.Drawing.Size(375, 19);
+            this.pickLabel.TabIndex = 38;
+            this.pickLabel.Text = "Round 1, Pick 1";
+            this.pickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DraftForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 696);
+            this.Controls.Add(this.pickLabel);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -704,6 +717,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.CheckBox stickyDraftBoards;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox listScoutedOnly;
+        private System.Windows.Forms.Label pickLabel;
 
     }
 }

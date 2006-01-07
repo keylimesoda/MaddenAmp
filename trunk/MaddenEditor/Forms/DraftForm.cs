@@ -144,21 +144,14 @@ namespace MaddenEditor.Forms
 			if (CurrentSelectingId == HumanTeamId)
 			{
 				selectingLabel.ForeColor = System.Drawing.Color.Red;
-				SkipButton.Enabled = false;
-			}
-			else
-			{
-				selectingLabel.ForeColor = System.Drawing.Color.Black;
+                pickLabel.ForeColor = System.Drawing.Color.Red;
+                SkipButton.Enabled = false;
+                draftButton.Enabled = true;
 			}
 
 			random = new Random(unchecked((int)DateTime.Now.Ticks));
 
 			dm.SetTradeParameters(CurrentPick);
-
-			if (CurrentSelectingId == HumanTeamId)
-			{
-				draftButton.Enabled = true;
-			}
 
 			timeRemaining = (int)secondsPerPick;
 			clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
@@ -483,14 +476,23 @@ namespace MaddenEditor.Forms
                 RookieGrid.CurrentCell = RookieGrid[1, 0];
 		}
 
-		public string pickToString(int pick, int con)
+        public string pickToString(int pick, int con)
+        {
+            return pickToString(pick, con, true);
+        }
+
+		public string pickToString(int pick, int con, bool with_value)
 		{
 			if (pick < 1000)
 			{
 				int round = pick / 32 + 1;
 				int pickInRound = pick % 32 + 1;
+                string toReturn = "Round " + round + ", Pick " + pickInRound;
 
-				return "Round " + round + ", Pick " + pickInRound + " (" + dm.pickValues[pick] + ")";
+                if (with_value)
+                    toReturn += " (" + dm.pickValues[pick] + ")";
+
+                return toReturn;
 			}
 			else
 			{
@@ -783,9 +785,13 @@ namespace MaddenEditor.Forms
 				selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
 				selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
 
+                pickLabel.Text = pickToString(CurrentPick, 0, false);
+                pickLabel.TextAlign = ContentAlignment.MiddleCenter;
+
 				if (CurrentSelectingId == HumanTeamId)
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Red;
+                    pickLabel.ForeColor = System.Drawing.Color.Red;
 
 					if (wishlistData.Rows.Count > 0)
 					{
@@ -796,7 +802,8 @@ namespace MaddenEditor.Forms
 				else
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Black;
-				}
+                    pickLabel.ForeColor = System.Drawing.Color.Black;
+                }
 
 				clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
@@ -811,14 +818,19 @@ namespace MaddenEditor.Forms
 				selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
 				selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
 
+                pickLabel.Text = pickToString(CurrentPick, 0, false);
+                pickLabel.TextAlign = ContentAlignment.MiddleCenter;
+
 				if (CurrentSelectingId == HumanTeamId)
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Red;
-				}
+                    pickLabel.ForeColor = System.Drawing.Color.Red;
+                }
 				else
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Black;
-				}
+                    pickLabel.ForeColor = System.Drawing.Color.Black;
+                }
 
 				clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
 
@@ -1044,9 +1056,13 @@ namespace MaddenEditor.Forms
 				selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
 				selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
 
+                pickLabel.Text = pickToString(CurrentPick, 0, false);
+                pickLabel.TextAlign = ContentAlignment.MiddleCenter;
+
 				if (CurrentSelectingId == HumanTeamId)
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Red;
+                    pickLabel.ForeColor = System.Drawing.Color.Red;
 
 					if (wishlistData.Rows.Count > 0)
 					{
@@ -1057,6 +1073,7 @@ namespace MaddenEditor.Forms
 				else
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Black;
+                    pickLabel.ForeColor = System.Drawing.Color.Black;
 				}
 
 				clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
@@ -1206,10 +1223,12 @@ namespace MaddenEditor.Forms
 				if (CurrentSelectingId == HumanTeamId)
 				{
 					selectingLabel.ForeColor = System.Drawing.Color.Red;
+                    pickLabel.ForeColor = System.Drawing.Color.Red;
 				}
 				else
 				{
-					selectingLabel.ForeColor = System.Drawing.Color.Black;
+                    selectingLabel.ForeColor = System.Drawing.Color.Black;
+                    pickLabel.ForeColor = System.Drawing.Color.Black;
 				}
 
 				clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
@@ -1240,10 +1259,12 @@ namespace MaddenEditor.Forms
 				if (timeRemaining % 2 == 0)
 				{
 					selectingLabel.Text = "";
+                    pickLabel.Text = "";
 				}
 				else
 				{
 					selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                    pickLabel.Text = pickToString(CurrentPick, 0, false);
 				}
 
 				if (timeRemaining > 0 && (random.NextDouble() > fastPickProb || NextSelectingId() == HumanTeamId))
