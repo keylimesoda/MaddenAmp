@@ -1087,7 +1087,7 @@ namespace MaddenEditor.Forms
 				draftTimer.Start();
 			}
 
-			Console.WriteLine("Total MakePick: " + total.Subtract(DateTime.Now));
+			//Console.WriteLine("Total MakePick: " + total.Subtract(DateTime.Now));
 			return true;
 		}
 
@@ -1396,14 +1396,14 @@ namespace MaddenEditor.Forms
 			}
 			else if (!preventTrades)
 			{
-				Console.WriteLine(dm.tradeOffers.Count);
+				//Console.WriteLine(dm.tradeOffers.Count);
 				if (skipping)
 				{
 					Console.WriteLine("skipping " + tradeProb);
 				}
 				if (!dm.tradeExists(HumanTeamId))
 				{
-					Console.WriteLine("No Human trade");
+					//Console.WriteLine("No Human trade");
 				}
 
 				// randomize the team that starts the trade bidding.
@@ -1412,114 +1412,127 @@ namespace MaddenEditor.Forms
 				// j just counts iterations; current team should be 'i'.
 				for (int j = 0; j < 32; j++)
 				{
-					if (i == CurrentSelectingId) { continue; }
+                    i++;
+                    if (i == 32) { i = 0; }
+                    Console.Write(i + " ");
 
-					if (skipping && noNotify && i == HumanTeamId) { continue; }
+                    if (i == CurrentSelectingId) { continue; }
+
+                    if (skipping && noNotify && i == HumanTeamId) { continue; }
 
 					test = random.NextDouble();
 
-					if (skipping || test < tradeProb)
-					{
-						if (!dm.tradeExists(i))
-						{
-							Console.WriteLine("Initiating trade talks with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
-							TradeOffer to = dm.tradeInitialOffer(i, CurrentPick, (double)timeRemaining / (double)secondsPerPick);
+                    if (skipping || test < tradeProb)
+                    {
+                        if (!dm.tradeExists(i))
+                        {
+                            //Console.WriteLine("Initiating trade talks with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            TradeOffer to = dm.tradeInitialOffer(i, CurrentPick, (double)timeRemaining / (double)secondsPerPick);
 
-							if (to != null)
-							{
-								if (CurrentSelectingId == HumanTeamId && tradeDownForm == null)
-								{
-									string teamName = dm.model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam);
-									draftTimer.Stop();
-									DialogResult dr = MessageBox.Show("The " + teamName + " have a trade offer for you.\nDo you want to start trade discussions with them?\nIf not, you will not be able to negotiate with them again on this pick.", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-									draftTimer.Start();
+                            if (to != null)
+                            {
+                                if (CurrentSelectingId == HumanTeamId && tradeDownForm == null)
+                                {
+                                    string teamName = dm.model.TeamModel.GetTeamNameFromTeamId(to.LowerTeam);
+                                    draftTimer.Stop();
+                                    DialogResult dr = MessageBox.Show("The " + teamName + " have a trade offer for you.\nDo you want to start trade discussions with them?\nIf not, you will not be able to negotiate with them again on this pick.", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    draftTimer.Start();
 
-									if (dr == DialogResult.Yes)
-									{
-										tradeDownForm = new TradeDownForm(dm, this, to);
-										tradeDownForm.Show();
-										tradeButton.Enabled = false;
-									}
-									else
-									{
-										to.status = (int)TradeOfferStatus.Rejected;
-									}
-								}
-								else if (CurrentSelectingId != HumanTeamId)
-								{
-									if (!noNotify)
-									{
-										DialogResult dr = MessageBox.Show("The " + dm.model.TeamModel.GetTeamNameFromTeamId(CurrentSelectingId) + " have a trade offer for you.\nDo you want to start trade discussions with them?", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    if (dr == DialogResult.Yes)
+                                    {
+                                        tradeDownForm = new TradeDownForm(dm, this, to);
+                                        tradeDownForm.Show();
+                                        tradeButton.Enabled = false;
+                                    }
+                                    else
+                                    {
+                                        to.status = (int)TradeOfferStatus.Rejected;
+                                    }
+                                }
+                                else if (CurrentSelectingId != HumanTeamId)
+                                {
+                                    if (!noNotify)
+                                    {
+                                        DialogResult dr = MessageBox.Show("The " + dm.model.TeamModel.GetTeamNameFromTeamId(CurrentSelectingId) + " have a trade offer for you.\nDo you want to start trade discussions with them?", "Trade?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-										if (dr == DialogResult.Yes)
-										{
-											if (skipping)
-											{
-												threadToDo = 9;
-												globalTradeOffer = to;
-												autoPickBackgroundWorker.ReportProgress(0);
-											}
-											else
-											{
-												tradeUpForm = new TradeUpForm(dm, this, to);
-												tradeUpForm.Show();
-												tradeButton.Enabled = false;
-											}
+                                        if (dr == DialogResult.Yes)
+                                        {
+                                            if (skipping)
+                                            {
+                                                threadToDo = 9;
+                                                globalTradeOffer = to;
+                                                autoPickBackgroundWorker.ReportProgress(0);
+                                            }
+                                            else
+                                            {
+                                                tradeUpForm = new TradeUpForm(dm, this, to);
+                                                tradeUpForm.Show();
+                                                tradeButton.Enabled = false;
+                                            }
 
-											quitSkipping = true;
-										}
-										else
-										{
-											to.status = (int)TradeOfferStatus.Rejected;
-											if (skipping)
-											{
-												threadToDo = 8;
-												autoPickBackgroundWorker.ReportProgress(0);
-											}
-											else
-											{
-												tradeButton.Enabled = false;
-											}
-										}
-									}
-								}
-							}
-						}
-						else if (dm.tradePending(i))
-						{
-							Console.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
-							TradeOffer to = dm.tradeCounterOffer(i, (double)timeRemaining / (double)secondsPerPick);
+                                            quitSkipping = true;
+                                        }
+                                        else
+                                        {
+                                            to.status = (int)TradeOfferStatus.Rejected;
+                                            if (skipping)
+                                            {
+                                                threadToDo = 8;
+                                                autoPickBackgroundWorker.ReportProgress(0);
+                                            }
+                                            else
+                                            {
+                                                tradeButton.Enabled = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (dm.tradeOffers[i].status == (int)TradeOfferStatus.PendingAccept)
+                        {
+                            bool otherOffer = false;
+                            for (int k = 0; k < 32; k++)
+                            {
+                                if (k != i && dm.tradePending(k))
+                                {
+                                    otherOffer = true;
+                                    break;
+                                }
+                            }
 
-							if (to != null && CurrentSelectingId != HumanTeamId)
-							{
-								ProcessTrade(to);
-								return;
-							}
-						}
-						else if (dm.tradeOffers[i].status == (int)TradeOfferStatus.PendingAccept && ((double)timeRemaining / (double)secondsPerPick < 0.5 || skipping))
-						{
-							bool otherOffer = false;
-							for (int k = 0; k < 32; k++)
-							{
-								if (dm.tradePending(k))
-								{
-									otherOffer = true;
-									break;
-								}
-							}
+                            bool openOffer = false;
+                            for (int k = 0; k < 32; k++)
+                            {
+                                if (k != CurrentSelectingId && k != HumanTeamId && !dm.tradeExists(k))
+                                {
+                                    openOffer = true;
+                                    break;
+                                }
+                            }
 
-							if (!otherOffer)
-							{
-								dm.AcceptTrade(dm.tradeOffers[i]);
-								ProcessTrade(dm.tradeOffers[i]);
-								return;
-							}
-						}
-					}
+                            if (!otherOffer && (!openOffer || (double)timeRemaining / (double)secondsPerPick < 0.5))
+                            {
+                                dm.AcceptTrade(dm.tradeOffers[i]);
+                                ProcessTrade(dm.tradeOffers[i]);
+                                return;
+                            }
+                        }
+                        else if (dm.tradePending(i))
+                        {
+                            //Console.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            TradeOffer to = dm.tradeCounterOffer(i, (double)timeRemaining / (double)secondsPerPick);
 
-					i++;
-					if (i == 32) { i = 0; }
+                            if (to != null && CurrentSelectingId != HumanTeamId)
+                            {
+                                ProcessTrade(to);
+                                return;
+                            }
+                        }
+                    }
 				}
+
+                Console.WriteLine("\n");
 
 				if (tradeDownForm != null && refreshTradeTeams)
 				{
