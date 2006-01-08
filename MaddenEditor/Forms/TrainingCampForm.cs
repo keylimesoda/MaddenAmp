@@ -16,14 +16,11 @@ namespace MaddenEditor.Forms
         private EditorModel model = null;
         private PlayerRecord lastLoadedRecord = null;
         private bool isInitialising = false;
-        private DepthChartEditingModel depthEditingModel = null;      
+        private DepthChartEditingModel depthEditingModel = null;
+        string installDirectory;
 
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
-
-        string installDirectory;
-     //   string profile;
-     //   List<string[]> ratingsVersions;
 
         public TrainingCampForm(EditorModel model)
         {
@@ -46,16 +43,14 @@ namespace MaddenEditor.Forms
         
         public void InitialiseUI()
                 {
-                    //Determine OffSeason conditioning
-                  
-
                     //Create output directory if none exists
-                    if (!Directory.Exists(installDirectory + "\\TrainingCamp"))
+                    string installDirectory = Application.StartupPath;
+                    if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp"))
                     {
-                        Directory.CreateDirectory(installDirectory + "\\TrainingCamp");
+                        Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp");
                     }
+                    
 
-                    installDirectory = Application.StartupPath;
             
                     depthEditingModel = new DepthChartEditingModel(model);      
                     isInitialising = true;                                      
@@ -63,20 +58,14 @@ namespace MaddenEditor.Forms
                     {
                         selectHumanTeam.Items.Add(team);
                     }
-                  selectHumanTeam.Items.RemoveAt(34);
-                  selectHumanTeam.Items.RemoveAt(33);
-                  selectHumanTeam.Items.RemoveAt(32);  
-
+                    selectHumanTeam.Items.RemoveAt(34);//Remove NFC,AFC,FREEAGENT
+                    selectHumanTeam.Items.RemoveAt(33);
+                    selectHumanTeam.Items.RemoveAt(32);  
                     foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
                     {
                         filterPositionComboBox.Items.Add(pos);
-                    }
-                  
-                     
-                    isInitialising = false;
-
-                   
-                    
+                    } 
+                    isInitialising = false;   
                 }
                 public void CleanUI()
                 {
@@ -86,6 +75,32 @@ namespace MaddenEditor.Forms
                 }
                 #endregion
 
+        private void LoadCampActivityNames()
+        {
+            installDirectory = Application.StartupPath;
+            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\tune.txt");
+            string versionline = sr.ReadLine();
+            //int version = Int32.Parse(versionline.Split(':')[1]);
+
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+                string ActivityName = line.Split('"')[0];
+
+                try
+                {
+                     
+                    
+                }
+                catch
+                {
+
+                }
+            }
+
+            sr.Close();
+            
+        }
        
 
 	/*	private void availablePlayerDatagrid_CellClick(object sender, DataGridViewCellEventArgs e)

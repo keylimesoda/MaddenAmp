@@ -103,11 +103,129 @@ namespace MaddenEditor.Forms
             this.model = model;
             InitializeComponent();
         }
+        private void LoadSliderSettings()
+        {
+            StreamWriter sw;
+            string installDirectory = Application.StartupPath;
+            if (!Directory.Exists(installDirectory + "\\Conditioning"))
+            {
+                Directory.CreateDirectory(installDirectory + "\\Conditioning");
+             
+            }
+            if (!File.Exists(installDirectory + "\\Conditioning\\Settings.txt")) // Create the Slider Profile if not present.
+            {
+                FileStream file = File.Create(installDirectory + "\\Conditioning\\Settings.txt");
+                sw = new StreamWriter(file);
 
+                sw.WriteLine("GainFrequency\t0");
+                sw.WriteLine("LossFrequency\t0");
+                sw.WriteLine("AmountGained\t15");
+                sw.WriteLine("AmountLost\t10");
+
+                sw.Close();
+            }    
+            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\Settings.txt");
+
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+                string[] splitLine = line.Split('\t');
+
+                if (splitLine[0] == "GainFrequency")
+                {
+                    GainFreqSld.Value = Int32.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "LossFrequency")
+                {
+                    LossFreqSld.Value = Int32.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "AmountGained")
+                {
+                    GainAmountSld.Value = Int32.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "AmountLost")
+                {
+                    LossAmountSld.Value = Int32.Parse(splitLine[1]);
+                }
+            }
+            sr.Close();
+        }
+        public void SaveSliders()
+        {
+            StreamWriter sw;
+            string installDirectory = Application.StartupPath;
+            if (!Directory.Exists(installDirectory + "\\Conditioning"))
+            {
+                Directory.CreateDirectory(installDirectory + "\\Conditioning");
+            
+            }
+            if (!File.Exists(installDirectory + "\\Conditioning\\Settings.txt"))
+            {
+                FileStream file = File.Create(installDirectory + "\\Conditioning\\Settings.txt");    // Create the Slider Profile if not present.
+                sw = new StreamWriter(file);
+            }
+            else
+            {
+                sw = new StreamWriter(installDirectory + "\\Conditioning\\Settings.txt", false);
+            }
+
+            sw.WriteLine("GainFrequency\t" + GainFreqSld.Value);
+            sw.WriteLine("LossFrequency\t" + LossFreqSld.Value);
+            sw.WriteLine("AmountGained\t" + GainAmountSld.Value);
+            sw.WriteLine("AmountLost\t" + LossAmountSld.Value);
+      
+            sw.Close();
+        }
+        public void LoadDefaults()
+        {
+            StreamWriter sw;
+            string installDirectory = Application.StartupPath;
+            if (!Directory.Exists(installDirectory + "\\Conditioning"))
+            {
+                Directory.CreateDirectory(installDirectory + "\\Conditioning");
+
+            }
+          
+                FileStream file = File.Create(installDirectory + "\\Conditioning\\Settings.txt");
+                sw = new StreamWriter(file);
+
+                sw.WriteLine("GainFrequency\t0");
+                sw.WriteLine("LossFrequency\t0");
+                sw.WriteLine("AmountGained\t15");
+                sw.WriteLine("AmountLost\t10");
+
+                sw.Close();
+                StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\Settings.txt");
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+                    string[] splitLine = line.Split('\t');
+
+                    if (splitLine[0] == "GainFrequency")
+                    {
+                        GainFreqSld.Value = Int32.Parse(splitLine[1]);
+                    }
+                    else if (splitLine[0] == "LossFrequency")
+                    {
+                        LossFreqSld.Value = Int32.Parse(splitLine[1]);
+                    }
+                    else if (splitLine[0] == "AmountGained")
+                    {
+                        GainAmountSld.Value = Int32.Parse(splitLine[1]);
+                    }
+                    else if (splitLine[0] == "AmountLost")
+                    {
+                        LossAmountSld.Value = Int32.Parse(splitLine[1]);
+                    }
+                }
+                sr.Close();
+
+
+        }
         public void initialiseUI()
         {
+            LoadSliderSettings();
             SelectHumanTeam.Enabled = false;
-
             depthEditingModel = new DepthChartEditingModel(model);
             foreach (TeamRecord team in model.TeamModel.GetTeams())
             {
@@ -115,7 +233,7 @@ namespace MaddenEditor.Forms
             }
             SelectHumanTeam.Items.RemoveAt(34);
             SelectHumanTeam.Items.RemoveAt(33);
-            SelectHumanTeam.Items.RemoveAt(32);    
+            SelectHumanTeam.Items.RemoveAt(32);   
             isInitialising = false;
         }           
         
@@ -307,14 +425,14 @@ namespace MaddenEditor.Forms
                 double DetermineWeight = 0;
                 if (i == 0)
                 {
-                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 30) - j) * PosWgtMod);
+                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 40) - j) * PosWgtMod);
                 }
                 else if (i == 1)
                 {
-                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 30) + j) * PosWgtMod);
+                    DetermineWeight = Math.Round(((50 * random.NextDouble() + 40) + j) * PosWgtMod);
                 }
 
-               double RandomWeight = Math.Round((DetermineWeight * random.NextDouble()) - TempCmot);
+               double RandomWeight = Math.Round((DetermineWeight * random.NextDouble()) - TempCmot) - GainFreqSld.Value;
                string CaptainFirst = "";
                string CaptainLast = "";               
                if (OldCaptain != "")
@@ -530,8 +648,8 @@ namespace MaddenEditor.Forms
             {
                 CaptainFirst = OldCaptain.Split(' ')[0];
                 CaptainLast = OldCaptain.Split(' ')[1];
-            }  
-            double RandomLoss = Math.Round((DetermineLoss * random.NextDouble()) + TempCmot);
+            }
+            double RandomLoss = Math.Round((DetermineLoss * random.NextDouble()) + TempCmot) - LossFreqSld.Value;
             if ((RandomLoss <= TotalLossMod) & (FirstName != ScenarioFirstName) & (LastName != ScenarioLastName) || (BadNews == true) & (FirstName == CaptainFirst) & (LastName == CaptainLast))
             {
                 WeightLoss = true;
@@ -810,7 +928,14 @@ namespace MaddenEditor.Forms
                 AttributeMeans(valObject.PositionId);
                 CallWeightGain((valObject.Weight + 160), valObject.Age, valObject.PositionId, CoachMotivation, valObject.FirstName, valObject.LastName);
                 CallWeightLoss((valObject.Weight + 160), valObject.Age, valObject.PositionId, CoachMotivation, valObject.FirstName, valObject.LastName);
-                if ((WeightGain == true & WeightLoss == false) | (WeightGain == false & WeightLoss == true))
+                string CaptainFirst = "";
+                string CaptainLast = "";
+                if (OldCaptain != "")
+                {
+                    CaptainFirst = OldCaptain.Split(' ')[0];
+                    CaptainLast = OldCaptain.Split(' ')[1];
+                }  
+                if ((WeightGain == true & WeightLoss == false) | (WeightGain == false & WeightLoss == true) || ((BadNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName)) || ((GoodNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName)))
                 {
 
                     if (WeightGain == true)
@@ -1132,13 +1257,7 @@ namespace MaddenEditor.Forms
                             valObject.Morale = Rating;
                         }
                     }
-                    string CaptainFirst = "";
-                    string CaptainLast = "";
-                    if (OldCaptain != "")
-                    {
-                        CaptainFirst = OldCaptain.Split(' ')[0];
-                        CaptainLast = OldCaptain.Split(' ')[1];
-                    }  
+                    
                     if ((GoodNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
                     {
                         Diff = (((model.CoachModel.CurrentCoachRecord.Chemistry - 70) / 6) * -1);
@@ -1328,6 +1447,10 @@ namespace MaddenEditor.Forms
                 sw.Write(sw.NewLine);
             }
             sw.Close();
+            if (ScenarioFirstName != "")
+            {
+                groupBox5.Visible = true;
+            }
         }
 
         private void HighLowCheck(int Skill)
@@ -1432,7 +1555,7 @@ namespace MaddenEditor.Forms
                     radioButton3.Text = "Circumvent player's agent and arrange a sit down meeting with " + ScenarioFirstName + " " + ScenarioLastName + ".(Only the best\nMotivators should try this approach. However if he shows up you'll stand a high chance of success..)";
                     radioButton4.Text = "Ignore situation and do nothing. (Sometimes tough love is best...)";
                     radioButton4.Checked = true;
-                    textBox1.Text = "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
+                    textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
                 }
                 else if (GoodBad <= 11) //Scenario 2; Captains
                 {
@@ -1560,7 +1683,7 @@ namespace MaddenEditor.Forms
                     Scenario = Scenario + ("\n\nYou have a decision to make. Please refer to the 'Offseason scenario' section\nof this form for further instruction, located in the upper right hand corner.");
                     radioButton1.Visible = false; 
                     radioButton2.Checked = true;
-                    textBox1.Text = "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + " and a Team Chemistry rating of " + model.CoachModel.CurrentCoachRecord.Chemistry + "...\r\n...Motivation as well as Team Chemistry will alter the effects of your decision accordingly...";
+                    textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + " and a Team Chemistry rating of " + model.CoachModel.CurrentCoachRecord.Chemistry + "...\r\n...Motivation as well as Team Chemistry will alter the effects of your decision accordingly...";
 
                 
                 
@@ -1572,7 +1695,7 @@ namespace MaddenEditor.Forms
 
             if (ScenarioTrue == false)
             {
-            textBox1.Text = "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
+            textBox1.Text = textBox1.Text + "\r\nYour team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
              PhaseOne(); 
             }
             
@@ -1585,15 +1708,15 @@ namespace MaddenEditor.Forms
 
             PercentModFat = 0;
             // record.BodyWeight; record.BodyMuscle; record.BodyFat; record.ArmsMuscle; record.ArmsFat; record.LegsThighMuscle; record.LegsThighFat; record.LegsCalfMuscle; record.LegsCalfFat; record.RearRearFat; record.RearShape; record.BodyOverall;
-            int AddedWeight = (int)((95 * random.NextDouble() + 15) - (Cmot - 70) + (Age - 25));
+            int AddedWeight = (int)((95 * random.NextDouble() + GainAmountSld.Value) - (Cmot - 70) + (Age - 25));
 
             if ((BadNews == true) & (HorribleNews == false))
             {
-                AddedWeight = AddedWeight + (int)((15 * random.NextDouble() + 15));
+                AddedWeight = AddedWeight + (int)((15 * random.NextDouble() + (GainAmountSld.Value + 15)));
             }
             else if ((BadNews == true) & (HorribleNews == true))
             {
-                AddedWeight = AddedWeight + (int)((15 * random.NextDouble() + 25));
+                AddedWeight = AddedWeight + (int)((15 * random.NextDouble() + (GainAmountSld.Value + 25)));
             }
 
             if (AddedWeight < 0)
@@ -1651,15 +1774,15 @@ namespace MaddenEditor.Forms
 
             PercentModMuscle = 0;
             // record.BodyWeight; record.BodyMuscle; record.BodyFat; record.ArmsMuscle; record.ArmsFat; record.LegsThighMuscle; record.LegsThighFat; record.LegsCalfMuscle; record.LegsCalfFat; record.RearRearFat; record.RearShape; record.BodyOverall;
-            int WeightLost = (int)((95 * random.NextDouble() + 10) - (Cmot - 70) - (Age - 25));
+            int WeightLost = (int)((95 * random.NextDouble() + LossAmountSld.Value) - (Cmot - 70) - (Age - 25));
 
             if ((GoodNews == true) & (GreatNews == false))//Single out Scenario player if applicable
             {
-                WeightLost = WeightLost + (int)((10 * random.NextDouble() + 12));
+                WeightLost = WeightLost + (int)((10 * random.NextDouble() + (LossAmountSld.Value + 12)));
             }
             else if ((GoodNews == true) & (GreatNews == true))
             {
-                WeightLost = WeightLost + (int)((10 * random.NextDouble() + 22));
+                WeightLost = WeightLost + (int)((10 * random.NextDouble() + (LossAmountSld.Value + 22)));
             }
 
             if (WeightLost < 0)
@@ -1718,8 +1841,9 @@ namespace MaddenEditor.Forms
             InitializeDataGrids();
         }
         private void SelectHumanTeam_SelectedIndexChanged(object sender, EventArgs e)
-        {           
-            textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much\ntime for you, as coach, to prepare for the seemingly endless\narray of tasks, meetings and film study you're\nroutinely bombarded with.\n\nYou must begin preparing for Training Camp even though its still months away.\nUsing what precious few hours of time you have let's get started\non your Training Camp planning.\nPlease allocate the alloted time to your Head Coach as all\n listed coaching ratings play into Training Camp\nplayer development including the positional ratings.");
+        {
+            checkBox2.Enabled = true;
+            textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 35 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
             PopulateCoach();
             button4.Enabled = true;            
 
@@ -1729,7 +1853,7 @@ namespace MaddenEditor.Forms
             model.CoachModel.SetPositionFilter(0);
             model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
             model.CoachModel.GetNextCoachRecord();
-            HoursLeft = 20;
+            HoursLeft = 35;
             HoursLeftlbl.Text = HoursLeft.ToString();
             hcname.Text = model.CoachModel.CurrentCoachRecord.Name;
             hcage.Text = model.CoachModel.CurrentCoachRecord.Age.ToString();
@@ -1782,6 +1906,7 @@ namespace MaddenEditor.Forms
             double CoachProgMod = 0.0;
             decimal AttributeDeviation = 0;
             decimal RankExp = 0;
+            string Changes = "";
             int oldKnw = model.CoachModel.CurrentCoachRecord.Knowledge;
             int OldMot = model.CoachModel.CurrentCoachRecord.Motivation;
             int oldChm = model.CoachModel.CurrentCoachRecord.Chemistry;
@@ -1796,49 +1921,77 @@ namespace MaddenEditor.Forms
             int Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
             int Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
 
-            if (SeasonsExp <= 2)
+            if (SeasonsExp <= 1)
+            {
+                CoachProgMod = (2);
+            }
+            else if (SeasonsExp == 2)
+            {
+                CoachProgMod = (1.9);
+            }
+            else if (SeasonsExp == 3)
+            {
+                CoachProgMod = (1.8);
+            }
+            else if (SeasonsExp == 4)
+            {
+                CoachProgMod = (1.65);
+            }
+            else if (SeasonsExp == 5)
+            {
+                CoachProgMod = (1.55);
+            }
+            else if (SeasonsExp == 6)
+            {
+                CoachProgMod = (1.4);
+            }
+            else if (SeasonsExp == 7)
             {
                 CoachProgMod = (1.3);
             }
-            else if (SeasonsExp <= 5)
+            else if (SeasonsExp == 8)
+            {
+                CoachProgMod = (1.2);
+            }
+            else if (SeasonsExp == 9)
             {
                 CoachProgMod = (1.1);
             }
-            else if (SeasonsExp <= 10)
+            else if (SeasonsExp == 10)
             {
-                CoachProgMod = (0.7);
+                CoachProgMod = (1);
             }
             else if (SeasonsExp <= 15)
             {
-                CoachProgMod = (0.35);
+                CoachProgMod = (.7);
             }
             else if (SeasonsExp <= 20)
             {
-                CoachProgMod = (0.15);
-            }
+                CoachProgMod = (.4);
+            }            
             else if (SeasonsExp > 20)
             {
-                CoachProgMod = (.05);
+                CoachProgMod = (.3);
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) * 10),3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) / 10),3); //Knw
             RankExp = ((decimal)knwUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Knowledge = model.CoachModel.CurrentCoachRecord.Knowledge + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Motivation)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Motivation)) / 10), 3); //Knw
             RankExp = ((decimal)motUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Motivation = model.CoachModel.CurrentCoachRecord.Motivation + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Chemistry)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Chemistry)) / 10), 3); //Knw
             RankExp = ((decimal)chmUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Chemistry = model.CoachModel.CurrentCoachRecord.Chemistry + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.Ethics)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Ethics)) / 10), 3); //Knw
             RankExp = ((decimal)ethUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
@@ -1846,133 +1999,157 @@ namespace MaddenEditor.Forms
             }
 
             //Pos ratings
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) / 10), 3); //Knw
             RankExp = ((decimal)qbUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) / 10), 3); //Knw
             RankExp = ((decimal)rbUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) / 10), 3); //Knw
             RankExp = ((decimal)wrUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.OffensiveAggression)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.OffensiveLineRating)) / 10), 3); //Knw
             RankExp = ((decimal)olUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) / 10), 3); //Knw
             RankExp = ((decimal)dlUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) / 10), 3); //Knw
             RankExp = ((decimal)lbUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) / 10), 3); //Knw
             RankExp = ((decimal)dbUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) / 10), 3); //Knw
             RankExp = ((decimal)kUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((2 - (99 / (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) * 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) / 10), 3); //Knw
             RankExp = ((decimal)pUpDown.Value * (decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            string Changes = "";
             if (model.CoachModel.CurrentCoachRecord.Knowledge > oldKnw)
             {
+                hcknw.Text = model.CoachModel.CurrentCoachRecord.Knowledge.ToString();
                 hcknw.ForeColor = Color.Blue;
                 Changes = "Knw increased +" + (model.CoachModel.CurrentCoachRecord.Knowledge - oldKnw) + " from " + oldKnw + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.Motivation > OldMot)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcmot.Text = model.CoachModel.CurrentCoachRecord.Motivation.ToString();
+                hcmot.ForeColor = Color.Blue;
                 Changes = Changes + "Mot increased +" + (model.CoachModel.CurrentCoachRecord.Motivation - OldMot) + " from " + OldMot + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.Chemistry > oldChm)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcchm.Text = model.CoachModel.CurrentCoachRecord.Chemistry.ToString();
+                hcchm.ForeColor = Color.Blue;
                 Changes = Changes + "Chm increased +" + (model.CoachModel.CurrentCoachRecord.Chemistry - oldChm) + " from " + oldChm + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.Ethics > OldEth)
             {
-                hcknw.ForeColor = Color.Blue;
+                hceth.Text = model.CoachModel.CurrentCoachRecord.Ethics.ToString();
+                hceth.ForeColor = Color.Blue;
                 Changes = Changes + "Eth increased +" + (model.CoachModel.CurrentCoachRecord.Ethics - OldEth) + " from " + OldEth + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.QuarterbackRating > oldqb)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcqb.Text = model.CoachModel.CurrentCoachRecord.QuarterbackRating.ToString();
+                hcqb.ForeColor = Color.Blue;
                 Changes = Changes + "qb increased +" + (model.CoachModel.CurrentCoachRecord.QuarterbackRating - oldqb) + " from " + oldqb + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.RunningbackRating > Oldrb)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcrb.Text = model.CoachModel.CurrentCoachRecord.RunningbackRating.ToString();
+                hcrb.ForeColor = Color.Blue;
                 Changes = Changes + "rb increased +" + (model.CoachModel.CurrentCoachRecord.RunningbackRating - Oldrb) + " from " + Oldrb + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.WideReceiverRating > oldwr)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcwr.Text = model.CoachModel.CurrentCoachRecord.WideReceiverRating.ToString();
+                hcwr.ForeColor = Color.Blue;
                 Changes = Changes + "wr increased +" + (model.CoachModel.CurrentCoachRecord.WideReceiverRating - oldwr) + " from " + oldwr + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.OffensiveLineRating > Oldol)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcol.Text = model.CoachModel.CurrentCoachRecord.OffensiveLineRating.ToString();
+                hcol.ForeColor = Color.Blue;
                 Changes = Changes + "ol increased +" + (model.CoachModel.CurrentCoachRecord.OffensiveLineRating - Oldol) + " from " + Oldol + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.DefensiveLineRating > olddl)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcdl.Text = model.CoachModel.CurrentCoachRecord.DefensiveLineRating.ToString();
+                hcdl.ForeColor = Color.Blue;
                 Changes = Changes + "dl increased +" + (model.CoachModel.CurrentCoachRecord.DefensiveLineRating - olddl) + " from " + olddl + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.LinebackerRating > Oldlb)
             {
-                hcknw.ForeColor = Color.Blue;
+                hclb.Text = model.CoachModel.CurrentCoachRecord.LinebackerRating.ToString();
+                hclb.ForeColor = Color.Blue;
                 Changes = Changes + "Lb increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldlb) + " from " + Oldlb + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.DefensiveBackRating > olddb)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcdb.Text = model.CoachModel.CurrentCoachRecord.DefensiveBackRating.ToString();
+                hcdb.ForeColor = Color.Blue;
                 Changes = Changes + "db increased +" + (model.CoachModel.CurrentCoachRecord.DefensiveBackRating - olddb) + " from " + olddb + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.KickerRating > Oldk)
             {
-                hcknw.ForeColor = Color.Blue;
+                hck.Text = model.CoachModel.CurrentCoachRecord.KickerRating.ToString();
+                hck.ForeColor = Color.Blue;
                 Changes = Changes + "k increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldk) + " from " + Oldk + ", ";
             }
             if (model.CoachModel.CurrentCoachRecord.PuntRating > Oldp)
             {
-                hcknw.ForeColor = Color.Blue;
+                hcp.Text = model.CoachModel.CurrentCoachRecord.PuntRating.ToString();
+                hcp.ForeColor = Color.Blue;
                 Changes = Changes + "p increased +" + (model.CoachModel.CurrentCoachRecord.PuntRating - Oldp) + " from " + Oldp + ", ";
             }
 
-            Timer1TextDelay(8);//pause to allow user to view coach progression
-            textBox1.Text = textBox1.Text + Changes + "...Now simming Conditioning...";
+            
+            if (Changes != "")
+            {
+                Timer1TextDelay(15);//pause to allow user to view coach progression
+                textBox1.Text = Changes + "...Now simulating Conditioning...";
+            }
+            else
+            {
+                Timer1TextDelay(5);//pause to allow user to view coach progression
+                textBox1.Text = "...No change to coaching attributes...Now simulating Conditioning..."; 
+            }
             textBox1.SelectionStart = textBox1.Text.Length;
             textBox1.SelectionLength = 0;
             textBox1.ScrollToCaret();
-
+            while (isTrue == true)
+            {
+                Application.DoEvents();
+            }
         }
         private void AddCoachingHours(NumericUpDown control)
         {
@@ -2005,6 +2182,7 @@ namespace MaddenEditor.Forms
                 kUpDown.Enabled = false;
                 pUpDown.Enabled = false;
                 button4.Enabled = false;
+                checkBox2.Enabled = false;
             }
         }
 
@@ -2274,7 +2452,7 @@ namespace MaddenEditor.Forms
                                     {
                                         Application.DoEvents();
                                     }
-                                    CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role a leader seriously. In addition to severing communication with you " + ScenarioFirstName + " he's reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
+                                    CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role as a leader seriously. In addition to severing communication with you " + ScenarioFirstName + " reported to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
                                     BadNews = true;
                                     HorribleNews = true;
                                     PhaseOne();
@@ -2293,7 +2471,7 @@ namespace MaddenEditor.Forms
                             {
                                 Application.DoEvents();
                             }
-                            CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role a leader seriously. In addition to severing communication with you " + ScenarioFirstName + " he's reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
+                            CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role as a leader seriously. In addition to severing communication with you " + ScenarioFirstName + " he's reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
                             BadNews = true;
                             HorribleNews = true;
                             PhaseOne();
@@ -2665,7 +2843,7 @@ namespace MaddenEditor.Forms
                 }
 
             }//End Negative Scen. 2
-
+            groupBox5.Visible = true;
         }
         private void Timer1TextDelay(int SleepValue)
         {
@@ -2793,19 +2971,30 @@ namespace MaddenEditor.Forms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for the selected team?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
-
-            if (dr == DialogResult.Yes)
+            if ((HoursLeft == 0) | (checkBox2.Checked == true))
             {
-                Cursor.Current = Cursors.WaitCursor;
-                CoachProgression();
-                RandomIssue();
-                Cursor.Current = Cursors.Arrow;
-                groupBox5.Visible = true;
-                button4.Enabled = false;    
-            }
+                DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for the selected team?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
 
-            return;
+                if (dr == DialogResult.Yes)
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    if (checkBox2.Checked == false)
+                    {
+                        CoachProgression();
+                    }
+                    RandomIssue();
+                    Cursor.Current = Cursors.Arrow;                   
+                    button4.Enabled = false;
+                    if (ScenarioFirstName == "")
+                    {
+                        MessageBox.Show("A .txt copy of your team's changes has been generated in\nthe \\Conditioning folder within the Gommo install directory.");
+                    }
+                }
+
+                return;
+            }
+            else
+                MessageBox.Show("Coaching Hours not equal to zero. Please re-distribute");
         }
 
         private void knwUpDown_ValueChanged(object sender, EventArgs e)
@@ -3017,8 +3206,27 @@ namespace MaddenEditor.Forms
             }
         }
 
-      
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
 
+        }
+
+        private void clickToSaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSliders();
+        }
+
+        private void loadDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadDefaults();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+                button4.Enabled = true;
+        }
+
+               
       
        
        
