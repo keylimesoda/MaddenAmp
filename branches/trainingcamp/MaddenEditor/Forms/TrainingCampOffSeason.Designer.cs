@@ -29,8 +29,8 @@ namespace MaddenEditor.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainingCampOffSeason));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SelectHumanTeam = new System.Windows.Forms.ComboBox();
@@ -57,6 +57,7 @@ namespace MaddenEditor.Forms
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.HoursLeftlbl = new System.Windows.Forms.Label();
             this.pUpDown = new System.Windows.Forms.NumericUpDown();
             this.kUpDown = new System.Windows.Forms.NumericUpDown();
             this.dbUpDown = new System.Windows.Forms.NumericUpDown();
@@ -86,7 +87,19 @@ namespace MaddenEditor.Forms
             this.hceth = new System.Windows.Forms.TextBox();
             this.hcage = new System.Windows.Forms.TextBox();
             this.hcname = new System.Windows.Forms.TextBox();
-            this.HoursLeftlbl = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.GainFreqSld = new System.Windows.Forms.TrackBar();
+            this.LossFreqSld = new System.Windows.Forms.TrackBar();
+            this.LossAmountSld = new System.Windows.Forms.TrackBar();
+            this.GainAmountSld = new System.Windows.Forms.TrackBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.saveSlidersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clickToSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -108,6 +121,11 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.chmUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.motUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.knwUpDown)).BeginInit();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LossAmountSld)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GainAmountSld)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -115,25 +133,24 @@ namespace MaddenEditor.Forms
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(310, 132);
+            this.label1.Size = new System.Drawing.Size(219, 29);
             this.label1.TabIndex = 0;
-            this.label1.Text = resources.GetString("label1.Text");
+            this.label1.Text = "Check the box below to simulate your teams offseason conditioning. ";
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(129, 169);
+            this.checkBox1.Location = new System.Drawing.Point(128, 60);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(178, 17);
+            this.checkBox1.Size = new System.Drawing.Size(82, 25);
             this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "Simulate Offseason Conditioning";
+            this.checkBox1.Text = "Simulate?";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // SelectHumanTeam
             // 
             this.SelectHumanTeam.FormattingEnabled = true;
-            this.SelectHumanTeam.Location = new System.Drawing.Point(6, 167);
+            this.SelectHumanTeam.Location = new System.Drawing.Point(8, 64);
             this.SelectHumanTeam.Name = "SelectHumanTeam";
             this.SelectHumanTeam.Size = new System.Drawing.Size(114, 21);
             this.SelectHumanTeam.TabIndex = 2;
@@ -142,7 +159,8 @@ namespace MaddenEditor.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 148);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(8, 45);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(98, 13);
             this.label2.TabIndex = 3;
@@ -151,7 +169,7 @@ namespace MaddenEditor.Forms
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(53, 67);
+            this.button1.Location = new System.Drawing.Point(44, 66);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(78, 23);
             this.button1.TabIndex = 4;
@@ -167,7 +185,7 @@ namespace MaddenEditor.Forms
             this.groupBox1.Controls.Add(this.SelectHumanTeam);
             this.groupBox1.Location = new System.Drawing.Point(4, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(328, 196);
+            this.groupBox1.Size = new System.Drawing.Size(228, 90);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Simulate Offseason Conditioning?";
@@ -176,9 +194,9 @@ namespace MaddenEditor.Forms
             // 
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Location = new System.Drawing.Point(338, 27);
+            this.groupBox2.Location = new System.Drawing.Point(4, 122);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(189, 99);
+            this.groupBox2.Size = new System.Drawing.Size(189, 101);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Skip Offseason Conditioning...";
@@ -187,7 +205,7 @@ namespace MaddenEditor.Forms
             // 
             this.label3.Location = new System.Drawing.Point(6, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(177, 48);
+            this.label3.Size = new System.Drawing.Size(177, 42);
             this.label3.TabIndex = 5;
             this.label3.Text = "Click the \'Skip\' button to go directly to Training Camp w/out simulating offseaso" +
                 "n conditioning.";
@@ -232,14 +250,14 @@ namespace MaddenEditor.Forms
             this.depthChartDataGrid.AllowUserToResizeColumns = false;
             this.depthChartDataGrid.AllowUserToResizeRows = false;
             this.depthChartDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle1;
             this.depthChartDataGrid.Location = new System.Drawing.Point(9, 373);
             this.depthChartDataGrid.MultiSelect = false;
             this.depthChartDataGrid.Name = "depthChartDataGrid";
@@ -328,12 +346,12 @@ namespace MaddenEditor.Forms
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(539, 95);
             this.textBox1.TabIndex = 11;
-            this.textBox1.Visible = false;
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.saveSlidersToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1082, 24);
@@ -358,9 +376,9 @@ namespace MaddenEditor.Forms
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.button3);
-            this.groupBox5.Location = new System.Drawing.Point(358, 132);
+            this.groupBox5.Location = new System.Drawing.Point(422, 215);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(150, 56);
+            this.groupBox5.Size = new System.Drawing.Size(106, 74);
             this.groupBox5.TabIndex = 34;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Proceed to Training Camp?";
@@ -369,7 +387,7 @@ namespace MaddenEditor.Forms
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button3.Location = new System.Drawing.Point(33, 18);
+            this.button3.Location = new System.Drawing.Point(6, 32);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(82, 24);
             this.button3.TabIndex = 0;
@@ -379,6 +397,7 @@ namespace MaddenEditor.Forms
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.checkBox2);
             this.groupBox6.Controls.Add(this.HoursLeftlbl);
             this.groupBox6.Controls.Add(this.pUpDown);
             this.groupBox6.Controls.Add(this.kUpDown);
@@ -411,11 +430,23 @@ namespace MaddenEditor.Forms
             this.groupBox6.Controls.Add(this.hcname);
             this.groupBox6.Location = new System.Drawing.Point(9, 295);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(1068, 72);
+            this.groupBox6.Size = new System.Drawing.Size(949, 72);
             this.groupBox6.TabIndex = 35;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "     Head Coach Name        Age       Knw      Mot      Chm     Eth            QB" +
-                "       RB       WR      OL         DL        LB        DB        K         P";
+                "       RB       WR      OL         DL        LB        DB        K         P    " +
+                " Hours Left";
+            // 
+            // HoursLeftlbl
+            // 
+            this.HoursLeftlbl.AutoSize = true;
+            this.HoursLeftlbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.HoursLeftlbl.Font = new System.Drawing.Font("Comic Sans MS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HoursLeftlbl.ForeColor = System.Drawing.Color.Red;
+            this.HoursLeftlbl.Location = new System.Drawing.Point(674, 20);
+            this.HoursLeftlbl.Name = "HoursLeftlbl";
+            this.HoursLeftlbl.Size = new System.Drawing.Size(2, 37);
+            this.HoursLeftlbl.TabIndex = 29;
             // 
             // pUpDown
             // 
@@ -543,9 +574,9 @@ namespace MaddenEditor.Forms
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(969, 19);
+            this.button4.Location = new System.Drawing.Point(741, 21);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(93, 36);
+            this.button4.Size = new System.Drawing.Size(73, 36);
             this.button4.TabIndex = 15;
             this.button4.Text = "Submit and Proceed...";
             this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -554,9 +585,9 @@ namespace MaddenEditor.Forms
             // 
             // hcp
             // 
+            this.hcp.BackColor = System.Drawing.Color.White;
             this.hcp.Location = new System.Drawing.Point(637, 18);
             this.hcp.Name = "hcp";
-            this.hcp.ReadOnly = true;
             this.hcp.Size = new System.Drawing.Size(22, 20);
             this.hcp.TabIndex = 14;
             // 
@@ -564,7 +595,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcdl.Location = new System.Drawing.Point(490, 18);
             this.hcdl.Name = "hcdl";
-            this.hcdl.ReadOnly = true;
             this.hcdl.Size = new System.Drawing.Size(22, 20);
             this.hcdl.TabIndex = 13;
             // 
@@ -572,7 +602,6 @@ namespace MaddenEditor.Forms
             // 
             this.hclb.Location = new System.Drawing.Point(528, 18);
             this.hclb.Name = "hclb";
-            this.hclb.ReadOnly = true;
             this.hclb.Size = new System.Drawing.Size(22, 20);
             this.hclb.TabIndex = 12;
             // 
@@ -580,7 +609,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcdb.Location = new System.Drawing.Point(565, 18);
             this.hcdb.Name = "hcdb";
-            this.hcdb.ReadOnly = true;
             this.hcdb.Size = new System.Drawing.Size(22, 20);
             this.hcdb.TabIndex = 11;
             // 
@@ -588,7 +616,6 @@ namespace MaddenEditor.Forms
             // 
             this.hck.Location = new System.Drawing.Point(600, 18);
             this.hck.Name = "hck";
-            this.hck.ReadOnly = true;
             this.hck.Size = new System.Drawing.Size(22, 20);
             this.hck.TabIndex = 10;
             // 
@@ -596,7 +623,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcqb.Location = new System.Drawing.Point(338, 18);
             this.hcqb.Name = "hcqb";
-            this.hcqb.ReadOnly = true;
             this.hcqb.Size = new System.Drawing.Size(22, 20);
             this.hcqb.TabIndex = 9;
             // 
@@ -604,7 +630,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcrb.Location = new System.Drawing.Point(376, 18);
             this.hcrb.Name = "hcrb";
-            this.hcrb.ReadOnly = true;
             this.hcrb.Size = new System.Drawing.Size(22, 20);
             this.hcrb.TabIndex = 8;
             // 
@@ -612,7 +637,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcwr.Location = new System.Drawing.Point(413, 18);
             this.hcwr.Name = "hcwr";
-            this.hcwr.ReadOnly = true;
             this.hcwr.Size = new System.Drawing.Size(22, 20);
             this.hcwr.TabIndex = 7;
             // 
@@ -620,7 +644,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcol.Location = new System.Drawing.Point(448, 18);
             this.hcol.Name = "hcol";
-            this.hcol.ReadOnly = true;
             this.hcol.Size = new System.Drawing.Size(22, 20);
             this.hcol.TabIndex = 6;
             // 
@@ -628,7 +651,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcknw.Location = new System.Drawing.Point(176, 18);
             this.hcknw.Name = "hcknw";
-            this.hcknw.ReadOnly = true;
             this.hcknw.Size = new System.Drawing.Size(22, 20);
             this.hcknw.TabIndex = 5;
             // 
@@ -636,7 +658,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcmot.Location = new System.Drawing.Point(214, 18);
             this.hcmot.Name = "hcmot";
-            this.hcmot.ReadOnly = true;
             this.hcmot.Size = new System.Drawing.Size(22, 20);
             this.hcmot.TabIndex = 4;
             // 
@@ -644,7 +665,6 @@ namespace MaddenEditor.Forms
             // 
             this.hcchm.Location = new System.Drawing.Point(251, 18);
             this.hcchm.Name = "hcchm";
-            this.hcchm.ReadOnly = true;
             this.hcchm.Size = new System.Drawing.Size(22, 20);
             this.hcchm.TabIndex = 3;
             // 
@@ -652,7 +672,6 @@ namespace MaddenEditor.Forms
             // 
             this.hceth.Location = new System.Drawing.Point(286, 18);
             this.hceth.Name = "hceth";
-            this.hceth.ReadOnly = true;
             this.hceth.Size = new System.Drawing.Size(22, 20);
             this.hceth.TabIndex = 2;
             // 
@@ -672,22 +691,132 @@ namespace MaddenEditor.Forms
             this.hcname.Size = new System.Drawing.Size(119, 20);
             this.hcname.TabIndex = 0;
             // 
-            // HoursLeftlbl
+            // groupBox7
             // 
-            this.HoursLeftlbl.AutoSize = true;
-            this.HoursLeftlbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.HoursLeftlbl.Font = new System.Drawing.Font("Comic Sans MS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HoursLeftlbl.ForeColor = System.Drawing.Color.Red;
-            this.HoursLeftlbl.Location = new System.Drawing.Point(674, 20);
-            this.HoursLeftlbl.Name = "HoursLeftlbl";
-            this.HoursLeftlbl.Size = new System.Drawing.Size(2, 37);
-            this.HoursLeftlbl.TabIndex = 29;
+            this.groupBox7.Controls.Add(this.label9);
+            this.groupBox7.Controls.Add(this.label8);
+            this.groupBox7.Controls.Add(this.label7);
+            this.groupBox7.Controls.Add(this.label6);
+            this.groupBox7.Controls.Add(this.LossAmountSld);
+            this.groupBox7.Controls.Add(this.GainAmountSld);
+            this.groupBox7.Controls.Add(this.LossFreqSld);
+            this.groupBox7.Controls.Add(this.GainFreqSld);
+            this.groupBox7.Location = new System.Drawing.Point(296, 27);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(232, 182);
+            this.groupBox7.TabIndex = 36;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Sliders...";
+            // 
+            // GainFreqSld
+            // 
+            this.GainFreqSld.Location = new System.Drawing.Point(6, 16);
+            this.GainFreqSld.Maximum = 30;
+            this.GainFreqSld.Name = "GainFreqSld";
+            this.GainFreqSld.Size = new System.Drawing.Size(141, 45);
+            this.GainFreqSld.TabIndex = 0;
+            // 
+            // LossFreqSld
+            // 
+            this.LossFreqSld.Location = new System.Drawing.Point(6, 54);
+            this.LossFreqSld.Maximum = 30;
+            this.LossFreqSld.Name = "LossFreqSld";
+            this.LossFreqSld.Size = new System.Drawing.Size(141, 45);
+            this.LossFreqSld.TabIndex = 1;
+            this.LossFreqSld.Scroll += new System.EventHandler(this.trackBar2_Scroll);
+            // 
+            // LossAmountSld
+            // 
+            this.LossAmountSld.Location = new System.Drawing.Point(6, 130);
+            this.LossAmountSld.Maximum = 50;
+            this.LossAmountSld.Minimum = 10;
+            this.LossAmountSld.Name = "LossAmountSld";
+            this.LossAmountSld.Size = new System.Drawing.Size(144, 45);
+            this.LossAmountSld.TabIndex = 3;
+            this.LossAmountSld.Value = 10;
+            // 
+            // GainAmountSld
+            // 
+            this.GainAmountSld.Location = new System.Drawing.Point(6, 91);
+            this.GainAmountSld.Maximum = 60;
+            this.GainAmountSld.Minimum = 15;
+            this.GainAmountSld.Name = "GainAmountSld";
+            this.GainAmountSld.Size = new System.Drawing.Size(144, 45);
+            this.GainAmountSld.TabIndex = 2;
+            this.GainAmountSld.Value = 15;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(151, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(62, 28);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Gain Frequency";
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(151, 51);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(62, 28);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Loss Frequency";
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(151, 91);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 28);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Amount Gained";
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(151, 130);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(62, 28);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Amount Lost";
+            // 
+            // saveSlidersToolStripMenuItem
+            // 
+            this.saveSlidersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clickToSaveToolStripMenuItem,
+            this.loadDefaultsToolStripMenuItem});
+            this.saveSlidersToolStripMenuItem.Name = "saveSlidersToolStripMenuItem";
+            this.saveSlidersToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.saveSlidersToolStripMenuItem.Text = "Slider Actions";
+            // 
+            // clickToSaveToolStripMenuItem
+            // 
+            this.clickToSaveToolStripMenuItem.Name = "clickToSaveToolStripMenuItem";
+            this.clickToSaveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clickToSaveToolStripMenuItem.Text = "Save";
+            this.clickToSaveToolStripMenuItem.Click += new System.EventHandler(this.clickToSaveToolStripMenuItem_Click);
+            // 
+            // loadDefaultsToolStripMenuItem
+            // 
+            this.loadDefaultsToolStripMenuItem.Name = "loadDefaultsToolStripMenuItem";
+            this.loadDefaultsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadDefaultsToolStripMenuItem.Text = "Load Defaults";
+            this.loadDefaultsToolStripMenuItem.Click += new System.EventHandler(this.loadDefaultsToolStripMenuItem_Click);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.Enabled = false;
+            this.checkBox2.Location = new System.Drawing.Point(820, 26);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(123, 31);
+            this.checkBox2.TabIndex = 30;
+            this.checkBox2.Text = "Check to skip Coach Progression";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // TrainingCampOffSeason
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1082, 712);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.menuStrip1);
@@ -728,6 +857,12 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.chmUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.motUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.knwUpDown)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LossAmountSld)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GainAmountSld)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -791,5 +926,18 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.NumericUpDown motUpDown;
         private System.Windows.Forms.NumericUpDown knwUpDown;
         private System.Windows.Forms.Label HoursLeftlbl;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TrackBar GainFreqSld;
+        private System.Windows.Forms.TrackBar LossAmountSld;
+        private System.Windows.Forms.TrackBar GainAmountSld;
+        private System.Windows.Forms.TrackBar LossFreqSld;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ToolStripMenuItem saveSlidersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clickToSaveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadDefaultsToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

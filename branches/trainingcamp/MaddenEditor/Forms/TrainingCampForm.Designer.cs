@@ -34,6 +34,7 @@ namespace MaddenEditor.Forms
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.filterPositionComboBox = new System.Windows.Forms.ComboBox();
             this.depthChartDataGrid = new System.Windows.Forms.DataGridView();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SelectTeam.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.depthChartDataGrid)).BeginInit();
@@ -91,11 +92,21 @@ namespace MaddenEditor.Forms
             this.depthChartDataGrid.TabIndex = 10;
             this.depthChartDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.depthChartDataGrid_CellContentClick);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(11, 286);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1003, 307);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
             // TrainingCampForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 645);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.depthChartDataGrid);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.SelectTeam);
@@ -118,5 +129,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox filterPositionComboBox;
         private System.Windows.Forms.DataGridView depthChartDataGrid;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
