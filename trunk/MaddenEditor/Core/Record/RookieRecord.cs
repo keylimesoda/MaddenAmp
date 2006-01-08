@@ -58,6 +58,8 @@ namespace MaddenEditor.Core.Record
         // Has structure needs[TeamId][PositionId][NeedType]
         public Dictionary<int, Dictionary<int, Dictionary<int, double>>> needs;
 
+        public Dictionary<int, int> starterINJs;
+
 		public RookieRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
@@ -76,6 +78,8 @@ namespace MaddenEditor.Core.Record
             CombineWords = new Dictionary<int, string>();
 
             ActualRatings = new Dictionary<int,double>();
+
+            starterINJs = new Dictionary<int, int>();
 
             ratings = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
             values = new Dictionary<int, Dictionary<int, Dictionary<int, double>>>();
@@ -192,10 +196,12 @@ namespace MaddenEditor.Core.Record
             }
 
             double injuryFactor = 0;
+            starterINJs[thePosition] = 100;
 
             for (int i = 0; i < Math.Min(numStarters, depthChartValues.Count); i++)
             {
                 injuryFactor += (1 - math.injury(depthChart[i].Injury, positionData[thePosition].DurabilityNeed) / 10) / Math.Min(numStarters, depthChartValues.Count);
+                starterINJs[thePosition] = Math.Min(depthChart[i].Injury, starterINJs[thePosition]);
             }
 
             double backupTemp;
@@ -774,9 +780,13 @@ namespace MaddenEditor.Core.Record
         */
 
         public double TotalNeed(TeamRecord team, int pickNumber, int position) {
+            double injFac = 0;
+            if (starterINJs[position] < 70)
+                injFac = Math.Tanh((70.0 - (double)starterINJs[position]) / 20.0);
+
             double ProbabilityOfStarting = Math.Sqrt(needs[team.TeamId][position][(int)NeedType.Starter]);
             double toReturn =  (needs[team.TeamId][position][(int)NeedType.Starter] +
-                Math.Tanh((double)pickNumber / 45) * (1 - ProbabilityOfStarting) * needs[team.TeamId][position][(int)NeedType.Backup] +
+                Math.Max(Math.Tanh((double)pickNumber / 45), injFac) * (1 - ProbabilityOfStarting) * needs[team.TeamId][position][(int)NeedType.Backup] +
                 Math.Tanh(((double)pickNumber + 5) / (5 * team.CON)) * (1 - ProbabilityOfStarting) * needs[team.TeamId][position][(int)NeedType.Successor]);
             return toReturn;
         }

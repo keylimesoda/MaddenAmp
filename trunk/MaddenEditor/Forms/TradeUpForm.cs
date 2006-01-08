@@ -220,6 +220,7 @@ namespace MaddenEditor.Forms
 
         public void HigherOffer(int response)
         {
+            Console.WriteLine("Processing higher offer...");
             selectPrevious();
             refreshTotals();
 

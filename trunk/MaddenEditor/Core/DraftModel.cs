@@ -2524,7 +2524,9 @@ namespace MaddenEditor.Core
 						rook.Value.AverageNeed(team.Value, pickNumber, dcr.awarenessAdjust) > positionData[rook.Value.Player.PositionId].Threshold &&
 						(rook.Value.PreCombineScoutedHours[team.Value.TeamId] + rook.Value.PostCombineScoutedHours[team.Value.TeamId]) >= (5 - pickNumber / 32) &&
 						// replace with statement on league projected position
-						rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > 0.75 * pickValues[nextpick])
+						// rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > 0.75 * pickValues[nextpick])
+                        (pickNumber + 16 < nextpick || rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Final] < nextpick || 
+                        rand.NextDouble() > (1.0 + Math.Tanh((rook.Value.EstimatedPickNumber[(int)RookieRecord.RatingType.Final] - nextpick - 32.0) / 16.0)) / 2.0))
 					{
 
 						HighestValue = rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust);
@@ -2581,7 +2583,7 @@ namespace MaddenEditor.Core
 		{
 			Dictionary<int, double> AverageValues = new Dictionary<int, double>();
 			// First determine average value
-
+            
 			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 			{
 				double total = 0;
@@ -4045,7 +4047,8 @@ namespace MaddenEditor.Core
 			tempPicksFromHigher = new List<int>();
 
 			// Start the offer with the most valuable pick from the lower team.
-			while (Math.Abs(target) > 0.03 * value && (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= MaxPicksFromLower) &&
+			while (Math.Abs(target) > 0.03 * value && 
+                (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= MaxPicksFromLower) &&
 				!((target > 0 && tempPicksFromLower.Count >= MaxPicksFromLower) || (target < 0 && tempPicksFromHigher.Count >= 2)))
 			{
 				int addedPick = AddClosestPick(target > 0);
