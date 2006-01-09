@@ -1449,7 +1449,7 @@ namespace MaddenEditor.Forms
             sw.Close();
             if (ScenarioFirstName != "")
             {
-                groupBox5.Visible = true;
+          //      groupBox5.Visible = true;
             }
         }
 
@@ -1501,7 +1501,7 @@ namespace MaddenEditor.Forms
             kUpDown.Enabled = false;
             pUpDown.Enabled = false;
 
-            if (Issue <= 20)
+            if (Issue <= 42)
             {  
                 SelectHumanTeam.Enabled = false;
                 checkBox1.Enabled = false;
@@ -2509,10 +2509,10 @@ namespace MaddenEditor.Forms
                 else if (radioButton4.Checked == true)
                 {
                     Timer1TextDelay(5);
+                    textBox1.Text = textBox1.Text + "\r\n\r\n...Screw " + model.PlayerModel.CurrentPlayerRecord.LastName + "...\r\n...Now simulating offseason conditioning...";
                     textBox1.SelectionStart = textBox1.Text.Length;
                     textBox1.SelectionLength = 0;
-                    textBox1.ScrollToCaret();
-                    textBox1.Text = textBox1.Text + "\r\n...Screw " + model.PlayerModel.CurrentPlayerRecord.LastName + "...\r\n...Now simulating offseason conditioning...";
+                    textBox1.ScrollToCaret();                    
                     while (isTrue == true)
                     {
                         Application.DoEvents();
@@ -2843,7 +2843,7 @@ namespace MaddenEditor.Forms
                 }
 
             }//End Negative Scen. 2
-            groupBox5.Visible = true;
+           // groupBox5.Visible = true;
         }
         private void Timer1TextDelay(int SleepValue)
         {

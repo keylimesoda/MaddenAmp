@@ -54,9 +54,13 @@ namespace MaddenEditor.Forms
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.OffSeasonHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSlidersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clickToSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.HoursLeftlbl = new System.Windows.Forms.Label();
             this.pUpDown = new System.Windows.Forms.NumericUpDown();
             this.kUpDown = new System.Windows.Forms.NumericUpDown();
@@ -88,18 +92,14 @@ namespace MaddenEditor.Forms
             this.hcage = new System.Windows.Forms.TextBox();
             this.hcname = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.GainFreqSld = new System.Windows.Forms.TrackBar();
-            this.LossFreqSld = new System.Windows.Forms.TrackBar();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.LossAmountSld = new System.Windows.Forms.TrackBar();
             this.GainAmountSld = new System.Windows.Forms.TrackBar();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.saveSlidersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clickToSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.LossFreqSld = new System.Windows.Forms.TrackBar();
+            this.GainFreqSld = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -122,10 +122,10 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.motUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.knwUpDown)).BeginInit();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LossAmountSld)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GainAmountSld)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -194,6 +194,7 @@ namespace MaddenEditor.Forms
             // 
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Enabled = false;
             this.groupBox2.Location = new System.Drawing.Point(4, 122);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(189, 101);
@@ -373,6 +374,29 @@ namespace MaddenEditor.Forms
             this.OffSeasonHelpToolStripMenuItem.Text = "OffSeason Help";
             this.OffSeasonHelpToolStripMenuItem.Click += new System.EventHandler(this.OffSeasonHelpToolStripMenuItem_Click);
             // 
+            // saveSlidersToolStripMenuItem
+            // 
+            this.saveSlidersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clickToSaveToolStripMenuItem,
+            this.loadDefaultsToolStripMenuItem});
+            this.saveSlidersToolStripMenuItem.Name = "saveSlidersToolStripMenuItem";
+            this.saveSlidersToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.saveSlidersToolStripMenuItem.Text = "Slider Actions";
+            // 
+            // clickToSaveToolStripMenuItem
+            // 
+            this.clickToSaveToolStripMenuItem.Name = "clickToSaveToolStripMenuItem";
+            this.clickToSaveToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.clickToSaveToolStripMenuItem.Text = "Save";
+            this.clickToSaveToolStripMenuItem.Click += new System.EventHandler(this.clickToSaveToolStripMenuItem_Click);
+            // 
+            // loadDefaultsToolStripMenuItem
+            // 
+            this.loadDefaultsToolStripMenuItem.Name = "loadDefaultsToolStripMenuItem";
+            this.loadDefaultsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.loadDefaultsToolStripMenuItem.Text = "Load Defaults";
+            this.loadDefaultsToolStripMenuItem.Click += new System.EventHandler(this.loadDefaultsToolStripMenuItem_Click);
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.button3);
@@ -436,6 +460,17 @@ namespace MaddenEditor.Forms
             this.groupBox6.Text = "     Head Coach Name        Age       Knw      Mot      Chm     Eth            QB" +
                 "       RB       WR      OL         DL        LB        DB        K         P    " +
                 " Hours Left";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.Enabled = false;
+            this.checkBox2.Location = new System.Drawing.Point(820, 26);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(123, 31);
+            this.checkBox2.TabIndex = 30;
+            this.checkBox2.Text = "Check to skip Coach Progression";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // HoursLeftlbl
             // 
@@ -708,22 +743,37 @@ namespace MaddenEditor.Forms
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Sliders...";
             // 
-            // GainFreqSld
+            // label9
             // 
-            this.GainFreqSld.Location = new System.Drawing.Point(6, 16);
-            this.GainFreqSld.Maximum = 30;
-            this.GainFreqSld.Name = "GainFreqSld";
-            this.GainFreqSld.Size = new System.Drawing.Size(141, 45);
-            this.GainFreqSld.TabIndex = 0;
+            this.label9.Location = new System.Drawing.Point(151, 130);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(62, 28);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Amount Lost";
             // 
-            // LossFreqSld
+            // label8
             // 
-            this.LossFreqSld.Location = new System.Drawing.Point(6, 54);
-            this.LossFreqSld.Maximum = 30;
-            this.LossFreqSld.Name = "LossFreqSld";
-            this.LossFreqSld.Size = new System.Drawing.Size(141, 45);
-            this.LossFreqSld.TabIndex = 1;
-            this.LossFreqSld.Scroll += new System.EventHandler(this.trackBar2_Scroll);
+            this.label8.Location = new System.Drawing.Point(151, 91);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 28);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Amount Gained";
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(151, 51);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(62, 28);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Loss Frequency";
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(151, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(62, 28);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Gain Frequency";
             // 
             // LossAmountSld
             // 
@@ -745,71 +795,24 @@ namespace MaddenEditor.Forms
             this.GainAmountSld.TabIndex = 2;
             this.GainAmountSld.Value = 15;
             // 
-            // label6
+            // LossFreqSld
             // 
-            this.label6.Location = new System.Drawing.Point(151, 17);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(62, 28);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Gain Frequency";
+            this.LossFreqSld.Location = new System.Drawing.Point(6, 54);
+            this.LossFreqSld.Maximum = 30;
+            this.LossFreqSld.Minimum = -10;
+            this.LossFreqSld.Name = "LossFreqSld";
+            this.LossFreqSld.Size = new System.Drawing.Size(141, 45);
+            this.LossFreqSld.TabIndex = 1;
+            this.LossFreqSld.Scroll += new System.EventHandler(this.trackBar2_Scroll);
             // 
-            // label7
+            // GainFreqSld
             // 
-            this.label7.Location = new System.Drawing.Point(151, 51);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(62, 28);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "Loss Frequency";
-            // 
-            // label8
-            // 
-            this.label8.Location = new System.Drawing.Point(151, 91);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(62, 28);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "Amount Gained";
-            // 
-            // label9
-            // 
-            this.label9.Location = new System.Drawing.Point(151, 130);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(62, 28);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "Amount Lost";
-            // 
-            // saveSlidersToolStripMenuItem
-            // 
-            this.saveSlidersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clickToSaveToolStripMenuItem,
-            this.loadDefaultsToolStripMenuItem});
-            this.saveSlidersToolStripMenuItem.Name = "saveSlidersToolStripMenuItem";
-            this.saveSlidersToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
-            this.saveSlidersToolStripMenuItem.Text = "Slider Actions";
-            // 
-            // clickToSaveToolStripMenuItem
-            // 
-            this.clickToSaveToolStripMenuItem.Name = "clickToSaveToolStripMenuItem";
-            this.clickToSaveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.clickToSaveToolStripMenuItem.Text = "Save";
-            this.clickToSaveToolStripMenuItem.Click += new System.EventHandler(this.clickToSaveToolStripMenuItem_Click);
-            // 
-            // loadDefaultsToolStripMenuItem
-            // 
-            this.loadDefaultsToolStripMenuItem.Name = "loadDefaultsToolStripMenuItem";
-            this.loadDefaultsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.loadDefaultsToolStripMenuItem.Text = "Load Defaults";
-            this.loadDefaultsToolStripMenuItem.Click += new System.EventHandler(this.loadDefaultsToolStripMenuItem_Click);
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.Enabled = false;
-            this.checkBox2.Location = new System.Drawing.Point(820, 26);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(123, 31);
-            this.checkBox2.TabIndex = 30;
-            this.checkBox2.Text = "Check to skip Coach Progression";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.GainFreqSld.Location = new System.Drawing.Point(6, 16);
+            this.GainFreqSld.Maximum = 30;
+            this.GainFreqSld.Minimum = -10;
+            this.GainFreqSld.Name = "GainFreqSld";
+            this.GainFreqSld.Size = new System.Drawing.Size(141, 45);
+            this.GainFreqSld.TabIndex = 0;
             // 
             // TrainingCampOffSeason
             // 
@@ -859,10 +862,10 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.knwUpDown)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LossAmountSld)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GainAmountSld)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
