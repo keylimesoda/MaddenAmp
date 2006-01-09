@@ -2006,55 +2006,55 @@ namespace MaddenEditor.Forms
 
             //Pos ratings
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)qbUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)qbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)rbUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)rbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) / 10), 3); //Knw
-            RankExp = ((decimal)wrUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)wrUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.OffensiveLineRating)) / 10), 3); //Knw
-            RankExp = ((decimal)olUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)olUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) / 10), 3); //Knw
-            RankExp = ((decimal)dlUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)dlUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) / 10), 3); //Knw
-            RankExp = ((decimal)lbUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)lbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)dbUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)dbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) / 10), 3); //Knw
-            RankExp = ((decimal)kUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)kUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) / 10), 3); //Knw
-            RankExp = ((decimal)pUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
@@ -2141,7 +2141,7 @@ namespace MaddenEditor.Forms
             
             if (Changes != "")
             {
-                Timer1TextDelay(15);//pause to allow user to view coach progression
+                Timer1TextDelay(12);//pause to allow user to view coach progression
                 textBox1.Text = Changes + "...Now simulating Conditioning...";
             }
             else
@@ -2339,7 +2339,7 @@ namespace MaddenEditor.Forms
                         Application.DoEvents();
                     }
                     Roll = Math.Round((69 * random.NextDouble() + 31));
-                    if (Roll <= (CoachMotivation * .5))//Player answers phone
+                    if (Roll <= (CoachMotivation * .7))//Player answers phone
                     {
                         Timer1TextDelay(30);
                         textBox1.Text = textBox1.Text + "\r\n\r\n\r\n\r\n...Two days later your office phone rings...\r\n...''Hello?''...''Yea coach, it's " + ScenarioFirstName + " " + ScenarioLastName + ". I, uh...I saw the article about me. I'm sure you didn't have anything to do with it but...I want you to know I stepped up my workouts yesterday. I'll be in shape for camp.''\r\n...You thank " + ScenarioFirstName + " and end the call. Running that article was a big gamble but it appears to have payed off...\r\n...Please wait while Offseason Conditioning is simulated..."; 
