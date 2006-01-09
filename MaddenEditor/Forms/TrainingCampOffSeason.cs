@@ -1502,7 +1502,7 @@ namespace MaddenEditor.Forms
             pUpDown.Enabled = false;
 
             if (Issue <= 42)
-            {  
+            {
                 SelectHumanTeam.Enabled = false;
                 checkBox1.Enabled = false;
                 textBox1.Visible = true;
@@ -1520,32 +1520,32 @@ namespace MaddenEditor.Forms
                 if (GoodBad <= 6) //Scenario 1; player slacking
                 {
 
-                
 
-                while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 16))
-            {
-                model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
-                model.PlayerModel.GetNextPlayerRecord();
-                PlayerCounter++;
-                if (PlayerCounter == teamPlayers.Count)
-                {
-                    PlayerCounter = 0;
-                    OverallRating = OverallRating - 3;
-                    model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
-                    model.PlayerModel.GetNextPlayerRecord();
-                }
-            }
 
-            model.CoachModel.SetPositionFilter(0);
-            model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
-            model.CoachModel.GetNextCoachRecord();
-            CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
-            ScenarioFirstName = model.PlayerModel.CurrentPlayerRecord.FirstName;
-            ScenarioLastName = model.PlayerModel.CurrentPlayerRecord.LastName;
-            ScenarioOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
-           // ScenarioPos = model.PlayerModel.CurrentPlayerRecord.PositionId.ToString();
+                    while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 16))
+                    {
+                        model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
+                        model.PlayerModel.GetNextPlayerRecord();
+                        PlayerCounter++;
+                        if (PlayerCounter == teamPlayers.Count)
+                        {
+                            PlayerCounter = 0;
+                            OverallRating = OverallRating - 3;
+                            model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
+                            model.PlayerModel.GetNextPlayerRecord();
+                        }
+                    }
 
-                
+                    model.CoachModel.SetPositionFilter(0);
+                    model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
+                    model.CoachModel.GetNextCoachRecord();
+                    CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
+                    ScenarioFirstName = model.PlayerModel.CurrentPlayerRecord.FirstName;
+                    ScenarioLastName = model.PlayerModel.CurrentPlayerRecord.LastName;
+                    ScenarioOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
+                    // ScenarioPos = model.PlayerModel.CurrentPlayerRecord.PositionId.ToString();
+
+
                     NegativeScenario1 = true;
                     ScenarioTrue = true;
                     Scenario = ("\n...Sometime during the offseason...\n\n\nLocation...\n\n" + SelectHumanTeam.SelectedItem.ToString() + " Training Camp facility...\n\nYou're approached by a member of the " + SelectHumanTeam.SelectedItem.ToString() + " board of directors.\n''I'm hearing whispers that a certain player on our team has been less than enthusiastic in his\nworkouts.'' He nervously glances around ensuring you're alone...\n\n\n''" + ScenarioFirstName + " " + ScenarioLastName + " (" + ScenarioOvr + " Ovr) he says. You need to address this before it gets out of control.''\n\nRefer to the upper Right corner of this form ('Offseason Scenario...') for further instruction...");
@@ -1556,6 +1556,7 @@ namespace MaddenEditor.Forms
                     radioButton4.Text = "Ignore situation and do nothing. (Sometimes tough love is best...)";
                     radioButton4.Checked = true;
                     textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
+                    MessageBox.Show(Scenario);
                 }
                 else if (GoodBad <= 11) //Scenario 2; Captains
                 {
@@ -1616,84 +1617,89 @@ namespace MaddenEditor.Forms
                         Captain2 = "";
                         Captain3 = "";
                     }
-                    while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain1.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain1.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain2.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain2.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain3.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain3.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20))
+                    if ((Captain1 != "") & (Captain2 != ""))
                     {
-                        model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
-                        model.PlayerModel.GetNextPlayerRecord();
-                        PlayerCounter++;
-                        if (PlayerCounter == teamPlayers.Count)
+                        while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain1.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain1.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain2.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain2.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.FirstName == Captain3.Split(' ')[0]) || (model.PlayerModel.CurrentPlayerRecord.LastName == Captain3.Split(' ')[1]) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20))
                         {
-                            PlayerCounter = 0;
-                            OverallRating = OverallRating - 3;
                             model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
                             model.PlayerModel.GetNextPlayerRecord();
+                            PlayerCounter++;
+                            if (PlayerCounter == teamPlayers.Count)
+                            {
+                                PlayerCounter = 0;
+                                OverallRating = OverallRating - 3;
+                                model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
+                                model.PlayerModel.GetNextPlayerRecord();
+                            }
                         }
-                    }
-                    groupBox4.Visible = true;
-                    model.CoachModel.SetPositionFilter(0);
-                    model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
-                    model.CoachModel.GetNextCoachRecord();
-                    CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
-                    ScenarioFirstName = model.PlayerModel.CurrentPlayerRecord.FirstName;
-                    ScenarioLastName = model.PlayerModel.CurrentPlayerRecord.LastName;
-                    ScenarioOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
-                    NewCaptain = model.PlayerModel.CurrentPlayerRecord.PlayerId;                    
-                    if ((model.PlayerModel.CurrentPlayerRecord.PositionId == 0) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 1) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 2) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 4) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 5) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 6) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 7) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 8) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 9))
-                    {
-                        PosStr = "Offensive";
-                        OldCaptain = Captain1;
+                        groupBox4.Visible = true;
+                        model.CoachModel.SetPositionFilter(0);
+                        model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
+                        model.CoachModel.GetNextCoachRecord();
+                        CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
+                        ScenarioFirstName = model.PlayerModel.CurrentPlayerRecord.FirstName;
+                        ScenarioLastName = model.PlayerModel.CurrentPlayerRecord.LastName;
+                        ScenarioOvr = model.PlayerModel.CurrentPlayerRecord.Overall;
+                        NewCaptain = model.PlayerModel.CurrentPlayerRecord.PlayerId;
+                        if ((model.PlayerModel.CurrentPlayerRecord.PositionId == 0) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 1) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 2) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 4) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 5) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 6) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 7) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 8) | (model.PlayerModel.CurrentPlayerRecord.PositionId == 9))
+                        {
+                            PosStr = "Offensive";
+                            OldCaptain = Captain1;
+                        }
+                        else
+                        {
+                            PosStr = "Defensive";
+                            OldCaptain = Captain2;
+                        }
+                        Scenario = ("\n...Sometime during the offseason...\n\n\nLocation...\n\n" + SelectHumanTeam.SelectedItem.ToString() + " Training Camp facility...\n\nYou're enjoying your morning cup of coffee while going over your plans for running\nthis year's training camp when the door to your office suddenly bursts open.\nStorming into the room is " + ScenarioFirstName + " " + ScenarioLastName + " (" + ScenarioOvr + " Ovr), one of your better players.\nHe doesn't look happy...\n''Coach, I feel...I feel that I deserve to be named " + PosStr + " Captain.''");
+                        if ((PosStr == "Offensive") & (Captain1 == ""))
+                        {
+                            Scenario = Scenario + ("\n\n''I mean we don't even currently have an offensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
+                            radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
+                            radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisappointed though Motivation/Chemistry will alter effects...";
+                            radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+                        }
+                        else if ((PosStr == "Defensive") & (Captain2 == ""))
+                        {
+                            Scenario = Scenario + ("\n\n''I mean we don't even currently have an defensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
+                            radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
+                            radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisappointed though Motivation/Chemistry will alter effects...";
+                            radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+
+                        }
+                        else if ((PosStr == "Offensive") & (Captain1 != ""))
+                        {
+                            Scenario = Scenario + ("\n\n''I've worked so hard to get to the point I'm at but I still don't feel\nthe " + SelectHumanTeam.SelectedItem.ToString() + " respect me. I want to be a leader and feel I can be more\neffective than our current offensive captain, " + Captain1 + "''");
+                            radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain. Be prepared for a negative\nreaction from your current " + PosStr + " Captain " + Captain1 + "...";
+                            radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have full confidence in your current\n" + PosStr + " Captain " + Captain1 + ". " + ScenarioLastName + " will likely be angry...";
+                            radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+
+                        }
+                        else if ((PosStr == "Defensive") & (Captain2 != ""))
+                        {
+                            Scenario = Scenario + ("\n\n''I've worked so hard to get to the point I'm at but I still don't feel\nthe " + SelectHumanTeam.SelectedItem.ToString() + " respect me. I want to be a leader and feel I can be more\neffective than our current defensive captain, " + Captain2 + ".''");
+                            radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain. Be prepared for a negative\nreaction from your current " + PosStr + " Captain " + Captain2 + "...";
+                            radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have full confidence in your current\n" + PosStr + " Captain " + Captain2 + ". " + ScenarioLastName + " will likely be angry...";
+                            radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
+
+                        }
+                        Scenario = Scenario + ("\n\nYou have a decision to make. Please refer to the 'Offseason scenario' section\nof this form for further instruction, located in the upper right hand corner.");
+                        radioButton1.Visible = false;
+                        radioButton2.Checked = true;
+                        textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + " and a Team Chemistry rating of " + model.CoachModel.CurrentCoachRecord.Chemistry + "...\r\n...Motivation as well as Team Chemistry will alter the effects of your decision accordingly...";
+
+                        MessageBox.Show(Scenario);
+
+
                     }
                     else
                     {
-                        PosStr = "Defensive";
-                        OldCaptain = Captain2;
+                        ScenarioTrue = false;
                     }
-                    Scenario = ("\n...Sometime during the offseason...\n\n\nLocation...\n\n" + SelectHumanTeam.SelectedItem.ToString() + " Training Camp facility...\n\nYou're enjoying your morning cup of coffee while going over your plans for running\nthis year's training camp when the door to your office suddenly bursts open.\nStorming into the room is " + ScenarioFirstName + " " + ScenarioLastName + " (" + ScenarioOvr + " Ovr), one of your better players.\nHe doesn't look happy...\n''Coach, I feel...I feel that I deserve to be named " + PosStr + " Captain.''");
-                    if ((PosStr == "Offensive") & (Captain1 == ""))
-                    {
-                        Scenario = Scenario + ("\n\n''I mean we don't even currently have an offensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
-                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
-                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisappointed though Motivation/Chemistry will alter effects...";
-                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
-                    }
-                    else if ((PosStr == "Defensive") & (Captain2 == ""))
-                    {
-                        Scenario = Scenario + ("\n\n''I mean we don't even currently have an defensive team captain. C'mon coach,\nname me captain and I'll report to camp in the best shape of my life...''");
-                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain...";
-                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have someone else in mind. He will be\ndisappointed though Motivation/Chemistry will alter effects...";
-                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
-
-                    }
-                    else if ((PosStr == "Offensive") & (Captain1 != ""))
-                    {
-                        Scenario = Scenario + ("\n\n''I've worked so hard to get to the point I'm at but I still don't feel\nthe " + SelectHumanTeam.SelectedItem.ToString() + " respect me. I want to be a leader and feel I can be more\neffective than our current offensive captain, " + Captain1 + "''");
-                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain. Be prepared for a negative\nreaction from your current " + PosStr + " Captain " + Captain1 + "...";
-                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have full confidence in your current\n" + PosStr + " Captain " + Captain1 + ". " + ScenarioLastName + " will likely be angry...";
-                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
-
-                    }
-                    else if ((PosStr == "Defensive") & (Captain2 != ""))
-                    {
-                        Scenario = Scenario + ("\n\n''I've worked so hard to get to the point I'm at but I still don't feel\nthe " + SelectHumanTeam.SelectedItem.ToString() + " respect me. I want to be a leader and feel I can be more\neffective than our current defensive captain, " + Captain2 + ".''");
-                        radioButton2.Text = "Name " + ScenarioFirstName + " " + ScenarioLastName + " your new " + PosStr + " Captain. Be prepared for a negative\nreaction from your current " + PosStr + " Captain " + Captain2 + "...";
-                        radioButton3.Text = "Refuse " + ScenarioLastName + "'s demand and tell him you have full confidence in your current\n" + PosStr + " Captain " + Captain2 + ". " + ScenarioLastName + " will likely be angry...";
-                        radioButton4.Text = "Dress " + ScenarioLastName + " down for having the nerve to try forcing the coach's hand. Tell " + ScenarioFirstName + " football is\na game of discipline and he clearly lacks any. Recommended only for excellent Motivator/Chemistry...";
-                    
-                    }
-                    Scenario = Scenario + ("\n\nYou have a decision to make. Please refer to the 'Offseason scenario' section\nof this form for further instruction, located in the upper right hand corner.");
-                    radioButton1.Visible = false; 
-                    radioButton2.Checked = true;
-                    textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + " and a Team Chemistry rating of " + model.CoachModel.CurrentCoachRecord.Chemistry + "...\r\n...Motivation as well as Team Chemistry will alter the effects of your decision accordingly...";
-
-                
-                
-                
                 }
-                   MessageBox.Show(Scenario);            
-                  
-            }
-
-            if (ScenarioTrue == false)
+                }
+                   
+            if ((ScenarioTrue == false) & ((Captain1 == "") & (Captain2 == "")))
             {
             textBox1.Text = textBox1.Text + "\r\nYour team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
              PhaseOne(); 
@@ -2471,7 +2477,7 @@ namespace MaddenEditor.Forms
                             {
                                 Application.DoEvents();
                             }
-                            CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role as a leader seriously. In addition to severing communication with you " + ScenarioFirstName + " he's reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
+                            CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role as a leader seriously. In addition to severing communication with you " + ScenarioFirstName + "'s reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
                             BadNews = true;
                             HorribleNews = true;
                             PhaseOne();
