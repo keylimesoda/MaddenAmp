@@ -1849,7 +1849,7 @@ namespace MaddenEditor.Forms
         private void SelectHumanTeam_SelectedIndexChanged(object sender, EventArgs e)
         {
             checkBox2.Enabled = true;
-            textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 35 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
+            textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 30 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
             PopulateCoach();
             button4.Enabled = true;            
 
@@ -1859,7 +1859,7 @@ namespace MaddenEditor.Forms
             model.CoachModel.SetPositionFilter(0);
             model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
             model.CoachModel.GetNextCoachRecord();
-            HoursLeft = 35;
+            HoursLeft = 30;
             HoursLeftlbl.Text = HoursLeft.ToString();
             hcname.Text = model.CoachModel.CurrentCoachRecord.Name;
             hcage.Text = model.CoachModel.CurrentCoachRecord.Age.ToString();
@@ -1980,25 +1980,25 @@ namespace MaddenEditor.Forms
                 CoachProgMod = (.3);
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) / 10),3); //Knw
-            RankExp = ((decimal)knwUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)knwUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Knowledge = model.CoachModel.CurrentCoachRecord.Knowledge + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Motivation)) / 10), 3); //Knw
-            RankExp = ((decimal)motUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)motUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Motivation = model.CoachModel.CurrentCoachRecord.Motivation + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Chemistry)) / 10), 3); //Knw
-            RankExp = ((decimal)chmUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)chmUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Chemistry = model.CoachModel.CurrentCoachRecord.Chemistry + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Ethics)) / 10), 3); //Knw
-            RankExp = ((decimal)ethUpDown.Value * (decimal)CoachProgMod);
+            RankExp = ((decimal)ethUpDown.Value * ((decimal)CoachProgMod * (decimal).7));//(decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Ethics = model.CoachModel.CurrentCoachRecord.Ethics + ((int)(RankExp) - (int)(AttributeDeviation));
@@ -2006,55 +2006,55 @@ namespace MaddenEditor.Forms
 
             //Pos ratings
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)qbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)qbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)rbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)rbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) / 10), 3); //Knw
-            RankExp = ((decimal)wrUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)wrUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.OffensiveLineRating)) / 10), 3); //Knw
-            RankExp = ((decimal)olUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)olUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) / 10), 3); //Knw
-            RankExp = ((decimal)dlUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)dlUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) / 10), 3); //Knw
-            RankExp = ((decimal)lbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)lbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)dbUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)dbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) / 10), 3); //Knw
-            RankExp = ((decimal)kUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)kUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) / 10), 3); //Knw
-            RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).6));
+            RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
@@ -2505,7 +2505,7 @@ namespace MaddenEditor.Forms
                         {
                             Application.DoEvents();
                         }
-                        CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role a leader seriously. In addition to severing communication with you " + ScenarioFirstName + " he's reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
+                        CurrentDialog = "\r\n...Clearly " + ScenarioFirstName + " " + ScenarioLastName + " isn't taking his role a leader seriously. In addition to severing communication with you " + ScenarioFirstName + "'s reporting to camp in horrible shape. Now, rather than sharpening his skill set in training camp you'll have to spend time conditioning him back into shape in addition to helping rebuild his morale which plummeted as a result of your miss-handling of the situation...";
                         BadNews = true;
                         HorribleNews = true;
                         PhaseOne();
