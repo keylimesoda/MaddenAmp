@@ -1,66 +1,67 @@
-//;Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.0;
-'QB-P',"Scrambling Drill","Stress the importance of buying time in the pocket +Btk +Car +Acc +Agi";Wgt.0;Spd.0;Acc.03;Agi.03;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.02;Jmp.0;Btk.02;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.3;
-'QB-P',"Routes + Progression","Work on progressing through your routes +ThA +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.06;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.04;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.1;
-'QB-P',"Deep Patterns","Build arm strength and accuracy on deep balls by throwing deep routes +ThP +Tha";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.08;Tha.02;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'HB-P',"Pass Blocking","Work on protecting the QB +Pbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.1;Rbk.0;KP.0;KA.0;KR.0;%Inj.1;
-'HB-P',"Gauntlet","Focus on ball security and leg power +Car +Btk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.06;Jmp.0;Btk.04;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'HB-P',"Relay Drill","Quick burst drill that improves quickness +Acc +Agi";Wgt.0;Spd.0;Acc.06;Agi.04;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.4;
-'HB-P',"Pass Paterns","Run pass routes and catch balls +Cat +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.04;Cat.06;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'HB-P',"Kick/Punt Returns","Work on the players ability to field kicks/punts +KR";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.1;%Inj.5;
-'FB-P',"Pass Blocking","Work on protecting the QB +Pbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.1;Rbk.0;KP.0;KA.0;KR.0;%Inj.1;
-'FB-P',"Gauntlet","Focus on ball security and leg power +Car +Btk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.06;Jmp.0;Btk.04;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'FB-P',"Relay Drill","Quick burst drill that improves quickness +Acc +Agi";Wgt.0;Spd.0;Acc.06;Agi.04;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.4;
-'FB-P',"Pass Paterns","Run pass routes and catch balls +Cat +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.04;Cat.06;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'FB-P',"Run Blocking","Work on leg power and drive blocking +Rbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.1;KP.0;KA.0;KR.0;%Inj.2;
-'WR-P',"WR Release","Stress ball snap reaction time +Acc +Agi +Awr";Wgt.0;Spd.0;Acc.05;Agi.04;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.01;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.7;
-'WR-P',"Route Running","Dry run through your pass patterns +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.1;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.1;
-'WR-P',"Gauntlet","Focus on ball security and leg power +Car +Btk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.06;Jmp.0;Btk.04;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'WR-P',"Jump Balls","Throw it up and let 'um go get it +Jmp +Cat";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.03;Car.0;Jmp.07;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.6;
-'WR-P',"Pass Patterns","Run pass routes and catch balls +Cat +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.04;Cat.06;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'WR-P',"Run Blocking","Work on leg power and drive blocking +Rbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.1;KP.0;KA.0;KR.0;%Inj.2;
-'WR-P',"Kick/Punt Returns","Work on the players ability to field kicks/punts +KR";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.1;%Inj.5;
-'TE-P',"TE Release","Stress ball snap reaction time +Acc +Agi +Awr";Wgt.0;Spd.0;Acc.05;Agi.04;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.01;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.7;
-'TE-P',"Pass Patterns","Run pass routes and catch balls +Cat +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.04;Cat.06;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'TE-P',"Gauntlet","Focus on ball security and leg power +Car +Btk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.06;Jmp.0;Btk.04;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'TE-P',"Run Blocking","Work on leg power and drive blocking +Rbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.1;KP.0;KA.0;KR.0;%Inj.2;
-'TE-P',"Pass Blocking","Work on protecting the QB +Pbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.1;Rbk.0;KP.0;KA.0;KR.0;%Inj.1;
-'OL-P',"Pull/Sweep Drill","Focus on building linemen quickness +Acc +Agi";Wgt.0;Spd.0;Acc.05;Agi.05;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'OL-P',"Blocking Sled","Individual blocking sled to build blocking skills +Str +Rbk +Pbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.02;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.04;Rbk.04;KP.0;KA.0;KR.0;%Inj.4;
-'OL-P',"Blitz Pickup","Several players wearing different colored jerseys rush the lineman. A color is called out at the last minute +Awr +Pbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.06;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.04;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'OL-P',"Run Blocking","Work on leg power and drive blocking +Rbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.1;KP.0;KA.0;KR.0;%Inj.2;
-'OL-P',"Pass Blocking","Work on protecting the QB +Pbk";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.1;Rbk.0;KP.0;KA.0;KR.0;%Inj.1;
-'DL-P',"Get off Ball Drill","Build reaction time and ball snap quickness +Acc";Wgt.0;Spd.0;Acc.1;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.6;
-'DL-P',"Swim/Rip Drill","Build upper body strength and focus on block shedding techniques +Str +Agi";Wgt.0;Spd.0;Acc.0;Agi.06;Str.04;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.4;
-'DL-P',"Tackle Drill","Practice form tackling +Tkl";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.1;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'DL-P',"Pursuit","Players practice pursuit angles while chasing a ball carrier +Spd +Acc +Tkl";Wgt.0;Spd.02;Acc.03;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.05;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'LB-P',"Get off Ball Drill","Build reaction time and ball snap quickness +Acc";Wgt.0;Spd.0;Acc.1;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.6;
-'LB-P',"Pass Rush","Work on linebacker ability to turn the corner +Acc +Agi";Wgt.0;Spd.0;Acc.06;Agi.04;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'LB-P',"Tackle Drill","Practice form tackling +Tkl";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.1;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'LB-P',"Pursuit","Players practice pursuit angles while chasing a ball carrier +Spd +Acc +Tkl";Wgt.0;Spd.02;Acc.03;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.05;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'LB-P',"Tip Drill","Reaction time to deflected ball +Cat +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.05;Cat.05;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.3;
-'DB-P',"Tackle Drill","Practice form tackling +Tkl";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.1;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.5;
-'DB-P',"Bump + Run","Force your cover men to hold strong at the LOS +Str";Wgt.0;Spd.0;Acc.0;Agi.0;Str.1;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.3;
-'DB-P',"Tip Drill","Reaction time to deflected ball +Cat +Awr";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.05;Cat.05;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.3;
-'DB-P',"Pursuit","Players practice pursuit angles while chasing a ball carrier +Spd +Acc +Tkl";Wgt.0;Spd.02;Acc.03;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.05;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.2;
-'DB-P',"Jump Ball","Throw it up and let 'um go get it +Jmp +Cat";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.03;Car.0;Jmp.07;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.0;KA.0;KR.0;%Inj.6;
-'KP-P',"Hit the Bullseye","Have kicker aim for a bullseye +KA";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.01;KA.09;KR.0;%Inj.1;
-'KP-P',"Kick Power","Stress ball hangtime/distance +KP";Wgt.0;Spd.0;Acc.0;Agi.0;Str.0;Stm.0;Inj.0;Tgh.;Mor.0;Awr.0;Cat.0;Car.0;Jmp.0;Btk.0;Tkl.0;Thp.0;Tha.0;Pbk.0;Rbk.0;KP.09;KA.01;KR.0;%Inj.3;
-'A',"Stationary Bike"
-'A',"Biking"
-'A',"Shuttle Runs"
-'A',"X-Country Skiing"
-'A',"Treadmill"
-'A',"StairClimber"
-'A',"Jogging Hills"
-'A',"Swim Laps"
-'A',"Wind Sprints"
-'D',"Weight Gain Diet"
-'D',"High Protein Diet"
-'D',"Balanced Diet"
-'D',"Counting Calories"
-'D',"Low Carb Diet"
-'W',"Calves"
-'W',"Quads + Hamstrings"
-'W',"Shoulders"
-'W',"Chest"
-'W',"Arms"
+//|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|0|;
+'QB-P',"Scrambling Drill","Stress the importance of buying time in the pocket +Btk +Car +Acc +Agi"|;Wgt|0|;Spd|0|;Acc|.03|;Agi|.03|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|.02|;Jmp|0|;Btk|.02|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|3|;
+'QB-P',"Routes + Progression","Work on progressing through your routes +ThA +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.06|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|.04|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|.1|;
+'QB-P',"Deep Patterns","Build arm strength and accuracy on deep balls by throwing deep routes +ThP +Tha"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|.08|;Tha|.02|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'HB-P',"Pass Blocking","Work on protecting the QB +Pbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.1|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|.1|;
+'HB-P',"Gauntlet","Focus on ball security and leg power +Car +Btk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|.06|;Jmp|0|;Btk|.04|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'HB-P',"Relay Drill","Quick burst drill that improves quickness +Acc +Agi"|;Wgt|0|;Spd|0|;Acc|.06|;Agi|.04|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|4|;
+'HB-P',"Pass Paterns","Run pass routes and catch balls +Cat +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.04|;Cat|.06|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'HB-P',"Kick/Punt Returns","Work on the players ability to field kicks/punts +KR"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|.1|;%Inj|5|;
+'FB-P',"Pass Blocking","Work on protecting the QB +Pbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.1|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|.1|;
+'FB-P',"Gauntlet","Focus on ball security and leg power +Car +Btk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|.06|;Jmp|0|;Btk|.04|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'FB-P',"Relay Drill","Quick burst drill that improves quickness +Acc +Agi"|;Wgt|0|;Spd|0|;Acc|.06|;Agi|.04|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|4|;
+'FB-P',"Pass Paterns","Run pass routes and catch balls +Cat +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.04|;Cat|.06|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'FB-P',"Run Blocking","Work on leg power and drive blocking +Rbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|.1|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'WR-P',"WR Release","Stress ball snap reaction time +Acc +Agi +Awr"|;Wgt|0|;Spd|0|;Acc|.05|;Agi|.04|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.0.1|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|7|;
+'WR-P',"Route Running","Dry run through your pass patterns +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.1|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|.1|;
+'WR-P',"Gauntlet","Focus on ball security and leg power +Car +Btk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|.06|;Jmp|0|;Btk|.04|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'WR-P',"Jump Balls","Throw it up and let 'um go get it +Jmp +Cat"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|.03|;Car|0|;Jmp|.07|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|6|;
+'WR-P',"Pass Patterns","Run pass routes and catch balls +Cat +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.04|;Cat|.06|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'WR-P',"Run Blocking","Work on leg power and drive blocking +Rbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|.1|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'WR-P',"Kick/Punt Returns","Work on the players ability to field kicks/punts +KR"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|.1|;%Inj|5|;
+'TE-P',"TE Release","Stress ball snap reaction time +Acc +Agi +Awr"|;Wgt|0|;Spd|0|;Acc|.05|;Agi|.04|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.0.1|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|7|;
+'TE-P',"Pass Patterns","Run pass routes and catch balls +Cat +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.04|;Cat|.06|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'TE-P',"Gauntlet","Focus on ball security and leg power +Car +Btk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|.06|;Jmp|0|;Btk|.04|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'TE-P',"Run Blocking","Work on leg power and drive blocking +Rbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|.1|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'TE-P',"Pass Blocking","Work on protecting the QB +Pbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.1|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|.1|;
+'OL-P',"Pull/Sweep Drill","Focus on building linemen quickness +Acc +Agi"|;Wgt|0|;Spd|0|;Acc|.05|;Agi|.05|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'OL-P',"Blocking Sled","Individual blocking sled to build blocking skills +Str +Rbk +Pbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|.02|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.04|;Rbk|.04|;KP|0|;KA|0|;KR|0|;%Inj|4|;
+'OL-P',"Blitz Pickup","Several players wearing different colored jerseys rush the lineman| A color is called out at the last minute +Awr +Pbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.06|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.04|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'OL-P',"Run Blocking","Work on leg power and drive blocking +Rbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|.1|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'OL-P',"Pass Blocking","Work on protecting the QB +Pbk"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.1|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|.1|;
+'DL-P',"Get off Ball Drill","Build reaction time and ball snap quickness +Acc"|;Wgt|0|;Spd|0|;Acc|.1|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|6|;
+'DL-P',"Swim/Rip Drill","Build upper body strength and focus on block shedding techniques +Str +Agi"|;Wgt|0|;Spd|0|;Acc|0|;Agi|.06|;Str|.04|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|4|;
+'DL-P',"Tackle Drill","Practice form tackling +Tkl"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|.1|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'DL-P',"Pursuit","Players practice pursuit angles while chasing a ball carrier +Spd +Acc +Tkl"|;Wgt|0|;Spd|.02|;Acc|.03|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|.05|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'LB-P',"Get off Ball Drill","Build reaction time and ball snap quickness +Acc"|;Wgt|0|;Spd|0|;Acc|.1|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|6|;
+'LB-P',"Pass Rush","Work on linebacker ability to turn the corner +Acc +Agi"|;Wgt|0|;Spd|0|;Acc|.06|;Agi|.04|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'LB-P',"Tackle Drill","Practice form tackling +Tkl"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|.1|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'LB-P',"Pursuit","Players practice pursuit angles while chasing a ball carrier +Spd +Acc +Tkl"|;Wgt|0|;Spd|.02|;Acc|.03|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|.05|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'LB-P',"Tip Drill","Reaction time to deflected ball +Cat +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.05|;Cat|.05|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|3|;
+'DB-P',"Tackle Drill","Practice form tackling +Tkl"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|.1|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|5|;
+'DB-P',"Bump + Run","Force your cover men to hold strong at the LOS +Str"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|.1|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|3|;
+'DB-P',"Tip Drill","Reaction time to deflected ball +Cat +Awr"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|.05|;Cat|.05|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|3|;
+'DB-P',"Pursuit","Players practice pursuit angles while chasing a ball carrier +Spd +Acc +Tkl"|;Wgt|0|;Spd|.02|;Acc|.03|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|.05|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'DB-P',"Jump Ball","Throw it up and let 'um go get it +Jmp +Cat"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|.03|;Car|0|;Jmp|.07|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|6|;
+'KP-P',"Hit the Bullseye","Have kicker aim for a bullseye +KA"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|.0.1|;KA|.09|;KR|0|;%Inj|.1|;
+'KP-P',"Kick Power","Stress ball hangtime/distance +KP"|;Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|.09|;KA|.0.1|;KR|0|;%Inj|3|;
+'A',"Stationary Bike"|;Wgt|-.05|;Spd|0|;Acc|0|;Agi|0|;Str|-.02|;Stm|.06|;Inj|.02|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-3|;
+'A',"Biking"|;Wgt|-.05|;Spd|0|;Acc|0|;Agi|0|;Str|-.01|;Stm|.08|;Inj|.01|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-2|;
+'A',"Shuttle Runs"|;Wgt|-.0.1|;Spd|.0.1|;Acc|.03|;Agi|.04|;Str|0|;Stm|.02|;Inj|0|;Tgh|0|;Mor|-.02|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|1|;
+'A',"X-Country Skiing"|;Wgt|-.05|;Spd|0|;Acc|0|;Agi|0|;Str|.02|;Stm|.07|;Inj|.0.1|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-2|;
+'A',"Treadmill"|;Wgt|-.05|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|.08|;Inj|.02|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-1|;
+'A',"StairClimber"|;Wgt|-.1|;Spd|0|;Acc|0|;Agi|0|;Str|.0.1|;Stm|.07|;Inj|.02|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|.0.1|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-3|;
+'A',"Jogging Hills"|;Wgt|-.1|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|.08|;Inj|.0.1|;Tgh|.01|;Mor|-.02|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|1|;
+'A',"Swim Laps"|;Wgt|-.03|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|.06|;Inj|.04|;Tgh|00|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-4|;
+'A',"Wind Sprints"|;Wgt|-.03|;Spd|.8|;Acc|.01|;Agi|0|;Str|0|;Stm|.01|;Inj|0|;Tgh|0|;Mor|-.03|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|2|;
+'D',"Weight Gain Diet"|;Wgt|.1|;Spd|0|;Acc|0|;Agi|0|;Str|0|;Stm|0|;Inj|0|;Tgh|00|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|0|;
+'D',"High Protein Diet";Wgt|.04|;Spd|0|;Acc|0|;Agi|0|;Str|.06|;Stm|-.02|;Inj|.02|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|0|;
+'D',"Balanced Diet";Wgt|0|;Spd|0|;Acc|0|;Agi|0|;Str|.03|;Stm|.04|;Inj|.03|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-1|;
+'D',"Counting Calories";Wgt|-.05|;Spd|0|;Acc|0|;Agi|0|;Str|-.04|;Stm|-.04|;Inj|-.02|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-1|;
+'D',"Low Carb Diet";Wgt|-.07|;Spd|0|;Acc|0|;Agi|0|;Str|-.04|;Stm|-.03|;Inj|-.03|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|-1|;
+'W',"Calves";Wgt|.01|;Spd|0|;Acc|0|;Agi|0|;Str|.01|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|.08|;Btk|.01|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|1|;
+'W',"Quads + Hamstrings";Wgt|.05|;Spd|0|;Acc|0|;Agi|0|;Str|.03|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|.07|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|1|;
+'W',"Shoulders";Wgt|.01|;Spd|0|;Acc|0|;Agi|0|;Str|.01|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|.07|;Tha|0|;Pbk|.01|;Rbk|.01|;KP|.1|;KA|0|;KR|0|;%Inj|1|;
+'W',"Chest";Wgt|.04|;Spd|0|;Acc|0|;Agi|0|;Str|.06|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.02|;Rbk|.02|;KP|0|;KA|0|;KR|0|;%Inj|1|;
+'W',"Arms";Wgt|.02|;Spd|0|;Acc|0|;Agi|0|;Str|.04|;Stm|0|;Inj|0|;Tgh|0|;Mor|0|;Awr|0|;Cat|0|;Car|.04|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|.01|;Rbk|.01|;KP|0|;KA|0|;KR|0|;%Inj|1|;
+'G',"Paintball";Wgt|-.01|;Spd|0|;Acc|.02|;Agi|0|;Str|0|;Stm|.02|;Inj|0|;Tgh|0|;Mor|.1|;Awr|0|;Cat|0|;Car|0|;Jmp|0|;Btk|0|;Tkl|0|;Thp|0|;Tha|0|;Pbk|0|;Rbk|0|;KP|0|;KA|0|;KR|0|;%Inj|0|;
