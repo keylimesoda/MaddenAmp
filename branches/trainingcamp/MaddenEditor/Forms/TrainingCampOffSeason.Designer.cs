@@ -779,7 +779,6 @@ namespace MaddenEditor.Forms
             // 
             this.LossAmountSld.Location = new System.Drawing.Point(6, 130);
             this.LossAmountSld.Maximum = 50;
-            this.LossAmountSld.Minimum = 10;
             this.LossAmountSld.Name = "LossAmountSld";
             this.LossAmountSld.Size = new System.Drawing.Size(144, 45);
             this.LossAmountSld.TabIndex = 3;
@@ -789,7 +788,6 @@ namespace MaddenEditor.Forms
             // 
             this.GainAmountSld.Location = new System.Drawing.Point(6, 91);
             this.GainAmountSld.Maximum = 60;
-            this.GainAmountSld.Minimum = 15;
             this.GainAmountSld.Name = "GainAmountSld";
             this.GainAmountSld.Size = new System.Drawing.Size(144, 45);
             this.GainAmountSld.TabIndex = 2;
