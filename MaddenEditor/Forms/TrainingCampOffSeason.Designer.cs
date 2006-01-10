@@ -100,6 +100,7 @@ namespace MaddenEditor.Forms
             this.GainAmountSld = new System.Windows.Forms.TrackBar();
             this.LossFreqSld = new System.Windows.Forms.TrackBar();
             this.GainFreqSld = new System.Windows.Forms.TrackBar();
+            this.DisableScenarioChk = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -421,6 +422,7 @@ namespace MaddenEditor.Forms
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.DisableScenarioChk);
             this.groupBox6.Controls.Add(this.checkBox2);
             this.groupBox6.Controls.Add(this.HoursLeftlbl);
             this.groupBox6.Controls.Add(this.pUpDown);
@@ -454,7 +456,7 @@ namespace MaddenEditor.Forms
             this.groupBox6.Controls.Add(this.hcname);
             this.groupBox6.Location = new System.Drawing.Point(9, 295);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(949, 72);
+            this.groupBox6.Size = new System.Drawing.Size(1010, 72);
             this.groupBox6.TabIndex = 35;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "     Head Coach Name        Age       Knw      Mot      Chm     Eth            QB" +
@@ -464,11 +466,11 @@ namespace MaddenEditor.Forms
             // checkBox2
             // 
             this.checkBox2.Enabled = false;
-            this.checkBox2.Location = new System.Drawing.Point(820, 26);
+            this.checkBox2.Location = new System.Drawing.Point(810, 7);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(123, 31);
+            this.checkBox2.Size = new System.Drawing.Size(139, 31);
             this.checkBox2.TabIndex = 30;
-            this.checkBox2.Text = "Check to skip Coach Progression";
+            this.checkBox2.Text = "Skip Coach Progression";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
@@ -609,7 +611,7 @@ namespace MaddenEditor.Forms
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(741, 21);
+            this.button4.Location = new System.Drawing.Point(731, 21);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(73, 36);
             this.button4.TabIndex = 15;
@@ -812,6 +814,15 @@ namespace MaddenEditor.Forms
             this.GainFreqSld.Size = new System.Drawing.Size(141, 45);
             this.GainFreqSld.TabIndex = 0;
             // 
+            // DisableScenarioChk
+            // 
+            this.DisableScenarioChk.Location = new System.Drawing.Point(810, 37);
+            this.DisableScenarioChk.Name = "DisableScenarioChk";
+            this.DisableScenarioChk.Size = new System.Drawing.Size(194, 33);
+            this.DisableScenarioChk.TabIndex = 37;
+            this.DisableScenarioChk.Text = "Disable \'Offseason Scenario\' mode";
+            this.DisableScenarioChk.UseVisualStyleBackColor = true;
+            // 
             // TrainingCampOffSeason
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -940,5 +951,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem clickToSaveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadDefaultsToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox DisableScenarioChk;
     }
 }
