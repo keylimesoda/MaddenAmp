@@ -1255,6 +1255,9 @@ namespace MaddenEditor.Forms
             {
                 foreach (CoachRecord coach in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
                 {
+                    if (!opponents.ContainsKey(coach.TeamId))
+                        continue;
+
                     int offRPbase;
                     int offAggbase;
                     int defRPbase;
