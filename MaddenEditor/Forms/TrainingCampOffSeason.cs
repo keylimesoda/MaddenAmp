@@ -38,66 +38,24 @@ namespace MaddenEditor.Forms
         public string profile;
         private EditorModel model = null;
         private DepthChartEditingModel depthEditingModel = null;
-        private bool isInitialising = false;
-        public Boolean WeightGain = false;
-        public Boolean WeightLoss = false;
-        public decimal PercentModFat = 0;
-        public decimal PercentModMuscle = 0;
-        public int Rating = 0;
-        public int Skill = 0;
-        string PosStr = null;
-        int AddWgt = 0;
-        int OldWgt = 0;
-        int SpdMean = 0;
-        int AccMean = 0;
-        int AgiMean = 0;
-        int StrMean = 0;
-        int StmMean = 0;
-        int InjMean = 0;
+        private bool isInitialising = false;public Boolean WeightGain = false;public Boolean WeightLoss = false;
+        public decimal PercentModFat = 0;public decimal PercentModMuscle = 0;
+        public int Rating = 0;public int Skill = 0;string PosStr = null;
+        int AddWgt = 0; int OldWgt = 0; int SpdMean = 0; int AccMean = 0; int AgiMean = 0; int StrMean = 0; int StmMean = 0; int InjMean = 0;
         double PosWgtMod = 0;
-        bool NegativeScenario1 = false;
-        bool NegativeScenario2 = false;
+        bool NegativeScenario1 = false; bool NegativeScenario2 = false;
         int HoursLeft = 0;
-        int knw = 0;
-        int mot = 0;
-        int chm = 0;
-        int eth = 0;
-        int qb = 0;
-        int rb = 0;
-        int wr = 0;
-        int ol = 0;
-        int dl = 0;
-        int lb = 0;
-        int db = 0;
-        int k = 0;
-        int p = 0;
+        int knw = 0; int mot = 0;int chm = 0;int eth = 0;int qb = 0;int rb = 0;int wr = 0;int ol = 0;int dl = 0;int lb = 0;int db = 0;int k = 0;int p = 0;
         //Variables used for random scenarios
-        string ScenarioFirstName = "";
-        string ScenarioLastName = "";
-        int ScenarioOvr = 0;
-        string ScenarioPos = "";
-        int CoachMotivation = 0;
-        string CurrentDialog = "";
-        int ScenarioCounter = 0;
-        int Sleep = 0;
-        bool isTrue = false;
-        bool BadNews = false;
-        bool GoodNews = false;
-        bool HorribleNews = false;
-        bool GreatNews = false;
-        string Captain1 = "";
-        string Captain2 = "";
-        string Captain3 = "";       
-        int NewCaptain = 0;
-        string OldCaptain = "";
-
-        int Diff = 0; //This is any modifier applied to an ability if random scenario = true
+        string ScenarioFirstName = "";string ScenarioLastName = "";int ScenarioOvr = 0;string ScenarioPos = "";int CoachMotivation = 0;string CurrentDialog = "";
+        int ScenarioCounter = 0;int Sleep = 0;bool isTrue = false;bool BadNews = false;bool GoodNews = false;bool HorribleNews = false;bool GreatNews = false;
+        string Captain1 = "";string Captain2 = "";string Captain3 = "";int NewCaptain = 0;string OldCaptain = "";int Diff = 0; //This is any modifier applied to an ability if random scenario = true
         private TeamCaptainRecord teamCaptainRecord = null;
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
-
         Random random = new Random();  
-           
+        //Tune file attribute Variables
+        decimal SpdLoss; decimal AccLoss; decimal AgiLoss; decimal StmLoss; decimal InjLoss; decimal SpdGain; decimal AccGain; decimal AgiGain; decimal StmGain; decimal StrLoss; decimal InjGain;
         public TrainingCampOffSeason(EditorModel model)
         { 
             this.model = model;
@@ -123,12 +81,85 @@ namespace MaddenEditor.Forms
                 sw.WriteLine("AmountLost\t10");
 
                 sw.Close();
-            }    
-            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\Settings.txt");
+            }
+            if (!File.Exists(installDirectory + "\\Conditioning\\ConditioningTune.txt")) // Create the Slider Profile if not present.
+            {
+                FileStream file = File.Create(installDirectory + "\\Conditioning\\ConditioningTune.txt");
+                sw = new StreamWriter(file);
+                sw.WriteLine("**WeightGain");
+                sw.WriteLine("SpdLoss\t.25");
+                sw.WriteLine("AccLoss\t.35");
+                sw.WriteLine("AgiLoss\t.35");
+                sw.WriteLine("StmLoss\t1.35");
+                sw.WriteLine("InjLoss\t.2");
+                sw.WriteLine("**WeightLoss");
+                sw.WriteLine("SpdGain\t.16");
+                sw.WriteLine("AccGain\t.38");
+                sw.WriteLine("AgiGain\t.38");
+                sw.WriteLine("StrLoss\t.1");
+                sw.WriteLine("StmGain\t.35");
+                sw.WriteLine("InjGain\t.5");
+
+                sw.Close();
+            }
+            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\ConditioningTune.txt");
 
             while (!sr.EndOfStream)
             {
                 string line = sr.ReadLine();
+                string[] splitLine = line.Split('\t');
+
+                if (splitLine[0] == "SpdLoss")
+                {
+                    SpdLoss = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "AccLoss")
+                {
+                    AccLoss = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "AgiLoss")
+                {
+                    AgiLoss = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "StmLoss")
+                {
+                    StmLoss = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "InjLoss")
+                {
+                    InjLoss = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "SpdGain")
+                {
+                    SpdGain = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "AccGain")
+                {
+                    AccGain = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "AgiGain")
+                {
+                    AgiGain = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "StrLoss")
+                {
+                    StrLoss = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "StmGain")
+                {
+                    StmGain = decimal.Parse(splitLine[1]);
+                }
+                else if (splitLine[0] == "InjGain")
+                {
+                    InjGain = decimal.Parse(splitLine[1]);
+                }
+            }
+            sr.Close();
+            StreamReader srt = new StreamReader(installDirectory + "\\Conditioning\\Settings.txt");
+
+            while (!srt.EndOfStream)
+            {
+                string line = srt.ReadLine();
                 string[] splitLine = line.Split('\t');
 
                 if (splitLine[0] == "GainFrequency")
@@ -148,7 +179,7 @@ namespace MaddenEditor.Forms
                     LossAmountSld.Value = Int32.Parse(splitLine[1]);
                 }
             }
-            sr.Close();
+            srt.Close();
         }
         public void SaveSliders()
         {
@@ -168,7 +199,6 @@ namespace MaddenEditor.Forms
             {
                 sw = new StreamWriter(installDirectory + "\\Conditioning\\Settings.txt", false);
             }
-
             sw.WriteLine("GainFrequency\t" + GainFreqSld.Value);
             sw.WriteLine("LossFrequency\t" + LossFreqSld.Value);
             sw.WriteLine("AmountGained\t" + GainAmountSld.Value);
@@ -184,8 +214,7 @@ namespace MaddenEditor.Forms
             {
                 Directory.CreateDirectory(installDirectory + "\\Conditioning");
 
-            }
-          
+            }          
                 FileStream file = File.Create(installDirectory + "\\Conditioning\\Settings.txt");
                 sw = new StreamWriter(file);
 
@@ -219,8 +248,6 @@ namespace MaddenEditor.Forms
                     }
                 }
                 sr.Close();
-
-
         }
         public void initialiseUI()
         {
@@ -235,8 +262,7 @@ namespace MaddenEditor.Forms
             SelectHumanTeam.Items.RemoveAt(33);
             SelectHumanTeam.Items.RemoveAt(32);   
             isInitialising = false;
-        }           
-        
+        } 
         private void CallWeightGain(int Weight, int Age, int Pos, int Cmot, string FirstName, string LastName)
         {           
             int AgeMod = 0;
@@ -449,7 +475,6 @@ namespace MaddenEditor.Forms
                     WeightGain = true;
                 }           
         }
-
         private void CallWeightLoss(int Weight, int Age, int Pos, int Cmot, string FirstName, string LastName)
         {
             int AgeMod = 0;
@@ -901,9 +926,7 @@ namespace MaddenEditor.Forms
                 InjMean = 80;
                 PosWgtMod = .25;
             }
-
         }
-
        private void PhaseOne()
         {
             InitializeDataGrids();
@@ -1018,18 +1041,18 @@ namespace MaddenEditor.Forms
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Speed / (decimal)SpdMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)SpdMean / (decimal)valObject.Speed), 4))) * 2) + (decimal).1; }
+                        { AttributeDifferential = (((1 - (decimal.Round(((decimal)SpdMean / (decimal)valObject.Speed), 4))) * 2) + (decimal)SpdLoss) * (decimal)PosWgtMod; }
                         else
-                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal).2) * (decimal)PosWgtMod; }
+                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)SpdLoss) * (decimal)PosWgtMod; }
                         Rating = (int)Math.Round(valObject.Speed * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         valObject.Speed = Rating;
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Acceleration / (decimal)AccMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)AccMean / (decimal)valObject.Acceleration), 4))) * 2) + (decimal).25; }
+                        { AttributeDifferential = (((1 - (decimal.Round(((decimal)AccMean / (decimal)valObject.Acceleration), 4))) * 2) + (decimal)AccLoss) * (decimal)PosWgtMod; }
                         else
-                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal).3) * (decimal)PosWgtMod; }
+                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AccLoss) * (decimal)PosWgtMod; }
                         Rating = (int)Math.Round(valObject.Acceleration * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         OldAcc = valObject.Acceleration;
@@ -1037,9 +1060,9 @@ namespace MaddenEditor.Forms
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Agility / (decimal)AgiMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)AgiMean / (decimal)valObject.Agility), 4))) * 2) + (decimal).25; }
+                        { AttributeDifferential = (((1 - (decimal.Round(((decimal)AgiMean / (decimal)valObject.Agility), 4))) * 2) + (decimal)AgiLoss) * (decimal)PosWgtMod; }
                         else
-                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal).3) * (decimal)PosWgtMod; }
+                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AgiLoss) * (decimal)PosWgtMod; }
                         Rating = (int)Math.Round(valObject.Agility * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         OldAgi = valObject.Agility;
@@ -1054,9 +1077,9 @@ namespace MaddenEditor.Forms
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Stamina / (decimal)StmMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StmMean / (decimal)valObject.Stamina), 4))) * 2) + (decimal).35; }
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StmMean / (decimal)valObject.Stamina), 4))) * 2) + (decimal)StmLoss; }
                         else
-                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal).95; }
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)StmLoss; }
                         Rating = (int)Math.Round(valObject.Stamina * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         valObject.Stamina = Rating;
@@ -1068,9 +1091,9 @@ namespace MaddenEditor.Forms
                         }
                         AttributeDifferential = decimal.Round(((decimal)valObject.Injury / (decimal)InjMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)InjMean / (decimal)valObject.Injury), 4))) * 2) + (decimal).35; }
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)InjMean / (decimal)valObject.Injury), 4))) * 2) + (decimal)InjLoss; }
                         else
-                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal).2; }
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)InjLoss; }
                         Rating = (int)Math.Round(valObject.Injury * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         valObject.Injury = Rating;
@@ -1125,9 +1148,9 @@ namespace MaddenEditor.Forms
                         {
                             AttributeDifferential = decimal.Round(((decimal)valObject.Speed / (decimal)SpdMean), 4);
                             if (AttributeDifferential > 1)
-                            { AttributeDifferential = ((1 - (decimal.Round(((decimal)SpdMean / (decimal)valObject.Speed), 4))) * 2) + (decimal).1; }
+                            { AttributeDifferential = (((1 - (decimal.Round(((decimal)SpdMean / (decimal)valObject.Speed), 4))) * 2) + (decimal)SpdGain)* (decimal)PosWgtMod; }
                             else
-                            { AttributeDifferential = (((1 - AttributeDifferential) * (decimal)1.5) + (decimal).1) * (decimal)PosWgtMod; }
+                            { AttributeDifferential = (((1 - AttributeDifferential) * (decimal)1.5) + (decimal)SpdGain) * (decimal)PosWgtMod; }
                             Rating = (int)Math.Round(valObject.Speed * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                             HighLowCheck(Rating);
                             valObject.Speed = Rating;
@@ -1137,9 +1160,9 @@ namespace MaddenEditor.Forms
                         {
                             AttributeDifferential = decimal.Round(((decimal)valObject.Acceleration / (decimal)AccMean), 4);
                             if (AttributeDifferential > 1)
-                            { AttributeDifferential = ((1 - (decimal.Round(((decimal)AccMean / (decimal)valObject.Acceleration), 4))) * 2) + (decimal).25; }
+                            { AttributeDifferential = (((1 - (decimal.Round(((decimal)AccMean / (decimal)valObject.Acceleration), 4))) * 2) + (decimal)AccGain) * (decimal)PosWgtMod; }
                             else
-                            { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal).35) * (decimal)PosWgtMod; }
+                            { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AccGain) * (decimal)PosWgtMod; }
                             Rating = (int)Math.Round(valObject.Acceleration * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                             HighLowCheck(Rating);
                             OldAcc = valObject.Acceleration;
@@ -1150,9 +1173,9 @@ namespace MaddenEditor.Forms
                         {
                             AttributeDifferential = decimal.Round(((decimal)valObject.Agility / (decimal)AgiMean), 4);
                             if (AttributeDifferential > 1)
-                            { AttributeDifferential = ((1 - (decimal.Round(((decimal)AgiMean / (decimal)valObject.Agility), 4))) * 2) + (decimal).25; }
+                            { AttributeDifferential = (((1 - (decimal.Round(((decimal)AgiMean / (decimal)valObject.Agility), 4))) * 2) + (decimal)AgiGain)* (decimal)PosWgtMod; }
                             else
-                            { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal).35) * (decimal)PosWgtMod; }
+                            { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AgiGain) * (decimal)PosWgtMod; }
                             Rating = (int)Math.Round(valObject.Agility * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                             HighLowCheck(Rating);
                             OldAgi = valObject.Agility;
@@ -1167,9 +1190,9 @@ namespace MaddenEditor.Forms
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Stamina / (decimal)StmMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StmMean / (decimal)valObject.Stamina), 4))) * 2) + (decimal).35; }
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StmMean / (decimal)valObject.Stamina), 4))) * 2) + (decimal)StmGain; }
                         else
-                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal).95; }
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)StmGain; }
                         Rating = (int)Math.Round(valObject.Stamina * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         valObject.Stamina = Rating;
@@ -1182,18 +1205,18 @@ namespace MaddenEditor.Forms
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Strength / (decimal)StrMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StrMean / (decimal)valObject.Strength), 4))) * 2) + (decimal).25; }
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StrMean / (decimal)valObject.Strength), 4))) * 2) + (decimal)StrLoss; }
                         else
-                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal).4; }
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)StrLoss; }
                         Rating = (int)Math.Round(valObject.Strength * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         valObject.Strength = Rating;
 
                         AttributeDifferential = decimal.Round(((decimal)valObject.Injury / (decimal)InjMean), 4);
                         if (AttributeDifferential > 1)
-                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)InjMean / (decimal)valObject.Injury), 4))) * 2) + (decimal).35; }
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)InjMean / (decimal)valObject.Injury), 4))) * 2) + (decimal)InjGain; }
                         else
-                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal).5; }
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)InjGain; }
                         Rating = (int)Math.Round(valObject.Injury * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
                         HighLowCheck(Rating);
                         valObject.Injury = Rating;
@@ -1343,11 +1366,8 @@ namespace MaddenEditor.Forms
                 }
                 groupBox3.Enabled = true;
                 label4.Text = FatCoutner + " player(s) are in worse condition than when last season ended.";
-                label5.Text = MuscleCounter + " player(s) showed up to camp in better condition than when last season ended.";
-               
-            }
-
-          
+                label5.Text = MuscleCounter + " player(s) showed up to camp in better condition than when last season ended.";               
+            }          
             string OwnerFeedback = "";
             textBox1.Visible = true;
             //negative commentary
@@ -1366,7 +1386,6 @@ namespace MaddenEditor.Forms
                     OwnerFeedback = ("Message from ownership...We're extremely upset with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s complete failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is ridiculous. This trend must change.");
                 }
              }
-
             //positive commentary
             if (MuscleCounter > FatCoutner)
             {
@@ -1383,7 +1402,6 @@ namespace MaddenEditor.Forms
                     OwnerFeedback = ("Message from ownership...You've clearly got an eye for motivational talent." + model.CoachModel.CurrentCoachRecord.Name + " has been supremely focused on staying on top of our guys and we can now use training camp to sharpen the player's skills without having to waste valuable time working the team back into shape.");
                 }
               }
-
             //Neutrel
             if (MuscleCounter == FatCoutner)
             {
@@ -1398,7 +1416,6 @@ namespace MaddenEditor.Forms
                 }
             }
             
-
             isInitialising = false;
             textBox1.Text = textBox1.Text + "\r\n\r\n" + OwnerFeedback + CurrentDialog;
             textBox1.SelectionStart = textBox1.Text.Length;
@@ -1460,7 +1477,6 @@ namespace MaddenEditor.Forms
             else if ((int)Skill < 0)
             {Rating = 0;}                     
         }
-
         private DataColumn AddColumn(string ColName, string ColType)
         {
             DataColumn dc = new DataColumn();
@@ -1501,7 +1517,7 @@ namespace MaddenEditor.Forms
             kUpDown.Enabled = false;
             pUpDown.Enabled = false;
 
-            if (Issue <= 42)
+            if (Issue <= 30)
             {
                 SelectHumanTeam.Enabled = false;
                 checkBox1.Enabled = false;
@@ -1519,9 +1535,6 @@ namespace MaddenEditor.Forms
 
                 if (GoodBad <= 6) //Scenario 1; player slacking
                 {
-
-
-
                     while ((model.PlayerModel.CurrentPlayerRecord.Overall < OverallRating) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 19) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 20) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 3) || (model.PlayerModel.CurrentPlayerRecord.PositionId == 16))
                     {
                         model.PlayerModel.SetTeamFilter(SelectHumanTeam.Text);
@@ -1558,7 +1571,7 @@ namespace MaddenEditor.Forms
                     textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
                     MessageBox.Show(Scenario);
                 }
-                else if (GoodBad <= 11) //Scenario 2; Captains
+                else if (GoodBad > 6) //Scenario 2; Captains
                 {
                     NegativeScenario2 = true;
                     ScenarioTrue = true;
@@ -1689,8 +1702,6 @@ namespace MaddenEditor.Forms
                         textBox1.Text = textBox1.Text + "Your team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + " and a Team Chemistry rating of " + model.CoachModel.CurrentCoachRecord.Chemistry + "...\r\n...Motivation as well as Team Chemistry will alter the effects of your decision accordingly...";
 
                         MessageBox.Show(Scenario);
-
-
                     }
                     else
                     {
@@ -1703,12 +1714,8 @@ namespace MaddenEditor.Forms
             {
             textBox1.Text = textBox1.Text + "\r\nYour team's head coach, " + model.CoachModel.CurrentCoachRecord.Name + ", has a Motivation rating of " + model.CoachModel.CurrentCoachRecord.Motivation + "...";
              PhaseOne(); 
-            }
-            
+            }            
         }
-
-
-
         private void AllocateWeight(int Cmot, int Age)
         {
 
@@ -1851,8 +1858,7 @@ namespace MaddenEditor.Forms
             checkBox2.Enabled = true;
             textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 30 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
             PopulateCoach();
-            button4.Enabled = true;            
-
+            button4.Enabled = true; 
         }
         private void PopulateCoach()
         {
@@ -2006,55 +2012,55 @@ namespace MaddenEditor.Forms
 
             //Pos ratings
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)qbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)qbUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)rbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)rbUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) / 10), 3); //Knw
-            RankExp = ((decimal)wrUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)wrUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.OffensiveLineRating)) / 10), 3); //Knw
-            RankExp = ((decimal)olUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)olUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) / 10), 3); //Knw
-            RankExp = ((decimal)dlUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)dlUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) / 10), 3); //Knw
-            RankExp = ((decimal)lbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)lbUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) / 10), 3); //Knw
-            RankExp = ((decimal)dbUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)dbUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) / 10), 3); //Knw
-            RankExp = ((decimal)kUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)kUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) / 10), 3); //Knw
-            RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
@@ -2207,10 +2213,8 @@ namespace MaddenEditor.Forms
                     form.Show();
                 }
 
-                return;
-                    
+                return;                    
         }
-
         private void TrainingCampOffSeason_Load(object sender, EventArgs e)
         {
 
@@ -2227,11 +2231,8 @@ namespace MaddenEditor.Forms
 
                 ScenarioDialog();
 
-                Cursor.Current = Cursors.Arrow;
-
-               
+                Cursor.Current = Cursors.Arrow;               
             }
-
             return;
         }
         private void ScenarioDialog()
@@ -2684,7 +2685,6 @@ namespace MaddenEditor.Forms
                     return;
                 }
 
-
                 else if ((radioButton3.Checked == true) & (PosStr == "Offensive") & (Captain1 == "") || (radioButton2.Checked == true) & (PosStr == "Defensive") & (Captain2 == ""))
                 {
                     Timer1TextDelay(8);
@@ -2991,6 +2991,7 @@ namespace MaddenEditor.Forms
                     RandomIssue();
                     Cursor.Current = Cursors.Arrow;                   
                     button4.Enabled = false;
+                    checkBox2.Enabled = false;
                     if (ScenarioFirstName == "")
                     {
                         MessageBox.Show("A .txt copy of your team's changes has been generated in\nthe \\Conditioning folder within the Gommo install directory.");
