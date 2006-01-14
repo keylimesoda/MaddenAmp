@@ -27,6 +27,7 @@ using System.Text;
 using MaddenEditor.Db;
 using MaddenEditor.Core.Record;
 using MaddenEditor.Core.Record.Stats;
+using MaddenEditor.Core.Record.FranchiseState;
 
 namespace MaddenEditor.Core
 {
@@ -237,13 +238,41 @@ namespace MaddenEditor.Core
                 case EditorModel.TEAM_STATS_TABLE:
                     newRecord = new SeasonStatsTeamRecord(recno, this, parentModel);
                     break;
-                case EditorModel.FRANCHISE_STATE_TABLE:
-                    newRecord = new FranchiseStateRecord(recno, this, parentModel);
+                case EditorModel.FRANCHISE_TIME_TABLE:
+                    newRecord = new FranchiseTimeRecord(recno, this, parentModel);
                     break;
                 case EditorModel.BOXSCORE_TEAM_TABLE:
                     newRecord = new BoxScoreTeamRecord(recno, this, parentModel);
                     break;
-				// MADDEN DRAFT EDIT
+                case EditorModel.BOXSCORE_OFFENSIVE_LINE_TABLE:
+                    newRecord = new BoxScoreOffensiveLineRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.SEASON_STATS_OFFENSIVE_LINE_TABLE:
+                    newRecord = new SeasonStatsOffensiveLineRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.CAREER_STATS_OFFENSIVE_LINE_TABLE:
+                    newRecord = new CareerStatsOffensiveLineRecord(recno, this, parentModel);
+                    break;
+
+                case EditorModel.SCOUTING_STATE_TABLE:
+                    newRecord = new ScoutingStateRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.RFA_STATE_TABLE:
+                    newRecord = new RFAStateRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.RESIGN_PLAYERS_STATE_TABLE:
+                    newRecord = new ResignPlayersStateRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.FREE_AGENCY_STATE_TABLE:
+                    newRecord = new FreeAgencyStateRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.DRAFT_STATE_TABLE:
+                    newRecord = new DraftStateRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.FRANCHISE_STAGE_TABLE:
+                    newRecord = new FranchiseStageRecord(recno, this, parentModel);
+                    break;
+                // MADDEN DRAFT EDIT
 				case EditorModel.GAME_OPTIONS_TABLE:
 					newRecord = new GameOptionRecord(recno, this, parentModel);
 					break;

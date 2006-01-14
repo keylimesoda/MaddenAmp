@@ -28,6 +28,8 @@ namespace MaddenEditor.Forms
         const double fumbleForcedProbability = 0.9301;
         const double fumbleRecoveredProbability = .8833;
 
+        const double pancakeProbability = 0.3;
+
         const double firstDownMultiplier = 1.145;
         const double thirdDownAttemptsProbability = 0.83;
 
@@ -667,7 +669,7 @@ namespace MaddenEditor.Forms
             this.Update();
             Cursor.Current = Cursors.WaitCursor;
             
-            int currentWeek = model.FranchiseState.Week;
+            int currentWeek = model.FranchiseTime.Week;
 
             /*
             int currentWeek = 30;
@@ -689,7 +691,7 @@ namespace MaddenEditor.Forms
                 Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
                 Random rand = new Random();
                 List<int> humanControlled = new List<int>();
-                int currentSeason = model.FranchiseState.Season;
+                int currentSeason = model.FranchiseTime.Season;
 
                 // season and career stats indexed by PGID
                 Dictionary<int, SeasonStatsOffenseRecord> seasonStatsOffense = new Dictionary<int, SeasonStatsOffenseRecord>();
@@ -1413,11 +1415,22 @@ namespace MaddenEditor.Forms
         private void CheckedChanged(object sender, EventArgs e)
         {
             dirty = true;
+
+            if (sender == fixSimEngine)
+            {
+                if (fixSimEngine.Checked)
+                    fixHumanPancakes.Enabled = true;
+                else
+                {
+                    fixHumanPancakes.Enabled = false;
+                    fixHumanPancakes.Checked = false;
+                }
+            }
         }
 
         private void dumpStatsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int currentSeason = model.FranchiseState.Season;
+            int currentSeason = model.FranchiseTime.Season;
 
             int passingOffense = 0;
             int rushingOffense = 0;
@@ -1582,13 +1595,13 @@ namespace MaddenEditor.Forms
 
         private void fixAllStatsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 1; i < model.FranchiseState.Week; i++)
+            for (int i = 1; i < model.FranchiseTime.Week; i++)
                 RepairWeek(i);
         }
 
         private void RepairWeek(int currentWeek)
         {
-            int currentSeason = model.FranchiseState.Season;
+            int currentSeason = model.FranchiseTime.Season;
 
             Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
             List<int> humanControlled = new List<int>();
@@ -1596,8 +1609,10 @@ namespace MaddenEditor.Forms
             // season and career stats indexed by PGID
             Dictionary<int, SeasonStatsOffenseRecord> seasonStatsOffense = new Dictionary<int, SeasonStatsOffenseRecord>();
             Dictionary<int, SeasonStatsDefenseRecord> seasonStatsDefense = new Dictionary<int, SeasonStatsDefenseRecord>();
+            Dictionary<int, SeasonStatsOffensiveLineRecord> seasonStatsOffensiveLine = new Dictionary<int,SeasonStatsOffensiveLineRecord>();
             Dictionary<int, CareerStatsOffenseRecord> careerStatsOffense = new Dictionary<int, CareerStatsOffenseRecord>();
             Dictionary<int, CareerStatsDefenseRecord> careerStatsDefense = new Dictionary<int, CareerStatsDefenseRecord>();
+            Dictionary<int, CareerStatsOffensiveLineRecord> careerStatsOffensiveLine = new Dictionary<int,CareerStatsOffensiveLineRecord>();
             Dictionary<int, SeasonStatsTeamRecord> teamStats = new Dictionary<int, SeasonStatsTeamRecord>();
             Dictionary<int, BoxScoreTeamRecord> teamBoxScores = new Dictionary<int, BoxScoreTeamRecord>();
 
@@ -1613,11 +1628,20 @@ namespace MaddenEditor.Forms
                     seasonStatsOffense[stat.PlayerId] = stat;
             }
 
+            foreach (SeasonStatsOffensiveLineRecord stat in model.TableModels[EditorModel.SEASON_STATS_OFFENSIVE_LINE_TABLE].GetRecords())
+            {
+                if (stat.Season == currentSeason)
+                    seasonStatsOffensiveLine[stat.PlayerId] = stat;
+            }
+
             foreach (CareerStatsDefenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_DEFENSE_TABLE].GetRecords())
                 careerStatsDefense[stat.PlayerId] = stat;
 
             foreach (CareerStatsOffenseRecord stat in model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].GetRecords())
                 careerStatsOffense[stat.PlayerId] = stat;
+
+            foreach (CareerStatsOffensiveLineRecord stat in model.TableModels[EditorModel.CAREER_STATS_OFFENSIVE_LINE_TABLE].GetRecords())
+                careerStatsOffensiveLine[stat.PlayerId] = stat;
 
             foreach (SeasonStatsTeamRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
                 teamStats[stat.TeamId] = stat;
@@ -1646,7 +1670,7 @@ namespace MaddenEditor.Forms
 
             Dictionary<int, List<BoxScoreOffenseRecord>> interceptees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
             Dictionary<int, List<BoxScoreOffenseRecord>> sackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
-            Dictionary<int, List<BoxScoreOffenseRecord>> OLsackees = new Dictionary<int, List<BoxScoreOffenseRecord>>();
+            Dictionary<int, List<BoxScoreOffensiveLineRecord>> OLsackees = new Dictionary<int, List<BoxScoreOffensiveLineRecord>>();
 
             /*
             Dictionary<int, List<BoxScoreDefenseRecord>> forcers = new Dictionary<int, List<BoxScoreDefenseRecord>>();
@@ -1671,34 +1695,32 @@ namespace MaddenEditor.Forms
                 }
             }
 
-                for (int i = 0; i < 32; i++)
-                {
-                    interceptees[i] = new List<BoxScoreOffenseRecord>();
-                    sackees[i] = new List<BoxScoreOffenseRecord>();
-                }
+            for (int i = 0; i < 32; i++)
+            {
+                interceptees[i] = new List<BoxScoreOffenseRecord>();
+                sackees[i] = new List<BoxScoreOffenseRecord>();
+            }
 
-                foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
+            foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
+            {
+                if (stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId) && stat.Season == currentSeason)
                 {
-                    if (stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId) && stat.Season == currentSeason)
+                    if (startingRBIDs.ContainsValue(stat.PlayerId))
+                        startingRBs[stat.TeamId] = stat;
+                    else if (backupRBIDs.ContainsValue(stat.PlayerId))
+                        backupRBs[stat.TeamId] = stat;
+                    if (stat.Interceptions > 0)
+                        interceptees[stat.TeamId].Add(stat);
+
+                    if (stat.Sacks > 0)
+                        sackees[stat.TeamId].Add(stat);
+                    if (stat.PassingYards > 0)
                     {
-                        if (startingRBIDs.ContainsValue(stat.PlayerId))
-                            startingRBs[stat.TeamId] = stat;
-                        else if (backupRBIDs.ContainsValue(stat.PlayerId))
-                            backupRBs[stat.TeamId] = stat;
-
-                        if (stat.Interceptions > 0)
-                            interceptees[stat.TeamId].Add(stat);
-
-                        if (stat.Sacks > 0)
-                            sackees[stat.TeamId].Add(stat);
-
-                        if (stat.PassingYards > 0)
-                        {
-                            if (!maxPassers.ContainsKey(stat.TeamId) || maxPassers[stat.TeamId].PassingYards < stat.PassingYards)
-                                maxPassers[stat.TeamId] = stat;
-                        }
+                        if (!maxPassers.ContainsKey(stat.TeamId) || maxPassers[stat.TeamId].PassingYards < stat.PassingYards)
+                            maxPassers[stat.TeamId] = stat;
                     }
                 }
+            }
 
             /*
                 foreach (BoxScoreDefenseRecord stat in model.TableModels[EditorModel.BOXSCORE_DEFENSE_TABLE].GetRecords())
@@ -1723,6 +1745,37 @@ namespace MaddenEditor.Forms
                     }
                 }
                  * */
+
+            foreach (BoxScoreOffensiveLineRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSIVE_LINE_TABLE].GetRecords())
+            {
+                if (stat.Week != currentWeek - 1 || stat.Season != currentSeason)
+                    continue;
+
+                if (!humanControlled.Contains(stat.TeamId))
+                {
+                    if (stat.SacksAllowed > 0)
+                        OLsackees[stat.TeamId].Add(stat);
+                    continue;
+                }
+
+                if (!fixHumanPancakes.Checked)
+                    continue;
+
+                int pancakes = stat.Pancakes;
+                for (int i = 0; i < pancakes; i++)
+                {
+                    if (rand.NextDouble() > pancakeProbability)
+                    {
+                        stat.Pancakes--;
+
+                        if (currentWeek < 19)
+                        {
+                            seasonStatsOffensiveLine[stat.PlayerId].Pancakes--;
+                            careerStatsOffensiveLine[stat.PlayerId].Pancakes--;
+                        }
+                    }
+                }
+            }
 
                 // fix first downs, etc.
                 foreach (int i in teamBoxScores.Keys)
@@ -1881,10 +1934,27 @@ namespace MaddenEditor.Forms
                             if (sackees[previousOpponents[stat.TeamId]][subtractFrom].Sacks == 0)
                                 sackees[previousOpponents[stat.TeamId]].RemoveAt(subtractFrom);
 
+                            int OLPGID = -1;
+                            if (OLsackees[previousOpponents[stat.TeamId]].Count > 0)
+                            {
+                                subtractFrom = rand.Next(OLsackees[previousOpponents[stat.TeamId]].Count);
+                                OLPGID = OLsackees[previousOpponents[stat.TeamId]][subtractFrom].PlayerId;
+
+                                OLsackees[previousOpponents[stat.TeamId]][subtractFrom].SacksAllowed--;
+                                if (OLsackees[previousOpponents[stat.TeamId]][subtractFrom].SacksAllowed == 0)
+                                    OLsackees[previousOpponents[stat.TeamId]].RemoveAt(subtractFrom);
+                            }
+
                             if (currentWeek < 19)
                             {
                                 seasonStatsOffense[QBPGID].Sacks--;
                                 careerStatsOffense[QBPGID].Sacks--;
+
+                                if (OLPGID >= 0)
+                                {
+                                    seasonStatsOffensiveLine[OLPGID].SacksAllowed--;
+                                    careerStatsOffensiveLine[OLPGID].SacksAllowed--;
+                                }
 
                                 teamStats[stat.TeamId].Sacks--;
                                 teamStats[previousOpponents[stat.TeamId]].SacksAllowed--;
