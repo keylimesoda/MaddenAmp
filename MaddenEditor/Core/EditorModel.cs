@@ -30,6 +30,7 @@ using System.Text;
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.Record.FranchiseState;
 
 namespace MaddenEditor.Core
 {
@@ -42,6 +43,12 @@ namespace MaddenEditor.Core
 		RosterFile, 
 		FranchiseFile 
 	}
+
+    public enum FranchiseState
+    {
+        RestrictedFreeAgents = 0,
+        ResignPlayers
+    }
 
 	public enum MaddenFileVersion
 	{
@@ -111,7 +118,14 @@ namespace MaddenEditor.Core
         public const string DRAFT_PICK_TABLE = "DRPK";
         public const string DRAFTED_PLAYERS_TABLE = "DRPL";
 
-        public const string FRANCHISE_STATE_TABLE = "SEAI";
+        // franchise state tables
+        public const string FRANCHISE_TIME_TABLE = "SEAI";
+        public const string DRAFT_STATE_TABLE = "DRIN";
+        public const string FREE_AGENCY_STATE_TABLE = "FAIN";
+        public const string RESIGN_PLAYERS_STATE_TABLE = "REIN";
+        public const string RFA_STATE_TABLE = "RFIN";
+        public const string SCOUTING_STATE_TABLE = "SCIN";
+        public const string FRANCHISE_STAGE_TABLE = "MOIN";
 
         // stats
         public const string BOXSCORE_DEFENSE_TABLE = "BDEF";
@@ -122,6 +136,9 @@ namespace MaddenEditor.Core
         public const string CAREER_STATS_DEFENSE_TABLE = "PCDE";
         public const string TEAM_STATS_TABLE = "TSSE";
         public const string BOXSCORE_TEAM_TABLE = "BTES";
+        public const string BOXSCORE_OFFENSIVE_LINE_TABLE = "BOLN";
+        public const string SEASON_STATS_OFFENSIVE_LINE_TABLE = "PSOL";
+        public const string CAREER_STATS_OFFENSIVE_LINE_TABLE = "PCOL";
 
 		private List<string[]> draftClassFields;
 
@@ -150,6 +167,24 @@ namespace MaddenEditor.Core
             return fileName;
         }
 
+        public void SetFranchiseState(int state)
+        {
+            DraftState.AtDraftStage = false;
+            RFAState.AtRFAStage = false;
+            ResignPlayersState.AtResignPlayersStage = false;
+            FreeAgencyState.AtFreeAgencyStage = false;
+
+            switch (state)
+            {
+                case (int)FranchiseState.ResignPlayers:
+                    ResignPlayersState.AtResignPlayersStage = true;
+                    break;
+                case (int)FranchiseState.RestrictedFreeAgents:
+                    RFAState.AtRFAStage = true;
+                    break;
+            }
+        }
+
 		public List<string[]> DraftClassFields
 		{
 			get
@@ -158,14 +193,62 @@ namespace MaddenEditor.Core
 			}
 		}
 
-        public FranchiseStateRecord FranchiseState
+        public FranchiseStageRecord FranchiseStage
         {
             get
             {
-                return (FranchiseStateRecord)tableModels[EditorModel.FRANCHISE_STATE_TABLE].GetRecord(0);
+                return (FranchiseStageRecord)tableModels[EditorModel.FRANCHISE_STAGE_TABLE].GetRecord(0);
             }
         }
-       // MADDEN DRAFT EDIT
+
+        public FranchiseTimeRecord FranchiseTime
+        {
+            get
+            {
+                return (FranchiseTimeRecord)tableModels[EditorModel.FRANCHISE_TIME_TABLE].GetRecord(0);
+            }
+        }
+
+        public DraftStateRecord DraftState
+        {
+            get
+            {
+                return (DraftStateRecord)tableModels[EditorModel.DRAFT_STATE_TABLE].GetRecord(0);
+            }
+        }
+
+        public FreeAgencyStateRecord FreeAgencyState
+        {
+            get
+            {
+                return (FreeAgencyStateRecord)tableModels[EditorModel.FREE_AGENCY_STATE_TABLE].GetRecord(0);
+            }
+        }
+
+        public ResignPlayersStateRecord ResignPlayersState
+        {
+            get
+            {
+                return (ResignPlayersStateRecord)tableModels[EditorModel.RESIGN_PLAYERS_STATE_TABLE].GetRecord(0);
+            }
+        }
+
+        public RFAStateRecord RFAState
+        {
+            get
+            {
+                return (RFAStateRecord)tableModels[EditorModel.RFA_STATE_TABLE].GetRecord(0);
+            }
+        }
+
+        public ScoutingStateRecord ScoutingState
+        {
+            get
+            {
+                return (ScoutingStateRecord)tableModels[EditorModel.SCOUTING_STATE_TABLE].GetRecord(0);
+            }
+        }
+        // MADDEN DRAFT EDIT
 		
 		public EditorModel(string filename, MainForm form)
 		{
@@ -370,6 +453,7 @@ namespace MaddenEditor.Core
                     // MADDEN DRAFT EDIT
                     tableOrder.Add(DRAFT_PICK_TABLE, -1);
                     tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);
+
                     tableOrder.Add(BOXSCORE_OFFENSE_TABLE, -1);
                     tableOrder.Add(BOXSCORE_DEFENSE_TABLE, -1);
                     tableOrder.Add(SEASON_STATS_DEFENSE_TABLE, -1);
@@ -378,7 +462,17 @@ namespace MaddenEditor.Core
                     tableOrder.Add(CAREER_STATS_OFFENSE_TABLE, -1);
                     tableOrder.Add(TEAM_STATS_TABLE, -1);
                     tableOrder.Add(BOXSCORE_TEAM_TABLE, -1);
-                    tableOrder.Add(FRANCHISE_STATE_TABLE, -1);
+                    tableOrder.Add(BOXSCORE_OFFENSIVE_LINE_TABLE, -1);
+                    tableOrder.Add(SEASON_STATS_OFFENSIVE_LINE_TABLE, -1);
+                    tableOrder.Add(CAREER_STATS_OFFENSIVE_LINE_TABLE, -1);
+                    tableOrder.Add(FRANCHISE_TIME_TABLE, -1);
+
+                    tableOrder.Add(SCOUTING_STATE_TABLE, -1);
+                    tableOrder.Add(RFA_STATE_TABLE, -1);
+                    tableOrder.Add(RESIGN_PLAYERS_STATE_TABLE, -1);
+                    tableOrder.Add(FREE_AGENCY_STATE_TABLE, -1);
+                    tableOrder.Add(DRAFT_STATE_TABLE, -1);
+                    tableOrder.Add(FRANCHISE_STAGE_TABLE, -1);
                     // MADDEN DRAFT EDIT
 					if (fileVersion >= MaddenFileVersion.Ver2005)
 					{

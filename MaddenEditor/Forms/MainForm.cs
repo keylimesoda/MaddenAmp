@@ -744,7 +744,181 @@ namespace MaddenEditor.Forms
             wm.Show();
         }
 
-		// MADDEN DRAFT EDIT
+        private void fixProgressionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LocalMath math = new LocalMath(model.FileVersion);
+            Random rand = new Random();
+            DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 
-	}
+            // current players sorted by position
+            List<List<PlayerRecord>> playersByPosition = new List<List<PlayerRecord>>();
+            List<List<int>> targetsByPosition = new List<List<int>>();
+            Dictionary<int, List<double>> playerTargets = new Dictionary<int, List<double>>();
+
+            List<PlayerRecord> freeAgents = new List<PlayerRecord>();
+            List<PlayerRecord> rookies = new List<PlayerRecord>();
+
+            for (int i = 0; i < 21; i++)
+            {
+                playersByPosition.Add(new List<PlayerRecord>());
+                targetsByPosition.Add(new List<int>());
+
+                for (int j = 0; j < 100; j++)
+                    targetsByPosition[i].Add(0);
+            }
+
+            int numPlayers = 0;
+            foreach (PlayerRecord player in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (player.TeamId < 32)
+                {
+                    playersByPosition[player.PositionId].Add(player);
+                    playerTargets[player.PlayerId] = new List<double>();
+
+                    if (player.YearsPro == 0)
+                        rookies.Add(player);
+
+                    double mu = player.Overall + math.theta(6 - player.YearsPro) * (double)(6-player.YearsPro) -
+				        math.theta(player.Age + 3.0 - dcr.positionData[player.PositionId].RetirementAge)*(player.Age + 3.0 - dcr.positionData[player.PositionId].RetirementAge);
+                    double sigma = 2.0 + 1.2 * math.theta(6 - player.YearsPro) * (double)(6 - player.YearsPro) +
+                        1.2 * math.theta(player.Age + 3.0 - dcr.positionData[player.PositionId].RetirementAge) * (double)(player.Age + 3.0 - dcr.positionData[player.PositionId].RetirementAge);
+
+                    for (int i = 0; i < 100; i++)
+                        playerTargets[player.PlayerId].Add(Math.Exp(-Math.Pow((double)i-mu,2.0)/(2.0*Math.Pow(sigma,2.0))));
+                }
+                else if (player.TeamId == 1009)
+                    freeAgents.Add(player);
+                else if (player.TeamId == 1015)
+                    rookies.Add(player);
+                else
+                    continue;
+
+                numPlayers++;
+            }
+
+            // targets for each OVR
+            List<int> targets = new List<int>();
+            int total = 0;
+            for (int x = 0; x < 100; x++)
+            {
+                double num = ((double)numPlayers / 22.4726) *
+                    Math.Exp(-Math.Pow(x - 77.83433433433433, 2) / 163.4356002649296);
+
+                int target = (int)Math.Round(math.bellcurve(num, Math.Sqrt(num), rand));
+
+                targets.Add(target);
+                total += target;
+            }
+
+            // subtract FA's and rookies as players already allocated, since
+            // we don't want to adjust these guys at all.
+            foreach (PlayerRecord player in freeAgents)
+            {
+                if (targets[player.Overall] > 0)
+                {
+                    targets[player.Overall]--;
+                    total--;
+                }
+                numPlayers--;
+            }
+
+            foreach (PlayerRecord player in rookies)
+            {
+                if (targets[player.Overall] > 0)
+                {
+                    targets[player.Overall]--;
+                    total--;
+                }
+                numPlayers--;
+            }
+
+            // fix up any error
+            for (int i = 0; i < Math.Abs(total - numPlayers); i++)
+            {
+                // pick a random bin to adjust
+                int fix = Math.Min(99,Math.Max(0,(int)Math.Round(math.bellcurve(77.83, 9.04, rand))));
+
+                if (targets[fix] == 0 && total > numPlayers)
+                {
+                    i--; continue;
+                }
+
+                targets[fix] = targets[fix] + Math.Sign(numPlayers - total);
+            }
+
+            // distribute these targets to each position
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < targets[i]; j++)
+                    targetsByPosition[rand.Next(0, 21)][i]++;
+            }
+
+            // now make adjustments
+            for (int i = 0; i < 21; i++)
+            {
+                List<int> adjusted = new List<int>();
+                for (int j = 99; j >= 0; j--)
+                {
+                    Dictionary<int, double> relProbs = new Dictionary<int,double>();
+                    double totalProbs = 0;
+                    foreach (PlayerRecord player in playersByPosition[i])
+                    {
+                        if (adjusted.Contains(player.PlayerId))
+                            continue;
+
+                        double probTotal = 0;
+                        for (int k = 0; k <= j; k++)
+                            probTotal += playerTargets[player.PlayerId][j];
+
+                        relProbs[player.PlayerId] = playerTargets[player.PlayerId][j] / probTotal;
+                        totalProbs += relProbs[player.PlayerId];
+                    }
+
+                    for (int k = 0; k < targetsByPosition[i][j]; k++)
+                    {
+                        double tempProb = 0;
+                        double testRand = totalProbs * rand.NextDouble();
+
+                        foreach (PlayerRecord player in playersByPosition[i])
+                        {
+                            if (adjusted.Contains(player.PlayerId))
+                                continue;
+
+                            if (testRand < tempProb + relProbs[player.PlayerId])
+                            {
+                                // adjust this guy
+                                Console.WriteLine(player.ToString() + ", Age: " + player.Age + ", Previous OVR: " + player.Overall + ", Adjusted OVR: " + j);
+                                adjusted.Add(player.PlayerId);
+                                break;
+                            }
+
+                            tempProb += relProbs[player.PlayerId];
+                        }
+                    }
+                }
+            }
+            
+            /*
+            Dictionary<int, int> bins = new Dictionary<int, int>();
+
+            for (int i = 0; i < 100; i++)
+                bins[i] = 0;
+
+            foreach (PlayerRecord player in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                bins[player.Overall]++;
+            }
+             * */
+
+            Console.Write("{");
+            for (int i = 0; i < 99; i++)
+            {
+                Console.Write(targets[i] + ", ");
+            }
+            Console.WriteLine(targets[99] + "}");
+        }
+
+        // MADDEN DRAFT EDIT
+
+    }
 }

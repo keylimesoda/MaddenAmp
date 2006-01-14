@@ -4,12 +4,12 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record
 {
-    public class FranchiseStateRecord : TableRecordModel
+    public class FranchiseTimeRecord : TableRecordModel
     {
         public const string SEASON = "SEYR";
         public const string WEEK = "SEWN";
 
-		public FranchiseStateRecord(int record, TableModel tableModel, EditorModel EditorModel)
+		public FranchiseTimeRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 

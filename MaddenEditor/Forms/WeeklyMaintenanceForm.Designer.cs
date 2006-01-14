@@ -123,6 +123,7 @@ namespace MaddenEditor.Forms
             this.simOffAggSlider = new System.Windows.Forms.TrackBar();
             this.simOffRPUpDown = new System.Windows.Forms.NumericUpDown();
             this.simOffRPSlider = new System.Windows.Forms.TrackBar();
+            this.fixHumanPancakes = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.PlayersTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -291,6 +292,7 @@ namespace MaddenEditor.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.fixHumanPancakes);
             this.groupBox3.Controls.Add(this.fixSimEngine);
             this.groupBox3.Controls.Add(this.reorderDepthCharts);
             this.groupBox3.Location = new System.Drawing.Point(8, 308);
@@ -1379,6 +1381,18 @@ namespace MaddenEditor.Forms
             this.simOffRPSlider.Value = 53;
             this.simOffRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
+            // fixHumanPancakes
+            // 
+            this.fixHumanPancakes.AutoSize = true;
+            this.fixHumanPancakes.Checked = true;
+            this.fixHumanPancakes.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.fixHumanPancakes.Location = new System.Drawing.Point(40, 85);
+            this.fixHumanPancakes.Name = "fixHumanPancakes";
+            this.fixHumanPancakes.Size = new System.Drawing.Size(154, 17);
+            this.fixHumanPancakes.TabIndex = 2;
+            this.fixHumanPancakes.Text = "Fix Human Pancake Totals";
+            this.fixHumanPancakes.UseVisualStyleBackColor = true;
+            // 
             // WeeklyMaintenanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1555,5 +1569,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem dumpStatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixAllStatsToolStripMenuItem;
+        private System.Windows.Forms.CheckBox fixHumanPancakes;
     }
 }
