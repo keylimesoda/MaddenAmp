@@ -24,9 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-// MADDEN DRAFT EDIT
-//using MaddenEditor.ConSole;
-// MADDEN DRAFT EDIT
 using MaddenEditor.Db;
 using MaddenEditor.Forms;
 using MaddenEditor.Core.Record;

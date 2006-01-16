@@ -45,6 +45,7 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.trainingCampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -167,7 +168,8 @@ namespace MaddenEditor.Forms
             this.searchforCoachesToolStripMenuItem,
             this.toolStripSeparator3,
             this.depthChartEditorToolStripMenuItem,
-            this.globalPlayerAttrEditorToolStripMenuItem});
+            this.globalPlayerAttrEditorToolStripMenuItem,
+			this.trainingCampToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -204,6 +206,13 @@ namespace MaddenEditor.Forms
             this.globalPlayerAttrEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.globalPlayerAttrEditorToolStripMenuItem.Text = "Global Player Attr Editor ...";
             this.globalPlayerAttrEditorToolStripMenuItem.Click += new System.EventHandler(this.globalPlayerAttrEditorToolStripMenuItem_Click);
+			// 
+			// trainingCampToolStripMenuItem
+			// 
+			this.trainingCampToolStripMenuItem.Name = "trainingCampToolStripMenuItem";
+			this.trainingCampToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.trainingCampToolStripMenuItem.Text = "Training Camp ...";
+			this.trainingCampToolStripMenuItem.Click += new System.EventHandler(this.trainingCampToolStripMenuItem_Click);
             // 
             // franchiseToolStripMenuItem
             // 
@@ -519,5 +528,6 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem simulateCPUMinicampsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem weeklyMaintenanceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixProgressionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trainingCampToolStripMenuItem;
     }
 }

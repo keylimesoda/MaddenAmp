@@ -390,7 +390,7 @@ namespace MaddenEditor.Forms
 			this.label110.AutoSize = true;
 			this.label110.Location = new System.Drawing.Point(8, 258);
 			this.label110.Name = "label110";
-			this.label110.Size = new System.Drawing.Size(51, 13);
+			this.label110.Size = new System.Drawing.Size(55, 13);
 			this.label110.TabIndex = 39;
 			this.label110.Text = "Tendancy";
 			// 
@@ -430,7 +430,7 @@ namespace MaddenEditor.Forms
 			this.playerDominantHand.AutoSize = true;
 			this.playerDominantHand.Location = new System.Drawing.Point(124, 198);
 			this.playerDominantHand.Name = "playerDominantHand";
-			this.playerDominantHand.Size = new System.Drawing.Size(81, 17);
+			this.playerDominantHand.Size = new System.Drawing.Size(85, 17);
 			this.playerDominantHand.TabIndex = 7;
 			this.playerDominantHand.Text = "Left Handed";
 			this.playerDominantHand.CheckedChanged += new System.EventHandler(this.playerDominantHand_CheckedChanged);
@@ -485,7 +485,7 @@ namespace MaddenEditor.Forms
 			this.label9.AutoSize = true;
 			this.label9.Location = new System.Drawing.Point(8, 224);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(51, 13);
+			this.label9.Size = new System.Drawing.Size(55, 13);
 			this.label9.TabIndex = 14;
 			this.label9.Text = "Years Exp";
 			// 
@@ -494,7 +494,7 @@ namespace MaddenEditor.Forms
 			this.label8.AutoSize = true;
 			this.label8.Location = new System.Drawing.Point(16, 199);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(43, 13);
+			this.label8.Size = new System.Drawing.Size(47, 13);
 			this.label8.TabIndex = 13;
 			this.label8.Text = "Jersey #";
 			// 
@@ -503,7 +503,7 @@ namespace MaddenEditor.Forms
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(19, 172);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(40, 13);
+			this.label7.Size = new System.Drawing.Size(44, 13);
 			this.label7.TabIndex = 12;
 			this.label7.Text = "Position";
 			// 
@@ -512,7 +512,7 @@ namespace MaddenEditor.Forms
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(27, 145);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(30, 13);
+			this.label6.Size = new System.Drawing.Size(34, 13);
 			this.label6.TabIndex = 11;
 			this.label6.Text = "Team";
 			// 
@@ -810,7 +810,7 @@ namespace MaddenEditor.Forms
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(19, 118);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(38, 13);
+			this.label5.Size = new System.Drawing.Size(42, 13);
 			this.label5.TabIndex = 9;
 			this.label5.Text = "College";
 			// 
@@ -819,7 +819,7 @@ namespace MaddenEditor.Forms
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(34, 89);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(22, 13);
+			this.label4.Size = new System.Drawing.Size(26, 13);
 			this.label4.TabIndex = 8;
 			this.label4.Text = "Age";
 			// 
@@ -847,7 +847,7 @@ namespace MaddenEditor.Forms
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(3, 65);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(54, 13);
+			this.label3.Size = new System.Drawing.Size(58, 13);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Last Name";
 			// 
@@ -857,7 +857,7 @@ namespace MaddenEditor.Forms
 			this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label2.Location = new System.Drawing.Point(0, 6);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(212, 18);
+			this.label2.Size = new System.Drawing.Size(215, 18);
 			this.label2.TabIndex = 2;
 			this.label2.Text = "PLAYER INFORMATION";
 			// 
@@ -866,7 +866,7 @@ namespace MaddenEditor.Forms
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(3, 40);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(53, 13);
+			this.label1.Size = new System.Drawing.Size(57, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "First Name";
 			// 
@@ -903,7 +903,7 @@ namespace MaddenEditor.Forms
 			this.filterDraftClassCheckBox.AutoSize = true;
 			this.filterDraftClassCheckBox.Location = new System.Drawing.Point(7, 67);
 			this.filterDraftClassCheckBox.Name = "filterDraftClassCheckBox";
-			this.filterDraftClassCheckBox.Size = new System.Drawing.Size(73, 17);
+			this.filterDraftClassCheckBox.Size = new System.Drawing.Size(77, 17);
 			this.filterDraftClassCheckBox.TabIndex = 4;
 			this.filterDraftClassCheckBox.Text = "Draft Class";
 			this.filterDraftClassCheckBox.CheckedChanged += new System.EventHandler(this.filterDraftClassCheckBox_CheckedChanged);
@@ -958,7 +958,7 @@ namespace MaddenEditor.Forms
 			this.teamCheckBox.AutoSize = true;
 			this.teamCheckBox.Location = new System.Drawing.Point(7, 20);
 			this.teamCheckBox.Name = "teamCheckBox";
-			this.teamCheckBox.Size = new System.Drawing.Size(49, 17);
+			this.teamCheckBox.Size = new System.Drawing.Size(53, 17);
 			this.teamCheckBox.TabIndex = 0;
 			this.teamCheckBox.Text = "Team";
 			this.teamCheckBox.CheckedChanged += new System.EventHandler(this.teamCheckBox_CheckedChanged);
@@ -969,7 +969,7 @@ namespace MaddenEditor.Forms
 			this.positionCheckBox.AutoSize = true;
 			this.positionCheckBox.Location = new System.Drawing.Point(7, 43);
 			this.positionCheckBox.Name = "positionCheckBox";
-			this.positionCheckBox.Size = new System.Drawing.Size(59, 17);
+			this.positionCheckBox.Size = new System.Drawing.Size(63, 17);
 			this.positionCheckBox.TabIndex = 2;
 			this.positionCheckBox.Text = "Position";
 			this.positionCheckBox.CheckedChanged += new System.EventHandler(this.positionCheckBox_CheckedChanged);
@@ -1057,7 +1057,7 @@ namespace MaddenEditor.Forms
 			this.label107.AutoSize = true;
 			this.label107.Location = new System.Drawing.Point(370, 232);
 			this.label107.Name = "label107";
-			this.label107.Size = new System.Drawing.Size(90, 13);
+			this.label107.Size = new System.Drawing.Size(94, 13);
 			this.label107.TabIndex = 74;
 			this.label107.Text = "Draft Round Index";
 			// 
@@ -1066,7 +1066,7 @@ namespace MaddenEditor.Forms
 			this.label106.AutoSize = true;
 			this.label106.Location = new System.Drawing.Point(399, 202);
 			this.label106.Name = "label106";
-			this.label106.Size = new System.Drawing.Size(61, 13);
+			this.label106.Size = new System.Drawing.Size(65, 13);
 			this.label106.TabIndex = 73;
 			this.label106.Text = "Draft Round";
 			// 
@@ -1125,7 +1125,7 @@ namespace MaddenEditor.Forms
 			this.label78.AutoSize = true;
 			this.label78.Location = new System.Drawing.Point(37, 38);
 			this.label78.Name = "label78";
-			this.label78.Size = new System.Drawing.Size(63, 13);
+			this.label78.Size = new System.Drawing.Size(67, 13);
 			this.label78.TabIndex = 68;
 			this.label78.Text = "Enhance by ";
 			this.label78.Visible = false;
@@ -1157,7 +1157,7 @@ namespace MaddenEditor.Forms
 			this.label75.AutoSize = true;
 			this.label75.Location = new System.Drawing.Point(103, 62);
 			this.label75.Name = "label75";
-			this.label75.Size = new System.Drawing.Size(11, 13);
+			this.label75.Size = new System.Drawing.Size(15, 13);
 			this.label75.TabIndex = 67;
 			this.label75.Text = "%";
 			this.label75.Visible = false;
@@ -1167,7 +1167,7 @@ namespace MaddenEditor.Forms
 			this.playerProBowl.AutoSize = true;
 			this.playerProBowl.Location = new System.Drawing.Point(455, 263);
 			this.playerProBowl.Name = "playerProBowl";
-			this.playerProBowl.Size = new System.Drawing.Size(61, 17);
+			this.playerProBowl.Size = new System.Drawing.Size(65, 17);
 			this.playerProBowl.TabIndex = 23;
 			this.playerProBowl.Text = "ProBowl";
 			this.playerProBowl.CheckedChanged += new System.EventHandler(this.playerProBowl_CheckedChanged);
@@ -1200,7 +1200,7 @@ namespace MaddenEditor.Forms
 			this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label37.Location = new System.Drawing.Point(19, 15);
 			this.label37.Name = "label37";
-			this.label37.Size = new System.Drawing.Size(65, 15);
+			this.label37.Size = new System.Drawing.Size(68, 15);
 			this.label37.TabIndex = 54;
 			this.label37.Text = "OVERALL";
 			// 
@@ -1209,7 +1209,7 @@ namespace MaddenEditor.Forms
 			this.label35.AutoSize = true;
 			this.label35.Location = new System.Drawing.Point(392, 328);
 			this.label35.Name = "label35";
-			this.label35.Size = new System.Drawing.Size(48, 13);
+			this.label35.Size = new System.Drawing.Size(52, 13);
 			this.label35.TabIndex = 51;
 			this.label35.Text = "Portrait Id";
 			// 
@@ -1231,7 +1231,7 @@ namespace MaddenEditor.Forms
 			this.playerNFLIcon.AutoSize = true;
 			this.playerNFLIcon.Location = new System.Drawing.Point(455, 286);
 			this.playerNFLIcon.Name = "playerNFLIcon";
-			this.playerNFLIcon.Size = new System.Drawing.Size(66, 17);
+			this.playerNFLIcon.Size = new System.Drawing.Size(70, 17);
 			this.playerNFLIcon.TabIndex = 24;
 			this.playerNFLIcon.Text = "NFL Icon";
 			this.playerNFLIcon.CheckedChanged += new System.EventHandler(this.playerNFLIcon_CheckedChanged);
@@ -1262,7 +1262,7 @@ namespace MaddenEditor.Forms
 			this.label34.AutoSize = true;
 			this.label34.Location = new System.Drawing.Point(425, 407);
 			this.label34.Name = "label34";
-			this.label34.Size = new System.Drawing.Size(35, 13);
+			this.label34.Size = new System.Drawing.Size(39, 13);
 			this.label34.TabIndex = 45;
 			this.label34.Text = "Morale";
 			// 
@@ -1271,7 +1271,7 @@ namespace MaddenEditor.Forms
 			this.label33.AutoSize = true;
 			this.label33.Location = new System.Drawing.Point(404, 368);
 			this.label33.Name = "label33";
-			this.label33.Size = new System.Drawing.Size(56, 13);
+			this.label33.Size = new System.Drawing.Size(60, 13);
 			this.label33.TabIndex = 44;
 			this.label33.Text = "Importance";
 			// 
@@ -1280,7 +1280,7 @@ namespace MaddenEditor.Forms
 			this.label30.AutoSize = true;
 			this.label30.Location = new System.Drawing.Point(232, 407);
 			this.label30.Name = "label30";
-			this.label30.Size = new System.Drawing.Size(56, 13);
+			this.label30.Size = new System.Drawing.Size(60, 13);
 			this.label30.TabIndex = 39;
 			this.label30.Text = "Toughness";
 			// 
@@ -1289,7 +1289,7 @@ namespace MaddenEditor.Forms
 			this.label29.AutoSize = true;
 			this.label29.Location = new System.Drawing.Point(260, 368);
 			this.label29.Name = "label29";
-			this.label29.Size = new System.Drawing.Size(28, 13);
+			this.label29.Size = new System.Drawing.Size(32, 13);
 			this.label29.TabIndex = 38;
 			this.label29.Text = "Injury";
 			// 
@@ -1298,7 +1298,7 @@ namespace MaddenEditor.Forms
 			this.label28.AutoSize = true;
 			this.label28.Location = new System.Drawing.Point(247, 329);
 			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(41, 13);
+			this.label28.Size = new System.Drawing.Size(45, 13);
 			this.label28.TabIndex = 37;
 			this.label28.Text = "Stamina";
 			// 
@@ -1307,7 +1307,7 @@ namespace MaddenEditor.Forms
 			this.label27.AutoSize = true;
 			this.label27.Location = new System.Drawing.Point(229, 290);
 			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(59, 13);
+			this.label27.Size = new System.Drawing.Size(63, 13);
 			this.label27.TabIndex = 36;
 			this.label27.Text = "Kick Return";
 			// 
@@ -1316,7 +1316,7 @@ namespace MaddenEditor.Forms
 			this.label26.AutoSize = true;
 			this.label26.Location = new System.Drawing.Point(216, 251);
 			this.label26.Name = "label26";
-			this.label26.Size = new System.Drawing.Size(72, 13);
+			this.label26.Size = new System.Drawing.Size(76, 13);
 			this.label26.TabIndex = 35;
 			this.label26.Text = "Kick Accuracy";
 			// 
@@ -1325,7 +1325,7 @@ namespace MaddenEditor.Forms
 			this.label25.AutoSize = true;
 			this.label25.Location = new System.Drawing.Point(231, 211);
 			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(57, 13);
+			this.label25.Size = new System.Drawing.Size(61, 13);
 			this.label25.TabIndex = 34;
 			this.label25.Text = "Kick Power";
 			// 
@@ -1334,7 +1334,7 @@ namespace MaddenEditor.Forms
 			this.label24.AutoSize = true;
 			this.label24.Location = new System.Drawing.Point(222, 173);
 			this.label24.Name = "label24";
-			this.label24.Size = new System.Drawing.Size(67, 13);
+			this.label24.Size = new System.Drawing.Size(71, 13);
 			this.label24.TabIndex = 33;
 			this.label24.Text = "Run Blocking";
 			// 
@@ -1343,7 +1343,7 @@ namespace MaddenEditor.Forms
 			this.label23.AutoSize = true;
 			this.label23.Location = new System.Drawing.Point(218, 133);
 			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(70, 13);
+			this.label23.Size = new System.Drawing.Size(74, 13);
 			this.label23.TabIndex = 32;
 			this.label23.Text = "Pass Blocking";
 			// 
@@ -1352,7 +1352,7 @@ namespace MaddenEditor.Forms
 			this.label22.AutoSize = true;
 			this.label22.Location = new System.Drawing.Point(207, 95);
 			this.label22.Name = "label22";
-			this.label22.Size = new System.Drawing.Size(81, 13);
+			this.label22.Size = new System.Drawing.Size(85, 13);
 			this.label22.TabIndex = 31;
 			this.label22.Text = "Throw Accuracy";
 			// 
@@ -1361,7 +1361,7 @@ namespace MaddenEditor.Forms
 			this.label21.AutoSize = true;
 			this.label21.Location = new System.Drawing.Point(222, 56);
 			this.label21.Name = "label21";
-			this.label21.Size = new System.Drawing.Size(66, 13);
+			this.label21.Size = new System.Drawing.Size(70, 13);
 			this.label21.TabIndex = 30;
 			this.label21.Text = "Throw Power";
 			// 
@@ -1617,7 +1617,7 @@ namespace MaddenEditor.Forms
 			this.label20.AutoSize = true;
 			this.label20.Location = new System.Drawing.Point(49, 407);
 			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(36, 13);
+			this.label20.Size = new System.Drawing.Size(40, 13);
 			this.label20.TabIndex = 10;
 			this.label20.Text = "Tackle";
 			// 
@@ -1626,7 +1626,7 @@ namespace MaddenEditor.Forms
 			this.label19.AutoSize = true;
 			this.label19.Location = new System.Drawing.Point(17, 368);
 			this.label19.Name = "label19";
-			this.label19.Size = new System.Drawing.Size(67, 13);
+			this.label19.Size = new System.Drawing.Size(71, 13);
 			this.label19.TabIndex = 9;
 			this.label19.Text = "Break Tackle";
 			// 
@@ -1635,7 +1635,7 @@ namespace MaddenEditor.Forms
 			this.label18.AutoSize = true;
 			this.label18.Location = new System.Drawing.Point(22, 213);
 			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(62, 13);
+			this.label18.Size = new System.Drawing.Size(66, 13);
 			this.label18.TabIndex = 8;
 			this.label18.Text = "Acceleration";
 			// 
@@ -1644,7 +1644,7 @@ namespace MaddenEditor.Forms
 			this.label17.AutoSize = true;
 			this.label17.Location = new System.Drawing.Point(39, 251);
 			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(45, 13);
+			this.label17.Size = new System.Drawing.Size(49, 13);
 			this.label17.TabIndex = 7;
 			this.label17.Text = "Catching";
 			// 
@@ -1653,7 +1653,7 @@ namespace MaddenEditor.Forms
 			this.label16.AutoSize = true;
 			this.label16.Location = new System.Drawing.Point(43, 292);
 			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(41, 13);
+			this.label16.Size = new System.Drawing.Size(45, 13);
 			this.label16.TabIndex = 6;
 			this.label16.Text = "Carrying";
 			// 
@@ -1662,7 +1662,7 @@ namespace MaddenEditor.Forms
 			this.label15.AutoSize = true;
 			this.label15.Location = new System.Drawing.Point(43, 329);
 			this.label15.Name = "label15";
-			this.label15.Size = new System.Drawing.Size(42, 13);
+			this.label15.Size = new System.Drawing.Size(46, 13);
 			this.label15.TabIndex = 5;
 			this.label15.Text = "Jumping";
 			// 
@@ -1671,7 +1671,7 @@ namespace MaddenEditor.Forms
 			this.label14.AutoSize = true;
 			this.label14.Location = new System.Drawing.Point(54, 173);
 			this.label14.Name = "label14";
-			this.label14.Size = new System.Drawing.Size(30, 13);
+			this.label14.Size = new System.Drawing.Size(34, 13);
 			this.label14.TabIndex = 4;
 			this.label14.Text = "Agility";
 			// 
@@ -1680,7 +1680,7 @@ namespace MaddenEditor.Forms
 			this.label13.AutoSize = true;
 			this.label13.Location = new System.Drawing.Point(29, 134);
 			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(55, 13);
+			this.label13.Size = new System.Drawing.Size(59, 13);
 			this.label13.TabIndex = 3;
 			this.label13.Text = "Awareness";
 			// 
@@ -1689,7 +1689,7 @@ namespace MaddenEditor.Forms
 			this.label12.AutoSize = true;
 			this.label12.Location = new System.Drawing.Point(41, 95);
 			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(43, 13);
+			this.label12.Size = new System.Drawing.Size(47, 13);
 			this.label12.TabIndex = 2;
 			this.label12.Text = "Strength";
 			// 
@@ -1711,7 +1711,7 @@ namespace MaddenEditor.Forms
 			this.label11.AutoSize = true;
 			this.label11.Location = new System.Drawing.Point(50, 56);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(34, 13);
+			this.label11.Size = new System.Drawing.Size(38, 13);
 			this.label11.TabIndex = 0;
 			this.label11.Text = "Speed";
 			// 
@@ -1793,7 +1793,7 @@ namespace MaddenEditor.Forms
 			this.label71.AutoSize = true;
 			this.label71.Location = new System.Drawing.Point(292, 389);
 			this.label71.Name = "label71";
-			this.label71.Size = new System.Drawing.Size(73, 13);
+			this.label71.Size = new System.Drawing.Size(77, 13);
 			this.label71.TabIndex = 63;
 			this.label71.Text = "Throwing Style";
 			// 
@@ -1815,7 +1815,7 @@ namespace MaddenEditor.Forms
 			this.label67.AutoSize = true;
 			this.label67.Location = new System.Drawing.Point(306, 350);
 			this.label67.Name = "label67";
-			this.label67.Size = new System.Drawing.Size(59, 13);
+			this.label67.Size = new System.Drawing.Size(63, 13);
 			this.label67.TabIndex = 61;
 			this.label67.Text = "Right Tatoo";
 			// 
@@ -1824,7 +1824,7 @@ namespace MaddenEditor.Forms
 			this.label66.AutoSize = true;
 			this.label66.Location = new System.Drawing.Point(313, 313);
 			this.label66.Name = "label66";
-			this.label66.Size = new System.Drawing.Size(52, 13);
+			this.label66.Size = new System.Drawing.Size(56, 13);
 			this.label66.TabIndex = 59;
 			this.label66.Text = "Left Tatoo";
 			// 
@@ -1881,7 +1881,7 @@ namespace MaddenEditor.Forms
 			this.label65.AutoSize = true;
 			this.label65.Location = new System.Drawing.Point(304, 274);
 			this.label65.Name = "label65";
-			this.label65.Size = new System.Drawing.Size(61, 13);
+			this.label65.Size = new System.Drawing.Size(65, 13);
 			this.label65.TabIndex = 57;
 			this.label65.Text = "Face Shape";
 			this.label65.Visible = false;
@@ -1906,7 +1906,7 @@ namespace MaddenEditor.Forms
 			this.label64.AutoSize = true;
 			this.label64.Location = new System.Drawing.Point(326, 239);
 			this.label64.Name = "label64";
-			this.label64.Size = new System.Drawing.Size(39, 13);
+			this.label64.Size = new System.Drawing.Size(43, 13);
 			this.label64.TabIndex = 55;
 			this.label64.Text = "Face Id";
 			// 
@@ -1928,7 +1928,7 @@ namespace MaddenEditor.Forms
 			this.label63.AutoSize = true;
 			this.label63.Location = new System.Drawing.Point(317, 201);
 			this.label63.Name = "label63";
-			this.label63.Size = new System.Drawing.Size(48, 13);
+			this.label63.Size = new System.Drawing.Size(52, 13);
 			this.label63.TabIndex = 53;
 			this.label63.Text = "Hair Style";
 			// 
@@ -1980,7 +1980,7 @@ namespace MaddenEditor.Forms
 			this.label62.AutoSize = true;
 			this.label62.Location = new System.Drawing.Point(316, 161);
 			this.label62.Name = "label62";
-			this.label62.Size = new System.Drawing.Size(49, 13);
+			this.label62.Size = new System.Drawing.Size(53, 13);
 			this.label62.TabIndex = 51;
 			this.label62.Text = "Hair Color";
 			// 
@@ -2006,7 +2006,7 @@ namespace MaddenEditor.Forms
 			this.label61.AutoSize = true;
 			this.label61.Location = new System.Drawing.Point(314, 123);
 			this.label61.Name = "label61";
-			this.label61.Size = new System.Drawing.Size(51, 13);
+			this.label61.Size = new System.Drawing.Size(55, 13);
 			this.label61.TabIndex = 49;
 			this.label61.Text = "Skin Color";
 			this.label61.Visible = false;
@@ -2016,7 +2016,7 @@ namespace MaddenEditor.Forms
 			this.label36.AutoSize = true;
 			this.label36.Location = new System.Drawing.Point(460, 49);
 			this.label36.Name = "label36";
-			this.label36.Size = new System.Drawing.Size(16, 13);
+			this.label36.Size = new System.Drawing.Size(20, 13);
 			this.label36.TabIndex = 46;
 			this.label36.Text = "lbs";
 			// 
@@ -2079,7 +2079,7 @@ namespace MaddenEditor.Forms
 			this.label32.AutoSize = true;
 			this.label32.Location = new System.Drawing.Point(331, 86);
 			this.label32.Name = "label32";
-			this.label32.Size = new System.Drawing.Size(34, 13);
+			this.label32.Size = new System.Drawing.Size(38, 13);
 			this.label32.TabIndex = 47;
 			this.label32.Text = "Height";
 			// 
@@ -2088,7 +2088,7 @@ namespace MaddenEditor.Forms
 			this.label31.AutoSize = true;
 			this.label31.Location = new System.Drawing.Point(331, 49);
 			this.label31.Name = "label31";
-			this.label31.Size = new System.Drawing.Size(37, 13);
+			this.label31.Size = new System.Drawing.Size(41, 13);
 			this.label31.TabIndex = 44;
 			this.label31.Text = "Weight";
 			// 
@@ -2097,7 +2097,7 @@ namespace MaddenEditor.Forms
 			this.label60.AutoSize = true;
 			this.label60.Location = new System.Drawing.Point(168, 429);
 			this.label60.Name = "label60";
-			this.label60.Size = new System.Drawing.Size(34, 13);
+			this.label60.Size = new System.Drawing.Size(38, 13);
 			this.label60.TabIndex = 41;
 			this.label60.Text = "Shape";
 			// 
@@ -2106,7 +2106,7 @@ namespace MaddenEditor.Forms
 			this.label59.AutoSize = true;
 			this.label59.Location = new System.Drawing.Point(158, 389);
 			this.label59.Name = "label59";
-			this.label59.Size = new System.Drawing.Size(44, 13);
+			this.label59.Size = new System.Drawing.Size(48, 13);
 			this.label59.TabIndex = 39;
 			this.label59.Text = "Rear Fat";
 			// 
@@ -2115,7 +2115,7 @@ namespace MaddenEditor.Forms
 			this.label58.AutoSize = true;
 			this.label58.Location = new System.Drawing.Point(165, 353);
 			this.label58.Name = "label58";
-			this.label58.Size = new System.Drawing.Size(37, 13);
+			this.label58.Size = new System.Drawing.Size(41, 13);
 			this.label58.TabIndex = 33;
 			this.label58.Text = "Muscle";
 			// 
@@ -2124,7 +2124,7 @@ namespace MaddenEditor.Forms
 			this.label57.AutoSize = true;
 			this.label57.Location = new System.Drawing.Point(163, 274);
 			this.label57.Name = "label57";
-			this.label57.Size = new System.Drawing.Size(39, 13);
+			this.label57.Size = new System.Drawing.Size(43, 13);
 			this.label57.TabIndex = 31;
 			this.label57.Text = "Calf Fat";
 			// 
@@ -2133,7 +2133,7 @@ namespace MaddenEditor.Forms
 			this.label56.AutoSize = true;
 			this.label56.Location = new System.Drawing.Point(144, 236);
 			this.label56.Name = "label56";
-			this.label56.Size = new System.Drawing.Size(58, 13);
+			this.label56.Size = new System.Drawing.Size(62, 13);
 			this.label56.TabIndex = 28;
 			this.label56.Text = "Calf Muscle";
 			// 
@@ -2142,7 +2142,7 @@ namespace MaddenEditor.Forms
 			this.label55.AutoSize = true;
 			this.label55.Location = new System.Drawing.Point(154, 196);
 			this.label55.Name = "label55";
-			this.label55.Size = new System.Drawing.Size(48, 13);
+			this.label55.Size = new System.Drawing.Size(52, 13);
 			this.label55.TabIndex = 26;
 			this.label55.Text = "Thigh Fat";
 			// 
@@ -2151,7 +2151,7 @@ namespace MaddenEditor.Forms
 			this.label54.AutoSize = true;
 			this.label54.Location = new System.Drawing.Point(135, 159);
 			this.label54.Name = "label54";
-			this.label54.Size = new System.Drawing.Size(67, 13);
+			this.label54.Size = new System.Drawing.Size(71, 13);
 			this.label54.TabIndex = 24;
 			this.label54.Text = "Thigh Muscle";
 			// 
@@ -2216,7 +2216,7 @@ namespace MaddenEditor.Forms
 			this.label53.AutoSize = true;
 			this.label53.Location = new System.Drawing.Point(184, 88);
 			this.label53.Name = "label53";
-			this.label53.Size = new System.Drawing.Size(18, 13);
+			this.label53.Size = new System.Drawing.Size(22, 13);
 			this.label53.TabIndex = 21;
 			this.label53.Text = "Fat";
 			// 
@@ -2225,7 +2225,7 @@ namespace MaddenEditor.Forms
 			this.label52.AutoSize = true;
 			this.label52.Location = new System.Drawing.Point(165, 49);
 			this.label52.Name = "label52";
-			this.label52.Size = new System.Drawing.Size(37, 13);
+			this.label52.Size = new System.Drawing.Size(41, 13);
 			this.label52.TabIndex = 19;
 			this.label52.Text = "Muscle";
 			// 
@@ -2250,7 +2250,7 @@ namespace MaddenEditor.Forms
 			this.label51.AutoSize = true;
 			this.label51.Location = new System.Drawing.Point(2, 429);
 			this.label51.Name = "label51";
-			this.label51.Size = new System.Drawing.Size(58, 13);
+			this.label51.Size = new System.Drawing.Size(62, 13);
 			this.label51.TabIndex = 37;
 			this.label51.Text = "Flak Jacket";
 			// 
@@ -2259,7 +2259,7 @@ namespace MaddenEditor.Forms
 			this.label50.AutoSize = true;
 			this.label50.Location = new System.Drawing.Point(11, 391);
 			this.label50.Name = "label50";
-			this.label50.Size = new System.Drawing.Size(49, 13);
+			this.label50.Size = new System.Drawing.Size(53, 13);
 			this.label50.TabIndex = 35;
 			this.label50.Text = "Pad Shelf";
 			// 
@@ -2276,7 +2276,7 @@ namespace MaddenEditor.Forms
 			this.label49.AutoSize = true;
 			this.label49.Location = new System.Drawing.Point(7, 353);
 			this.label49.Name = "label49";
-			this.label49.Size = new System.Drawing.Size(53, 13);
+			this.label49.Size = new System.Drawing.Size(57, 13);
 			this.label49.TabIndex = 16;
 			this.label49.Text = "Pad Width";
 			// 
@@ -2285,7 +2285,7 @@ namespace MaddenEditor.Forms
 			this.label48.AutoSize = true;
 			this.label48.Location = new System.Drawing.Point(4, 315);
 			this.label48.Name = "label48";
-			this.label48.Size = new System.Drawing.Size(56, 13);
+			this.label48.Size = new System.Drawing.Size(60, 13);
 			this.label48.TabIndex = 14;
 			this.label48.Text = "Pad Height";
 			// 
@@ -2294,7 +2294,7 @@ namespace MaddenEditor.Forms
 			this.label47.AutoSize = true;
 			this.label47.Location = new System.Drawing.Point(3, 277);
 			this.label47.Name = "label47";
-			this.label47.Size = new System.Drawing.Size(57, 13);
+			this.label47.Size = new System.Drawing.Size(61, 13);
 			this.label47.TabIndex = 12;
 			this.label47.Text = "Thigh Pads";
 			// 
@@ -2303,7 +2303,7 @@ namespace MaddenEditor.Forms
 			this.label46.AutoSize = true;
 			this.label46.Location = new System.Drawing.Point(27, 239);
 			this.label46.Name = "label46";
-			this.label46.Size = new System.Drawing.Size(33, 13);
+			this.label46.Size = new System.Drawing.Size(37, 13);
 			this.label46.TabIndex = 10;
 			this.label46.Text = "Shoes";
 			// 
@@ -2312,7 +2312,7 @@ namespace MaddenEditor.Forms
 			this.label45.AutoSize = true;
 			this.label45.Location = new System.Drawing.Point(42, 166);
 			this.label45.Name = "label45";
-			this.label45.Size = new System.Drawing.Size(18, 13);
+			this.label45.Size = new System.Drawing.Size(22, 13);
 			this.label45.TabIndex = 4;
 			this.label45.Text = "Fat";
 			// 
@@ -2321,7 +2321,7 @@ namespace MaddenEditor.Forms
 			this.label44.AutoSize = true;
 			this.label44.Location = new System.Drawing.Point(23, 127);
 			this.label44.Name = "label44";
-			this.label44.Size = new System.Drawing.Size(37, 13);
+			this.label44.Size = new System.Drawing.Size(41, 13);
 			this.label44.TabIndex = 5;
 			this.label44.Text = "Muscle";
 			// 
@@ -2330,7 +2330,7 @@ namespace MaddenEditor.Forms
 			this.label43.AutoSize = true;
 			this.label43.Location = new System.Drawing.Point(23, 88);
 			this.label43.Name = "label43";
-			this.label43.Size = new System.Drawing.Size(37, 13);
+			this.label43.Size = new System.Drawing.Size(41, 13);
 			this.label43.TabIndex = 3;
 			this.label43.Text = "Weight";
 			// 
@@ -2416,7 +2416,7 @@ namespace MaddenEditor.Forms
 			this.label42.AutoSize = true;
 			this.label42.Location = new System.Drawing.Point(24, 49);
 			this.label42.Name = "label42";
-			this.label42.Size = new System.Drawing.Size(36, 13);
+			this.label42.Size = new System.Drawing.Size(40, 13);
 			this.label42.TabIndex = 1;
 			this.label42.Text = "Overall";
 			// 
@@ -2426,7 +2426,7 @@ namespace MaddenEditor.Forms
 			this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label41.Location = new System.Drawing.Point(195, 308);
 			this.label41.Name = "label41";
-			this.label41.Size = new System.Drawing.Size(38, 16);
+			this.label41.Size = new System.Drawing.Size(42, 16);
 			this.label41.TabIndex = 32;
 			this.label41.Text = "Rear";
 			// 
@@ -2436,7 +2436,7 @@ namespace MaddenEditor.Forms
 			this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label40.Location = new System.Drawing.Point(196, 118);
 			this.label40.Name = "label40";
-			this.label40.Size = new System.Drawing.Size(38, 16);
+			this.label40.Size = new System.Drawing.Size(42, 16);
 			this.label40.TabIndex = 23;
 			this.label40.Text = "Legs";
 			// 
@@ -2446,7 +2446,7 @@ namespace MaddenEditor.Forms
 			this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label39.Location = new System.Drawing.Point(195, 14);
 			this.label39.Name = "label39";
-			this.label39.Size = new System.Drawing.Size(39, 16);
+			this.label39.Size = new System.Drawing.Size(43, 16);
 			this.label39.TabIndex = 18;
 			this.label39.Text = "Arms";
 			// 
@@ -2456,7 +2456,7 @@ namespace MaddenEditor.Forms
 			this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label38.Location = new System.Drawing.Point(50, 198);
 			this.label38.Name = "label38";
-			this.label38.Size = new System.Drawing.Size(77, 16);
+			this.label38.Size = new System.Drawing.Size(81, 16);
 			this.label38.TabIndex = 9;
 			this.label38.Text = "Equipment";
 			// 
@@ -2466,7 +2466,7 @@ namespace MaddenEditor.Forms
 			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label10.Location = new System.Drawing.Point(50, 14);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(40, 16);
+			this.label10.Size = new System.Drawing.Size(44, 16);
 			this.label10.TabIndex = 0;
 			this.label10.Text = "Body";
 			// 
@@ -2546,7 +2546,7 @@ namespace MaddenEditor.Forms
 			this.label77.AutoSize = true;
 			this.label77.Location = new System.Drawing.Point(5, 56);
 			this.label77.Name = "label77";
-			this.label77.Size = new System.Drawing.Size(36, 13);
+			this.label77.Size = new System.Drawing.Size(40, 13);
 			this.label77.TabIndex = 3;
 			this.label77.Text = "Length";
 			// 
@@ -2796,7 +2796,7 @@ namespace MaddenEditor.Forms
 			this.label76.AutoSize = true;
 			this.label76.Location = new System.Drawing.Point(12, 28);
 			this.label76.Name = "label76";
-			this.label76.Size = new System.Drawing.Size(28, 13);
+			this.label76.Size = new System.Drawing.Size(32, 13);
 			this.label76.TabIndex = 1;
 			this.label76.Text = "Injury";
 			// 
@@ -2805,7 +2805,7 @@ namespace MaddenEditor.Forms
 			this.playerInjuryReserve.AutoSize = true;
 			this.playerInjuryReserve.Location = new System.Drawing.Point(182, 22);
 			this.playerInjuryReserve.Name = "playerInjuryReserve";
-			this.playerInjuryReserve.Size = new System.Drawing.Size(97, 17);
+			this.playerInjuryReserve.Size = new System.Drawing.Size(101, 17);
 			this.playerInjuryReserve.TabIndex = 0;
 			this.playerInjuryReserve.Text = "Injured Reserve";
 			this.playerInjuryReserve.CheckedChanged += new System.EventHandler(this.playerInjuryReserve_CheckedChanged);
@@ -2862,7 +2862,7 @@ namespace MaddenEditor.Forms
 			this.label86.AutoSize = true;
 			this.label86.Location = new System.Drawing.Point(277, 274);
 			this.label86.Name = "label86";
-			this.label86.Size = new System.Drawing.Size(58, 13);
+			this.label86.Size = new System.Drawing.Size(62, 13);
 			this.label86.TabIndex = 35;
 			this.label86.Text = "Right Ankle";
 			// 
@@ -2871,7 +2871,7 @@ namespace MaddenEditor.Forms
 			this.label87.AutoSize = true;
 			this.label87.Location = new System.Drawing.Point(284, 243);
 			this.label87.Name = "label87";
-			this.label87.Size = new System.Drawing.Size(51, 13);
+			this.label87.Size = new System.Drawing.Size(55, 13);
 			this.label87.TabIndex = 34;
 			this.label87.Text = "Left Ankle";
 			// 
@@ -2880,7 +2880,7 @@ namespace MaddenEditor.Forms
 			this.label88.AutoSize = true;
 			this.label88.Location = new System.Drawing.Point(279, 212);
 			this.label88.Name = "label88";
-			this.label88.Size = new System.Drawing.Size(56, 13);
+			this.label88.Size = new System.Drawing.Size(60, 13);
 			this.label88.TabIndex = 33;
 			this.label88.Text = "Right Knee";
 			// 
@@ -3001,7 +3001,7 @@ namespace MaddenEditor.Forms
 			this.label89.AutoSize = true;
 			this.label89.Location = new System.Drawing.Point(286, 181);
 			this.label89.Name = "label89";
-			this.label89.Size = new System.Drawing.Size(49, 13);
+			this.label89.Size = new System.Drawing.Size(53, 13);
 			this.label89.TabIndex = 25;
 			this.label89.Text = "Left Knee";
 			// 
@@ -3010,7 +3010,7 @@ namespace MaddenEditor.Forms
 			this.label90.AutoSize = true;
 			this.label90.Location = new System.Drawing.Point(294, 150);
 			this.label90.Name = "label90";
-			this.label90.Size = new System.Drawing.Size(41, 13);
+			this.label90.Size = new System.Drawing.Size(45, 13);
 			this.label90.TabIndex = 24;
 			this.label90.Text = "Sleeves";
 			// 
@@ -3019,7 +3019,7 @@ namespace MaddenEditor.Forms
 			this.label91.AutoSize = true;
 			this.label91.Location = new System.Drawing.Point(278, 119);
 			this.label91.Name = "label91";
-			this.label91.Size = new System.Drawing.Size(57, 13);
+			this.label91.Size = new System.Drawing.Size(61, 13);
 			this.label91.TabIndex = 23;
 			this.label91.Text = "Right Hand";
 			// 
@@ -3028,7 +3028,7 @@ namespace MaddenEditor.Forms
 			this.label92.AutoSize = true;
 			this.label92.Location = new System.Drawing.Point(285, 88);
 			this.label92.Name = "label92";
-			this.label92.Size = new System.Drawing.Size(50, 13);
+			this.label92.Size = new System.Drawing.Size(54, 13);
 			this.label92.TabIndex = 22;
 			this.label92.Text = "Left Hand";
 			// 
@@ -3037,7 +3037,7 @@ namespace MaddenEditor.Forms
 			this.label93.AutoSize = true;
 			this.label93.Location = new System.Drawing.Point(280, 57);
 			this.label93.Name = "label93";
-			this.label93.Size = new System.Drawing.Size(55, 13);
+			this.label93.Size = new System.Drawing.Size(59, 13);
 			this.label93.TabIndex = 21;
 			this.label93.Text = "Right Wrist";
 			// 
@@ -3065,7 +3065,7 @@ namespace MaddenEditor.Forms
 			this.label94.AutoSize = true;
 			this.label94.Location = new System.Drawing.Point(287, 26);
 			this.label94.Name = "label94";
-			this.label94.Size = new System.Drawing.Size(48, 13);
+			this.label94.Size = new System.Drawing.Size(52, 13);
 			this.label94.TabIndex = 19;
 			this.label94.Text = "Left Wrist";
 			// 
@@ -3093,7 +3093,7 @@ namespace MaddenEditor.Forms
 			this.label85.AutoSize = true;
 			this.label85.Location = new System.Drawing.Point(54, 275);
 			this.label85.Name = "label85";
-			this.label85.Size = new System.Drawing.Size(60, 13);
+			this.label85.Size = new System.Drawing.Size(64, 13);
 			this.label85.TabIndex = 17;
 			this.label85.Text = "Right Elbow";
 			// 
@@ -3102,7 +3102,7 @@ namespace MaddenEditor.Forms
 			this.label84.AutoSize = true;
 			this.label84.Location = new System.Drawing.Point(61, 244);
 			this.label84.Name = "label84";
-			this.label84.Size = new System.Drawing.Size(53, 13);
+			this.label84.Size = new System.Drawing.Size(57, 13);
 			this.label84.TabIndex = 16;
 			this.label84.Text = "Left Elbow";
 			// 
@@ -3111,7 +3111,7 @@ namespace MaddenEditor.Forms
 			this.label83.AutoSize = true;
 			this.label83.Location = new System.Drawing.Point(67, 213);
 			this.label83.Name = "label83";
-			this.label83.Size = new System.Drawing.Size(48, 13);
+			this.label83.Size = new System.Drawing.Size(52, 13);
 			this.label83.TabIndex = 15;
 			this.label83.Text = "NeckPad";
 			// 
@@ -3233,7 +3233,7 @@ namespace MaddenEditor.Forms
 			this.label82.AutoSize = true;
 			this.label82.Location = new System.Drawing.Point(56, 182);
 			this.label82.Name = "label82";
-			this.label82.Size = new System.Drawing.Size(59, 13);
+			this.label82.Size = new System.Drawing.Size(63, 13);
 			this.label82.TabIndex = 7;
 			this.label82.Text = "Mouthpiece";
 			// 
@@ -3242,7 +3242,7 @@ namespace MaddenEditor.Forms
 			this.label81.AutoSize = true;
 			this.label81.Location = new System.Drawing.Point(61, 151);
 			this.label81.Name = "label81";
-			this.label81.Size = new System.Drawing.Size(54, 13);
+			this.label81.Size = new System.Drawing.Size(58, 13);
 			this.label81.TabIndex = 6;
 			this.label81.Text = "Nasal Strip";
 			// 
@@ -3251,7 +3251,7 @@ namespace MaddenEditor.Forms
 			this.label80.AutoSize = true;
 			this.label80.Location = new System.Drawing.Point(66, 119);
 			this.label80.Name = "label80";
-			this.label80.Size = new System.Drawing.Size(48, 13);
+			this.label80.Size = new System.Drawing.Size(52, 13);
 			this.label80.TabIndex = 5;
 			this.label80.Text = "Eye Paint";
 			// 
@@ -3260,7 +3260,7 @@ namespace MaddenEditor.Forms
 			this.label79.AutoSize = true;
 			this.label79.Location = new System.Drawing.Point(88, 89);
 			this.label79.Name = "label79";
-			this.label79.Size = new System.Drawing.Size(26, 13);
+			this.label79.Size = new System.Drawing.Size(30, 13);
 			this.label79.TabIndex = 4;
 			this.label79.Text = "Visor";
 			// 
@@ -3269,7 +3269,7 @@ namespace MaddenEditor.Forms
 			this.label73.AutoSize = true;
 			this.label73.Location = new System.Drawing.Point(58, 58);
 			this.label73.Name = "label73";
-			this.label73.Size = new System.Drawing.Size(56, 13);
+			this.label73.Size = new System.Drawing.Size(60, 13);
 			this.label73.TabIndex = 3;
 			this.label73.Text = "Face Mask";
 			// 
@@ -3303,7 +3303,7 @@ namespace MaddenEditor.Forms
 			this.label72.AutoSize = true;
 			this.label72.Location = new System.Drawing.Point(52, 26);
 			this.label72.Name = "label72";
-			this.label72.Size = new System.Drawing.Size(62, 13);
+			this.label72.Size = new System.Drawing.Size(66, 13);
 			this.label72.TabIndex = 1;
 			this.label72.Text = "Helmet Style";
 			// 
@@ -3371,7 +3371,7 @@ namespace MaddenEditor.Forms
 			this.label108.AutoSize = true;
 			this.label108.Location = new System.Drawing.Point(480, 24);
 			this.label108.Name = "label108";
-			this.label108.Size = new System.Drawing.Size(12, 13);
+			this.label108.Size = new System.Drawing.Size(16, 13);
 			this.label108.TabIndex = 90;
 			this.label108.Text = "M";
 			// 
@@ -3388,7 +3388,7 @@ namespace MaddenEditor.Forms
 			this.label109.AutoSize = true;
 			this.label109.Location = new System.Drawing.Point(372, 24);
 			this.label109.Name = "label109";
-			this.label109.Size = new System.Drawing.Size(38, 13);
+			this.label109.Size = new System.Drawing.Size(42, 13);
 			this.label109.TabIndex = 88;
 			this.label109.Text = "Cap Hit";
 			// 
@@ -3397,7 +3397,7 @@ namespace MaddenEditor.Forms
 			this.capRoomUnitLabel.AutoSize = true;
 			this.capRoomUnitLabel.Location = new System.Drawing.Point(324, 24);
 			this.capRoomUnitLabel.Name = "capRoomUnitLabel";
-			this.capRoomUnitLabel.Size = new System.Drawing.Size(12, 13);
+			this.capRoomUnitLabel.Size = new System.Drawing.Size(16, 13);
 			this.capRoomUnitLabel.TabIndex = 87;
 			this.capRoomUnitLabel.Text = "M";
 			// 
@@ -3414,7 +3414,7 @@ namespace MaddenEditor.Forms
 			this.capRoomLabel.AutoSize = true;
 			this.capRoomLabel.Location = new System.Drawing.Point(201, 24);
 			this.capRoomLabel.Name = "capRoomLabel";
-			this.capRoomLabel.Size = new System.Drawing.Size(53, 13);
+			this.capRoomLabel.Size = new System.Drawing.Size(57, 13);
 			this.capRoomLabel.TabIndex = 85;
 			this.capRoomLabel.Text = "Cap Room";
 			// 
@@ -3423,7 +3423,7 @@ namespace MaddenEditor.Forms
 			this.label96.AutoSize = true;
 			this.label96.Location = new System.Drawing.Point(159, 24);
 			this.label96.Name = "label96";
-			this.label96.Size = new System.Drawing.Size(12, 13);
+			this.label96.Size = new System.Drawing.Size(16, 13);
 			this.label96.TabIndex = 84;
 			this.label96.Text = "M";
 			// 
@@ -3440,7 +3440,7 @@ namespace MaddenEditor.Forms
 			this.label95.AutoSize = true;
 			this.label95.Location = new System.Drawing.Point(27, 24);
 			this.label95.Name = "label95";
-			this.label95.Size = new System.Drawing.Size(62, 13);
+			this.label95.Size = new System.Drawing.Size(66, 13);
 			this.label95.TabIndex = 82;
 			this.label95.Text = "Team Salary";
 			// 
@@ -3449,7 +3449,7 @@ namespace MaddenEditor.Forms
 			this.label74.AutoSize = true;
 			this.label74.Location = new System.Drawing.Point(49, 196);
 			this.label74.Name = "label74";
-			this.label74.Size = new System.Drawing.Size(59, 13);
+			this.label74.Size = new System.Drawing.Size(63, 13);
 			this.label74.TabIndex = 81;
 			this.label74.Text = "Total Salary";
 			// 
@@ -3472,7 +3472,7 @@ namespace MaddenEditor.Forms
 			this.label70.AutoSize = true;
 			this.label70.Location = new System.Drawing.Point(37, 157);
 			this.label70.Name = "label70";
-			this.label70.Size = new System.Drawing.Size(71, 13);
+			this.label70.Size = new System.Drawing.Size(75, 13);
 			this.label70.TabIndex = 80;
 			this.label70.Text = "Signing Bonus";
 			// 
@@ -3495,7 +3495,7 @@ namespace MaddenEditor.Forms
 			this.label69.AutoSize = true;
 			this.label69.Location = new System.Drawing.Point(203, 196);
 			this.label69.Name = "label69";
-			this.label69.Size = new System.Drawing.Size(94, 13);
+			this.label69.Size = new System.Drawing.Size(98, 13);
 			this.label69.TabIndex = 79;
 			this.label69.Text = "Contract Years Left";
 			// 
@@ -3504,7 +3504,7 @@ namespace MaddenEditor.Forms
 			this.label68.AutoSize = true;
 			this.label68.Location = new System.Drawing.Point(218, 157);
 			this.label68.Name = "label68";
-			this.label68.Size = new System.Drawing.Size(79, 13);
+			this.label68.Size = new System.Drawing.Size(83, 13);
 			this.label68.TabIndex = 78;
 			this.label68.Text = "Contract Length";
 			// 
@@ -3539,7 +3539,7 @@ namespace MaddenEditor.Forms
 			this.label105.AutoSize = true;
 			this.label105.Location = new System.Drawing.Point(444, 49);
 			this.label105.Name = "label105";
-			this.label105.Size = new System.Drawing.Size(9, 13);
+			this.label105.Size = new System.Drawing.Size(13, 13);
 			this.label105.TabIndex = 22;
 			this.label105.Text = "7";
 			// 
@@ -3548,7 +3548,7 @@ namespace MaddenEditor.Forms
 			this.label104.AutoSize = true;
 			this.label104.Location = new System.Drawing.Point(389, 49);
 			this.label104.Name = "label104";
-			this.label104.Size = new System.Drawing.Size(9, 13);
+			this.label104.Size = new System.Drawing.Size(13, 13);
 			this.label104.TabIndex = 21;
 			this.label104.Text = "6";
 			// 
@@ -3557,7 +3557,7 @@ namespace MaddenEditor.Forms
 			this.label103.AutoSize = true;
 			this.label103.Location = new System.Drawing.Point(335, 49);
 			this.label103.Name = "label103";
-			this.label103.Size = new System.Drawing.Size(9, 13);
+			this.label103.Size = new System.Drawing.Size(13, 13);
 			this.label103.TabIndex = 20;
 			this.label103.Text = "5";
 			// 
@@ -3566,7 +3566,7 @@ namespace MaddenEditor.Forms
 			this.label102.AutoSize = true;
 			this.label102.Location = new System.Drawing.Point(280, 49);
 			this.label102.Name = "label102";
-			this.label102.Size = new System.Drawing.Size(9, 13);
+			this.label102.Size = new System.Drawing.Size(13, 13);
 			this.label102.TabIndex = 19;
 			this.label102.Text = "4";
 			// 
@@ -3575,7 +3575,7 @@ namespace MaddenEditor.Forms
 			this.label101.AutoSize = true;
 			this.label101.Location = new System.Drawing.Point(224, 49);
 			this.label101.Name = "label101";
-			this.label101.Size = new System.Drawing.Size(9, 13);
+			this.label101.Size = new System.Drawing.Size(13, 13);
 			this.label101.TabIndex = 18;
 			this.label101.Text = "3";
 			// 
@@ -3584,7 +3584,7 @@ namespace MaddenEditor.Forms
 			this.label100.AutoSize = true;
 			this.label100.Location = new System.Drawing.Point(169, 49);
 			this.label100.Name = "label100";
-			this.label100.Size = new System.Drawing.Size(9, 13);
+			this.label100.Size = new System.Drawing.Size(13, 13);
 			this.label100.TabIndex = 17;
 			this.label100.Text = "2";
 			// 
@@ -3593,7 +3593,7 @@ namespace MaddenEditor.Forms
 			this.label99.AutoSize = true;
 			this.label99.Location = new System.Drawing.Point(113, 49);
 			this.label99.Name = "label99";
-			this.label99.Size = new System.Drawing.Size(9, 13);
+			this.label99.Size = new System.Drawing.Size(13, 13);
 			this.label99.TabIndex = 16;
 			this.label99.Text = "1";
 			// 
@@ -3714,7 +3714,7 @@ namespace MaddenEditor.Forms
 			this.label98.AutoSize = true;
 			this.label98.Location = new System.Drawing.Point(25, 106);
 			this.label98.Name = "label98";
-			this.label98.Size = new System.Drawing.Size(64, 13);
+			this.label98.Size = new System.Drawing.Size(68, 13);
 			this.label98.TabIndex = 1;
 			this.label98.Text = "Yearly Salary";
 			// 
@@ -3723,7 +3723,7 @@ namespace MaddenEditor.Forms
 			this.label97.AutoSize = true;
 			this.label97.Location = new System.Drawing.Point(18, 73);
 			this.label97.Name = "label97";
-			this.label97.Size = new System.Drawing.Size(71, 13);
+			this.label97.Size = new System.Drawing.Size(75, 13);
 			this.label97.TabIndex = 0;
 			this.label97.Text = "Signing Bonus";
 			// 
