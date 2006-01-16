@@ -1604,6 +1604,17 @@ namespace MaddenEditor.Forms
         {
             int currentSeason = model.FranchiseTime.Season;
 
+            bool preseason = true;
+            foreach (ScheduleRecord rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+            {
+                if (rec.WeekNumber > 3)
+                {
+                    preseason = false;
+                    break;
+                }
+            }
+                    
+
             Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
             List<int> humanControlled = new List<int>();
 
@@ -1773,7 +1784,8 @@ namespace MaddenEditor.Forms
                         if (currentWeek < 19)
                         {
                             seasonStatsOffensiveLine[stat.PlayerId].Pancakes--;
-                            careerStatsOffensiveLine[stat.PlayerId].Pancakes--;
+                            if (!preseason)
+                                careerStatsOffensiveLine[stat.PlayerId].Pancakes--;
                         }
                     }
                 }
@@ -1845,7 +1857,8 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsDefense[stat.PlayerId].PassesDefended--;
-                                careerStatsDefense[stat.PlayerId].PassesDefended--;
+                                if (!preseason)
+                                    careerStatsDefense[stat.PlayerId].PassesDefended--;
                             }
                         }
                     }
@@ -1858,7 +1871,8 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsDefense[stat.PlayerId].FumblesForced--;
-                                careerStatsDefense[stat.PlayerId].FumblesForced--;
+                                if (!preseason)
+                                    careerStatsDefense[stat.PlayerId].FumblesForced--;
                             }
                         }
                     }
@@ -1874,7 +1888,8 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsDefense[stat.PlayerId].FumblesRecovered--;
-                                careerStatsDefense[stat.PlayerId].FumblesRecovered--;
+                                if (!preseason)
+                                    careerStatsDefense[stat.PlayerId].FumblesRecovered--;
 
                                 teamStats[stat.TeamId].FumblesRecovered--;
                                 teamStats[previousOpponents[stat.TeamId]].FumblesLost--;
@@ -1894,7 +1909,8 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsDefense[stat.PlayerId].Interceptions--;
-                                careerStatsDefense[stat.PlayerId].Interceptions--;
+                                if (!preseason)
+                                    careerStatsDefense[stat.PlayerId].Interceptions--;
                             }
 
                             int subtractFrom = rand.Next(interceptees[previousOpponents[stat.TeamId]].Count);
@@ -1907,7 +1923,8 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsOffense[QBPGID].Interceptions--;
-                                careerStatsOffense[QBPGID].Interceptions--;
+                                if (!preseason)
+                                    careerStatsOffense[QBPGID].Interceptions--;
 
                                 teamStats[stat.TeamId].InterceptionsCaught--;
                                 teamStats[previousOpponents[stat.TeamId]].InterceptionsThrown--;
@@ -1926,7 +1943,8 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsDefense[stat.PlayerId].Sacks--;
-                                careerStatsDefense[stat.PlayerId].Sacks--;
+                                if (!preseason)
+                                    careerStatsDefense[stat.PlayerId].Sacks--;
                             }
 
                             int subtractFrom = rand.Next(sackees[previousOpponents[stat.TeamId]].Count);
@@ -1950,12 +1968,14 @@ namespace MaddenEditor.Forms
                             if (currentWeek < 19)
                             {
                                 seasonStatsOffense[QBPGID].Sacks--;
-                                careerStatsOffense[QBPGID].Sacks--;
+                                if (!preseason)
+                                    careerStatsOffense[QBPGID].Sacks--;
 
                                 if (OLPGID >= 0)
                                 {
                                     seasonStatsOffensiveLine[OLPGID].SacksAllowed--;
-                                    careerStatsOffensiveLine[OLPGID].SacksAllowed--;
+                                    if (!preseason)
+                                        careerStatsOffensiveLine[OLPGID].SacksAllowed--;
                                 }
 
                                 teamStats[stat.TeamId].Sacks--;
@@ -1990,7 +2010,8 @@ namespace MaddenEditor.Forms
                     if (currentWeek < 19)
                     {
                         seasonStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
-                        careerStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+                        if (!preseason)
+                            careerStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
                     }
 
                     maxPassers[stat.TeamId].PassingYards += yardsToAdd;
@@ -1998,7 +2019,8 @@ namespace MaddenEditor.Forms
                     if (currentWeek < 19)
                     {
                         seasonStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
-                        careerStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+                        if (!preseason)
+                            careerStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
 
                         teamStats[stat.TeamId].TotalYards += yardsToAdd;
                         teamStats[stat.TeamId].TotalOffense += yardsToAdd;
@@ -2013,7 +2035,8 @@ namespace MaddenEditor.Forms
                     if (currentWeek < 19)
                     {
                         seasonStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
-                        careerStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
+                        if (!preseason)
+                            careerStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
                     }
 
                     int rushYardsToAdd = (int)Math.Round((double)stat.RushingYards * (rushingYardsMultiplier - 1.0));
@@ -2024,7 +2047,8 @@ namespace MaddenEditor.Forms
                     if (currentWeek < 19)
                     {
                         seasonStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
-                        careerStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
+                        if (!preseason)
+                            careerStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
 
                         teamStats[stat.TeamId].TotalYards += rushYardsToAdd;
                         teamStats[stat.TeamId].TotalOffense += rushYardsToAdd;
@@ -2058,8 +2082,12 @@ namespace MaddenEditor.Forms
                     {
                         seasonStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
                         seasonStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
-                        careerStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
-                        careerStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+
+                        if (!preseason)
+                        {
+                            careerStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
+                            careerStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+                        }
 
                         teamStats[i].TotalYards -= yards;
                         teamStats[i].TotalOffense -= yards;
@@ -2105,7 +2133,8 @@ namespace MaddenEditor.Forms
                     if (currentWeek < 19)
                     {
                         backupRBSeason.RushingAttempts += carries;
-                        backupRBCareer.RushingAttempts += carries;
+                        if (!preseason)
+                            backupRBCareer.RushingAttempts += carries;
                     }
 
                     int backupYards = (int)Math.Round((double)yards * yardageMultipler);
@@ -2116,7 +2145,8 @@ namespace MaddenEditor.Forms
                     if (currentWeek < 19)
                     {
                         backupRBSeason.RushingYards += backupYards;
-                        backupRBCareer.RushingYards += backupYards;
+                        if (!preseason)
+                            backupRBCareer.RushingYards += backupYards;
 
                         teamStats[i].TotalYards += backupYards;
                         teamStats[i].TotalOffense += backupYards;
