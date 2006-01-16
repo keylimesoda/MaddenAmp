@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Gommo's Madden Editor"
-!define PRODUCT_VERSION "2.0.0"
+!define PRODUCT_VERSION "2.1.0"
 !define PRODUCT_PUBLISHER "Tributech"
 !define PRODUCT_WEB_SITE "http://gommo.homelinux.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\MaddenEditor.exe"
@@ -72,6 +72,7 @@ Section "MainSection" SEC01
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor (${PRODUCT_VERSION}).lnk" "$INSTDIR\MaddenEditor.exe"
 
   CreateShortCut "$DESKTOP\Gommo's Madden Editor.lnk" "$INSTDIR\MaddenEditor.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\readme.txt.lnk" "$INSTDIR\readme.txt"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -116,6 +117,7 @@ Section Uninstall
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\Gommo's Madden Editor.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Gommo's Madden Editor (${PRODUCT_VERSION}).lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\readme.txt.lnk"
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
   RMDir "$INSTDIR"
