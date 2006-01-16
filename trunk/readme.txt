@@ -1,15 +1,15 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                           GOMMO'S MADDEN EDITOR 2.0.0
+                           GOMMO'S MADDEN EDITOR 2.1.0
                                   
-                                WITH DRAFT ENGINE
+                             WITH ADVANCED FEATURES
 
-                                15th December 2005
+                               16th January 2006
 
-                                     readme.txt
+                                  readme.txt
 
-                                  ----------------
+                                ----------------
 
    Contents
    --------
@@ -17,11 +17,10 @@
    1. Introduction
    2. Requirements
    3. Features
-   4. Fixed Issues
-   5. Known Issues
-   6. Developer Information
-   7. Future Plans
-   8. Licence
+   4. Known Issues
+   5. Developer Information
+   6. Future Plans
+   7. Licence
 
 1. INTRODUCTION
 ===============
@@ -44,115 +43,25 @@ Microsoft .NET Framework Version 2.0 Redistributable Package (x86).
 
 3. FEATURES
 ===========
-* Added Player Tendancies
+* Player Editing
 
-* Added Team Rivals
+* Coach Editing
 
-* Added Team Defensive PlayStyle
+* Team Editing
 
-* Added coach skin color (Not sure if its right)
+* Player Depth Chart Editing
 
-* Added new helmet style for 2006
+* Player Team Control
 
-* Supports to most extent Madden 2004,2005 & 2006
+* Team Captain Assignment
 
-* Added In-Game and Sim Injury sliders for Madden 2006 franchises
+* Simulated Draft Engine
 
-* Added Color selectors for team primary colors
+* Offseason Conditioning Feature
 
-* Regular season schedule editing. (Will add postseason later)
+* Supports to most extent Madden 2004, 2005 & 2006
 
-* Added additional filters to Global player editor
-
-* Team editing
-
-* Export to CSV for players
-
-* Moved Depth Chart to Tools Menu
-
-* Fixed salary cap editing (It takes effect now, however there is still a salary cap bug when editing player salaries)
-
-*  Set User Controlled Teams in Franchise
-
-*  Thanks to zentrarium we now have the ability to set team Captains!!! Available in the
-        Franchise menu option when loading a franchise file.
-
-*  Support for Madden 2004 files. (Only tested with Roster files at the moment, due to me
-        not having any franchise files)
-
-*  Global Attribute Editing (version 1)
-        Added a Tool to set/increment/decrement player attributes.
-        You can filter by the usual team/position/draft class options
-
-*  Coach editing is all corrected including all Priorities and balanced/aggressive/conservative
-        etc..
-        i.e QB's can have a priority set to scrambing/balanced/pocket
-
-* Depth Chart Editing. 
-        PLEASE BE AWARE!!!! This lets you set any player to any position, However, i have 
-        experimented and it seems the game doesnt allow you to add certain players to 
-        positions. For example, I couldnt get the game to allow Lineman to play QB.
-        
-        In fact I couldnt even put a WR at CB. That sucks!!
-
-* Coach searching.
-
-* Better editing of Salary. Changes should be effecting Team Salary too now
-
-* Editing of RFA Minimum Tenders and Salary Cap in Franchise files
-
-* Editing of some Coach attributes
-
-* Adding/removing of injuries with full description and bug fixes
-
-* Delete function
-
-* Added Draft Class Filter for easy editing of draft classes
-
-* Supports loading franchise files
-
-* Added support to estimate OVR rating by hitting calculate
-        (From files by ReMiNiScE @ football-freaks.com)
-
-* Nearly all player attributes (bar 5) are now editable
-
-* Fast Search function to find specific players
-
-* Filter functions to narrow browsing down making it easy to move through
-  players on teams/positions
-
-4. FIXED ISSUES
-===============
-* Fixed Player Face mask bug
-
-* Fixed crash in Team Navigator
-
-* Fixed editing of Team Rivals
-
-* Fixed issue where deleting a player caused the file to not work. This was due to 
-  the player not being removed from the depth chart
-
-* Fixed issue where moving a player to a different team didnt remove him from his
-  old teams depth chart
-
-* Fixed issue where moving a player to a different team didn't also move his injuries 
-
-* Fixed loading of 2004 franchise files (though team captains and changing user controlled
-                                         teams are not available )
-
-* Fixed changing user controlled teams not taking immediate effect
-
-* Fixed absence of NFL Europe league
-
-* Fixed issue where Team Combobox stayed disabled in Coach editing screen
-
-* Fixed issue where loading certain coaches would crash
-
-* Fixed issue where editing salary cap max's didnt take effect
-
-* Fixed issue where moving all players to different positions caused a lockup
-
-5. KNOWN ISSUES
+4. KNOWN ISSUES
 ===============
 
 * Editing players salary doesnt seem to edit teams total salary correctly in franchise mode
@@ -164,9 +73,11 @@ Microsoft .NET Framework Version 2.0 Redistributable Package (x86).
   NOTE: Please, if you get a crash, email the details of the crash (Found in 
         the details section of the crash box) to bugs@tributech.com.au.
   
-6. DEVELOPER INFORMATION
+5. DEVELOPER INFORMATION
 ========================
-This product is being developed with Visual C# Express Beta 2.
+This product is being developed with Visual C# Express. This IDE is available from
+Microsoft for free until November 2006. If you download it before then, you have it
+for life, for FREE!!
 
 The source is available from a subversion server. You will need a subversion
 client in order to retrieve the latest source code.
@@ -185,17 +96,13 @@ code back in, but anyone is free to get the source code.
 
 You can also browse the repository at the above address too.
 
-This source has only been in development for a few days now so I've been very 
-busy just getting things to work. As a result, lots of comments have been
-missed :( . Sorry, I will endevour to clean up the code a bit when I get the
-full player attribute editing going.
-
-Also, I'll probably start up a bugzilla project for reporting of bugs etc.. if
-theres enough reason too.
+Issue tracking is available at bugzilla.tributech.com.au. You will need to 
+request a login at the front page and I will set you up with permissions to log
+and fix bugs.
 
 The setup file is generated with NSIS (nsis.sourceforge.net)
 
-7. FUTURE PLANS
+6. FUTURE PLANS
 ===============
 
 * More user friendly GUI with dialog position remembering etc..
@@ -212,8 +119,8 @@ The setup file is generated with NSIS (nsis.sourceforge.net)
 
 * More...
 
-8. LICENCE
+7. LICENCE
 ==========
-This program is developed under the LGPL. See licence.txt for full licence.
+This program is developed under the GPL. See licence.txt for full licence.
 
 
