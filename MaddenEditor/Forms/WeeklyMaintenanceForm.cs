@@ -1700,6 +1700,7 @@ namespace MaddenEditor.Forms
             {
                 interceptees[i] = new List<BoxScoreOffenseRecord>();
                 sackees[i] = new List<BoxScoreOffenseRecord>();
+                OLsackees[i] = new List<BoxScoreOffensiveLineRecord>();
             }
 
             foreach (BoxScoreOffenseRecord stat in model.TableModels[EditorModel.BOXSCORE_OFFENSE_TABLE].GetRecords())
