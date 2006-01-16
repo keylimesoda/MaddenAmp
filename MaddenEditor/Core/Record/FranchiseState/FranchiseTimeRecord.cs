@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaddenEditor.Core.Record
+namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class FranchiseTimeRecord : TableRecordModel
     {

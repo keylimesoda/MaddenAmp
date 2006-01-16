@@ -10,6 +10,7 @@ using System.IO;
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
 using MaddenEditor.Core.Record.Stats;
+using MaddenEditor.Core.Record.FranchiseState;
 
 namespace MaddenEditor.Forms
 {

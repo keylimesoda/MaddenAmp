@@ -64,6 +64,13 @@
     <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
     <Compile Include="Core\DraftModel.cs" />
     <Compile Include="Core\Record\DraftPickRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\DraftStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\FranchiseStage.cs" />
+    <Compile Include="Core\Record\FranchiseState\FranchiseTimeRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\FreeAgencyStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\ResignPlayersStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\RFAStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\ScoutingStateRecord.cs" />
     <Compile Include="Core\Record\GameOptionRecord.cs" />
     <Compile Include="Core\Record\GenericRecord.cs" />
     <Compile Include="Core\Record\OwnerRecord.cs" />
@@ -72,12 +79,14 @@
     <Compile Include="Core\Record\ScheduleRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreOffensiveLineRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreTeamRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsOffenseRecord.cs" />
-    <Compile Include="Core\Record\FranchiseStateRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerStatsOffensiveLineRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsOffensiveLineRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsTeamRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
     <Compile Include="Core\ScheduleEditingModel.cs" />
@@ -228,6 +237,18 @@
     <Compile Include="Forms\TradeUpForm.Designer.cs">
       <DependentUpon>TradeUpForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrainingCampForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampForm.Designer.cs">
+      <DependentUpon>TrainingCampForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainingCampOffSeason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampOffSeason.Designer.cs">
+      <DependentUpon>TrainingCampOffSeason.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -308,6 +329,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TradeUpForm.resx">
       <DependentUpon>TradeUpForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampForm.resx">
+      <DependentUpon>TrainingCampForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampOffSeason.resx">
+      <DependentUpon>TrainingCampOffSeason.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserControlledTeamForm.resx">
       <DependentUpon>UserControlledTeamForm.cs</DependentUpon>

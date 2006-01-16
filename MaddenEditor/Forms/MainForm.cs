@@ -744,13 +744,21 @@ namespace MaddenEditor.Forms
             wm.Show();
         }
 
+		private void trainingCampToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampOffSeason tcos = new TrainingCampOffSeason(model);
+            tcos.initialiseUI();
+            //  form.Show(this);
+            tcos.Show();
+        }
+
         private void fixProgressionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LocalMath math = new LocalMath(model.FileVersion);
             Random rand = new Random();
             DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 
-            // current players sorted by position
+			// current players sorted by position
             List<List<PlayerRecord>> playersByPosition = new List<List<PlayerRecord>>();
             List<List<int>> targetsByPosition = new List<List<int>>();
             Dictionary<int, List<double>> playerTargets = new Dictionary<int, List<double>>();
