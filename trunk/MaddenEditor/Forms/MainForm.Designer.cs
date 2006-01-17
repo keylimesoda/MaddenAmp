@@ -65,6 +65,8 @@ namespace MaddenEditor.Forms
 			this.fixProgressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.developerBiosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.developerBiosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.playerPage = new System.Windows.Forms.TabPage();
 			this.testButton = new System.Windows.Forms.Button();
@@ -343,12 +345,14 @@ namespace MaddenEditor.Forms
 			this.fixProgressionToolStripMenuItem.Name = "fixProgressionToolStripMenuItem";
 			this.fixProgressionToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
 			this.fixProgressionToolStripMenuItem.Text = "Fix Progression";
+			this.fixProgressionToolStripMenuItem.Visible = false;
 			this.fixProgressionToolStripMenuItem.Click += new System.EventHandler(this.fixProgressionToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.developerBiosToolStripMenuItem1});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
 			this.helpToolStripMenuItem.Text = "&Help";
@@ -356,9 +360,23 @@ namespace MaddenEditor.Forms
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.aboutToolStripMenuItem.Text = "About ...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			// 
+			// developerBiosToolStripMenuItem1
+			// 
+			this.developerBiosToolStripMenuItem1.Name = "developerBiosToolStripMenuItem1";
+			this.developerBiosToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
+			this.developerBiosToolStripMenuItem1.Text = "Developer Bio\'s ...";
+			this.developerBiosToolStripMenuItem1.Click += new System.EventHandler(this.developerBiosToolStripMenuItem_Click);
+			// 
+			// developerBiosToolStripMenuItem
+			// 
+			this.developerBiosToolStripMenuItem.Name = "developerBiosToolStripMenuItem";
+			this.developerBiosToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.developerBiosToolStripMenuItem.Text = "Developer Bio\'s ...";
+			this.developerBiosToolStripMenuItem.Click += new System.EventHandler(this.developerBiosToolStripMenuItem_Click);
 			// 
 			// tabControl
 			// 
@@ -467,7 +485,7 @@ namespace MaddenEditor.Forms
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Gommo\'s Madden Editor";
+			this.Text = "Madden Amp";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -529,5 +547,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem weeklyMaintenanceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixProgressionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainingCampToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem developerBiosToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem developerBiosToolStripMenuItem1;
     }
 }

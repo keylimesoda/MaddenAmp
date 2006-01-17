@@ -45,7 +45,7 @@ namespace MaddenEditor.Forms
 	/// <author>Colin Goudie</author>
 	public partial class MainForm : Form
 	{
-		private const string TITLE_STRING = "Gommo's Madden Editor";
+		private const string TITLE_STRING = "Madden Amp";
 		private EditorModel model = null;
 		private string filePathToLoad;
 		private bool isInitialising = false;
@@ -925,6 +925,12 @@ namespace MaddenEditor.Forms
             }
             Console.WriteLine(targets[99] + "}");
         }
+
+		private void developerBiosToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			DeveloperBioForm form = new DeveloperBioForm();
+			form.Show();
+		}
 
         // MADDEN DRAFT EDIT
 
