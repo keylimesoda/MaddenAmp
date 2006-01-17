@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Gommo's Madden Editor")]
-[assembly: AssemblyDescription("Thankyou for using this editor.\r\n\r\nReport bugs to bugs@tributech.com.au\r\n\r\nThis program is licenced under the GPL.\r\nSource is available via subversion at\r\n\r\nhttp://gommo.homelinux.net/svn/repos/maddeneditor/trunk\r\n\r\nThanks go to \r\n Spin16 for his excellent work bug fixing and the Draft Engine\r\n bakersville123 for his Offseason conditioning \r\ncparker for his issue reporting\r\nSuchy63 for TDBAccess.dll making it all possible\r\nfritzdis for Salary Calculations\r\nReMiNiScE for his OVR ratings\r\nCinciBearFan for his K & P ratings\r\nOmega4ce for his Injury descriptions\r\nBig Current Thankyou to zentrarium")]
+[assembly: AssemblyTitle("Madden Amp")]
+[assembly: AssemblyDescription("Thankyou for using this editor.\r\n\r\nReport bugs to bugs@tributech.com.au\r\n\r\nThis program is licenced under the GPL.\r\nSource is available via subversion at\r\n\r\nhttp://gommo.homelinux.net/svn/repos/maddeneditor/trunk\r\n\r\nThanks go to \r\nSpin16 for his excellent work bug fixing and the Draft Engine\r\nbakersville123 for his Offseason conditioning \r\ncparker for his issue reporting\r\nSuchy63 for TDBAccess.dll making it all possible\r\nfritzdis for Salary Calculations\r\nReMiNiScE for his OVR ratings\r\nCinciBearFan for his K & P ratings\r\nOmega4ce for his Injury descriptions\r\nBig Current Thankyou to zentrarium")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tributech")]
-[assembly: AssemblyProduct("Gommo's Madden Editor")]
-[assembly: AssemblyCopyright("Copyright © Tributech 2005")]
+[assembly: AssemblyProduct("Madden Amp")]
+[assembly: AssemblyCopyright("Copyright © Tributech 2006")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
