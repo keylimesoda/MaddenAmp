@@ -1,9 +1,9 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                           GOMMO'S MADDEN EDITOR 2.1.0
+                               MADDEN AMP 2.1.0
                                   
-                             WITH ADVANCED FEATURES
+                        the power to Amplify your Franchise
 
                                16th January 2006
 
