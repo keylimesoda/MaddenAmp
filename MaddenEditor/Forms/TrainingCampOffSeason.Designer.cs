@@ -57,9 +57,12 @@ namespace MaddenEditor.Forms
             this.saveSlidersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clickToSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cPUSimulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.simAllCPUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.DisableScenarioChk = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.HoursLeftlbl = new System.Windows.Forms.Label();
             this.pUpDown = new System.Windows.Forms.NumericUpDown();
@@ -100,7 +103,6 @@ namespace MaddenEditor.Forms
             this.GainAmountSld = new System.Windows.Forms.TrackBar();
             this.LossFreqSld = new System.Windows.Forms.TrackBar();
             this.GainFreqSld = new System.Windows.Forms.TrackBar();
-            this.DisableScenarioChk = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -264,9 +266,10 @@ namespace MaddenEditor.Forms
             this.depthChartDataGrid.MultiSelect = false;
             this.depthChartDataGrid.Name = "depthChartDataGrid";
             this.depthChartDataGrid.ReadOnly = true;
+            this.depthChartDataGrid.RowHeadersVisible = false;
             this.depthChartDataGrid.RowTemplate.Height = 28;
             this.depthChartDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.depthChartDataGrid.Size = new System.Drawing.Size(1068, 327);
+            this.depthChartDataGrid.Size = new System.Drawing.Size(1028, 271);
             this.depthChartDataGrid.TabIndex = 9;
             // 
             // groupBox4
@@ -276,7 +279,7 @@ namespace MaddenEditor.Forms
             this.groupBox4.Controls.Add(this.radioButton3);
             this.groupBox4.Controls.Add(this.radioButton2);
             this.groupBox4.Controls.Add(this.radioButton1);
-            this.groupBox4.Location = new System.Drawing.Point(533, 27);
+            this.groupBox4.Location = new System.Drawing.Point(510, 27);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(539, 161);
             this.groupBox4.TabIndex = 10;
@@ -341,7 +344,7 @@ namespace MaddenEditor.Forms
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(533, 194);
+            this.textBox1.Location = new System.Drawing.Point(510, 194);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -353,12 +356,14 @@ namespace MaddenEditor.Forms
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.saveSlidersToolStripMenuItem});
+            this.saveSlidersToolStripMenuItem,
+            this.cPUSimulationToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1082, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1055, 24);
             this.menuStrip1.TabIndex = 33;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
@@ -398,12 +403,27 @@ namespace MaddenEditor.Forms
             this.loadDefaultsToolStripMenuItem.Text = "Load Defaults";
             this.loadDefaultsToolStripMenuItem.Click += new System.EventHandler(this.loadDefaultsToolStripMenuItem_Click);
             // 
+            // cPUSimulationToolStripMenuItem
+            // 
+            this.cPUSimulationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.simAllCPUToolStripMenuItem});
+            this.cPUSimulationToolStripMenuItem.Name = "cPUSimulationToolStripMenuItem";
+            this.cPUSimulationToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.cPUSimulationToolStripMenuItem.Text = "CPU Simulation";
+            // 
+            // simAllCPUToolStripMenuItem
+            // 
+            this.simAllCPUToolStripMenuItem.Name = "simAllCPUToolStripMenuItem";
+            this.simAllCPUToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.simAllCPUToolStripMenuItem.Text = "Sim all CPU controlled teams";
+            this.simAllCPUToolStripMenuItem.Click += new System.EventHandler(this.simAllCPUToolStripMenuItem_Click);
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.button3);
-            this.groupBox5.Location = new System.Drawing.Point(422, 215);
+            this.groupBox5.Location = new System.Drawing.Point(405, 228);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(106, 74);
+            this.groupBox5.Size = new System.Drawing.Size(99, 61);
             this.groupBox5.TabIndex = 34;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Proceed to Training Camp?";
@@ -456,16 +476,24 @@ namespace MaddenEditor.Forms
             this.groupBox6.Controls.Add(this.hcname);
             this.groupBox6.Location = new System.Drawing.Point(9, 295);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(1010, 72);
+            this.groupBox6.Size = new System.Drawing.Size(1028, 72);
             this.groupBox6.TabIndex = 35;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "     Head Coach Name        Age       Knw      Mot      Chm     Eth            QB" +
                 "       RB       WR      OL         DL        LB        DB        K         P    " +
                 " Hours Left";
             // 
+            // DisableScenarioChk
+            // 
+            this.DisableScenarioChk.Location = new System.Drawing.Point(810, 37);
+            this.DisableScenarioChk.Name = "DisableScenarioChk";
+            this.DisableScenarioChk.Size = new System.Drawing.Size(139, 33);
+            this.DisableScenarioChk.TabIndex = 37;
+            this.DisableScenarioChk.Text = "Disable \'Offseason Scenario\' mode";
+            this.DisableScenarioChk.UseVisualStyleBackColor = true;
+            // 
             // checkBox2
             // 
-            this.checkBox2.Enabled = false;
             this.checkBox2.Location = new System.Drawing.Point(810, 7);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(139, 31);
@@ -738,9 +766,9 @@ namespace MaddenEditor.Forms
             this.groupBox7.Controls.Add(this.GainAmountSld);
             this.groupBox7.Controls.Add(this.LossFreqSld);
             this.groupBox7.Controls.Add(this.GainFreqSld);
-            this.groupBox7.Location = new System.Drawing.Point(296, 27);
+            this.groupBox7.Location = new System.Drawing.Point(238, 27);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(232, 182);
+            this.groupBox7.Size = new System.Drawing.Size(224, 182);
             this.groupBox7.TabIndex = 36;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Sliders...";
@@ -814,20 +842,11 @@ namespace MaddenEditor.Forms
             this.GainFreqSld.Size = new System.Drawing.Size(141, 45);
             this.GainFreqSld.TabIndex = 0;
             // 
-            // DisableScenarioChk
-            // 
-            this.DisableScenarioChk.Location = new System.Drawing.Point(810, 37);
-            this.DisableScenarioChk.Name = "DisableScenarioChk";
-            this.DisableScenarioChk.Size = new System.Drawing.Size(194, 33);
-            this.DisableScenarioChk.TabIndex = 37;
-            this.DisableScenarioChk.Text = "Disable \'Offseason Scenario\' mode";
-            this.DisableScenarioChk.UseVisualStyleBackColor = true;
-            // 
             // TrainingCampOffSeason
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1082, 712);
+            this.ClientSize = new System.Drawing.Size(1055, 666);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -952,5 +971,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem loadDefaultsToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox DisableScenarioChk;
+        private System.Windows.Forms.ToolStripMenuItem cPUSimulationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem simAllCPUToolStripMenuItem;
     }
 }

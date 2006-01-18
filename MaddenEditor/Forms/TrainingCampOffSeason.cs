@@ -53,9 +53,12 @@ namespace MaddenEditor.Forms
         private TeamCaptainRecord teamCaptainRecord = null;
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
-        Random random = new Random();  
+        Random random = new Random();
+        OwnerRecord CPUteam;
+        int oldKnw;int OldMot;int oldChm;int OldEth;int oldqb;int Oldrb;int oldwr;int Oldol;int olddl;int Oldlb;int olddb;int Oldk;int Oldp;
         //Tune file attribute Variables
         decimal SpdLoss; decimal AccLoss; decimal AgiLoss; decimal StmLoss; decimal InjLoss; decimal SpdGain; decimal AccGain; decimal AgiGain; decimal StmGain; decimal StrLoss; decimal InjGain; int DisableScenario;
+        
         public TrainingCampOffSeason(EditorModel model)
         { 
             this.model = model;
@@ -945,18 +948,19 @@ namespace MaddenEditor.Forms
                 PosWgtMod = .25;
             }
         }
-       private void PhaseOne()
+       private void PhaseOneCPU()
         {
-            InitializeDataGrids();
-            int teamId = ((TeamRecord)SelectHumanTeam.SelectedItem).TeamId;
+            RosterView.Clear();
+
+            int teamId = ((OwnerRecord)CPUteam).TeamId;
             int positionId = 0;
             int FatCoutner = 0;
             int MuscleCounter = 0;
             int acCounter = 1;            
             List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
             //Load current teams coach
-            model.CoachModel.SetPositionFilter(0);
-            model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
+            model.CoachModel.SetPositionFilter(0);           
+            model.CoachModel.SetTeamFilter(CPUteam.ToString());
             model.CoachModel.GetNextCoachRecord();
             int CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
 
@@ -1270,49 +1274,7 @@ namespace MaddenEditor.Forms
 
                     }
 
-                    //Determine if Morale dropped due to offseason scenario
-                    if ((valObject.FirstName == ScenarioFirstName) & (valObject.LastName == ScenarioLastName))
-                    {
-                        if ((BadNews == true) & (HorribleNews == false))
-                        {
-                            Rating = (valObject.Morale - (int)(11 * random.NextDouble() + (10 + Diff)));
-                            HighLowCheck(Rating);
-                            valObject.Morale = Rating;
-                        }
-                        else if (HorribleNews == true)
-                        {
-                            Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + (20 + Diff))));
-                            HighLowCheck(Rating);
-                            valObject.Morale = Rating;
-                        }
-                        if ((GoodNews == true) & (GreatNews == false) & (valObject.Morale != 100))
-                        {
-                            Rating = (valObject.Morale + ((int)(11 * random.NextDouble() + (5 + Diff))));
-                            HighLowCheck(Rating);
-                            valObject.Morale = Rating;
-                        }
-                        else if ((GreatNews == true) & (valObject.Morale != 100))
-                        {
-                            Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + (15 + Diff))));
-                            HighLowCheck(Rating);
-                            valObject.Morale = Rating;
-                        }
-                    }
-                    
-                    if ((GoodNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
-                    {
-                        Diff = (((model.CoachModel.CurrentCoachRecord.Chemistry - 70) / 6) * -1);
-                        Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + (15 + Diff))));
-                        HighLowCheck(Rating);
-                        valObject.Morale = Rating;
-                    }
-                    if ((BadNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
-                    {
-                        Diff = ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 6);
-                        Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + (10 + Diff))));
-                        HighLowCheck(Rating);
-                        valObject.Morale = Rating;
-                    }
+                  
                     //Add modified datarow to view before/after changes 
                     DataRow ac = RosterView.NewRow();
                     // playerHeightComboBox.SelectedIndex = record.Height - 65;
@@ -1383,74 +1345,24 @@ namespace MaddenEditor.Forms
                     depthChartDataGrid.CurrentCell = depthChartDataGrid[0, 0];
                 }
                 groupBox3.Enabled = true;
-                label4.Text = FatCoutner + " player(s) are in worse condition than when last season ended.";
-                label5.Text = MuscleCounter + " player(s) showed up to camp in better condition than when last season ended.";               
+                           
             }          
-            string OwnerFeedback = "";
-            textBox1.Visible = true;
-            //negative commentary
-            if (FatCoutner > MuscleCounter)
-            {
-                if ((Math.Abs(FatCoutner - MuscleCounter) <= (int)1))
-                {
-                    OwnerFeedback = ("Message from ownership...We're a little disappointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s inability to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight isn't too bad but we'd like to see better next offseason.");
-                }
-                else if ((Math.Abs(FatCoutner - MuscleCounter) <= (int)3))
-                {
-                    OwnerFeedback = ("Message from ownership...We're disappointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is unacceptable.");
-                }
-                else if ((Math.Abs(FatCoutner - MuscleCounter) > (int)3))
-                {
-                    OwnerFeedback = ("Message from ownership...We're extremely upset with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s complete failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is ridiculous. This trend must change.");
-                }
-             }
-            //positive commentary
-            if (MuscleCounter > FatCoutner)
-            {
-                if ((Math.Abs(MuscleCounter - FatCoutner) <= (int)1))
-                {
-                    OwnerFeedback = ("Message from ownership...At least we had more guys show up to camp in better shape then they were in when last season ended. Head coach " + model.CoachModel.CurrentCoachRecord.Name + " did an acceptable job of motivating our players this past offseason. A " + MuscleCounter + "/" + FatCoutner + " loss/gain is good.");
-                }
-                else if ((Math.Abs(MuscleCounter - FatCoutner) <= (int)3))
-                {
-                    OwnerFeedback = ("Message from ownership..." + model.CoachModel.CurrentCoachRecord.Name + " did a great job the past couple months reaching out to our players and encouraging them to not only maintain their conditioning but in some cases even improve upon it." + MuscleCounter + " player(s) reporting to camp in better shape than last year shows us this coach has the team focused on winning.");
-                }
-                else if ((Math.Abs(MuscleCounter - FatCoutner) > (int)3))
-                {
-                    OwnerFeedback = ("Message from ownership...You've clearly got an eye for motivational talent." + model.CoachModel.CurrentCoachRecord.Name + " has been supremely focused on staying on top of our guys and we can now use training camp to sharpen the player's skills without having to waste valuable time working the team back into shape.");
-                }
-              }
-            //Neutrel
-            if (MuscleCounter == FatCoutner)
-            {
-                double NeutralRoll = (2 * random.NextDouble()) + 1;
-                if (NeutralRoll == 1)
-                {
-                    OwnerFeedback = ("Message from ownership...We need more motivational spark out of " + model.CoachModel.CurrentCoachRecord.Name + ".But at least it's a wash in terms of loss/gain. We won't have to spend that much camp time working them back into shape...");
-                }
-                else
-                {
-                    OwnerFeedback = ("Message from ownership...The number of players reporting to camp heavier than last year equals those that " + model.CoachModel.CurrentCoachRecord.Name + " reached out to this past offseason.\nWe'd like better Motivation next year to get a jump on our division..");
-                }
-            }
+          
             
             isInitialising = false;
-            textBox1.Text = textBox1.Text + "\r\n\r\n" + OwnerFeedback + CurrentDialog;
-            textBox1.SelectionStart = textBox1.Text.Length;
-            textBox1.SelectionLength = 0;
-            textBox1.ScrollToCaret();
-            //Disable checkbox
-            checkBox1.Enabled = false;
-            SelectHumanTeam.Enabled = false;
-
+         
+        
             //Export Conditioning Report
             string installDirectory = Application.StartupPath;
-            if (!Directory.Exists(installDirectory + "\\Conditioning"))
+            string fullFranchisePath = model.GetFileName();
+            string[] splitPath = fullFranchisePath.Split('\\');
+            string franchiseFilename = splitPath[splitPath.Length - 1];
+            if (!Directory.Exists(installDirectory + "\\Conditioning\\" + franchiseFilename + "\\"))
             {
-                Directory.CreateDirectory(installDirectory + "\\Conditioning");
+                Directory.CreateDirectory(installDirectory + "\\Conditioning\\" + franchiseFilename + "\\");
             }
             // Create the CSV file to which grid data will be exported.
-            StreamWriter sw = new StreamWriter((installDirectory + "\\Conditioning\\" + SelectHumanTeam.Text + ".txt"), false);
+            StreamWriter sw = new StreamWriter((installDirectory + "\\Conditioning\\" + franchiseFilename + "\\" + CPUteam.ToString() + ".txt"), false);
             // First we will write the headers.
             DataTable dt = RosterView;
             int iColCount = dt.Columns.Count;
@@ -1480,14 +1392,583 @@ namespace MaddenEditor.Forms
                     }
                 }
                 sw.Write(sw.NewLine);
+                sw.WriteLine();
+               
+            }
+            if (checkBox2.Checked == false)
+            {
+                sw.Write("Coach Progression...");
+                sw.WriteLine();
+                sw.WriteLine("Name\t\tKnw\tMot\tChm\tEth\tQB\tRB\tWR\tOL\tDL\tLB\tDB\tK\tP\t");
+                sw.Write(model.CoachModel.CurrentCoachRecord.Name + "\t" + oldKnw + "\t" + OldMot + "\t" + oldChm + "\t" + OldEth + "\t" + oldqb + "\t" + Oldrb + "\t" + oldwr + "\t" + Oldol + "\t" + olddl + "\t" + olddb + "\t" + Oldk + "\t" + Oldp);
+                sw.WriteLine();
+                sw.WriteLine(model.CoachModel.CurrentCoachRecord.Name + "\t" + model.CoachModel.CurrentCoachRecord.Knowledge + "\t" + model.CoachModel.CurrentCoachRecord.Motivation + "\t" + model.CoachModel.CurrentCoachRecord.Chemistry + "\t" +
+                   model.CoachModel.CurrentCoachRecord.Ethics + "\t" + model.CoachModel.CurrentCoachRecord.QuarterbackRating + "\t" + model.CoachModel.CurrentCoachRecord.RunningbackRating + "\t" + model.CoachModel.CurrentCoachRecord.WideReceiverRating + "\t" +
+                   model.CoachModel.CurrentCoachRecord.OffensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.LinebackerRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveBackRating + "\t" + model.CoachModel.CurrentCoachRecord.KickerRating + "\t" +
+                   model.CoachModel.CurrentCoachRecord.PuntRating);
             }
             sw.Close();
-            if (ScenarioFirstName != "")
+           
+        }
+        private void PhaseOne()
+        {
+            InitializeDataGrids();
+            int teamId = ((TeamRecord)SelectHumanTeam.SelectedItem).TeamId;
+            int positionId = 0;
+            int FatCoutner = 0;
+            int MuscleCounter = 0;
+            int acCounter = 1;
+            List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
+            //Load current teams coach
+            model.CoachModel.SetPositionFilter(0);
+            model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
+            model.CoachModel.GetNextCoachRecord();
+            int CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
+
+            foreach (PlayerRecord valObject in teamPlayers)
             {
-          //      groupBox5.Visible = true;
+                WeightGain = false;
+                WeightLoss = false;
+                Rating = 0;
+                Skill = 0;
+                AttributeMeans(valObject.PositionId);
+                CallWeightGain((valObject.Weight + 160), valObject.Age, valObject.PositionId, CoachMotivation, valObject.FirstName, valObject.LastName);
+                CallWeightLoss((valObject.Weight + 160), valObject.Age, valObject.PositionId, CoachMotivation, valObject.FirstName, valObject.LastName);
+                string CaptainFirst = "";
+                string CaptainLast = "";
+                if (OldCaptain != "")
+                {
+                    CaptainFirst = OldCaptain.Split(' ')[0];
+                    CaptainLast = OldCaptain.Split(' ')[1];
+                }
+                if ((WeightGain == true & WeightLoss == false) | (WeightGain == false & WeightLoss == true) || ((BadNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName)) || ((GoodNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName)))
+                {
+
+                    if (WeightGain == true)
+                    {
+                        FatCoutner++;
+                    }
+                    else if (WeightLoss == true)
+                    {
+                        MuscleCounter++;
+                    }
+
+                    //Print Before row to DataGrid
+                    DataRow dr = RosterView.NewRow();
+                    // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                    dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                    dr["Pos"] = PosStr;
+                    dr["Age"] = valObject.Age;
+                    dr["Exp"] = valObject.YearsPro;
+                    valObject.Overall = valObject.CalculateOverallRating(valObject.PositionId);
+                    dr["Ovr"] = valObject.Overall;
+                    // Would like to include feet/inches
+                    dr["Hgt"] = valObject.Height;
+                    dr["Wgt"] = valObject.Weight + 160;
+                    dr["Spd"] = valObject.Speed;
+                    dr["Acc"] = valObject.Acceleration;
+                    dr["Agi"] = valObject.Agility;
+                    dr["Str"] = valObject.Strength;
+                    dr["Stm"] = valObject.Stamina;
+                    dr["Inj"] = valObject.Injury;
+                    dr["Tgh"] = valObject.Toughness;
+                    dr["Mor"] = valObject.Morale;
+                    dr["Awr"] = valObject.Awareness;
+                    dr["Cat"] = valObject.Catching;
+                    dr["Car"] = valObject.Carrying;
+                    dr["Jmp"] = valObject.Jumping;
+                    dr["Btk"] = valObject.BreakTackle;
+                    dr["Tkl"] = valObject.Tackle;
+                    dr["ThP"] = valObject.ThrowPower;
+                    dr["ThA"] = valObject.ThrowAccuracy;
+                    dr["Pbk"] = valObject.PassBlocking;
+                    dr["Rbk"] = valObject.RunBlocking;
+                    dr["KP"] = valObject.KickPower;
+                    dr["KA"] = valObject.KickAccuracy;
+                    dr["KR"] = valObject.BodyWeight;
+                    // dr["KR"] = valObject.KickReturn;
+
+                    RosterView.Rows.Add(dr);
+                    int OldOvr = valObject.Overall;
+                    int OldSpeed = valObject.Speed;
+                    int OldAcc = valObject.Acceleration;
+                    int OldAgi = valObject.Agility;
+                    int OldStr = valObject.Strength;
+                    int OldStm = valObject.Stamina;
+                    int OldInj = valObject.Injury;
+                    int OldJmp = valObject.Jumping;
+                    int OldBtk = valObject.BreakTackle;
+                    OldWgt = valObject.Weight + 160;
+                    int OldPbk = valObject.PassBlocking;
+                    int OldRbk = valObject.RunBlocking;
+                    int OldMor = valObject.Morale;
+
+                    decimal AttributeDifferential;
+
+                    if (WeightGain == true)
+                    {
+                        AllocateWeight(CoachMotivation, valObject.Age);
+                        PercentModFat = (Math.Abs((decimal)PercentModFat - 1) * (decimal)PosWgtMod) + 1;
+                        PercentModMuscle = 2 - PercentModFat;
+                        AddWgt = (int)(Math.Ceiling((valObject.Weight + 160) * (decimal)PercentModFat));
+                        decimal WgtDifferential = decimal.Round((1 - ((decimal)OldWgt / (decimal)AddWgt)), 4); // *(decimal)1.35;
+
+                        PercentModFat = Math.Round(((decimal)AddWgt / (decimal)OldWgt), 6) + (decimal).05;
+                        PercentModMuscle = Math.Round(((decimal)OldWgt / (decimal)AddWgt), 6) - (decimal).05;
+
+                        valObject.Weight = (AddWgt - 160);
+                        Rating = (int)(Math.Ceiling(valObject.BodyWeight * PercentModFat));
+                        HighLowCheck(Rating);
+                        valObject.BodyWeight = Rating;
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Speed / (decimal)SpdMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = (((1 - (decimal.Round(((decimal)SpdMean / (decimal)valObject.Speed), 4))) * 2) + (decimal)SpdLoss) * (decimal)PosWgtMod; }
+                        else
+                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)SpdLoss) * (decimal)PosWgtMod; }
+                        Rating = (int)Math.Round(valObject.Speed * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        valObject.Speed = Rating;
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Acceleration / (decimal)AccMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = (((1 - (decimal.Round(((decimal)AccMean / (decimal)valObject.Acceleration), 4))) * 2) + (decimal)AccLoss) * (decimal)PosWgtMod; }
+                        else
+                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AccLoss) * (decimal)PosWgtMod; }
+                        Rating = (int)Math.Round(valObject.Acceleration * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        OldAcc = valObject.Acceleration;
+                        valObject.Acceleration = Rating;
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Agility / (decimal)AgiMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = (((1 - (decimal.Round(((decimal)AgiMean / (decimal)valObject.Agility), 4))) * 2) + (decimal)AgiLoss) * (decimal)PosWgtMod; }
+                        else
+                        { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AgiLoss) * (decimal)PosWgtMod; }
+                        Rating = (int)Math.Round(valObject.Agility * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        OldAgi = valObject.Agility;
+                        if ((valObject.Acceleration < OldAcc) & (Rating < valObject.Agility)) //Increment PassBlk, decrement Run block due to weight loss
+                        {
+                            int BlockChange = ((OldAcc - valObject.Acceleration) + (OldAgi - Rating)) / 2;
+                            valObject.RunBlocking = valObject.RunBlocking + BlockChange;
+                            valObject.PassBlocking = valObject.PassBlocking - BlockChange;
+                        }
+                        valObject.Agility = Rating;
+
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Stamina / (decimal)StmMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StmMean / (decimal)valObject.Stamina), 4))) * 2) + (decimal)StmLoss; }
+                        else
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)StmLoss; }
+                        Rating = (int)Math.Round(valObject.Stamina * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        valObject.Stamina = Rating;
+                        if (OldStm > valObject.Stamina) //Decrement Jump = Stamina loss /2
+                        {
+                            int JumpChange = (OldStm - valObject.Stamina) / 2;
+                            valObject.Jumping = valObject.Jumping - JumpChange;
+                            valObject.BreakTackle = valObject.BreakTackle + JumpChange; //BreakTackle drop due to mass loss
+                        }
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Injury / (decimal)InjMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)InjMean / (decimal)valObject.Injury), 4))) * 2) + (decimal)InjLoss; }
+                        else
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)InjLoss; }
+                        Rating = (int)Math.Round(valObject.Injury * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        valObject.Injury = Rating;
+
+                        Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
+                        HighLowCheck(Rating);
+                        valObject.BodyMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.BodyFat * (PercentModFat * (decimal)1.35))));
+                        HighLowCheck(Rating);
+                        valObject.BodyFat = Rating;
+                        Rating = (int)(Math.Floor((valObject.ArmsMuscle * PercentModMuscle)));
+                        HighLowCheck(Rating);
+                        valObject.ArmsMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.ArmsFat * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.ArmsFat = Rating;
+                        Rating = (int)(Math.Floor((valObject.LegsThighMuscle * PercentModMuscle)));
+                        HighLowCheck(Rating);
+                        valObject.LegsThighMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.LegsThighFat * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.LegsThighFat = Rating;
+                        Rating = (int)(Math.Floor((valObject.LegsCalfMuscle * PercentModMuscle)));
+                        HighLowCheck(Rating);
+                        valObject.LegsCalfMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.LegsCalfFat * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.LegsCalfFat = Rating;
+                        Rating = (int)(Math.Round((valObject.BodyOverall * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.BodyOverall = Rating;
+
+
+                    }
+                    else if (WeightLoss == true)
+                    {
+                        AllocateLoss(CoachMotivation, valObject.Age);
+                        PercentModFat = Math.Abs((Math.Abs((decimal)PercentModFat - 1) * (decimal)PosWgtMod) - 1);
+                        PercentModMuscle = 2 - PercentModFat;
+                        AddWgt = (int)(Math.Floor((valObject.Weight + 160) * (decimal)PercentModFat));
+                        decimal WgtDifferential = decimal.Round((1 - ((decimal)AddWgt / (decimal)OldWgt)), 4) * (decimal)1.5;
+
+                        PercentModFat = Math.Round(((decimal)OldWgt / (decimal)AddWgt), 6) - (decimal).05;
+                        PercentModMuscle = Math.Round(((decimal)AddWgt / (decimal)OldWgt), 6) + (decimal).05;
+
+                        valObject.Weight = (AddWgt - 160);
+                        Rating = (int)(Math.Ceiling(valObject.BodyWeight * PercentModFat));
+                        HighLowCheck(Rating);
+                        valObject.BodyWeight = Rating;
+
+                        if (valObject.Speed < SpdMean)//Spd increase check
+                        {
+                            AttributeDifferential = decimal.Round(((decimal)valObject.Speed / (decimal)SpdMean), 4);
+                            if (AttributeDifferential > 1)
+                            { AttributeDifferential = (((1 - (decimal.Round(((decimal)SpdMean / (decimal)valObject.Speed), 4))) * 2) + (decimal)SpdGain) * (decimal)PosWgtMod; }
+                            else
+                            { AttributeDifferential = (((1 - AttributeDifferential) * (decimal)1.5) + (decimal)SpdGain) * (decimal)PosWgtMod; }
+                            Rating = (int)Math.Round(valObject.Speed * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                            HighLowCheck(Rating);
+                            valObject.Speed = Rating;
+                        }
+
+                        if ((valObject.Acceleration < AccMean) || (valObject.Speed > OldSpeed))//Acc increase check
+                        {
+                            AttributeDifferential = decimal.Round(((decimal)valObject.Acceleration / (decimal)AccMean), 4);
+                            if (AttributeDifferential > 1)
+                            { AttributeDifferential = (((1 - (decimal.Round(((decimal)AccMean / (decimal)valObject.Acceleration), 4))) * 2) + (decimal)AccGain) * (decimal)PosWgtMod; }
+                            else
+                            { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AccGain) * (decimal)PosWgtMod; }
+                            Rating = (int)Math.Round(valObject.Acceleration * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                            HighLowCheck(Rating);
+                            OldAcc = valObject.Acceleration;
+                            valObject.Acceleration = Rating;
+                        }
+
+                        if ((valObject.Agility < AgiMean) || (valObject.Speed > OldSpeed)) //Agi increase check
+                        {
+                            AttributeDifferential = decimal.Round(((decimal)valObject.Agility / (decimal)AgiMean), 4);
+                            if (AttributeDifferential > 1)
+                            { AttributeDifferential = (((1 - (decimal.Round(((decimal)AgiMean / (decimal)valObject.Agility), 4))) * 2) + (decimal)AgiGain) * (decimal)PosWgtMod; }
+                            else
+                            { AttributeDifferential = (((1 - AttributeDifferential) * 2) + (decimal)AgiGain) * (decimal)PosWgtMod; }
+                            Rating = (int)Math.Round(valObject.Agility * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                            HighLowCheck(Rating);
+                            OldAgi = valObject.Agility;
+                            if ((valObject.Acceleration > OldAcc) & (Rating > valObject.Agility)) //Decrement PassBlk, increment Run block due to weight gain
+                            {
+                                int BlockChange = ((valObject.Acceleration - OldAcc) + (Rating - OldAgi)) / 2;
+                                valObject.RunBlocking = valObject.RunBlocking - BlockChange;
+                                valObject.PassBlocking = valObject.PassBlocking + BlockChange;
+                            }
+                            valObject.Agility = Rating;
+                        }
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Stamina / (decimal)StmMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StmMean / (decimal)valObject.Stamina), 4))) * 2) + (decimal)StmGain; }
+                        else
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)StmGain; }
+                        Rating = (int)Math.Round(valObject.Stamina * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        valObject.Stamina = Rating;
+                        if (OldStm < valObject.Stamina) //Decrement Jump = Stamina loss /2
+                        {
+                            int JumpChange = (valObject.Stamina - OldStm) / 2;
+                            valObject.Jumping = valObject.Jumping + JumpChange;
+                            valObject.BreakTackle = valObject.BreakTackle - JumpChange; //BreakTackle drop due to mass loss
+                        }
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Strength / (decimal)StrMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)StrMean / (decimal)valObject.Strength), 4))) * 2) + (decimal)StrLoss; }
+                        else
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)StrLoss; }
+                        Rating = (int)Math.Round(valObject.Strength * (1 - ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        valObject.Strength = Rating;
+
+                        AttributeDifferential = decimal.Round(((decimal)valObject.Injury / (decimal)InjMean), 4);
+                        if (AttributeDifferential > 1)
+                        { AttributeDifferential = ((1 - (decimal.Round(((decimal)InjMean / (decimal)valObject.Injury), 4))) * 2) + (decimal)InjGain; }
+                        else
+                        { AttributeDifferential = ((1 - AttributeDifferential) * 2) + (decimal)InjGain; }
+                        Rating = (int)Math.Round(valObject.Injury * (1 + ((decimal)WgtDifferential * (decimal)AttributeDifferential)));
+                        HighLowCheck(Rating);
+                        valObject.Injury = Rating;
+
+                        Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
+                        HighLowCheck(Rating);
+                        valObject.BodyMuscle = Rating;
+                        Rating = (int)(Math.Ceiling(valObject.BodyFat * (PercentModFat * (decimal)0.65)));
+                        HighLowCheck(Rating);
+                        valObject.BodyFat = Rating;
+                        Rating = (int)(Math.Floor((valObject.ArmsMuscle * PercentModMuscle)));
+                        HighLowCheck(Rating);
+                        valObject.ArmsMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.ArmsFat * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.ArmsFat = Rating;
+                        Rating = (int)(Math.Floor((valObject.LegsThighMuscle * PercentModMuscle)));
+                        HighLowCheck(Rating);
+                        valObject.LegsThighMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.LegsThighFat * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.LegsThighFat = Rating;
+                        Rating = (int)(Math.Floor((valObject.LegsCalfMuscle * PercentModMuscle)));
+                        HighLowCheck(Rating);
+                        valObject.LegsCalfMuscle = Rating;
+                        Rating = (int)(Math.Ceiling((valObject.LegsCalfFat * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.LegsCalfFat = Rating;
+                        Rating = (int)(Math.Round((valObject.BodyOverall * PercentModFat)));
+                        HighLowCheck(Rating);
+                        valObject.BodyOverall = Rating;
+
+
+                    }
+
+                    //Determine if Morale dropped due to offseason scenario
+                    if ((valObject.FirstName == ScenarioFirstName) & (valObject.LastName == ScenarioLastName))
+                    {
+                        if ((BadNews == true) & (HorribleNews == false))
+                        {
+                            Rating = (valObject.Morale - (int)(11 * random.NextDouble() + (10 + Diff)));
+                            HighLowCheck(Rating);
+                            valObject.Morale = Rating;
+                        }
+                        else if (HorribleNews == true)
+                        {
+                            Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + (20 + Diff))));
+                            HighLowCheck(Rating);
+                            valObject.Morale = Rating;
+                        }
+                        if ((GoodNews == true) & (GreatNews == false) & (valObject.Morale != 100))
+                        {
+                            Rating = (valObject.Morale + ((int)(11 * random.NextDouble() + (5 + Diff))));
+                            HighLowCheck(Rating);
+                            valObject.Morale = Rating;
+                        }
+                        else if ((GreatNews == true) & (valObject.Morale != 100))
+                        {
+                            Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + (15 + Diff))));
+                            HighLowCheck(Rating);
+                            valObject.Morale = Rating;
+                        }
+                    }
+
+                    if ((GoodNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
+                    {
+                        Diff = (((model.CoachModel.CurrentCoachRecord.Chemistry - 70) / 6) * -1);
+                        Rating = (valObject.Morale - ((int)(16 * random.NextDouble() + (15 + Diff))));
+                        HighLowCheck(Rating);
+                        valObject.Morale = Rating;
+                    }
+                    if ((BadNews == true) & (CaptainFirst == valObject.FirstName) & (CaptainLast == valObject.LastName))
+                    {
+                        Diff = ((model.CoachModel.CurrentCoachRecord.Chemistry - 50) / 6);
+                        Rating = (valObject.Morale + ((int)(16 * random.NextDouble() + (10 + Diff))));
+                        HighLowCheck(Rating);
+                        valObject.Morale = Rating;
+                    }
+                    //Add modified datarow to view before/after changes 
+                    DataRow ac = RosterView.NewRow();
+                    // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+
+                    ac["Name"] = "      CURRENT-" + valObject.LastName;
+                    ac["Pos"] = PosStr;
+                    ac["Age"] = valObject.Age;
+                    ac["Exp"] = valObject.YearsPro;
+
+                    // Would like to include feet/inches
+                    ac["Hgt"] = valObject.Height;
+                    ac["Wgt"] = valObject.Weight + 160;
+                    ac["Spd"] = valObject.Speed;
+                    ac["Acc"] = valObject.Acceleration;
+                    ac["Agi"] = valObject.Agility;
+                    ac["Str"] = valObject.Strength;
+                    ac["Stm"] = valObject.Stamina;
+                    ac["Inj"] = valObject.Injury;
+                    ac["Tgh"] = valObject.Toughness;
+                    ac["Mor"] = valObject.Morale;
+                    ac["Awr"] = valObject.Awareness;
+                    ac["Cat"] = valObject.Catching;
+                    ac["Car"] = valObject.Carrying;
+                    ac["Jmp"] = valObject.Jumping;
+                    ac["Btk"] = valObject.BreakTackle;
+                    ac["Tkl"] = valObject.Tackle;
+                    ac["ThP"] = valObject.ThrowPower;
+                    ac["ThA"] = valObject.ThrowAccuracy;
+                    ac["Pbk"] = valObject.PassBlocking;
+                    ac["Rbk"] = valObject.RunBlocking;
+                    ac["KP"] = valObject.KickPower;
+                    ac["KA"] = valObject.KickAccuracy;
+                    ac["KR"] = valObject.KickReturn;
+
+                    valObject.Overall = valObject.CalculateOverallRating(valObject.PositionId);
+                    //Reload the overall rating
+                    valObject.Overall = valObject.Overall;
+                    ac["Ovr"] = valObject.Overall;
+
+                    RosterView.Rows.Add(ac);
+
+                    CellColor(4, acCounter, valObject.Overall, OldOvr);
+                    CellColor(6, acCounter, valObject.Weight, (OldWgt - 160));
+                    CellColor(7, acCounter, valObject.Speed, OldSpeed);
+                    CellColor(8, acCounter, valObject.Acceleration, OldAcc);
+                    CellColor(9, acCounter, valObject.Agility, OldAgi);
+                    CellColor(10, acCounter, valObject.Strength, OldStr);
+                    CellColor(11, acCounter, valObject.Stamina, OldStm);
+                    CellColor(12, acCounter, valObject.Injury, OldInj);
+                    CellColor(18, acCounter, valObject.Jumping, OldJmp);
+                    CellColor(19, acCounter, valObject.BreakTackle, OldBtk);
+                    CellColor(23, acCounter, valObject.PassBlocking, OldPbk);
+                    CellColor(24, acCounter, valObject.RunBlocking, OldRbk);
+                    CellColor(14, acCounter, valObject.Morale, OldMor);
+
+                    acCounter = acCounter + 2;
+
+
+                }
+
+
+                // Sort the current view after running foreach loop unless view empty
+                if (RosterView.Rows.Count != 0)
+                {
+                    //  depthChartDataGrid.Sort(depthChartDataGrid.Columns["Pos"], ListSortDirection.Descending);
+
+                    depthChartDataGrid.CurrentCell = depthChartDataGrid[0, 0];
+                }
+                groupBox3.Enabled = true;
+                label4.Text = FatCoutner + " player(s) are in worse condition than when last season ended.";
+                label5.Text = MuscleCounter + " player(s) showed up to camp in better condition than when last season ended.";
+            }
+            string OwnerFeedback = "";
+            textBox1.Visible = true;
+            //negative commentary
+            if (FatCoutner > MuscleCounter)
+            {
+                if ((Math.Abs(FatCoutner - MuscleCounter) <= (int)1))
+                {
+                    OwnerFeedback = ("Message from ownership...We're a little disappointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s inability to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight isn't too bad but we'd like to see better next offseason.");
+                }
+                else if ((Math.Abs(FatCoutner - MuscleCounter) <= (int)3))
+                {
+                    OwnerFeedback = ("Message from ownership...We're disappointed with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is unacceptable.");
+                }
+                else if ((Math.Abs(FatCoutner - MuscleCounter) > (int)3))
+                {
+                    OwnerFeedback = ("Message from ownership...We're extremely upset with head coach " + model.CoachModel.CurrentCoachRecord.Name + "'s complete failure to motivate our players this past offseason." + FatCoutner + " player(s) reporting to camp overweight is ridiculous. This trend must change.");
+                }
+            }
+            //positive commentary
+            if (MuscleCounter > FatCoutner)
+            {
+                if ((Math.Abs(MuscleCounter - FatCoutner) <= (int)1))
+                {
+                    OwnerFeedback = ("Message from ownership...At least we had more guys show up to camp in better shape then they were in when last season ended. Head coach " + model.CoachModel.CurrentCoachRecord.Name + " did an acceptable job of motivating our players this past offseason. A " + MuscleCounter + "/" + FatCoutner + " loss/gain is good.");
+                }
+                else if ((Math.Abs(MuscleCounter - FatCoutner) <= (int)3))
+                {
+                    OwnerFeedback = ("Message from ownership..." + model.CoachModel.CurrentCoachRecord.Name + " did a great job the past couple months reaching out to our players and encouraging them to not only maintain their conditioning but in some cases even improve upon it." + MuscleCounter + " player(s) reporting to camp in better shape than last year shows us this coach has the team focused on winning.");
+                }
+                else if ((Math.Abs(MuscleCounter - FatCoutner) > (int)3))
+                {
+                    OwnerFeedback = ("Message from ownership...You've clearly got an eye for motivational talent." + model.CoachModel.CurrentCoachRecord.Name + " has been supremely focused on staying on top of our guys and we can now use training camp to sharpen the player's skills without having to waste valuable time working the team back into shape.");
+                }
+            }
+            //Neutrel
+            if (MuscleCounter == FatCoutner)
+            {
+                double NeutralRoll = (2 * random.NextDouble()) + 1;
+                if (NeutralRoll == 1)
+                {
+                    OwnerFeedback = ("Message from ownership...We need more motivational spark out of " + model.CoachModel.CurrentCoachRecord.Name + ".But at least it's a wash in terms of loss/gain. We won't have to spend that much camp time working them back into shape...");
+                }
+                else
+                {
+                    OwnerFeedback = ("Message from ownership...The number of players reporting to camp heavier than last year equals those that " + model.CoachModel.CurrentCoachRecord.Name + " reached out to this past offseason.\nWe'd like better Motivation next year to get a jump on our division..");
+                }
+            }
+
+            isInitialising = false;
+            textBox1.Text = textBox1.Text + "\r\n\r\n" + OwnerFeedback + CurrentDialog;
+            textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.SelectionLength = 0;
+            textBox1.ScrollToCaret();
+            //Disable checkbox
+            checkBox1.Enabled = false;
+            SelectHumanTeam.Enabled = false;
+
+            //Export Conditioning Report
+            string installDirectory = Application.StartupPath;
+            string fullFranchisePath = model.GetFileName();
+            string[] splitPath = fullFranchisePath.Split('\\');
+            string franchiseFilename = splitPath[splitPath.Length - 1];
+            if (!Directory.Exists(installDirectory + "\\Conditioning\\" + franchiseFilename + "\\"))
+            {
+                Directory.CreateDirectory(installDirectory + "\\Conditioning\\" + franchiseFilename + "\\");
+            }
+            // Create the CSV file to which grid data will be exported.
+            StreamWriter sw = new StreamWriter((installDirectory + "\\Conditioning\\" + franchiseFilename + "\\" + SelectHumanTeam.Text + ".txt"), false);
+            // First we will write the headers.
+            DataTable dt = RosterView;
+            int iColCount = dt.Columns.Count;
+            sw.Write(dt.Columns[0]);
+            sw.Write("\t\t\t");
+            for (int i = 1; i < iColCount; i++)
+            {
+                sw.Write(dt.Columns[i]);
+                if (i < iColCount - 1)
+                {
+                    sw.Write("\t");
+                }
+            }
+            sw.Write(sw.NewLine);
+            // Now write all the rows.
+            foreach (DataRow dr in dt.Rows)
+            {
+                for (int i = 0; i < iColCount; i++)
+                {
+                    if (!Convert.IsDBNull(dr[i]))
+                    {
+                        sw.Write(dr[i].ToString());
+                    }
+                    if (i < iColCount - 1)
+                    {
+                        sw.Write("\t");
+                    }
+                }
+                sw.Write(sw.NewLine);
+                sw.WriteLine();
+                
+            }
+            if (checkBox2.Checked == false)
+            {
+                sw.Write("Coach Progression...");
+                sw.WriteLine();
+                sw.WriteLine("Name\t\tKnw\tMot\tChm\tEth\tQB\tRB\tWR\tOL\tDL\tLB\tDB\tK\tP\t");
+                sw.Write(model.CoachModel.CurrentCoachRecord.Name + "\t" + oldKnw + "\t" + OldMot + "\t" + oldChm + "\t" + OldEth + "\t" + oldqb + "\t" + Oldrb + "\t" + oldwr + "\t" + Oldol + "\t" + olddl + "\t" + olddb + "\t" + Oldk + "\t" + Oldp);
+                sw.WriteLine();
+                sw.WriteLine(model.CoachModel.CurrentCoachRecord.Name + "\t" + model.CoachModel.CurrentCoachRecord.Knowledge + "\t" + model.CoachModel.CurrentCoachRecord.Motivation + "\t" + model.CoachModel.CurrentCoachRecord.Chemistry + "\t" +
+                   model.CoachModel.CurrentCoachRecord.Ethics + "\t" + model.CoachModel.CurrentCoachRecord.QuarterbackRating + "\t" + model.CoachModel.CurrentCoachRecord.RunningbackRating + "\t" + model.CoachModel.CurrentCoachRecord.WideReceiverRating + "\t" +
+                   model.CoachModel.CurrentCoachRecord.OffensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.LinebackerRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveBackRating + "\t" + model.CoachModel.CurrentCoachRecord.KickerRating + "\t" +
+                   model.CoachModel.CurrentCoachRecord.PuntRating);
+            }
+            sw.Close();
+            if (ScenarioFirstName == "")
+            {
+            //    groupBox5.Visible = true;
             }
         }
-
         private void HighLowCheck(int Skill)
         {
             if ((int)Skill > 99)
@@ -1537,7 +2018,7 @@ namespace MaddenEditor.Forms
 
             if (DisableScenarioChk.Checked == false)//Skip OffSeason Scenario mode if check box checked
             {
-                if (Issue <= 30)
+                if (Issue <= 15)
                 {
                     SelectHumanTeam.Enabled = false;
                     checkBox1.Enabled = false;
@@ -1930,28 +2411,30 @@ namespace MaddenEditor.Forms
             pUpDown.Enabled = true;
 
         }
-        private void CoachProgression()
+        private void CoachProgressionCPU()
         {
+            model.CoachModel.SetPositionFilter(0);
+            model.CoachModel.SetTeamFilter(CPUteam.ToString());
+            model.CoachModel.GetNextCoachRecord();
             int Wins = model.CoachModel.CurrentCoachRecord.CareerLoses;
             int Losses = model.CoachModel.CurrentCoachRecord.CareerWins;            
             int SeasonsExp = (int)((Wins + Losses) / 16);
             double CoachProgMod = 0.0;
             decimal AttributeDeviation = 0;
             decimal RankExp = 0;
-            string Changes = "";
-            int oldKnw = model.CoachModel.CurrentCoachRecord.Knowledge;
-            int OldMot = model.CoachModel.CurrentCoachRecord.Motivation;
-            int oldChm = model.CoachModel.CurrentCoachRecord.Chemistry;
-            int OldEth = model.CoachModel.CurrentCoachRecord.Ethics;
-            int oldqb = model.CoachModel.CurrentCoachRecord.QuarterbackRating;
-            int Oldrb = model.CoachModel.CurrentCoachRecord.RunningbackRating;
-            int oldwr = model.CoachModel.CurrentCoachRecord.WideReceiverRating;
-            int Oldol = model.CoachModel.CurrentCoachRecord.OffensiveLineRating;
-            int olddl = model.CoachModel.CurrentCoachRecord.DefensiveLineRating;
-            int Oldlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
-            int olddb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
-            int Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            int Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
+             oldKnw = model.CoachModel.CurrentCoachRecord.Knowledge;
+             OldMot = model.CoachModel.CurrentCoachRecord.Motivation;
+             oldChm = model.CoachModel.CurrentCoachRecord.Chemistry;
+             OldEth = model.CoachModel.CurrentCoachRecord.Ethics;
+             oldqb = model.CoachModel.CurrentCoachRecord.QuarterbackRating;
+             Oldrb = model.CoachModel.CurrentCoachRecord.RunningbackRating;
+             oldwr = model.CoachModel.CurrentCoachRecord.WideReceiverRating;
+             Oldol = model.CoachModel.CurrentCoachRecord.OffensiveLineRating;
+             olddl = model.CoachModel.CurrentCoachRecord.DefensiveLineRating;
+             Oldlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
+             olddb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
+             Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
+             Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
 
             if (SeasonsExp <= 1)
             {
@@ -2006,6 +2489,245 @@ namespace MaddenEditor.Forms
                 CoachProgMod = (.3);
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) / 10),3); //Knw
+            RankExp = (3 * ((decimal)CoachProgMod * (decimal).7));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Knowledge = model.CoachModel.CurrentCoachRecord.Knowledge + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Motivation)) / 10), 3); //Knw
+            RankExp = (3 * ((decimal)CoachProgMod * (decimal).7));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Motivation = model.CoachModel.CurrentCoachRecord.Motivation + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Chemistry)) / 10), 3); //Knw
+            RankExp = (1 * ((decimal)CoachProgMod * (decimal).7));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Chemistry = model.CoachModel.CurrentCoachRecord.Chemistry + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Ethics)) / 10), 3); //Knw
+            RankExp = (1 * ((decimal)CoachProgMod * (decimal).7));//(decimal)CoachProgMod);
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.Ethics = model.CoachModel.CurrentCoachRecord.Ethics + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+
+            //Pos ratings
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.OffensiveLineRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) / 10), 3); //Knw
+            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+           /*
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.KickerRating)) / 10), 3); //Knw
+            RankExp = ((decimal)kUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) / 10), 3); //Knw
+            RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
+            if (RankExp > AttributeDeviation)
+            {
+                model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
+            }
+            
+            if (model.CoachModel.CurrentCoachRecord.Knowledge > oldKnw)
+            {
+                hcknw.Text = model.CoachModel.CurrentCoachRecord.Knowledge.ToString();
+                hcknw.ForeColor = Color.Blue;
+                Changes = "Knw increased +" + (model.CoachModel.CurrentCoachRecord.Knowledge - oldKnw) + " from " + oldKnw + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.Motivation > OldMot)
+            {
+                hcmot.Text = model.CoachModel.CurrentCoachRecord.Motivation.ToString();
+                hcmot.ForeColor = Color.Blue;
+                Changes = Changes + "Mot increased +" + (model.CoachModel.CurrentCoachRecord.Motivation - OldMot) + " from " + OldMot + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.Chemistry > oldChm)
+            {
+                hcchm.Text = model.CoachModel.CurrentCoachRecord.Chemistry.ToString();
+                hcchm.ForeColor = Color.Blue;
+                Changes = Changes + "Chm increased +" + (model.CoachModel.CurrentCoachRecord.Chemistry - oldChm) + " from " + oldChm + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.Ethics > OldEth)
+            {
+                hceth.Text = model.CoachModel.CurrentCoachRecord.Ethics.ToString();
+                hceth.ForeColor = Color.Blue;
+                Changes = Changes + "Eth increased +" + (model.CoachModel.CurrentCoachRecord.Ethics - OldEth) + " from " + OldEth + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.QuarterbackRating > oldqb)
+            {
+                hcqb.Text = model.CoachModel.CurrentCoachRecord.QuarterbackRating.ToString();
+                hcqb.ForeColor = Color.Blue;
+                Changes = Changes + "qb increased +" + (model.CoachModel.CurrentCoachRecord.QuarterbackRating - oldqb) + " from " + oldqb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.RunningbackRating > Oldrb)
+            {
+                hcrb.Text = model.CoachModel.CurrentCoachRecord.RunningbackRating.ToString();
+                hcrb.ForeColor = Color.Blue;
+                Changes = Changes + "rb increased +" + (model.CoachModel.CurrentCoachRecord.RunningbackRating - Oldrb) + " from " + Oldrb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.WideReceiverRating > oldwr)
+            {
+                hcwr.Text = model.CoachModel.CurrentCoachRecord.WideReceiverRating.ToString();
+                hcwr.ForeColor = Color.Blue;
+                Changes = Changes + "wr increased +" + (model.CoachModel.CurrentCoachRecord.WideReceiverRating - oldwr) + " from " + oldwr + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.OffensiveLineRating > Oldol)
+            {
+                hcol.Text = model.CoachModel.CurrentCoachRecord.OffensiveLineRating.ToString();
+                hcol.ForeColor = Color.Blue;
+                Changes = Changes + "ol increased +" + (model.CoachModel.CurrentCoachRecord.OffensiveLineRating - Oldol) + " from " + Oldol + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.DefensiveLineRating > olddl)
+            {
+                hcdl.Text = model.CoachModel.CurrentCoachRecord.DefensiveLineRating.ToString();
+                hcdl.ForeColor = Color.Blue;
+                Changes = Changes + "dl increased +" + (model.CoachModel.CurrentCoachRecord.DefensiveLineRating - olddl) + " from " + olddl + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.LinebackerRating > Oldlb)
+            {
+                hclb.Text = model.CoachModel.CurrentCoachRecord.LinebackerRating.ToString();
+                hclb.ForeColor = Color.Blue;
+                Changes = Changes + "Lb increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldlb) + " from " + Oldlb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.DefensiveBackRating > olddb)
+            {
+                hcdb.Text = model.CoachModel.CurrentCoachRecord.DefensiveBackRating.ToString();
+                hcdb.ForeColor = Color.Blue;
+                Changes = Changes + "db increased +" + (model.CoachModel.CurrentCoachRecord.DefensiveBackRating - olddb) + " from " + olddb + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.KickerRating > Oldk)
+            {
+                hck.Text = model.CoachModel.CurrentCoachRecord.KickerRating.ToString();
+                hck.ForeColor = Color.Blue;
+                Changes = Changes + "k increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldk) + " from " + Oldk + ", ";
+            }
+            if (model.CoachModel.CurrentCoachRecord.PuntRating > Oldp)
+            {
+                hcp.Text = model.CoachModel.CurrentCoachRecord.PuntRating.ToString();
+                hcp.ForeColor = Color.Blue;
+                Changes = Changes + "p increased +" + (model.CoachModel.CurrentCoachRecord.PuntRating - Oldp) + " from " + Oldp + ", ";
+            }
+            */
+            
+          
+        }
+        private void CoachProgression()
+        {
+            int Wins = model.CoachModel.CurrentCoachRecord.CareerLoses;
+            int Losses = model.CoachModel.CurrentCoachRecord.CareerWins;
+            int SeasonsExp = (int)((Wins + Losses) / 16);
+            double CoachProgMod = 0.0;
+            decimal AttributeDeviation = 0;
+            decimal RankExp = 0;
+            string Changes = "";
+             oldKnw = model.CoachModel.CurrentCoachRecord.Knowledge;
+             OldMot = model.CoachModel.CurrentCoachRecord.Motivation;
+             oldChm = model.CoachModel.CurrentCoachRecord.Chemistry;
+             OldEth = model.CoachModel.CurrentCoachRecord.Ethics;
+             oldqb = model.CoachModel.CurrentCoachRecord.QuarterbackRating;
+             Oldrb = model.CoachModel.CurrentCoachRecord.RunningbackRating;
+             oldwr = model.CoachModel.CurrentCoachRecord.WideReceiverRating;
+             Oldol = model.CoachModel.CurrentCoachRecord.OffensiveLineRating;
+             olddl = model.CoachModel.CurrentCoachRecord.DefensiveLineRating;
+             Oldlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
+             olddb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
+             Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
+             Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
+
+            if (SeasonsExp <= 1)
+            {
+                CoachProgMod = (2);
+            }
+            else if (SeasonsExp == 2)
+            {
+                CoachProgMod = (1.9);
+            }
+            else if (SeasonsExp == 3)
+            {
+                CoachProgMod = (1.8);
+            }
+            else if (SeasonsExp == 4)
+            {
+                CoachProgMod = (1.65);
+            }
+            else if (SeasonsExp == 5)
+            {
+                CoachProgMod = (1.55);
+            }
+            else if (SeasonsExp == 6)
+            {
+                CoachProgMod = (1.4);
+            }
+            else if (SeasonsExp == 7)
+            {
+                CoachProgMod = (1.3);
+            }
+            else if (SeasonsExp == 8)
+            {
+                CoachProgMod = (1.2);
+            }
+            else if (SeasonsExp == 9)
+            {
+                CoachProgMod = (1.1);
+            }
+            else if (SeasonsExp == 10)
+            {
+                CoachProgMod = (1);
+            }
+            else if (SeasonsExp <= 15)
+            {
+                CoachProgMod = (.7);
+            }
+            else if (SeasonsExp <= 20)
+            {
+                CoachProgMod = (.4);
+            }
+            else if (SeasonsExp > 20)
+            {
+                CoachProgMod = (.3);
+            }
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) / 10), 3); //Knw
             RankExp = ((decimal)knwUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
@@ -2164,7 +2886,7 @@ namespace MaddenEditor.Forms
                 Changes = Changes + "p increased +" + (model.CoachModel.CurrentCoachRecord.PuntRating - Oldp) + " from " + Oldp + ", ";
             }
 
-            
+
             if (Changes != "")
             {
                 Timer1TextDelay(12);//pause to allow user to view coach progression
@@ -2173,7 +2895,7 @@ namespace MaddenEditor.Forms
             else
             {
                 Timer1TextDelay(5);//pause to allow user to view coach progression
-                textBox1.Text = "...No change to coaching attributes...Now simulating Conditioning..."; 
+                textBox1.Text = "...No change to coaching attributes...Now simulating Conditioning...";
             }
             textBox1.SelectionStart = textBox1.Text.Length;
             textBox1.SelectionLength = 0;
@@ -2869,7 +3591,7 @@ namespace MaddenEditor.Forms
                 }
 
             }//End Negative Scen. 2
-           // groupBox5.Visible = true;
+         //   groupBox5.Visible = true;
         }
         private void Timer1TextDelay(int SleepValue)
         {
@@ -3003,6 +3725,7 @@ namespace MaddenEditor.Forms
 
                 if (dr == DialogResult.Yes)
                 {
+                    button4.Enabled = false;
                     Cursor.Current = Cursors.WaitCursor;
                     if (checkBox2.Checked == false)
                     {
@@ -3253,9 +3976,49 @@ namespace MaddenEditor.Forms
                 button4.Enabled = true;
         }
 
-               
-      
-       
+        private void SimCPUbutton_Click(object sender, EventArgs e)
+        {
+           
+
+
+
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void simAllCPUToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for all CPU teams? Please be\npatient. Sim process may take a few moments...\n\n*Note-OffSeason Scenario mode is disabled during CPU Simulation however\nHead Coach progression is based on the coach progression checkbox state...", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+
+            if (dr == DialogResult.Yes)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                checkBox1.Enabled = false;
+                InitializeDataGrids();
+                foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
+                {
+                    CPUteam = (OwnerRecord)team;
+
+                    if (CPUteam.UserControlled == false)
+                    {
+                        if (checkBox2.Checked == false)
+                        {
+                            CoachProgressionCPU();
+                        }
+                        PhaseOneCPU();
+                    }
+                }
+                Cursor.Current = Cursors.Arrow;
+                MessageBox.Show("CPU Sim is now complete. A .txt file has been generated for all CPU teams in the installation directory within the Conditioning folder.\nYou may now close this form. If you still need to run conditioning on human teams simply re-enter via the 'Training Camp'\nunder the 'Tools' menu strip.", "", MessageBoxButtons.OK, MessageBoxIcon.None);
+            }
+        }
+
+        
+        
        
     }
 }
