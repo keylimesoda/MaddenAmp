@@ -51,6 +51,9 @@ namespace MaddenEditor.Forms
             this.SetTimeGrd = new System.Windows.Forms.DataGridView();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.CurWeatherPic = new System.Windows.Forms.PictureBox();
+            this.DialogTxt = new System.Windows.Forms.TextBox();
             this.SelectTeam.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.depthChartDataGrid)).BeginInit();
@@ -60,6 +63,8 @@ namespace MaddenEditor.Forms
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SetTimeGrd)).BeginInit();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurWeatherPic)).BeginInit();
             this.SuspendLayout();
             // 
             // TrainingTime
@@ -121,7 +126,7 @@ namespace MaddenEditor.Forms
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle1;
-            this.depthChartDataGrid.Location = new System.Drawing.Point(6, 60);
+            this.depthChartDataGrid.Location = new System.Drawing.Point(4, 119);
             this.depthChartDataGrid.Name = "depthChartDataGrid";
             this.depthChartDataGrid.ReadOnly = true;
             this.depthChartDataGrid.RowHeadersVisible = false;
@@ -132,9 +137,9 @@ namespace MaddenEditor.Forms
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.ActivityGrd);
-            this.groupBox1.Location = new System.Drawing.Point(6, 199);
+            this.groupBox1.Location = new System.Drawing.Point(4, 258);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(584, 422);
+            this.groupBox1.Size = new System.Drawing.Size(584, 312);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Activity Name...";
@@ -163,7 +168,7 @@ namespace MaddenEditor.Forms
             this.ActivityGrd.RowTemplate.ReadOnly = true;
             this.ActivityGrd.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ActivityGrd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ActivityGrd.Size = new System.Drawing.Size(572, 397);
+            this.ActivityGrd.Size = new System.Drawing.Size(572, 285);
             this.ActivityGrd.TabIndex = 0;
             this.ActivityGrd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ActivityGrd_CellClick);
             // 
@@ -200,7 +205,7 @@ namespace MaddenEditor.Forms
             // 
             this.groupBox4.Controls.Add(this.ActivityLbl);
             this.groupBox4.Controls.Add(this.SetTimeGrd);
-            this.groupBox4.Location = new System.Drawing.Point(594, 199);
+            this.groupBox4.Location = new System.Drawing.Point(592, 258);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(301, 208);
             this.groupBox4.TabIndex = 13;
@@ -256,9 +261,9 @@ namespace MaddenEditor.Forms
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.textBox1);
-            this.groupBox5.Location = new System.Drawing.Point(594, 409);
+            this.groupBox5.Location = new System.Drawing.Point(592, 468);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(253, 212);
+            this.groupBox5.Size = new System.Drawing.Size(253, 102);
             this.groupBox5.TabIndex = 14;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Player Breakdown...";
@@ -269,14 +274,45 @@ namespace MaddenEditor.Forms
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(241, 187);
+            this.textBox1.Size = new System.Drawing.Size(241, 75);
             this.textBox1.TabIndex = 0;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.DialogTxt);
+            this.groupBox6.Controls.Add(this.CurWeatherPic);
+            this.groupBox6.Location = new System.Drawing.Point(498, 6);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(507, 107);
+            this.groupBox6.TabIndex = 15;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Forecast...";
+            // 
+            // CurWeatherPic
+            // 
+            this.CurWeatherPic.BackColor = System.Drawing.Color.White;
+            this.CurWeatherPic.Location = new System.Drawing.Point(8, 19);
+            this.CurWeatherPic.Name = "CurWeatherPic";
+            this.CurWeatherPic.Size = new System.Drawing.Size(82, 80);
+            this.CurWeatherPic.TabIndex = 0;
+            this.CurWeatherPic.TabStop = false;
+            // 
+            // DialogTxt
+            // 
+            this.DialogTxt.Location = new System.Drawing.Point(96, 16);
+            this.DialogTxt.Multiline = true;
+            this.DialogTxt.Name = "DialogTxt";
+            this.DialogTxt.ReadOnly = true;
+            this.DialogTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.DialogTxt.Size = new System.Drawing.Size(405, 83);
+            this.DialogTxt.TabIndex = 1;
             // 
             // TrainingCampForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1013, 629);
+            this.ClientSize = new System.Drawing.Size(1013, 579);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -300,6 +336,9 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.SetTimeGrd)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurWeatherPic)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -322,5 +361,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label ActivityLbl;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.PictureBox CurWeatherPic;
+        private System.Windows.Forms.TextBox DialogTxt;
     }
 }

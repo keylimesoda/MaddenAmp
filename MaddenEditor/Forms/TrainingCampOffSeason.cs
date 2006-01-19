@@ -1400,9 +1400,9 @@ namespace MaddenEditor.Forms
                 sw.Write("Coach Progression...");
                 sw.WriteLine();
                 sw.WriteLine("Name\t\tKnw\tMot\tChm\tEth\tQB\tRB\tWR\tOL\tDL\tLB\tDB\tK\tP\t");
-                sw.Write(model.CoachModel.CurrentCoachRecord.Name + "\t" + oldKnw + "\t" + OldMot + "\t" + oldChm + "\t" + OldEth + "\t" + oldqb + "\t" + Oldrb + "\t" + oldwr + "\t" + Oldol + "\t" + olddl + "\t" + olddb + "\t" + Oldk + "\t" + Oldp);
+                sw.Write(model.CoachModel.CurrentCoachRecord.Name + "\t\t" + oldKnw + "\t" + OldMot + "\t" + oldChm + "\t" + OldEth + "\t" + oldqb + "\t" + Oldrb + "\t" + oldwr + "\t" + Oldol + "\t" + olddl + "\t" + Oldlb + "\t" + olddb + "\t" + Oldk + "\t" + Oldp);
                 sw.WriteLine();
-                sw.WriteLine(model.CoachModel.CurrentCoachRecord.Name + "\t" + model.CoachModel.CurrentCoachRecord.Knowledge + "\t" + model.CoachModel.CurrentCoachRecord.Motivation + "\t" + model.CoachModel.CurrentCoachRecord.Chemistry + "\t" +
+                sw.WriteLine(model.CoachModel.CurrentCoachRecord.Name + "\t\t" + model.CoachModel.CurrentCoachRecord.Knowledge + "\t" + model.CoachModel.CurrentCoachRecord.Motivation + "\t" + model.CoachModel.CurrentCoachRecord.Chemistry + "\t" +
                    model.CoachModel.CurrentCoachRecord.Ethics + "\t" + model.CoachModel.CurrentCoachRecord.QuarterbackRating + "\t" + model.CoachModel.CurrentCoachRecord.RunningbackRating + "\t" + model.CoachModel.CurrentCoachRecord.WideReceiverRating + "\t" +
                    model.CoachModel.CurrentCoachRecord.OffensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.LinebackerRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveBackRating + "\t" + model.CoachModel.CurrentCoachRecord.KickerRating + "\t" +
                    model.CoachModel.CurrentCoachRecord.PuntRating);
@@ -1956,9 +1956,9 @@ namespace MaddenEditor.Forms
                 sw.Write("Coach Progression...");
                 sw.WriteLine();
                 sw.WriteLine("Name\t\tKnw\tMot\tChm\tEth\tQB\tRB\tWR\tOL\tDL\tLB\tDB\tK\tP\t");
-                sw.Write(model.CoachModel.CurrentCoachRecord.Name + "\t" + oldKnw + "\t" + OldMot + "\t" + oldChm + "\t" + OldEth + "\t" + oldqb + "\t" + Oldrb + "\t" + oldwr + "\t" + Oldol + "\t" + olddl + "\t" + olddb + "\t" + Oldk + "\t" + Oldp);
+                sw.Write(model.CoachModel.CurrentCoachRecord.Name + "\t\t" + oldKnw + "\t" + OldMot + "\t" + oldChm + "\t" + OldEth + "\t" + oldqb + "\t" + Oldrb + "\t" + oldwr + "\t" + Oldol + "\t" + olddl + "\t" + Oldlb + "\t" + olddb + "\t" + Oldk + "\t" + Oldp);
                 sw.WriteLine();
-                sw.WriteLine(model.CoachModel.CurrentCoachRecord.Name + "\t" + model.CoachModel.CurrentCoachRecord.Knowledge + "\t" + model.CoachModel.CurrentCoachRecord.Motivation + "\t" + model.CoachModel.CurrentCoachRecord.Chemistry + "\t" +
+                sw.WriteLine(model.CoachModel.CurrentCoachRecord.Name + "\t\t" + model.CoachModel.CurrentCoachRecord.Knowledge + "\t" + model.CoachModel.CurrentCoachRecord.Motivation + "\t" + model.CoachModel.CurrentCoachRecord.Chemistry + "\t" +
                    model.CoachModel.CurrentCoachRecord.Ethics + "\t" + model.CoachModel.CurrentCoachRecord.QuarterbackRating + "\t" + model.CoachModel.CurrentCoachRecord.RunningbackRating + "\t" + model.CoachModel.CurrentCoachRecord.WideReceiverRating + "\t" +
                    model.CoachModel.CurrentCoachRecord.OffensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveLineRating + "\t" + model.CoachModel.CurrentCoachRecord.LinebackerRating + "\t" + model.CoachModel.CurrentCoachRecord.DefensiveBackRating + "\t" + model.CoachModel.CurrentCoachRecord.KickerRating + "\t" +
                    model.CoachModel.CurrentCoachRecord.PuntRating);
@@ -1966,7 +1966,7 @@ namespace MaddenEditor.Forms
             sw.Close();
             if (ScenarioFirstName == "")
             {
-            //    groupBox5.Visible = true;
+             //   groupBox5.Visible = true;
             }
         }
         private void HighLowCheck(int Skill)
@@ -2018,7 +2018,7 @@ namespace MaddenEditor.Forms
 
             if (DisableScenarioChk.Checked == false)//Skip OffSeason Scenario mode if check box checked
             {
-                if (Issue <= 15)
+                if (Issue <= 25)
                 {
                     SelectHumanTeam.Enabled = false;
                     checkBox1.Enabled = false;
@@ -2436,41 +2436,144 @@ namespace MaddenEditor.Forms
              Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
              Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
 
+             int OffBalance = ((oldqb + Oldrb + oldwr + Oldol) / 4);
+             int OffBalanceSum = (oldqb + Oldrb + oldwr + Oldol);
+             OffBalance = (int)(OffBalance + (-6 * random.NextDouble() + 10));
+             int DefBalance = ((olddl + Oldlb + olddb) / 3);
+             int DefBalanceSum = (olddl + Oldlb + olddb);
+             DefBalance = (int)(DefBalance + (-6 * random.NextDouble() + 10));
+             int CoreRatings = ((oldKnw + OldMot + OldEth + oldChm) / 4);
+             int CoreRatingSum = (oldKnw + OldMot + OldEth + oldChm);
+
+             if ((Math.Abs(OffBalance - DefBalance) >= 13))
+             {
+                 if (OffBalance < DefBalance)
+                 {
+                     OffBalance = (int)(OffBalance * (double)4);
+                     DefBalance = (int)(DefBalance / (double)4);
+                 }
+                 else if (DefBalance < OffBalance)
+                 {
+                     DefBalance = (int)(DefBalance * (double)4);
+                     OffBalance = (int)(OffBalance / (double)4);
+                 }
+
+             }
+            
+            
+
+             int RatingsSum = (OffBalance + DefBalance + CoreRatings);
+             decimal OffBalanceAloc = Math.Round((((decimal)OffBalance / (decimal)RatingsSum) * 30), 0);
+             decimal DefBalanceAloc = Math.Round((((decimal)DefBalance / (decimal)RatingsSum) * 30), 0);
+             decimal CoreRatingsAloc = Math.Round(((((decimal)CoreRatings / (decimal)RatingsSum) * 30) / 2), 0);
+
+            
+
+             int RnkKnw; int RnkMot; int RnkChm; int RnkEth; int RnkQB; int RnkRB; int RnkWR; int RnkOL; int RnkDL; int RnkLB; int RnkDB;
+
+            RnkQB = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)oldqb) / (decimal)OffBalanceSum), 2))) * (decimal)OffBalanceAloc)), 0));
+
+            if (RnkQB > 5)
+            {
+                RnkQB = 5;
+            }
+            RnkRB = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)Oldrb) / (decimal)OffBalanceSum), 2))) * (decimal)OffBalanceAloc)), 0));
+
+            if (RnkRB > 5)
+            {
+                RnkRB = 5;
+            }
+            RnkWR = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)oldwr) / (decimal)OffBalanceSum), 2))) * (decimal)OffBalanceAloc)), 0));
+
+            if (RnkWR > 5)
+            {
+                RnkWR = 5;
+            }
+            RnkOL = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)Oldol) / (decimal)OffBalanceSum), 2))) * (decimal)OffBalanceAloc)), 0));
+
+            if (RnkOL > 5)
+            {
+                RnkOL = 5;
+            }
+            RnkDL = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)olddl) / (decimal)OffBalanceSum), 2))) * (decimal)DefBalanceAloc)), 0));
+
+            if (RnkDL > 5)
+            {
+                RnkDL = 5;
+            }
+            RnkLB = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)Oldlb) / (decimal)OffBalanceSum), 2))) * (decimal)DefBalanceAloc)), 0));
+
+            if (RnkLB > 5)
+            {
+                RnkLB = 5;
+            }
+            RnkDB = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)olddb) / (decimal)OffBalanceSum), 2))) * (decimal)DefBalanceAloc)), 0));
+
+            if (RnkDB > 5)
+            {
+                RnkDB = 5;
+            }
+            RnkKnw = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)oldKnw) / (decimal)OffBalanceSum), 2))) * (decimal)CoreRatingsAloc)), 0));
+
+            if (RnkKnw > 5)
+            {
+                RnkKnw = 5;
+            }
+            RnkMot = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)OldMot) / (decimal)OffBalanceSum), 2))) * (decimal)CoreRatingsAloc)), 0));
+
+            if (RnkMot > 5)
+            {
+                RnkMot = 5;
+            }
+            RnkChm = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)oldChm) / (decimal)OffBalanceSum), 2))) * (decimal)CoreRatingsAloc)), 0));
+
+            if (RnkChm > 5)
+            {
+                RnkChm = 5;
+            }
+            RnkEth = (int)(Math.Round((((1 - (Math.Round((((decimal)OffBalanceSum - (decimal)OldEth) / (decimal)OffBalanceSum), 2))) * (decimal)CoreRatingsAloc)), 0));
+
+            if (RnkEth > 5)
+            {
+                RnkEth = 5;
+            }
+
+
             if (SeasonsExp <= 1)
             {
-                CoachProgMod = (2);
+                CoachProgMod = (2.2);
             }
             else if (SeasonsExp == 2)
             {
-                CoachProgMod = (1.9);
+                CoachProgMod = (2.1);
             }
             else if (SeasonsExp == 3)
             {
-                CoachProgMod = (1.8);
+                CoachProgMod = (2);
             }
             else if (SeasonsExp == 4)
             {
-                CoachProgMod = (1.65);
+                CoachProgMod = (1.85);
             }
             else if (SeasonsExp == 5)
             {
-                CoachProgMod = (1.55);
+                CoachProgMod = (1.75);
             }
             else if (SeasonsExp == 6)
             {
-                CoachProgMod = (1.4);
+                CoachProgMod = (1.55);
             }
             else if (SeasonsExp == 7)
             {
-                CoachProgMod = (1.3);
+                CoachProgMod = (1.45);
             }
             else if (SeasonsExp == 8)
             {
-                CoachProgMod = (1.2);
+                CoachProgMod = (1.35);
             }
             else if (SeasonsExp == 9)
             {
-                CoachProgMod = (1.1);
+                CoachProgMod = (1.2);
             }
             else if (SeasonsExp == 10)
             {
@@ -2489,25 +2592,25 @@ namespace MaddenEditor.Forms
                 CoachProgMod = (.3);
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) / 10),3); //Knw
-            RankExp = (3 * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = (RnkKnw * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Knowledge = model.CoachModel.CurrentCoachRecord.Knowledge + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Motivation)) / 10), 3); //Knw
-            RankExp = (3 * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = (RnkMot * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Motivation = model.CoachModel.CurrentCoachRecord.Motivation + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Chemistry)) / 10), 3); //Knw
-            RankExp = (1 * ((decimal)CoachProgMod * (decimal).7));
+            RankExp = (RnkChm * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Chemistry = model.CoachModel.CurrentCoachRecord.Chemistry + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Ethics)) / 10), 3); //Knw
-            RankExp = (1 * ((decimal)CoachProgMod * (decimal).7));//(decimal)CoachProgMod);
+            RankExp = (RnkEth * ((decimal)CoachProgMod * (decimal).7));//(decimal)CoachProgMod);
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.Ethics = model.CoachModel.CurrentCoachRecord.Ethics + ((int)(RankExp) - (int)(AttributeDeviation));
@@ -2515,43 +2618,43 @@ namespace MaddenEditor.Forms
 
             //Pos ratings
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.QuarterbackRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkQB * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.QuarterbackRating = model.CoachModel.CurrentCoachRecord.QuarterbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.RunningbackRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkRB * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.RunningbackRating = model.CoachModel.CurrentCoachRecord.RunningbackRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.WideReceiverRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkWR * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.WideReceiverRating = model.CoachModel.CurrentCoachRecord.WideReceiverRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.OffensiveLineRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkOL * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveLineRating = model.CoachModel.CurrentCoachRecord.OffensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveLineRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkDL * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveLineRating = model.CoachModel.CurrentCoachRecord.DefensiveLineRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.LinebackerRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkLB * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.LinebackerRating = model.CoachModel.CurrentCoachRecord.LinebackerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.DefensiveBackRating)) / 10), 3); //Knw
-            RankExp = (2 * ((decimal)CoachProgMod * (decimal).75));
+            RankExp = (RnkDB * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
                 model.CoachModel.CurrentCoachRecord.DefensiveBackRating = model.CoachModel.CurrentCoachRecord.DefensiveBackRating + ((int)(RankExp) - (int)(AttributeDeviation));
@@ -2675,58 +2778,58 @@ namespace MaddenEditor.Forms
              Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
              Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
 
-            if (SeasonsExp <= 1)
-            {
-                CoachProgMod = (2);
-            }
-            else if (SeasonsExp == 2)
-            {
-                CoachProgMod = (1.9);
-            }
-            else if (SeasonsExp == 3)
-            {
-                CoachProgMod = (1.8);
-            }
-            else if (SeasonsExp == 4)
-            {
-                CoachProgMod = (1.65);
-            }
-            else if (SeasonsExp == 5)
-            {
-                CoachProgMod = (1.55);
-            }
-            else if (SeasonsExp == 6)
-            {
-                CoachProgMod = (1.4);
-            }
-            else if (SeasonsExp == 7)
-            {
-                CoachProgMod = (1.3);
-            }
-            else if (SeasonsExp == 8)
-            {
-                CoachProgMod = (1.2);
-            }
-            else if (SeasonsExp == 9)
-            {
-                CoachProgMod = (1.1);
-            }
-            else if (SeasonsExp == 10)
-            {
-                CoachProgMod = (1);
-            }
-            else if (SeasonsExp <= 15)
-            {
-                CoachProgMod = (.7);
-            }
-            else if (SeasonsExp <= 20)
-            {
-                CoachProgMod = (.4);
-            }
-            else if (SeasonsExp > 20)
-            {
-                CoachProgMod = (.3);
-            }
+             if (SeasonsExp <= 1)
+             {
+                 CoachProgMod = (2.2);
+             }
+             else if (SeasonsExp == 2)
+             {
+                 CoachProgMod = (2.1);
+             }
+             else if (SeasonsExp == 3)
+             {
+                 CoachProgMod = (2);
+             }
+             else if (SeasonsExp == 4)
+             {
+                 CoachProgMod = (1.85);
+             }
+             else if (SeasonsExp == 5)
+             {
+                 CoachProgMod = (1.75);
+             }
+             else if (SeasonsExp == 6)
+             {
+                 CoachProgMod = (1.55);
+             }
+             else if (SeasonsExp == 7)
+             {
+                 CoachProgMod = (1.45);
+             }
+             else if (SeasonsExp == 8)
+             {
+                 CoachProgMod = (1.35);
+             }
+             else if (SeasonsExp == 9)
+             {
+                 CoachProgMod = (1.2);
+             }
+             else if (SeasonsExp == 10)
+             {
+                 CoachProgMod = (1);
+             }
+             else if (SeasonsExp <= 15)
+             {
+                 CoachProgMod = (.7);
+             }
+             else if (SeasonsExp <= 20)
+             {
+                 CoachProgMod = (.4);
+             }
+             else if (SeasonsExp > 20)
+             {
+                 CoachProgMod = (.3);
+             }
             AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.Knowledge)) / 10), 3); //Knw
             RankExp = ((decimal)knwUpDown.Value * ((decimal)CoachProgMod * (decimal).7));
             if (RankExp > AttributeDeviation)
@@ -3591,7 +3694,7 @@ namespace MaddenEditor.Forms
                 }
 
             }//End Negative Scen. 2
-         //   groupBox5.Visible = true;
+          //  groupBox5.Visible = true;
         }
         private void Timer1TextDelay(int SleepValue)
         {
@@ -4013,7 +4116,7 @@ namespace MaddenEditor.Forms
                     }
                 }
                 Cursor.Current = Cursors.Arrow;
-                MessageBox.Show("CPU Sim is now complete. A .txt file has been generated for all CPU teams in the installation directory within the Conditioning folder.\nYou may now close this form. If you still need to run conditioning on human teams simply re-enter via the 'Training Camp'\nunder the 'Tools' menu strip.", "", MessageBoxButtons.OK, MessageBoxIcon.None);
+                MessageBox.Show("CPU Sim is now complete. A .txt file has been generated for all CPU teams in the installation directory within the Conditioning folder.\nYou may now close this form. If you still need to run conditioning on human teams simply re-enter via 'Training Camp'\nunder the 'Tools' menu strip.", "", MessageBoxButtons.OK, MessageBoxIcon.None);
             }
         }
 
