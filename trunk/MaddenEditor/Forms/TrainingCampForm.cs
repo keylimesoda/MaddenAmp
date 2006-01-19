@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
 using System.IO;
+using System.Reflection;
 
 namespace MaddenEditor.Forms
 {
@@ -29,6 +30,7 @@ namespace MaddenEditor.Forms
         BindingSource ActivityViewBinding = new BindingSource();
         DataTable AllocateTimingView = new DataTable();
         BindingSource AllocateTimingViewBinding = new BindingSource();
+        Random random = new Random();
 
         public TrainingCampForm(EditorModel model)
         {
@@ -202,6 +204,10 @@ namespace MaddenEditor.Forms
                         incrementPosition.Items.Add(s);
                     }
             */
+
+                    WeatherGenerator();
+
+
                     isInitialising = false;   
                 }
                 public void CleanUI()
@@ -982,6 +988,59 @@ namespace MaddenEditor.Forms
 
 
         }
+       
+        private void WeatherGenerator()
+        {
+            int CurTmp = 88;
+
+            DialogTxt.Text = "...'Morning Coach. Looks we got lots of sun today.\r\nCurrent Temperature is " + CurTmp + ".";
+          //  CurWeatherPic.Image = ;
+
+            int Weather = (int)(7 * random.NextDouble() + 1);
+            string pic = "";
+
+            if (Weather == 1)
+            {
+                pic = "sunny";
+            }
+            else if (Weather == 2)
+            {
+                pic = "cloudy";
+            }
+            else if (Weather == 3)
+            {
+                pic = "FairWindy";
+            }
+            else if (Weather == 4)
+            {
+                pic = "HvyRain";
+            }
+            else if (Weather == 5)
+            {
+                pic = "PartlyCloudy";
+            }
+            else if (Weather == 6)
+            {
+                pic = "scattered_Tstorms";
+            }
+            else if (Weather == 7)
+            {
+                pic = "Showers";
+            }
+            else if (Weather == 8)
+            {
+                pic = "thunder";
+            }
+           
+
+            System.Reflection.Assembly thisExe;
+            thisExe = System.Reflection.Assembly.GetExecutingAssembly();
+            System.IO.Stream file =
+                thisExe.GetManifestResourceStream("MaddenEditor.Resources." + pic + ".JPG");
+            this.CurWeatherPic.Image = Image.FromStream(file);
+
+        }
+
         private void PositionView_CheckedChanged(object sender, EventArgs e)
         {
             {

@@ -389,6 +389,14 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Resources\cloudy.JPG" />
+    <EmbeddedResource Include="Resources\FairWindy.JPG" />
+    <EmbeddedResource Include="Resources\HvyRain.JPG" />
+    <EmbeddedResource Include="Resources\PartlyCloudy.JPG" />
+    <EmbeddedResource Include="Resources\scattered_Tstorms.JPG" />
+    <EmbeddedResource Include="Resources\Showers.JPG" />
+    <EmbeddedResource Include="Resources\sunny.JPG" />
+    <EmbeddedResource Include="Resources\thunder.JPG" />
     <EmbeddedResource Include="Resources\JoshBio.txt" />
     <EmbeddedResource Include="Resources\ColinBio.txt" />
     <EmbeddedResource Include="Resources\DavidBio.txt" />
