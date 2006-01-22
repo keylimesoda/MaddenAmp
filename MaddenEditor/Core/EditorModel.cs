@@ -136,6 +136,8 @@ namespace MaddenEditor.Core
         public const string BOXSCORE_OFFENSIVE_LINE_TABLE = "BOLN";
         public const string SEASON_STATS_OFFENSIVE_LINE_TABLE = "PSOL";
         public const string CAREER_STATS_OFFENSIVE_LINE_TABLE = "PCOL";
+        public const string SEASON_GAMES_PLAYED_TABLE = "PSNG";
+        public const string CAREER_GAMES_PLAYED_TABLE = "PCNG";
 
 		private List<string[]> draftClassFields;
 
@@ -462,6 +464,8 @@ namespace MaddenEditor.Core
                     tableOrder.Add(BOXSCORE_OFFENSIVE_LINE_TABLE, -1);
                     tableOrder.Add(SEASON_STATS_OFFENSIVE_LINE_TABLE, -1);
                     tableOrder.Add(CAREER_STATS_OFFENSIVE_LINE_TABLE, -1);
+                    tableOrder.Add(SEASON_GAMES_PLAYED_TABLE, -1);
+                    tableOrder.Add(CAREER_GAMES_PLAYED_TABLE, -1);
                     tableOrder.Add(FRANCHISE_TIME_TABLE, -1);
 
                     tableOrder.Add(SCOUTING_STATE_TABLE, -1);

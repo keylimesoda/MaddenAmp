@@ -1,6 +1,6 @@
 /******************************************************************************
  * Madden 2005 Editor
- * Copyright (C) 2005 MaddenWishlist.com
+ * Copyright (C) 2005 MaddenWishlist.com and spin16
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -542,8 +542,8 @@ namespace MaddenEditor.Core
 			CalculateDepthChartValues(dpRecord.CurrentTeamId);
 
 			/*
-            toDraft.Player.EffectiveOVR = toDraft.ratings[dpRecord.CurrentTeamId][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.OVR] + 5 * (5 - model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON) / 2
-                    + math.injury(toDraft.ratings[dpRecord.CurrentTeamId][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.INJ], positionData[toDraft.Player.PositionId].DurabilityNeed);
+            toDraft.Player.EffectiveOVR = toDraft.ratings[dpRecord.CurrentTeamId][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.OVR] + 5 * (5 - model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).CON) / 2
+                    + math.injury(toDraft.ratings[dpRecord.CurrentTeamId][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.INJ], positionData[toDraft.Player.PositionId].DurabilityNeed);
 			toDraft.Player.Value = LocalMath.ValueScale * positionData[toDraft.Player.PositionId].Value(model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).DefensiveSystem) * math.valcurve(toDraft.Player.EffectiveOVR);
 
 			depthChart[dpRecord.CurrentTeamId][toDraft.Player.PositionId].Add(toDraft.Player);
@@ -1901,51 +1901,51 @@ namespace MaddenEditor.Core
 		private void SetInitialRookieAttributes()
 		{
 			Dictionary<int, int> initialErrors = new Dictionary<int, int>();
-			initialErrors[(int)RookieRecord.Attribute.INJ] = 40;
-			initialErrors[(int)RookieRecord.Attribute.SPD] = 20;
-			initialErrors[(int)RookieRecord.Attribute.ACC] = 30;
-			initialErrors[(int)RookieRecord.Attribute.AGI] = 30;
-			initialErrors[(int)RookieRecord.Attribute.JMP] = 20;
-			initialErrors[(int)RookieRecord.Attribute.AWR] = 30;
-			initialErrors[(int)RookieRecord.Attribute.STR] = 20;
-			initialErrors[(int)RookieRecord.Attribute.CTH] = 20;
-			initialErrors[(int)RookieRecord.Attribute.CAR] = 30;
-			initialErrors[(int)RookieRecord.Attribute.BTK] = 20;
-			initialErrors[(int)RookieRecord.Attribute.TAK] = 30;
-			initialErrors[(int)RookieRecord.Attribute.THP] = 20;
-			initialErrors[(int)RookieRecord.Attribute.THA] = 30;
-			initialErrors[(int)RookieRecord.Attribute.PBK] = 30;
-			initialErrors[(int)RookieRecord.Attribute.RBK] = 30;
-			initialErrors[(int)RookieRecord.Attribute.KPR] = 20;
-			initialErrors[(int)RookieRecord.Attribute.KAC] = 20;
-			initialErrors[(int)RookieRecord.Attribute.KRT] = 30;
-			initialErrors[(int)RookieRecord.Attribute.STA] = 40;
-			initialErrors[(int)RookieRecord.Attribute.TGH] = 20;
+			initialErrors[(int)MaddenAttribute.INJ] = 40;
+			initialErrors[(int)MaddenAttribute.SPD] = 20;
+			initialErrors[(int)MaddenAttribute.ACC] = 30;
+			initialErrors[(int)MaddenAttribute.AGI] = 30;
+			initialErrors[(int)MaddenAttribute.JMP] = 20;
+			initialErrors[(int)MaddenAttribute.AWR] = 30;
+			initialErrors[(int)MaddenAttribute.STR] = 20;
+			initialErrors[(int)MaddenAttribute.CTH] = 20;
+			initialErrors[(int)MaddenAttribute.CAR] = 30;
+			initialErrors[(int)MaddenAttribute.BTK] = 20;
+			initialErrors[(int)MaddenAttribute.TAK] = 30;
+			initialErrors[(int)MaddenAttribute.THP] = 20;
+			initialErrors[(int)MaddenAttribute.THA] = 30;
+			initialErrors[(int)MaddenAttribute.PBK] = 30;
+			initialErrors[(int)MaddenAttribute.RBK] = 30;
+			initialErrors[(int)MaddenAttribute.KPR] = 20;
+			initialErrors[(int)MaddenAttribute.KAC] = 20;
+			initialErrors[(int)MaddenAttribute.KRT] = 30;
+			initialErrors[(int)MaddenAttribute.STA] = 40;
+			initialErrors[(int)MaddenAttribute.TGH] = 20;
 
 			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 			{
 				Dictionary<int, double> baseInitials = new Dictionary<int, double>();
 
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.TGH] = rook.Value.Player.Toughness;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.THA] = rook.Value.Player.ThrowAccuracy;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.THP] = rook.Value.Player.ThrowPower;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.INJ] = rook.Value.Player.Injury;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.STA] = rook.Value.Player.Stamina;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.SPD] = rook.Value.Player.Speed;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.AGI] = rook.Value.Player.Agility;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.ACC] = rook.Value.Player.Acceleration;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.STR] = rook.Value.Player.Strength;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.JMP] = rook.Value.Player.Jumping;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.CTH] = rook.Value.Player.Catching;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.CAR] = rook.Value.Player.Carrying;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.BTK] = rook.Value.Player.BreakTackle;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.TAK] = rook.Value.Player.Tackle;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.PBK] = rook.Value.Player.PassBlocking;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.RBK] = rook.Value.Player.RunBlocking;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.KPR] = rook.Value.Player.KickPower;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.KAC] = rook.Value.Player.KickAccuracy;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.KRT] = rook.Value.Player.KickReturn;
-				rook.Value.ActualRatings[(int)RookieRecord.Attribute.AWR] = rook.Value.Player.Awareness;
+				rook.Value.ActualRatings[(int)MaddenAttribute.TGH] = rook.Value.Player.Toughness;
+				rook.Value.ActualRatings[(int)MaddenAttribute.THA] = rook.Value.Player.ThrowAccuracy;
+				rook.Value.ActualRatings[(int)MaddenAttribute.THP] = rook.Value.Player.ThrowPower;
+				rook.Value.ActualRatings[(int)MaddenAttribute.INJ] = rook.Value.Player.Injury;
+				rook.Value.ActualRatings[(int)MaddenAttribute.STA] = rook.Value.Player.Stamina;
+				rook.Value.ActualRatings[(int)MaddenAttribute.SPD] = rook.Value.Player.Speed;
+				rook.Value.ActualRatings[(int)MaddenAttribute.AGI] = rook.Value.Player.Agility;
+				rook.Value.ActualRatings[(int)MaddenAttribute.ACC] = rook.Value.Player.Acceleration;
+				rook.Value.ActualRatings[(int)MaddenAttribute.STR] = rook.Value.Player.Strength;
+				rook.Value.ActualRatings[(int)MaddenAttribute.JMP] = rook.Value.Player.Jumping;
+				rook.Value.ActualRatings[(int)MaddenAttribute.CTH] = rook.Value.Player.Catching;
+				rook.Value.ActualRatings[(int)MaddenAttribute.CAR] = rook.Value.Player.Carrying;
+				rook.Value.ActualRatings[(int)MaddenAttribute.BTK] = rook.Value.Player.BreakTackle;
+				rook.Value.ActualRatings[(int)MaddenAttribute.TAK] = rook.Value.Player.Tackle;
+				rook.Value.ActualRatings[(int)MaddenAttribute.PBK] = rook.Value.Player.PassBlocking;
+				rook.Value.ActualRatings[(int)MaddenAttribute.RBK] = rook.Value.Player.RunBlocking;
+				rook.Value.ActualRatings[(int)MaddenAttribute.KPR] = rook.Value.Player.KickPower;
+				rook.Value.ActualRatings[(int)MaddenAttribute.KAC] = rook.Value.Player.KickAccuracy;
+				rook.Value.ActualRatings[(int)MaddenAttribute.KRT] = rook.Value.Player.KickReturn;
+				rook.Value.ActualRatings[(int)MaddenAttribute.AWR] = rook.Value.Player.Awareness;
 
 				for (int i = 3; i < 23; i++)
 				{
@@ -1968,13 +1968,13 @@ namespace MaddenEditor.Core
 		{
 			Dictionary<int, int> measureableErrors = new Dictionary<int, int>();
 
-			measureableErrors[(int)RookieRecord.Attribute.SPD] = 10;
-			measureableErrors[(int)RookieRecord.Attribute.INJ] = 20;
-			measureableErrors[(int)RookieRecord.Attribute.ACC] = 20;
-			measureableErrors[(int)RookieRecord.Attribute.AGI] = 20;
-			measureableErrors[(int)RookieRecord.Attribute.JMP] = 10;
-			measureableErrors[(int)RookieRecord.Attribute.AWR] = 30;
-			measureableErrors[(int)RookieRecord.Attribute.STR] = 10;
+			measureableErrors[(int)MaddenAttribute.SPD] = 10;
+			measureableErrors[(int)MaddenAttribute.INJ] = 20;
+			measureableErrors[(int)MaddenAttribute.ACC] = 20;
+			measureableErrors[(int)MaddenAttribute.AGI] = 20;
+			measureableErrors[(int)MaddenAttribute.JMP] = 10;
+			measureableErrors[(int)MaddenAttribute.AWR] = 30;
+			measureableErrors[(int)MaddenAttribute.STR] = 10;
 
 			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 			{
@@ -2002,7 +2002,7 @@ namespace MaddenEditor.Core
 						double sigma = Math.Abs((0.5) * (rook.Value.ratings[i][(int)RookieRecord.RatingType.Initial][j] - cv));
 
 						rook.Value.ratings[i][(int)RookieRecord.RatingType.Combine][j] =
-							math.bellcurve(cv, sigma, rand);
+							math.bellcurve(cv, sigma);
 					}
 				}
 			}
@@ -2021,7 +2021,7 @@ namespace MaddenEditor.Core
 						double sigma = Math.Abs((0.5) * (rook.Value.ratings[i][(int)RookieRecord.RatingType.Combine][j] - cv));
 
 						rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][j] =
-							math.bellcurve(cv, sigma, rand);
+							math.bellcurve(cv, sigma);
 					}
 				}
 			}
@@ -2702,25 +2702,25 @@ namespace MaddenEditor.Core
 			{
 
 				rook.Value.CombineNumbers[(int)CombineStat.Forty] =
-					Math.Round(100 * (4.25 + 0.2 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.SPD]) / 10)) / 100;
+					Math.Round(100 * (4.25 + 0.2 * (99 - rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.SPD]) / 10)) / 100;
 
 				rook.Value.CombineNumbers[(int)CombineStat.Shuttle] =
-					Math.Round(100 * (3.75 + 0.18 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.ACC]) / 10)) / 100;
+					Math.Round(100 * (3.75 + 0.18 * (99 - rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.ACC]) / 10)) / 100;
 
 				rook.Value.CombineNumbers[(int)CombineStat.Cone] =
-					Math.Round(100 * (6.60 + 0.23 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.AGI]) / 10)) / 100;
+					Math.Round(100 * (6.60 + 0.23 * (99 - rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.AGI]) / 10)) / 100;
 
 				rook.Value.CombineNumbers[(int)CombineStat.BenchPress] =
-					Math.Max((Math.Round(42 - 5.5 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.STR]) / 10)), 0);
+					Math.Max((Math.Round(42 - 5.5 * (99 - rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.STR]) / 10)), 0);
 
 				rook.Value.CombineNumbers[(int)CombineStat.Vertical] =
-					42 - 3 * (99 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.JMP]) / 10;
+					42 - 3 * (99 - rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.JMP]) / 10;
 
 				rook.Value.CombineNumbers[(int)CombineStat.Doctor] =
-					9.9 - rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.INJ] / 10;
+					9.9 - rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.INJ] / 10;
 
 				rook.Value.CombineNumbers[(int)CombineStat.RoundGrade] = RookieRanks[rook.Key];
-				rook.Value.CombineNumbers[(int)CombineStat.Wonderlic] = Math.Max(Math.Round(rook.Value.ratings[HumanTeamId][type][(int)RookieRecord.Attribute.AWR] / 2), 0);
+				rook.Value.CombineNumbers[(int)CombineStat.Wonderlic] = Math.Max(Math.Round(rook.Value.ratings[HumanTeamId][type][(int)MaddenAttribute.AWR] / 2), 0);
 
 				rook.Value.CombineWords[(int)CombineStat.Vertical] = (Math.Round(rook.Value.CombineNumbers[(int)CombineStat.Vertical])).ToString() + "\"";
 				rook.Value.CombineWords[(int)CombineStat.Height] = Math.Floor((double)rook.Value.Player.Height / 12) + "'" + rook.Value.Player.Height % 12 + "\"";
@@ -2879,10 +2879,10 @@ namespace MaddenEditor.Core
 						// INJ should have no bearing on their likelihood of starting.
 
 						rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.NoProg] =
-							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed));
+							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) + math.injury(rook.Value.ratings[team.Key][type][(int)MaddenAttribute.INJ], positionData[pair.Key].DurabilityNeed));
 
 						rook.Value.values[team.Key][pair.Key][(int)RookieRecord.ValueType.WithProg] =
-							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(/*5.0 * (5.0 - (double)team.Value.CON) / 2*/ math.pointboost(rook.Value.Player, team.Value.CON, 40) + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) /*+  math.injury(rook.Value.ratings[team.Key][type][(int)RookieRecord.Attribute.INJ], positionData[pair.Key].DurabilityNeed) */);
+							LocalMath.ValueScale * positionData[pair.Key].Value(team.Value.DefensiveSystem) * math.valcurve(/*5.0 * (5.0 - (double)team.Value.CON) / 2*/ math.pointboost(rook.Value.Player, team.Value.CON, 40) + rook.Value.GetAdjustedOverall(team.Value.TeamId, type, pair.Key, dcr.awarenessAdjust) /*+  math.injury(rook.Value.ratings[team.Key][type][(int)MaddenAttribute.INJ], positionData[pair.Key].DurabilityNeed) */);
 					}
 				}
 			}
@@ -3707,21 +3707,21 @@ namespace MaddenEditor.Core
             {
                 for (int i = 0; i < 32; i++)
                 {
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.OVR] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.OVR] =
                         rook.Value.Player.Overall;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.INJ] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.INJ] =
                         rook.Value.Player.Injury;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.SPD] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.SPD] =
                         rook.Value.Player.Speed;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.ACC] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.ACC] =
                         rook.Value.Player.Acceleration;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.AGI] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.AGI] =
                         rook.Value.Player.Agility;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.JMP] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.JMP] =
                         rook.Value.Player.Jumping;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.AWR] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.AWR] =
                         rook.Value.Player.Awareness;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)RookieRecord.Attribute.STR] =
+                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.STR] =
                         rook.Value.Player.Strength;
                 }
             }

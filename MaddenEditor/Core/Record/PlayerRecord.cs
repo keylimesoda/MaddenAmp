@@ -155,6 +155,9 @@ namespace MaddenEditor.Core.Record
 		double[] estYearlySalary = new double[7];
 		double[] estSigningBonusArray = new double[7];
 
+        public bool Starter = false;
+        public int backupValue = 0;
+
 		public PlayerRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
@@ -162,6 +165,139 @@ namespace MaddenEditor.Core.Record
 		}
 
         // MADDEN DRAFT EDIT
+
+        public int GetAttribute(int AttributeID)
+        {
+            switch (AttributeID)
+            {
+                case (int)MaddenAttribute.ACC:
+                    return Acceleration;
+                case (int)MaddenAttribute.AGE:
+                    return Age;
+                case (int)MaddenAttribute.AGI:
+                    return Agility;
+                case (int)MaddenAttribute.AWR:
+                    return Awareness;
+                case (int)MaddenAttribute.BTK:
+                    return BreakTackle;
+                case (int)MaddenAttribute.CAR:
+                    return Carrying;
+                case (int)MaddenAttribute.CTH:
+                    return Catching;
+                case (int)MaddenAttribute.INJ:
+                    return Injury;
+                case (int)MaddenAttribute.JMP:
+                    return Jumping;
+                case (int)MaddenAttribute.KAC:
+                    return KickAccuracy;
+                case (int)MaddenAttribute.KPR:
+                    return KickPower;
+                case (int)MaddenAttribute.KRT:
+                    return KickReturn;
+                case (int)MaddenAttribute.OVR:
+                    return Overall;
+                case (int)MaddenAttribute.PBK:
+                    return PassBlocking;
+                case (int)MaddenAttribute.RBK:
+                    return RunBlocking;
+                case (int)MaddenAttribute.SPD:
+                    return Speed;
+                case (int)MaddenAttribute.STA:
+                    return Stamina;
+                case (int)MaddenAttribute.STR:
+                    return Strength;
+                case (int)MaddenAttribute.TAK:
+                    return Tackle;
+                case (int)MaddenAttribute.TGH:
+                    return Toughness;
+                case (int)MaddenAttribute.THA:
+                    return ThrowAccuracy;
+                case (int)MaddenAttribute.THP:
+                    return ThrowPower;
+                case (int)MaddenAttribute.YRP:
+                    return YearsPro;
+            }
+
+            return -1;
+        }
+
+        public void SetAttribute(int AttributeID, int value)
+        {
+            value = Math.Min(99, Math.Max(0, value));
+
+            switch (AttributeID)
+            {
+                case (int)MaddenAttribute.ACC:
+                    Acceleration = value;
+                    break;
+                case (int)MaddenAttribute.AGE:
+                    Age = value;
+                    break;
+                case (int)MaddenAttribute.AGI:
+                    Agility = value;
+                    break;
+                case (int)MaddenAttribute.AWR:
+                    Awareness = value;
+                    break;
+                case (int)MaddenAttribute.BTK:
+                    BreakTackle = value;
+                    break;
+                case (int)MaddenAttribute.CAR:
+                    Carrying = value;
+                    break;
+                case (int)MaddenAttribute.CTH:
+                    Catching = value;
+                    break;
+                case (int)MaddenAttribute.INJ:
+                    Injury = value;
+                    break;
+                case (int)MaddenAttribute.JMP:
+                    Jumping = value;
+                    break;
+                case (int)MaddenAttribute.KAC:
+                    KickAccuracy = value;
+                    break;
+                case (int)MaddenAttribute.KPR:
+                    KickPower = value;
+                    break;
+                case (int)MaddenAttribute.KRT:
+                    KickReturn = value;
+                    break;
+                case (int)MaddenAttribute.OVR:
+                    Overall = value;
+                    break;
+                case (int)MaddenAttribute.PBK:
+                    PassBlocking = value;
+                    break;
+                case (int)MaddenAttribute.RBK:
+                    RunBlocking = value;
+                    break;
+                case (int)MaddenAttribute.SPD:
+                    Speed = value;
+                    break;
+                case (int)MaddenAttribute.STA:
+                    Stamina = value;
+                    break;
+                case (int)MaddenAttribute.STR:
+                    Strength = value;
+                    break;
+                case (int)MaddenAttribute.TAK:
+                    Tackle = value;
+                    break;
+                case (int)MaddenAttribute.TGH:
+                    Toughness = value;
+                    break;
+                case (int)MaddenAttribute.THA:
+                    ThrowAccuracy = value;
+                    break;
+                case (int)MaddenAttribute.THP:
+                    ThrowPower = value;
+                    break;
+                case (int)MaddenAttribute.YRP:
+                    YearsPro = value;
+                    break;
+            }
+        }
 
         public string RatingsLine(string[] attributes)
         {
