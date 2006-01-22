@@ -23,6 +23,9 @@ namespace MaddenEditor.Forms
         string franchiseFilename = "";
         int CurPercent = 0;
         string CurName = "";
+        public int CurDay;
+        public string CurTeam;
+        public TrainingCampSplashScreen trainingCampSplashScreen = null;
 
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
@@ -1106,6 +1109,16 @@ namespace MaddenEditor.Forms
         {
             CurName = (string)SetTimeGrd.Rows[e.RowIndex].Cells["Name"].Value;
             FillTextBox(filterPositionComboBox.Text);
+        }
+
+        private void AdvanceBtn_Click(object sender, EventArgs e)
+        {
+            CurDay = 1;
+            CurTeam = "Packers";
+            //this.Hide();
+            TrainingCampSplashScreen form = new TrainingCampSplashScreen(model, this);          
+            form.Show();
+            
         }
 
       
