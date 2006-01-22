@@ -29,11 +29,25 @@ using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Core
 {
+    public enum DepthChartGroups
+    {
+        Quarterbacks = 0,
+        Receivers,
+        OffensiveLine,
+        DefensiveLine,
+        Linebackers,
+        DefensiveBacks,
+        Kickers,
+        Punters,
+        SpecialTeams
+    }
+
 	public class DepthChartRepairer
 	{
 		EditorModel model;
 		LocalMath math;
 		public Dictionary<int, Position> positionData;
+        public List<List<int>> depthChartGroups;
 
 		// awarenessAdjust[ActualPosition][AlternativePosition]
 		public Dictionary<int, Dictionary<int, double>> awarenessAdjust = new Dictionary<int, Dictionary<int, double>>();
@@ -168,14 +182,70 @@ namespace MaddenEditor.Core
 			return toReturn;
 		}
 
-		public DepthChartRepairer(EditorModel em, Dictionary<int, Position> pd)
+        public void InitializeDCGroups()
+        {
+            depthChartGroups = new List<List<int>>();
+
+            // QB's
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.Quarterbacks].Add((int)MaddenPositions.QB);
+
+            // HB's, FB's, TE's, WR's
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.Receivers].Add((int)MaddenPositions.HB);
+            depthChartGroups[(int)DepthChartGroups.Receivers].Add((int)MaddenPositions.FB);
+            depthChartGroups[(int)DepthChartGroups.Receivers].Add((int)MaddenPositions.WR);
+            depthChartGroups[(int)DepthChartGroups.Receivers].Add((int)MaddenPositions.TE);
+
+            // OL
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.OffensiveLine].Add((int)MaddenPositions.LT);
+            depthChartGroups[(int)DepthChartGroups.OffensiveLine].Add((int)MaddenPositions.LG);
+            depthChartGroups[(int)DepthChartGroups.OffensiveLine].Add((int)MaddenPositions.C);
+            depthChartGroups[(int)DepthChartGroups.OffensiveLine].Add((int)MaddenPositions.RG);
+            depthChartGroups[(int)DepthChartGroups.OffensiveLine].Add((int)MaddenPositions.RT);
+
+            // DL
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.DefensiveLine].Add((int)MaddenPositions.LE);
+            depthChartGroups[(int)DepthChartGroups.DefensiveLine].Add((int)MaddenPositions.RE);
+            depthChartGroups[(int)DepthChartGroups.DefensiveLine].Add((int)MaddenPositions.DT);
+
+            // LB
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.Linebackers].Add((int)MaddenPositions.LOLB);
+            depthChartGroups[(int)DepthChartGroups.Linebackers].Add((int)MaddenPositions.MLB);
+            depthChartGroups[(int)DepthChartGroups.Linebackers].Add((int)MaddenPositions.ROLB);
+
+            // DB
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.DefensiveBacks].Add((int)MaddenPositions.CB);
+            depthChartGroups[(int)DepthChartGroups.DefensiveBacks].Add((int)MaddenPositions.FS);
+            depthChartGroups[(int)DepthChartGroups.DefensiveBacks].Add((int)MaddenPositions.SS);
+
+            // K
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.Kickers].Add((int)MaddenPositions.K);
+
+            // P
+            depthChartGroups.Add(new List<int>());
+            depthChartGroups[(int)DepthChartGroups.Punters].Add((int)MaddenPositions.P);
+
+            // Special Positions
+            depthChartGroups.Add(new List<int>());
+            for (int i = 21; i < 26; i++)
+                depthChartGroups[(int)DepthChartGroups.SpecialTeams].Add(i);
+        }
+
+        public DepthChartRepairer(EditorModel em, Dictionary<int, Position> pd)
 		{
 			model = em;
 			positionData = pd;
 
 			math = new LocalMath(model.FileVersion);
 
-			InitializeAwarenessAdjust();
+            InitializeDCGroups();
+            InitializeAwarenessAdjust();
 
 			if (pd == null)
 			{
@@ -335,6 +405,11 @@ namespace MaddenEditor.Core
 			model.TableModels[EditorModel.DEPTH_CHART_TABLE].Save();
 		}
 
+/*        public Dictionary<int, List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies, int con, bool freshOverall)
+        {
+
+        }
+        */
 		public List<List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies)
 		{
             // Find a list of injured players

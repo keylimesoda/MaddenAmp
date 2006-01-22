@@ -81,9 +81,11 @@
     <Compile Include="Core\Record\Stats\BoxScoreOffenseRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreOffensiveLineRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreTeamRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerGamesPlayedRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsOffenseRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsOffensiveLineRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonGamesPlayedRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffensiveLineRecord.cs" />
@@ -188,6 +190,12 @@
     </Compile>
     <Compile Include="Forms\ProfileDialog.Designer.cs">
       <DependentUpon>ProfileDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProgressionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgressionForm.Designer.cs">
+      <DependentUpon>ProgressionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SalaryCapForm.cs">
       <SubType>Form</SubType>

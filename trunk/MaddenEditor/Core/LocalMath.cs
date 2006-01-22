@@ -31,12 +31,20 @@ namespace MaddenEditor.Core
 	{
 		//public const double ValueScale = 0.28*1.3;
 		public const double ValueScale = 1;
+        Random rand;
+
+        bool extraGaussian;
+        double deviate;
+        double lastSigma;
 
 		private MaddenFileVersion mfv;
 
 		public LocalMath(MaddenFileVersion version)
 		{
 			mfv = version;
+            rand = new Random();
+            extraGaussian = false;
+            lastSigma = 0;
 		}
 
         public bool InPositionGroup(int positionId, int groupId)
@@ -168,7 +176,36 @@ namespace MaddenEditor.Core
 				theta(player.Age + 5.0 - retireAge) * 0.2 * Math.Min((double)player.Age + 5.0 - retireAge, 5.0) * (0.5 * conReverse + 0.1875 * Math.Pow(conReverse, 2.0));
 		}
 
-		public double bellcurve(double cv, double sigma, Random rand)
+        public double bellcurve(double cv, double sigma)
+        {
+            double v1;
+            double v2;
+            double rsq;
+
+            if (extraGaussian && sigma == lastSigma)
+            {
+                extraGaussian = false;
+                return cv + deviate;
+            }
+            else
+            {
+                lastSigma = sigma;
+
+                do
+                {
+                    v1 = 2.0 * rand.NextDouble() - 1.0;
+                    v2 = 2.0 * rand.NextDouble() - 1.0;
+                    rsq = v1 * v1 + v2 * v2;
+                } while (rsq >= 1 || rsq == 0);
+
+                double fac = Math.Sqrt(-2.0 * Math.Log(rsq) / rsq);
+                deviate = sigma * v1 * fac;
+                extraGaussian = true;
+                return cv + sigma * v2 * fac;
+            }
+        }
+
+/*		public double bellcurve(double cv, double sigma, Random rand)
 		{
 			int numSteps = 100;
 			double stepSize = sigma / Math.Sqrt(numSteps);
@@ -190,7 +227,7 @@ namespace MaddenEditor.Core
 
 			return cv + walked;
 		}
-
+*/
 		public string SkillToGrade(double skill)
 		{
 			if (skill == -1)

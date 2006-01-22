@@ -253,6 +253,12 @@ namespace MaddenEditor.Core
                 case EditorModel.CAREER_STATS_OFFENSIVE_LINE_TABLE:
                     newRecord = new CareerStatsOffensiveLineRecord(recno, this, parentModel);
                     break;
+                case EditorModel.CAREER_GAMES_PLAYED_TABLE:
+                    newRecord = new CareerGamesPlayedRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.SEASON_GAMES_PLAYED_TABLE:
+                    newRecord = new SeasonGamesPlayedRecord(recno, this, parentModel);
+                    break;
 
                 case EditorModel.SCOUTING_STATE_TABLE:
                     newRecord = new ScoutingStateRecord(recno, this, parentModel);
