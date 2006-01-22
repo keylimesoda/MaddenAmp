@@ -261,6 +261,12 @@
     <Compile Include="Forms\TrainingCampOffSeason.Designer.cs">
       <DependentUpon>TrainingCampOffSeason.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrainingCampSplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampSplashScreen.Designer.cs">
+      <DependentUpon>TrainingCampSplashScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -398,6 +404,10 @@
     <EmbeddedResource Include="Forms\TrainingCampMeeting.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TrainingCampMeeting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampSplashScreen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrainingCampSplashScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\cloudy.JPG" />
     <EmbeddedResource Include="Resources\FairWindy.JPG" />

@@ -51,6 +51,7 @@ namespace MaddenEditor.Forms
             this.SetTimeGrd = new System.Windows.Forms.DataGridView();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.AdvanceBtn = new System.Windows.Forms.Button();
             this.SelectTeam.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.depthChartDataGrid)).BeginInit();
@@ -272,11 +273,22 @@ namespace MaddenEditor.Forms
             this.textBox1.Size = new System.Drawing.Size(241, 75);
             this.textBox1.TabIndex = 0;
             // 
+            // AdvanceBtn
+            // 
+            this.AdvanceBtn.Location = new System.Drawing.Point(498, 24);
+            this.AdvanceBtn.Name = "AdvanceBtn";
+            this.AdvanceBtn.Size = new System.Drawing.Size(69, 30);
+            this.AdvanceBtn.TabIndex = 15;
+            this.AdvanceBtn.Text = "Advance...";
+            this.AdvanceBtn.UseVisualStyleBackColor = true;
+            this.AdvanceBtn.Click += new System.EventHandler(this.AdvanceBtn_Click);
+            // 
             // TrainingCampForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 579);
+            this.Controls.Add(this.AdvanceBtn);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -322,5 +334,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label ActivityLbl;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button AdvanceBtn;
     }
 }
