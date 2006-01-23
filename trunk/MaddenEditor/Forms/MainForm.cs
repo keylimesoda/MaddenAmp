@@ -754,6 +754,8 @@ namespace MaddenEditor.Forms
 
         private void fixProgressionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ProgressionForm pf = new ProgressionForm(model);
+            pf.Show();
         }
 
 		private void developerBiosToolStripMenuItem_Click(object sender, EventArgs e)

@@ -48,6 +48,9 @@ namespace MaddenEditor.Forms
             this.randomUpDown = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.randomSlider = new System.Windows.Forms.TrackBar();
+            this.rooks = new System.Windows.Forms.CheckBox();
+            this.freeAgents = new System.Windows.Forms.CheckBox();
+            this.output = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.startedUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.startedSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playedUpDown)).BeginInit();
@@ -64,7 +67,7 @@ namespace MaddenEditor.Forms
             // 
             // mainButton
             // 
-            this.mainButton.Location = new System.Drawing.Point(32, 334);
+            this.mainButton.Location = new System.Drawing.Point(32, 354);
             this.mainButton.Name = "mainButton";
             this.mainButton.Size = new System.Drawing.Size(117, 23);
             this.mainButton.TabIndex = 0;
@@ -79,7 +82,7 @@ namespace MaddenEditor.Forms
             this.startedUpDown.Size = new System.Drawing.Size(40, 20);
             this.startedUpDown.TabIndex = 30;
             this.startedUpDown.Value = new decimal(new int[] {
-            50,
+            40,
             0,
             0,
             0});
@@ -102,7 +105,7 @@ namespace MaddenEditor.Forms
             this.startedSlider.Size = new System.Drawing.Size(168, 45);
             this.startedSlider.TabIndex = 28;
             this.startedSlider.TickFrequency = 5;
-            this.startedSlider.Value = 50;
+            this.startedSlider.Value = 40;
             this.startedSlider.ValueChanged += new System.EventHandler(this.youthSlider_ValueChanged);
             // 
             // playedUpDown
@@ -112,7 +115,7 @@ namespace MaddenEditor.Forms
             this.playedUpDown.Size = new System.Drawing.Size(40, 20);
             this.playedUpDown.TabIndex = 27;
             this.playedUpDown.Value = new decimal(new int[] {
-            50,
+            30,
             0,
             0,
             0});
@@ -135,7 +138,7 @@ namespace MaddenEditor.Forms
             this.playedSlider.Size = new System.Drawing.Size(168, 45);
             this.playedSlider.TabIndex = 25;
             this.playedSlider.TickFrequency = 5;
-            this.playedSlider.Value = 50;
+            this.playedSlider.Value = 30;
             this.playedSlider.ValueChanged += new System.EventHandler(this.youthSlider_ValueChanged);
             // 
             // ageUpDown
@@ -145,7 +148,7 @@ namespace MaddenEditor.Forms
             this.ageUpDown.Size = new System.Drawing.Size(40, 20);
             this.ageUpDown.TabIndex = 24;
             this.ageUpDown.Value = new decimal(new int[] {
-            50,
+            60,
             0,
             0,
             0});
@@ -168,7 +171,7 @@ namespace MaddenEditor.Forms
             this.ageSlider.Size = new System.Drawing.Size(168, 45);
             this.ageSlider.TabIndex = 22;
             this.ageSlider.TickFrequency = 5;
-            this.ageSlider.Value = 50;
+            this.ageSlider.Value = 60;
             this.ageSlider.ValueChanged += new System.EventHandler(this.youthSlider_ValueChanged);
             // 
             // youthUpDown
@@ -178,7 +181,7 @@ namespace MaddenEditor.Forms
             this.youthUpDown.Size = new System.Drawing.Size(40, 20);
             this.youthUpDown.TabIndex = 21;
             this.youthUpDown.Value = new decimal(new int[] {
-            50,
+            20,
             0,
             0,
             0});
@@ -201,21 +204,22 @@ namespace MaddenEditor.Forms
             this.youthSlider.Size = new System.Drawing.Size(168, 45);
             this.youthSlider.TabIndex = 19;
             this.youthSlider.TickFrequency = 5;
-            this.youthSlider.Value = 50;
+            this.youthSlider.Value = 20;
             this.youthSlider.ValueChanged += new System.EventHandler(this.youthSlider_ValueChanged);
             // 
             // recommended
             // 
-            this.recommended.Location = new System.Drawing.Point(188, 334);
+            this.recommended.Location = new System.Drawing.Point(188, 354);
             this.recommended.Name = "recommended";
             this.recommended.Size = new System.Drawing.Size(117, 23);
             this.recommended.TabIndex = 31;
-            this.recommended.Text = "Load Recommended";
+            this.recommended.Text = "Load Defaults";
             this.recommended.UseVisualStyleBackColor = true;
+            this.recommended.Click += new System.EventHandler(this.recommended_Click);
             // 
             // maxUpDown
             // 
-            this.maxUpDown.Location = new System.Drawing.Point(277, 285);
+            this.maxUpDown.Location = new System.Drawing.Point(277, 274);
             this.maxUpDown.Maximum = new decimal(new int[] {
             20,
             0,
@@ -234,7 +238,7 @@ namespace MaddenEditor.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 288);
+            this.label5.Location = new System.Drawing.Point(15, 277);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(82, 13);
             this.label5.TabIndex = 33;
@@ -242,7 +246,7 @@ namespace MaddenEditor.Forms
             // 
             // maxSlider
             // 
-            this.maxSlider.Location = new System.Drawing.Point(99, 284);
+            this.maxSlider.Location = new System.Drawing.Point(99, 273);
             this.maxSlider.Maximum = 20;
             this.maxSlider.Name = "maxSlider";
             this.maxSlider.Size = new System.Drawing.Size(168, 45);
@@ -283,11 +287,44 @@ namespace MaddenEditor.Forms
             this.randomSlider.Value = 50;
             this.randomSlider.ValueChanged += new System.EventHandler(this.youthSlider_ValueChanged);
             // 
+            // rooks
+            // 
+            this.rooks.AutoSize = true;
+            this.rooks.Location = new System.Drawing.Point(11, 322);
+            this.rooks.Name = "rooks";
+            this.rooks.Size = new System.Drawing.Size(97, 17);
+            this.rooks.TabIndex = 38;
+            this.rooks.Text = "Adjust Rookies";
+            this.rooks.UseVisualStyleBackColor = true;
+            // 
+            // freeAgents
+            // 
+            this.freeAgents.AutoSize = true;
+            this.freeAgents.Location = new System.Drawing.Point(113, 322);
+            this.freeAgents.Name = "freeAgents";
+            this.freeAgents.Size = new System.Drawing.Size(115, 17);
+            this.freeAgents.TabIndex = 39;
+            this.freeAgents.Text = "Adjust Free Agents";
+            this.freeAgents.UseVisualStyleBackColor = true;
+            // 
+            // output
+            // 
+            this.output.AutoSize = true;
+            this.output.Location = new System.Drawing.Point(233, 322);
+            this.output.Name = "output";
+            this.output.Size = new System.Drawing.Size(96, 17);
+            this.output.TabIndex = 40;
+            this.output.Text = "Output Results";
+            this.output.UseVisualStyleBackColor = true;
+            // 
             // ProgressionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 376);
+            this.ClientSize = new System.Drawing.Size(336, 389);
+            this.Controls.Add(this.output);
+            this.Controls.Add(this.freeAgents);
+            this.Controls.Add(this.rooks);
             this.Controls.Add(this.randomUpDown);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.randomSlider);
@@ -349,5 +386,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.NumericUpDown randomUpDown;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TrackBar randomSlider;
+        private System.Windows.Forms.CheckBox rooks;
+        private System.Windows.Forms.CheckBox freeAgents;
+        private System.Windows.Forms.CheckBox output;
     }
 }
