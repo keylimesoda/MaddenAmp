@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -33,6 +34,20 @@ namespace MaddenEditor.Forms
 
         private void mainButton_Click(object sender, EventArgs e)
         {
+            StreamWriter sw = null;
+            if (output.Checked)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+
+                DialogResult dr = sfd.ShowDialog();
+
+                if (sfd.FileName.Length > 0)
+                    sw = new StreamWriter(sfd.FileName);
+            }
+
+            mainButton.Enabled = false;
+            Cursor.Current = Cursors.WaitCursor;
+
             LocalMath math = new LocalMath(model.FileVersion);
             Random rand = new Random();
             DepthChartRepairer dcr = new DepthChartRepairer(model, null);
@@ -71,7 +86,7 @@ namespace MaddenEditor.Forms
                     gamesPlayed[stat.PlayerId] += stat.GamesPlayed;
 
                     if (stat.Season < 0)
-                        gamesStarted[stat.PlayerId] += stat.GamesPlayed / 2;
+                        gamesStarted[stat.PlayerId] += 3*stat.GamesPlayed / 4;
                     else
                         gamesStarted[stat.PlayerId] += stat.GamesStarted;
                 }
@@ -80,17 +95,17 @@ namespace MaddenEditor.Forms
             foreach (KeyValuePair<int, int> pair in gamesStartedLastYear)
             {
                 if (!gamesStarted.ContainsKey(pair.Key) || gamesStarted[pair.Key] == 0)
-                    startedGamesFactor[pair.Key] = 1;
+                    startedGamesFactor[pair.Key] = Math.Tanh((double)pair.Value / 6.0);
                 else
-                    startedGamesFactor[pair.Key] = Math.Tanh(pair.Value / gamesStarted[pair.Key]);
+                    startedGamesFactor[pair.Key] = Math.Tanh((double)pair.Value / 6.0)*Math.Tanh((double)pair.Value / (double)gamesStarted[pair.Key]);
             }
 
             foreach (KeyValuePair<int, int> pair in gamesPlayedLastYear)
             {
                 if (!gamesPlayed.ContainsKey(pair.Key) || gamesPlayed[pair.Key] == 0)
-                    playedGamesFactor[pair.Key] = 1;
+                    playedGamesFactor[pair.Key] = Math.Tanh((double)pair.Value / 6.0);
                 else
-                    playedGamesFactor[pair.Key] = Math.Tanh(pair.Value / gamesPlayed[pair.Key]);
+                    playedGamesFactor[pair.Key] = Math.Tanh((double)pair.Value / 6.0)*Math.Tanh((double)pair.Value / (double)gamesPlayed[pair.Key]);
             }
 
             List<PlayerRecord> freeAgentsAndRookies = new List<PlayerRecord>();
@@ -117,25 +132,31 @@ namespace MaddenEditor.Forms
             {
                 playerTargets[player.PlayerId] = new List<double>();
 
-                if (player.TeamId < 32)
+                if (player.TeamId < 32 || (rooks.Checked && player.TeamId == 1015) || (freeAgents.Checked && player.TeamId == 1009))
                 {
                     playersByPosition[player.PositionId].Add(player);
                     playersLeft[player.PositionId]++;
 
-                    if (player.YearsPro == 0)
+                    if (!rooks.Checked && player.YearsPro == 0)
                         freeAgentsAndRookies.Add(player);
 
-                    double delta = playedCredit * playedGamesFactor[player.PlayerId] +
-                        startedCredit * startedGamesFactor[player.PlayerId] + 
-                        youthCredit*math.theta(6 - player.YearsPro) * (double)(6 - player.YearsPro) / 6.0 -
-                        ageDebit*math.theta(player.Age + 4.0 - dcr.positionData[player.PositionId].RetirementAge) * (player.Age + 4.0 - dcr.positionData[player.PositionId].RetirementAge) / 4.0;
+                    double delta = playedCredit * (playedGamesFactor.ContainsKey(player.PlayerId) ? playedGamesFactor[player.PlayerId] : 0) +
+                        startedCredit * (startedGamesFactor.ContainsKey(player.PlayerId) ? startedGamesFactor[player.PlayerId] : 0) +
+                        youthCredit * math.theta(6 - player.YearsPro) * (6.0 - (double)player.YearsPro) / 6.0 -
+                        ageDebit*math.theta(player.Age + 5.0 - dcr.positionData[player.PositionId].RetirementAge) * ((double)player.Age + 5.0 - (double)dcr.positionData[player.PositionId].RetirementAge) / 5.0;
 
                     delta = Math.Min(maxSlider.Value, Math.Max(-maxSlider.Value, delta));
+
+                    if (player.YearsPro == 0 || player.TeamId == 1009)
+                        delta = 0;
 
                     double mu = player.Overall + delta;
                     playerMeans[player.PlayerId] = mu;
 
-                    double sigma = 1.0 + randomness * delta;
+                    double sigma = 1.0 + randomness * Math.Abs(playedCredit * (playedGamesFactor.ContainsKey(player.PlayerId) ? playedGamesFactor[player.PlayerId] : 0) +
+                        startedCredit * (startedGamesFactor.ContainsKey(player.PlayerId) ? startedGamesFactor[player.PlayerId] : 0) +
+                        youthCredit * math.theta(6 - player.YearsPro) * (6.0 - (double)player.YearsPro) / 6.0 +
+                        ageDebit * math.theta(player.Age + 5.0 - dcr.positionData[player.PositionId].RetirementAge) * ((double)player.Age + 5.0 - (double)dcr.positionData[player.PositionId].RetirementAge) / 5.0);
 
                     double total = 0;
                     for (int i = 0; i < 100; i++)
@@ -167,65 +188,63 @@ namespace MaddenEditor.Forms
                 numPlayers++;
             }
 
-            // distribute ratings amongst the bins
-            for (int i = 0; i < numPlayers; i++)
+            for (int i = 0; i < 21; i++)
             {
-                int bin;
-
-                // pick a bin to adjust
-                while (true)
+                int total = 0;
+                for (int j = 0; j < 100; j++)
                 {
-                    bin = (int)Math.Round(math.bellcurve(77.83, 9.04));
-                    if (bin < 100 && bin >= 0)
-                        break;
+                    double num = ((double)playersLeft[i]) * Math.Exp(-Math.Pow((double)j - 77.83, 2.0) / 163.44) / 22.66;
+                    targetsByPosition[i][j] = Math.Max(0, (int)Math.Round(math.bellcurve(num, Math.Sqrt(num) / 2)));
+                    total += targetsByPosition[i][j];
                 }
 
-                int randPos = rand.Next(numPlayers - i);
-
-                for (int j = 0; j < 21; j++)
+                while (total != playersLeft[i])
                 {
-                    if (randPos < playersLeft[j])
+                    int bin;
+
+                    // pick a bin to adjust
+                    while (true)
                     {
-                        randPos = j;
-                        break;
+                        bin = (int)Math.Round(math.bellcurve(77.83, 9.04));
+                        if (bin < 100 && bin >= 0)
+                            break;
                     }
 
-                    randPos -= playersLeft[j];
+                    if (total > playersLeft[i])
+                    {
+                        if (targetsByPosition[i][bin] > 0)
+                        {
+                            targetsByPosition[i][bin]--;
+                            total--;
+                        }
+                    }
+                    else
+                    {
+                        targetsByPosition[i][bin]++;
+                        total++;
+                    }
                 }
-
-                targetsByPosition[randPos][bin]++;
-                playersLeft[randPos]--;
             }
 
-            /*            // targets for each OVR
-                        List<int> targets = new List<int>();
-                        int total = 0;
-                        for (int x = 0; x < 100; x++)
-                        {
-                            double num = ((double)numPlayers / 22.4726) *
-                                Math.Exp(-Math.Pow(x - 77.83433433433433, 2) / 163.4356002649296);
 
-                            int target = (int)Math.Round(math.bellcurve(num, Math.Sqrt(num), rand));
-
-                            targets.Add(target);
-                            total += target;
-                        }
-            */
             // subtract FA's and rookies as players already allocated, since
             // we don't want to adjust these guys at all.
-            foreach (PlayerRecord player in freeAgentsAndRookies)
+            if (!rooks.Checked || !freeAgents.Checked)
             {
-                // find the closest bin to adjust
-                int binshift = 0;
-                while (targetsByPosition[player.PositionId][player.Overall + binshift] <= 0)
+                foreach (PlayerRecord player in freeAgentsAndRookies)
                 {
-                    if (binshift >= 0)
-                        binshift = -binshift - 1;
-                    else
-                        binshift = -binshift;
-                }
+                    // find the closest bin to adjust
+                    int binshift = 0;
+                    while (targetsByPosition[player.PositionId][player.Overall + binshift] <= 0)
+                    {
+                        if (binshift >= 0)
+                            binshift = -binshift - 1;
+                        else
+                            binshift = -binshift;
+                    }
 
-                targetsByPosition[player.PositionId][player.Overall + binshift]--;
+                    targetsByPosition[player.PositionId][player.Overall + binshift]--;
+                }
             }
 
             // now make adjustments
@@ -286,7 +305,6 @@ namespace MaddenEditor.Forms
                             if (adjusted.Contains(player.PlayerId))
                                 continue;
 
-
                             if (testRand < tempProb + relProbs[player.PlayerId])
                             {
                                 adjusted.Add(player.PlayerId);
@@ -317,11 +335,20 @@ namespace MaddenEditor.Forms
                                     }
                                 }
 
-                                Console.WriteLine("Adjusting " + player.ToString() + " -- Current Overall: " + player.Overall + ", Target: " + j);
+                                if (sw == null)
+                                    Console.WriteLine("Adjusting " + player.ToString() + " " + player.TeamId + " " + player.YearsPro + " -- Current Overall: " + player.Overall + ", Target: " + j);
+                                else
+                                    sw.WriteLine("Adjusting " + player.ToString() + " -- Current Overall: " + player.Overall + ", Target: " + j);
+
                                 for (int m = 0; m < attributesByPosition[player.PositionId].Count; m++)
                                 {
                                     if (attributesByPosition[player.PositionId][m])
-                                        Console.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                    {
+                                        if (sw == null)
+                                            Console.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                        else
+                                            sw.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                    }
                                 }
 
                                 while (player.Overall != j)
@@ -333,7 +360,6 @@ namespace MaddenEditor.Forms
                                     {
                                         if (testRand < tempProb + pair.Value)
                                         {
-
                                             player.SetAttribute(pair.Key, player.GetAttribute(pair.Key) + Math.Sign(j - player.Overall));
                                             break;
                                         }
@@ -344,11 +370,20 @@ namespace MaddenEditor.Forms
                                     player.Overall = player.CalculateOverallRating(player.PositionId, false);
                                 }
 
-                                Console.WriteLine("New attributes:");
+                                if (sw == null)
+                                    Console.WriteLine("New attributes:");
+                                else
+                                    sw.WriteLine("New attributes:");
+
                                 for (int m = 0; m < attributesByPosition[player.PositionId].Count; m++)
                                 {
                                     if (attributesByPosition[player.PositionId][m])
-                                        Console.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                    {
+                                        if (sw == null)
+                                            Console.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                        else
+                                            sw.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                    }
                                 }
 
                                 break;
@@ -376,6 +411,11 @@ namespace MaddenEditor.Forms
                     }
                 }
             }
+
+            Cursor.Current = Cursors.Arrow;
+            if (sw != null)
+                sw.Close();
+
 
             /*
             Dictionary<int, int> bins = new Dictionary<int, int>();
@@ -634,6 +674,20 @@ namespace MaddenEditor.Forms
             triggerChangedEvent = false;
             sliderToChange.Value = (int)sender.Value;
             triggerChangedEvent = true;
+        }
+
+        private void recommended_Click(object sender, EventArgs e)
+        {
+            youthSlider.Value = 20;
+            ageSlider.Value = 60;
+            playedSlider.Value = 30;
+            startedSlider.Value = 40;
+            randomSlider.Value = 50;
+            maxSlider.Value = 10;
+
+            rooks.Checked = false;
+            freeAgents.Checked = false;
+            output.Checked = false;
         }
     }
 }

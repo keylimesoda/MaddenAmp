@@ -409,6 +409,10 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Forms\ProgressionForm.resx">
+      <DependentUpon>ProgressionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrainingCampMeeting.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TrainingCampMeeting.cs</DependentUpon>
