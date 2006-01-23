@@ -1018,7 +1018,9 @@ namespace MaddenEditor.Forms
 					dm.SavePicks(sfd.FileName);
 
 					MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
-				}
+                }
+
+                dm.ClearRookieGameRecords();
 
 				return false;
 			}

@@ -24,8 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+
 using MaddenEditor.Forms;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.Record.Stats;
 
 namespace MaddenEditor.Core
 {
@@ -568,6 +570,32 @@ namespace MaddenEditor.Core
 			//Console.Writeline("Total MakeSelection: " + total.Subtract(DateTime.Now));
 			return toDraft;
 		}
+
+        public void ClearRookieGameRecords()
+        {
+            List<int> rookieIDs = new List<int>();
+            foreach (PlayerRecord player in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (player.YearsPro == 0)
+                    rookieIDs.Add(player.PlayerId);
+            }
+
+            List<TableRecordModel> games = new List<TableRecordModel>(model.TableModels[EditorModel.SEASON_GAMES_PLAYED_TABLE].GetRecords().ToArray());
+            for (int i = 0; i < games.Count; i++)
+            {
+                if (rookieIDs.Contains(((SeasonGamesPlayedRecord)games[i]).PlayerId))
+                    games[i].SetDeleteFlag(true);
+            }
+
+            foreach (CareerGamesPlayedRecord stat in model.TableModels[EditorModel.CAREER_GAMES_PLAYED_TABLE].GetRecords())
+            {
+                if (rookieIDs.Contains(stat.PlayerId))
+                {
+                    stat.GamesPlayed = 0;
+                    stat.GamesStarted = 0;
+                }
+            }
+        }
 
 		public void DumpDraftResults()
 		{
