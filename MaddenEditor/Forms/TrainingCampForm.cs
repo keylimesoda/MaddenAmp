@@ -25,7 +25,9 @@ namespace MaddenEditor.Forms
         string CurName = "";
         public int CurDay;
         public string CurTeam;
+        public string Stage;
         public TrainingCampSplashScreen trainingCampSplashScreen = null;
+        public TrainingCampMeeting trainingCampMeeting = null;
 
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
@@ -59,7 +61,7 @@ namespace MaddenEditor.Forms
             if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text))
             {
                 Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text);
-
+                Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System");
             }  
                 int teamId = ((TeamRecord)selectHumanTeam.SelectedItem).TeamId;
                 int positionId = 0;
@@ -164,6 +166,10 @@ namespace MaddenEditor.Forms
                             sw.Close();
                         }
 
+                        FileStream system = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\system");
+                        sw = new StreamWriter(system);
+                        sw.WriteLine(selectHumanTeam.Text + "," + "Hell Week" + "," + "1");
+                        sw.Close();
         }
         public void InitialiseUI()
                 {
@@ -833,28 +839,56 @@ namespace MaddenEditor.Forms
 
                 if (dr == DialogResult.No)
                 {
-                    Directory.Delete((installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text), true);
-                    OutputRoster();
-                    filterPositionComboBox.SelectedIndex = 0;
-                    ActivityCmb.SelectedIndex = 0;
-                    RefillRosterView();
+                    DialogResult drr = MessageBox.Show("Begin Training Camp for " + selectHumanTeam.Text + "?...", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+
+                    if (drr == DialogResult.Yes)
+                    {
+                        Directory.Delete((installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text), true);
+                        OutputRoster();
+                        filterPositionComboBox.SelectedIndex = 0;
+                        ActivityCmb.SelectedIndex = 0;
+                        RefillRosterView();
+                        LaunchSplash();
+                        //  AdvanceBtn.Text = "Start...";
+                        //  groupBox6.Enabled = true;
+                    }
+                    else if (drr == DialogResult.No)
+                {
+                    return;
+                }
 
                 }
                 else if (dr == DialogResult.Yes)
                 {
                     filterPositionComboBox.SelectedIndex = 0;
                     ActivityCmb.SelectedIndex = 0;
-                    RefillRosterView();
+                    RefillRosterView(); 
+                 //   AdvanceBtn.Text = "Continue...";
+                 //   groupBox6.Enabled = true;
 
                 }
 
             }
             else 
             {
-                OutputRoster();
-                filterPositionComboBox.SelectedIndex = 0;
-                ActivityCmb.SelectedIndex = 0;
-                RefillRosterView();
+                DialogResult drr = MessageBox.Show("Begin Training Camp for " + selectHumanTeam.Text + "?...", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+
+                if (drr == DialogResult.Yes)
+                {                    
+                    OutputRoster();
+                    filterPositionComboBox.SelectedIndex = 0;
+                    ActivityCmb.SelectedIndex = 0;
+                    RefillRosterView();
+                    LaunchSplash();
+                    //  AdvanceBtn.Text = "Start...";
+                    //  groupBox6.Enabled = true;
+
+                }
+                else if (drr == DialogResult.No)
+                {
+                    return;
+                }
+               
 
             }
          
@@ -1110,15 +1144,28 @@ namespace MaddenEditor.Forms
             CurName = (string)SetTimeGrd.Rows[e.RowIndex].Cells["Name"].Value;
             FillTextBox(filterPositionComboBox.Text);
         }
+        private void LaunchSplash()
+        {
+            {
+                installDirectory = Application.StartupPath;
+                StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\system");
+                string Allcontents = sr.ReadToEnd();
+                sr.Close();
+                string[] Line = Allcontents.Split(',');
+                CurTeam = Line[0];
+                Stage = Line[1];
+                CurDay = Int32.Parse(Line[2]);
+                groupBox6.Enabled = false;
+                //this.Hide();
+                TrainingCampSplashScreen form = new TrainingCampSplashScreen(model, this);
+                form.Show();
 
+            }
+
+        }
         private void AdvanceBtn_Click(object sender, EventArgs e)
         {
-            CurDay = 1;
-            CurTeam = "Packers";
-            //this.Hide();
-            TrainingCampSplashScreen form = new TrainingCampSplashScreen(model, this);          
-            form.Show();
-            
+            LaunchSplash();            
         }
 
       

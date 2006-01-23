@@ -140,9 +140,23 @@ namespace MaddenEditor.Forms
             {
                 Application.DoEvents();
             }
+            if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 1))
+            {
+                
+                Timer1TextDelay(10);
+                this.Close();
+                while (isTrue == true)
+                {
+                    Application.DoEvents();
+                }
+                TrainingCampMeeting form = new TrainingCampMeeting(model, tcform);
+                form.Show();
 
-               this.Close();
-
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
         private void m_SplashTextTimer_Tick(object sender, EventArgs e)
