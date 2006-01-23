@@ -55,14 +55,18 @@ namespace MaddenEditor.Forms
             this.setGameInjuriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.draftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.depthChartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.depthChartProgMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveTradedDraftPicksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportDraftClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importDraftClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.simulateCPUMinicampsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportDraftClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.weeklyMaintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fixProgressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.depthChartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.depthChartProgMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.simulateCPUMinicampsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.developerBiosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,9 +82,6 @@ namespace MaddenEditor.Forms
             this.processingTableLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.rosterFileLoaderThread = new System.ComponentModel.BackgroundWorker();
             this.testerWorkerThread = new System.ComponentModel.BackgroundWorker();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.playerPage.SuspendLayout();
@@ -233,6 +234,7 @@ namespace MaddenEditor.Forms
             this.moveTradedDraftPicksToolStripMenuItem,
             this.importDraftClassToolStripMenuItem,
             this.exportDraftClassToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.toolStripSeparator7,
             this.weeklyMaintenanceToolStripMenuItem,
             this.fixProgressionToolStripMenuItem,
@@ -242,7 +244,7 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator8,
             this.simulateCPUMinicampsToolStripMenuItem});
             this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
-            this.franchiseToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.franchiseToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.franchiseToolStripMenuItem.Text = "Franchise";
             // 
             // editScheduleToolStripMenuItem
@@ -297,33 +299,12 @@ namespace MaddenEditor.Forms
             this.draftMenuItem.Text = "Enter Draft";
             this.draftMenuItem.Click += new System.EventHandler(this.enterDraftToolStripMenuItem_Click);
             // 
-            // depthChartMenuItem
-            // 
-            this.depthChartMenuItem.Name = "depthChartMenuItem";
-            this.depthChartMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.depthChartMenuItem.Text = "Reorder Depth Charts (No Prog)";
-            this.depthChartMenuItem.Click += new System.EventHandler(this.depthChartMenuItem_Click);
-            // 
-            // depthChartProgMenuItem
-            // 
-            this.depthChartProgMenuItem.Name = "depthChartProgMenuItem";
-            this.depthChartProgMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.depthChartProgMenuItem.Text = "Reorder Depth Charts (w/ Prog)";
-            this.depthChartProgMenuItem.Click += new System.EventHandler(this.depthChartProgMenuItem_Click);
-            // 
             // moveTradedDraftPicksToolStripMenuItem
             // 
             this.moveTradedDraftPicksToolStripMenuItem.Name = "moveTradedDraftPicksToolStripMenuItem";
             this.moveTradedDraftPicksToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.moveTradedDraftPicksToolStripMenuItem.Text = "Move Traded Draft Picks";
             this.moveTradedDraftPicksToolStripMenuItem.Click += new System.EventHandler(this.moveTradedDraftPicksToolStripMenuItem_Click);
-            // 
-            // exportDraftClassToolStripMenuItem
-            // 
-            this.exportDraftClassToolStripMenuItem.Name = "exportDraftClassToolStripMenuItem";
-            this.exportDraftClassToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.exportDraftClassToolStripMenuItem.Text = "Export Draft Class";
-            this.exportDraftClassToolStripMenuItem.Click += new System.EventHandler(this.exportDraftClassToolStripMenuItem_Click);
             // 
             // importDraftClassToolStripMenuItem
             // 
@@ -332,12 +313,24 @@ namespace MaddenEditor.Forms
             this.importDraftClassToolStripMenuItem.Text = "Import Draft Class";
             this.importDraftClassToolStripMenuItem.Click += new System.EventHandler(this.importDraftClassToolStripMenuItem_Click);
             // 
-            // simulateCPUMinicampsToolStripMenuItem
+            // exportDraftClassToolStripMenuItem
             // 
-            this.simulateCPUMinicampsToolStripMenuItem.Name = "simulateCPUMinicampsToolStripMenuItem";
-            this.simulateCPUMinicampsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.simulateCPUMinicampsToolStripMenuItem.Text = "Simulate CPU Minicamps";
-            this.simulateCPUMinicampsToolStripMenuItem.Click += new System.EventHandler(this.simulateCPUMinicampsToolStripMenuItem_Click);
+            this.exportDraftClassToolStripMenuItem.Name = "exportDraftClassToolStripMenuItem";
+            this.exportDraftClassToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.exportDraftClassToolStripMenuItem.Text = "Export Draft Class";
+            this.exportDraftClassToolStripMenuItem.Click += new System.EventHandler(this.exportDraftClassToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 22);
+            this.toolStripMenuItem1.Text = "Clear Rookie Games Played";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(237, 6);
             // 
             // weeklyMaintenanceToolStripMenuItem
             // 
@@ -352,6 +345,37 @@ namespace MaddenEditor.Forms
             this.fixProgressionToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.fixProgressionToolStripMenuItem.Text = "Fix Progression";
             this.fixProgressionToolStripMenuItem.Click += new System.EventHandler(this.fixProgressionToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(237, 6);
+            // 
+            // depthChartMenuItem
+            // 
+            this.depthChartMenuItem.Name = "depthChartMenuItem";
+            this.depthChartMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.depthChartMenuItem.Text = "Reorder Depth Charts (No Prog)";
+            this.depthChartMenuItem.Click += new System.EventHandler(this.depthChartMenuItem_Click);
+            // 
+            // depthChartProgMenuItem
+            // 
+            this.depthChartProgMenuItem.Name = "depthChartProgMenuItem";
+            this.depthChartProgMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.depthChartProgMenuItem.Text = "Reorder Depth Charts (w/ Prog)";
+            this.depthChartProgMenuItem.Click += new System.EventHandler(this.depthChartProgMenuItem_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(237, 6);
+            // 
+            // simulateCPUMinicampsToolStripMenuItem
+            // 
+            this.simulateCPUMinicampsToolStripMenuItem.Name = "simulateCPUMinicampsToolStripMenuItem";
+            this.simulateCPUMinicampsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.simulateCPUMinicampsToolStripMenuItem.Text = "Simulate CPU Minicamps";
+            this.simulateCPUMinicampsToolStripMenuItem.Click += new System.EventHandler(this.simulateCPUMinicampsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -475,21 +499,6 @@ namespace MaddenEditor.Forms
             this.testerWorkerThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.testerWorkerThread_DoWork);
             this.testerWorkerThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.testerWorkerThread_ProgressChanged);
             // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(237, 6);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(237, 6);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(237, 6);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -572,5 +581,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }

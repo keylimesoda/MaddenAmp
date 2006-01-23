@@ -764,6 +764,17 @@ namespace MaddenEditor.Forms
 			form.Show();
 		}
 
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Are you sure you want to clear all rookie games played data?  You should only do this during the offseason or at the beginning of the season.", "Confirm", MessageBoxButtons.YesNo);
+
+            if (dr == DialogResult.Yes)
+            {
+                DraftModel dm = new DraftModel(model);
+                dm.ClearRookieGameRecords();
+            }
+        }
+
         // MADDEN DRAFT EDIT
 
     }
