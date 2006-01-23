@@ -409,10 +409,14 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+<<<<<<< .mine
+    <EmbeddedResource Include="Resources\FairWindy.JPG" />
+=======
     <EmbeddedResource Include="Forms\ProgressionForm.resx">
       <DependentUpon>ProgressionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+>>>>>>> .r255
     <EmbeddedResource Include="Forms\TrainingCampMeeting.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TrainingCampMeeting.cs</DependentUpon>
@@ -422,10 +426,8 @@
       <DependentUpon>TrainingCampSplashScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\cloudy.JPG" />
-    <EmbeddedResource Include="Resources\FairWindy.JPG" />
     <EmbeddedResource Include="Resources\HvyRain.JPG" />
     <EmbeddedResource Include="Resources\PartlyCloudy.JPG" />
-    <EmbeddedResource Include="Resources\scattered_Tstorms.JPG" />
     <EmbeddedResource Include="Resources\Showers.JPG" />
     <EmbeddedResource Include="Resources\sunny.JPG" />
     <EmbeddedResource Include="Resources\thunder.JPG" />

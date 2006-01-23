@@ -152,6 +152,7 @@ namespace MaddenEditor.Forms
         {
             if (!triggerChangedEvent)
             {
+
                 return;
             }
 
