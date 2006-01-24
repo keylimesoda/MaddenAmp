@@ -68,6 +68,7 @@ namespace MaddenEditor.Forms
             this.Name = "TrainingCampSplashScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Welcome to Training Camp...";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TrainingCampSplashScreen_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
