@@ -26,7 +26,7 @@ namespace MaddenEditor.Forms
             tcform = trainingForm;
             tcform.trainingCampSplashScreen = this;
             this.model = model;
-            InitializeComponent();            
+            InitializeComponent();              
         }
 
         protected override void OnLoad(EventArgs e)
@@ -95,13 +95,10 @@ namespace MaddenEditor.Forms
                 e.Cancel = true;
             } // End if we should fade instead of closing.
 
+            
         }
 
-       
-
-        
-       
-        
+               
         private void Timer1TextDelay(int SleepValue)
         {
             Counter = 0;
@@ -114,9 +111,9 @@ namespace MaddenEditor.Forms
             //int X = 1;
             int xx = (int)(49 * random.NextDouble() + 10);
             Splashtxt.Text = Splashtxt.Text + "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                 ";
-            Splashtxt.SelectionStart = Splashtxt.Text.Length;
-            Splashtxt.SelectionLength = 0;
-            Splashtxt.ScrollToCaret();
+         //   Splashtxt.SelectionStart = Splashtxt.Text.Length;
+         //   Splashtxt.SelectionLength = 0;
+         //   Splashtxt.ScrollToCaret();
 
             string HellWeek = (",.,.,.,L,o,c,a,t,i,o,n,\r\n                                 ,.,.,.," + tcform.CurTeam + ", T,r,a,i,n,i,n,g, C,a,m,p, F,a,c,i,l,i,t,y,\r\n                                 ,.,.,.,H,e,l,l, W,e,e,k,.,.,.,D,a,y, " + tcform.CurDay + ",\r\n                                 ,.,.,.,5,:," + xx + ",:,23, A,M");
             string[] splitLine = HellWeek.Split(',');
@@ -134,29 +131,23 @@ namespace MaddenEditor.Forms
             }
 
 
-            Timer1TextDelay(15);
+            Timer1TextDelay(11);
             Splashtxt.Text = Splashtxt.Text;
             while (isTrue == true)
             {
                 Application.DoEvents();
             }
-            if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 1))
-            {
+         //   if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 1))
+         //   {
                 
-                Timer1TextDelay(10);
+                Timer1TextDelay(12);
                 this.Close();
                 while (isTrue == true)
                 {
                     Application.DoEvents();
                 }
-                TrainingCampMeeting form = new TrainingCampMeeting(model, tcform);
-                form.Show();
-
-            }
-            else
-            {
-                this.Close();
-            }
+          //  }
+           
         }
 
         private void m_SplashTextTimer_Tick(object sender, EventArgs e)
@@ -170,6 +161,14 @@ namespace MaddenEditor.Forms
             }
 
         }
+
+        private void TrainingCampSplashScreen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            TrainingCampMeeting form = new TrainingCampMeeting(model, tcform);
+            form.Show();
+        }
+
+      
         
 
        

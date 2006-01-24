@@ -20,7 +20,7 @@ namespace MaddenEditor.Forms
         private DepthChartEditingModel depthEditingModel = null;
         string installDirectory;
         string CurrentActivity = "";
-        string franchiseFilename = "";
+        public string franchiseFilename = "";
         int CurPercent = 0;
         string CurName = "";
         public int CurDay;
@@ -28,7 +28,7 @@ namespace MaddenEditor.Forms
         public string Stage;
         public TrainingCampSplashScreen trainingCampSplashScreen = null;
         public TrainingCampMeeting trainingCampMeeting = null;
-
+        public TeamRecord tn;
         DataTable RosterView = new DataTable();
         BindingSource RosterViewBinding = new BindingSource();
         DataTable ActivityView = new DataTable();
@@ -54,123 +54,7 @@ namespace MaddenEditor.Forms
             set { this.model = value; }
         }
 
-        private void OutputRoster()
-        {            
-            StreamWriter sw;
-            string installDirectory = Application.StartupPath;
-            if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text))
-            {
-                Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text);
-                Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System");
-            }  
-                int teamId = ((TeamRecord)selectHumanTeam.SelectedItem).TeamId;
-                int positionId = 0;
-                string Pos = "";
-                List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
- 
-                    foreach (PlayerRecord valObject in teamPlayers)
-                        {
-                            if (valObject.PositionId == 0)
-                            {
-                                Pos = "QB";
-                            }
-                            else if (valObject.PositionId == 1)
-                            {
-                                Pos = "HB";
-                            }
-                            else if (valObject.PositionId == 2)
-                            {
-                                Pos = "FB";
-                            }
-                            else if (valObject.PositionId == 3)
-                            {
-                                Pos = "WR";
-                            }
-                            else if (valObject.PositionId == 4)
-                            {
-                                Pos = "TE";
-                            }
-                            else if ((valObject.PositionId == 5) | (valObject.PositionId == 6) | (valObject.PositionId == 7) | (valObject.PositionId == 8) | (valObject.PositionId == 9))
-                            {
-                                Pos = "OL";
-                            }
-                            else if ((valObject.PositionId == 10) | (valObject.PositionId == 11) | (valObject.PositionId == 12))
-                            {
-                                Pos = "DL";
-                            }
-                            else if ((valObject.PositionId == 13) | (valObject.PositionId == 14) | (valObject.PositionId == 15))
-                            {
-                                Pos = "LB";
-                            }
-                            else if ((valObject.PositionId == 16) | (valObject.PositionId == 17) | (valObject.PositionId == 18))
-                            {
-                                Pos = "DB";
-                            }
-                            else if ((valObject.PositionId == 19) | (valObject.PositionId == 20))
-                            {
-                                Pos = "KP";
-                            }
-                            Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos);
-                            FileStream file = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
-                            sw = new StreamWriter(file);
-                            sw.Write("100");
-                            sw.WriteLine();
-                            sw.Write(valObject.FirstName + " " + valObject.LastName);
-                            sw.Write(",");                                                       
-                            sw.Write(valObject.Weight + 160);
-                            sw.Write(",");
-                            sw.Write(valObject.Overall);
-                            sw.Write(",");
-                            sw.Write(valObject.Speed);
-                            sw.Write(",");
-                            sw.Write(valObject.Acceleration);
-                            sw.Write(",");
-                            sw.Write(valObject.Agility);
-                            sw.Write(",");
-                            sw.Write(valObject.Strength);
-                            sw.Write(",");
-                            sw.Write(valObject.Stamina);
-                            sw.Write(",");
-                            sw.Write(valObject.Injury);
-                            sw.Write(",");
-                            sw.Write(valObject.Toughness);
-                            sw.Write(",");
-                            sw.Write(valObject.Morale);
-                            sw.Write(",");
-                            sw.Write(valObject.Awareness);
-                            sw.Write(",");
-                            sw.Write(valObject.Catching);
-                            sw.Write(",");
-                            sw.Write(valObject.Carrying);
-                            sw.Write(",");
-                            sw.Write(valObject.Jumping);
-                            sw.Write(",");
-                            sw.Write(valObject.BreakTackle);
-                            sw.Write(",");
-                            sw.Write(valObject.Tackle);
-                            sw.Write(",");
-                            sw.Write(valObject.ThrowPower);
-                            sw.Write(",");
-                            sw.Write(valObject.ThrowAccuracy);
-                            sw.Write(",");
-                            sw.Write(valObject.PassBlocking);
-                            sw.Write(",");
-                            sw.Write(valObject.RunBlocking);
-                            sw.Write(",");
-                            sw.Write(valObject.KickPower);
-                            sw.Write(",");
-                            sw.Write(valObject.KickAccuracy);
-                            sw.Write(",");
-                            sw.Write(valObject.KickReturn);
-                            sw.WriteLine();
-                            sw.Close();
-                        }
-
-                        FileStream system = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\system");
-                        sw = new StreamWriter(system);
-                        sw.WriteLine(selectHumanTeam.Text + "," + "Hell Week" + "," + "1");
-                        sw.Close();
-        }
+        
         public void InitialiseUI()
                 {
                     //Create output directory if none exists
@@ -184,27 +68,40 @@ namespace MaddenEditor.Forms
                     franchiseFilename = splitPath[splitPath.Length - 1];
 
                     depthEditingModel = new DepthChartEditingModel(model);      
-                    isInitialising = true;                                      
+                    isInitialising = true;
+                                          
                     foreach (TeamRecord team in model.TeamModel.GetTeams())
                     {
                         selectHumanTeam.Items.Add(team);
                     }
                     selectHumanTeam.Items.RemoveAt(34);//Remove NFC,AFC,FREEAGENT
                     selectHumanTeam.Items.RemoveAt(33);
-                    selectHumanTeam.Items.RemoveAt(32);  
+                    selectHumanTeam.Items.RemoveAt(32);
                     foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
                     {
                         filterPositionComboBox.Items.Add(pos);
                     }
+               //     filterPositionComboBox.Items.Add("OL");
+               //     filterPositionComboBox.Items.Add("DL");
+              //      filterPositionComboBox.Items.Add("LB");
+               //     filterPositionComboBox.Items.Add("DB");
+                    int sdfsd = 0;
+                    foreach (string pos in Enum.GetNames(typeof(MaddenPositionGroups)))
+                    {
+                        filterPositionComboBox.Items.Add(pos);
+                        sdfsd++;
+                    }
+
                     //Populate Activity combobox
                     ActivityCmb.Items.Add("Position Drills");
                     ActivityCmb.Items.Add("Aerobic/Cardio");
                     ActivityCmb.Items.Add("Weight Training");
                     ActivityCmb.Items.Add("Dietary");
-                    ActivityCmb.Items.Add("Group Activities");
+                    ActivityCmb.Items.Add("Team Drills");
                     //Populate AllocateBy combobox
+                    AllocateByCmb.Items.Add("Team");
+                    AllocateByCmb.Items.Add("Position");
                     AllocateByCmb.Items.Add("Individual");
-                    AllocateByCmb.Items.Add("Group");
                   /* 
                     foreach (string s in Enum.GetNames(typeof(MaddenPositionGroups)))
                     {
@@ -267,7 +164,7 @@ namespace MaddenEditor.Forms
                 }
                 else
                 {
-                    if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT")
+                    if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
                     {
                         if (splitLine[1] == "OL-P")
                         {
@@ -276,7 +173,7 @@ namespace MaddenEditor.Forms
                             ActivityView.Rows.Add(ac);
                         }
                     }
-                    else if (Pos == "RE" | Pos == "LE" | Pos == "DT")
+                    else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
                     {
                         if (splitLine[1] == "DL-P")
                         {
@@ -285,7 +182,7 @@ namespace MaddenEditor.Forms
                             ActivityView.Rows.Add(ac);
                         }
                     }
-                    else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB")
+                    else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
                     {
                         if (splitLine[1] == "LB-P")
                         {
@@ -294,7 +191,7 @@ namespace MaddenEditor.Forms
                             ActivityView.Rows.Add(ac);
                         }
                     }
-                    else if (Pos == "CB" | Pos == "FS" | Pos == "SS")
+                    else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
                     {
                         if (splitLine[1] == "DB-P")
                         {
@@ -317,7 +214,7 @@ namespace MaddenEditor.Forms
             }//end while
             sr.Close();            
         }
-        private void LoadMisc()
+        private void LoadConditioning()
         {
             installDirectory = Application.StartupPath;
             StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\tune.txt");
@@ -349,11 +246,7 @@ namespace MaddenEditor.Forms
             {
                 Type = "W";
             }
-            else if (ActivityCmb.SelectedIndex == 4)
-            {
-                Type = "G";
-            }
-
+ 
             while (!sr.EndOfStream)
             {
                 DataRow ac = ActivityView.NewRow();
@@ -615,48 +508,470 @@ namespace MaddenEditor.Forms
             List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
         
             RosterView.Clear();
-
-            foreach (PlayerRecord valObject in teamPlayers)
+            //Ind. Position view
+            if ((filterPositionComboBox.SelectedIndex >= 0) & (filterPositionComboBox.SelectedIndex <= 20))
             {
-                if (valObject.PositionId == positionId)
+                foreach (PlayerRecord valObject in teamPlayers)
                 {
-                    DataRow dr = RosterView.NewRow();
+                    if (valObject.PositionId == positionId)
+                    {
+                        DataRow dr = RosterView.NewRow();
 
-                    // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                        // playerHeightComboBox.SelectedIndex = record.Height - 65;
 
-                    dr["Name"] = valObject.FirstName + " " + valObject.LastName;
-                    dr["Age"] = valObject.Age;
-                    dr["Exp"] = valObject.YearsPro;
-                    dr["Ovr"] = valObject.Overall;
-                    // Would like to include feet/inches
-                    dr["Hgt"] = valObject.Height;
-                    dr["Wgt"] = valObject.Weight + 160;
-                    dr["Spd"] = valObject.Speed;
-                    dr["Acc"] = valObject.Acceleration;
-                    dr["Agi"] = valObject.Agility;
-                    dr["Str"] = valObject.Strength;
-                    dr["Stm"] = valObject.Stamina;
-                    dr["Inj"] = valObject.Injury;
-                    dr["Tgh"] = valObject.Toughness;
-                    dr["Mor"] = valObject.Morale;
-                    dr["Awr"] = valObject.Awareness;
-                    dr["Cat"] = valObject.Catching;
-                    dr["Car"] = valObject.Carrying;
-                    dr["Jmp"] = valObject.Jumping;
-                    dr["Btk"] = valObject.BreakTackle;
-                    dr["Tkl"] = valObject.Tackle;
-                    dr["ThP"] = valObject.ThrowPower;
-                    dr["ThA"] = valObject.ThrowAccuracy;
-                    dr["Pbk"] = valObject.PassBlocking;
-                    dr["Rbk"] = valObject.RunBlocking;
-                    dr["KP"] = valObject.KickPower;
-                    dr["KA"] = valObject.KickAccuracy;
-                    dr["KR"] = valObject.KickReturn;
+                        dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                        dr["Age"] = valObject.Age;
+                        dr["Exp"] = valObject.YearsPro;
+                        dr["Ovr"] = valObject.Overall;
+                        // Would like to include feet/inches
+                        dr["Hgt"] = valObject.Height;
+                        dr["Wgt"] = valObject.Weight + 160;
+                        dr["Spd"] = valObject.Speed;
+                        dr["Acc"] = valObject.Acceleration;
+                        dr["Agi"] = valObject.Agility;
+                        dr["Str"] = valObject.Strength;
+                        dr["Stm"] = valObject.Stamina;
+                        dr["Inj"] = valObject.Injury;
+                        dr["Tgh"] = valObject.Toughness;
+                        dr["Mor"] = valObject.Morale;
+                        dr["Awr"] = valObject.Awareness;
+                        dr["Cat"] = valObject.Catching;
+                        dr["Car"] = valObject.Carrying;
+                        dr["Jmp"] = valObject.Jumping;
+                        dr["Btk"] = valObject.BreakTackle;
+                        dr["Tkl"] = valObject.Tackle;
+                        dr["ThP"] = valObject.ThrowPower;
+                        dr["ThA"] = valObject.ThrowAccuracy;
+                        dr["Pbk"] = valObject.PassBlocking;
+                        dr["Rbk"] = valObject.RunBlocking;
+                        dr["KP"] = valObject.KickPower;
+                        dr["KA"] = valObject.KickAccuracy;
+                        dr["KR"] = valObject.KickReturn;
 
-                    RosterView.Rows.Add(dr);
+                        RosterView.Rows.Add(dr);
 
+                    }
                 }
             }
+
+            else if (filterPositionComboBox.SelectedIndex > 20) 
+            {
+
+                if (filterPositionComboBox.SelectedIndex == 21)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId >= 5) && (valObject.PositionId <= 9))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 22)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 5) || (valObject.PositionId == 9))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+
+                if (filterPositionComboBox.SelectedIndex == 23)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 6) || (valObject.PositionId == 8))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+
+                if (filterPositionComboBox.SelectedIndex == 24)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 10) || (valObject.PositionId == 11) || (valObject.PositionId == 12))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 25)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 10) || (valObject.PositionId == 11))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+
+                if (filterPositionComboBox.SelectedIndex == 26)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 13) || (valObject.PositionId == 14) || (valObject.PositionId == 15))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 27)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 13) || (valObject.PositionId == 15))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 28)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 16) || (valObject.PositionId == 17) || (valObject.PositionId == 18))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 29)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 17) || (valObject.PositionId == 18))
+                        {
+                            DataRow dr = RosterView.NewRow();
+
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            dr["Age"] = valObject.Age;
+                            dr["Exp"] = valObject.YearsPro;
+                            dr["Ovr"] = valObject.Overall;
+                            // Would like to include feet/inches
+                            dr["Hgt"] = valObject.Height;
+                            dr["Wgt"] = valObject.Weight + 160;
+                            dr["Spd"] = valObject.Speed;
+                            dr["Acc"] = valObject.Acceleration;
+                            dr["Agi"] = valObject.Agility;
+                            dr["Str"] = valObject.Strength;
+                            dr["Stm"] = valObject.Stamina;
+                            dr["Inj"] = valObject.Injury;
+                            dr["Tgh"] = valObject.Toughness;
+                            dr["Mor"] = valObject.Morale;
+                            dr["Awr"] = valObject.Awareness;
+                            dr["Cat"] = valObject.Catching;
+                            dr["Car"] = valObject.Carrying;
+                            dr["Jmp"] = valObject.Jumping;
+                            dr["Btk"] = valObject.BreakTackle;
+                            dr["Tkl"] = valObject.Tackle;
+                            dr["ThP"] = valObject.ThrowPower;
+                            dr["ThA"] = valObject.ThrowAccuracy;
+                            dr["Pbk"] = valObject.PassBlocking;
+                            dr["Rbk"] = valObject.RunBlocking;
+                            dr["KP"] = valObject.KickPower;
+                            dr["KA"] = valObject.KickAccuracy;
+                            dr["KR"] = valObject.KickReturn;
+
+                            RosterView.Rows.Add(dr);
+
+                        }
+                    }
+
+                }
+
+
+
+
+               
+            }
+
 
 
 
@@ -717,9 +1032,26 @@ namespace MaddenEditor.Forms
 
                     installDirectory = Application.StartupPath;
                     StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
-                    int TotalRemaining = Int32.Parse(sr.ReadLine());
+                    string[] Time = sr.ReadLine().Split(',');
                     string Allcontents = sr.ReadToEnd();
                     sr.Close();
+                    
+                    string TimeRemaining = "";
+                    if (ActivityCmb.SelectedIndex == 0)
+                    {
+                        TimeRemaining = Time[1];
+                    }
+                    else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                    {
+                        TimeRemaining = Time[0];
+                    }
+                    else if (ActivityCmb.SelectedIndex == 4)
+                    {
+                        TimeRemaining = Time[2];
+                    }
+                    
+                    
+                    
                     string[] Line = Allcontents.Split('\n');
                     int Len = Line.Length;
                     textBox1.Text = "Current Allocations for " + CurName + "\r\n";
@@ -751,48 +1083,63 @@ namespace MaddenEditor.Forms
             int positionId = filterPositionComboBox.SelectedIndex;
 
             List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
-
             AllocateTimingView.Clear();
-
-            foreach (PlayerRecord valObject in teamPlayers)
+            if ((filterPositionComboBox.SelectedIndex >= 0) & (filterPositionComboBox.SelectedIndex <= 20))
             {
-                if (valObject.PositionId == positionId)
+               
+
+                foreach (PlayerRecord valObject in teamPlayers)
                 {
-                    DataRow dr = AllocateTimingView.NewRow();
-                    Pos = filterPositionComboBox.Text;
-                    // playerHeightComboBox.SelectedIndex = record.Height - 65;
-                    if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT")
+                    if (valObject.PositionId == positionId)
                     {
-                        Pos = "OL";
-                    }
-                    else if (Pos == "RE" | Pos == "LE" | Pos == "DT")
-                    {
-                        Pos = "DL";
-                    }
-                    else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB")
-                    {
-                        Pos = "LB";
-                    }
-                    else if (Pos == "CB" | Pos == "FS" | Pos == "SS")
-                    {
-                        Pos = "DB";
-                    }
-                    else if (Pos == "K" | Pos == "P")
-                    {
-                        Pos = "KP";
-                    }
-                    
+                        DataRow dr = AllocateTimingView.NewRow();
+                        Pos = filterPositionComboBox.Text;
+                        // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                        if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT")
+                        {
+                            Pos = "OL";
+                        }
+                        else if (Pos == "RE" | Pos == "LE" | Pos == "DT")
+                        {
+                            Pos = "DL";
+                        }
+                        else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB")
+                        {
+                            Pos = "LB";
+                        }
+                        else if (Pos == "CB" | Pos == "FS" | Pos == "SS")
+                        {
+                            Pos = "DB";
+                        }
+                        else if (Pos == "K" | Pos == "P")
+                        {
+                            Pos = "KP";
+                        }
+
 
                         dr["Name"] = valObject.FirstName + " " + valObject.LastName;
                         installDirectory = Application.StartupPath;
                         StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
 
-                        int TimeRemaining = Int32.Parse(sr.ReadLine());
+                        string[] Time = sr.ReadLine().Split(',');
+                        string TimeRemaining = "";
+                        if (ActivityCmb.SelectedIndex == 0)
+                        {
+                            TimeRemaining = Time[1];
+                        }
+                        else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                        {
+                            TimeRemaining = Time[0];
+                        }
+                        else if (ActivityCmb.SelectedIndex == 4)
+                        {
+                            TimeRemaining = Time[2];
+                        }
 
                         while (!sr.EndOfStream)
                         {
                             string line = sr.ReadLine();
-                            string[] splitLine = line.Split(',');                            
+                            string[] splitLine = line.Split(',');
                             if (splitLine.Length > 1)
                             {
                                 if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
@@ -803,22 +1150,745 @@ namespace MaddenEditor.Forms
                                 {
                                     dr["Allocated To"] = splitLine[1] + "%";
                                 }
-                            //    else if (splitLine[0] != CurrentActivity)
-                             //   {
-                              //      dr["Allocated To"] = 0 + "%";
-                             //   }
+                                //    else if (splitLine[0] != CurrentActivity)
+                                //   {
+                                //      dr["Allocated To"] = 0 + "%";
+                                //   }
                             }
                         }
                         sr.Close();
-                       
+
                         AllocateTimingView.Rows.Add(dr);
-                      //  SetTimingCombo(); 
-                       
+                        //  SetTimingCombo(); 
+
+                    }
+
                 }
-          
             }
 
+            else if (filterPositionComboBox.SelectedIndex > 20)
+            {
+                if (filterPositionComboBox.SelectedIndex == 21)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId >= 5) && (valObject.PositionId <= 9))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
 
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 22)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 5) || (valObject.PositionId == 9))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 23)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 6) || (valObject.PositionId == 8))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 24)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 10) || (valObject.PositionId == 11) || (valObject.PositionId == 12))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 25)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 10) || (valObject.PositionId == 11))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 26)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 13) || (valObject.PositionId == 14) || (valObject.PositionId == 15))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 27)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 13) || (valObject.PositionId == 15))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 28)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 16) || (valObject.PositionId == 17) || (valObject.PositionId == 18))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+                if (filterPositionComboBox.SelectedIndex == 29)
+                {
+                    foreach (PlayerRecord valObject in teamPlayers)
+                    {
+                        if ((valObject.PositionId == 17) || (valObject.PositionId == 18))
+                        {
+                            DataRow dr = AllocateTimingView.NewRow();
+                            Pos = filterPositionComboBox.Text;
+                            // playerHeightComboBox.SelectedIndex = record.Height - 65;
+                            if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                            {
+                                Pos = "OL";
+                            }
+                            else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                            {
+                                Pos = "DL";
+                            }
+                            else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                            {
+                                Pos = "LB";
+                            }
+                            else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                            {
+                                Pos = "DB";
+                            }
+                            else if (Pos == "K" | Pos == "P")
+                            {
+                                Pos = "KP";
+                            }
+
+
+                            dr["Name"] = valObject.FirstName + " " + valObject.LastName;
+                            installDirectory = Application.StartupPath;
+                            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+
+                            string[] Time = sr.ReadLine().Split(',');
+                            string TimeRemaining = "";
+                            if (ActivityCmb.SelectedIndex == 0)
+                            {
+                                TimeRemaining = Time[1];
+                            }
+                            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                            {
+                                TimeRemaining = Time[0];
+                            }
+                            else if (ActivityCmb.SelectedIndex == 4)
+                            {
+                                TimeRemaining = Time[2];
+                            }
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] splitLine = line.Split(',');
+                                if (splitLine.Length > 1)
+                                {
+                                    if (splitLine[0] == (valObject.FirstName + " " + valObject.LastName))
+                                    {
+                                        dr["Remaining Time"] = TimeRemaining + "%";
+                                    }
+                                    if (splitLine[0] == CurrentActivity)
+                                    {
+                                        dr["Allocated To"] = splitLine[1] + "%";
+                                    }
+                                    //    else if (splitLine[0] != CurrentActivity)
+                                    //   {
+                                    //      dr["Allocated To"] = 0 + "%";
+                                    //   }
+                                }
+                            }
+                            sr.Close();
+
+                            AllocateTimingView.Rows.Add(dr);
+                            //  SetTimingCombo(); 
+
+                        }
+
+                    }
+
+                }
+
+
+
+
+            }
 
         }
 
@@ -828,7 +1898,33 @@ namespace MaddenEditor.Forms
         {
            InitializeDataGrids();
         }
- 
+        private void BeginCamp()
+        {
+
+                StreamWriter sw;
+                StreamWriter sw1;
+                StreamWriter sw2;
+                string installDirectory = Application.StartupPath;
+                if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text))
+                {
+                    Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System");
+                }
+
+                FileStream system = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\system");
+                sw = new StreamWriter(system);
+                sw.WriteLine(selectHumanTeam.Text + "," + "Hell Week" + "," + "1");
+                sw.Close();
+                system = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\coachsliders");
+                sw1 = new StreamWriter(system);
+                sw1.WriteLine(0 + "," + 0 + "," + 0 + "," + 0 + "," + 0);
+                sw1.Close();
+                system = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\currentteam");
+                sw2 = new StreamWriter(system);
+                sw2.WriteLine(selectHumanTeam.SelectedIndex);
+                sw2.Close();
+
+                tn = (TeamRecord)selectHumanTeam.SelectedItem;
+        }
         private void selectHumanTeam_SelectedIndexChanged(object sender, EventArgs e)
         {
            
@@ -844,11 +1940,15 @@ namespace MaddenEditor.Forms
                     if (drr == DialogResult.Yes)
                     {
                         Directory.Delete((installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text), true);
-                        OutputRoster();
-                        filterPositionComboBox.SelectedIndex = 0;
-                        ActivityCmb.SelectedIndex = 0;
-                        RefillRosterView();
+                        BeginCamp();
+                        //   OutputRoster();
+                     //   filterPositionComboBox.SelectedIndex = 0;
+                     //   ActivityCmb.SelectedIndex = 0;
+                    //    RefillRosterView();
+                  //      this.Hide();
                         LaunchSplash();
+                        selectHumanTeam.Enabled = false;
+                        filterPositionComboBox.Enabled = true;
                         //  AdvanceBtn.Text = "Start...";
                         //  groupBox6.Enabled = true;
                     }
@@ -861,8 +1961,8 @@ namespace MaddenEditor.Forms
                 else if (dr == DialogResult.Yes)
                 {
                     filterPositionComboBox.SelectedIndex = 0;
-                    ActivityCmb.SelectedIndex = 0;
-                    RefillRosterView(); 
+                    selectHumanTeam.Enabled = false;
+                    filterPositionComboBox.Enabled = true;
                  //   AdvanceBtn.Text = "Continue...";
                  //   groupBox6.Enabled = true;
 
@@ -874,12 +1974,16 @@ namespace MaddenEditor.Forms
                 DialogResult drr = MessageBox.Show("Begin Training Camp for " + selectHumanTeam.Text + "?...", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
 
                 if (drr == DialogResult.Yes)
-                {                    
-                    OutputRoster();
-                    filterPositionComboBox.SelectedIndex = 0;
-                    ActivityCmb.SelectedIndex = 0;
-                    RefillRosterView();
+                {
+                    BeginCamp();
+                //    OutputRoster();
+                //    filterPositionComboBox.SelectedIndex = 0;
+                //    ActivityCmb.SelectedIndex = 0;
+                //    RefillRosterView();
+             //       this.Hide();
                     LaunchSplash();
+                    filterPositionComboBox.Enabled = true;
+                    selectHumanTeam.Enabled = false;
                     //  AdvanceBtn.Text = "Start...";
                     //  groupBox6.Enabled = true;
 
@@ -956,14 +2060,33 @@ namespace MaddenEditor.Forms
                     }
 
                     string Allcontents = "";
-                    int TotalRemaining = 0;
+                    string TotalRemaining = "";
                     int difference = 0;
 
                     dr["Name"] = valObject.FirstName + " " + valObject.LastName;
                     installDirectory = Application.StartupPath;
                     StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
 
-                    TotalRemaining = Int32.Parse(sr.ReadLine());                    
+                    string[] Total = sr.ReadLine().Split(',');
+                    int SaveRemainingPosition = 0;
+                    if (ActivityCmb.SelectedIndex == 0)
+                    {
+                        TotalRemaining = Total[1].ToString();
+                        SaveRemainingPosition = 1;
+                    }
+                    else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
+                    {
+                        TotalRemaining = Total[0].ToString();
+                        SaveRemainingPosition = 0;
+                    }
+                    else if (ActivityCmb.SelectedIndex == 4)
+                    {
+                        TotalRemaining = Total[2].ToString();
+                        SaveRemainingPosition = 2;
+                    }
+
+
+                    int Time = int.Parse(TotalRemaining);                    
                     Allcontents = sr.ReadToEnd();
                     sr.Close();
                     string[] Line = Allcontents.Split('\n');
@@ -990,8 +2113,22 @@ namespace MaddenEditor.Forms
 
                     }
                     difference = OldValue - CurPercent;
-                    TotalRemaining = TotalRemaining + difference;
-                    sw.Write(TotalRemaining);
+                    Time = Time + difference;
+
+                    if (SaveRemainingPosition == 0)
+                    {
+                        sw.Write(Time + "," + Total[1] + "," + Total[2] + "," + Total[3] + "," + Total[4] + "," + Total[5]);
+                    }
+                    else if (SaveRemainingPosition == 1)
+                    {
+                        sw.Write(Total[0] + "," + Time + "," + Total[2] + "," + Total[3] + "," + Total[4] + "," + Total[5]);
+                    }
+                    else if (SaveRemainingPosition == 2)
+                    {
+                        sw.Write(Total[0] + "," + Total[1] + "," + Time + "," + Total[3] + "," + Total[4] + "," + Total[5]);
+                    }
+
+      //              sw.Write(TotalRemaining);
                     sw.WriteLine();
                     sw.Write(Allcontents);
                     sw.Write(CurrentActivity + "," + CurPercent);
@@ -1080,17 +2217,27 @@ namespace MaddenEditor.Forms
 
         private void filterPositionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             if (!isInitialising)
             {
                 RefillRosterView();
+                ActivityCmb.Enabled = true;
+           //     CurrentActivity = (string)ActivityGrd.Rows[0].Cells["Activity"].Value;
+           //     ActivityLbl.Text = CurrentActivity;
             }
             if (ActivityCmb.SelectedIndex == 0)
             {
+                RefillRosterView();
                 LoadPositionDrills(filterPositionComboBox.Text);
+           //     CurrentActivity = (string)ActivityGrd.Rows[0].Cells["Activity"].Value;
+           //     ActivityLbl.Text = CurrentActivity;
             }
-            else
+            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
             {
-                LoadMisc();
+                RefillRosterView();
+                LoadConditioning();
+            //    CurrentActivity = (string)ActivityGrd.Rows[0].Cells["Activity"].Value;
+            //    ActivityLbl.Text = CurrentActivity;
             }
            
         }
@@ -1103,9 +2250,9 @@ namespace MaddenEditor.Forms
                 CurrentActivity = (string)ActivityGrd.Rows[0].Cells["Activity"].Value;
                 ActivityLbl.Text = CurrentActivity;
             }
-            else 
+            else if ((ActivityCmb.SelectedIndex >= 1) & (ActivityCmb.SelectedIndex <= 3))
             {
-                LoadMisc();
+                LoadConditioning();
                 CurrentActivity = (string)ActivityGrd.Rows[0].Cells["Activity"].Value;
                 ActivityLbl.Text = CurrentActivity;
             }
@@ -1149,14 +2296,13 @@ namespace MaddenEditor.Forms
             {
                 installDirectory = Application.StartupPath;
                 StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text + "\\System\\system");
-                string Allcontents = sr.ReadToEnd();
+                string Allcontents = sr.ReadLine();
                 sr.Close();
                 string[] Line = Allcontents.Split(',');
                 CurTeam = Line[0];
                 Stage = Line[1];
                 CurDay = Int32.Parse(Line[2]);
                 groupBox6.Enabled = false;
-                //this.Hide();
                 TrainingCampSplashScreen form = new TrainingCampSplashScreen(model, this);
                 form.Show();
 
@@ -1168,6 +2314,7 @@ namespace MaddenEditor.Forms
             LaunchSplash();            
         }
 
+  
       
 
         

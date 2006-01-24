@@ -102,6 +102,7 @@ namespace MaddenEditor.Forms
             // 
             // filterPositionComboBox
             // 
+            this.filterPositionComboBox.Enabled = false;
             this.filterPositionComboBox.FormattingEnabled = true;
             this.filterPositionComboBox.Location = new System.Drawing.Point(6, 19);
             this.filterPositionComboBox.Name = "filterPositionComboBox";
@@ -192,6 +193,7 @@ namespace MaddenEditor.Forms
             // 
             // ActivityCmb
             // 
+            this.ActivityCmb.Enabled = false;
             this.ActivityCmb.FormattingEnabled = true;
             this.ActivityCmb.Location = new System.Drawing.Point(6, 19);
             this.ActivityCmb.Name = "ActivityCmb";
@@ -205,7 +207,7 @@ namespace MaddenEditor.Forms
             this.groupBox4.Controls.Add(this.SetTimeGrd);
             this.groupBox4.Location = new System.Drawing.Point(592, 258);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(301, 208);
+            this.groupBox4.Size = new System.Drawing.Size(321, 208);
             this.groupBox4.TabIndex = 13;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Set Time...";
@@ -251,7 +253,7 @@ namespace MaddenEditor.Forms
             this.SetTimeGrd.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.SetTimeGrd.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.SetTimeGrd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.SetTimeGrd.Size = new System.Drawing.Size(289, 149);
+            this.SetTimeGrd.Size = new System.Drawing.Size(309, 149);
             this.SetTimeGrd.TabIndex = 0;
             this.SetTimeGrd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SetTimeGrd_CellClick);
             this.SetTimeGrd.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SetTimeGrd_CellEndEdit);
