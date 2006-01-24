@@ -1,11 +1,11 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                               MADDEN AMP 2.1.0
+                               MADDEN AMP 2.1.1
                                   
                         the power to Amplify your Franchise
 
-                               16th January 2006
+                               24th January 2006
 
                                   readme.txt
 
@@ -24,17 +24,14 @@
 
 1. INTRODUCTION
 ===============
-Since the release of TDBAccess from Suchy63 editors have begun cropping up for 
-Madden 2005. This is just another one to choose from. This project is open 
-source and anyone is actively encouraged to develop it.
+Welcome to the newly renamed 'Madden Amp', an EA Sports Madden franchise utility 
+that is designed to maximise the benefits you get from Madden. This is more than
+an editor and as we release more versions we hope to bring you new and improved 
+features that help amplify your Madden experience.
 
 2. REQUIREMENTS
 ===============
 The main requirement for this program is .NET Framework Runtime v2.0. 
-(NOTE: This is the official version now. Don't use the Beta 2 that this editor
-used to run from. Uninstall that, and install the official released one)
-You need to install this in order to run the program. Also NOTE, if you have a 
-previous .NET Framework Runtime v2.0 Beta installed, uninstall it first.
 
 This can be downloaded from 
 http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=en
@@ -59,7 +56,7 @@ Microsoft .NET Framework Version 2.0 Redistributable Package (x86).
 
 * Offseason Conditioning Feature
 
-* Supports to most extent Madden 2004, 2005 & 2006
+* Supports to most extent, Madden 2004, 2005 & 2006
 
 4. KNOWN ISSUES
 ===============

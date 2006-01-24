@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Madden Amp"
-!define PRODUCT_VERSION "2.1.0"
+!define PRODUCT_VERSION "2.1.1"
 !define PRODUCT_PUBLISHER "Tributech"
 !define PRODUCT_WEB_SITE "http://gommo.homelinux.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\MaddenEditor.exe"
