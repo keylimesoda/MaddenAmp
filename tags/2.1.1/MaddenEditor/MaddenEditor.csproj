@@ -1,0 +1,435 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C3E9F92E-BECB-4AC3-84E7-3AC4C3F2717F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MaddenEditor</RootNamespace>
+    <AssemblyName>MaddenEditor</AssemblyName>
+    <Win32Resource>
+    </Win32Resource>
+    <ApplicationIcon>football.ico</ApplicationIcon>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>http://localhost/MaddenEditor/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1717,0414</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1717,0414</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ConSole\ConSoleDraft.cs" />
+    <Compile Include="Core\CoachEditingModel.cs" />
+    <Compile Include="Core\DepthChartEditingModel.cs" />
+    <Compile Include="Core\DepthChartRepairer.cs" />
+    <Compile Include="Core\EditorModel.cs" />
+    <Compile Include="Core\LocalMath.cs" />
+    <Compile Include="Core\PlayerEditingModel.cs" />
+    <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
+    <Compile Include="Core\DraftModel.cs" />
+    <Compile Include="Core\Record\DraftPickRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\DraftStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\FranchiseStage.cs" />
+    <Compile Include="Core\Record\FranchiseState\FranchiseTimeRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\FreeAgencyStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\ResignPlayersStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\RFAStateRecord.cs" />
+    <Compile Include="Core\Record\FranchiseState\ScoutingStateRecord.cs" />
+    <Compile Include="Core\Record\GameOptionRecord.cs" />
+    <Compile Include="Core\Record\GenericRecord.cs" />
+    <Compile Include="Core\Record\OwnerRecord.cs" />
+    <Compile Include="Core\Record\RookieRecord.cs" />
+    <Compile Include="Core\Record\SalaryCapRecord.cs" />
+    <Compile Include="Core\Record\ScheduleRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreDefenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreOffensiveLineRecord.cs" />
+    <Compile Include="Core\Record\Stats\BoxScoreTeamRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerGamesPlayedRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerStatsDefenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerStatsOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerStatsOffensiveLineRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonGamesPlayedRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsOffensiveLineRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonStatsTeamRecord.cs" />
+    <Compile Include="Core\Record\TeamCaptainRecord.cs" />
+    <Compile Include="Core\ScheduleEditingModel.cs" />
+    <Compile Include="Core\TeamEditingModel.cs" />
+    <Compile Include="Db\TDB.cs" />
+    <Compile Include="Db\TdbFieldProperties.cs" />
+    <Compile Include="Db\TdbTableProperties.cs" />
+    <Compile Include="Core\Record\CityRecord.cs" />
+    <Compile Include="Core\Record\CoachRecord.cs" />
+    <Compile Include="Core\Record\DepthChartRecord.cs" />
+    <Compile Include="Core\Record\InjuryRecord.cs" />
+    <Compile Include="Core\Record\PlayerRecord.cs" />
+    <Compile Include="Core\Record\StadiumRecord.cs" />
+    <Compile Include="Core\TableModel.cs" />
+    <Compile Include="Core\TableRecordModel.cs" />
+    <Compile Include="Core\Record\TeamRecord.cs" />
+    <Compile Include="Core\Record\UniformRecord.cs" />
+    <Compile Include="Forms\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ColorChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorChooser.Designer.cs">
+      <DependentUpon>ColorChooser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CustomTeamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomTeamForm.Designer.cs">
+      <DependentUpon>CustomTeamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DepthChartEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\DepthChartEditorControl.Designer.cs">
+      <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DepthChartEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DepthChartEditorForm.Designer.cs">
+      <DependentUpon>DepthChartEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DeveloperBioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DeveloperBioForm.Designer.cs">
+      <DependentUpon>DeveloperBioForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DraftConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DraftConfigForm.Designer.cs">
+      <DependentUpon>DraftConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DraftForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DraftForm.Designer.cs">
+      <DependentUpon>DraftForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportForm.Designer.cs">
+      <DependentUpon>ExportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GameInjuryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GameInjuryForm.Designer.cs">
+      <DependentUpon>GameInjuryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GlobalAttributeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GlobalAttributeForm.Designer.cs">
+      <DependentUpon>GlobalAttributeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IEditorForm.cs" />
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PlayerEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PlayerEditControl.Designer.cs">
+      <DependentUpon>PlayerEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProfileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProfileDialog.Designer.cs">
+      <DependentUpon>ProfileDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProgressionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgressionForm.Designer.cs">
+      <DependentUpon>ProgressionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SalaryCapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SalaryCapForm.Designer.cs">
+      <DependentUpon>SalaryCapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScheduleEditingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScheduleEditingForm.Designer.cs">
+      <DependentUpon>ScheduleEditingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScoutingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScoutingForm.Designer.cs">
+      <DependentUpon>ScoutingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CoachEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CoachEditControl.Designer.cs">
+      <DependentUpon>CoachEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TeamCaptainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TeamCaptainForm.Designer.cs">
+      <DependentUpon>TeamCaptainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TeamEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TeamEditControl.Designer.cs">
+      <DependentUpon>TeamEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TradeDownForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TradeDownForm.Designer.cs">
+      <DependentUpon>TradeDownForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TradeUpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TradeUpForm.Designer.cs">
+      <DependentUpon>TradeUpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainingCampForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampForm.Designer.cs">
+      <DependentUpon>TrainingCampForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainingCampMeeting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampMeeting.Designer.cs">
+      <DependentUpon>TrainingCampMeeting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainingCampOffSeason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampOffSeason.Designer.cs">
+      <DependentUpon>TrainingCampOffSeason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainingCampSplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampSplashScreen.Designer.cs">
+      <DependentUpon>TrainingCampSplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UserControlledTeamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserControlledTeamForm.Designer.cs">
+      <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WeeklyMaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WeeklyMaintenanceForm.Designer.cs">
+      <DependentUpon>WeeklyMaintenanceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorChooser.resx">
+      <DependentUpon>ColorChooser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomTeamForm.resx">
+      <DependentUpon>CustomTeamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DepthChartEditorControl.resx">
+      <DependentUpon>DepthChartEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DepthChartEditorForm.resx">
+      <DependentUpon>DepthChartEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DeveloperBioForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DeveloperBioForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DraftConfigForm.resx">
+      <DependentUpon>DraftConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DraftForm.resx">
+      <DependentUpon>DraftForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportForm.resx">
+      <DependentUpon>ExportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GameInjuryForm.resx">
+      <DependentUpon>GameInjuryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GlobalAttributeForm.resx">
+      <DependentUpon>GlobalAttributeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PlayerEditControl.resx">
+      <DependentUpon>PlayerEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProfileDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProfileDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SalaryCapForm.resx">
+      <DependentUpon>SalaryCapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScheduleEditingForm.resx">
+      <DependentUpon>ScheduleEditingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScoutingForm.resx">
+      <DependentUpon>ScoutingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CoachEditControl.resx">
+      <DependentUpon>CoachEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TeamCaptainForm.resx">
+      <DependentUpon>TeamCaptainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TeamEditControl.resx">
+      <DependentUpon>TeamEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TradeDownForm.resx">
+      <DependentUpon>TradeDownForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TradeUpForm.resx">
+      <DependentUpon>TradeUpForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampForm.resx">
+      <DependentUpon>TrainingCampForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampOffSeason.resx">
+      <DependentUpon>TrainingCampOffSeason.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserControlledTeamForm.resx">
+      <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WeeklyMaintenanceForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WeeklyMaintenanceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="football.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="draft.txt" />
+    <Content Include="GUI.txt" />
+    <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Resources\FairWindy.JPG" />
+    <EmbeddedResource Include="Forms\TrainingCampMeeting.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrainingCampMeeting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampSplashScreen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrainingCampSplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\cloudy.JPG" />
+    <EmbeddedResource Include="Resources\HvyRain.JPG" />
+    <EmbeddedResource Include="Resources\PartlyCloudy.JPG" />
+    <EmbeddedResource Include="Resources\Showers.JPG" />
+    <EmbeddedResource Include="Resources\sunny.JPG" />
+    <EmbeddedResource Include="Resources\thunder.JPG" />
+    <EmbeddedResource Include="Resources\JoshBio.txt" />
+    <EmbeddedResource Include="Resources\ColinBio.txt" />
+    <EmbeddedResource Include="Resources\DavidBio.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)Libs\tdbaccess.dll $(ProjectDir)$(OutDir)</PostBuildEvent>
+  </PropertyGroup>
+</Project>
