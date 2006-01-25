@@ -29,7 +29,7 @@ namespace MaddenEditor.Forms
         const double fumbleForcedProbability = 0.9301;
         const double fumbleRecoveredProbability = .8833;
 
-        const double pancakeProbability = 0.3;
+        const double pancakeProbability = 0.45;
 
         const double firstDownMultiplier = 1.145;
         const double thirdDownAttemptsProbability = 0.83;
