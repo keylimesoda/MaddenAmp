@@ -48,6 +48,8 @@ Microsoft .NET Framework Version 2.0 Redistributable Package (x86).
 
 * Player Depth Chart Editing
 
+* Schedule Editing
+
 * Player Team Control
 
 * Team Captain Assignment

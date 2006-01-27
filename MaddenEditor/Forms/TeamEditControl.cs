@@ -35,6 +35,8 @@ namespace MaddenEditor.Forms
 {
 	public partial class TeamEditControl : UserControl, IEditorForm
 	{
+		private const string UNIFORM_OBJ_COL = "clmUniformObj";
+
 		private EditorModel model = null;
 
 		private bool isInitialising = false;
@@ -112,6 +114,13 @@ namespace MaddenEditor.Forms
 			//Load a team
 			LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
 
+			if (dgDefaultUniforms.Rows.Count > 0)
+			{
+				dgDefaultUniforms.Rows[0].Selected = true;
+			}
+
+			EnableDefaultUniformButtons();
+
 			isInitialising = false;
 		}
 
@@ -127,6 +136,7 @@ namespace MaddenEditor.Forms
 			cityCombo.Items.Clear();
 			teamDefensivePlaybookCombo.Items.Clear();
 			teamOffensivePlaybookCombo.Items.Clear();
+			dgDefaultUniforms.Rows.Clear();
 		}
 
 		#endregion
@@ -180,6 +190,8 @@ namespace MaddenEditor.Forms
 				//Team colours
 				pnlPrimary.BackColor = record.PrimaryColor;
 				pnlSecondary.BackColor = record.SecondaryColor;
+
+				LoadDefaultUniformDataGrid(record);
 
 				foreach (Object obj in divisionCombo.Items)
 				{
@@ -281,7 +293,55 @@ namespace MaddenEditor.Forms
 			{
 				isInitialising = false;
 			}
+
 			lastLoadedRecord = record;
+		}
+
+		private void LoadDefaultUniformDataGrid(TeamRecord record)
+		{
+			//Fill in the datagrid for this team's uniforms
+			//Clear the current rows
+			dgDefaultUniforms.Rows.Clear();
+
+			SortedList<int, UniformRecord> defaultUniforms = model.TeamModel.TeamUniformModel.GetUniforms(record);
+
+			if (defaultUniforms == null)
+			{
+				//Disable the data grid for this team
+				dgDefaultUniforms.Visible = false;
+				btnDefaultUniDown.Visible = false;
+				btnDefaultUniUp.Visible = false;
+				lblDefaultUniforms.Visible = false;
+				tbDefaultAway.Visible = false;
+				tbDefaultHome.Visible = false;
+			}
+			else
+			{
+				dgDefaultUniforms.Visible = true;
+				btnDefaultUniDown.Visible = true;
+				btnDefaultUniUp.Visible = true;
+				lblDefaultUniforms.Visible = true;
+				tbDefaultAway.Visible = true;
+				tbDefaultHome.Visible = true;
+
+				int row = 0;
+				foreach (UniformRecord rec in defaultUniforms.Values)
+				{
+					DataGridViewRow viewRow = rec.GetDataGridViewRow();
+
+					if (row == 0)
+					{
+						viewRow.DefaultCellStyle.BackColor = Color.AliceBlue;
+					}
+					else if (row == 1)
+					{
+						viewRow.DefaultCellStyle.BackColor = Color.Beige;
+					}
+
+					dgDefaultUniforms.Rows.Add(viewRow);
+					row++;
+				}
+			}
 		}
 
 		private void nameTextBox_TextChanged(object sender, EventArgs e)
@@ -634,6 +694,84 @@ namespace MaddenEditor.Forms
 			}
 		}
 
+		private void btnDefaultUniUp_Click(object sender, EventArgs e)
+		{
+			//Need to get the 2 records, the one that is selected and the one above this one
+			if (dgDefaultUniforms.SelectedRows.Count == 1)
+			{
+				int selectedRow = dgDefaultUniforms.SelectedRows[0].Index;
+
+				UniformRecord selectedRecord = (UniformRecord)dgDefaultUniforms.Rows[selectedRow].Cells[UNIFORM_OBJ_COL].Value;
+				UniformRecord destRecord = (UniformRecord)dgDefaultUniforms.Rows[selectedRow - 1].Cells[UNIFORM_OBJ_COL].Value;
+
+				int temp = selectedRecord.TeamUniformClass;
+				selectedRecord.TeamUniformClass = destRecord.TeamUniformClass;
+				destRecord.TeamUniformClass = temp;
+
+				LoadDefaultUniformDataGrid(lastLoadedRecord);
+
+				dgDefaultUniforms.Rows[selectedRow - 1].Selected = true;
+
+				EnableDefaultUniformButtons();
+			}
+		}
+
+		private void btnDefaultUniDown_Click(object sender, EventArgs e)
+		{
+			//Need to get the 2 records, the one that is selected and the one below this one
+			if (dgDefaultUniforms.SelectedRows.Count == 1)
+			{
+				int selectedRow = dgDefaultUniforms.SelectedRows[0].Index;
+
+				UniformRecord selectedRecord = (UniformRecord)dgDefaultUniforms.Rows[selectedRow].Cells[UNIFORM_OBJ_COL].Value;
+				UniformRecord destRecord = (UniformRecord)dgDefaultUniforms.Rows[selectedRow + 1].Cells[UNIFORM_OBJ_COL].Value;
+
+				int temp = selectedRecord.TeamUniformClass;
+				selectedRecord.TeamUniformClass = destRecord.TeamUniformClass;
+				destRecord.TeamUniformClass = temp;
+
+				LoadDefaultUniformDataGrid(lastLoadedRecord);
+
+				dgDefaultUniforms.Rows[selectedRow + 1].Selected = true;
+
+				EnableDefaultUniformButtons();
+			}
+		}
+
+		private void dgDefaultUniforms_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (!isInitialising)
+			{
+				EnableDefaultUniformButtons();
+			}
+		}
+
+		private void EnableDefaultUniformButtons()
+		{
+			btnDefaultUniDown.Enabled = false;
+			btnDefaultUniUp.Enabled = false;
+
+			if (dgDefaultUniforms.SelectedRows.Count == 1)
+			{
+				if (dgDefaultUniforms.SelectedRows[0].Index == 0)
+				{
+					btnDefaultUniUp.Enabled = false;
+				}
+				else
+				{
+					btnDefaultUniUp.Enabled = true;
+				}
+
+				if (dgDefaultUniforms.SelectedRows[0].Index == dgDefaultUniforms.Rows.Count - 1)
+				{
+				btnDefaultUniDown.Enabled = false;
+				}
+				else
+				{
+					btnDefaultUniDown.Enabled = true;
+				}
+			}
+		}
 	}
 	
 }

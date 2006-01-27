@@ -57,121 +57,14 @@ namespace MaddenEditor.Core
 		private IList<GenericRecord> teamTypeList = null;
 		/** Add the city list here for the time being */
 		private IList<GenericRecord> cityList = null;
-
-        // MADDEN DRAFT EDIT
-        public void ComputeCONs() {
-            List<TeamRecord> teamsTemp = new List<TeamRecord>();
-		    foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-			{
-				TeamRecord tr = (TeamRecord)record;
-				teamsTemp.Add(tr);
-			}
-
-            teamsTemp = SortByOverall(teamsTemp);
-
-            List<int> conCutoffs = new List<int>();
-            conCutoffs.Add(teamsTemp[28].GetOverall());
-            conCutoffs.Add(teamsTemp[22].GetOverall());
-            conCutoffs.Add(teamsTemp[14].GetOverall());
-            conCutoffs.Add(teamsTemp[6].GetOverall());
-
-            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-            {
-                TeamRecord tr = (TeamRecord)record;
-
-                if (tr.GetOverall() < conCutoffs[0])
-                {
-                    tr.CON = 1;
-                }
-                else if (tr.GetOverall() < conCutoffs[1])
-                {
-                    tr.CON = 2;
-                }
-                else if (tr.GetOverall() < conCutoffs[2])
-                {
-                    tr.CON = 3;
-                }
-                else if (tr.GetOverall() < conCutoffs[3])
-                {
-                    tr.CON = 4;
-                }
-                else
-                {
-                    tr.CON = 5;
-                }
-                
-                // Should add code here that increases CON if they've got an old QB
-                // who's above 90 or so and about to retire.
-            }
-        }
-
-        // Another inefficient sort.  But damn it, I can't figure out this IComparer shit.
-        // So, again, we're only sorting 32 items, so N^2 isn't a big deal...
-        private List<TeamRecord> SortByOverall(List<TeamRecord> records)
-        {
-            List<TeamRecord> newList = new List<TeamRecord>();
-
-            while (records.Count > 0)
-            {
-                int bestOverall = 0;
-                int bestTeamIndex = -1;
-
-                for (int i = 0; i < records.Count; i++)
-                {
-					if (records[i].TeamId >= 32)
-                    {
-                        records.RemoveAt(i);
-                        i--;
-                        continue;
-                    }
-
-                    if (records[i].GetOverall() > bestOverall)
-                    {
-                        bestOverall = records[i].GetOverall();
-                        bestTeamIndex = i;
-                    }
-                }
-
-                newList.Add(records[bestTeamIndex]);
-                records.RemoveAt(bestTeamIndex);
-            }
-
-            return newList;
-        }
-
-        public void CalculateWins() {
-            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords()) 
-            {
-                ((TeamRecord)record).ComputeWins(model);
-            }
-
-        }
-
-        public void CalculateStrengthOfSchedule() {
-            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-            {
-                ((TeamRecord)record).ComputeStrengthOfSchedule(model);
-            }
-        }
-
-        public SortedList<int, TeamRecord> GetTeamRecords()
-        {
-
-            if (teamRecords == null)
-            {
-				CreateTeamRecords();
-            }
-
-            return teamRecords;
-        }
-
-
-        // MADDEN DRAFT EDIT
-
+		/** Editing model for team uniforms */
+		private TeamUniformModel teamUniformModel = null;
 
 		public TeamEditingModel(EditorModel model)
 		{
 			this.model = model;
+
+			teamUniformModel = new TeamUniformModel(model);
 
 			//Initialise the GenericRecord lists
 			teamTypeList = new List<GenericRecord>();
@@ -260,6 +153,119 @@ namespace MaddenEditor.Core
 			defensivePlayBookList.Add(new GenericRecord("Balanced D", 4));
 			defensivePlayBookList.Add(new GenericRecord("QB Contain", 5));
 		}
+
+		// MADDEN DRAFT EDIT
+		public void ComputeCONs()
+		{
+			List<TeamRecord> teamsTemp = new List<TeamRecord>();
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				TeamRecord tr = (TeamRecord)record;
+				teamsTemp.Add(tr);
+			}
+
+			teamsTemp = SortByOverall(teamsTemp);
+
+			List<int> conCutoffs = new List<int>();
+			conCutoffs.Add(teamsTemp[28].GetOverall());
+			conCutoffs.Add(teamsTemp[22].GetOverall());
+			conCutoffs.Add(teamsTemp[14].GetOverall());
+			conCutoffs.Add(teamsTemp[6].GetOverall());
+
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				TeamRecord tr = (TeamRecord)record;
+
+				if (tr.GetOverall() < conCutoffs[0])
+				{
+					tr.CON = 1;
+				}
+				else if (tr.GetOverall() < conCutoffs[1])
+				{
+					tr.CON = 2;
+				}
+				else if (tr.GetOverall() < conCutoffs[2])
+				{
+					tr.CON = 3;
+				}
+				else if (tr.GetOverall() < conCutoffs[3])
+				{
+					tr.CON = 4;
+				}
+				else
+				{
+					tr.CON = 5;
+				}
+
+				// Should add code here that increases CON if they've got an old QB
+				// who's above 90 or so and about to retire.
+			}
+		}
+
+		// Another inefficient sort.  But damn it, I can't figure out this IComparer shit.
+		// So, again, we're only sorting 32 items, so N^2 isn't a big deal...
+		private List<TeamRecord> SortByOverall(List<TeamRecord> records)
+		{
+			List<TeamRecord> newList = new List<TeamRecord>();
+
+			while (records.Count > 0)
+			{
+				int bestOverall = 0;
+				int bestTeamIndex = -1;
+
+				for (int i = 0; i < records.Count; i++)
+				{
+					if (records[i].TeamId >= 32)
+					{
+						records.RemoveAt(i);
+						i--;
+						continue;
+					}
+
+					if (records[i].GetOverall() > bestOverall)
+					{
+						bestOverall = records[i].GetOverall();
+						bestTeamIndex = i;
+					}
+				}
+
+				newList.Add(records[bestTeamIndex]);
+				records.RemoveAt(bestTeamIndex);
+			}
+
+			return newList;
+		}
+
+		public void CalculateWins()
+		{
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				((TeamRecord)record).ComputeWins(model);
+			}
+
+		}
+
+		public void CalculateStrengthOfSchedule()
+		{
+			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+			{
+				((TeamRecord)record).ComputeStrengthOfSchedule(model);
+			}
+		}
+
+		public SortedList<int, TeamRecord> GetTeamRecords()
+		{
+
+			if (teamRecords == null)
+			{
+				CreateTeamRecords();
+			}
+
+			return teamRecords;
+		}
+
+
+		// MADDEN DRAFT EDIT
 
 		public void SetConferenceFilter(int id)
 		{
@@ -549,6 +555,14 @@ namespace MaddenEditor.Core
 			}
 
 			return teamOwnerRecords;
+		}
+
+		public TeamUniformModel TeamUniformModel
+		{
+			get
+			{
+				return teamUniformModel;
+			}
 		}
 
 		public int GetTeamIdFromTeamName(string teamName)

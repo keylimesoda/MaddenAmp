@@ -325,7 +325,7 @@ namespace MaddenEditor.Forms
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
 			this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 22);
 			this.toolStripMenuItem1.Text = "Clear Rookie Games Played";
-			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+			this.toolStripMenuItem1.Click += new System.EventHandler(this.clearRookieGamesPlayedToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
