@@ -64,7 +64,7 @@ namespace MaddenEditor.Forms
 		{
 			for (int i=1; i <= ScheduleEditingModel.NUMBER_OF_WEEKS; i++)
 			{
-				cbWeekSelector.Items.Add("" + i);
+				cbWeekSelector.Items.Add(ScheduleRecord.WeekName(i - 1));
 			}
 			cbWeekSelector.SelectedIndex = 0;
 		}
@@ -80,7 +80,9 @@ namespace MaddenEditor.Forms
         // rather it loaded according to currentWeekNumber.  I can't imagine a
         // scenario in which you'd want to load something different from
         // currentWeekNumber.  This was what was causing the previous bug with
-        // edits in one week showing up in another.
+        // edits in one week showing up in another. ?? Did I write this C.G?
+		// Cause I'm thinking selecting another week number in the Combobox means that
+		// you can jump around week numbers
 		private void LoadWeek(int weeknumber)
 		{
 			isInitialising = true;
@@ -97,7 +99,7 @@ namespace MaddenEditor.Forms
 					dgScheduleView.Rows.Add(CreateDataGridRow(record));
 				}
 
-				lblTitle.Text = "Week " + weeknumber;
+				lblTitle.Text = ScheduleRecord.WeekName(weeknumber - 1);
 			}
 			catch (Exception e)
 			{
@@ -121,9 +123,12 @@ namespace MaddenEditor.Forms
 			//Bloody hell. I can't see how to put actual objects in the
 			//datagridviewcomboboxcells so I'm just putting strings.
 			//It sucks but I'll fix it later if I find out how
+			//http://msdn2.microsoft.com/en-us/library/system.windows.forms.datagridviewcomboboxeditingcontrol.aspx
 			DataGridViewRow viewRow = new DataGridViewRow();
 
 			DataGridViewComboBoxCell stateCell = new DataGridViewComboBoxCell();
+			//stateCell.ValueType = typeof(GenericRecord);
+			
 			foreach(GenericRecord val in record.GameStates)
 			{
 				stateCell.Items.Add(val.ToString());
@@ -135,8 +140,21 @@ namespace MaddenEditor.Forms
 			{
 				homeCell.Items.Add(rec.ToString());
 			}
-//			homeCell.Value = record.HomeTeam;
-            homeCell.Value = record.HomeTeam.Name;
+			//Only add Undecided teams if its the playoffs. May need to change this to PLAYOFF_WEEK + 1 because
+			//I think the wildcard weekend is always calculated.
+			if (record.WeekNumber >= ScheduleEditingModel.PLAYOFF_WEEK)
+			{
+				homeCell.Items.Add(ScheduleEditingModel.UNDECIDED_TEAM);
+			}
+
+			if (record.HomeTeam == null)
+			{
+				homeCell.Value = ScheduleEditingModel.UNDECIDED_TEAM;
+			}	
+			else
+			{
+				homeCell.Value = record.HomeTeam.Name;
+			}
 
 			DataGridViewTextBoxCell homeScoreCell = new DataGridViewTextBoxCell();
 			homeScoreCell.Value = record.HomeTeamScore;
@@ -146,9 +164,22 @@ namespace MaddenEditor.Forms
 			{
 				awayCell.Items.Add(rec.ToString());
 			}
-//			awayCell.Value = record.AwayTeam;
-            awayCell.Value = record.AwayTeam.Name;
+			//Only add Undecided teams if its the playoffs. May need to change this to PLAYOFF_WEEK + 1 because
+			//I think the wildcard weekend is always calculated.
+			if (record.WeekNumber >= ScheduleEditingModel.PLAYOFF_WEEK)
+			{
+				awayCell.Items.Add(ScheduleEditingModel.UNDECIDED_TEAM);
+			}
 
+			if (record.AwayTeam == null)
+			{
+				awayCell.Value = ScheduleEditingModel.UNDECIDED_TEAM;
+			}
+			else
+			{
+				awayCell.Value = record.AwayTeam.Name;
+			}
+			
 			DataGridViewTextBoxCell awayScoreCell = new DataGridViewTextBoxCell();
 			awayScoreCell.Value = record.AwayTeamScore;
 
@@ -195,7 +226,7 @@ namespace MaddenEditor.Forms
 
 		private void btnNextWeek_Click(object sender, EventArgs e)
 		{
-			if (currentWeekNumber < ScheduleEditingModel.NUMBER_OF_WEEKS)
+			if (currentWeekNumber < scheduleModel.MaxWeek)
 			{
 				currentWeekNumber++;
 				cbWeekSelector.SelectedIndex = currentWeekNumber - 1;
@@ -270,6 +301,11 @@ namespace MaddenEditor.Forms
 		}
 
 		private void applyButton_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
+
+		private void btnCancel_Click(object sender, EventArgs e)
 		{
 			this.Close();
 		}

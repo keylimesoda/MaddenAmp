@@ -209,6 +209,9 @@ namespace MaddenEditor.Core
 				case EditorModel.SCHEDULE_TABLE:
 					newRecord = new ScheduleRecord(recno, this, parentModel);
 					break;
+				case EditorModel.UNIFORM_TABLE:
+					newRecord = new UniformRecord(recno, this, parentModel);
+					break;
 				// MADDEN DRAFT EDIT
 				case EditorModel.DRAFT_PICK_TABLE:
 					newRecord = new DraftPickRecord(recno, this, parentModel);

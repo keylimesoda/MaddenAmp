@@ -30,15 +30,23 @@ namespace MaddenEditor.Core
 {
 	public class ScheduleEditingModel
 	{
-		public const int NUMBER_OF_WEEKS = 17;
+		// I dont like doing this but this will mean a team has not been decided yet
+		public const string UNDECIDED_TEAM = "T.B.A.";
+		// Number of weeks in an NFL schedule
+		public const int NUMBER_OF_WEEKS = 22;
+		// Playoff week starting
+		public const int PLAYOFF_WEEK = 17;
 		// Reference to our editor model
 		private EditorModel model = null;
 		// This collection holds our schedule (the index is week number)
 		private Dictionary<int, SortedList<int, ScheduleRecord>> schedule = null;
+		// The maximum week number (starting from 1)
+		private int maxWeekNumber;
 
 		public ScheduleEditingModel(EditorModel model)
 		{
 			this.model = model;
+			int currentMaxWeek = 0;
 
 			//Create and initialise our schedule collection
 			schedule = new Dictionary<int, SortedList<int, ScheduleRecord>>();
@@ -54,11 +62,16 @@ namespace MaddenEditor.Core
 				ScheduleRecord scheduleRecord = (ScheduleRecord)rec;
 				try
 				{
-					//Check to ensure we aren't adding records with higher than 17 weeks
+					//Check to ensure we aren't adding records with higher than NUMBER_OF_WEEKS weeks
 					if (scheduleRecord.WeekNumber >= schedule.Count)
 					{
 						//Don't add this week
 						return;
+					}
+					//Store the maximum week for this file so we don't try edit past it
+					if (scheduleRecord.WeekNumber >= currentMaxWeek)
+					{
+						currentMaxWeek = scheduleRecord.WeekNumber;
 					}
 					SortedList<int, ScheduleRecord> list = schedule[scheduleRecord.WeekNumber + 1];
 					try
@@ -77,6 +90,8 @@ namespace MaddenEditor.Core
 				}
 			}
 
+			//Make it based from 0
+			maxWeekNumber = currentMaxWeek + 1;
 		}
 
 		public IList<ScheduleRecord> GetWeek(int weeknumber)
@@ -87,6 +102,15 @@ namespace MaddenEditor.Core
 			}
 
 			return schedule[weeknumber].Values;
+		}
+
+		/// <summary>
+		/// Returns the maximum week number for this franchise based from week 1
+		/// </summary>
+		/// <returns></returns>
+		public int MaxWeek
+		{
+			get { return maxWeekNumber; }
 		}
 	}
 }

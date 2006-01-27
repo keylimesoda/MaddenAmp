@@ -35,22 +35,27 @@ namespace MaddenEditor.Forms
 			this.btnPreviousWeek = new System.Windows.Forms.Button();
 			this.btnNextWeek = new System.Windows.Forms.Button();
 			this.cbWeekSelector = new System.Windows.Forms.ComboBox();
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.btnApply = new System.Windows.Forms.Button();
 			this.dgScheduleView = new System.Windows.Forms.DataGridView();
-			this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.dataGridViewComboBoxColumn2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.dataGridViewComboBoxColumn3 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.dataGridViewComboBoxColumn4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.dataGridViewComboBoxColumn5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.GameState = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.HomeTeam = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.HomeTeamScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AwayTeam = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.AwayTeamScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.OverTime = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.GameDayType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.Weighting = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.lblTitle = new System.Windows.Forms.Label();
-			this.applyButton = new System.Windows.Forms.Button();
+			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.btnCancel = new System.Windows.Forms.Button();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
 			this.gbWeekNav.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgScheduleView)).BeginInit();
+			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer
@@ -66,9 +71,7 @@ namespace MaddenEditor.Forms
 			// 
 			// splitContainer.Panel2
 			// 
-			this.splitContainer.Panel2.Controls.Add(this.applyButton);
-			this.splitContainer.Panel2.Controls.Add(this.dgScheduleView);
-			this.splitContainer.Panel2.Controls.Add(this.lblTitle);
+			this.splitContainer.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer.Size = new System.Drawing.Size(792, 540);
 			this.splitContainer.SplitterDistance = 170;
 			this.splitContainer.TabIndex = 0;
@@ -83,16 +86,16 @@ namespace MaddenEditor.Forms
 			this.gbWeekNav.Controls.Add(this.cbWeekSelector);
 			this.gbWeekNav.Location = new System.Drawing.Point(4, 11);
 			this.gbWeekNav.Name = "gbWeekNav";
-			this.gbWeekNav.Size = new System.Drawing.Size(161, 52);
+			this.gbWeekNav.Size = new System.Drawing.Size(161, 77);
 			this.gbWeekNav.TabIndex = 3;
 			this.gbWeekNav.TabStop = false;
 			this.gbWeekNav.Text = "Week Navigator";
 			// 
 			// btnPreviousWeek
 			// 
-			this.btnPreviousWeek.Location = new System.Drawing.Point(6, 19);
+			this.btnPreviousWeek.Location = new System.Drawing.Point(7, 19);
 			this.btnPreviousWeek.Name = "btnPreviousWeek";
-			this.btnPreviousWeek.Size = new System.Drawing.Size(28, 23);
+			this.btnPreviousWeek.Size = new System.Drawing.Size(73, 23);
 			this.btnPreviousWeek.TabIndex = 0;
 			this.btnPreviousWeek.Text = "<<";
 			this.btnPreviousWeek.Click += new System.EventHandler(this.btnPreviousWeek_Click);
@@ -100,9 +103,9 @@ namespace MaddenEditor.Forms
 			// btnNextWeek
 			// 
 			this.btnNextWeek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnNextWeek.Location = new System.Drawing.Point(120, 19);
+			this.btnNextWeek.Location = new System.Drawing.Point(81, 19);
 			this.btnNextWeek.Name = "btnNextWeek";
-			this.btnNextWeek.Size = new System.Drawing.Size(33, 23);
+			this.btnNextWeek.Size = new System.Drawing.Size(73, 23);
 			this.btnNextWeek.TabIndex = 1;
 			this.btnNextWeek.Text = ">>";
 			this.btnNextWeek.Click += new System.EventHandler(this.btnNextWeek_Click);
@@ -112,11 +115,38 @@ namespace MaddenEditor.Forms
 			this.cbWeekSelector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbWeekSelector.FormattingEnabled = true;
-			this.cbWeekSelector.Location = new System.Drawing.Point(40, 19);
+			this.cbWeekSelector.Location = new System.Drawing.Point(7, 48);
 			this.cbWeekSelector.Name = "cbWeekSelector";
-			this.cbWeekSelector.Size = new System.Drawing.Size(74, 21);
+			this.cbWeekSelector.Size = new System.Drawing.Size(146, 21);
 			this.cbWeekSelector.TabIndex = 2;
 			this.cbWeekSelector.SelectedIndexChanged += new System.EventHandler(this.cbWeekSelector_SelectedIndexChanged);
+			// 
+			// tableLayoutPanel1
+			// 
+			this.tableLayoutPanel1.ColumnCount = 1;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Controls.Add(this.dgScheduleView, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.lblTitle, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 2);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 3;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(616, 538);
+			this.tableLayoutPanel1.TabIndex = 3;
+			// 
+			// btnApply
+			// 
+			this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnApply.Location = new System.Drawing.Point(451, 3);
+			this.btnApply.Name = "btnApply";
+			this.btnApply.Size = new System.Drawing.Size(75, 26);
+			this.btnApply.TabIndex = 0;
+			this.btnApply.Text = "Apply";
+			this.btnApply.Click += new System.EventHandler(this.applyButton_Click);
 			// 
 			// dgScheduleView
 			// 
@@ -126,96 +156,105 @@ namespace MaddenEditor.Forms
 			dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
 			dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
 			this.dgScheduleView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-			this.dgScheduleView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
 			this.dgScheduleView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-			this.dgScheduleView.Columns.Add(this.dataGridViewComboBoxColumn1);
-			this.dgScheduleView.Columns.Add(this.dataGridViewComboBoxColumn2);
-			this.dgScheduleView.Columns.Add(this.dataGridViewTextBoxColumn1);
-			this.dgScheduleView.Columns.Add(this.dataGridViewComboBoxColumn3);
-			this.dgScheduleView.Columns.Add(this.dataGridViewTextBoxColumn2);
-			this.dgScheduleView.Columns.Add(this.dataGridViewCheckBoxColumn1);
-			this.dgScheduleView.Columns.Add(this.dataGridViewComboBoxColumn4);
-			this.dgScheduleView.Columns.Add(this.dataGridViewComboBoxColumn5);
-			this.dgScheduleView.Location = new System.Drawing.Point(3, 44);
+			this.dgScheduleView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.GameState,
+            this.HomeTeam,
+            this.HomeTeamScore,
+            this.AwayTeam,
+            this.AwayTeamScore,
+            this.OverTime,
+            this.GameDayType,
+            this.Weighting});
+			this.dgScheduleView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dgScheduleView.Location = new System.Drawing.Point(3, 38);
 			this.dgScheduleView.Name = "dgScheduleView";
 			this.dgScheduleView.RowHeadersVisible = false;
-			this.dgScheduleView.Size = new System.Drawing.Size(610, 466);
+			this.dgScheduleView.Size = new System.Drawing.Size(610, 462);
 			this.dgScheduleView.TabIndex = 1;
 			this.dgScheduleView.Text = "dataGridView1";
 			this.dgScheduleView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgScheduleView_CellEndEdit);
 			// 
-			// dataGridViewComboBoxColumn1
+			// GameState
 			// 
-			this.dataGridViewComboBoxColumn1.HeaderText = "State";
-			this.dataGridViewComboBoxColumn1.Name = "GameState";
-			this.dataGridViewComboBoxColumn1.Width = 76;
+			this.GameState.HeaderText = "State";
+			this.GameState.Name = "GameState";
 			// 
-			// dataGridViewComboBoxColumn2
+			// HomeTeam
 			// 
-			this.dataGridViewComboBoxColumn2.HeaderText = "Home Team";
-			this.dataGridViewComboBoxColumn2.Name = "HomeTeam";
-			this.dataGridViewComboBoxColumn2.Width = 76;
+			this.HomeTeam.HeaderText = "Home Team";
+			this.HomeTeam.Name = "HomeTeam";
 			// 
-			// dataGridViewTextBoxColumn1
+			// HomeTeamScore
 			// 
-			this.dataGridViewTextBoxColumn1.HeaderText = "Score";
-			this.dataGridViewTextBoxColumn1.Name = "HomeTeamScore";
+			this.HomeTeamScore.HeaderText = "Score";
+			this.HomeTeamScore.Name = "HomeTeamScore";
 			// 
-			// dataGridViewComboBoxColumn3
+			// AwayTeam
 			// 
-			this.dataGridViewComboBoxColumn3.HeaderText = "Away Team";
-			this.dataGridViewComboBoxColumn3.Name = "AwayTeam";
-			this.dataGridViewComboBoxColumn3.Width = 76;
+			this.AwayTeam.HeaderText = "Away Team";
+			this.AwayTeam.Name = "AwayTeam";
 			// 
-			// dataGridViewTextBoxColumn2
+			// AwayTeamScore
 			// 
-			this.dataGridViewTextBoxColumn2.HeaderText = "Score";
-			this.dataGridViewTextBoxColumn2.Name = "AwayTeamScore";
+			this.AwayTeamScore.HeaderText = "Score";
+			this.AwayTeamScore.Name = "AwayTeamScore";
 			// 
-			// dataGridViewCheckBoxColumn1
+			// OverTime
 			// 
-			this.dataGridViewCheckBoxColumn1.HeaderText = "Overtime";
-			this.dataGridViewCheckBoxColumn1.Name = "OverTime";
+			this.OverTime.HeaderText = "Overtime";
+			this.OverTime.Name = "OverTime";
 			// 
-			// dataGridViewComboBoxColumn4
+			// GameDayType
 			// 
-			this.dataGridViewComboBoxColumn4.HeaderText = "Day";
-			this.dataGridViewComboBoxColumn4.Name = "GameDayType";
-			this.dataGridViewComboBoxColumn4.Width = 76;
+			this.GameDayType.HeaderText = "Day";
+			this.GameDayType.Name = "GameDayType";
 			// 
-			// dataGridViewComboBoxColumn5
+			// Weighting
 			// 
-			this.dataGridViewComboBoxColumn5.HeaderText = "Weighting";
-			this.dataGridViewComboBoxColumn5.Name = "Weighting";
-			this.dataGridViewComboBoxColumn5.Width = 76;
+			this.Weighting.HeaderText = "Weighting";
+			this.Weighting.Name = "Weighting";
 			// 
 			// lblTitle
 			// 
-			this.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblTitle.AutoSize = true;
 			this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTitle.Location = new System.Drawing.Point(271, 11);
+			this.lblTitle.Location = new System.Drawing.Point(3, 5);
 			this.lblTitle.Name = "lblTitle";
-			this.lblTitle.Size = new System.Drawing.Size(75, 24);
+			this.lblTitle.Size = new System.Drawing.Size(610, 24);
 			this.lblTitle.TabIndex = 0;
 			this.lblTitle.Text = "Week 1";
+			this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// applyButton
+			// flowLayoutPanel1
 			// 
-			this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.applyButton.Location = new System.Drawing.Point(538, 512);
-			this.applyButton.Name = "applyButton";
-			this.applyButton.Size = new System.Drawing.Size(75, 23);
-			this.applyButton.TabIndex = 2;
-			this.applyButton.Text = "Apply";
-			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+			this.flowLayoutPanel1.Controls.Add(this.btnCancel);
+			this.flowLayoutPanel1.Controls.Add(this.btnApply);
+			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 506);
+			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(610, 29);
+			this.flowLayoutPanel1.TabIndex = 2;
+			// 
+			// btnCancel
+			// 
+			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnCancel.Location = new System.Drawing.Point(532, 3);
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.Size = new System.Drawing.Size(75, 26);
+			this.btnCancel.TabIndex = 1;
+			this.btnCancel.Text = "Cancel";
+			this.btnCancel.UseVisualStyleBackColor = true;
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// ScheduleEditingForm
 			// 
+			this.AcceptButton = this.btnApply;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(792, 540);
 			this.Controls.Add(this.splitContainer);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -224,10 +263,12 @@ namespace MaddenEditor.Forms
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScheduleEditingForm_FormClosing);
 			this.splitContainer.Panel1.ResumeLayout(false);
 			this.splitContainer.Panel2.ResumeLayout(false);
-			this.splitContainer.Panel2.PerformLayout();
 			this.splitContainer.ResumeLayout(false);
 			this.gbWeekNav.ResumeLayout(false);
+			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgScheduleView)).EndInit();
+			this.flowLayoutPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -241,14 +282,17 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ComboBox cbWeekSelector;
 		private System.Windows.Forms.Label lblTitle;
 		private System.Windows.Forms.DataGridView dgScheduleView;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn2;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn4;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn5;
-		private System.Windows.Forms.Button applyButton;
+		private System.Windows.Forms.Button btnApply;
+		private System.Windows.Forms.DataGridViewComboBoxColumn GameState;
+		private System.Windows.Forms.DataGridViewComboBoxColumn HomeTeam;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HomeTeamScore;
+		private System.Windows.Forms.DataGridViewComboBoxColumn AwayTeam;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AwayTeamScore;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn OverTime;
+		private System.Windows.Forms.DataGridViewComboBoxColumn GameDayType;
+		private System.Windows.Forms.DataGridViewComboBoxColumn Weighting;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.Button btnCancel;
 	}
 }

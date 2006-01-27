@@ -28,10 +28,51 @@ namespace MaddenEditor.Core.Record
 {
 	public class UniformRecord : TableRecordModel
 	{
+		public const string UNIFORM_ID = "UFID";
+		public const string TEAM_ID = "TGID";
+		public const string TEAM_UNIFORM_CLASS = "TUCO";
+
 		public UniformRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
 		}
+		
+		public int UniformId
+		{
+			get
+			{
+				return GetIntField(UNIFORM_ID);
+			}
+			set
+			{
+				SetField(UNIFORM_ID, value);
+			}
+		}
+
+		public int TeamId
+		{
+			get
+			{
+				return GetIntField(TEAM_ID);
+			}
+			set
+			{
+				SetField(TEAM_ID, value);
+			}
+		}
+
+		public int TeamUniformClass
+		{
+			get
+			{
+				return GetIntField(TEAM_UNIFORM_CLASS);
+			}
+			set
+			{
+				SetField(TEAM_UNIFORM_CLASS, value);
+			}
+		}
+
 	}
 }
