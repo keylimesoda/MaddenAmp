@@ -298,7 +298,6 @@ namespace MaddenEditor.Core
 			teamEditingModel = new TeamEditingModel(this);
 			coachEditingModel = new CoachEditingModel(this);
 		
-
 			if (fileType == MaddenFileType.FranchiseFile)
 			{
 				//Get the SalaryCapRecord for its info
@@ -444,14 +443,14 @@ namespace MaddenEditor.Core
                 tableOrder.Add(DEPTH_CHART_TABLE, -1);
 				tableOrder.Add(COACH_SLIDER_TABLE, -1);
 				tableOrder.Add(CITY_TABLE, -1);
+				tableOrder.Add(UNIFORM_TABLE, -1);
 				//Make sure we only load some tables if we are a franchise file
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
 					tableOrder.Add(SCHEDULE_TABLE, -1);
-					tableOrder.Add(UNIFORM_TABLE, -1);
-                    // MADDEN DRAFT EDIT
+					// MADDEN DRAFT EDIT
                     tableOrder.Add(DRAFT_PICK_TABLE, -1);
                     tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);
 

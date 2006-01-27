@@ -65,6 +65,8 @@ Section "MainSection" SEC01
   File "MaddenEditor\Docs\contributions.txt"
   File "MaddenEditor\Docs\DBFileStructure.doc"
   File "06files\MFE-2006-TEST-2.fra"
+  File "MaddenEditor\bin\Release\LumenWorks.Framework.IO.dll"
+  File "MaddenEditor\bin\Release\Uniform Mappings.csv"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -113,6 +115,8 @@ Section Uninstall
   Delete "$INSTDIR\contributions.txt"
   Delete "$INSTDIR\DBFileStructure.doc"
   Delete "$INSTDIR\MFE-2006-TEST-2.fra"
+  Delete "$INSTDIR\LumenWorks.Framework.IO.dll"
+  Delete "$INSTDIR\Uniform Mappings.csv"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\Madden Amp.lnk"

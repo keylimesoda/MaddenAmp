@@ -764,7 +764,7 @@ namespace MaddenEditor.Forms
 			form.Show();
 		}
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void clearRookieGamesPlayedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dr = MessageBox.Show("Are you sure you want to clear all rookie games played data?  You should only do this during the offseason or at the beginning of the season.", "Confirm", MessageBoxButtons.YesNo);
 

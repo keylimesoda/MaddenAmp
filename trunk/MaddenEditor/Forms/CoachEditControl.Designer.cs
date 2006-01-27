@@ -783,7 +783,7 @@ namespace MaddenEditor.Forms
 			this.priorityGroupBox.Controls.Add(this.label15);
 			this.priorityGroupBox.Location = new System.Drawing.Point(194, 0);
 			this.priorityGroupBox.Name = "priorityGroupBox";
-			this.priorityGroupBox.Size = new System.Drawing.Size(265, 477);
+			this.priorityGroupBox.Size = new System.Drawing.Size(306, 477);
 			this.priorityGroupBox.TabIndex = 12;
 			this.priorityGroupBox.TabStop = false;
 			this.priorityGroupBox.Text = "Priorities";

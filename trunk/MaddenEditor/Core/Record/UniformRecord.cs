@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MaddenEditor.Core.Record
 {
@@ -31,11 +32,16 @@ namespace MaddenEditor.Core.Record
 		public const string UNIFORM_ID = "UFID";
 		public const string TEAM_ID = "TGID";
 		public const string TEAM_UNIFORM_CLASS = "TUCO";
-
+		
+		private String homeAway;
+		private String jerseyColor;
+		private String pantsColor;
+		private bool throwBack;
+		
 		public UniformRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
-
+			
 		}
 		
 		public int UniformId
@@ -74,5 +80,80 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
+		public String HomeAway
+		{
+			set
+			{
+				homeAway = value;
+			}
+			get
+			{
+				return (homeAway == "H" ? "Home" : "Away");
+			}
+		}
+
+		public String JerseyColor
+		{
+			set
+			{
+				jerseyColor = value;
+			}
+			get
+			{
+				return jerseyColor;
+			}
+		}
+
+		public String PantsColor
+		{
+			set
+			{
+				pantsColor = value;
+			}
+			get
+			{
+				return pantsColor;
+			}
+		}
+
+		public Boolean Throwback
+		{
+			set
+			{
+				throwBack = value;
+			}
+			get
+			{
+				return throwBack;
+			}
+		}
+
+		public DataGridViewRow GetDataGridViewRow()
+		{
+			DataGridViewRow viewRow = new DataGridViewRow();
+
+			DataGridViewTextBoxCell homeAwayTextBox = new DataGridViewTextBoxCell();
+			homeAwayTextBox.Value = this.HomeAway;
+			viewRow.Cells.Add(homeAwayTextBox);
+
+			DataGridViewTextBoxCell jerseyColorTextBox = new DataGridViewTextBoxCell();
+			jerseyColorTextBox.Value = this.JerseyColor;
+			viewRow.Cells.Add(jerseyColorTextBox);
+
+			DataGridViewTextBoxCell pantsColorTextBox = new DataGridViewTextBoxCell();
+			pantsColorTextBox.Value = this.PantsColor;
+			viewRow.Cells.Add(pantsColorTextBox);
+
+			DataGridViewTextBoxCell throwbackTextBox = new DataGridViewTextBoxCell();
+			throwbackTextBox.Value = Throwback.ToString();
+			viewRow.Cells.Add(throwbackTextBox);
+
+			DataGridViewTextBoxCell objectTextBox = new DataGridViewTextBoxCell();
+			objectTextBox.ValueType = typeof(UniformRecord);
+			objectTextBox.Value = this;
+			viewRow.Cells.Add(objectTextBox);
+
+			return viewRow;
+		}
 	}
 }
