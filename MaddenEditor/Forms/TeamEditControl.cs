@@ -234,7 +234,7 @@ namespace MaddenEditor.Forms
 				}
 				if (model.FileVersion >= MaddenFileVersion.Ver2005)
 				{
-					if (model.TeamModel.CurrentTeamRecord.TeamRival1 == 1023)
+					if (model.TeamModel.CurrentTeamRecord.TeamRival1 == TeamEditingModel.NO_TEAM_ID)
 					{
 						cbTeamRival1.Text = "N/A";
 					}
@@ -243,7 +243,7 @@ namespace MaddenEditor.Forms
 						cbTeamRival1.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival1);
 					}
 
-					if (model.TeamModel.CurrentTeamRecord.TeamRival2 == 1023)
+					if (model.TeamModel.CurrentTeamRecord.TeamRival2 == TeamEditingModel.NO_TEAM_ID)
 					{
 						cbTeamRival2.Text = "N/A";
 					}
@@ -252,7 +252,7 @@ namespace MaddenEditor.Forms
 						cbTeamRival2.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival2);
 					}
 
-					if (model.TeamModel.CurrentTeamRecord.TeamRival3 == 1023)
+					if (model.TeamModel.CurrentTeamRecord.TeamRival3 == TeamEditingModel.NO_TEAM_ID)
 					{
 						cbTeamRival3.Text = "N/A";
 					}

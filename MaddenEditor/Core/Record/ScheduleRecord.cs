@@ -84,10 +84,12 @@ namespace MaddenEditor.Core.Record
 			gameStateList.Add(new GenericRecord("Away Team Win", 2));
 			gameStateList.Add(new GenericRecord("Home Team Win", 3));
 			gameStateList.Add(new GenericRecord("Tie", 4));
+			gameStateList.Add(new GenericRecord("??", 5));
+			gameStateList.Add(new GenericRecord("T.B.A", 6));
 
 			// Initialise the Game Weightings
 			gameWeightings = new List<GenericRecord>();
-			gameWeightings.Add(new GenericRecord("None", 0));
+			gameWeightings.Add(new GenericRecord("Preseason", 0));
 			gameWeightings.Add(new GenericRecord("Season game", 25));
 			gameWeightings.Add(new GenericRecord("Wildcard game", 50));
 			gameWeightings.Add(new GenericRecord("Divisional game", 75));
@@ -233,7 +235,14 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetField(AWAY_TEAM_ID, value.TeamId);
+				if (value == null)
+				{
+					SetField(AWAY_TEAM_ID, TeamEditingModel.NO_TEAM_ID);
+				}
+				else
+				{
+					SetField(AWAY_TEAM_ID, value.TeamId);
+				}
 			}
 		}
 
@@ -245,7 +254,14 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetField(HOME_TEAM_ID, value.TeamId);
+				if (value == null)
+				{
+					SetField(HOME_TEAM_ID, TeamEditingModel.NO_TEAM_ID);
+				}
+				else
+				{
+					SetField(HOME_TEAM_ID, value.TeamId);
+				}
 			}
 		}
 
@@ -332,5 +348,30 @@ namespace MaddenEditor.Core.Record
 				SetField(WEEK_NUMBER, value);
 			}
 		}
+
+		/// <summary>
+		/// Given a week number this returns a week name for that week
+		/// </summary>
+		/// <param name="weeknumber"></param>
+		/// <returns></returns>
+		public static string WeekName(int weeknumber)
+		{
+			switch (weeknumber)
+			{
+				case 17:
+					return "Wildcard Weekend";
+				case 18:
+					return "Divisional Playoffs";
+				case 19:
+					return "Championship Weekend";
+				case 20:
+					return "Superbowl Sunday";
+				case 21:
+					return "Probowl Weekend";
+				default:
+					return "Week " + (weeknumber + 1);
+			}
+		}
 	}
 }
+

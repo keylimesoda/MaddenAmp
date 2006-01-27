@@ -109,6 +109,7 @@ namespace MaddenEditor.Core
 		public const string OWNER_TABLE = "OWNR";
 		public const string CITY_TABLE = "CITY";
 		public const string SCHEDULE_TABLE = "SCHD";
+		public const string UNIFORM_TABLE = "TUNI";
 		// Madden 2006 specific tables
 		public const string GAME_OPTIONS_TABLE = "GOPT";
         // MADDEN DRAFT EDIT
@@ -449,6 +450,7 @@ namespace MaddenEditor.Core
 					tableOrder.Add(SALARY_CAP_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
 					tableOrder.Add(SCHEDULE_TABLE, -1);
+					tableOrder.Add(UNIFORM_TABLE, -1);
                     // MADDEN DRAFT EDIT
                     tableOrder.Add(DRAFT_PICK_TABLE, -1);
                     tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);

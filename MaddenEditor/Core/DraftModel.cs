@@ -3028,7 +3028,7 @@ namespace MaddenEditor.Core
 		}
 */
 
-		// Set rookie drafted teams to 1023, add to rookies dictionary, 
+		// Set rookie drafted teams to TeamRecord.NO_TEAM_ID, add to rookies dictionary, 
 		// assign corresponding PlayerRecord to RookieRecord
 		private void ExtractRookies()
 		{
@@ -3036,7 +3036,7 @@ namespace MaddenEditor.Core
 			{
 				RookieRecord record = (RookieRecord)rec;
 
-				record.DraftedTeam = 1023;
+				record.DraftedTeam = TeamEditingModel.NO_TEAM_ID;
 				record.DraftPickNumber = 255;
 				record.dm = this;
 				record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerId));

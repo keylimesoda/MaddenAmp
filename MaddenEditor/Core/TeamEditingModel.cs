@@ -30,6 +30,10 @@ namespace MaddenEditor.Core
 {
 	public class TeamEditingModel
 	{
+		public const int NO_TEAM_ID = 1023;
+		public const int PROBOWL_TEAM_AFC = 1010; //??
+		public const int PROBOWL_TEAM_NFC = 1011; //??
+
 		/** Collection of team names hashed by teamid */
 		private Dictionary<int, string> teamNameList = null;
 		/** View to the TeamRecords indexed by Teamid */
@@ -518,7 +522,6 @@ namespace MaddenEditor.Core
 			}
 			
 			return null;
-			
 		}
 
 		public string GetTeamNameFromTeamId(int teamid)
@@ -583,6 +586,11 @@ namespace MaddenEditor.Core
 				}
 
 				return id;
+			}
+			else if (teamName == ScheduleEditingModel.UNDECIDED_TEAM)
+			{
+				//we'll return NO_TEAM_ID if the team is an undecided team
+				return TeamEditingModel.NO_TEAM_ID;
 			}
 			else
 			{
