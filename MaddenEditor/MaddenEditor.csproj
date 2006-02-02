@@ -44,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1717,0414</NoWarn>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -198,11 +199,11 @@
     <Compile Include="Forms\ProgressionForm.Designer.cs">
       <DependentUpon>ProgressionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SalaryCapForm.cs">
+    <Compile Include="Forms\FranchiseOptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SalaryCapForm.Designer.cs">
-      <DependentUpon>SalaryCapForm.cs</DependentUpon>
+    <Compile Include="Forms\FranchiseOptionsForm.Designer.cs">
+      <DependentUpon>FranchiseOptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ScheduleEditingForm.cs">
       <SubType>Form</SubType>
@@ -334,8 +335,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>ProfileDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SalaryCapForm.resx">
-      <DependentUpon>SalaryCapForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FranchiseOptionsForm.resx">
+      <DependentUpon>FranchiseOptionsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScheduleEditingForm.resx">
       <DependentUpon>ScheduleEditingForm.cs</DependentUpon>

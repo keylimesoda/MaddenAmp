@@ -48,7 +48,7 @@ namespace MaddenEditor.Forms
 			this.trainingCampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.editSalaryCapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editFranchiseOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.setTeamCaptainsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setUserControlledTeamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -224,7 +224,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.franchiseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editScheduleToolStripMenuItem,
-            this.editSalaryCapsToolStripMenuItem,
+            this.editFranchiseOptionsToolStripMenuItem,
             this.toolStripSeparator5,
             this.setTeamCaptainsToolStripMenuItem,
             this.setUserControlledTeamsToolStripMenuItem,
@@ -254,12 +254,12 @@ namespace MaddenEditor.Forms
 			this.editScheduleToolStripMenuItem.Text = "Edit Schedule ...";
 			this.editScheduleToolStripMenuItem.Click += new System.EventHandler(this.editScheduleToolStripMenuItem_Click);
 			// 
-			// editSalaryCapsToolStripMenuItem
+			// editFranchiseOptionsToolStripMenuItem
 			// 
-			this.editSalaryCapsToolStripMenuItem.Name = "editSalaryCapsToolStripMenuItem";
-			this.editSalaryCapsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-			this.editSalaryCapsToolStripMenuItem.Text = "Edit Salary Caps ...";
-			this.editSalaryCapsToolStripMenuItem.Click += new System.EventHandler(this.editSalaryCapsToolStripMenuItem_Click);
+			this.editFranchiseOptionsToolStripMenuItem.Name = "editFranchiseOptionsToolStripMenuItem";
+			this.editFranchiseOptionsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+			this.editFranchiseOptionsToolStripMenuItem.Text = "Edit Franchise Options ...";
+			this.editFranchiseOptionsToolStripMenuItem.Click += new System.EventHandler(this.editFranchiseOptionsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -550,7 +550,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.ToolStripMenuItem searchforPlayerToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker testerWorkerThread;
 		private System.Windows.Forms.ToolStripMenuItem franchiseToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem editSalaryCapsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem editFranchiseOptionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripStatusLabel processingTableLabel;
 		private System.Windows.Forms.Button testButton;
 		private System.Windows.Forms.TabPage teamPage;

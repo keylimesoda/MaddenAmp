@@ -28,10 +28,14 @@ using MaddenEditor.Core;
 
 namespace MaddenEditor.Core.Record
 {
-	class GameOptionRecord : TableRecordModel
+	public class GameOptionRecord : TableRecordModel
 	{
 		public const string INGAME_INJURY = "INGI";
 		public const string SIM_INJURY = "SIMI";
+		public const string CAP_PENALTY = "OSCP";
+		public const string OWNER_MODE = "OOWN";
+		public const string SALARY_CAP = "OFSC";
+		public const string TRADE_DEADLINE = "OFTD";
 
 		public GameOptionRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -60,6 +64,54 @@ namespace MaddenEditor.Core.Record
 			get
 			{
 				return GetIntField(SIM_INJURY);
+			}
+		}
+
+		public bool CapPenalty
+		{
+			set
+			{
+				SetField(CAP_PENALTY, (value ? 1 : 0));
+			}
+			get
+			{
+				return (GetIntField(CAP_PENALTY) == 1);
+			}
+		}
+
+		public bool OwnerMode
+		{
+			set
+			{
+				SetField(OWNER_MODE, (value ? 1 : 0));
+			}
+			get
+			{
+				return (GetIntField(OWNER_MODE) == 1);
+			}
+		}
+
+		public bool SalaryCap
+		{
+			set
+			{
+				SetField(SALARY_CAP, (value ? 1 : 0));
+			}
+			get
+			{
+				return (GetIntField(SALARY_CAP) == 1);
+			}
+		}
+
+		public bool TradeDeadline
+		{
+			set
+			{
+				SetField(TRADE_DEADLINE, (value ? 1 : 0));
+			}
+			get
+			{
+				return (GetIntField(TRADE_DEADLINE) == 1);
 			}
 		}
 	}

@@ -63,9 +63,7 @@ namespace MaddenEditor.Forms
 		public void InitialiseUI()
 		{
 			//Get the only gameoption record
-			TableRecordModel tableRecord = model.TableModels[EditorModel.GAME_OPTIONS_TABLE].GetRecord(0);
-
-			gameRecord = (GameOptionRecord)tableRecord;
+			gameRecord = model.GameOptionModel;
 
 			nudInGameInjury.Value = gameRecord.InGameInjury;
 			tbInGameInjury.Value = gameRecord.InGameInjury;

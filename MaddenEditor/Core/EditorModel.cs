@@ -160,6 +160,7 @@ namespace MaddenEditor.Core
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
 		private SalaryCapRecord salaryCapRecord = null;
+		private GameOptionRecord gameOptionsRecord = null;
 
         // MADDEN DRAFT EDIT
         public string GetFileName()
@@ -302,6 +303,8 @@ namespace MaddenEditor.Core
 			{
 				//Get the SalaryCapRecord for its info
 				salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
+				//Get the only GameOptions Record for its info
+				gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
 			}
 		}
 		/// <summary>
@@ -362,6 +365,16 @@ namespace MaddenEditor.Core
 			get
 			{
 				return salaryCapRecord;
+			}
+		}
+		/// <summary>
+		/// Returns the GameOptionRecord. There is only ever one record in this table.
+		/// </summary>
+		public GameOptionRecord GameOptionModel
+		{
+			get
+			{
+				return gameOptionsRecord;
 			}
 		}
 		/// <summary>
