@@ -32,14 +32,14 @@ using MaddenEditor.Core;
 
 namespace MaddenEditor.Forms
 {
-	public partial class SalaryCapForm : Form, IEditorForm
+	public partial class FranchiseOptionsForm : Form, IEditorForm
 	{
 		/** Reference to our editor model */
 		private EditorModel model = null;
 		/** Boolean to stop events firing when initialising */
 		private bool isInitialising = false;
 
-		public SalaryCapForm(EditorModel model)
+		public FranchiseOptionsForm(EditorModel model)
 		{
 			isInitialising = true;
 
@@ -51,32 +51,6 @@ namespace MaddenEditor.Forms
 
 			InitialiseUI();
 		}
-
-		private void year1RFA_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void year2RFA_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void year3RFA_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void year4RFA_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void salaryCap_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
 
 		#region IEditorForm Members
 
@@ -96,6 +70,11 @@ namespace MaddenEditor.Forms
 			year4RFA.Value = model.SalaryCapModel.RestrictedFA4;
 			salaryCap.Value = model.SalaryCapModel.SalaryCap;
 
+			cbCapPenalties.Checked = model.GameOptionModel.CapPenalty;
+			cbSalaryCap.Checked = model.GameOptionModel.SalaryCap;
+			cbTradeDeadline.Checked = model.GameOptionModel.TradeDeadline;
+			cbOwnerMode.Checked = model.GameOptionModel.OwnerMode;
+
 			isInitialising = false;
 		}
 
@@ -113,6 +92,11 @@ namespace MaddenEditor.Forms
 			model.SalaryCapModel.RestrictedFA3 = (int)year3RFA.Value;
 			model.SalaryCapModel.RestrictedFA4 = (int)year4RFA.Value;
 			model.SalaryCapModel.SalaryCap = (int)salaryCap.Value;
+			model.GameOptionModel.OwnerMode = cbOwnerMode.Checked;
+			model.GameOptionModel.TradeDeadline = cbTradeDeadline.Checked;
+			model.GameOptionModel.SalaryCap = cbSalaryCap.Checked;
+			model.GameOptionModel.CapPenalty = cbCapPenalties.Checked;
+
 			DialogResult = DialogResult.OK;
 		}
 
@@ -120,5 +104,6 @@ namespace MaddenEditor.Forms
 		{
 			DialogResult = DialogResult.Cancel;
 		}
-}
+
+	}
 }

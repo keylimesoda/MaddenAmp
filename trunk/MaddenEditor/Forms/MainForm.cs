@@ -413,9 +413,9 @@ namespace MaddenEditor.Forms
 			playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 		}
 
-		private void editSalaryCapsToolStripMenuItem_Click(object sender, EventArgs e)
+		private void editFranchiseOptionsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SalaryCapForm form = new SalaryCapForm(model);
+			FranchiseOptionsForm form = new FranchiseOptionsForm(model);
 			form.ShowDialog();
 		}
 
