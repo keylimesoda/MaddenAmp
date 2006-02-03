@@ -70,10 +70,24 @@ namespace MaddenEditor.Forms
 			year4RFA.Value = model.SalaryCapModel.RestrictedFA4;
 			salaryCap.Value = model.SalaryCapModel.SalaryCap;
 
-			cbCapPenalties.Checked = model.GameOptionModel.CapPenalty;
-			cbSalaryCap.Checked = model.GameOptionModel.SalaryCap;
-			cbTradeDeadline.Checked = model.GameOptionModel.TradeDeadline;
-			cbOwnerMode.Checked = model.GameOptionModel.OwnerMode;
+			if (model.GameOptionModel != null)
+			{
+				cbCapPenalties.Enabled = true;
+				cbSalaryCap.Enabled = true;
+				cbTradeDeadline.Enabled = true;
+				cbOwnerMode.Enabled = true;
+				cbCapPenalties.Checked = model.GameOptionModel.CapPenalty;
+				cbSalaryCap.Checked = model.GameOptionModel.SalaryCap;
+				cbTradeDeadline.Checked = model.GameOptionModel.TradeDeadline;
+				cbOwnerMode.Checked = model.GameOptionModel.OwnerMode;
+			}
+			else
+			{
+				cbCapPenalties.Enabled = false;
+				cbSalaryCap.Enabled = false;
+				cbTradeDeadline.Enabled = false;
+				cbOwnerMode.Enabled = false;
+			}
 
 			isInitialising = false;
 		}

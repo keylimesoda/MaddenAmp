@@ -162,8 +162,71 @@ namespace MaddenEditor.Core
 		private SalaryCapRecord salaryCapRecord = null;
 		private GameOptionRecord gameOptionsRecord = null;
 
-        // MADDEN DRAFT EDIT
-        public string GetFileName()
+		#region Constructors
+		public EditorModel(string filename, MainForm form)
+		{
+			view = form;
+			this.fileName = filename;
+
+			// MADDEN DRAFT EDIT
+			draftClassFields = new List<string[]>();
+			draftClassFields.Add(new string[] { "PFNA", "PLNA", "PPOS", 
+				"PCOL", "PAGE", "PWGT", "PHGT", "PHAN", "POVR", "PSPD",
+				"PSTR", "PAWR", "PAGI", "PACC", "PCTH", "PCAR", "PJMP",
+				"PBTK", "PTAK", "PTHP", "PTHA", "PPBK", "PRBK",	"PKPR",
+				"PKAC", "PKRT", "PSTA", "PINJ", "PTGH", "PSTY", "PMOR", 
+				"PSBS", /*"PTPS",*/ "PMTS", "PUTS", "PFTS", "PLSS", "PTSS",
+				"PWSS", "PCHS", "PQTS", "PMAS", "PFAS", "PMHS", "PFHS", 
+				"PMCS", "PFCS", /*"PMGS", "PQGS",*/ "PSKI", "PHCL", "PHED", 
+				"PEYE", "PNEK", "PVIS", "PMPC", "PLHA", "TLHA", "PRHA",
+				"TRHA", "PLSH", "PRSH", "PLTH", "PRTH", "PLEL", "TLEL",
+				"PREL", "TREL", "PGSL", "PTSL", "PLWR", "TLWR", "PRWR",
+				"TRWR", "PBRE", "PTAL", "PTAR", "PHLM", "PFMK", "PFEx" });
+			// MADDEN DRAFT EDIT
+
+
+			//Try and open the file
+			try
+			{
+				dbIndex = TDB.TDBOpen(filename);
+			}
+			catch (DllNotFoundException e)
+			{
+				Console.WriteLine(e.ToString());
+				throw new ApplicationException("Can't open file: " + e.ToString());
+			}
+			//This collection will hold the created TableModel objects for each database table opened
+			tableModels = new Dictionary<string, TableModel>();
+			//We create a collection of database table names that we want to load
+			tableOrder = new Dictionary<string, int>();
+
+			//Process the file
+			if (!ProcessFile())
+			{
+				throw new ApplicationException("Error processing file: " + filename);
+			}
+
+			//Once we've processed the file create our editing models
+			playerEditingModel = new PlayerEditingModel(this);
+			teamEditingModel = new TeamEditingModel(this);
+			coachEditingModel = new CoachEditingModel(this);
+
+			if (fileType == MaddenFileType.FranchiseFile)
+			{
+				//Get the SalaryCapRecord for its info
+				salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
+				if (FileVersion == MaddenFileVersion.Ver2006)
+				{
+					//Get the only GameOptions Record for its info
+					gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
+				}
+			}
+		}
+		#endregion
+
+		#region Madden Draft Edit
+
+		public string GetFileName()
         {
             return fileName;
         }
@@ -248,65 +311,9 @@ namespace MaddenEditor.Core
             {
                 return (ScoutingStateRecord)tableModels[EditorModel.SCOUTING_STATE_TABLE].GetRecord(0);
             }
-        }
-        // MADDEN DRAFT EDIT
-		
-		public EditorModel(string filename, MainForm form)
-		{
-			view = form;
-			this.fileName = filename;
-
-			// MADDEN DRAFT EDIT
-			draftClassFields = new List<string[]>();
-			draftClassFields.Add(new string[] { "PFNA", "PLNA", "PPOS", 
-				"PCOL", "PAGE", "PWGT", "PHGT", "PHAN", "POVR", "PSPD",
-				"PSTR", "PAWR", "PAGI", "PACC", "PCTH", "PCAR", "PJMP",
-				"PBTK", "PTAK", "PTHP", "PTHA", "PPBK", "PRBK",	"PKPR",
-				"PKAC", "PKRT", "PSTA", "PINJ", "PTGH", "PSTY", "PMOR", 
-				"PSBS", /*"PTPS",*/ "PMTS", "PUTS", "PFTS", "PLSS", "PTSS",
-				"PWSS", "PCHS", "PQTS", "PMAS", "PFAS", "PMHS", "PFHS", 
-				"PMCS", "PFCS", /*"PMGS", "PQGS",*/ "PSKI", "PHCL", "PHED", 
-				"PEYE", "PNEK", "PVIS", "PMPC", "PLHA", "TLHA", "PRHA",
-				"TRHA", "PLSH", "PRSH", "PLTH", "PRTH", "PLEL", "TLEL",
-				"PREL", "TREL", "PGSL", "PTSL", "PLWR", "TLWR", "PRWR",
-				"TRWR", "PBRE", "PTAL", "PTAR", "PHLM", "PFMK", "PFEx" });
-			// MADDEN DRAFT EDIT
-
-
-			//Try and open the file
-			try
-			{
-				dbIndex = TDB.TDBOpen(filename);
-			}
-			catch (DllNotFoundException e)
-			{
-				Console.WriteLine(e.ToString());
-				throw new ApplicationException("Can't open file: " + e.ToString());
-			}
-			//This collection will hold the created TableModel objects for each database table opened
-			tableModels = new Dictionary<string, TableModel>();
-			//We create a collection of database table names that we want to load
-			tableOrder = new Dictionary<string, int>();
-
-			//Process the file
-			if (!ProcessFile())
-			{
-				throw new ApplicationException("Error processing file: " + filename);
-			}
-
-			//Once we've processed the file create our editing models
-			playerEditingModel = new PlayerEditingModel(this);
-			teamEditingModel = new TeamEditingModel(this);
-			coachEditingModel = new CoachEditingModel(this);
-		
-			if (fileType == MaddenFileType.FranchiseFile)
-			{
-				//Get the SalaryCapRecord for its info
-				salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
-				//Get the only GameOptions Record for its info
-				gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
-			}
 		}
+		#endregion
+		
 		/// <summary>
 		/// The Enumerated Filetype that is currently loaded
 		/// </summary>
