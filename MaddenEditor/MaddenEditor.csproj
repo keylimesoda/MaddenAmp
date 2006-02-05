@@ -453,6 +453,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)Libs\tdbaccess.dll $(ProjectDir)$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)Libs\tdbaccess.dll $(ProjectDir)$(OutDir)
+mkdir Conditioning\TrainingCamp
+copy $(ProjectDir)tune.txt $(ProjectDir)$(OutDir)Conditioning\TrainingCamp\tune.txt</PostBuildEvent>
   </PropertyGroup>
 </Project>
