@@ -3976,41 +3976,41 @@ namespace MaddenEditor.Forms
         private void AdvanceBtn_Click(object sender, EventArgs e)
         {
             
-                //textBox1.Text = "";
-                //ExceptionReporting();
-                //  if (textBox1.Text == "")
-                //  {
-                if (CurDay <= 14)
-                {
-                    DialogResult dr = MessageBox.Show("Process current day and proceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
-                    if (dr == DialogResult.No)
-                    {
-                        return;
-                    }
-                    else if (dr == DialogResult.Yes)
-                    {
-                         //textBox1.Text = "";
-                //ExceptionReporting();
-                //  if (textBox1.Text == "")
-                //  {
-                        Cursor.Current = Cursors.WaitCursor;
+                textBox1.Text = "";
+                ExceptionReporting();
+                  if (textBox1.Text == "")
+                  {
+                      if (CurDay <= 14)
+                      {
+                          DialogResult dr = MessageBox.Show("Process current day and proceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+                          if (dr == DialogResult.No)
+                          {
+                              return;
+                          }
+                          else if (dr == DialogResult.Yes)
+                          {
+                              //textBox1.Text = "";
+                              //ExceptionReporting();
+                              //  if (textBox1.Text == "")
+                              //  {
+                              Cursor.Current = Cursors.WaitCursor;
 
-                    ProcessDaily();
-                    UpdateCamp();
-                    LaunchSplash();
-                //  }
-                    }
+                              ProcessDaily();
+                              UpdateCamp();
+                              LaunchSplash();
+                          }
+                      }
                 }
                 else if (CurDay == 15)
                 {
-                     DialogResult drs = MessageBox.Show("Clicking Advance will immediately process day 14, the final day of camp.\n\nYou'll see the before camp and after camp attributes for each player.\n\nProceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+                    DialogResult drs = MessageBox.Show("Clicking Advance will immediately process day 14, the final day of camp.\n\nYou'll see the before camp and after camp attributes for each player.\n\nProceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
                     if (drs == DialogResult.No)
                     {
                         return;
                     }
                     else if (drs == DialogResult.Yes)
                     {
-                       // depthChartDataGrid.ReadOnly = true;
+                        // depthChartDataGrid.ReadOnly = true;
                         depthChartDataGrid.AllowUserToResizeColumns = true;
                         AdvanceBtn.Enabled = false;
                         label1.Text = "Final player progression...";
@@ -4018,13 +4018,17 @@ namespace MaddenEditor.Forms
                         ProcessFinal();
                         MessageBox.Show("A file has been generated in the Madden Amp install directory\nwithin /Conditioning/TrainingCamp/" + franchiseFilename + "/" + CurTeam + "\nnamed 'Final Progression.txt'");
                     }
-                    }
+                }
                 
                 
 
 
                 Cursor.Current = Cursors.Arrow;
-            
+                if (File.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions"))
+                {
+                    File.Delete(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions");
+                }
+
         }
 
         private void GroupAssign_SelectedIndexChanged(object sender, EventArgs e)
@@ -4057,6 +4061,9 @@ namespace MaddenEditor.Forms
         {
             //Exception Reporting
             string Pos ="";
+            textBox1.Text = "";
+            installDirectory = Application.StartupPath;
+           
             StreamReader ct = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\currentteam");
             int CurTeamIndex = int.Parse(ct.ReadLine());
             ct.Close();
@@ -4112,7 +4119,7 @@ namespace MaddenEditor.Forms
                 string Allcontents = sr.ReadToEnd();
                 sr.Close();
 
-                if (((Stage == "Hell Week") & (int.Parse(Time[0]) != 0)) || ((Stage == "Hell Week") & (int.Parse(Time[1]) < 0)) || ((Stage == "Hell Week") & (int.Parse(Time[5]) < 0)))
+                if (((Stage == "Hell Week") & (int.Parse(Time[0]) < 0)) || ((Stage == "Hell Week") & (int.Parse(Time[1]) < 0)) || ((Stage == "Hell Week") & (int.Parse(Time[5]) < 0)))
                 {
                     StreamWriter sw = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions",true);
                     sw.Write("--" + valObject.FirstName + " " + valObject.LastName + ", " + Pos + ", Time Remaining less than zero.");
@@ -4127,6 +4134,8 @@ namespace MaddenEditor.Forms
                     sw.Close();
                 }
             }
+            if (File.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions"))
+            {
                 StreamReader sr1 = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions");
                 string Exception = sr1.ReadToEnd();
                 sr1.Close();
@@ -4145,7 +4154,7 @@ namespace MaddenEditor.Forms
                     MessageBox.Show("Exceptions detected. Please see Text Box at bottom of page for details.\nCannot proceed to next day until exceptions handled.");
                     return;
                 }
-
+            }
         }
 
         public void AgeDeclination()
