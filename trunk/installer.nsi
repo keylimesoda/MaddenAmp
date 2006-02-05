@@ -67,6 +67,9 @@ Section "MainSection" SEC01
   File "06files\MFE-2006-TEST-2.fra"
   File "MaddenEditor\bin\Release\LumenWorks.Framework.IO.dll"
   File "MaddenEditor\bin\Release\Uniform Mappings.csv"
+  CreateDirectory $INSTDIR\Conditioning
+  CreateDirectory $INSTDIR\Conditioning\TrainingCamp
+  File /oname=$INSTDIR\Conditioning\TrainingCamp\tune.txt "MaddenEditor\tune.txt"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -117,6 +120,7 @@ Section Uninstall
   Delete "$INSTDIR\MFE-2006-TEST-2.fra"
   Delete "$INSTDIR\LumenWorks.Framework.IO.dll"
   Delete "$INSTDIR\Uniform Mappings.csv"
+  Delete "$INSTDIR\Conditioning\TrainingCamp\tune.txt"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\Madden Amp.lnk"
