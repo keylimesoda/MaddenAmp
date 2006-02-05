@@ -57,6 +57,10 @@ namespace MaddenEditor.Forms
 		private CoachEditControl coachEditControl = null;
 		private TeamEditControl teamEditControl = null;
 
+		private TabPage playerPage = null;
+		private TabPage coachPage = null;
+		private TabPage teamPage = null;
+
 		private delegate void saveMenuDelegate(bool enabled);
 
 		/// <summary>
@@ -68,20 +72,7 @@ namespace MaddenEditor.Forms
 
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 
-
 			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
-
-			playerEditControl = new PlayerEditControl();
-			coachEditControl = new CoachEditControl();
-			teamEditControl = new TeamEditControl();
-
-			playerPage.Controls.Add(playerEditControl);
-			coachPage.Controls.Add(coachEditControl);
-			teamPage.Controls.Add(teamEditControl);
-
-			playerEditControl.Dock = DockStyle.Fill;
-			coachEditControl.Dock = DockStyle.Fill;
-			teamEditControl.Dock = DockStyle.Fill;
 
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
@@ -182,11 +173,6 @@ namespace MaddenEditor.Forms
 		void rosterFileLoaderThread_DoWork(object sender, DoWorkEventArgs e)
 		{
 			model = new EditorModel(filePathToLoad, this);
-			//once the model is initialised set tell the custom edit
-			//controls about it
-			playerEditControl.Model = model;
-			coachEditControl.Model = model;
-			teamEditControl.Model = model;
 		}
 
 		public void updateProgress(int percentage, string tablename)
@@ -194,16 +180,18 @@ namespace MaddenEditor.Forms
 			rosterFileLoaderThread.ReportProgress(percentage, tablename);
 		}
 
+		public void updateTableProgress(int percentage, string tablename)
+		{
+			ProgressChangedEventArgs e = new ProgressChangedEventArgs(percentage, tablename);
+
+			BeginInvoke(new ProgressChangedEventHandler(rosterFileLoaderThread_ProgressChanged), new object[] { null, e });
+		}
+		
 		private void InitialiseUI()
 		{
 			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision + "  - " + System.IO.Path.GetFileName(filePathToLoad);
 
-			playerEditControl.InitialiseUI();
-			coachEditControl.InitialiseUI();
-			teamEditControl.InitialiseUI();
-
 			exportToolStripMenuItem.Enabled = true;
-			tabControl.Visible = true;
 			toolsToolStripMenuItem.Visible = true;
 			processingTableLabel.Text = "";
 			statusStrip.Visible = false;
@@ -259,9 +247,18 @@ namespace MaddenEditor.Forms
 			//Now clean up ready for reloading
 			searchPlayerForm = null;
 
-			playerEditControl.CleanUI();
-			coachEditControl.CleanUI();
-			teamEditControl.CleanUI();
+			if (playerEditControl != null)
+			{
+				playerEditControl.CleanUI();
+			}
+			if (coachEditControl != null)
+			{
+				coachEditControl.CleanUI();
+			}
+			if (teamEditControl != null)
+			{
+				teamEditControl.CleanUI();
+			}
 
 			exportToolStripMenuItem.Enabled = false;
 			tabControl.Visible = false;
@@ -288,8 +285,18 @@ namespace MaddenEditor.Forms
 
 		private void rosterFileLoaderThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
+			if (e.ProgressPercentage == 0)
+			{
+				statusStrip.Visible = true;
+			}
+
 			toolStripProgressBar.Value = e.ProgressPercentage;
 			processingTableLabel.Text = "Loading Table: " + e.UserState.ToString();
+
+			if (e.ProgressPercentage == 100)
+			{
+				statusStrip.Visible = false;
+			}
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -348,6 +355,11 @@ namespace MaddenEditor.Forms
 
 		private void searchforCoachesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			if (coachEditControl == null)
+			{
+				InitialiseCoachPage();
+			}
+
 			if (searchCoachForm == null)
 			{
 				searchCoachForm = new SearchForm(model, SearchType.COACH);
@@ -361,12 +373,17 @@ namespace MaddenEditor.Forms
 				model.CoachModel.CurrentCoachRecord = (CoachRecord)searchCoachForm.SelectedSearchTarget;
 				coachEditControl.LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
 				//Switch tab page to correct page
-				tabControl.SelectedIndex = 1;
+				tabControl.SelectedTab = coachPage;
 			}
 		}
 
 		private void searchforPlayerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			if (playerEditControl == null)
+			{
+				InitialisePlayerPage();
+			}
+
 			if (searchPlayerForm == null)
 			{
 				searchPlayerForm = new SearchForm(model, SearchType.PLAYER);
@@ -381,36 +398,8 @@ namespace MaddenEditor.Forms
 				model.PlayerModel.CurrentPlayerRecord = (PlayerRecord)searchPlayerForm.SelectedSearchTarget;
 				playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 				//Switch tab page to correct page
-				tabControl.SelectedIndex = 0;
+				tabControl.SelectedTab = playerPage;
 			}
-		}
-
-		private void testButton_Click(object sender, EventArgs e)
-		{
-			if (testerWorkerThread.IsBusy)
-			{
-				testerWorkerThread.CancelAsync();
-
-			}
-			else
-			{
-				testerWorkerThread.DoWork += new DoWorkEventHandler(testerWorkerThread_DoWork);
-				testerWorkerThread.RunWorkerAsync();
-			}
-		}
-
-		private void testerWorkerThread_DoWork(object sender, DoWorkEventArgs e)
-		{
-			// This method will run on a thread other than the UI thread.
-			// Be sure not to manipulate any Windows Forms controls created
-			// on the UI thread from this method.
-
-		}
-
-		private void testerWorkerThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
-		{
-			model.PlayerModel.GetNextPlayerRecord();
-			playerEditControl.LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 		}
 
 		private void editFranchiseOptionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -802,7 +791,83 @@ namespace MaddenEditor.Forms
             tcos.Show();
         }
 
-        // MADDEN DRAFT EDIT
+		private void playerEditingToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (playerEditControl == null)
+			{
+				InitialisePlayerPage();
+			}
+			tabControl.SelectedTab = playerPage;
+		}
 
+		private void coachPlayerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (coachEditControl == null)
+			{
+				InitialiseCoachPage();
+
+			}
+			tabControl.SelectedTab = coachPage;
+		}
+
+		private void teamEditorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (teamEditControl == null)
+			{
+				InitialiseTeamPage();
+			}
+			tabControl.SelectedTab = teamPage;
+		}
+
+		private void InitialisePlayerPage()
+		{
+			playerEditControl = new PlayerEditControl();
+			playerPage = new TabPage("Player Editor");
+
+			tabControl.Visible = true;
+			tabControl.Dock = DockStyle.Fill;
+			tabControl.Controls.Add(playerPage);
+			playerPage.Controls.Add(playerEditControl);
+			
+			playerEditControl.Dock = DockStyle.Fill;
+
+			playerEditControl.Model = model;
+
+			playerEditControl.InitialiseUI();
+		}
+
+		private void InitialiseCoachPage()
+		{
+			coachEditControl = new CoachEditControl();
+			coachPage = new TabPage("Coach Editor");
+
+			tabControl.Visible = true;
+			tabControl.Dock = DockStyle.Fill;
+			tabControl.Controls.Add(coachPage);
+			coachPage.Controls.Add(coachEditControl);
+
+			coachEditControl.Dock = DockStyle.Fill;
+
+			coachEditControl.Model = model;
+
+			coachEditControl.InitialiseUI();
+		}
+
+		private void InitialiseTeamPage()
+		{
+			teamEditControl = new TeamEditControl();
+			teamPage = new TabPage("Team Editor");
+
+			tabControl.Visible = true;
+			tabControl.Dock = DockStyle.Fill;
+			tabControl.Controls.Add(teamPage);
+			teamPage.Controls.Add(teamEditControl);
+
+			teamEditControl.Dock = DockStyle.Fill;
+
+			teamEditControl.Model = model;
+
+			teamEditControl.InitialiseUI();
+		}
     }
 }
