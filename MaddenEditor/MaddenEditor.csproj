@@ -277,6 +277,12 @@
     <Compile Include="Forms\TrainingCampSplashScreen.Designer.cs">
       <DependentUpon>TrainingCampSplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrainingCampTuneGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampTuneGUI.Designer.cs">
+      <DependentUpon>TrainingCampTuneGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -415,6 +421,10 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Forms\TrainingCampTuneGUI.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrainingCampTuneGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\FairWindy.JPG" />
     <EmbeddedResource Include="Forms\TrainingCampMeeting.resx">
       <SubType>Designer</SubType>

@@ -78,10 +78,10 @@ namespace MaddenEditor.Forms
                 FileStream file = File.Create(installDirectory + "\\Conditioning\\SliderSettings.txt");
                 sw = new StreamWriter(file);
 
-                sw.WriteLine("GainFrequency\t0");
+                sw.WriteLine("GainFrequency\t13");
                 sw.WriteLine("LossFrequency\t0");
-                sw.WriteLine("AmountGained\t15");
-                sw.WriteLine("AmountLost\t10");
+                sw.WriteLine("AmountGained\t2");
+                sw.WriteLine("AmountLost\t4");
                 sw.WriteLine("DisableOffseasonScenario\t0");
 
                 sw.Close();
@@ -1395,6 +1395,7 @@ namespace MaddenEditor.Forms
                 sw.WriteLine();
                
             }
+           /*
             if (checkBox2.Checked == false)
             {
                 sw.Write("Coach Progression...");
@@ -1408,7 +1409,7 @@ namespace MaddenEditor.Forms
                    model.CoachModel.CurrentCoachRecord.PuntRating);
             }
             sw.Close();
-           
+           */
         }
         private void PhaseOne()
         {
@@ -1424,7 +1425,7 @@ namespace MaddenEditor.Forms
             model.CoachModel.SetTeamFilter(SelectHumanTeam.SelectedItem.ToString());
             model.CoachModel.GetNextCoachRecord();
             int CoachMotivation = model.CoachModel.CurrentCoachRecord.Motivation;
-
+            
             foreach (PlayerRecord valObject in teamPlayers)
             {
                 WeightGain = false;
@@ -1951,6 +1952,7 @@ namespace MaddenEditor.Forms
                 sw.WriteLine();
                 
             }
+            /*
             if (checkBox2.Checked == false)
             {
                 sw.Write("Coach Progression...");
@@ -1964,9 +1966,10 @@ namespace MaddenEditor.Forms
                    model.CoachModel.CurrentCoachRecord.PuntRating);
             }
             sw.Close();
+             */
             if (ScenarioFirstName == "")
             {
-             //   groupBox5.Visible = true;
+             groupBox5.Visible = true;
             }
         }
         private void HighLowCheck(int Skill)
@@ -1990,13 +1993,15 @@ namespace MaddenEditor.Forms
             if (Attribute > OldAttribute)
             {depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Blue;}
             else if (Attribute < OldAttribute)
-            {depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Red;}          
-      
+            {depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Red;}
+
             if (Col == 6)
+            {
                 if (Attribute > OldAttribute)
-                {depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Red;}
+                { depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Red; }
                 else if (Attribute < OldAttribute)
-                {depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Blue;}        
+                { depthChartDataGrid.CurrentCell.Style.ForeColor = Color.Blue; }
+            }
         }
         private void RandomIssue()
         {
@@ -2357,7 +2362,7 @@ namespace MaddenEditor.Forms
         private void SelectHumanTeam_SelectedIndexChanged(object sender, EventArgs e)
         {
             checkBox2.Enabled = true;
-            textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 30 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
+          //  textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 30 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
             PopulateCoach();
             button4.Enabled = true; 
         }
@@ -3694,7 +3699,7 @@ namespace MaddenEditor.Forms
                 }
 
             }//End Negative Scen. 2
-          //  groupBox5.Visible = true;
+          groupBox5.Visible = true;
         }
         private void Timer1TextDelay(int SleepValue)
         {
@@ -3717,7 +3722,8 @@ namespace MaddenEditor.Forms
         private void InitializeDataGrids()
         {
             isInitialising = true;
-            
+            RosterView.Clear();
+            RosterView.Columns.Clear();
             RosterView.Columns.Add(AddColumn("Name", "System.String"));
             RosterView.Columns.Add(AddColumn("Pos", "System.String"));
             RosterView.Columns.Add(AddColumn("Age", "System.Int16"));
@@ -3822,32 +3828,35 @@ namespace MaddenEditor.Forms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if ((HoursLeft == 0) | (checkBox2.Checked == true))
-            {
+            //if ((HoursLeft == 0) | (checkBox2.Checked == true))
+           // {
                 DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for the selected team?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
 
                 if (dr == DialogResult.Yes)
                 {
                     button4.Enabled = false;
                     Cursor.Current = Cursors.WaitCursor;
+                    /*
                     if (checkBox2.Checked == false)
                     {
                         CoachProgression();
+
                     }
+                     */
                     RandomIssue();
                     Cursor.Current = Cursors.Arrow;                   
                     button4.Enabled = false;
                     checkBox2.Enabled = false;
                     if (ScenarioFirstName == "")
                     {
-                        MessageBox.Show("A .txt copy of your team's changes has been generated in\nthe \\Conditioning folder within the Gommo install directory.");
+                        MessageBox.Show("A .txt copy of your team's changes has been generated in\nthe \\Conditioning folder within the Madden Amp install directory.");
                     }
                 }
 
                 return;
-            }
-            else
-                MessageBox.Show("Coaching Hours not equal to zero. Please re-distribute");
+          //  }
+          //  else
+          //      MessageBox.Show("Coaching Hours not equal to zero. Please re-distribute");
         }
 
         private void knwUpDown_ValueChanged(object sender, EventArgs e)
@@ -4095,12 +4104,12 @@ namespace MaddenEditor.Forms
 
         private void simAllCPUToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for all CPU teams? Please be\npatient. Sim process may take a few moments...\n\n*Note-OffSeason Scenario mode is disabled during CPU Simulation however\nHead Coach progression is based on the coach progression checkbox state...", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+            DialogResult dr = MessageBox.Show("Proceed with offseason conditioning for all CPU teams? Please be\npatient. Sim process may take a few moments...\n\n*Note-OffSeason Scenario mode is disabled during CPU Simulation however...", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
 
             if (dr == DialogResult.Yes)
             {
                 Cursor.Current = Cursors.WaitCursor;
-                checkBox1.Enabled = false;
+              //  checkBox1.Enabled = false;
                 InitializeDataGrids();
                 foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
                 {

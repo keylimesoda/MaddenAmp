@@ -39,6 +39,8 @@ namespace MaddenEditor.Forms
             this.CurWeatherPic = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.downtimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.specialteamsUpDown = new System.Windows.Forms.NumericUpDown();
             this.filmstudyUpDown = new System.Windows.Forms.NumericUpDown();
@@ -59,10 +61,13 @@ namespace MaddenEditor.Forms
             this.ConditioningSldr = new System.Windows.Forms.TrackBar();
             this.BeginDay = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.OutdoorsRadioButton = new System.Windows.Forms.RadioButton();
             this.IndoorsRadioButton = new System.Windows.Forms.RadioButton();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.OutdoorsRadioButton = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.infirmaryTxt = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dispositionTxt = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurWeatherPic)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -79,6 +84,8 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.PositionDrillSldr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConditioningSldr)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox6
@@ -91,7 +98,7 @@ namespace MaddenEditor.Forms
             this.groupBox6.Controls.Add(this.CurWeatherPic);
             this.groupBox6.Location = new System.Drawing.Point(3, 12);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(453, 149);
+            this.groupBox6.Size = new System.Drawing.Size(502, 149);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Forecast...";
@@ -143,7 +150,7 @@ namespace MaddenEditor.Forms
             this.DialogTxt.Name = "DialogTxt";
             this.DialogTxt.ReadOnly = true;
             this.DialogTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.DialogTxt.Size = new System.Drawing.Size(351, 127);
+            this.DialogTxt.Size = new System.Drawing.Size(400, 127);
             this.DialogTxt.TabIndex = 1;
             // 
             // CurWeatherPic
@@ -184,6 +191,27 @@ namespace MaddenEditor.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Time Allocation...";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.label6.Location = new System.Drawing.Point(265, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 16);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "label6";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(146, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(122, 16);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Current Allocations:";
+            // 
             // downtimeUpDown
             // 
             this.downtimeUpDown.Location = new System.Drawing.Point(444, 294);
@@ -193,7 +221,7 @@ namespace MaddenEditor.Forms
             0,
             0});
             this.downtimeUpDown.Minimum = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -201,7 +229,7 @@ namespace MaddenEditor.Forms
             this.downtimeUpDown.Size = new System.Drawing.Size(36, 20);
             this.downtimeUpDown.TabIndex = 17;
             this.downtimeUpDown.Value = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -210,67 +238,37 @@ namespace MaddenEditor.Forms
             // 
             this.specialteamsUpDown.Location = new System.Drawing.Point(444, 243);
             this.specialteamsUpDown.Maximum = new decimal(new int[] {
-            75,
             0,
-            0,
-            0});
-            this.specialteamsUpDown.Minimum = new decimal(new int[] {
-            5,
             0,
             0,
             0});
             this.specialteamsUpDown.Name = "specialteamsUpDown";
             this.specialteamsUpDown.Size = new System.Drawing.Size(36, 20);
             this.specialteamsUpDown.TabIndex = 16;
-            this.specialteamsUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             // 
             // filmstudyUpDown
             // 
             this.filmstudyUpDown.Location = new System.Drawing.Point(444, 194);
             this.filmstudyUpDown.Maximum = new decimal(new int[] {
-            75,
             0,
-            0,
-            0});
-            this.filmstudyUpDown.Minimum = new decimal(new int[] {
-            5,
             0,
             0,
             0});
             this.filmstudyUpDown.Name = "filmstudyUpDown";
             this.filmstudyUpDown.Size = new System.Drawing.Size(36, 20);
             this.filmstudyUpDown.TabIndex = 15;
-            this.filmstudyUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             // 
             // teamdrillUpDown
             // 
             this.teamdrillUpDown.Location = new System.Drawing.Point(444, 143);
             this.teamdrillUpDown.Maximum = new decimal(new int[] {
-            75,
             0,
-            0,
-            0});
-            this.teamdrillUpDown.Minimum = new decimal(new int[] {
-            5,
             0,
             0,
             0});
             this.teamdrillUpDown.Name = "teamdrillUpDown";
             this.teamdrillUpDown.Size = new System.Drawing.Size(36, 20);
             this.teamdrillUpDown.TabIndex = 14;
-            this.teamdrillUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             // 
             // positiondrillUpDown
             // 
@@ -281,7 +279,7 @@ namespace MaddenEditor.Forms
             0,
             0});
             this.positiondrillUpDown.Minimum = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -289,7 +287,7 @@ namespace MaddenEditor.Forms
             this.positiondrillUpDown.Size = new System.Drawing.Size(36, 20);
             this.positiondrillUpDown.TabIndex = 13;
             this.positiondrillUpDown.Value = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -303,7 +301,7 @@ namespace MaddenEditor.Forms
             0,
             0});
             this.conditioningUpDown.Minimum = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -311,7 +309,7 @@ namespace MaddenEditor.Forms
             this.conditioningUpDown.Size = new System.Drawing.Size(36, 20);
             this.conditioningUpDown.TabIndex = 12;
             this.conditioningUpDown.Value = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -324,6 +322,7 @@ namespace MaddenEditor.Forms
             this.DownTimeLbl.Size = new System.Drawing.Size(70, 13);
             this.DownTimeLbl.TabIndex = 11;
             this.DownTimeLbl.Text = "Down Time...";
+            this.toolTip1.SetToolTip(this.DownTimeLbl, resources.GetString("DownTimeLbl.ToolTip"));
             // 
             // SpecialTeamsLbl
             // 
@@ -333,6 +332,8 @@ namespace MaddenEditor.Forms
             this.SpecialTeamsLbl.Size = new System.Drawing.Size(86, 13);
             this.SpecialTeamsLbl.TabIndex = 10;
             this.SpecialTeamsLbl.Text = "Special Teams...";
+            this.toolTip1.SetToolTip(this.SpecialTeamsLbl, "Currently, the Special Teams slider\r\namplifies the effect your special teams\r\ncoa" +
+                    "ch has on kickers and returners.");
             // 
             // FilmStudyLbl
             // 
@@ -342,6 +343,7 @@ namespace MaddenEditor.Forms
             this.FilmStudyLbl.Size = new System.Drawing.Size(64, 13);
             this.FilmStudyLbl.TabIndex = 9;
             this.FilmStudyLbl.Text = "Film Study...";
+            this.toolTip1.SetToolTip(this.FilmStudyLbl, resources.GetString("FilmStudyLbl.ToolTip"));
             // 
             // TeamDrillLbl
             // 
@@ -351,6 +353,8 @@ namespace MaddenEditor.Forms
             this.TeamDrillLbl.Size = new System.Drawing.Size(68, 13);
             this.TeamDrillLbl.TabIndex = 8;
             this.TeamDrillLbl.Text = "Team Drills...";
+            this.toolTip1.SetToolTip(this.TeamDrillLbl, "The Team Drills slider is not available until the\r\nsecond week of camp. This repr" +
+                    "esents the total\r\ndaily time allocated to Team Drills.");
             // 
             // PositionDrillLbl
             // 
@@ -360,6 +364,8 @@ namespace MaddenEditor.Forms
             this.PositionDrillLbl.Size = new System.Drawing.Size(78, 13);
             this.PositionDrillLbl.TabIndex = 7;
             this.PositionDrillLbl.Text = "Position Drills...";
+            this.toolTip1.SetToolTip(this.PositionDrillLbl, "This slider controls how much of a player\'s daily\r\nregimine is dedicated to pract" +
+                    "icing their\r\npositional skills. This slider has no direct effect on\r\nmorale.");
             // 
             // ConditioningLbl
             // 
@@ -369,78 +375,82 @@ namespace MaddenEditor.Forms
             this.ConditioningLbl.Size = new System.Drawing.Size(74, 13);
             this.ConditioningLbl.TabIndex = 6;
             this.ConditioningLbl.Text = "Conditioning...";
+            this.toolTip1.SetToolTip(this.ConditioningLbl, resources.GetString("ConditioningLbl.ToolTip"));
             // 
             // DownTimeSldr
             // 
             this.DownTimeSldr.Location = new System.Drawing.Point(91, 292);
-            this.DownTimeSldr.Maximum = 75;
-            this.DownTimeSldr.Minimum = 5;
+            this.DownTimeSldr.Maximum = 80;
+            this.DownTimeSldr.Minimum = 10;
             this.DownTimeSldr.Name = "DownTimeSldr";
             this.DownTimeSldr.Size = new System.Drawing.Size(347, 45);
             this.DownTimeSldr.TabIndex = 5;
-            this.DownTimeSldr.Value = 5;
+            this.toolTip1.SetToolTip(this.DownTimeSldr, resources.GetString("DownTimeSldr.ToolTip"));
+            this.DownTimeSldr.Value = 10;
             this.DownTimeSldr.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // SpecialTeamsSldr
             // 
             this.SpecialTeamsSldr.Location = new System.Drawing.Point(91, 241);
-            this.SpecialTeamsSldr.Maximum = 75;
-            this.SpecialTeamsSldr.Minimum = 5;
+            this.SpecialTeamsSldr.Maximum = 0;
             this.SpecialTeamsSldr.Name = "SpecialTeamsSldr";
             this.SpecialTeamsSldr.Size = new System.Drawing.Size(347, 45);
             this.SpecialTeamsSldr.TabIndex = 4;
-            this.SpecialTeamsSldr.Value = 5;
+            this.toolTip1.SetToolTip(this.SpecialTeamsSldr, "Currently, the Special Teams slider\r\namplifies the effect your special teams\r\ncoa" +
+                    "ch has on kickers and returners.");
             this.SpecialTeamsSldr.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // FilmStudySldr
             // 
             this.FilmStudySldr.Location = new System.Drawing.Point(91, 194);
-            this.FilmStudySldr.Maximum = 75;
-            this.FilmStudySldr.Minimum = 5;
+            this.FilmStudySldr.Maximum = 0;
             this.FilmStudySldr.Name = "FilmStudySldr";
             this.FilmStudySldr.Size = new System.Drawing.Size(347, 45);
             this.FilmStudySldr.TabIndex = 3;
-            this.FilmStudySldr.Value = 5;
+            this.toolTip1.SetToolTip(this.FilmStudySldr, resources.GetString("FilmStudySldr.ToolTip"));
             this.FilmStudySldr.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // TeamDrillSldr
             // 
             this.TeamDrillSldr.Location = new System.Drawing.Point(91, 143);
-            this.TeamDrillSldr.Maximum = 75;
-            this.TeamDrillSldr.Minimum = 5;
+            this.TeamDrillSldr.Maximum = 0;
             this.TeamDrillSldr.Name = "TeamDrillSldr";
             this.TeamDrillSldr.Size = new System.Drawing.Size(347, 45);
             this.TeamDrillSldr.TabIndex = 2;
-            this.TeamDrillSldr.Value = 5;
+            this.toolTip1.SetToolTip(this.TeamDrillSldr, "The Team Drills slider is not available until the\r\nsecond week of camp. This repr" +
+                    "esents the total\r\ndaily time allocated to Team Drills.");
             this.TeamDrillSldr.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // PositionDrillSldr
             // 
             this.PositionDrillSldr.Location = new System.Drawing.Point(91, 92);
-            this.PositionDrillSldr.Maximum = 75;
-            this.PositionDrillSldr.Minimum = 5;
+            this.PositionDrillSldr.Maximum = 80;
+            this.PositionDrillSldr.Minimum = 10;
             this.PositionDrillSldr.Name = "PositionDrillSldr";
             this.PositionDrillSldr.Size = new System.Drawing.Size(347, 45);
             this.PositionDrillSldr.TabIndex = 1;
-            this.PositionDrillSldr.Value = 5;
+            this.toolTip1.SetToolTip(this.PositionDrillSldr, "This slider controls how much of a player\'s daily\r\nregimine is dedicated to pract" +
+                    "icing their\r\npositional skills. This slider has no direct effect on\r\nmorale.");
+            this.PositionDrillSldr.Value = 10;
             this.PositionDrillSldr.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // ConditioningSldr
             // 
             this.ConditioningSldr.Location = new System.Drawing.Point(91, 41);
-            this.ConditioningSldr.Maximum = 75;
-            this.ConditioningSldr.Minimum = 5;
+            this.ConditioningSldr.Maximum = 80;
+            this.ConditioningSldr.Minimum = 10;
             this.ConditioningSldr.Name = "ConditioningSldr";
             this.ConditioningSldr.Size = new System.Drawing.Size(347, 45);
             this.ConditioningSldr.TabIndex = 0;
-            this.ConditioningSldr.Value = 5;
+            this.toolTip1.SetToolTip(this.ConditioningSldr, resources.GetString("ConditioningSldr.ToolTip"));
+            this.ConditioningSldr.Value = 10;
             this.ConditioningSldr.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
             // BeginDay
             // 
             this.BeginDay.BackColor = System.Drawing.Color.PaleTurquoise;
             this.BeginDay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BeginDay.Location = new System.Drawing.Point(462, 50);
+            this.BeginDay.Location = new System.Drawing.Point(691, 63);
             this.BeginDay.Name = "BeginDay";
             this.BeginDay.Size = new System.Drawing.Size(85, 40);
             this.BeginDay.TabIndex = 18;
@@ -452,23 +462,12 @@ namespace MaddenEditor.Forms
             // 
             this.groupBox2.Controls.Add(this.IndoorsRadioButton);
             this.groupBox2.Controls.Add(this.OutdoorsRadioButton);
-            this.groupBox2.Location = new System.Drawing.Point(456, 96);
+            this.groupBox2.Location = new System.Drawing.Point(567, 38);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(104, 65);
+            this.groupBox2.Size = new System.Drawing.Size(108, 65);
             this.groupBox2.TabIndex = 19;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Practice Field...";
-            // 
-            // OutdoorsRadioButton
-            // 
-            this.OutdoorsRadioButton.AutoSize = true;
-            this.OutdoorsRadioButton.Location = new System.Drawing.Point(12, 19);
-            this.OutdoorsRadioButton.Name = "OutdoorsRadioButton";
-            this.OutdoorsRadioButton.Size = new System.Drawing.Size(77, 17);
-            this.OutdoorsRadioButton.TabIndex = 0;
-            this.OutdoorsRadioButton.TabStop = true;
-            this.OutdoorsRadioButton.Text = "Outdoors...";
-            this.OutdoorsRadioButton.UseVisualStyleBackColor = true;
             // 
             // IndoorsRadioButton
             // 
@@ -479,34 +478,78 @@ namespace MaddenEditor.Forms
             this.IndoorsRadioButton.TabIndex = 1;
             this.IndoorsRadioButton.TabStop = true;
             this.IndoorsRadioButton.Text = "Indoors...";
+            this.toolTip1.SetToolTip(this.IndoorsRadioButton, "No heat worries when practicing indoors. No adverse\r\neffects from rain or wind ei" +
+                    "ther.\r\n\r\nHowever, due to the hard practice surface injury\r\nchances are elevated." +
+                    "..");
             this.IndoorsRadioButton.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // OutdoorsRadioButton
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(146, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(122, 16);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Current Allocations:";
+            this.OutdoorsRadioButton.AutoSize = true;
+            this.OutdoorsRadioButton.Location = new System.Drawing.Point(12, 19);
+            this.OutdoorsRadioButton.Name = "OutdoorsRadioButton";
+            this.OutdoorsRadioButton.Size = new System.Drawing.Size(77, 17);
+            this.OutdoorsRadioButton.TabIndex = 0;
+            this.OutdoorsRadioButton.TabStop = true;
+            this.OutdoorsRadioButton.Text = "Outdoors...";
+            this.toolTip1.SetToolTip(this.OutdoorsRadioButton, resources.GetString("OutdoorsRadioButton.ToolTip"));
+            this.OutdoorsRadioButton.UseVisualStyleBackColor = true;
             // 
-            // label6
+            // groupBox3
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.label6.Location = new System.Drawing.Point(265, 16);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(51, 16);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "label6";
+            this.groupBox3.Controls.Add(this.infirmaryTxt);
+            this.groupBox3.Location = new System.Drawing.Point(511, 109);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(299, 399);
+            this.groupBox3.TabIndex = 20;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Infirmary...";
+            // 
+            // infirmaryTxt
+            // 
+            this.infirmaryTxt.Location = new System.Drawing.Point(10, 21);
+            this.infirmaryTxt.Multiline = true;
+            this.infirmaryTxt.Name = "infirmaryTxt";
+            this.infirmaryTxt.ReadOnly = true;
+            this.infirmaryTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.infirmaryTxt.Size = new System.Drawing.Size(279, 367);
+            this.infirmaryTxt.TabIndex = 0;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.dispositionTxt);
+            this.groupBox4.Location = new System.Drawing.Point(511, 345);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(299, 163);
+            this.groupBox4.TabIndex = 21;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Team disposition...";
+            this.groupBox4.Visible = false;
+            // 
+            // dispositionTxt
+            // 
+            this.dispositionTxt.Location = new System.Drawing.Point(6, 19);
+            this.dispositionTxt.Multiline = true;
+            this.dispositionTxt.Name = "dispositionTxt";
+            this.dispositionTxt.ReadOnly = true;
+            this.dispositionTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dispositionTxt.Size = new System.Drawing.Size(283, 133);
+            this.dispositionTxt.TabIndex = 0;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 15000;
+            this.toolTip1.InitialDelay = 200;
+            this.toolTip1.ReshowDelay = 100;
+            this.toolTip1.ShowAlways = true;
             // 
             // TrainingCampMeeting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 540);
+            this.ClientSize = new System.Drawing.Size(817, 517);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.BeginDay);
             this.Controls.Add(this.groupBox1);
@@ -534,6 +577,10 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.ConditioningSldr)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -573,5 +620,10 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.RadioButton OutdoorsRadioButton;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox infirmaryTxt;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox dispositionTxt;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

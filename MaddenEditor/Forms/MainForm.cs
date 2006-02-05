@@ -775,6 +775,33 @@ namespace MaddenEditor.Forms
             }
         }
 
+        private void tunetxtModifierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampTuneGUI tcos = new TrainingCampTuneGUI(model);
+            //  form.Show(this);
+            tcos.Show();
+        }
+
+        private void tunetxtGUIEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampTuneGUI tcos = new TrainingCampTuneGUI(model);
+            tcos.Show();
+        }
+
+        private void offSeasonConditioningTrainingCampToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampOffSeason tcos = new TrainingCampOffSeason(model);
+            tcos.initialiseUI();
+            //  form.Show(this);
+            tcos.Show();
+        }
+
+        private void tUNEtxtGUIEditorforTrainingCampToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampTuneGUI tcos = new TrainingCampTuneGUI(model);
+            tcos.Show();
+        }
+
         // MADDEN DRAFT EDIT
 
     }

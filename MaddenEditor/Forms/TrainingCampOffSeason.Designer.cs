@@ -103,6 +103,7 @@ namespace MaddenEditor.Forms
             this.GainAmountSld = new System.Windows.Forms.TrackBar();
             this.LossFreqSld = new System.Windows.Forms.TrackBar();
             this.GainFreqSld = new System.Windows.Forms.TrackBar();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -129,6 +130,7 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.GainAmountSld)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).BeginInit();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -136,7 +138,7 @@ namespace MaddenEditor.Forms
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(219, 29);
+            this.label1.Size = new System.Drawing.Size(186, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Check the box below to simulate your teams offseason conditioning. ";
             // 
@@ -184,11 +186,12 @@ namespace MaddenEditor.Forms
             // 
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.SelectHumanTeam);
             this.groupBox1.Location = new System.Drawing.Point(4, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(228, 90);
+            this.groupBox1.Size = new System.Drawing.Size(270, 90);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Simulate Offseason Conditioning?";
@@ -197,7 +200,6 @@ namespace MaddenEditor.Forms
             // 
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Enabled = false;
             this.groupBox2.Location = new System.Drawing.Point(4, 122);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(189, 101);
@@ -262,14 +264,14 @@ namespace MaddenEditor.Forms
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.depthChartDataGrid.DefaultCellStyle = dataGridViewCellStyle1;
-            this.depthChartDataGrid.Location = new System.Drawing.Point(9, 373);
+            this.depthChartDataGrid.Location = new System.Drawing.Point(9, 302);
             this.depthChartDataGrid.MultiSelect = false;
             this.depthChartDataGrid.Name = "depthChartDataGrid";
             this.depthChartDataGrid.ReadOnly = true;
             this.depthChartDataGrid.RowHeadersVisible = false;
             this.depthChartDataGrid.RowTemplate.Height = 28;
             this.depthChartDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.depthChartDataGrid.Size = new System.Drawing.Size(1028, 271);
+            this.depthChartDataGrid.Size = new System.Drawing.Size(1028, 342);
             this.depthChartDataGrid.TabIndex = 9;
             // 
             // groupBox4
@@ -442,7 +444,6 @@ namespace MaddenEditor.Forms
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.DisableScenarioChk);
             this.groupBox6.Controls.Add(this.checkBox2);
             this.groupBox6.Controls.Add(this.HoursLeftlbl);
             this.groupBox6.Controls.Add(this.pUpDown);
@@ -458,7 +459,6 @@ namespace MaddenEditor.Forms
             this.groupBox6.Controls.Add(this.chmUpDown);
             this.groupBox6.Controls.Add(this.motUpDown);
             this.groupBox6.Controls.Add(this.knwUpDown);
-            this.groupBox6.Controls.Add(this.button4);
             this.groupBox6.Controls.Add(this.hcp);
             this.groupBox6.Controls.Add(this.hcdl);
             this.groupBox6.Controls.Add(this.hclb);
@@ -476,25 +476,28 @@ namespace MaddenEditor.Forms
             this.groupBox6.Controls.Add(this.hcname);
             this.groupBox6.Location = new System.Drawing.Point(9, 295);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(1028, 72);
+            this.groupBox6.Size = new System.Drawing.Size(890, 72);
             this.groupBox6.TabIndex = 35;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "     Head Coach Name        Age       Knw      Mot      Chm     Eth            QB" +
                 "       RB       WR      OL         DL        LB        DB        K         P    " +
                 " Hours Left";
+            this.groupBox6.Visible = false;
             // 
             // DisableScenarioChk
             // 
-            this.DisableScenarioChk.Location = new System.Drawing.Point(810, 37);
+            this.DisableScenarioChk.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.DisableScenarioChk.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DisableScenarioChk.Location = new System.Drawing.Point(0, 16);
             this.DisableScenarioChk.Name = "DisableScenarioChk";
-            this.DisableScenarioChk.Size = new System.Drawing.Size(139, 33);
+            this.DisableScenarioChk.Size = new System.Drawing.Size(78, 68);
             this.DisableScenarioChk.TabIndex = 37;
-            this.DisableScenarioChk.Text = "Disable \'Offseason Scenario\' mode";
+            this.DisableScenarioChk.Text = "check to disable Offseason Scenario  mode";
             this.DisableScenarioChk.UseVisualStyleBackColor = true;
             // 
             // checkBox2
             // 
-            this.checkBox2.Location = new System.Drawing.Point(810, 7);
+            this.checkBox2.Location = new System.Drawing.Point(731, 7);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(139, 31);
             this.checkBox2.TabIndex = 30;
@@ -639,7 +642,7 @@ namespace MaddenEditor.Forms
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(731, 21);
+            this.button4.Location = new System.Drawing.Point(191, 22);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(73, 36);
             this.button4.TabIndex = 15;
@@ -766,7 +769,7 @@ namespace MaddenEditor.Forms
             this.groupBox7.Controls.Add(this.GainAmountSld);
             this.groupBox7.Controls.Add(this.LossFreqSld);
             this.groupBox7.Controls.Add(this.GainFreqSld);
-            this.groupBox7.Location = new System.Drawing.Point(238, 27);
+            this.groupBox7.Location = new System.Drawing.Point(280, 27);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(224, 182);
             this.groupBox7.TabIndex = 36;
@@ -842,11 +845,22 @@ namespace MaddenEditor.Forms
             this.GainFreqSld.Size = new System.Drawing.Size(141, 45);
             this.GainFreqSld.TabIndex = 0;
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.DisableScenarioChk);
+            this.groupBox8.Location = new System.Drawing.Point(199, 122);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(75, 87);
+            this.groupBox8.TabIndex = 38;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "   Disable?";
+            // 
             // TrainingCampOffSeason
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 666);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -894,6 +908,7 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.GainAmountSld)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LossFreqSld)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GainFreqSld)).EndInit();
+            this.groupBox8.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -973,5 +988,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.CheckBox DisableScenarioChk;
         private System.Windows.Forms.ToolStripMenuItem cPUSimulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem simAllCPUToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox8;
     }
 }

@@ -1,3 +1,25 @@
+/******************************************************************************
+ * Madden 2005 Editor
+ * Copyright (C) 2005 MaddenWishlist.com
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * 
+ * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * 
+ * maddeneditor@tributech.com.au
+ * 
+ *****************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +40,7 @@ namespace MaddenEditor.Forms
         Random random = new Random();
         private bool triggerChangedEvent = true;
         private DepthChartEditingModel depthEditingModel = null;
+        private string Mode; int CurTmp = 0; int WindSpd = 0;
 
         public MaddenEditor.Core.EditorModel Model
         {
@@ -31,56 +54,349 @@ namespace MaddenEditor.Forms
             depthEditingModel = new DepthChartEditingModel(model);
             InitializeComponent();
             label6.Text = (conditioningUpDown.Value + positiondrillUpDown.Value + teamdrillUpDown.Value + filmstudyUpDown.Value + specialteamsUpDown.Value + downtimeUpDown.Value) + "%";
-            if (tcform.Stage == "Hell Week")
+            string installDirectory = Application.StartupPath;
+
+            if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 1))
             {
-                ConditioningSldr.Value = 5;
-                ConditioningSldr.Minimum = 5;
-                conditioningUpDown.Value = 5;
-                conditioningUpDown.Minimum = 5;
-                PositionDrillSldr.Value = 5;
-                PositionDrillSldr.Minimum = 5;
-                positiondrillUpDown.Value = 5;
-                positiondrillUpDown.Minimum = 5;
-                DownTimeSldr.Value = 5;
-                DownTimeSldr.Minimum = 5;
-                downtimeUpDown.Value = 5;
-                downtimeUpDown.Minimum = 5;
-                ConditioningSldr.Maximum = 90;
-                conditioningUpDown.Maximum = 90;
-                PositionDrillSldr.Maximum = 90;
-                positiondrillUpDown.Maximum = 90;
-                DownTimeSldr.Maximum = 90;
-                downtimeUpDown.Maximum = 90;
-                teamdrillUpDown.Enabled = false;
-                filmstudyUpDown.Enabled = false;
-                specialteamsUpDown.Enabled = false;
-                TeamDrillSldr.Enabled = false;
-                FilmStudySldr.Enabled = false;
-                SpecialTeamsSldr.Enabled = false;
-                label6.Text = (conditioningUpDown.Value + positiondrillUpDown.Value  + downtimeUpDown.Value) + "%";
+
+                DialogResult dr = MessageBox.Show("Enable Advanced mode?\n\nSelecting 'Yes' will enable Advanced mode,where you'll make daily changes to your\nCoach Sliders.\n\nIn doing so you'll have more control over managing your teams daily activites\nbut training camp takes longer in advanced mode than is does in basic mode.\n\nSelecting 'No' enables Basic mode where you make only two adjustmants to your\ncoaching sliders; Once at the beginning of week 1 and again at the start of week 2.\n\nPlayer activities will carry over to each day in Basic mode.\n\nRegardless of mode, you can exit Training Camp at any time\nduring the Player Allocation phase. Re-entering the training camp screen\nreloads your progress and allows you to continue...\n\n***NOTE: Advanced mode currently unavaiable in Beta release", "", MessageBoxButtons.OK, MessageBoxIcon.None);
+
+                if (dr == DialogResult.Yes)
+                {
+                    StreamWriter sw2 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
+                    sw2.Write("advanced");
+                    sw2.WriteLine();
+                    sw2.Close();
+                }
+                else if (dr == DialogResult.No)
+                {
+                    StreamWriter sw2 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
+                    sw2.Write("basic");
+                    sw2.WriteLine();
+                    sw2.Close();
+                }
+
+                infirmaryTxt.Text = "--All players are healthy and ready for camp";
 
             }
+            //temp code for basic 
+            StreamWriter sw10 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
+            sw10.Write("basic");
+            sw10.WriteLine();
+            sw10.Close();
 
+            StreamReader ct = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
+            Mode = ct.ReadLine();
+            ct.Close();
+
+
+            conditioningUpDown.Enabled = false;
+            positiondrillUpDown.Enabled = false;
+            downtimeUpDown.Enabled = false;
+            filmstudyUpDown.Enabled = false;
+            specialteamsUpDown.Enabled = false;
+            teamdrillUpDown.Enabled = false;
+            filmstudyUpDown.Enabled = false;
+            specialteamsUpDown.Enabled = false;
+            ConditioningSldr.Enabled = false;
+            PositionDrillSldr.Enabled = false;
+            DownTimeSldr.Enabled = false;
+            TeamDrillSldr.Enabled = false;
+            FilmStudySldr.Enabled = false;
+            SpecialTeamsSldr.Enabled = false;
+
+            if (((tcform.Stage == "Hell Week") & (Mode == "advanced")) || ((tcform.Stage == "Hell Week") & (Mode == "basic") & (tcform.CurDay == 1)))
+            {
+                conditioningUpDown.Enabled = true;
+                positiondrillUpDown.Enabled = true;
+                downtimeUpDown.Enabled = true;
+                ConditioningSldr.Enabled = true;
+                PositionDrillSldr.Enabled = true;
+                DownTimeSldr.Enabled = true;
+                ConditioningSldr.Value = 10;
+                ConditioningSldr.Minimum = 10;
+                conditioningUpDown.Value = 10;
+                conditioningUpDown.Minimum = 10;
+                PositionDrillSldr.Value = 10;
+                PositionDrillSldr.Minimum = 10;
+                positiondrillUpDown.Value = 10;
+                positiondrillUpDown.Minimum = 10;
+                DownTimeSldr.Value = 10;
+                DownTimeSldr.Minimum = 10;
+                downtimeUpDown.Value = 10;
+                downtimeUpDown.Minimum = 10;
+                ConditioningSldr.Maximum = 80;
+                conditioningUpDown.Maximum = 80;
+                PositionDrillSldr.Maximum = 80;
+                positiondrillUpDown.Maximum = 80;
+                DownTimeSldr.Maximum = 80;
+                downtimeUpDown.Maximum = 80;
+                label6.Text = (conditioningUpDown.Value + positiondrillUpDown.Value + downtimeUpDown.Value) + "%";
+            }
+            else if (((tcform.Stage == "Training Camp") & (tcform.CurDay == 8)))
+            {
+                conditioningUpDown.Enabled = true;
+                positiondrillUpDown.Enabled = true;
+                downtimeUpDown.Enabled = true;
+                teamdrillUpDown.Enabled = true;
+                specialteamsUpDown.Enabled = true;
+                filmstudyUpDown.Enabled = true;
+                ConditioningSldr.Enabled = true;
+                PositionDrillSldr.Enabled = true;
+                DownTimeSldr.Enabled = true;
+                TeamDrillSldr.Enabled = true;
+                DownTimeSldr.Enabled = true;
+                FilmStudySldr.Enabled = true;
+                SpecialTeamsSldr.Enabled = true;
+
+                ConditioningSldr.Value = 10;
+                ConditioningSldr.Minimum = 10;
+                conditioningUpDown.Value = 10;
+                conditioningUpDown.Minimum = 10;
+                PositionDrillSldr.Value = 10;
+                PositionDrillSldr.Minimum = 10;
+                positiondrillUpDown.Value = 10;
+                positiondrillUpDown.Minimum = 10;
+                DownTimeSldr.Value = 10;
+                DownTimeSldr.Minimum = 10;
+                downtimeUpDown.Value = 10;
+                downtimeUpDown.Minimum = 10;
+                TeamDrillSldr.Minimum = 5;
+                teamdrillUpDown.Minimum = 5;
+                TeamDrillSldr.Value = 5;
+                teamdrillUpDown.Value = 5;
+                FilmStudySldr.Minimum = 10;
+                filmstudyUpDown.Minimum = 10;
+                FilmStudySldr.Value = 10;
+                filmstudyUpDown.Value = 10;
+                specialteamsUpDown.Minimum = 10;
+                SpecialTeamsSldr.Minimum = 10;
+                specialteamsUpDown.Value = 10;
+                SpecialTeamsSldr.Value = 10;
+
+                ConditioningSldr.Maximum = 55;
+                conditioningUpDown.Maximum = 55;
+                PositionDrillSldr.Maximum = 55;
+                positiondrillUpDown.Maximum = 55;
+                DownTimeSldr.Maximum = 55;
+                downtimeUpDown.Maximum = 55;
+                specialteamsUpDown.Maximum = 55;
+                SpecialTeamsSldr.Maximum = 55;
+                FilmStudySldr.Maximum = 55;
+                filmstudyUpDown.Maximum = 55;
+                TeamDrillSldr.Maximum = 50;
+                teamdrillUpDown.Maximum = 50;
+
+                label6.Text = (conditioningUpDown.Value + positiondrillUpDown.Value + downtimeUpDown.Value + teamdrillUpDown.Value + filmstudyUpDown.Value + specialteamsUpDown.Value) + "%";
+            }
+            else if (((tcform.Stage == "Training Camp") & (tcform.CurDay >= 9)))
+            {
+                if (Mode == "Advanced")
+                {
+                    conditioningUpDown.Enabled = true;
+                    positiondrillUpDown.Enabled = true;
+                    downtimeUpDown.Enabled = true;
+                    teamdrillUpDown.Enabled = true;
+                    specialteamsUpDown.Enabled = true;
+                    filmstudyUpDown.Enabled = true;
+                    ConditioningSldr.Enabled = true;
+                    PositionDrillSldr.Enabled = true;
+                    DownTimeSldr.Enabled = true;
+                    TeamDrillSldr.Enabled = true;
+                    DownTimeSldr.Enabled = true;
+                    FilmStudySldr.Enabled = true;
+                    SpecialTeamsSldr.Enabled = true;
+                }
+                else
+                {
+                    conditioningUpDown.Enabled = false;
+                    positiondrillUpDown.Enabled = false;
+                    downtimeUpDown.Enabled = false;
+                    teamdrillUpDown.Enabled = false;
+                    specialteamsUpDown.Enabled = false;
+                    filmstudyUpDown.Enabled = false;
+                    ConditioningSldr.Enabled = false;
+                    PositionDrillSldr.Enabled = false;
+                    DownTimeSldr.Enabled = false;
+                    TeamDrillSldr.Enabled = false;
+                    DownTimeSldr.Enabled = false;
+                    FilmStudySldr.Enabled = false;
+                    SpecialTeamsSldr.Enabled = false;
+
+                }
+                ConditioningSldr.Minimum = 10;
+                conditioningUpDown.Minimum = 10;
+                PositionDrillSldr.Minimum = 10;
+                positiondrillUpDown.Minimum = 10;
+                DownTimeSldr.Minimum = 10;
+                downtimeUpDown.Minimum = 10;
+                TeamDrillSldr.Minimum = 5;
+                teamdrillUpDown.Minimum = 5;
+                FilmStudySldr.Minimum = 10;
+                filmstudyUpDown.Minimum = 10;
+                specialteamsUpDown.Minimum = 10;
+                SpecialTeamsSldr.Minimum = 10;
+
+                ConditioningSldr.Maximum = 55;
+                conditioningUpDown.Maximum = 55;
+                PositionDrillSldr.Maximum = 55;
+                positiondrillUpDown.Maximum = 55;
+                DownTimeSldr.Maximum = 55;
+                downtimeUpDown.Maximum = 55;
+                specialteamsUpDown.Maximum = 55;
+                SpecialTeamsSldr.Maximum = 55;
+                FilmStudySldr.Maximum = 55;
+                filmstudyUpDown.Maximum = 55;
+                TeamDrillSldr.Maximum = 50;
+                teamdrillUpDown.Maximum = 50;
+                StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\coachsliders");
+                string[] Sliders = sr.ReadLine().Split(',');
+                sr.Close();
+
+                ConditioningSldr.Value = int.Parse(Sliders[0]);
+                conditioningUpDown.Value = int.Parse(Sliders[0]);
+                PositionDrillSldr.Value = int.Parse(Sliders[1]);
+                positiondrillUpDown.Value = int.Parse(Sliders[1]);
+                TeamDrillSldr.Value = int.Parse(Sliders[2]);
+                teamdrillUpDown.Value = int.Parse(Sliders[2]);
+                FilmStudySldr.Value = int.Parse(Sliders[3]);
+                filmstudyUpDown.Value = int.Parse(Sliders[3]);
+                specialteamsUpDown.Value = int.Parse(Sliders[4]);
+                SpecialTeamsSldr.Value = int.Parse(Sliders[4]);
+                DownTimeSldr.Value = int.Parse(Sliders[5]);
+                downtimeUpDown.Value = int.Parse(Sliders[5]);
+                label6.Text = (conditioningUpDown.Value + positiondrillUpDown.Value + downtimeUpDown.Value + teamdrillUpDown.Value + filmstudyUpDown.Value + specialteamsUpDown.Value) + "%";
+            }
+            if ((Mode == "basic") & (tcform.CurDay >= 2) & (tcform.CurDay <= 7))
+            {
+                StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\coachsliders");
+                string[] Sliders = sr.ReadLine().Split(',');
+                sr.Close();
+
+                ConditioningSldr.Value = int.Parse(Sliders[0]);
+                conditioningUpDown.Value = int.Parse(Sliders[0]);
+                PositionDrillSldr.Value = int.Parse(Sliders[1]);
+                positiondrillUpDown.Value = int.Parse(Sliders[1]);
+                TeamDrillSldr.Value = int.Parse(Sliders[2]);
+                teamdrillUpDown.Value = int.Parse(Sliders[2]);
+                FilmStudySldr.Value = int.Parse(Sliders[3]);
+                filmstudyUpDown.Value = int.Parse(Sliders[3]);
+                specialteamsUpDown.Value = int.Parse(Sliders[4]);
+                SpecialTeamsSldr.Value = int.Parse(Sliders[4]);
+                DownTimeSldr.Value = int.Parse(Sliders[5]);
+                downtimeUpDown.Value = int.Parse(Sliders[5]);
+            }
+            if (tcform.CurDay != 1)
+            {
+                StreamReader index = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\currentteam");
+                int CurTeamIndex = int.Parse(index.ReadLine());
+                index.Close();
+                int teamId = CurTeamIndex;
+                int positionId = 0;
+                string Pos = "";
+                List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
+                foreach (PlayerRecord valObject in teamPlayers)
+                {
+
+                    if (valObject.PositionId == 0)
+                    {
+                        Pos = "QB";
+                    }
+                    else if (valObject.PositionId == 1)
+                    {
+                        Pos = "HB";
+                    }
+                    else if (valObject.PositionId == 2)
+                    {
+                        Pos = "FB";
+                    }
+                    else if (valObject.PositionId == 3)
+                    {
+                        Pos = "WR";
+                    }
+                    else if (valObject.PositionId == 4)
+                    {
+                        Pos = "TE";
+                    }
+                    else if (valObject.PositionId == 5 | valObject.PositionId == 6 | valObject.PositionId == 7 | valObject.PositionId == 8 | valObject.PositionId == 9)
+                    {
+                        Pos = "OL";
+                    }
+                    else if (valObject.PositionId == 10 | valObject.PositionId == 11 | valObject.PositionId == 12)
+                    {
+                        Pos = "DL";
+                    }
+                    else if (valObject.PositionId == 13 | valObject.PositionId == 14 | valObject.PositionId == 15)
+                    {
+                        Pos = "LB";
+                    }
+                    else if (valObject.PositionId == 16 | valObject.PositionId == 17 | valObject.PositionId == 18)
+                    {
+                        Pos = "DB";
+                    }
+                    else if (valObject.PositionId == 19)
+                    {
+                        Pos = "KP";
+                    }
+                    else if (valObject.PositionId == 20)
+                    {
+                        Pos = "KP";
+                    }
+                    //current totals
+                    StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName + " Totals");
+                    string TotalsContents = sr.ReadToEnd();
+                    sr.Close();
+                    string[] TotalsContentsLine = TotalsContents.Split(',');
+                    string[] CurInjury = TotalsContentsLine[1].Split(';');
+                    /*
+                                        if (int.Parse(TotalsContentsLine[2]) >= 7)
+                                        {
+                                            int wk = int.Parse(TotalsContentsLine[2]) / 7;
+                                            TotalsContentsLine[2] = wk + " weeks.";
+                                        }
+                    */
+
+                    if (TotalsContentsLine[1] != "")
+                    {
+                        if (int.Parse(TotalsContentsLine[2]) == 91)
+                        {
+                            infirmaryTxt.Text = infirmaryTxt.Text + "--" + valObject.FirstName + " " + valObject.LastName + " " + CurInjury[1] + " out for the entire season.\r\n\r\n";
+
+                                                    }
+                        else if (int.Parse(TotalsContentsLine[2]) != 91)
+                        {
+                            infirmaryTxt.Text = infirmaryTxt.Text + "--" + valObject.FirstName + " " + valObject.LastName + " " + CurInjury[1] + " out for " + TotalsContentsLine[2] + " day(s).\r\n\r\n";
+ 
+                        }
+
+                    }
+
+
+                }
+               
+            }
             OutdoorsRadioButton.Checked = true;
             WeatherGenerator();
         }
-
         private void WeatherGenerator()
         {
             int MinTmp = 0;
-            int MaxTmp = 0;
-            int CurTmp = 0;
-            int WindSpd = 0;
+            int MaxTmp = 0;            
             int TmpDeviation = 0;
             string WndDir = "";
             int Weather = (int)(90 * random.NextDouble() + 1);
             string pic = "";
+            tcform.HeadCold = 0;
+            tcform.TghRainBonus = 0;
+            tcform.TghBonus = 0;
+            tcform.CatBonus = 0;
+            tcform.WthInjIncrease = 0;
 
             if (Weather <= 25)
             {
                 pic = "sunny";               
                 TmpDeviation = (int)(10 * random.NextDouble() + 1);
-                WindSpd = (int)(7 * random.NextDouble());
+                WindSpd = (int)(7 * random.NextDouble()); 
 
                 if (TmpDeviation <= 4)
                 {
@@ -269,11 +585,11 @@ namespace MaddenEditor.Forms
                 }
                 else if (CurTmp <= 80)
                 {
-                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. Lots of wind but fair skies. Current Temperature is " + CurTmp + ". A little cool. Good day for conditioning drills but QBs will struggle along with the kickers.";
+                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. Lots of wind but fair skies. Current Temperature is " + CurTmp + ". A little cool. Good day for conditioning drills but QBs will struggle with accuracy along with the kickers. It'll help some with throwing/kicking power though.";
                 }
                 else if (CurTmp <= 95)
                 {
-                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. Fair skies but very windy. Current Temperature is " + CurTmp + ". My clipboard notes keep blowing away. Great day for conditioning drills but QBs will struggle along with the kickers.";
+                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. Fair skies but very windy. Current Temperature is " + CurTmp + ". My clipboard notes keep blowing away. Great day for conditioning drills but QBs will struggle with accuracy along with the kickers. It'll help some with throwing/kicking power though";
                 }
             }
             else if (Weather <= 72)
@@ -310,16 +626,19 @@ namespace MaddenEditor.Forms
                 CurTmp = (int)(MaxTmp * random.NextDouble() + MinTmp);
                 if (CurTmp <= 80)
                 {
-                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. Cool and rainy. Current Temperature is " + CurTmp + ". We can keep them outside and won't have to worry about heat exhaustion. Plus the slick conditions will benefit receivers(catching a slick ball), running backs and QBs(decrease fumbling). All we're risking is the occaisional cold.";
+                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. Cool and rainy. Current Temperature is " + CurTmp + ". We can keep them outside and won't have to worry about heat exhaustion. Plus the slick conditions will benefit receivers(catching a slick ball), running backs and QBs(decrease fumbling). Playing conditions aren't too bad. Shouldn't much affect injury chances. All we're really risking is the occaisional cold.";
                 }
                 else if (CurTmp <= 88)
                 {
-                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. The forecast for today is warm with showers. Current Temperature is " + CurTmp + ". The slick conditions will benefit receivers(catching a slick ball), running backs and QBs(decrease fumbling). All we're risking is the occaisional cold.";
+                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. The forecast for today is warm with showers. Current Temperature is " + CurTmp + ". The slick conditions will benefit receivers(catching a slick ball), running backs and QBs(decrease fumbling). Playing conditions aren't too bad. Shouldn't much affect injury chances. All we're really risking is the occaisional cold.";
                 }
                 else if (CurTmp > 88)
                 {
-                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. It's hot and humid but there's a cool misty rainfall. Current Temperature is " + CurTmp + ". The slick conditions will benefit receivers(catching a slick ball), running backs and QBs(decrease fumbling). All we're risking is the occaisional cold.";
+                    DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. It's hot and humid but there's a cool misty rainfall. Current Temperature is " + CurTmp + ". The slick conditions will benefit receivers(catching a slick ball), running backs and QBs(decrease fumbling). Playing conditions aren't too bad. Shouldn't much affect injury chances. All we're really risking is the occaisional cold.";
                 }
+                tcform.HeadCold = (int)(2 * random.NextDouble() + 1);
+                tcform.WthInjIncrease = 1;
+                tcform.CatBonus = (decimal).025;
             }
             else if (Weather <= 82)
             {
@@ -328,7 +647,12 @@ namespace MaddenEditor.Forms
                     MinTmp = 73;
                     MaxTmp = 10;
                 CurTmp = (int)(MaxTmp * random.NextDouble() + MinTmp);
-                DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. My clipboard is soaked! It's coming down in buckets out there. Current Temperature is " + CurTmp + ". It's a monsoon, but there're no reports of lightening so we could practice outside if you so choose. Doing so will benefit nearly every position as they'll have to maintain a sharp focus in the fierce conditions. It'll toughen these patsies up some too. Just be prepared for a guy or two catching a head cold.";
+                DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. My clipboard is soaked! It's coming down in buckets out there. Current Temperature is " + CurTmp + ". It's a monsoon, but there're no reports of lightening so we could practice outside if you so choose. Doing so will benefit nearly every position as they'll have to maintain a sharp focus in the fierce conditions. It'll toughen these patsies up some too. Just be prepared for a guy or two catching a head cold. One more thing, the miserable conditions have made the footing quite slippery, so the chance of injury is elevated.";
+                tcform.HeadCold = (int)(5 * random.NextDouble() + 1);
+                tcform.TghBonus = (decimal)0.1;
+                tcform.CatBonus = (decimal).05;
+                tcform.WthInjIncrease = 3;
+                tcform.HvyRainAwrBonus = (decimal).5;
             }
             else if (Weather > 82)
             {
@@ -390,7 +714,10 @@ namespace MaddenEditor.Forms
 
         }
 
+        private void Injury()
+        {
 
+        }
         private void ReloadMeeting()
         {
 
@@ -400,8 +727,22 @@ namespace MaddenEditor.Forms
                 FilmStudySldr.Enabled = false;
                 SpecialTeamsSldr.Enabled = false;
                 DownTimeSldr.Enabled = false;
+                teamdrillUpDown.Enabled = false;
+                filmstudyUpDown.Enabled = false;
+                specialteamsUpDown.Enabled = false;
+                downtimeUpDown.Enabled = false;
             }
-
+            else if (tcform.Stage == "Training Camp")
+            {
+                TeamDrillSldr.Enabled = true;
+                FilmStudySldr.Enabled = true;
+                SpecialTeamsSldr.Enabled = true;
+                DownTimeSldr.Enabled = true;
+                teamdrillUpDown.Enabled = true;
+                filmstudyUpDown.Enabled = true;
+                specialteamsUpDown.Enabled = true;
+                downtimeUpDown.Enabled = true;
+            }
 
 
 
@@ -494,7 +835,7 @@ namespace MaddenEditor.Forms
                     UpDownToChange.Value = UpDownToChange.Maximum;
                     sender.Value = (int)UpDownToChange.Maximum;
                 }
-
+                
             }
             else if (tcform.Stage == "Hell Week")
             {               
@@ -646,6 +987,7 @@ namespace MaddenEditor.Forms
 
             StreamReader ct = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\currentteam");
             int CurTeamIndex = int.Parse(ct.ReadLine());
+            ct.Close();
             StreamWriter sw;
             int Con = 0; int PosDrill = 0; int Team = 0; int Film = 0; int Special = 0; int Down = 0;
             if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam))
@@ -655,6 +997,7 @@ namespace MaddenEditor.Forms
 
             StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\coachsliders");
             string line = sr.ReadLine();
+            sr.Close();
             string[] CoachSliders = line.Split(',');
             Con = int.Parse(CoachSliders[0]);
             PosDrill = int.Parse(CoachSliders[1]);
@@ -663,7 +1006,7 @@ namespace MaddenEditor.Forms
             Special = int.Parse(CoachSliders[4]);
             Down = int.Parse(CoachSliders[5]);
 
-            int teamId = ((TeamRecord)tcform.tn).TeamId;
+            int teamId = CurTeamIndex;
             int positionId = 0;
             string Pos = "";
             List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
@@ -710,60 +1053,135 @@ namespace MaddenEditor.Forms
                 {
                     Pos = "KP";
                 }
-                Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos);
-                FileStream file = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
-                sw = new StreamWriter(file);
-                sw.Write(Con + "," + PosDrill + "," + Team + "," + Con + "," + Film + "," + Special + "," + Down);
-                sw.WriteLine();
-                sw.Write(valObject.FirstName + " " + valObject.LastName);
-                sw.Write(",");
-                sw.Write(valObject.Weight + 160);
-                sw.Write(",");
-                sw.Write(valObject.Overall);
-                sw.Write(",");
-                sw.Write(valObject.Speed);
-                sw.Write(",");
-                sw.Write(valObject.Acceleration);
-                sw.Write(",");
-                sw.Write(valObject.Agility);
-                sw.Write(",");
-                sw.Write(valObject.Strength);
-                sw.Write(",");
-                sw.Write(valObject.Stamina);
-                sw.Write(",");
-                sw.Write(valObject.Injury);
-                sw.Write(",");
-                sw.Write(valObject.Toughness);
-                sw.Write(",");
-                sw.Write(valObject.Morale);
-                sw.Write(",");
-                sw.Write(valObject.Awareness);
-                sw.Write(",");
-                sw.Write(valObject.Catching);
-                sw.Write(",");
-                sw.Write(valObject.Carrying);
-                sw.Write(",");
-                sw.Write(valObject.Jumping);
-                sw.Write(",");
-                sw.Write(valObject.BreakTackle);
-                sw.Write(",");
-                sw.Write(valObject.Tackle);
-                sw.Write(",");
-                sw.Write(valObject.ThrowPower);
-                sw.Write(",");
-                sw.Write(valObject.ThrowAccuracy);
-                sw.Write(",");
-                sw.Write(valObject.PassBlocking);
-                sw.Write(",");
-                sw.Write(valObject.RunBlocking);
-                sw.Write(",");
-                sw.Write(valObject.KickPower);
-                sw.Write(",");
-                sw.Write(valObject.KickAccuracy);
-                sw.Write(",");
-                sw.Write(valObject.KickReturn);
-                sw.WriteLine();
-                sw.Close();
+                if (tcform.CurDay == 1)
+                {
+                    Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos);
+                    FileStream file = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+                    sw = new StreamWriter(file);
+                    sw.Write(Con + "," + PosDrill + "," + Team + "," + Con + "," + Film + "," + Special + "," + Down);
+                    sw.WriteLine();
+                    sw.Write(valObject.FirstName + " " + valObject.LastName);
+                    sw.Write(",");
+                    sw.Write(valObject.Weight + 160);
+                    sw.Write(",");
+                    valObject.Overall = valObject.CalculateOverallRating(valObject.PositionId);
+                    //Reload the overall rating
+                    valObject.Overall = valObject.Overall;
+                    sw.Write(valObject.Overall);
+                    sw.Write(",");
+                    sw.Write(valObject.Speed);
+                    sw.Write(",");
+                    sw.Write(valObject.Acceleration);
+                    sw.Write(",");
+                    sw.Write(valObject.Agility);
+                    sw.Write(",");
+                    sw.Write(valObject.Strength);
+                    sw.Write(",");
+                    sw.Write(valObject.Stamina);
+                    sw.Write(",");
+                    sw.Write(valObject.Injury);
+                    sw.Write(",");
+                    sw.Write(valObject.Toughness);
+                    sw.Write(",");
+                    sw.Write(valObject.Morale);
+                    sw.Write(",");
+                    sw.Write(valObject.Awareness);
+                    sw.Write(",");
+                    sw.Write(valObject.Catching);
+                    sw.Write(",");
+                    sw.Write(valObject.Carrying);
+                    sw.Write(",");
+                    sw.Write(valObject.Jumping);
+                    sw.Write(",");
+                    sw.Write(valObject.BreakTackle);
+                    sw.Write(",");
+                    sw.Write(valObject.Tackle);
+                    sw.Write(",");
+                    sw.Write(valObject.ThrowPower);
+                    sw.Write(",");
+                    sw.Write(valObject.ThrowAccuracy);
+                    sw.Write(",");
+                    sw.Write(valObject.PassBlocking);
+                    sw.Write(",");
+                    sw.Write(valObject.RunBlocking);
+                    sw.Write(",");
+                    sw.Write(valObject.KickPower);
+                    sw.Write(",");
+                    sw.Write(valObject.KickAccuracy);
+                    sw.Write(",");
+                    sw.Write(valObject.KickReturn);
+                    sw.WriteLine();
+                    sw.Close();
+                }
+                else if (tcform.CurDay > 1)
+                {
+                    sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+                    string OldTotalsContents = sr.ReadToEnd();
+                    sr.Close();
+                    string[] OldTotalsContentsLine = OldTotalsContents.Split('\n');
+                    string[] OldRatings = OldTotalsContentsLine[1].Split(',');
+                    
+                    FileStream file = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+                    sw = new StreamWriter(file);
+                    sw.Write(Con + "," + PosDrill + "," + Team + "," + Con + "," + Film + "," + Special + "," + Down);
+                    sw.WriteLine();
+                    sw.Write(valObject.FirstName + " " + valObject.LastName);
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[1]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[2]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[3]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[4]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[5]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[6]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[7]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[8]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[9]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[10]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[11]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[12]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[13]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[14]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[15]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[16]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[17]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[18]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[19]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[20]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[21]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[22]));
+                    sw.Write(",");
+                    sw.Write(int.Parse(OldRatings[23]));
+                    sw.WriteLine();
+                    sw.Close();
+
+
+
+                }
+
+
+
+
             }
 
         }
@@ -783,35 +1201,106 @@ namespace MaddenEditor.Forms
                 }
                 else if (dr == DialogResult.Yes)
                 {
-
                     string installDirectory = Application.StartupPath;
+                    
                     StreamWriter sw = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\coachsliders");
                     sw.Write(conditioningUpDown.Value + "," + positiondrillUpDown.Value + "," + teamdrillUpDown.Value + "," + filmstudyUpDown.Value + "," + specialteamsUpDown.Value + "," + downtimeUpDown.Value);
                     sw.WriteLine();
+                    sw.Close();
+                    
                     if (IndoorsRadioButton.Checked == true)
                     {
-                        sw.Write("indoors");
+                        tcform.Facility = "Indoors";
+                       // sw.Write("indoors");
                     }
                     else if (OutdoorsRadioButton.Checked == true)
                     {
-                        sw.Write("outdoors");
+                        tcform.Facility = "Outdoors";
+                       // sw.Write("outdoors");
                     }
-                    sw.Close();
+                   // sw.Close();
+                    if (tcform.CurDay == 1)
+                    {
+                        MessageBox.Show("Age declination will now be simulated decrementing physical attributes based on age.\nA .txt before/after file is generated in the applications install directory within\nConditioning/TrainingCamp/" + tcform.CurTeam + "/System/AgeDeclination.txt\nSimply minimize Madden Amp and navigate to the file in Windows.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OutputRoster();
+                        tcform.AgeDeclination();
+                        OutputRoster();
+                        
+                    }
+                    if ((Mode == "advanced") || ((tcform.Stage == "Hell Week") & (Mode == "basic") & (tcform.CurDay == 1)) || ((tcform.Stage == "Training Camp")  & (Mode == "basic") & (tcform.CurDay == 8)))
+                    {
+                        OutputRoster();
+                    }
+                   
                     StreamWriter sw1 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\system");
                     if ((tcform.Stage == "Hell Week") & (tcform.CurDay <= 6))
                     {
                         tcform.CurDay++;
                         sw1.Write(tcform.CurTeam + "," + "Hell Week" + "," + tcform.CurDay);
                     }
+                    else if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 7))
+                    {                       
+                        sw1.Write(tcform.CurTeam + "," + "Training Camp" + ",8");
+                    }
+                    else if ((tcform.Stage == "Training Camp") & (tcform.CurDay <= 14))
+                    {    
+                          tcform.CurDay++;
+                        sw1.Write(tcform.CurTeam + "," + "Training Camp" + "," + tcform.CurDay);
+                    }
+                   
+
 
                     sw1.Close();
 
-                    OutputRoster();
+                    StreamWriter sw2 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\TeamDrills");
+                    sw2.Write(teamdrillUpDown.Value + "," + 0 + "," + 0);
+                    sw2.WriteLine();
+                    sw2.Close();
+
+                    
                     this.Close();
                     TrainingCampForm tc = new TrainingCampForm(model);
+                    StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\system");
+                    string Allcontents = sr.ReadLine();
+                    sr.Close();
+                    string[] Line = Allcontents.Split(',');
+                    tcform.CurTeam = Line[0];
+                    tcform.Stage = Line[1];
+                    tcform.CurDay = Int32.Parse(Line[2]);
 
-                    //  tc.Show();
+                    if (tcform.CurDay <= 14)
+                    {
+                        tcform.label1.Text = "Advance to " + tcform.Stage + " Day " + tcform.CurDay + "...";
+                    }
+                        /*
+                    else if (tcform.CurDay == 7)
+                    {
+                        tcform.label1.Text = "Process Hell Week and view Progression...";
+                    }
+                    else if (tcform.CurDay == 14)
+                    {
+                        tcform.label1.Text = "Finalize Training Camp and view Progression...";
+                    }
+                   */
 
+                    tcform.groupBox6.Enabled = true;
+                    tcform.filterPositionComboBox.SelectedIndex = 0;
+                    tcform.ActivityCmb.SelectedIndex = 0;
+                  //  tcform.GroupAssign.SelectedIndex = 0;
+                    tcform.selectHumanTeam.SelectedText = tcform.CurTeam;
+                    tcform.groupBox7.Enabled = false;
+                    tcform.WindSpeed = WindSpd;
+                    tcform.Temp = CurTmp;
+                    if (tcform.CurDay <= 7)
+                    {
+                        tcform.ActivityCmb.Items.Remove("Team");
+                    }
+                    if (tcform.CurDay == 8)
+                    {
+                        tcform.ActivityCmb.Items.Add("Team");
+                    }
+                    tcform.Show();
+                    tcform.RefillRosterView();
 
                 }
 
@@ -825,6 +1314,8 @@ namespace MaddenEditor.Forms
             CloseCheck();
 
         }
+
+       
 
 
 
