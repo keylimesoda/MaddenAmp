@@ -150,7 +150,7 @@ namespace MaddenEditor.Core
 		private int tableCount = 0;
 		private string fileName = "";
 		private MainForm view = null;
-		private Dictionary<string, TableModel> tableModels = null;
+		private TableModelDictionary tableModels = null;
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
 		private MaddenFileVersion fileVersion = MaddenFileVersion.Ver2005; //Assume 2005
 		private Dictionary<string, int> tableOrder = null;
@@ -195,17 +195,19 @@ namespace MaddenEditor.Core
 				Console.WriteLine(e.ToString());
 				throw new ApplicationException("Can't open file: " + e.ToString());
 			}
-			//This collection will hold the created TableModel objects for each database table opened
-			tableModels = new Dictionary<string, TableModel>();
+
 			//We create a collection of database table names that we want to load
 			tableOrder = new Dictionary<string, int>();
 
+			//This collection will hold the created TableModel objects for each database table opened
+			tableModels = new TableModelDictionary(this, tableOrder);
+			
 			//Process the file
 			if (!ProcessFile())
 			{
 				throw new ApplicationException("Error processing file: " + filename);
 			}
-
+			
 			//Once we've processed the file create our editing models
 			playerEditingModel = new PlayerEditingModel(this);
 			teamEditingModel = new TeamEditingModel(this);
@@ -388,7 +390,7 @@ namespace MaddenEditor.Core
 		/// This readonly property returns the tablemodel collection allowing you
 		/// to get lowerlevel access to the database records for any table
 		/// </summary>
-		public Dictionary<string, TableModel> TableModels
+		public TableModelDictionary TableModels
 		{
 			get
 			{
@@ -413,10 +415,6 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public TableModel GetTable(string tableName)
-		{
-			return tableModels[tableName];
-		}
 		/// <summary>
 		/// This is the main function that processes the database file and loads the 
 		/// tables into objects in memory
@@ -561,7 +559,7 @@ namespace MaddenEditor.Core
 					result = false;
 					break;
 				}
-				result &= ProcessTable(pair.Value);
+				//result &= ProcessTable(pair.Value);
 			}
 						
 			return result;
@@ -573,10 +571,10 @@ namespace MaddenEditor.Core
 		/// </summary>
 		/// <param name="tableNumber">The Table number of the table in the database</param>
 		/// <returns>True if successful, false otherwise</returns>
-		private bool ProcessTable(int tableNumber)
+		public bool ProcessTable(int tableNumber)
 		{
 			//Reset the progress bar
-			view.updateProgress(0, "");
+			view.updateTableProgress(0, "");
 
 			//Get the table properties
 			TdbTableProperties tableProps = new TdbTableProperties();
@@ -663,12 +661,12 @@ namespace MaddenEditor.Core
 				//recordsFound++;
 
 				currentProgress += progressInterval;
-				view.updateProgress((int)currentProgress, table.Name);
+				view.updateTableProgress((int)currentProgress, table.Name);
 			}
 
 			tableModels.Add(table.Name, table);
 			Console.WriteLine("Finished processing Table: " + table.Name);
-			view.updateProgress(100, table.Name);
+			view.updateTableProgress(100, table.Name);
 			return true;
 		}
 

@@ -93,6 +93,7 @@
     <Compile Include="Core\Record\Stats\SeasonStatsTeamRecord.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
     <Compile Include="Core\ScheduleEditingModel.cs" />
+    <Compile Include="Core\TableModelDictionary.cs" />
     <Compile Include="Core\TeamEditingModel.cs" />
     <Compile Include="Core\TeamUniformModel.cs" />
     <Compile Include="Db\TDB.cs" />
