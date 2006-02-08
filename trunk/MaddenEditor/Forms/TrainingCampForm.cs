@@ -3388,7 +3388,7 @@ namespace MaddenEditor.Forms
         }
         private void selectHumanTeam_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+            Cursor.Current = Cursors.WaitCursor;
             string installDirectory = Application.StartupPath;
             if (Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + selectHumanTeam.Text))
             {
@@ -3482,7 +3482,7 @@ namespace MaddenEditor.Forms
                
 
             }
-         
+            Cursor.Current = Cursors.Arrow;
         }
         private void SetTimingCombo()
         {
@@ -3978,57 +3978,58 @@ namespace MaddenEditor.Forms
             
                 textBox1.Text = "";
                 ExceptionReporting();
-                  if (textBox1.Text == "")
-                  {
-                      if (CurDay <= 14)
-                      {
-                          DialogResult dr = MessageBox.Show("Process current day and proceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
-                          if (dr == DialogResult.No)
-                          {
-                              return;
-                          }
-                          else if (dr == DialogResult.Yes)
-                          {
-                              //textBox1.Text = "";
-                              //ExceptionReporting();
-                              //  if (textBox1.Text == "")
-                              //  {
-                              Cursor.Current = Cursors.WaitCursor;
-
-                              ProcessDaily();
-                              UpdateCamp();
-                              LaunchSplash();
-                          }
-                      }
-                }
-                else if (CurDay == 15)
+                if (textBox1.Text == "")
                 {
-                    DialogResult drs = MessageBox.Show("Clicking Advance will immediately process day 14, the final day of camp.\n\nYou'll see the before camp and after camp attributes for each player.\n\nProceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
-                    if (drs == DialogResult.No)
+                    if (CurDay <= 14)
                     {
-                        return;
+                        DialogResult dr = MessageBox.Show("Process current day and proceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+                        if (dr == DialogResult.No)
+                        {
+                            return;
+                        }
+                        else if (dr == DialogResult.Yes)
+                        {
+                            //textBox1.Text = "";
+                            //ExceptionReporting();
+                            //  if (textBox1.Text == "")
+                            //  {
+                            Cursor.Current = Cursors.WaitCursor;
+
+                            ProcessDaily();
+                            UpdateCamp();
+                            LaunchSplash();
+                        }
                     }
-                    else if (drs == DialogResult.Yes)
+
+                    else if (CurDay == 15)
                     {
-                        // depthChartDataGrid.ReadOnly = true;
-                        depthChartDataGrid.AllowUserToResizeColumns = true;
-                        AdvanceBtn.Enabled = false;
-                        label1.Text = "Final player progression...";
-                        SetTimeGrd.Columns.Remove(TrainingTime);
-                        ProcessFinal();
-                        MessageBox.Show("A file has been generated in the Madden Amp install directory\nwithin /Conditioning/TrainingCamp/" + franchiseFilename + "/" + CurTeam + "\nnamed 'Final Progression.txt'");
+                        DialogResult drs = MessageBox.Show("Clicking Advance will immediately process day 14, the final day of camp.\n\nYou'll see the before camp and after camp attributes for each player.\n\nProceed?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
+                        if (drs == DialogResult.No)
+                        {
+                            return;
+                        }
+                        else if (drs == DialogResult.Yes)
+                        {
+                            // depthChartDataGrid.ReadOnly = true;
+                            depthChartDataGrid.AllowUserToResizeColumns = true;
+                            AdvanceBtn.Enabled = false;
+                            label1.Text = "Final player progression...";
+                            SetTimeGrd.Columns.Remove(TrainingTime);
+                            ProcessFinal();
+                            MessageBox.Show("A file has been generated in the Madden Amp install directory\nwithin /Conditioning/TrainingCamp/" + franchiseFilename + "/" + CurTeam + "\nnamed 'Final Progression.txt'");
+                        }
+
+
+
+
+
+                        Cursor.Current = Cursors.Arrow;
+                        if (File.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions"))
+                        {
+                            File.Delete(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions");
+                        }
                     }
                 }
-                
-                
-
-
-                Cursor.Current = Cursors.Arrow;
-                if (File.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions"))
-                {
-                    File.Delete(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions");
-                }
-
         }
 
         private void GroupAssign_SelectedIndexChanged(object sender, EventArgs e)
