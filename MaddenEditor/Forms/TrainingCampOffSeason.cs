@@ -2364,7 +2364,7 @@ namespace MaddenEditor.Forms
             checkBox2.Enabled = true;
           //  textBox1.Text = ("It's a short offseason in today's NFL and it doesn't leave much time for you, as coach, to prepare for the seemingly endless array of tasks, meetings and film study you're routinely bombarded with. You must begin preparing for Training Camp even though its still months away. You've got about one week to focus on your skills so using what precious few hours of time you have let's get started on your Training Camp planning. Please allocate the alloted time to your Head Coach as all listed coaching ratings play into Training Camp player development including the positional ratings. You have 30 'hours' to distribute. Knowledge,Motivation,Chemistry and Ethics consume 2 hours per rank. Less experienced head coaches are more apt to see attribute increases than those coaches with more experience. Or choose to skip coach progression by simply checking 'Check to skip coach progression' then clicking the 'submit and proceed' button..");
             PopulateCoach();
-            button4.Enabled = true; 
+            btnSimOffseasonConditioning.Enabled = true; 
         }
         private void PopulateCoach()
         {
@@ -3043,7 +3043,7 @@ namespace MaddenEditor.Forms
                 dbUpDown.Enabled = false;
                 kUpDown.Enabled = false;
                 pUpDown.Enabled = false;
-                button4.Enabled = false;
+                btnSimOffseasonConditioning.Enabled = false;
                 checkBox2.Enabled = false;
             }
         }
@@ -3826,7 +3826,7 @@ namespace MaddenEditor.Forms
             form.Show();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+		private void btnSimOffseasonConditioning_Click(object sender, EventArgs e)
         {
             //if ((HoursLeft == 0) | (checkBox2.Checked == true))
            // {
@@ -3834,7 +3834,7 @@ namespace MaddenEditor.Forms
 
                 if (dr == DialogResult.Yes)
                 {
-                    button4.Enabled = false;
+                    btnSimOffseasonConditioning.Enabled = false;
                     Cursor.Current = Cursors.WaitCursor;
                     /*
                     if (checkBox2.Checked == false)
@@ -3845,7 +3845,7 @@ namespace MaddenEditor.Forms
                      */
                     RandomIssue();
                     Cursor.Current = Cursors.Arrow;                   
-                    button4.Enabled = false;
+                    btnSimOffseasonConditioning.Enabled = false;
                     checkBox2.Enabled = false;
                     if (ScenarioFirstName == "")
                     {
@@ -4085,7 +4085,7 @@ namespace MaddenEditor.Forms
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-                button4.Enabled = true;
+                btnSimOffseasonConditioning.Enabled = true;
         }
 
         private void SimCPUbutton_Click(object sender, EventArgs e)
