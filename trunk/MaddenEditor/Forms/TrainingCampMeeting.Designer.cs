@@ -449,6 +449,7 @@ namespace MaddenEditor.Forms
             // BeginDay
             // 
             this.BeginDay.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.BeginDay.Enabled = false;
             this.BeginDay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BeginDay.Location = new System.Drawing.Point(691, 63);
             this.BeginDay.Name = "BeginDay";

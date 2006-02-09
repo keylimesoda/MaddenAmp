@@ -67,6 +67,7 @@ namespace MaddenEditor.Forms
             this.TuneModifierGrd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TuneModifierGrd.Size = new System.Drawing.Size(1183, 659);
             this.TuneModifierGrd.TabIndex = 0;
+            this.TuneModifierGrd.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.TuneModifierGrd_CellEndEdit);
             // 
             // menuStrip1
             // 
@@ -90,7 +91,7 @@ namespace MaddenEditor.Forms
             // OffSeasonHelpToolStripMenuItem
             // 
             this.OffSeasonHelpToolStripMenuItem.Name = "OffSeasonHelpToolStripMenuItem";
-            this.OffSeasonHelpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OffSeasonHelpToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.OffSeasonHelpToolStripMenuItem.Text = "Tune.txt Help";
             this.OffSeasonHelpToolStripMenuItem.Click += new System.EventHandler(this.OffSeasonHelpToolStripMenuItem_Click);
             // 

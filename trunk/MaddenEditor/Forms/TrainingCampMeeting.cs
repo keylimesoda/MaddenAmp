@@ -49,6 +49,7 @@ namespace MaddenEditor.Forms
 
         public TrainingCampMeeting(EditorModel model, TrainingCampForm trainingForm)
         {
+            
             tcform = trainingForm;
             tcform.trainingCampMeeting = this;
             depthEditingModel = new DepthChartEditingModel(model);
@@ -59,7 +60,7 @@ namespace MaddenEditor.Forms
             if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 1))
             {
 
-                DialogResult dr = MessageBox.Show("Enable Advanced mode?\n\nSelecting 'Yes' will enable Advanced mode,where you'll make daily changes to your\nCoach Sliders.\n\nIn doing so you'll have more control over managing your teams daily activites\nbut training camp takes longer in advanced mode than is does in basic mode.\n\nSelecting 'No' enables Basic mode where you make only two adjustmants to your\ncoaching sliders; Once at the beginning of week 1 and again at the start of week 2.\n\nPlayer activities will carry over to each day in Basic mode.\n\nRegardless of mode, you can exit Training Camp at any time\nduring the Player Allocation phase. Re-entering the training camp screen\nreloads your progress and allows you to continue...\n\n***NOTE: Advanced mode currently unavaiable in Beta release", "", MessageBoxButtons.OK, MessageBoxIcon.None);
+                DialogResult dr = MessageBox.Show("Enable Advanced mode?\n\nSelecting 'Yes' will enable Advanced mode,where you'll make daily changes to your\nCoach Sliders.\n\nIn doing so you'll have more control over managing your teams daily activites\nbut training camp takes longer in advanced mode than is does in basic mode.\n\nSelecting 'No' enables Basic mode where you make only two adjustmants to your\ncoaching sliders; Once at the beginning of week 1 and again at the start of week 2.\n\nPlayer activities will carry over to each day in Basic mode.\n\nRegardless of mode, you can exit Training Camp at any time\nduring the Player Allocation phase. Re-entering the training camp screen\nreloads your progress and allows you to continue...\n\n***NOTE: Advanced mode currently unavailable in Beta release", "", MessageBoxButtons.OK, MessageBoxIcon.None);
 
                 if (dr == DialogResult.Yes)
                 {
@@ -376,6 +377,7 @@ namespace MaddenEditor.Forms
                
             }
             OutdoorsRadioButton.Checked = true;
+            BeginDay.Enabled = true;
             WeatherGenerator();
         }
         private void WeatherGenerator()
@@ -638,7 +640,7 @@ namespace MaddenEditor.Forms
                 }
                 tcform.HeadCold = (int)(2 * random.NextDouble() + 1);
                 tcform.WthInjIncrease = 1;
-                tcform.CatBonus = (decimal).025;
+                tcform.CatBonus = (decimal).00025;
             }
             else if (Weather <= 82)
             {
@@ -650,9 +652,9 @@ namespace MaddenEditor.Forms
                 DialogTxt.Text = DialogTxt.Text + "...'Morning Coach. My clipboard is soaked! It's coming down in buckets out there. Current Temperature is " + CurTmp + ". It's a monsoon, but there're no reports of lightening so we could practice outside if you so choose. Doing so will benefit nearly every position as they'll have to maintain a sharp focus in the fierce conditions. It'll toughen these patsies up some too. Just be prepared for a guy or two catching a head cold. One more thing, the miserable conditions have made the footing quite slippery, so the chance of injury is elevated.";
                 tcform.HeadCold = (int)(5 * random.NextDouble() + 1);
                 tcform.TghBonus = (decimal)0.1;
-                tcform.CatBonus = (decimal).05;
+                tcform.CatBonus = (decimal).0005;
                 tcform.WthInjIncrease = 3;
-                tcform.HvyRainAwrBonus = (decimal).5;
+                tcform.HvyRainAwrBonus = (decimal).05;
             }
             else if (Weather > 82)
             {
@@ -1180,8 +1182,6 @@ namespace MaddenEditor.Forms
                 }
 
 
-
-
             }
 
         }
@@ -1194,6 +1194,7 @@ namespace MaddenEditor.Forms
             }
             else if (label6.Text == "100%")
             {
+                           
                 DialogResult dr = MessageBox.Show("Start the day with the current coaching allocations?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
                 if (dr == DialogResult.No)
                 {
@@ -1202,7 +1203,7 @@ namespace MaddenEditor.Forms
                 else if (dr == DialogResult.Yes)
                 {
                     string installDirectory = Application.StartupPath;
-                    
+                    BeginDay.Enabled = false;     
                     StreamWriter sw = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\coachsliders");
                     sw.Write(conditioningUpDown.Value + "," + positiondrillUpDown.Value + "," + teamdrillUpDown.Value + "," + filmstudyUpDown.Value + "," + specialteamsUpDown.Value + "," + downtimeUpDown.Value);
                     sw.WriteLine();
@@ -1291,11 +1292,11 @@ namespace MaddenEditor.Forms
                     tcform.groupBox7.Enabled = false;
                     tcform.WindSpeed = WindSpd;
                     tcform.Temp = CurTmp;
-                    if (tcform.CurDay <= 7)
+                    if (tcform.CurDay <= 8)
                     {
                         tcform.ActivityCmb.Items.Remove("Team");
                     }
-                    if (tcform.CurDay == 8)
+                    if (tcform.CurDay == 9)
                     {
                         tcform.ActivityCmb.Items.Add("Team");
                     }
@@ -1311,6 +1312,7 @@ namespace MaddenEditor.Forms
         }
         private void button1_Click(object sender, EventArgs e)
         {
+
             CloseCheck();
 
         }
