@@ -1,13 +1,12 @@
-;A;Jogging Hills;You want to win in the 4th quarter? Try this drill. Just be prepared for icy stares from your players;|-15|0|0|0|-4|60|0|0|-5|0|0|0|6|0|0|0|0|0|0|0|0|0|4
-;QB-P;Burnout Drill;+++THP Strong chance of injury  Quarterback pairs with an assistant at the longest depth at which the quarterback can throw a pass on-a-line. He continually throws passes to his receiver until he can no longer make the throw, then the distance is reduced to a manageable depth and the process is repeated. This is done until the quarterbacks arm is exhausted.;|0|0|0|0|0|0|0|0|-5|0|0|0|0|0|0|35|2|0|0|0|0|0|15
-;A;StairClimber;Gruelling cardio workout designed to loose weight and muscle mass in a hurry;|-10|0|0|0|-4|50|10|0|-4|0|0|0|2|0|0|0|0|0|0|0|0|0|-2
-;A;Wind Sprints;Speed kills.Build your players speed w/ this morale killer...;|-2|30|20|4|-1|10|0|0|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|3
-;A;Shuttle Runs;Sharp burst drill focusing on speed,acceleration and agility but too many reps can sour the mood;|-1|4|40|46|-1|20|0|0|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|2
-;A;Stationary Bike;Loose weight,increase cardio and injury prevention but slight cost to muscle mass;|-5|0|0|0|-2|40|10|0|-1|0|0|0|0|0|0|0|0|0|0|0|0|0|-2
-;A;Treadmill;Build your cardio with a more aggresive workout than the stationary bike;|-8|0|0|0|-4|40|10|0|-1|0|0|0|0|0|0|0|0|0|0|0|0|0|-2
-;A;Biking;Strong focus on stamina improvement, slight increase to injury prevention;|-6|0|0|0|-1|20|0|0|0|0|0|0|2|0|0|0|0|0|0|0|0|0|-2
-;A;X-Country Skiing;Great cardio workout plus slight strength increase;|-1|0|0|0|-1|15|0|0|0|0|0|0|0|0|0|5|0|0|0|0|0|0|-1
-;A;Swim Laps;Excellent excercise with a focus on endurance and injury prevention;|-2|0|0|0|7|15|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|-1
+;A;Jogging Hills;You want to win in the 4th quarter? Try this drill. Just be prepared for icy stares from your players;|-15|0|0|0|-4|25|0|0|-5|0|0|0|6|0|0|0|0|0|0|0|0|0|4
+;A;StairClimber;Gruelling cardio workout designed to loose weight and muscle mass in a hurry;|-10|0|0|0|-4|20|10|0|-4|0|0|0|2|0|0|0|0|0|0|0|0|0|-2
+;A;Wind Sprints;Speed kills.Build your players speed w/ this morale killer...;|-2|15|8|3|-1|7|0|0|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;A;Shuttle Runs;Sharp burst drill focusing on speed,acceleration and agility but too many reps can sour the mood;|-1|2|15|20|-1|10|0|0|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;A;Stationary Bike;Loose weight,increase cardio and injury prevention but slight cost to muscle mass;|-5|0|0|0|-2|17|10|0|-1|0|0|0|0|0|0|0|0|0|0|0|0|0|-2
+;A;Treadmill;Build your cardio with a more aggresive workout than the stationary bike;|-8|0|0|0|-4|13|10|0|-1|0|0|0|0|0|0|0|0|0|0|0|0|0|-2
+;A;Biking;Strong focus on stamina improvement, slight increase to injury prevention;|-6|0|0|0|-1|11|0|0|0|0|0|0|2|0|0|0|0|0|0|0|0|0|-2
+;A;X-Country Skiing;Great cardio workout plus slight strength increase;|-1|0|0|0|-1|11|0|0|0|0|0|0|0|0|0|5|0|0|0|0|0|0|-1
+;A;Swim Laps;Excellent excercise with a focus on endurance and injury prevention;|-2|0|0|0|7|11|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|-1
 ;D;Counting Calories;Put player on a fixed calorie diet plan. i.e. 1200, 1500 or 1800 calorie diets.;|-1|0|0|0|-3|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
 ;D;Low Carb Diet;Steer clear of carbs in this low carb diet.;|-2|0|0|0|-7|-4|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
 ;D;Weight Gain Diet;Start eating six meals per day (spaced out to about once every three hours);|5|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
@@ -60,15 +59,16 @@
 ;OL-P;Blitz Pickup;+AWR +PBK  Several players wearing different colored jerseys rush the lineman. A color is called out at the last minute ;|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|0|10|0|0|0|0|0
 ;OL-P;Run Blocking;+++Rbk  Slayer. High chance of injury as player pushes an old tractor up an incline;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|20|0|0|0|12
 ;OL-P;Pass Blocking; +PBK  Work on protecting the QB;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|2
+;QB-P;Burnout Drill;+++THP Strong chance of injury  Quarterback pairs with an assistant at the longest depth at which the quarterback can throw a pass on-a-line. He continually throws passes to his receiver until he can no longer make the throw, then the distance is reduced to a manageable depth and the process is repeated. This is done until the quarterbacks arm is exhausted.;|0|0|0|0|0|0|0|0|-5|0|0|0|0|0|0|35|2|0|0|0|0|0|15
 ;QB-P;Dropback Square Drill; ++ACC  A series of pylons lined up as a square. Starting inside the square at one corner, the Quarterback takes a presnap stance and takes a standard dropback, then resets at the next pylon behind him and repeats. This can be run at the depth of any normal drop;|0|0|30|10|6|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|3
 ;QB-P;Rollout Drill;+AGI +SPD  Cones are used to mark the location of the offensive line, another set of cones are set 6 yards behind the tackles. Quarterback simulates a snap and rolls out around the cone, making a throwing motion without throwing about 1 yard behind the LOS. He should continue about 5 yards beyond the LOS.;|0|15|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
 ;QB-P;Scrambling Triangle;+AGI +ACC  Quarterback takes a 5 step drop. Keeping the ball in the passing position, he runs forward and to the right and a 45 degree angle, then side shuffles to the left. He then drops back at a 45 degree angle to end up where he started.;|0|0|15|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
 ;QB-P;Grip Drop Drill;++CAR  Quarterback holds the ball with 1 hand at waste level, then brings it up 6-8 inches. He releases the ball completely, then regrips it, alternating hands each rep.;|0|0|0|0|0|0|0|0|0|0|0|30|0|0|0|0|0|0|0|0|0|0|0
-;QB-P;One Knee Drill; +THP +THA  Quarterbacks play catch on their knees 10 yards apart, requiring proper throwing technique rather than reliance on legs and weight.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|15|0|0|0|0|0|3
-;QB-P;Crossbar Drill;++THA  Quarterbacks pair off at 12 yards apart on either side of the goal posts. They play catch, trying to throw the ball as close to the crossbar without going under it or hitting it as possible.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|5|20|0|0|0|0|0|2
-;QB-P;Down the Line;+THA +STM  Keeping a constant distance of 10 yards, two quarterbacks run the length of the field throwing the ball back and forth. Time is kept in order to measure progress over time.;|0|0|0|0|0|20|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|3
-;QB-P;Routes + Progression;++AWR +THA  Work on progressing through your routes.;|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|10|0|0|0|0|0|1
-;QB-P;Deep Patterns;+THP +THA  Build arm strength and accuracy on deep balls by throwing deep routes.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|10|0|0|0|0|0|5
+;QB-P;One Knee Drill; +THP +THA  Quarterbacks play catch on their knees 10 yards apart, requiring proper throwing technique rather than reliance on legs and weight.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|12|11|0|0|0|0|0|3
+;QB-P;Crossbar Drill;++THA  Quarterbacks pair off at 12 yards apart on either side of the goal posts. They play catch, trying to throw the ball as close to the crossbar without going under it or hitting it as possible.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2|16|0|0|0|0|0|2
+;QB-P;Down the Line;+THA +STM  Keeping a constant distance of 10 yards, two quarterbacks run the length of the field throwing the ball back and forth. Time is kept in order to measure progress over time.;|0|0|0|0|0|20|0|0|0|0|0|0|0|0|0|0|11|0|0|0|0|0|3
+;QB-P;Routes + Progression;++AWR +THA  Work on progressing through your routes.;|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|7|0|0|0|0|0|1
+;QB-P;Deep Patterns;+THP +THA  Build arm strength and accuracy on deep balls by throwing deep routes.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|6|7|0|0|0|0|0|5
 ;TE-P;Side to Side;+CAT +STM  Two players shuffle side to side from one endzone to the other tossing the ball back and forth with both hands.;|0|0|0|0|0|10|0|0|0|0|10|0|0|0|0|0|0|0|0|0|0|0|2
 ;TE-P;Mirror;++RBK  Receivers pair off between cones about 5-8 yards apart. The receiver playing the DB then does whatever he must to get past the receiver while staying within the cones.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|3
 ;TE-P;Grip Drop Drill;+CAR +CAT  Like the Quarterback version of the drill, except that the receiver holds the ball at his knees, bent over. Ball must be caught before reaching the ground.;|0|0|0|0|0|0|0|0|0|0|10|10|0|0|0|0|0|0|0|0|0|0|2

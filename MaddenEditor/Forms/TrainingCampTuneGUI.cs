@@ -356,142 +356,39 @@ namespace MaddenEditor.Forms
 
         }
 
-
-
-
-/*
-                    else
-                    {
-                        if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
-                        {
-                            if (splitLine[1] == "OL-P")
-                            {
-                                ac["Activity"] = splitLine[3];
-                                ac["Description"] = splitLine[5];
-                                RosterView.Rows.Add(ac);
-                            }
-                        }
-                        else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
-                        {
-                            if (splitLine[1] == "DL-P")
-                            {
-                                ac["Activity"] = splitLine[3];
-                                ac["Description"] = splitLine[5];
-                                RosterView.Rows.Add(ac);
-                            }
-                        }
-                        else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
-                        {
-                            if (splitLine[1] == "LB-P")
-                            {
-                                ac["Activity"] = splitLine[3];
-                                ac["Description"] = splitLine[5];
-                                RosterView.Rows.Add(ac);
-                            }
-                        }
-                        else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
-                        {
-                            if (splitLine[1] == "DB-P")
-                            {
-                                ac["Activity"] = splitLine[3];
-                                ac["Description"] = splitLine[5];
-                                RosterView.Rows.Add(ac);
-                            }
-                        }
-                        else if (Pos == "K" | Pos == "P")
-                        {
-                            if (splitLine[1] == "KP-P")
-                            {
-                                ac["Activity"] = splitLine[3];
-                                ac["Description"] = splitLine[5];
-                                RosterView.Rows.Add(ac);
-                            }
-                        }
-
-                    }
-                }//end while
-            }
-            sr.Close(); 
-
-
-        }
-
-
-
-/*
-            AllocateTimingView.Columns.Add(AddColumn("Name", "System.String"));
-            AllocateTimingView.Columns.Add(AddColumn("Remaining Time", "System.String"));
-            AllocateTimingView.Columns.Add(AddColumn("Allocated To", "System.String"));
-
-            AllocateTimingViewBinding.DataSource = AllocateTimingView;
-            SetTimeGrd.DataSource = AllocateTimingViewBinding;
-
-            SetTimeGrd.Columns["Name"].Width = 120;
-            SetTimeGrd.Columns["Remaining Time"].Width = 60;
-            SetTimeGrd.Columns["Allocated To"].Width = 55;
-            SetTimeGrd.Columns["Name"].ReadOnly = true;
-            SetTimeGrd.Columns["Remaining Time"].ReadOnly = true;
-            SetTimeGrd.Columns["Allocated To"].ReadOnly = true;
-
-            SetTimeGrd.Columns.Add(TrainingTime);
-            SetTimeGrd.Columns["TrainingTime"].Width = 50;
-            SetTimeGrd.Columns["TrainingTime"].Resizable = DataGridViewTriState.False;
-
-            SetTimingCombo();
-
-            //Set Team combo box to record 0
-
-            // selectHumanTeam.SelectedIndex = 0;
-            // filterPositionComboBox.SelectedIndex = 0;
-
-            //    model.PlayerModel.SetTeamFilter(selectHumanTeam.Text);
-            //   model.PlayerModel.SetPositionFilter(filterPositionComboBox.SelectedIndex);
-            //   model.PlayerModel.GetNextPlayerRecord();
-           // isInitialising = false;
-
-            //     RefillRosterView();
-
-        }
-/*
-        private void SetTimingCombo()
+        private void TuneModifierGrd_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            TrainingTime.ValueType = System.Type.GetType("System.Int16");
-            TrainingTime.Items.Add("-10");
-            TrainingTime.Items.Add("-9");
-            TrainingTime.Items.Add("-8");
-            TrainingTime.Items.Add("-7");
-            TrainingTime.Items.Add("-6");
-            TrainingTime.Items.Add("-5");
-            TrainingTime.Items.Add("-4");
-            TrainingTime.Items.Add("-3");
-            TrainingTime.Items.Add("-2");
-            TrainingTime.Items.Add("-1");
-            TrainingTime.Items.Add("0");
-            TrainingTime.Items.Add("1");
-            TrainingTime.Items.Add("2");
-            TrainingTime.Items.Add("3");
-            TrainingTime.Items.Add("4");
-            TrainingTime.Items.Add("5");
-            TrainingTime.Items.Add("6");
-            TrainingTime.Items.Add("7");
-            TrainingTime.Items.Add("8");
-            TrainingTime.Items.Add("9");
-            TrainingTime.Items.Add("10");
+           
+               //if ((DBNull)TuneModifierGrd.Rows[e.RowIndex].Cells["Activity"].Value = true) 
+               //{
+               //    TuneModifierGrd.Rows[e.RowIndex].Cells["Activity"].Value = "No value";
+               //    MessageBox.Show("Cannot leave Activity or Description blank");
+               //    return;
+                   
+               //}
+               // if (TuneModifierGrd.Rows[e.RowIndex].Cells["Description"].Value == null ) 
+               //{
+               //    TuneModifierGrd.Rows[e.RowIndex].Cells["Description"].Value = "No value";
+               //    MessageBox.Show("Cannot leave Activity or Description blank");
+               //    return;
+                   
+               //}
+
+               //if (e.ColumnIndex >= 3 & e.ColumnIndex <= 25)
+               //{
+                   
+               //    if ((string)TuneModifierGrd.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "{}" )
+               //    {                      
+               //        MessageBox.Show("Cannot leave attribute cell blank.\n\nValue of '0' added by default.");
+               //        return;
+
+               //    }
+
+               //}
+         
 
 
-            //  for (int i = 0; i < SetTimeGrd.Rows.Count; i++)
-            //  {
-
-            //  }
-            //  SetTimeGrd.Columns.Add(TrainingTime);
         }
-
-*/
-
-
-
-
-
 
 
 

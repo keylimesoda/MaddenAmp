@@ -3978,6 +3978,7 @@ namespace MaddenEditor.Forms
             
                 textBox1.Text = "";
                 ExceptionReporting();
+
                 if (textBox1.Text == "")
                 {
                     if (CurDay <= 14)
@@ -4135,6 +4136,26 @@ namespace MaddenEditor.Forms
                     sw.Close();
                 }
             }
+
+            if (CurDay >= 8)
+            {
+                StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\TeamDrills");
+
+                string[] Total = sr.ReadLine().Split(',');
+                sr.Close();
+
+                if (int.Parse(Total[0]) != 0)
+                {
+
+                    StreamWriter sw = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions", true);
+                    sw.Write("--Team Drill time still remaining. Please distribute Team Drills by selecting the Activity combo box and selecting Team.");
+                    sw.WriteLine();
+                    sw.Close();
+
+                }
+
+            }
+
             if (File.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions"))
             {
                 StreamReader sr1 = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions");
@@ -4153,8 +4174,10 @@ namespace MaddenEditor.Forms
                         i++;
                     }
                     MessageBox.Show("Exceptions detected. Please see Text Box at bottom of page for details.\nCannot proceed to next day until exceptions handled.");
-                    return;
+                   
                 }
+                File.Delete(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\exceptions");
+                return;
             }
         }
 
@@ -4427,17 +4450,17 @@ namespace MaddenEditor.Forms
                 decimal CoachPositionalDrillModifier = 0;
                 if (valObject.PositionId <= 9)
                 {
-                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 100) + ((OCKnw - 70) / 100)) + PositionalDrillMod), 2);
+                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 1000) + ((OCKnw - 70) / 1000)) + PositionalDrillMod), 2);
               //      DailyMoraleEffect = Math.Round((((((Down + PoolUnassigned) - Con) / 10) + ((HCChm - 70) / 25)) + ((OCChm - 70) / 30)), 0);
                 }
                 else if ((valObject.PositionId >= 10) & (valObject.PositionId <= 18))
                 {
-                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 100) + ((DCKnw - 70) / 100)) + PositionalDrillMod), 2);
+                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 1000) + ((DCKnw - 70) / 1000)) + PositionalDrillMod), 2);
                //     DailyMoraleEffect = Math.Round((((((Down + PoolUnassigned) - Con) / 10) + ((HCChm - 70) / 25)) + ((DCChm - 70) / 30)), 0);
                 }
                 else if (valObject.PositionId >= 19)
                 {
-                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 100) + ((STKnw - 70) / 100)) + PositionalDrillMod), 2);
+                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 1000) + ((STKnw - 70) / 1000)) + PositionalDrillMod), 2);
               //      DailyMoraleEffect = Math.Round((((((Down + PoolUnassigned) - Con) / 10) + ((HCChm - 70) / 25)) + ((STChm - 70) / 30)), 0);
                 }
                               
@@ -5507,7 +5530,7 @@ namespace MaddenEditor.Forms
 
 
                             //cat
-                            AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * ExpMod) / (decimal)99))), 3);
+                            AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * ExpMod) / (decimal)90))), 3);
                             if (AttributeDifferential > 1)
                             {
                                 AttributeDifferential = (decimal).01;
@@ -6435,17 +6458,17 @@ namespace MaddenEditor.Forms
                 decimal CoachPositionalDrillModifier = 0;
                 if (valObject.PositionId <= 9)
                 {
-                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 100) + ((OCKnw - 70) / 100)) + PositionalDrillMod), 2);
+                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 1000) + ((OCKnw - 70) / 1000)) + PositionalDrillMod), 2);
                     DailyMoraleEffect = Math.Round((((((Down + PoolUnassigned) - Con) / 10) + ((HCChm - 70) / 25)) + ((OCChm - 70) / 30)), 0);
                 }
                 else if ((valObject.PositionId >= 10) & (valObject.PositionId <= 18))
                 {
-                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 100) + ((DCKnw - 70) / 100)) + PositionalDrillMod), 2);
+                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 1000) + ((DCKnw - 70) / 1000)) + PositionalDrillMod), 2);
                     DailyMoraleEffect = Math.Round((((((Down + PoolUnassigned) - Con) / 10) + ((HCChm - 70) / 25)) + ((DCChm - 70) / 30)), 0);
                 }
                 else if (valObject.PositionId >= 19)
                 {
-                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 100) + ((STKnw - 70) / 100)) + PositionalDrillMod), 2);
+                    CoachPositionalDrillModifier = Math.Round(((((HCKnw - 70) / 1000) + ((STKnw - 70) / 1000)) + PositionalDrillMod), 2);
                     DailyMoraleEffect = Math.Round((((((Down + PoolUnassigned) - Con) / 10) + ((HCChm - 70) / 25)) + ((STChm - 70) / 30)), 0);
                 }
 
@@ -6467,7 +6490,7 @@ namespace MaddenEditor.Forms
                 sr.Close();
                 string[] TotalsContentsLine = TotalsContents.Split(',');
                 //morale
-                decimal CurrentMoraleEffect = (((decimal.Parse(TotalsContentsLine[11])) - 70) / 750) + ((decimal)PoolUnassigned / 750); //Effects players work ethic               
+                decimal CurrentMoraleEffect = (((decimal.Parse(TotalsContentsLine[11])) - 70) / 1000) + ((decimal)PoolUnassigned / 1000); //Effects players work ethic               
                 int DaysActive = int.Parse(TotalsContentsLine[0]);
                 string InjuryType = TotalsContentsLine[1];
                 int InjuryLength = int.Parse(TotalsContentsLine[2]);
@@ -6720,7 +6743,7 @@ namespace MaddenEditor.Forms
                                 }
                                 if (decimal.Parse(TuneFileAttributeMods[23]) != 0)
                                 {
-                                    injchance = injchance + (((decimal.Parse(TuneFileAttributeMods[23]) / 100) * (decimal)Rank) + WthInjIncrease);
+                                    injchance = injchance + (((decimal.Parse(TuneFileAttributeMods[23]) / 100) * (decimal)Rank) );
                                 }
 
 
@@ -7031,7 +7054,7 @@ namespace MaddenEditor.Forms
                 if ((Injured == false) & (CurDay <= 13))
                 {
 
-                    int FinalInjChance = (valObject.Injury - (int)injchance) + (valObject.Toughness / 10);
+                    int FinalInjChance = (valObject.Injury - ((int)injchance + (int)WthInjIncrease)) + (valObject.Toughness / 10);
 
                     if ((55 * random.NextDouble() + 1) > (FinalInjChance))
                     {
@@ -7469,7 +7492,7 @@ namespace MaddenEditor.Forms
 
 
                 //cat
-                AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * ExpMod) / (decimal)99))), 3);
+                AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * ExpMod) / (decimal)90))), 3);
                 if (AttributeDifferential > 1)
                 {
                     AttributeDifferential = (decimal).01;
