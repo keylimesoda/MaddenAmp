@@ -274,6 +274,9 @@ namespace MaddenEditor.Forms
 			this.playerSigningBonusYear0 = new System.Windows.Forms.TextBox();
 			this.label98 = new System.Windows.Forms.Label();
 			this.label97 = new System.Windows.Forms.Label();
+			this.topTableLayout = new System.Windows.Forms.TableLayoutPanel();
+			this.pnlTopLeft = new System.Windows.Forms.Panel();
+			this.pnlTopRight = new System.Windows.Forms.Panel();
 			this.playerSplitContainer.Panel1.SuspendLayout();
 			this.playerSplitContainer.Panel2.SuspendLayout();
 			this.playerSplitContainer.SuspendLayout();
@@ -343,6 +346,9 @@ namespace MaddenEditor.Forms
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
+			this.topTableLayout.SuspendLayout();
+			this.pnlTopLeft.SuspendLayout();
+			this.pnlTopRight.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// playerSplitContainer
@@ -2814,42 +2820,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox2.Controls.Add(this.label86);
-			this.groupBox2.Controls.Add(this.label87);
-			this.groupBox2.Controls.Add(this.label88);
-			this.groupBox2.Controls.Add(this.playerRightAnkleCombo);
-			this.groupBox2.Controls.Add(this.playerLeftAnkleCombo);
-			this.groupBox2.Controls.Add(this.playerRightKneeCombo);
-			this.groupBox2.Controls.Add(this.playerSleevesCombo);
-			this.groupBox2.Controls.Add(this.playerLeftKneeCombo);
-			this.groupBox2.Controls.Add(this.playerRightHandCombo);
-			this.groupBox2.Controls.Add(this.playerLeftHandCombo);
-			this.groupBox2.Controls.Add(this.label89);
-			this.groupBox2.Controls.Add(this.label90);
-			this.groupBox2.Controls.Add(this.label91);
-			this.groupBox2.Controls.Add(this.label92);
-			this.groupBox2.Controls.Add(this.label93);
-			this.groupBox2.Controls.Add(this.playerRightWristCombo);
-			this.groupBox2.Controls.Add(this.label94);
-			this.groupBox2.Controls.Add(this.playerLeftWristCombo);
-			this.groupBox2.Controls.Add(this.label85);
-			this.groupBox2.Controls.Add(this.label84);
-			this.groupBox2.Controls.Add(this.label83);
-			this.groupBox2.Controls.Add(this.playerRightElbowCombo);
-			this.groupBox2.Controls.Add(this.playerLeftElbowCombo);
-			this.groupBox2.Controls.Add(this.playerNeckRollCombo);
-			this.groupBox2.Controls.Add(this.playerNasalStripCombo);
-			this.groupBox2.Controls.Add(this.playerMouthPieceCombo);
-			this.groupBox2.Controls.Add(this.playerEyePaintCombo);
-			this.groupBox2.Controls.Add(this.playerVisorCombo);
-			this.groupBox2.Controls.Add(this.label82);
-			this.groupBox2.Controls.Add(this.label81);
-			this.groupBox2.Controls.Add(this.label80);
-			this.groupBox2.Controls.Add(this.label79);
-			this.groupBox2.Controls.Add(this.label73);
-			this.groupBox2.Controls.Add(this.playerFaceMaskCombo);
-			this.groupBox2.Controls.Add(this.label72);
-			this.groupBox2.Controls.Add(this.playerHelmetStyleCombo);
+			this.groupBox2.Controls.Add(this.topTableLayout);
 			this.groupBox2.Location = new System.Drawing.Point(4, 5);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(523, 300);
@@ -2860,7 +2831,7 @@ namespace MaddenEditor.Forms
 			// label86
 			// 
 			this.label86.AutoSize = true;
-			this.label86.Location = new System.Drawing.Point(277, 274);
+			this.label86.Location = new System.Drawing.Point(31, 232);
 			this.label86.Name = "label86";
 			this.label86.Size = new System.Drawing.Size(62, 13);
 			this.label86.TabIndex = 35;
@@ -2869,7 +2840,7 @@ namespace MaddenEditor.Forms
 			// label87
 			// 
 			this.label87.AutoSize = true;
-			this.label87.Location = new System.Drawing.Point(284, 243);
+			this.label87.Location = new System.Drawing.Point(38, 205);
 			this.label87.Name = "label87";
 			this.label87.Size = new System.Drawing.Size(55, 13);
 			this.label87.TabIndex = 34;
@@ -2878,7 +2849,7 @@ namespace MaddenEditor.Forms
 			// label88
 			// 
 			this.label88.AutoSize = true;
-			this.label88.Location = new System.Drawing.Point(279, 212);
+			this.label88.Location = new System.Drawing.Point(33, 178);
 			this.label88.Name = "label88";
 			this.label88.Size = new System.Drawing.Size(60, 13);
 			this.label88.TabIndex = 33;
@@ -2886,6 +2857,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRightAnkleCombo
 			// 
+			this.playerRightAnkleCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerRightAnkleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerRightAnkleCombo.FormattingEnabled = true;
 			this.playerRightAnkleCombo.Items.AddRange(new object[] {
@@ -2893,14 +2866,16 @@ namespace MaddenEditor.Forms
             "White Taped",
             "Black Taped",
             "TC Taped"});
-			this.playerRightAnkleCombo.Location = new System.Drawing.Point(342, 266);
+			this.playerRightAnkleCombo.Location = new System.Drawing.Point(99, 229);
 			this.playerRightAnkleCombo.Name = "playerRightAnkleCombo";
-			this.playerRightAnkleCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerRightAnkleCombo.Size = new System.Drawing.Size(133, 21);
 			this.playerRightAnkleCombo.TabIndex = 17;
 			this.playerRightAnkleCombo.SelectedIndexChanged += new System.EventHandler(this.playerRightAnkleCombo_SelectedIndexChanged);
 			// 
 			// playerLeftAnkleCombo
 			// 
+			this.playerLeftAnkleCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerLeftAnkleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerLeftAnkleCombo.FormattingEnabled = true;
 			this.playerLeftAnkleCombo.Items.AddRange(new object[] {
@@ -2908,27 +2883,31 @@ namespace MaddenEditor.Forms
             "White Taped",
             "Black Taped",
             "TC Taped"});
-			this.playerLeftAnkleCombo.Location = new System.Drawing.Point(341, 235);
+			this.playerLeftAnkleCombo.Location = new System.Drawing.Point(99, 202);
 			this.playerLeftAnkleCombo.Name = "playerLeftAnkleCombo";
-			this.playerLeftAnkleCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerLeftAnkleCombo.Size = new System.Drawing.Size(133, 21);
 			this.playerLeftAnkleCombo.TabIndex = 16;
 			this.playerLeftAnkleCombo.SelectedIndexChanged += new System.EventHandler(this.playerLeftAnkleCombo_SelectedIndexChanged);
 			// 
 			// playerRightKneeCombo
 			// 
+			this.playerRightKneeCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerRightKneeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerRightKneeCombo.FormattingEnabled = true;
 			this.playerRightKneeCombo.Items.AddRange(new object[] {
             "Normal",
             "Brace"});
-			this.playerRightKneeCombo.Location = new System.Drawing.Point(341, 204);
+			this.playerRightKneeCombo.Location = new System.Drawing.Point(99, 175);
 			this.playerRightKneeCombo.Name = "playerRightKneeCombo";
-			this.playerRightKneeCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerRightKneeCombo.Size = new System.Drawing.Size(133, 21);
 			this.playerRightKneeCombo.TabIndex = 15;
 			this.playerRightKneeCombo.SelectedIndexChanged += new System.EventHandler(this.playerRightKneeCombo_SelectedIndexChanged);
 			// 
 			// playerSleevesCombo
 			// 
+			this.playerSleevesCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerSleevesCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerSleevesCombo.FormattingEnabled = true;
 			this.playerSleevesCombo.Items.AddRange(new object[] {
@@ -2939,27 +2918,31 @@ namespace MaddenEditor.Forms
             "Wt Half",
             "Blk Half",
             "TC Half"});
-			this.playerSleevesCombo.Location = new System.Drawing.Point(341, 142);
+			this.playerSleevesCombo.Location = new System.Drawing.Point(99, 121);
 			this.playerSleevesCombo.Name = "playerSleevesCombo";
-			this.playerSleevesCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerSleevesCombo.Size = new System.Drawing.Size(133, 21);
 			this.playerSleevesCombo.TabIndex = 13;
 			this.playerSleevesCombo.SelectedIndexChanged += new System.EventHandler(this.playerSleevesCombo_SelectedIndexChanged);
 			// 
 			// playerLeftKneeCombo
 			// 
+			this.playerLeftKneeCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerLeftKneeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerLeftKneeCombo.FormattingEnabled = true;
 			this.playerLeftKneeCombo.Items.AddRange(new object[] {
             "Normal",
             "Brace"});
-			this.playerLeftKneeCombo.Location = new System.Drawing.Point(341, 173);
+			this.playerLeftKneeCombo.Location = new System.Drawing.Point(99, 148);
 			this.playerLeftKneeCombo.Name = "playerLeftKneeCombo";
-			this.playerLeftKneeCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerLeftKneeCombo.Size = new System.Drawing.Size(133, 21);
 			this.playerLeftKneeCombo.TabIndex = 14;
 			this.playerLeftKneeCombo.SelectedIndexChanged += new System.EventHandler(this.playerLeftKneeCombo_SelectedIndexChanged);
 			// 
 			// playerRightHandCombo
 			// 
+			this.playerRightHandCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerRightHandCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerRightHandCombo.FormattingEnabled = true;
 			this.playerRightHandCombo.Items.AddRange(new object[] {
@@ -2971,14 +2954,16 @@ namespace MaddenEditor.Forms
             "Wt RB Gloves",
             "Blk RB Gloves",
             "TC RB Gloves"});
-			this.playerRightHandCombo.Location = new System.Drawing.Point(340, 111);
+			this.playerRightHandCombo.Location = new System.Drawing.Point(99, 94);
 			this.playerRightHandCombo.Name = "playerRightHandCombo";
-			this.playerRightHandCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerRightHandCombo.Size = new System.Drawing.Size(132, 21);
 			this.playerRightHandCombo.TabIndex = 12;
 			this.playerRightHandCombo.SelectedIndexChanged += new System.EventHandler(this.playerRightHandCombo_SelectedIndexChanged);
 			// 
 			// playerLeftHandCombo
 			// 
+			this.playerLeftHandCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerLeftHandCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerLeftHandCombo.FormattingEnabled = true;
 			this.playerLeftHandCombo.Items.AddRange(new object[] {
@@ -2990,16 +2975,16 @@ namespace MaddenEditor.Forms
             "Wt RB Gloves",
             "Blk RB Gloves",
             "TC RB Gloves"});
-			this.playerLeftHandCombo.Location = new System.Drawing.Point(340, 80);
+			this.playerLeftHandCombo.Location = new System.Drawing.Point(99, 67);
 			this.playerLeftHandCombo.Name = "playerLeftHandCombo";
-			this.playerLeftHandCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerLeftHandCombo.Size = new System.Drawing.Size(132, 21);
 			this.playerLeftHandCombo.TabIndex = 11;
 			this.playerLeftHandCombo.SelectedIndexChanged += new System.EventHandler(this.playerLeftHandCombo_SelectedIndexChanged);
 			// 
 			// label89
 			// 
 			this.label89.AutoSize = true;
-			this.label89.Location = new System.Drawing.Point(286, 181);
+			this.label89.Location = new System.Drawing.Point(40, 151);
 			this.label89.Name = "label89";
 			this.label89.Size = new System.Drawing.Size(53, 13);
 			this.label89.TabIndex = 25;
@@ -3008,7 +2993,7 @@ namespace MaddenEditor.Forms
 			// label90
 			// 
 			this.label90.AutoSize = true;
-			this.label90.Location = new System.Drawing.Point(294, 150);
+			this.label90.Location = new System.Drawing.Point(48, 124);
 			this.label90.Name = "label90";
 			this.label90.Size = new System.Drawing.Size(45, 13);
 			this.label90.TabIndex = 24;
@@ -3017,7 +3002,7 @@ namespace MaddenEditor.Forms
 			// label91
 			// 
 			this.label91.AutoSize = true;
-			this.label91.Location = new System.Drawing.Point(278, 119);
+			this.label91.Location = new System.Drawing.Point(32, 97);
 			this.label91.Name = "label91";
 			this.label91.Size = new System.Drawing.Size(61, 13);
 			this.label91.TabIndex = 23;
@@ -3026,7 +3011,7 @@ namespace MaddenEditor.Forms
 			// label92
 			// 
 			this.label92.AutoSize = true;
-			this.label92.Location = new System.Drawing.Point(285, 88);
+			this.label92.Location = new System.Drawing.Point(39, 70);
 			this.label92.Name = "label92";
 			this.label92.Size = new System.Drawing.Size(54, 13);
 			this.label92.TabIndex = 22;
@@ -3035,7 +3020,7 @@ namespace MaddenEditor.Forms
 			// label93
 			// 
 			this.label93.AutoSize = true;
-			this.label93.Location = new System.Drawing.Point(280, 57);
+			this.label93.Location = new System.Drawing.Point(34, 43);
 			this.label93.Name = "label93";
 			this.label93.Size = new System.Drawing.Size(59, 13);
 			this.label93.TabIndex = 21;
@@ -3043,6 +3028,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRightWristCombo
 			// 
+			this.playerRightWristCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerRightWristCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerRightWristCombo.FormattingEnabled = true;
 			this.playerRightWristCombo.Items.AddRange(new object[] {
@@ -3054,16 +3041,16 @@ namespace MaddenEditor.Forms
             "Wt Double",
             "Blk Double",
             "TC Double"});
-			this.playerRightWristCombo.Location = new System.Drawing.Point(340, 49);
+			this.playerRightWristCombo.Location = new System.Drawing.Point(99, 40);
 			this.playerRightWristCombo.Name = "playerRightWristCombo";
-			this.playerRightWristCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerRightWristCombo.Size = new System.Drawing.Size(132, 21);
 			this.playerRightWristCombo.TabIndex = 10;
 			this.playerRightWristCombo.SelectedIndexChanged += new System.EventHandler(this.playerRightWristCombo_SelectedIndexChanged);
 			// 
 			// label94
 			// 
 			this.label94.AutoSize = true;
-			this.label94.Location = new System.Drawing.Point(287, 26);
+			this.label94.Location = new System.Drawing.Point(41, 17);
 			this.label94.Name = "label94";
 			this.label94.Size = new System.Drawing.Size(52, 13);
 			this.label94.TabIndex = 19;
@@ -3071,6 +3058,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerLeftWristCombo
 			// 
+			this.playerLeftWristCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerLeftWristCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerLeftWristCombo.FormattingEnabled = true;
 			this.playerLeftWristCombo.Items.AddRange(new object[] {
@@ -3082,16 +3071,16 @@ namespace MaddenEditor.Forms
             "Wt Double",
             "Blk Double",
             "TC Double"});
-			this.playerLeftWristCombo.Location = new System.Drawing.Point(340, 18);
+			this.playerLeftWristCombo.Location = new System.Drawing.Point(99, 13);
 			this.playerLeftWristCombo.Name = "playerLeftWristCombo";
-			this.playerLeftWristCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerLeftWristCombo.Size = new System.Drawing.Size(132, 21);
 			this.playerLeftWristCombo.TabIndex = 9;
 			this.playerLeftWristCombo.SelectedIndexChanged += new System.EventHandler(this.playerLeftWristCombo_SelectedIndexChanged);
 			// 
 			// label85
 			// 
 			this.label85.AutoSize = true;
-			this.label85.Location = new System.Drawing.Point(54, 275);
+			this.label85.Location = new System.Drawing.Point(36, 235);
 			this.label85.Name = "label85";
 			this.label85.Size = new System.Drawing.Size(64, 13);
 			this.label85.TabIndex = 17;
@@ -3100,7 +3089,7 @@ namespace MaddenEditor.Forms
 			// label84
 			// 
 			this.label84.AutoSize = true;
-			this.label84.Location = new System.Drawing.Point(61, 244);
+			this.label84.Location = new System.Drawing.Point(44, 209);
 			this.label84.Name = "label84";
 			this.label84.Size = new System.Drawing.Size(57, 13);
 			this.label84.TabIndex = 16;
@@ -3109,7 +3098,7 @@ namespace MaddenEditor.Forms
 			// label83
 			// 
 			this.label83.AutoSize = true;
-			this.label83.Location = new System.Drawing.Point(67, 213);
+			this.label83.Location = new System.Drawing.Point(49, 180);
 			this.label83.Name = "label83";
 			this.label83.Size = new System.Drawing.Size(52, 13);
 			this.label83.TabIndex = 15;
@@ -3117,6 +3106,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerRightElbowCombo
 			// 
+			this.playerRightElbowCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerRightElbowCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerRightElbowCombo.FormattingEnabled = true;
 			this.playerRightElbowCombo.Items.AddRange(new object[] {
@@ -3130,14 +3121,16 @@ namespace MaddenEditor.Forms
             "Black Wrist",
             "White Wrist",
             "TC Wrist"});
-			this.playerRightElbowCombo.Location = new System.Drawing.Point(122, 267);
+			this.playerRightElbowCombo.Location = new System.Drawing.Point(107, 229);
 			this.playerRightElbowCombo.Name = "playerRightElbowCombo";
-			this.playerRightElbowCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerRightElbowCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerRightElbowCombo.TabIndex = 8;
 			this.playerRightElbowCombo.SelectedIndexChanged += new System.EventHandler(this.playerRightElbowCombo_SelectedIndexChanged);
 			// 
 			// playerLeftElbowCombo
 			// 
+			this.playerLeftElbowCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerLeftElbowCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerLeftElbowCombo.FormattingEnabled = true;
 			this.playerLeftElbowCombo.Items.AddRange(new object[] {
@@ -3151,42 +3144,48 @@ namespace MaddenEditor.Forms
             "Black Wrist",
             "White Wrist",
             "TC Wrist"});
-			this.playerLeftElbowCombo.Location = new System.Drawing.Point(121, 236);
+			this.playerLeftElbowCombo.Location = new System.Drawing.Point(107, 202);
 			this.playerLeftElbowCombo.Name = "playerLeftElbowCombo";
-			this.playerLeftElbowCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerLeftElbowCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerLeftElbowCombo.TabIndex = 7;
 			this.playerLeftElbowCombo.SelectedIndexChanged += new System.EventHandler(this.playerLeftElbowCombo_SelectedIndexChanged);
 			// 
 			// playerNeckRollCombo
 			// 
+			this.playerNeckRollCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerNeckRollCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerNeckRollCombo.FormattingEnabled = true;
 			this.playerNeckRollCombo.Items.AddRange(new object[] {
             "None",
             "Normal",
             "Extended"});
-			this.playerNeckRollCombo.Location = new System.Drawing.Point(121, 205);
+			this.playerNeckRollCombo.Location = new System.Drawing.Point(107, 175);
 			this.playerNeckRollCombo.Name = "playerNeckRollCombo";
-			this.playerNeckRollCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerNeckRollCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerNeckRollCombo.TabIndex = 6;
 			this.playerNeckRollCombo.SelectedIndexChanged += new System.EventHandler(this.playerNeckRollCombo_SelectedIndexChanged);
 			// 
 			// playerNasalStripCombo
 			// 
+			this.playerNasalStripCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerNasalStripCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerNasalStripCombo.FormattingEnabled = true;
 			this.playerNasalStripCombo.Items.AddRange(new object[] {
             "None",
             "White",
             "Black"});
-			this.playerNasalStripCombo.Location = new System.Drawing.Point(121, 143);
+			this.playerNasalStripCombo.Location = new System.Drawing.Point(107, 121);
 			this.playerNasalStripCombo.Name = "playerNasalStripCombo";
-			this.playerNasalStripCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerNasalStripCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerNasalStripCombo.TabIndex = 4;
 			this.playerNasalStripCombo.SelectedIndexChanged += new System.EventHandler(this.playerNasalStripCombo_SelectedIndexChanged);
 			// 
 			// playerMouthPieceCombo
 			// 
+			this.playerMouthPieceCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerMouthPieceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerMouthPieceCombo.FormattingEnabled = true;
 			this.playerMouthPieceCombo.Items.AddRange(new object[] {
@@ -3194,27 +3193,31 @@ namespace MaddenEditor.Forms
             "White",
             "Black",
             "Team Color"});
-			this.playerMouthPieceCombo.Location = new System.Drawing.Point(121, 174);
+			this.playerMouthPieceCombo.Location = new System.Drawing.Point(107, 148);
 			this.playerMouthPieceCombo.Name = "playerMouthPieceCombo";
-			this.playerMouthPieceCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerMouthPieceCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerMouthPieceCombo.TabIndex = 5;
 			this.playerMouthPieceCombo.SelectedIndexChanged += new System.EventHandler(this.playerMouthPieceCombo_SelectedIndexChanged);
 			// 
 			// playerEyePaintCombo
 			// 
+			this.playerEyePaintCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerEyePaintCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerEyePaintCombo.FormattingEnabled = true;
 			this.playerEyePaintCombo.Items.AddRange(new object[] {
             "None",
             "Black"});
-			this.playerEyePaintCombo.Location = new System.Drawing.Point(120, 112);
+			this.playerEyePaintCombo.Location = new System.Drawing.Point(107, 94);
 			this.playerEyePaintCombo.Name = "playerEyePaintCombo";
-			this.playerEyePaintCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerEyePaintCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerEyePaintCombo.TabIndex = 3;
 			this.playerEyePaintCombo.SelectedIndexChanged += new System.EventHandler(this.playerEyePaintCombo_SelectedIndexChanged);
 			// 
 			// playerVisorCombo
 			// 
+			this.playerVisorCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerVisorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerVisorCombo.FormattingEnabled = true;
 			this.playerVisorCombo.Items.AddRange(new object[] {
@@ -3222,16 +3225,16 @@ namespace MaddenEditor.Forms
             "Clear",
             "Dark",
             "Amber"});
-			this.playerVisorCombo.Location = new System.Drawing.Point(120, 81);
+			this.playerVisorCombo.Location = new System.Drawing.Point(107, 67);
 			this.playerVisorCombo.Name = "playerVisorCombo";
-			this.playerVisorCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerVisorCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerVisorCombo.TabIndex = 2;
 			this.playerVisorCombo.SelectedIndexChanged += new System.EventHandler(this.playerVisorCombo_SelectedIndexChanged);
 			// 
 			// label82
 			// 
 			this.label82.AutoSize = true;
-			this.label82.Location = new System.Drawing.Point(56, 182);
+			this.label82.Location = new System.Drawing.Point(37, 150);
 			this.label82.Name = "label82";
 			this.label82.Size = new System.Drawing.Size(63, 13);
 			this.label82.TabIndex = 7;
@@ -3240,7 +3243,7 @@ namespace MaddenEditor.Forms
 			// label81
 			// 
 			this.label81.AutoSize = true;
-			this.label81.Location = new System.Drawing.Point(61, 151);
+			this.label81.Location = new System.Drawing.Point(43, 123);
 			this.label81.Name = "label81";
 			this.label81.Size = new System.Drawing.Size(58, 13);
 			this.label81.TabIndex = 6;
@@ -3249,7 +3252,7 @@ namespace MaddenEditor.Forms
 			// label80
 			// 
 			this.label80.AutoSize = true;
-			this.label80.Location = new System.Drawing.Point(66, 119);
+			this.label80.Location = new System.Drawing.Point(49, 97);
 			this.label80.Name = "label80";
 			this.label80.Size = new System.Drawing.Size(52, 13);
 			this.label80.TabIndex = 5;
@@ -3258,7 +3261,7 @@ namespace MaddenEditor.Forms
 			// label79
 			// 
 			this.label79.AutoSize = true;
-			this.label79.Location = new System.Drawing.Point(88, 89);
+			this.label79.Location = new System.Drawing.Point(71, 70);
 			this.label79.Name = "label79";
 			this.label79.Size = new System.Drawing.Size(30, 13);
 			this.label79.TabIndex = 4;
@@ -3267,7 +3270,7 @@ namespace MaddenEditor.Forms
 			// label73
 			// 
 			this.label73.AutoSize = true;
-			this.label73.Location = new System.Drawing.Point(58, 58);
+			this.label73.Location = new System.Drawing.Point(41, 43);
 			this.label73.Name = "label73";
 			this.label73.Size = new System.Drawing.Size(60, 13);
 			this.label73.TabIndex = 3;
@@ -3275,6 +3278,8 @@ namespace MaddenEditor.Forms
 			// 
 			// playerFaceMaskCombo
 			// 
+			this.playerFaceMaskCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerFaceMaskCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerFaceMaskCombo.FormattingEnabled = true;
 			this.playerFaceMaskCombo.Items.AddRange(new object[] {
@@ -3292,16 +3297,16 @@ namespace MaddenEditor.Forms
             "RevoG2B",
             "RevoG3BDU",
             "RevoG2EG"});
-			this.playerFaceMaskCombo.Location = new System.Drawing.Point(120, 50);
+			this.playerFaceMaskCombo.Location = new System.Drawing.Point(107, 40);
 			this.playerFaceMaskCombo.Name = "playerFaceMaskCombo";
-			this.playerFaceMaskCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerFaceMaskCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerFaceMaskCombo.TabIndex = 1;
 			this.playerFaceMaskCombo.SelectedIndexChanged += new System.EventHandler(this.playerFaceMaskCombo_SelectedIndexChanged);
 			// 
 			// label72
 			// 
 			this.label72.AutoSize = true;
-			this.label72.Location = new System.Drawing.Point(52, 26);
+			this.label72.Location = new System.Drawing.Point(35, 16);
 			this.label72.Name = "label72";
 			this.label72.Size = new System.Drawing.Size(66, 13);
 			this.label72.TabIndex = 1;
@@ -3309,11 +3314,13 @@ namespace MaddenEditor.Forms
 			// 
 			// playerHelmetStyleCombo
 			// 
+			this.playerHelmetStyleCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.playerHelmetStyleCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.playerHelmetStyleCombo.FormattingEnabled = true;
-			this.playerHelmetStyleCombo.Location = new System.Drawing.Point(120, 19);
+			this.playerHelmetStyleCombo.Location = new System.Drawing.Point(107, 13);
 			this.playerHelmetStyleCombo.Name = "playerHelmetStyleCombo";
-			this.playerHelmetStyleCombo.Size = new System.Drawing.Size(92, 21);
+			this.playerHelmetStyleCombo.Size = new System.Drawing.Size(119, 21);
 			this.playerHelmetStyleCombo.TabIndex = 0;
 			this.playerHelmetStyleCombo.SelectedIndexChanged += new System.EventHandler(this.playerHelmetStyleCombo_SelectedIndexChanged);
 			// 
@@ -3727,6 +3734,79 @@ namespace MaddenEditor.Forms
 			this.label97.TabIndex = 0;
 			this.label97.Text = "Signing Bonus";
 			// 
+			// topTableLayout
+			// 
+			this.topTableLayout.ColumnCount = 2;
+			this.topTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.topTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.topTableLayout.Controls.Add(this.pnlTopLeft, 0, 0);
+			this.topTableLayout.Controls.Add(this.pnlTopRight, 1, 0);
+			this.topTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.topTableLayout.Location = new System.Drawing.Point(3, 16);
+			this.topTableLayout.Name = "topTableLayout";
+			this.topTableLayout.RowCount = 1;
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.topTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.topTableLayout.Size = new System.Drawing.Size(517, 281);
+			this.topTableLayout.TabIndex = 1;
+			// 
+			// pnlTopLeft
+			// 
+			this.pnlTopLeft.Controls.Add(this.playerHelmetStyleCombo);
+			this.pnlTopLeft.Controls.Add(this.label72);
+			this.pnlTopLeft.Controls.Add(this.label73);
+			this.pnlTopLeft.Controls.Add(this.playerFaceMaskCombo);
+			this.pnlTopLeft.Controls.Add(this.playerVisorCombo);
+			this.pnlTopLeft.Controls.Add(this.label79);
+			this.pnlTopLeft.Controls.Add(this.playerEyePaintCombo);
+			this.pnlTopLeft.Controls.Add(this.label80);
+			this.pnlTopLeft.Controls.Add(this.label81);
+			this.pnlTopLeft.Controls.Add(this.label82);
+			this.pnlTopLeft.Controls.Add(this.playerMouthPieceCombo);
+			this.pnlTopLeft.Controls.Add(this.playerNasalStripCombo);
+			this.pnlTopLeft.Controls.Add(this.playerNeckRollCombo);
+			this.pnlTopLeft.Controls.Add(this.playerLeftElbowCombo);
+			this.pnlTopLeft.Controls.Add(this.playerRightElbowCombo);
+			this.pnlTopLeft.Controls.Add(this.label83);
+			this.pnlTopLeft.Controls.Add(this.label84);
+			this.pnlTopLeft.Controls.Add(this.label85);
+			this.pnlTopLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlTopLeft.Location = new System.Drawing.Point(3, 3);
+			this.pnlTopLeft.Name = "pnlTopLeft";
+			this.pnlTopLeft.Size = new System.Drawing.Size(252, 275);
+			this.pnlTopLeft.TabIndex = 0;
+			// 
+			// pnlTopRight
+			// 
+			this.pnlTopRight.Controls.Add(this.playerLeftWristCombo);
+			this.pnlTopRight.Controls.Add(this.label86);
+			this.pnlTopRight.Controls.Add(this.label94);
+			this.pnlTopRight.Controls.Add(this.label87);
+			this.pnlTopRight.Controls.Add(this.playerRightWristCombo);
+			this.pnlTopRight.Controls.Add(this.label88);
+			this.pnlTopRight.Controls.Add(this.label93);
+			this.pnlTopRight.Controls.Add(this.playerRightAnkleCombo);
+			this.pnlTopRight.Controls.Add(this.label92);
+			this.pnlTopRight.Controls.Add(this.playerLeftAnkleCombo);
+			this.pnlTopRight.Controls.Add(this.label91);
+			this.pnlTopRight.Controls.Add(this.playerRightKneeCombo);
+			this.pnlTopRight.Controls.Add(this.label90);
+			this.pnlTopRight.Controls.Add(this.playerSleevesCombo);
+			this.pnlTopRight.Controls.Add(this.label89);
+			this.pnlTopRight.Controls.Add(this.playerLeftKneeCombo);
+			this.pnlTopRight.Controls.Add(this.playerLeftHandCombo);
+			this.pnlTopRight.Controls.Add(this.playerRightHandCombo);
+			this.pnlTopRight.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlTopRight.Location = new System.Drawing.Point(261, 3);
+			this.pnlTopRight.Name = "pnlTopRight";
+			this.pnlTopRight.Size = new System.Drawing.Size(253, 275);
+			this.pnlTopRight.TabIndex = 1;
+			// 
 			// PlayerEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3804,13 +3884,17 @@ namespace MaddenEditor.Forms
 			this.groupBox3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.playerInjuryLength)).EndInit();
 			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
 			this.contractPage.ResumeLayout(false);
 			this.contractPage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
+			this.topTableLayout.ResumeLayout(false);
+			this.pnlTopLeft.ResumeLayout(false);
+			this.pnlTopLeft.PerformLayout();
+			this.pnlTopRight.ResumeLayout(false);
+			this.pnlTopRight.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -4063,5 +4147,8 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.Label label106;
 		private System.Windows.Forms.Label label110;
 		private System.Windows.Forms.ComboBox cbTendancy;
+		private System.Windows.Forms.TableLayoutPanel topTableLayout;
+		private System.Windows.Forms.Panel pnlTopLeft;
+		private System.Windows.Forms.Panel pnlTopRight;
 	}
 }
