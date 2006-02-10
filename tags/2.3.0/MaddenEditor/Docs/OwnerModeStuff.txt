@@ -1,0 +1,59 @@
+Here are the field infos for the prices.
+
+Prices:
+table "OTGO"
+
+Field "OWGT" (Products)
+Ticket Prices
+0 = Upper Level
+1 = Upper Endzone
+2 = Mid Level
+3 = Lower Level
+4 = Club Seats
+5 = Luxury Boxes (10=1K)!!!!
+Concessions
+6 = Food 1
+7 = Food 2
+8 = Food 3
+9 = Food 4
+10 = Drink 1
+11 = Drink 2
+Merchandise
+12 = Programs
+13 = Heats
+14 = Jerseys
+15 = Bobble Heads
+16 = Foam Fingers (Packers Cheese Heads  )
+Parking
+17 = Grass
+18 = Stadium Lot
+19 = Reserved
+20 = Garage
+21 = Valet
+
+Field "OWGP" (Prices)
+
+The next thing I found out:
+
+Weekly income and Attendance.
+
+table "OTIW"
+
+OWFA = Attendance (1=0/101=100) 
+OWIC = Finanz Info Incom Concessions % *
+TGID = Team ID 
+OWIM = Finanz Info Incom Mercandise % *
+SEWN = Season Week 
+OWIP = Finanz Info Incom Parking % *
+OWFS = Fan Support 
+OWIT = Finanz Info, Incom Tickets % *
+
+* 100 % = 5.00M
+
+Here are some things to consider.
+
+The % ratings are set automatically before the game is played. The bases for it are: Team standing, Prices, Fan support and I think which opponent are it is.
+
+We have only the possibility for changing some things, after the game are already is played, or save the game before the kickoff is played!
+
+zentrarium
