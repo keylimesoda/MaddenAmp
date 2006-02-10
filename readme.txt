@@ -5,7 +5,7 @@
                                   
                         the power to Amplify your Franchise
 
-                               6th February 2006
+                               10th February 2006
 
                                   readme.txt
 
@@ -57,6 +57,8 @@ Microsoft .NET Framework Version 2.0 Redistributable Package (x86).
 * Simulated Draft Engine
 
 * Offseason Conditioning Feature
+
+* Training Camp Feature
 
 * Supports to most extent, Madden 2004, 2005 & 2006
 
