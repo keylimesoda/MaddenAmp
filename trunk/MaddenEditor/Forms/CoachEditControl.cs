@@ -241,6 +241,7 @@ namespace MaddenEditor.Forms
 
 		public void InitialiseUI()
 		{
+			isInitialising = true;
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
 				cbTeamCombo.Items.Add(rec);
@@ -289,6 +290,7 @@ namespace MaddenEditor.Forms
 				
 				priorityGroupBox.Controls.Add(priorityDescriptionLabels[i]);
 			}
+			isInitialising = false;
 			LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
 		}
 
