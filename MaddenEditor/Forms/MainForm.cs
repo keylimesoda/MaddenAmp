@@ -85,11 +85,12 @@ namespace MaddenEditor.Forms
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (CheckSave())
-			{
-				CloseModel();
-				Application.Exit();
-			}
+			Close();
+			//if (CheckSave())
+			//{
+		//		CloseModel();
+		//		Application.Exit();
+		//	}
 		}
 
 		/// <summary>
@@ -301,10 +302,15 @@ namespace MaddenEditor.Forms
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			CheckSave();
-			CloseModel();
-
-			Application.Exit();
+			if (CheckSave())
+			{
+				CloseModel();
+				Application.Exit();
+			}
+			else
+			{
+				e.Cancel = true;
+			}
 		}
 
 		public bool Dirty
