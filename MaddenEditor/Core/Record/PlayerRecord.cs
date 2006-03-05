@@ -1693,7 +1693,7 @@ namespace MaddenEditor.Core.Record
 				estSigningBonusArray[i] = 0;
 			}
 
-			if (ContractLength == 0)
+			if (ContractLength == 0 || ContractLength > 7)
 			{
 				return;
 			}
