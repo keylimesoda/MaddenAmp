@@ -1636,7 +1636,6 @@ namespace MaddenEditor.Forms
                     break;
                 }
             }
-                    
 
             Dictionary<int, int> previousOpponents = new Dictionary<int, int>();
             List<int> humanControlled = new List<int>();
@@ -1900,22 +1899,27 @@ namespace MaddenEditor.Forms
                         }
                     }
 
-                    for (int i = 0; i < stat.FumblesRecovered; i++)
+                    if (model.PlayerModel.GetPlayerByPlayerId(stat.PlayerId).PositionId >= (int)MaddenPositions.LE)
                     {
-                        if (rand.NextDouble() > fumbleRecoveredProbability)
+                        int frs = stat.FumblesRecovered;
+
+                        for (int i = 0; i < frs && teamBoxScores[previousOpponents[stat.TeamId]].FumblesLost > 0 && teamBoxScores[stat.TeamId].FumblesRecovered > 0; i++)
                         {
-                            stat.FumblesRecovered--;
-                            teamBoxScores[stat.TeamId].FumblesRecovered--;
-                            teamBoxScores[previousOpponents[stat.TeamId]].FumblesLost--;
-
-                            if (currentWeek < 19)
+                            if (rand.NextDouble() > fumbleRecoveredProbability)
                             {
-                                seasonStatsDefense[stat.PlayerId].FumblesRecovered--;
-                                if (!preseason)
-                                    careerStatsDefense[stat.PlayerId].FumblesRecovered--;
+                                stat.FumblesRecovered--;
+                                teamBoxScores[stat.TeamId].FumblesRecovered--;
+                                teamBoxScores[previousOpponents[stat.TeamId]].FumblesLost--;
 
-                                teamStats[stat.TeamId].FumblesRecovered--;
-                                teamStats[previousOpponents[stat.TeamId]].FumblesLost--;
+                                if (currentWeek < 19)
+                                {
+                                    seasonStatsDefense[stat.PlayerId].FumblesRecovered--;
+                                    if (!preseason)
+                                        careerStatsDefense[stat.PlayerId].FumblesRecovered--;
+
+                                    teamStats[stat.TeamId].FumblesRecovered--;
+                                    teamStats[previousOpponents[stat.TeamId]].FumblesLost--;
+                                }
                             }
                         }
                     }
@@ -2053,7 +2057,7 @@ namespace MaddenEditor.Forms
 
                     int rushAttemptsSubtracted = (int)Math.Round((double)stat.RushingAttempts * (1.0 - rushingAttemptsMultiplier));
                     stat.RushingAttempts -= rushAttemptsSubtracted;
-                    teamBoxScores[stat.TeamId].RushingAttempts--;
+                    teamBoxScores[stat.TeamId].RushingAttempts -= rushAttemptsSubtracted;
 
                     if (currentWeek < 19)
                     {
@@ -2131,6 +2135,8 @@ namespace MaddenEditor.Forms
                         backupRBBox.TeamId = i;
                         backupRBBox.Week = currentWeek - 1;
                         backupRBBox.Season = currentSeason;
+                        backupRBBox.GameNumber = startingRBs[i].GameNumber;
+                        backupRBBox.Weight = startingRBs[i].Weight;
                     }
 
                     if (seasonStatsOffense.ContainsKey(backupRBIDs[i]))

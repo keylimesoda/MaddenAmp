@@ -257,7 +257,7 @@ namespace MaddenEditor.Forms
                 {
                     // find the closest bin to adjust
                     int binshift = 0;
-                    while (targetsByPosition[player.PositionId][player.Overall + binshift] <= 0)
+                    while (targetsByPosition[player.PositionId][Math.Min(99, player.Overall + binshift)] <= 0)
                     {
                         if (binshift >= 0)
                             binshift = -binshift - 1;
@@ -438,6 +438,7 @@ namespace MaddenEditor.Forms
             if (sw != null)
                 sw.Close();
 
+            MessageBox.Show("Done!");
 
             /*
             Dictionary<int, int> bins = new Dictionary<int, int>();

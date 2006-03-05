@@ -39,11 +39,37 @@ namespace MaddenEditor.Core.Record.Stats
         public const string SEASON = "SEYR";
         public const string WEEK = "SEWN";
         public const string TEAM_ID = "TGID";
+        public const string WEIGHT = "SEWT";
+        public const string GAME_NUMBER = "SGNM";
 
 		public BoxScoreOffenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
+        }
+
+        public int Weight
+        {
+            get
+            {
+                return GetIntField(WEIGHT);
+            }
+            set
+            {
+                SetField(WEIGHT, value);
+            }
+        }
+
+        public int GameNumber
+        {
+            get
+            {
+                return GetIntField(GAME_NUMBER);
+            }
+            set
+            {
+                SetField(GAME_NUMBER, value);
+            }
         }
 
         public int Interceptions
