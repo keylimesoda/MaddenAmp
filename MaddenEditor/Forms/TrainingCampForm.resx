@@ -117,29 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="ActivityGrd.ToolTip" xml:space="preserve">
-    <value>You may leave training camp at any time from this screen
-and your progress will be dynamically saved. Simply save
-your franchise file upon exiting Madden Amp.
-
-When you're ready to resum Training Camp, re-enter to
-this screen via the 'Skip' button in Offseason Conditioning
-and then select your team from the drop down box. When
-asked to Resume choose yes.</value>
-  </data>
   <metadata name="GroupAssign.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="AdvanceBtn.ToolTip" xml:space="preserve">
     <value>Your progress is dynamically saved every time 
-you're on this screen. Simply close this form 
-and save your progress upon exiting Madden
-Amp. To continue your Training Camp navigate
-to the Trianing Camp screen, select your team,
-and select 'Yes' when prompted to continue.</value>
+you're on this screen. 
+
+Simply close this form and save your progress 
+upon exiting MaddenAmp. 
+
+To continue your Training Camp navigateto
+ the Trianing Camp screen, select your
+team,and select 'Yes' when prompted to 
+continue.</value>
   </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>109, 17</value>
