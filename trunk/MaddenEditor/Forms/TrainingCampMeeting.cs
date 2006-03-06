@@ -60,7 +60,7 @@ namespace MaddenEditor.Forms
             if ((tcform.Stage == "Hell Week") & (tcform.CurDay == 1))
             {
 
-                DialogResult dr = MessageBox.Show("Enable Advanced mode?\n\nSelecting 'Yes' will enable Advanced mode,where you'll make daily changes to your\nCoach Sliders.\n\nIn doing so you'll have more control over managing your teams daily activites\nbut training camp takes longer in advanced mode than is does in basic mode.\n\nSelecting 'No' enables Basic mode where you make only two adjustmants to your\ncoaching sliders; Once at the beginning of week 1 and again at the start of week 2.\n\nPlayer activities will carry over to each day in Basic mode.\n\nRegardless of mode, you can exit Training Camp at any time\nduring the Player Allocation phase. Re-entering the training camp screen\nreloads your progress and allows you to continue...\n\n***NOTE: Advanced mode currently unavailable in Beta release", "", MessageBoxButtons.OK, MessageBoxIcon.None);
+                DialogResult dr = MessageBox.Show("Enable Advanced mode?\n\nSelecting 'Yes' will enable Advanced mode, where you'll make daily changes to your\nCoach Sliders.\n\nIn doing so you'll have more control over managing your teams daily activites.\n\nSelecting 'No' enables Basic mode where you make only two adjustmants to your\ncoaching sliders; Once at the beginning of week 1 and again at the start of week 2.\n\nPlayer activities will carry over to each day in basic mode however\nwhen in advanced mode,alotments are reset daily.\n\nRegardless of mode, you can exit Training Camp at any time\nduring the Player Allocation phase. Re-entering the training camp screen\nreloads your progress and allows you to continue...", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dr == DialogResult.Yes)
                 {
@@ -81,10 +81,10 @@ namespace MaddenEditor.Forms
 
             }
             //temp code for basic 
-            StreamWriter sw10 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
-            sw10.Write("basic");
-            sw10.WriteLine();
-            sw10.Close();
+            //StreamWriter sw10 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
+            //sw10.Write("basic");
+            //sw10.WriteLine();
+            //sw10.Close();
 
             StreamReader ct = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\mode");
             Mode = ct.ReadLine();
@@ -192,7 +192,7 @@ namespace MaddenEditor.Forms
             }
             else if (((tcform.Stage == "Training Camp") & (tcform.CurDay >= 9)))
             {
-                if (Mode == "Advanced")
+                if (Mode == "advanced")
                 {
                     conditioningUpDown.Enabled = true;
                     positiondrillUpDown.Enabled = true;
@@ -654,7 +654,7 @@ namespace MaddenEditor.Forms
                 tcform.TghBonus = (decimal)0.1;
                 tcform.CatBonus = (decimal).0005;
                 tcform.WthInjIncrease = 3;
-                tcform.HvyRainAwrBonus = (decimal).05;
+                tcform.HvyRainAwrBonus = (decimal).0005;
             }
             else if (Weather > 82)
             {
@@ -1185,6 +1185,97 @@ namespace MaddenEditor.Forms
             }
 
         }
+        public void OutputRosterAdvanced()
+        {
+            string installDirectory = Application.StartupPath;
+
+
+            StreamReader ct = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\currentteam");
+            int CurTeamIndex = int.Parse(ct.ReadLine());
+            ct.Close();
+            StreamWriter sw;
+            int Con = 0; int PosDrill = 0; int Team = 0; int Film = 0; int Special = 0; int Down = 0;
+            if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam))
+            {
+                Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam);
+            }
+
+            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\coachsliders");
+            string line = sr.ReadLine();
+            sr.Close();
+            string[] CoachSliders = line.Split(',');
+            Con = int.Parse(CoachSliders[0]);
+            PosDrill = int.Parse(CoachSliders[1]);
+            Team = int.Parse(CoachSliders[2]);
+            Film = int.Parse(CoachSliders[3]);
+            Special = int.Parse(CoachSliders[4]);
+            Down = int.Parse(CoachSliders[5]);
+
+            int teamId = CurTeamIndex;
+            int positionId = 0;
+            string Pos = "";
+            List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
+
+            foreach (PlayerRecord valObject in teamPlayers)
+            {
+                if (valObject.PositionId == 0)
+                {
+                    Pos = "QB";
+                }
+                else if (valObject.PositionId == 1)
+                {
+                    Pos = "HB";
+                }
+                else if (valObject.PositionId == 2)
+                {
+                    Pos = "FB";
+                }
+                else if (valObject.PositionId == 3)
+                {
+                    Pos = "WR";
+                }
+                else if (valObject.PositionId == 4)
+                {
+                    Pos = "TE";
+                }
+                else if ((valObject.PositionId == 5) | (valObject.PositionId == 6) | (valObject.PositionId == 7) | (valObject.PositionId == 8) | (valObject.PositionId == 9))
+                {
+                    Pos = "OL";
+                }
+                else if ((valObject.PositionId == 10) | (valObject.PositionId == 11) | (valObject.PositionId == 12))
+                {
+                    Pos = "DL";
+                }
+                else if ((valObject.PositionId == 13) | (valObject.PositionId == 14) | (valObject.PositionId == 15))
+                {
+                    Pos = "LB";
+                }
+                else if ((valObject.PositionId == 16) | (valObject.PositionId == 17) | (valObject.PositionId == 18))
+                {
+                    Pos = "DB";
+                }
+                else if ((valObject.PositionId == 19) | (valObject.PositionId == 20))
+                {
+                    Pos = "KP";
+                }
+              
+               
+                    sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+                    string advLine = sr.ReadLine();
+                    string OldTotalsContents = sr.ReadToEnd();
+                    sr.Close();
+                  
+                    FileStream file = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+                    sw = new StreamWriter(file);
+                    sw.Write(Con + "," + PosDrill + "," + Team + "," + Con + "," + Film + "," + Special + "," + Down);
+                    sw.WriteLine();
+                    sw.Write(OldTotalsContents);
+                    sw.Close();
+
+
+            }
+
+        }
         private void CloseCheck()
         {
             if (label6.Text != "100%")
@@ -1228,11 +1319,17 @@ namespace MaddenEditor.Forms
                         OutputRoster();
                         
                     }
-                    if ((Mode == "advanced") || ((tcform.Stage == "Hell Week") & (Mode == "basic") & (tcform.CurDay == 1)) || ((tcform.Stage == "Training Camp")  & (Mode == "basic") & (tcform.CurDay == 8)))
+                    if ((Mode == "advanced") || ((tcform.Stage == "Hell Week") & (Mode == "basic") & (tcform.CurDay == 1)) || ((tcform.Stage == "Training Camp") & (Mode == "basic") & (tcform.CurDay == 8)))
                     {
                         OutputRoster();
                     }
-                   
+
+
+                    //if ((Mode == "advanced") & (tcform.CurDay > 1))
+                    //{
+                    //    OutputRoster();
+                    //}
+
                     StreamWriter sw1 = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + tcform.franchiseFilename + "\\" + tcform.CurTeam + "\\System\\system");
                     if ((tcform.Stage == "Hell Week") & (tcform.CurDay <= 6))
                     {
@@ -1314,6 +1411,11 @@ namespace MaddenEditor.Forms
         {
 
             CloseCheck();
+
+        }
+
+        private void TrainingCampMeeting_Load(object sender, EventArgs e)
+        {
 
         }
 

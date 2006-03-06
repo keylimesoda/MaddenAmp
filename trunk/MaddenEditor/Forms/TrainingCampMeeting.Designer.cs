@@ -559,6 +559,7 @@ namespace MaddenEditor.Forms
             this.Name = "TrainingCampMeeting";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Morning Meeting...";
+            this.Load += new System.EventHandler(this.TrainingCampMeeting_Load);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurWeatherPic)).EndInit();

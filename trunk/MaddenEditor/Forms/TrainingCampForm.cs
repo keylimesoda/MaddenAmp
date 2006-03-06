@@ -180,6 +180,11 @@ namespace MaddenEditor.Forms
             LoadPositionDrills(filterPositionComboBox.Text);
             CurrentActivity = (string)ActivityGrd.Rows[0].Cells["Activity"].Value;
             ActivityLbl.Text = CurrentActivity;
+
+            foreach (DataGridViewColumn i in ActivityGrd.Columns)
+            {
+                i.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
 
@@ -270,7 +275,7 @@ namespace MaddenEditor.Forms
             }
             sr.Close(); 
            
-        }
+        }       
         private void LoadConditioning()
         {
             installDirectory = Application.StartupPath;
@@ -3640,7 +3645,7 @@ namespace MaddenEditor.Forms
 
                     }
                     difference = OldValue - CurPercent;
-                    Time = Time + difference;
+                    Time = Time + difference;            
 
                     if (SaveRemainingPosition == 0)
                     {
@@ -5172,34 +5177,34 @@ namespace MaddenEditor.Forms
                         {
                             if (valObject.YearsPro == 0)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 100) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 100)), 4);
                             }
                             else if (valObject.YearsPro == 1)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 120) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 120)), 4);
                             }
                             else if (valObject.YearsPro == 2)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 140) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 140)), 4);
                             }
                             else if (valObject.YearsPro == 3)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 160) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 160)), 4);
                             }
                             else if (valObject.YearsPro == 4)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 200) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 200)), 4);
                             }
                         }
                         else if ((valObject.YearsPro > 4) & (Pos != "QB"))
                         {
-                            awr = awr + Math.Round((((decimal)Film / 400) * 7), 4);
+                            awr = awr + Math.Round((((decimal)Film / 400)), 4);
                         }
 
                         if (Pos == "KP")
                         {
-                            ka = ka + Math.Round((((decimal)Special / 400) * 7), 4);
-                            kp = kp + Math.Round((((decimal)Special / 400) * 7), 4);
+                            ka = ka + Math.Round((((decimal)Special / 400)), 4);
+                            kp = kp + Math.Round((((decimal)Special / 400)), 4);
                         }
 
 
@@ -5207,30 +5212,29 @@ namespace MaddenEditor.Forms
                         {
                             if (valObject.YearsPro == 0)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 1000) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 1000)), 4);
                             }
                             else if (valObject.YearsPro == 1)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 900) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 800)), 4);
                             }
                             else if (valObject.YearsPro == 2)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 600) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 600)), 4);
                             }
                             else if (valObject.YearsPro == 3)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 300) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 300)), 4);
                             }
                             else if (valObject.YearsPro == 4)
                             {
-                                awr = awr + Math.Round((((decimal)Film / 100) * 7), 4);
+                                awr = awr + Math.Round((((decimal)Film / 120)), 4);
                             }
                         }
                         else if ((valObject.YearsPro > 4) & (Pos == "QB"))
                         {
-                            awr = awr + Math.Round((((decimal)Film / 90) * 7), 4);
+                            awr = awr + Math.Round((((decimal)Film / 90)), 4);
                         }
-
 
 
                     }
@@ -5383,7 +5387,7 @@ namespace MaddenEditor.Forms
                             decimal ExpMod = 1;
                             if (valObject.YearsPro <= 3)
                             {
-                                ExpMod = Math.Round((((((decimal)valObject.YearsPro - 4) / 2) / 10) + 1), 2);
+                                ExpMod = Math.Round((((((decimal)valObject.YearsPro - 4) / 4) / 10) + 1), 2);
                             }
                             else if (valObject.YearsPro >= 4)
                             {
@@ -6650,7 +6654,7 @@ namespace MaddenEditor.Forms
                                 decimal Rank = decimal.Parse(CurrentText[1]); //Percent allocation to activity
                                 if (decimal.Parse(TuneFileAttributeMods[1]) != 0)
                                 {
-                                    wgt = wgt + (((decimal.Parse(TuneFileAttributeMods[1]) / 2000) * (decimal)Rank));//+ CurrentMoraleEffect);
+                                    wgt = wgt + (((decimal.Parse(TuneFileAttributeMods[1]) / 1000) * (decimal)Rank));//+ CurrentMoraleEffect);
                                 }
                                 if (decimal.Parse(TuneFileAttributeMods[2]) != 0)
                                 {
@@ -6691,7 +6695,7 @@ namespace MaddenEditor.Forms
                                 }
                                 if (decimal.Parse(TuneFileAttributeMods[11]) != 0)
                                 {
-                                    cat = cat + ((((decimal.Parse(TuneFileAttributeMods[11]) / 2000) * (decimal)Rank) + CurrentMoraleEffect) + ((decimal)PCM) + CatBonus);
+                                    cat = cat + ((((decimal.Parse(TuneFileAttributeMods[11]) / 3000) * (decimal)Rank) + CurrentMoraleEffect) + ((decimal)PCM) + CatBonus);
                                 }
                                 if (decimal.Parse(TuneFileAttributeMods[12]) != 0)
                                 {
@@ -6774,73 +6778,73 @@ namespace MaddenEditor.Forms
                             //Positional Bonuses
                             if (Pos == "QB")
                             {
-                                tha = tha + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                tha = tha + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                tha = tha + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                tha = tha + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "HB")
                             {
-                                car = car + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                btk = btk + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                car = car + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                btk = btk + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                car = car + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                btk = btk + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                car = car + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                btk = btk + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "FB")
                             {
-                                rbk = rbk + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                pbk = pbk + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                rbk = rbk + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                pbk = pbk + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                rbk = rbk + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                pbk = pbk + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                rbk = rbk + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                pbk = pbk + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "TE")
                             {
-                                cat = cat + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                rbk = rbk + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                cat = cat + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                rbk = rbk + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                cat = cat + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                rbk = rbk + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                cat = cat + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                rbk = rbk + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "WR")
                             {
-                                cat = cat + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                cat = cat + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                cat = cat + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                cat = cat + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "OL")
                             {
-                                rbk = rbk + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                pbk = pbk + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                rbk = rbk + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                pbk = pbk + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                rbk = rbk + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                pbk = pbk + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                rbk = rbk + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                pbk = pbk + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "DL")
                             {
-                                acc = acc + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                tkl = tkl + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                acc = acc + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                tkl = tkl + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                acc = acc + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                tkl = tkl + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                acc = acc + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                tkl = tkl + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "LB")
                             {
-                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                tkl = tkl + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                tkl = tkl + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                tkl = tkl + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                tkl = tkl + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "DB")
                             {
-                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                tkl = tkl + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                tkl = tkl + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                tkl = tkl + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                awr = awr + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                tkl = tkl + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
                             else if (Pos == "KP")
                             {
-                                kp = kp + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                ka = ka + Math.Round((((decimal)TeamDrillHalf) / 100), 4);
-                                kp = kp + Math.Round((((decimal)TeamDrillLive) / 50), 4);
-                                ka = ka + Math.Round((((decimal)TeamDrillLive) / 50), 4);
+                                kp = kp + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                ka = ka + Math.Round((((decimal)TeamDrillHalf) / 1000), 4);
+                                kp = kp + Math.Round((((decimal)TeamDrillLive) / 500), 4);
+                                ka = ka + Math.Round((((decimal)TeamDrillLive) / 500), 4);
                             }
 
 
@@ -6855,69 +6859,68 @@ namespace MaddenEditor.Forms
 
                             //Exp modifier  
 
+                            if ((valObject.YearsPro <= 4) & (Pos != "QB"))
+                            {
+                                if (valObject.YearsPro == 0)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 700)), 4);
+                                }
+                                else if (valObject.YearsPro == 1)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 800)), 4);
+                                }
+                                else if (valObject.YearsPro == 2)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 1000)), 4);
+                                }
+                                else if (valObject.YearsPro == 3)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 1200)), 4);
+                                }
+                                else if (valObject.YearsPro == 4)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 1500)), 4);
+                                }
+                            }
+                            else if ((valObject.YearsPro > 4) & (Pos != "QB"))
+                            {
+                                awr = awr + Math.Round((((decimal)Film / 2000)), 4);
+                            }
 
-                        if ((valObject.YearsPro <= 4) & (Pos != "QB"))
-                        {
-                            if (valObject.YearsPro == 0)
+                            if (Pos == "KP")
                             {
-                                awr = awr + Math.Round((((decimal)Film / 100) ), 4);
+                                ka = ka + Math.Round((((decimal)Special / 2000)), 4);
+                                kp = kp + Math.Round((((decimal)Special / 2000)), 4);
                             }
-                            else if (valObject.YearsPro == 1)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 120) ), 4);
-                            }
-                            else if (valObject.YearsPro == 2)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 140) ), 4);
-                            }
-                            else if (valObject.YearsPro == 3)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 160) ), 4);
-                            }
-                            else if (valObject.YearsPro == 4)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 200) ), 4);
-                            }
-                        }
-                        else if ((valObject.YearsPro > 4) & (Pos != "QB"))
-                        {
-                            awr = awr + Math.Round((((decimal)Film / 400) ), 4);
-                        }
-
-                        if (Pos == "KP")
-                        {
-                            ka = ka + Math.Round((((decimal)Special / 400) ), 4);
-                            kp = kp + Math.Round((((decimal)Special / 400) ), 4);
-                        }
 
 
-                        if ((valObject.YearsPro <= 4) & (Pos == "QB"))
-                        {
-                            if (valObject.YearsPro == 0)
+                            if ((valObject.YearsPro <= 4) & (Pos == "QB"))
                             {
-                                awr = awr + Math.Round((((decimal)Film / 1000)), 4);
+                                if (valObject.YearsPro == 0)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 8000)), 4);
+                                }
+                                else if (valObject.YearsPro == 1)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 6000)), 4);
+                                }
+                                else if (valObject.YearsPro == 2)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 4000)), 4);
+                                }
+                                else if (valObject.YearsPro == 3)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 2000)), 4);
+                                }
+                                else if (valObject.YearsPro == 4)
+                                {
+                                    awr = awr + Math.Round((((decimal)Film / 1200)), 4);
+                                }
                             }
-                            else if (valObject.YearsPro == 1)
+                            else if ((valObject.YearsPro > 4) & (Pos == "QB"))
                             {
                                 awr = awr + Math.Round((((decimal)Film / 900)), 4);
                             }
-                            else if (valObject.YearsPro == 2)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 600)), 4);
-                            }
-                            else if (valObject.YearsPro == 3)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 300)), 4);
-                            }
-                            else if (valObject.YearsPro == 4)
-                            {
-                                awr = awr + Math.Round((((decimal)Film / 100)), 4);
-                            }
-                        }
-                        else if ((valObject.YearsPro > 4) & (Pos == "QB"))
-                        {
-                            awr = awr + Math.Round((((decimal)Film / 90)), 4);
-                        }
 
                       
 
@@ -7268,14 +7271,14 @@ namespace MaddenEditor.Forms
 
                 if (wgt > 0)
                 {
-                    addedwgt = (int)(wgtO + (Math.Round(((decimal)wgt * (decimal)PosWgtMod), 0)));
+                    addedwgt = (int)(Math.Ceiling(((valObject.Weight + 160) + (((decimal)wgt * (decimal)PosWgtMod)))));
                     if (addedwgt > wgtO)
                     {
                         wgt = 0;
                     }
                     PercentModFat = (int)(Math.Round(((decimal)wgtO / (decimal)addedwgt), 3));
                     PercentModMuscle = (int)(Math.Round(((decimal)addedwgt / (decimal)wgtO), 3));
-                    valObject.Weight = addedwgt - 160;
+                    valObject.Weight = (addedwgt - 160);
                     Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
                     HighLowCheck(Rating);
                     valObject.BodyMuscle = Rating;
@@ -7306,14 +7309,14 @@ namespace MaddenEditor.Forms
                 }
                 else if (wgt < 0)
                 {
-                    addedwgt = (int)(wgtO + (Math.Round(((decimal)wgt * (decimal)PosWgtMod), 0)));
+                    addedwgt = (int)(Math.Floor(((valObject.Weight + 160) + (((decimal)wgt * (decimal)PosWgtMod)))));
                     if (addedwgt < wgtO)
                     {
                         wgt = 0;
                     }
                     PercentModFat = Math.Round(((decimal)addedwgt / (decimal)wgtO), 3);
                     PercentModMuscle = Math.Round(((decimal)wgtO / (decimal)addedwgt), 3);
-                    valObject.Weight = addedwgt - 160;
+                    valObject.Weight = (addedwgt - 160);
                     Rating = (int)(Math.Ceiling(valObject.BodyMuscle * PercentModMuscle));
                     HighLowCheck(Rating);
                     valObject.BodyMuscle = Rating;
@@ -7346,7 +7349,7 @@ namespace MaddenEditor.Forms
                 decimal ExpMod = 1;
                 if (valObject.YearsPro <= 3)
                 {
-                    ExpMod = Math.Round((((((decimal)valObject.YearsPro - 4) / 2) / 10) + 1), 2);
+                    ExpMod = Math.Round((((((decimal)valObject.YearsPro - 4) / 4) / 10) + 1), 2);
                 }
                 else if (valObject.YearsPro >= 4)
                 {
@@ -7356,7 +7359,7 @@ namespace MaddenEditor.Forms
                 AttributeDifferential = Math.Round(((1 - ((decimal)valObject.Speed / (decimal)SpdMean))), 3);
                 if (valObject.Speed > SpdMean)
                 {
-                    AttributeDifferential = (decimal).01;
+                    AttributeDifferential = (decimal).25; //was .01
                 }
                 Rating = (int)(Math.Round((valObject.Speed + (Math.Round((AttributeDifferential * (decimal)(spd)), 0))), 0));
                 HighLowCheck(Rating);
@@ -7374,7 +7377,7 @@ namespace MaddenEditor.Forms
                 AttributeDifferential = Math.Round(((1 - ((decimal)valObject.Acceleration / (decimal)AccMean))), 3);
                 if (valObject.Acceleration > AccMean)
                 {
-                    AttributeDifferential = (decimal).01;
+                    AttributeDifferential = (decimal).35;//was .01
                 }
                 Rating = (int)(Math.Round((valObject.Acceleration + (Math.Round((AttributeDifferential * (decimal)(acc)), 0))), 0));
                 HighLowCheck(Rating);
@@ -7393,7 +7396,7 @@ namespace MaddenEditor.Forms
                 AttributeDifferential = Math.Round(((1 - ((decimal)valObject.Agility / (decimal)AgiMean))), 3);
                 if (valObject.Agility > AgiMean)
                 {
-                    AttributeDifferential = (decimal).01;
+                    AttributeDifferential = (decimal).35;//was .01
                 }
                 Rating = (int)(Math.Round((valObject.Agility + (Math.Round((AttributeDifferential * (decimal)(agi)), 0))), 0));
                 HighLowCheck(Rating);
@@ -7411,7 +7414,7 @@ namespace MaddenEditor.Forms
                 AttributeDifferential = Math.Round(((1 - ((decimal)valObject.Strength / (decimal)StrMean))), 3);
                 if (valObject.Strength > StrMean)
                 {
-                    AttributeDifferential = (decimal).01;
+                    AttributeDifferential = (decimal).35;//was .01
                 }
                 Rating = (int)(Math.Round((valObject.Strength + (Math.Round((AttributeDifferential * (decimal)(str)), 0))), 0));
                 HighLowCheck(Rating);
@@ -7492,10 +7495,10 @@ namespace MaddenEditor.Forms
 
 
                 //cat
-                AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * ExpMod) / (decimal)90))), 3);
+                AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * (ExpMod)) / (decimal)87))), 3);
                 if (AttributeDifferential > 1)
                 {
-                    AttributeDifferential = (decimal).01;
+                    AttributeDifferential = (decimal).1;
                 }
                 Rating = (int)(Math.Round((valObject.Catching + (Math.Round((AttributeDifferential * (decimal)(cat)), 0))), 0));
                 HighLowCheck(Rating);
@@ -7850,7 +7853,7 @@ namespace MaddenEditor.Forms
                         af["Ovr"] = ovrO;
                         // Would like to include feet/inches
                         af["Hgt"] = valObject.Height;
-                        af["Wgt"] = valObject.Weight + 160;
+                        af["Wgt"] = wgtO;
                         af["Spd"] = spdO;
                         af["Acc"] = accO;
                         af["Agi"] = agiO;
@@ -8121,161 +8124,161 @@ namespace MaddenEditor.Forms
 
             if (PosId == 0)
             {
-                SpdMean = 58;
-                AccMean = 61;
-                AgiMean = 61;
-                StrMean = 55;
+                SpdMean = 63;
+                AccMean = 66;
+                AgiMean = 66;
+                StrMean = 60;
                 StmMean = 89;
                 InjMean = 83;
                 PosWgtMod = 1;
             }
             else if (PosId == 1)
             {
-                SpdMean = 88;
-                AccMean = 90;
-                AgiMean = 88;
-                StrMean = 68;
+                SpdMean = 90;
+                AccMean = 92;
+                AgiMean = 90;
+                StrMean = 70;
                 StmMean = 85;
                 InjMean = 85;
                 PosWgtMod = .9;
             }
             else if (PosId == 2)
             {
-                SpdMean = 70;
-                AccMean = 79;
-                AgiMean = 66;
-                StrMean = 71;
-                StmMean = 75;
+                SpdMean = 72;
+                AccMean = 81;
+                AgiMean = 68;
+                StrMean = 76;
+                StmMean = 78;
                 InjMean = 74;
                 PosWgtMod = 1.15;
             }
             else if (PosId == 3)
             {
-                SpdMean = 90;
-                AccMean = 92;
-                AgiMean = 90;
-                StrMean = 54;
-                StmMean = 88;
+                SpdMean = 92;
+                AccMean = 94;
+                AgiMean = 92;
+                StrMean = 56;
+                StmMean = 90;
                 InjMean = 85;
                 PosWgtMod = .5;
             }
             else if (PosId == 4)
             {
-                SpdMean = 72;
-                AccMean = 79;
-                AgiMean = 72;
-                StrMean = 70;
-                StmMean = 83;
+                SpdMean = 74;
+                AccMean = 81;
+                AgiMean = 74;
+                StrMean = 72;
+                StmMean = 86;
                 InjMean = 80;
                 PosWgtMod = 1.15;
             }
             else if (PosId == 5)
             {
-                SpdMean = 50;
-                AccMean = 70;
-                AgiMean = 52;
+                SpdMean = 55;
+                AccMean = 75;
+                AgiMean = 57;
                 StrMean = 90;
-                StmMean = 73;
+                StmMean = 80;
                 InjMean = 85;
                 PosWgtMod = 1.2;
             }
             else if (PosId == 6)
             {
-                SpdMean = 50;
-                AccMean = 70;
-                AgiMean = 52;
+                SpdMean = 55;
+                AccMean = 75;
+                AgiMean = 57;
                 StrMean = 90;
-                StmMean = 73;
+                StmMean = 80;
                 InjMean = 85;
                 PosWgtMod = 1.2;
             }
             else if (PosId == 7)
             {
-                SpdMean = 50;
-                AccMean = 70;
-                AgiMean = 52;
+                SpdMean = 55;
+                AccMean = 75;
+                AgiMean = 57;
                 StrMean = 90;
-                StmMean = 73;
+                StmMean = 80;
                 InjMean = 85;
                 PosWgtMod = 1.2;
             }
             else if (PosId == 8)
             {
-                SpdMean = 50;
-                AccMean = 70;
-                AgiMean = 52;
+                SpdMean = 55;
+                AccMean = 75;
+                AgiMean = 57;
                 StrMean = 90;
-                StmMean = 73;
+                StmMean = 80;
                 InjMean = 85;
                 PosWgtMod = 1.2;
             }
             else if (PosId == 9)
             {
-                SpdMean = 50;
-                AccMean = 70;
-                AgiMean = 52;
+                SpdMean = 55;
+                AccMean = 75;
+                AgiMean = 57;
                 StrMean = 90;
-                StmMean = 73;
+                StmMean = 80;
                 InjMean = 85;
                 PosWgtMod = 1.2;
             }
             else if (PosId == 10)
             {
-                SpdMean = 69;
-                AccMean = 77;
-                AgiMean = 68;
-                StrMean = 79;
-                StmMean = 77;
+                SpdMean = 73;
+                AccMean = 79;
+                AgiMean = 71;
+                StrMean = 84;
+                StmMean = 80;
                 InjMean = 80;
                 PosWgtMod = 1.15;
             }
             else if (PosId == 11)
             {
-                SpdMean = 69;
-                AccMean = 77;
-                AgiMean = 68;
-                StrMean = 79;
-                StmMean = 77;
+                SpdMean = 73;
+                AccMean = 79;
+                AgiMean = 71;
+                StrMean = 84;
+                StmMean = 80;
                 InjMean = 80;
                 PosWgtMod = 1.15;
             }
             else if (PosId == 12)
             {
-                SpdMean = 60;
-                AccMean = 77;
-                AgiMean = 68;
-                StrMean = 79;
-                StmMean = 77;
+                SpdMean = 64;
+                AccMean = 80;
+                AgiMean = 71;
+                StrMean = 84;
+                StmMean = 80;
                 InjMean = 80;
                 PosWgtMod = 1.2;
             }
             else if (PosId == 13)
             {
-                SpdMean = 79;
-                AccMean = 83;
-                AgiMean = 78;
-                StrMean = 72;
-                StmMean = 83;
+                SpdMean = 83;
+                AccMean = 85;
+                AgiMean = 83;
+                StrMean = 75;
+                StmMean = 86;
                 InjMean = 83;
                 PosWgtMod = 1.05;
             }
             else if (PosId == 14)
             {
-                SpdMean = 76;
-                AccMean = 80;
-                AgiMean = 76;
-                StrMean = 76;
-                StmMean = 84;
+                SpdMean = 83;
+                AccMean = 85;
+                AgiMean = 83;
+                StrMean = 75;
+                StmMean = 86;
                 InjMean = 80;
                 PosWgtMod = 1.05;
             }
             else if (PosId == 15)
             {
-                SpdMean = 79;
-                AccMean = 83;
-                AgiMean = 78;
-                StrMean = 72;
-                StmMean = 83;
+                SpdMean = 83;
+                AccMean = 85;
+                AgiMean = 83;
+                StrMean = 75;
+                StmMean = 86;
                 InjMean = 83;
                 PosWgtMod = 1.05;
             }
@@ -8284,28 +8287,28 @@ namespace MaddenEditor.Forms
                 SpdMean = 90;
                 AccMean = 92;
                 AgiMean = 89;
-                StrMean = 52;
-                StmMean = 85;
+                StrMean = 57;
+                StmMean = 90;
                 InjMean = 85;
                 PosWgtMod = .5;
             }
             else if (PosId == 17)
             {
-                SpdMean = 86;
-                AccMean = 88;
-                AgiMean = 86;
-                StrMean = 57;
-                StmMean = 85;
+                SpdMean = 88;
+                AccMean = 90;
+                AgiMean = 88;
+                StrMean = 63;
+                StmMean = 88;
                 InjMean = 85;
                 PosWgtMod = .75;
             }
             else if (PosId == 18)
             {
-                SpdMean = 86;
-                AccMean = 88;
-                AgiMean = 84;
-                StrMean = 60;
-                StmMean = 85;
+                SpdMean = 88;
+                AccMean = 90;
+                AgiMean = 86;
+                StrMean = 63;
+                StmMean = 88;
                 InjMean = 85;
                 PosWgtMod = .8;
             }
@@ -8722,8 +8725,8 @@ namespace MaddenEditor.Forms
 
 
             }
-        }
-
+        }      
+       
         private void simCPUCampsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dr = MessageBox.Show("Simulate Training Camp for all CPU teams?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None);
@@ -8758,13 +8761,142 @@ namespace MaddenEditor.Forms
 
         }
 
-       
+        private void ActivityGrd_CellToolTipTextNeeded(object sender, DataGridViewCellToolTipTextNeededEventArgs e)
+        {   
+                if ((ActivityGrd.Rows.Count > 0) & (e.RowIndex >= 0))
+                {
+            string CurName = (string)ActivityGrd.Rows[e.RowIndex].Cells["Activity"].Value;
+            string tooltp = "";
+            string Pos = filterPositionComboBox.Text;
+
+                    string installDirectory = Application.StartupPath;
+                    StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\tune.txt");
+                    
+                    if (ActivityCmb.Text == "Position Drills")
+                    {
+                        while (!sr.EndOfStream)
+                        {
+                            string line = sr.ReadLine();
+                            if (line != "")
+                            {
+                                string[] splitLine = line.Split(';');
+                                //Positional
+                                if ((splitLine[1] == Pos + "-P") & (splitLine[2] == CurName))
+                                {
+                                    string[] splitValues = splitLine[4].Split('|');
+                                    //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                    tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                        ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                        ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                        ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+                                }
+                                else
+                                {
+                                    if (Pos == "LT" | Pos == "LG" | Pos == "C" | Pos == "RG" | Pos == "RT" | Pos == "OL" | Pos == "OT" | Pos == "OG")
+                                    {
+                                        if ((splitLine[1] == "OL-P") & (splitLine[2] == CurName))
+                                        {
+                                            string[] splitValues = splitLine[4].Split('|');
+                                            //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                            tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                                ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                                ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                                ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+
+                                        }
+                                    }
+                                    else if (Pos == "RE" | Pos == "LE" | Pos == "DT" | Pos == "DL" | Pos == "DE")
+                                    {
+                                        if ((splitLine[1] == "DL-P") & (splitLine[2] == CurName))
+                                        {
+                                            string[] splitValues = splitLine[4].Split('|');
+                                            //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                            tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                                ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                                ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                                ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+
+                                        }
+                                    }
+                                    else if (Pos == "LOLB" | Pos == "MLB" | Pos == "ROLB" | Pos == "LB" | Pos == "OLB")
+                                    {
+                                        if ((splitLine[1] == "LB-P") & (splitLine[2] == CurName))
+                                        {
+                                            string[] splitValues = splitLine[4].Split('|');
+                                            //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                            tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                                ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                                ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                                ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+
+                                        }
+                                    }
+                                    else if (Pos == "CB" | Pos == "FS" | Pos == "SS" | Pos == "DB" | Pos == "S")
+                                    {
+                                        if ((splitLine[1] == "DB-P") & (splitLine[2] == CurName))
+                                        {
+                                            string[] splitValues = splitLine[4].Split('|');
+                                            //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                            tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                                ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                                ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                                ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+
+                                        }
+                                    }
+                                    else if (Pos == "K" | Pos == "P")
+                                    {
+                                        if ((splitLine[1] == "KP-P") & (splitLine[2] == CurName))
+                                        {
+                                            string[] splitValues = splitLine[4].Split('|');
+                                            //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                            tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                                ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                                ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                                ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+
+                                        }
+                                    }
+
+                                }
+                            }
+                        }//end while
+                    }//end position
+                    else if ((ActivityCmb.Text == "Dietary") || (ActivityCmb.Text == "Weight Training") || (ActivityCmb.Text == "Aerobic/Cardio"))
+                    {
+                        while (!sr.EndOfStream)
+                        {
+                            string line = sr.ReadLine();
+                            if (line != "")
+                            {
+                                string[] splitLine = line.Split(';');
+                                //Positional
+                                if ((splitLine[2] == CurName))
+                                {
+                                    string[] splitValues = splitLine[4].Split('|');
+                                    //wgt,spd,acc,agi,str,stm,inj,tgh,mor,awr,cat,car,jmp,btk,tkl,thp,tha,pbk,rbk,kp,ka,kr,inj_chance
+                                    tooltp = "Wgt=" + splitValues[1] + ",Spd=" + splitValues[2] + ",Acc=" + splitValues[3] + ",Agi=" + splitValues[4] + ",Str=" + splitValues[5] +
+                                        ",Stm=" + splitValues[6] + ",Inj=" + splitValues[7] + ",Tgh=" + splitValues[8] + ",Mor=" + splitValues[9] + ",Awr=" + splitValues[10] + ",Cat=" + splitValues[11] +
+                                        ",Car=" + splitValues[12] + ",Jmp=" + splitValues[13] + ",Btk=" + splitValues[14] + ",Tkl=" + splitValues[15] + ",Thp=" + splitValues[16] + ",Tha=" + splitValues[17] +
+                                        ",Pbk=" + splitValues[18] + ",Rbk=" + splitValues[19] + ",kp=" + splitValues[20] + ",ka=" + splitValues[21] + ",kr=" + splitValues[22] + ",Inj_chance=" + splitValues[23];
+                                }
 
 
+                            }
+                        }
+                    }//end while
+                    
+
+                    sr.Close();
+                   
+                    e.ToolTipText = tooltp;
 
 
+                }
+        }
 
-     
+
+        
  
 
           

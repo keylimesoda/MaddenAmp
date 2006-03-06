@@ -32,10 +32,10 @@ namespace MaddenEditor.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainingCampForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainingCampForm));
             this.TrainingTime = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.SelectTeam = new System.Windows.Forms.GroupBox();
             this.selectHumanTeam = new System.Windows.Forms.ComboBox();
@@ -150,7 +150,7 @@ namespace MaddenEditor.Forms
             this.depthChartDataGrid.Name = "depthChartDataGrid";
             this.depthChartDataGrid.ReadOnly = true;
             this.depthChartDataGrid.RowHeadersVisible = false;
-            this.depthChartDataGrid.Size = new System.Drawing.Size(1001, 133);
+            this.depthChartDataGrid.Size = new System.Drawing.Size(1020, 133);
             this.depthChartDataGrid.TabIndex = 10;
             // 
             // groupBox1
@@ -161,7 +161,7 @@ namespace MaddenEditor.Forms
             this.groupBox1.Controls.Add(this.ActivityGrd);
             this.groupBox1.Location = new System.Drawing.Point(445, 230);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(584, 327);
+            this.groupBox1.Size = new System.Drawing.Size(603, 327);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Activity Name...";
@@ -193,10 +193,10 @@ namespace MaddenEditor.Forms
             this.ActivityGrd.RowTemplate.ReadOnly = true;
             this.ActivityGrd.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ActivityGrd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ActivityGrd.Size = new System.Drawing.Size(562, 302);
+            this.ActivityGrd.Size = new System.Drawing.Size(581, 302);
             this.ActivityGrd.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.ActivityGrd, resources.GetString("ActivityGrd.ToolTip"));
             this.ActivityGrd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ActivityGrd_CellClick);
+            this.ActivityGrd.CellToolTipTextNeeded += new System.Windows.Forms.DataGridViewCellToolTipTextNeededEventHandler(this.ActivityGrd_CellToolTipTextNeeded);
             // 
             // groupBox3
             // 
@@ -340,7 +340,7 @@ namespace MaddenEditor.Forms
             this.groupBox6.Enabled = false;
             this.groupBox6.Location = new System.Drawing.Point(398, 36);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(615, 49);
+            this.groupBox6.Size = new System.Drawing.Size(634, 49);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Advance...";
@@ -444,7 +444,7 @@ namespace MaddenEditor.Forms
             this.cPUSimulationToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1032, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1051, 24);
             this.menuStrip1.TabIndex = 18;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -467,7 +467,7 @@ namespace MaddenEditor.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1032, 565);
+            this.ClientSize = new System.Drawing.Size(1051, 565);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
