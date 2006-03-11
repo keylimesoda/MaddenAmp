@@ -7495,7 +7495,7 @@ namespace MaddenEditor.Forms
 
 
                 //cat
-                AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * (ExpMod)) / (decimal)87))), 3);
+                AttributeDifferential = Math.Round(((1 - (((decimal)valObject.Catching * (ExpMod)) / (decimal)85))), 3);
                 if (AttributeDifferential > 1)
                 {
                     AttributeDifferential = (decimal).1;
