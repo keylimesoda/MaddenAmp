@@ -1,0 +1,231 @@
+Rec. No.,UFID,TGID,TUCO,Team,Home/Away,Jersey Color,Pants Color,Throwback
+0,9,0,0,Bears,H,Dk Blue,White,
+1,8,0,1,,A,White,Dk Blue,
+2,6,0,2,,H,Orange,Dk Blue,
+3,7,0,3,,H,Orange,White,Y
+4,21,1,0,Bengals,H,Black,White,
+5,20,1,1,,A,White,Blue,
+6,25,1,2,,H,Black,White,
+7,24,1,3,,A,White,White,
+8,23,1,4,,H,Black,White,Y
+9,22,1,5,,A,White,White,Y
+10,29,1,6,,H,Black,White,
+11,28,1,7,,A,White,White,
+12,26,1,8,,H,Black,Black,
+13,27,1,9,,H,Orange,White,
+14,16,1,10,,H,Orange,White,
+15,17,1,11,,H,Black,Black,
+16,18,1,12,,A,White,White,
+17,19,1,13,,H,Orange,Black,
+18,33,2,0,Bills,H,Dk Blue,White,
+19,32,2,1,,A,White,Dk Blue,
+20,30,2,2,,H,Dk Blue,Dk Blue,
+21,31,2,3,,A,White,White,
+22,39,2,4,,H,Blue,White,
+23,38,2,5,,A,White,White,
+24,35,2,6,,H,Lt Blue,White,Y
+25,34,2,7,,A,White,White,Y
+26,54,3,0,Broncos,H,Blue,White,
+27,53,3,1,,A,White,White,
+28,51,3,2,,H,Blue,Blue,
+29,52,3,3,,H,Orange,White,
+30,56,3,4,,H,Orange,White,Y
+31,55,3,5,,A,White,White,Y
+32,48,4,0,Browns,H,Brown,White,
+33,47,4,1,,A,White,White,
+34,40,4,2,,H,Orange,White,
+35,41,4,3,,A,White,Orange,
+36,42,4,4,,H,Brown,White,
+37,43,4,5,,A,White,White,
+38,44,4,6,,H,Orange,White,
+39,45,4,7,,A,White,Orange,
+40,46,4,8,,H,Brown,Orange,
+41,50,4,9,,H,Brown,White,
+42,49,4,10,,A,White,White,
+43,61,5,0,Bucs,H,Red,Pewter,
+44,60,5,1,,A,White,Pewter,
+45,57,5,2,,H,Red,White,
+46,58,5,3,,A,White,White,
+47,59,5,4,,H,Black,Pewter,
+48,63,5,5,,H,Orange,White,Y
+49,62,5,6,,A,White,White,Y
+50,68,6,0,Cardinals,H,Red,Red,
+51,67,6,1,,A,White,White,
+52,64,6,2,,H,Red,Red,
+53,65,6,3,,A,White,White,
+54,66,6,4,,A,White,White,
+55,76,7,0,Chargers,H,Blue,White,
+56,75,7,1,,A,White,Blue,
+57,82,7,2,,H,Blue,Yellow,
+58,81,7,3,,A,White,Yellow,
+59,80,7,4,,H,Lt Blue,Yellow,
+60,79,7,5,,A,White,Yellow,
+61,77,7,6,,A,White,White,Y
+62,78,7,7,,H,Powder Blue,White,Y
+63,73,7,8,,A,White,White,
+64,74,7,9,,H,Dk Blue,Dk Blue,
+65,85,8,0,Chiefs,H,Red,White,
+66,84,8,1,,A,White,Red,
+67,87,8,2,,H,Dk Red,White,
+68,86,8,3,,A,White,White,
+69,83,8,4,,A,White,White,
+70,90,9,0,Colts,H,Blue,White,
+71,89,9,1,,A,White,White,
+72,94,9,2,,H,Blue,White,
+73,93,9,3,,A,White,White,
+74,88,9,4,,A,White,White,Y
+75,97,10,0,Cowboys,A,White,Lt Blue,
+76,98,10,1,,H,Blue,Silver,
+77,95,10,2,,H,Blue,Silver,
+78,99,10,3,,A,White,White,
+79,100,10,4,,H,Blue,White,
+80,102,10,5,,H,Blue,Silver,
+81,101,10,6,,A,White,Lt Blue,
+82,96,10,7,,H,Blue,White,Y
+83,111,11,0,Dolphins,H,Teal,White,
+84,110,11,1,,A,White,Teal,
+85,107,11,2,,A,White,White,
+86,108,11,3,,H,Teal,Teal,
+87,109,11,4,,H,Orange,White,
+88,114,11,5,,A,White,White,Y
+89,115,11,6,,H,Teal,White,Y
+90,128,12,0,Eagles,H,Green,White,
+91,127,12,1,,A,White,Green,
+92,124,12,2,,A,White,White,
+93,125,12,3,,H,Black,Green,
+94,126,12,4,,H,Black,White,
+95,134,12,5,,H,Lt Green,Silver,Y
+96,133,12,6,,A,White,Silver,Y
+97,132,12,7,,H,Lt Green,Silver,Y
+98,131,12,8,,A,White,Silver,Y
+99,130,12,9,,H,Lt Green,White,Y
+100,129,12,10,,A,White,White,Y
+101,143,13,0,Falcons,H,Red,White,
+102,142,13,1,,A,White,White,
+103,153,13,2,,H,Black,Silver,
+104,152,13,3,,A,White,Silver,
+105,151,13,4,,H,Black,Silver,
+106,150,13,5,,A,White,Silver,
+107,147,13,6,,H,Black,Silver,
+108,146,13,7,,A,White,Silver,
+109,145,13,8,,H,Red,Silver,Y
+110,144,13,9,,A,White,Silver,Y
+111,137,13,10,,H,Black,White,
+112,138,13,11,,H,Black,Black,
+113,139,13,12,,A,White,Black,
+114,140,13,13,,H,Red,Black,
+115,141,13,14,,H,Dk Red,Black,
+116,206,14,0,49ers,H,Red,Gold,
+117,205,14,1,,A,White,Gold,
+118,210,14,2,,H,Red,Gold,
+119,209,14,3,,A,White,Gold,
+120,208,14,4,,H,Red,White,Y
+121,207,14,5,,A,White,White,Y
+122,204,14,6,,H,Gold,Gold,
+123,162,15,0,Giants,H,Dk Blue,Silver,
+124,161,15,1,,A,White,Silver,
+125,160,15,2,,A,White,Silver,
+126,168,15,3,,H,Blue,White,Y
+127,167,15,4,,A,White,White,Y
+128,166,15,5,,H,Blue,White,Y
+129,165,15,6,,A,White,Silver,Y
+130,159,15,7,,H,Red,Silver,Y
+131,174,16,0,Jaguars,H,Green,White,
+132,173,16,1,,A,White,Black,
+133,169,16,2,,H,Green,Green,
+134,170,16,3,,A,White,White,
+135,171,16,4,,A,White,Black,
+136,172,16,5,,H,Black,Black,
+137,175,16,6,,A,White,White,
+138,180,17,0,Jets,H,Green,White,
+139,179,17,1,,A,White,White,
+140,184,17,2,,H,Green,White,Y
+141,183,17,3,,A,White,White,Y
+142,182,17,4,,H,Green,White,
+143,181,17,5,,A,White,White,
+144,177,17,6,,H,Green,Green,
+145,178,17,7,,A,White,Green,
+146,189,18,0,Lions,H,Blue,Silver,
+147,188,18,1,,A,White,Silver,
+148,191,18,2,,H,Blue,Silver,Y
+149,190,18,3,,A,White,Silver,Y
+150,193,18,4,,H,Lt Blue,Silver,
+151,192,18,5,,A,White,Silver,
+152,186,18,6,,H,Blue,Silver,Y
+153,187,18,7,,H,Black,Silver,
+154,185,18,8,,H,Silver,Silver,
+155,226,19,0,Packers,H,Green,Yellow,
+156,225,19,1,,A,White,Yellow,
+157,228,19,2,,H,Green,Yellow,
+158,227,19,3,,A,White,Yellow,
+159,239,20,0,Panthers,H,Black,Silver,
+160,238,20,1,,A,White,Silver,
+161,237,20,2,,H,Blue,Silver,
+162,243,21,0,Patriots,H,Blue,Silver,
+163,242,21,1,,A,White,Dk Blue,
+164,240,21,2,,H,Blue,Blue,
+165,241,21,3,,H,Silver,Blue,
+166,247,21,4,,H,Blue,White,
+167,246,21,5,,A,White,White,
+168,245,21,6,,H,Orange,White,Y
+169,244,21,7,,A,White,White,Y
+170,250,22,0,Raiders,H,Black,Silver,
+171,249,22,1,,A,White,Silver,
+172,252,22,2,,H,Black,Silver,
+173,251,22,3,,A,White,Silver,
+174,248,22,4,,H,Silver,Silver,
+175,257,23,0,Rams,H,Blue,White,
+176,256,23,1,,A,White,Gold,
+177,253,23,2,,H,Blue,Blue,
+178,254,23,3,,A,White,Blue,
+179,255,23,4,,H,Gold,Gold,
+180,263,23,5,,H,Blue,Yellow,Y
+181,262,23,6,,A,White,Yellow,Y
+182,259,23,7,,H,Blue,White,Y
+183,258,23,8,,A,White,White,Y
+184,268,24,0,Ravens,H,Purple,Silver,
+185,267,24,1,,A,White,Silver,
+186,264,24,2,,H,Purple,Black,
+187,265,24,3,,A,White,Black,
+188,266,24,4,,H,Black,Black,
+189,276,25,0,Redskins,H,Red,White,
+190,275,25,1,,A,White,Red,
+191,273,25,2,,H,Dk Red,Gold,Y
+192,274,25,3,,A,White,White,
+193,278,25,4,,H,Lt Red,Gold,
+194,277,25,5,,A,White,Gold,
+195,289,26,0,Saints,H,Black,Gold,
+196,288,26,1,,A,White,Gold,
+197,285,26,2,,H,Gold,Black,
+198,286,26,3,,H,Black,Black,
+199,293,26,4,,H,Black,Gold,Y
+200,292,26,5,,A,White,Gold,Y
+201,291,26,6,,H,Black,Dk Gold,
+202,290,26,7,,A,White,Dk Gold,
+203,297,27,0,Seahawks,H,Blue,White,
+204,296,27,1,,A,White,Blue,
+205,295,27,2,,A,White,White,
+206,299,27,3,,H,Blue,Silver,Y
+207,298,27,4,,A,White,Silver,Y
+208,301,28,0,Steelers,H,Black,Gold,
+209,300,28,1,,A,White,Gold,
+210,304,29,0,Texans,H,Blue,White,
+211,303,29,1,,A,White,Blue,
+212,302,29,2,,H,Red,White,
+213,312,31,0,Vikings,H,Blue,White,
+214,311,31,1,,A,White,Blue,
+215,224,31,2,,H,Baby Blue,White,Y
+216,309,31,3,Titans,A,White,White,
+217,310,31,4,,H,Baby Blue,Blue,
+218,223,31,5,,A,White,Light Blue,Y
+219,222,31,6,,H,Light Blue,White,Y
+220,221,31,7,,A,White,White,Y
+221,314,30,0,,H,Purple,White,
+222,313,30,1,,A,White,White,
+223,316,30,2,,H,Purple,White,
+224,156,1009,0,,,,,
+225,156,1009,1,,,,,
+226,3,1010,0,,,,,
+227,2,1010,1,,,,,
+228,203,1011,0,,,,,
+229,202,1011,1,,,,,
