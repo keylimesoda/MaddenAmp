@@ -40,7 +40,7 @@ namespace MaddenEditor.Forms
     {
         const double sackProbability = 0.725;
         const double passingYardsMultiplier = 1.104;
-        const double rushingYardsMultiplier = 1.039;
+        const double rushingYardsMultiplier = 1.023;
         const double sackedYardsMultiplier = 0.903;
         const double rushingAttemptsMultiplier = 0.9285;
 
