@@ -2170,7 +2170,7 @@ namespace MaddenEditor.Forms
                     // this shouldn't really happen if they're using Weekly
                     // Maintenance properly, but this at least prevents
                     // an exception.
-                    if (!startingRBs.ContainsKey(i) || !previousOpponents.ContainsKey(i))
+                    if (!backupRBIDs.ContainsKey(i) || !startingRBs.ContainsKey(i) || !previousOpponents.ContainsKey(i))
                         continue;
 
                     double HB2frac = 1.0 - ((double)RBSlider(i)) / 100.0;
