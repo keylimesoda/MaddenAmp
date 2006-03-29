@@ -1537,8 +1537,8 @@ namespace MaddenEditor.Core
 			awarenessAdjust[(int)MaddenPositions.HB][(int)MaddenPositions.FB] = 0.65;
 			awarenessAdjust[(int)MaddenPositions.HB][(int)MaddenPositions.WR] = 0.80;
 			awarenessAdjust[(int)MaddenPositions.FB][(int)MaddenPositions.HB] = 0.90;
-			awarenessAdjust[(int)MaddenPositions.FB][(int)MaddenPositions.TE] = 0.85;
-			awarenessAdjust[(int)MaddenPositions.TE][(int)MaddenPositions.FB] = 0.85;
+			awarenessAdjust[(int)MaddenPositions.FB][(int)MaddenPositions.TE] = 0.7;
+			awarenessAdjust[(int)MaddenPositions.TE][(int)MaddenPositions.FB] = 0.7;
 			awarenessAdjust[(int)MaddenPositions.TE][(int)MaddenPositions.WR] = 0.9;
 
 			awarenessAdjust[(int)MaddenPositions.LT][(int)MaddenPositions.LG] = 0.8;
@@ -1619,7 +1619,7 @@ namespace MaddenEditor.Core
 			positionData.Add((int)MaddenPositions.HB, new Position(60, 60, 60, 0.8, 33, 1, 0.05, 1, 1, 1));
 			positionData.Add((int)MaddenPositions.FB, new Position(10, 10, 10, 0.3, 32, 0.2, 0.75, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.WR, new Position(65, 65, 65, 0.7, 35, 0.9, 0, 2, 2, 0.6));
-			positionData.Add((int)MaddenPositions.TE, new Position(25, 25, 25, 0.6, 32, 0.6, 0.4, 1, 1, 0.7));
+			positionData.Add((int)MaddenPositions.TE, new Position(30, 30, 30, 0.6, 32, 0.6, 0.4, 1, 1, 0.7));
 			positionData.Add((int)MaddenPositions.LT, new Position(65, 65, 65, 0.7, 36, 0.5, 0, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.LG, new Position(35, 35, 35, 0.4, 36, 0.5, 0.1, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.C, new Position(30, 30, 30, 0.4, 36, 0.5, 0.1, 1, 1, 0.8));
