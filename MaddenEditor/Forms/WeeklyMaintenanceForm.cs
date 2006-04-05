@@ -1004,7 +1004,8 @@ namespace MaddenEditor.Forms
             }
             */
 
-            RevertRatings();
+            if (currentWeek != 6 || currentWeek != 12 || !(currentWeek > 17))
+                RevertRatings();
 
             if (reorderDepthCharts.Checked)
             {
