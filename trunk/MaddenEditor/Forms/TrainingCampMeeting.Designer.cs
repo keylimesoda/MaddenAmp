@@ -164,6 +164,7 @@ namespace MaddenEditor.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ConditioningSldr);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.downtimeUpDown);
@@ -183,7 +184,6 @@ namespace MaddenEditor.Forms
             this.groupBox1.Controls.Add(this.FilmStudySldr);
             this.groupBox1.Controls.Add(this.TeamDrillSldr);
             this.groupBox1.Controls.Add(this.PositionDrillSldr);
-            this.groupBox1.Controls.Add(this.ConditioningSldr);
             this.groupBox1.Location = new System.Drawing.Point(3, 167);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(502, 341);

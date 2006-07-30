@@ -68,6 +68,30 @@ namespace MaddenEditor.Forms
         BindingSource AllocateTimingViewBinding = new BindingSource();
         Random random = new Random();
         OwnerRecord CPUteam;
+        private decimal AgeDecAttributeDifferential = 0;
+        private decimal SpdAttributeDifferential = 0;
+        private decimal AccAttributeDifferential = 0;
+         private decimal AgiAttributeDifferential = 0;
+         private decimal StrAttributeDifferential = 0;
+          private decimal StmAttributeDifferential = 0;
+        private decimal InjAttributeDifferential = 0;
+         private decimal TghAttributeDifferential = 0;
+         private decimal MorAttributeDifferential = 0;
+          private decimal AwrAttributeDifferential = 0;
+        private decimal CatAttributeDifferential = 0;
+         private decimal CarAttributeDifferential = 0;
+         private decimal JmpAttributeDifferential = 0;
+          private decimal BktAttributeDifferential = 0;
+        private decimal TklAttributeDifferential = 0;
+         private decimal ThpAttributeDifferential = 0;
+         private decimal ThaAttributeDifferential = 0;
+        private decimal RbkAttributeDifferential = 0;
+         private decimal PbkAttributeDifferential = 0;
+         private decimal KpwAttributeDifferential = 0;
+         private decimal KAAttributeDifferential = 0;
+       private decimal KRAttributeDifferential = 0;
+
+             
 
         public TrainingCampForm(EditorModel model)
         {
@@ -4188,6 +4212,139 @@ namespace MaddenEditor.Forms
 
         public void AgeDeclination()
         {
+            StreamWriter sw;
+            string installDirectory = Application.StartupPath;
+            if (!Directory.Exists(installDirectory + "\\Conditioning\\TrainingCamp"))
+            {
+                Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp");
+
+            }
+            if (!File.Exists(installDirectory + "\\Conditioning\\TrainingCamp\\Options.txt")) // Create the Slider Profile if not present.
+            {
+                FileStream file = File.Create(installDirectory + "\\Conditioning\\TrainingCamp\\Options.txt");
+                sw = new StreamWriter(file);
+                //progression attribute
+                sw.WriteLine("AgeDeclination\t100");
+            //    sw.WriteLine("Speed\t.25");
+            //    sw.WriteLine("Acceleration\t.35");
+            //    sw.WriteLine("Agility\t.35");
+            //    sw.WriteLine("Strength\t.35");
+            //    sw.WriteLine("Stamina\t.01");
+            //    sw.WriteLine("Injury\t.01");
+            //    sw.WriteLine("Toughness\t.01");
+            ////    sw.WriteLine("Morale\t0");
+            //    sw.WriteLine("Awareness\t0");
+            //    sw.WriteLine("Catching\t2");
+            //    sw.WriteLine("Carrying\t4");
+            //    sw.WriteLine("Jumping\t0");
+            //    sw.WriteLine("Breaktackle\t0");
+            //    sw.WriteLine("Tackle\t0");
+            //    sw.WriteLine("Throwpower\t2");
+            //    sw.WriteLine("Throwaccuracy\t4");
+            //    sw.WriteLine("Runblocking\t0");
+            //    sw.WriteLine("Passblocking\t0");
+            //    sw.WriteLine("Kickpower\t2");
+            //    sw.WriteLine("Kickaccuracy\t4");
+            //    sw.WriteLine("Kickreturn\t0");
+
+
+
+
+
+                sw.Close();
+            }
+
+            StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\Options.txt");
+
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+                string[] splitLine = line.Split('\t');
+
+                if (splitLine[0] == "AgeDeclination")
+                {
+                    AgeDecAttributeDifferential = decimal.Parse(splitLine[1]);
+                    AgeDecAttributeDifferential = AgeDecAttributeDifferential / 100;
+                }
+                //else if (splitLine[0] == "AccLoss")
+                //{
+                //    AccLoss = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "AgiLoss")
+                //{
+                //    AgiLoss = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "StmLoss")
+                //{
+                //    StmLoss = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "InjLoss")
+                //{
+                //    InjLoss = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "SpdGain")
+                //{
+                //    SpdGain = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "AccGain")
+                //{
+                //    AccGain = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "AgiGain")
+                //{
+                //    AgiGain = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "StrLoss")
+                //{
+                //    StrLoss = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "StmGain")
+                //{
+                //    StmGain = decimal.Parse(splitLine[1]);
+                //}
+                //else if (splitLine[0] == "InjGain")
+                //{
+                //    InjGain = decimal.Parse(splitLine[1]);
+                //}
+            }
+            sr.Close();
+
+            //StreamReader srt = new StreamReader(installDirectory + "\\Conditioning\\SliderSettings.txt");
+
+            //while (!srt.EndOfStream)
+            //{
+            //    string line = srt.ReadLine();
+            //    string[] splitLine = line.Split('\t');
+
+            //    if (splitLine[0] == "GainFrequency")
+            //    {
+            //        GainFreqSld.Value = Int32.Parse(splitLine[1]);
+            //    }
+            //    else if (splitLine[0] == "LossFrequency")
+            //    {
+            //        LossFreqSld.Value = Int32.Parse(splitLine[1]);
+            //    }
+            //    else if (splitLine[0] == "AmountGained")
+            //    {
+            //        GainAmountSld.Value = Int32.Parse(splitLine[1]);
+            //    }
+            //    else if (splitLine[0] == "AmountLost")
+            //    {
+            //        LossAmountSld.Value = Int32.Parse(splitLine[1]);
+            //    }
+            //    else if (splitLine[0] == "DisableOffseasonScenario")
+            //    {
+            //        DisableScenario = Int32.Parse(splitLine[1]);
+            //    }
+
+            //}
+            //srt.Close();
+
+
+
+
+
+
             StreamReader ct = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\currentteam");
             int CurTeamIndex = int.Parse(ct.ReadLine());
             ct.Close();
@@ -4200,7 +4357,7 @@ namespace MaddenEditor.Forms
                 if (valObject.Age >= 30)
                 {
                     string Pos = "";
-                    decimal Drop = Math.Round(((100 - ((decimal)valObject.Age - 29)) / 100),2);
+                    decimal Drop = Math.Round((1 - (((((decimal)valObject.Age - 29) * AgeDecAttributeDifferential)) / 100)),3);                  
 
                     valObject.Speed = (int)(valObject.Speed * Drop);
                     valObject.Acceleration = (int)(valObject.Acceleration * Drop);
@@ -4254,7 +4411,7 @@ namespace MaddenEditor.Forms
                         Pos = "KP";
                     }
                     installDirectory = Application.StartupPath;
-                    StreamReader sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
+                     sr = new StreamReader(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\" + Pos + "\\" + valObject.FirstName + " " + valObject.LastName);
                     string skip = sr.ReadLine();
                     string Line = sr.ReadLine();
                     string[] OldRatings = Line.Split(',');
@@ -4265,7 +4422,7 @@ namespace MaddenEditor.Forms
                     {
                         Directory.CreateDirectory(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\");
                     }
-                    StreamWriter sw = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\AgeDeclination.txt", true);
+                     sw = new StreamWriter(installDirectory + "\\Conditioning\\TrainingCamp\\" + franchiseFilename + "\\" + CurTeam + "\\System\\AgeDeclination.txt", true);
 
                     sw.WriteLine("-Old-" + valObject.FirstName + " " + valObject.LastName + "\tAge " + valObject.Age + "\tSpd=" + int.Parse(OldRatings[3]) + "\tAcc=" + int.Parse(OldRatings[4]) + "\tAgi=" + int.Parse(OldRatings[5]) + "\tStr=" + int.Parse(OldRatings[6]) + "\tStm=" + int.Parse(OldRatings[7]) + "\tInj=" + int.Parse(OldRatings[8]) +
                          " Tgh=" + int.Parse(OldRatings[9]) + "\tMor=" + int.Parse(OldRatings[10]) + "\tAwr=" + int.Parse(OldRatings[11]) + "\tCat=" + int.Parse(OldRatings[12]) + "\tCar=" + int.Parse(OldRatings[13]) + "\tJmp=" + int.Parse(OldRatings[14]) + "\tBtk=" + int.Parse(OldRatings[15]) + "\tTkl=" + int.Parse(OldRatings[16]) +
@@ -5317,33 +5474,33 @@ namespace MaddenEditor.Forms
                                 PercentModFat = (int)(Math.Round(((decimal)wgtO / (decimal)addedwgt), 3));
                                 PercentModMuscle = (int)(Math.Round(((decimal)addedwgt / (decimal)wgtO), 3));
                                 valObject.Weight = addedwgt - 160;
-                                Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
-                                HighLowCheck(Rating);
-                                valObject.BodyMuscle = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.BodyFat * (PercentModFat * (decimal)1.35))));
-                                HighLowCheck(Rating);
-                                valObject.BodyFat = Rating;
-                                Rating = (int)(Math.Floor((valObject.ArmsMuscle * PercentModMuscle)));
-                                HighLowCheck(Rating);
-                                valObject.ArmsMuscle = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.ArmsFat * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.ArmsFat = Rating;
-                                Rating = (int)(Math.Floor((valObject.LegsThighMuscle * PercentModMuscle)));
-                                HighLowCheck(Rating);
-                                valObject.LegsThighMuscle = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.LegsThighFat * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.LegsThighFat = Rating;
-                                Rating = (int)(Math.Floor((valObject.LegsCalfMuscle * PercentModMuscle)));
-                                HighLowCheck(Rating);
-                                valObject.LegsCalfMuscle = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.LegsCalfFat * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.LegsCalfFat = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.BodyOverall * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.BodyOverall = Rating;
+                                //Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
+                                //HighLowCheck(Rating);
+                                //valObject.BodyMuscle = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.BodyFat * (PercentModFat * (decimal)1.35))));
+                                //HighLowCheck(Rating);
+                                //valObject.BodyFat = Rating;
+                                //Rating = (int)(Math.Floor((valObject.ArmsMuscle * PercentModMuscle)));
+                                //HighLowCheck(Rating);
+                                //valObject.ArmsMuscle = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.ArmsFat * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.ArmsFat = Rating;
+                                //Rating = (int)(Math.Floor((valObject.LegsThighMuscle * PercentModMuscle)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsThighMuscle = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.LegsThighFat * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsThighFat = Rating;
+                                //Rating = (int)(Math.Floor((valObject.LegsCalfMuscle * PercentModMuscle)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsCalfMuscle = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.LegsCalfFat * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsCalfFat = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.BodyOverall * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.BodyOverall = Rating;
                             }
                             else if (wgt < 0)
                             {
@@ -5355,33 +5512,33 @@ namespace MaddenEditor.Forms
                                 PercentModFat = Math.Round(((decimal)addedwgt / (decimal)wgtO), 3);
                                 PercentModMuscle = Math.Round(((decimal)wgtO / (decimal)addedwgt), 3);
                                 valObject.Weight = addedwgt - 160;
-                                Rating = (int)(Math.Ceiling(valObject.BodyMuscle * PercentModMuscle));
-                                HighLowCheck(Rating);
-                                valObject.BodyMuscle = Rating;
-                                Rating = (int)(Math.Floor(valObject.BodyFat * (PercentModFat * (decimal)0.65)));
-                                HighLowCheck(Rating);
-                                valObject.BodyFat = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.ArmsMuscle * PercentModMuscle)));
-                                HighLowCheck(Rating);
-                                valObject.ArmsMuscle = Rating;
-                                Rating = (int)(Math.Floor((valObject.ArmsFat * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.ArmsFat = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.LegsThighMuscle * PercentModMuscle)));
-                                HighLowCheck(Rating);
-                                valObject.LegsThighMuscle = Rating;
-                                Rating = (int)(Math.Floor((valObject.LegsThighFat * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.LegsThighFat = Rating;
-                                Rating = (int)(Math.Ceiling((valObject.LegsCalfMuscle * PercentModMuscle)));
-                                HighLowCheck(Rating);
-                                valObject.LegsCalfMuscle = Rating;
-                                Rating = (int)(Math.Floor((valObject.LegsCalfFat * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.LegsCalfFat = Rating;
-                                Rating = (int)(Math.Floor((valObject.BodyOverall * PercentModFat)));
-                                HighLowCheck(Rating);
-                                valObject.BodyOverall = Rating;
+                                //Rating = (int)(Math.Ceiling(valObject.BodyMuscle * PercentModMuscle));
+                                //HighLowCheck(Rating);
+                                //valObject.BodyMuscle = Rating;
+                                //Rating = (int)(Math.Floor(valObject.BodyFat * (PercentModFat * (decimal)0.65)));
+                                //HighLowCheck(Rating);
+                                //valObject.BodyFat = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.ArmsMuscle * PercentModMuscle)));
+                                //HighLowCheck(Rating);
+                                //valObject.ArmsMuscle = Rating;
+                                //Rating = (int)(Math.Floor((valObject.ArmsFat * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.ArmsFat = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.LegsThighMuscle * PercentModMuscle)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsThighMuscle = Rating;
+                                //Rating = (int)(Math.Floor((valObject.LegsThighFat * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsThighFat = Rating;
+                                //Rating = (int)(Math.Ceiling((valObject.LegsCalfMuscle * PercentModMuscle)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsCalfMuscle = Rating;
+                                //Rating = (int)(Math.Floor((valObject.LegsCalfFat * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.LegsCalfFat = Rating;
+                                //Rating = (int)(Math.Floor((valObject.BodyOverall * PercentModFat)));
+                                //HighLowCheck(Rating);
+                                //valObject.BodyOverall = Rating;
 
                             }
                             decimal ExpMod = 1;
@@ -7279,33 +7436,33 @@ namespace MaddenEditor.Forms
                     PercentModFat = (int)(Math.Round(((decimal)wgtO / (decimal)addedwgt), 3));
                     PercentModMuscle = (int)(Math.Round(((decimal)addedwgt / (decimal)wgtO), 3));
                     valObject.Weight = (addedwgt - 160);
-                    Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
-                    HighLowCheck(Rating);
-                    valObject.BodyMuscle = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.BodyFat * (PercentModFat * (decimal)1.35))));
-                    HighLowCheck(Rating);
-                    valObject.BodyFat = Rating;
-                    Rating = (int)(Math.Floor((valObject.ArmsMuscle * PercentModMuscle)));
-                    HighLowCheck(Rating);
-                    valObject.ArmsMuscle = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.ArmsFat * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.ArmsFat = Rating;
-                    Rating = (int)(Math.Floor((valObject.LegsThighMuscle * PercentModMuscle)));
-                    HighLowCheck(Rating);
-                    valObject.LegsThighMuscle = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.LegsThighFat * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.LegsThighFat = Rating;
-                    Rating = (int)(Math.Floor((valObject.LegsCalfMuscle * PercentModMuscle)));
-                    HighLowCheck(Rating);
-                    valObject.LegsCalfMuscle = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.LegsCalfFat * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.LegsCalfFat = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.BodyOverall * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.BodyOverall = Rating;
+                    //Rating = (int)(Math.Floor(valObject.BodyMuscle * PercentModMuscle));
+                    //HighLowCheck(Rating);
+                    //valObject.BodyMuscle = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.BodyFat * (PercentModFat * (decimal)1.35))));
+                    //HighLowCheck(Rating);
+                    //valObject.BodyFat = Rating;
+                    //Rating = (int)(Math.Floor((valObject.ArmsMuscle * PercentModMuscle)));
+                    //HighLowCheck(Rating);
+                    //valObject.ArmsMuscle = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.ArmsFat * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.ArmsFat = Rating;
+                    //Rating = (int)(Math.Floor((valObject.LegsThighMuscle * PercentModMuscle)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsThighMuscle = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.LegsThighFat * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsThighFat = Rating;
+                    //Rating = (int)(Math.Floor((valObject.LegsCalfMuscle * PercentModMuscle)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsCalfMuscle = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.LegsCalfFat * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsCalfFat = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.BodyOverall * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.BodyOverall = Rating;
                 }
                 else if (wgt < 0)
                 {
@@ -7317,33 +7474,33 @@ namespace MaddenEditor.Forms
                     PercentModFat = Math.Round(((decimal)addedwgt / (decimal)wgtO), 3);
                     PercentModMuscle = Math.Round(((decimal)wgtO / (decimal)addedwgt), 3);
                     valObject.Weight = (addedwgt - 160);
-                    Rating = (int)(Math.Ceiling(valObject.BodyMuscle * PercentModMuscle));
-                    HighLowCheck(Rating);
-                    valObject.BodyMuscle = Rating;
-                    Rating = (int)(Math.Floor(valObject.BodyFat * (PercentModFat * (decimal)0.65)));
-                    HighLowCheck(Rating);
-                    valObject.BodyFat = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.ArmsMuscle * PercentModMuscle)));
-                    HighLowCheck(Rating);
-                    valObject.ArmsMuscle = Rating;
-                    Rating = (int)(Math.Floor((valObject.ArmsFat * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.ArmsFat = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.LegsThighMuscle * PercentModMuscle)));
-                    HighLowCheck(Rating);
-                    valObject.LegsThighMuscle = Rating;
-                    Rating = (int)(Math.Floor((valObject.LegsThighFat * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.LegsThighFat = Rating;
-                    Rating = (int)(Math.Ceiling((valObject.LegsCalfMuscle * PercentModMuscle)));
-                    HighLowCheck(Rating);
-                    valObject.LegsCalfMuscle = Rating;
-                    Rating = (int)(Math.Floor((valObject.LegsCalfFat * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.LegsCalfFat = Rating;
-                    Rating = (int)(Math.Floor((valObject.BodyOverall * PercentModFat)));
-                    HighLowCheck(Rating);
-                    valObject.BodyOverall = Rating;
+                    //Rating = (int)(Math.Ceiling(valObject.BodyMuscle * PercentModMuscle));
+                    //HighLowCheck(Rating);
+                    //valObject.BodyMuscle = Rating;
+                    //Rating = (int)(Math.Floor(valObject.BodyFat * (PercentModFat * (decimal)0.65)));
+                    //HighLowCheck(Rating);
+                    //valObject.BodyFat = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.ArmsMuscle * PercentModMuscle)));
+                    //HighLowCheck(Rating);
+                    //valObject.ArmsMuscle = Rating;
+                    //Rating = (int)(Math.Floor((valObject.ArmsFat * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.ArmsFat = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.LegsThighMuscle * PercentModMuscle)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsThighMuscle = Rating;
+                    //Rating = (int)(Math.Floor((valObject.LegsThighFat * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsThighFat = Rating;
+                    //Rating = (int)(Math.Ceiling((valObject.LegsCalfMuscle * PercentModMuscle)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsCalfMuscle = Rating;
+                    //Rating = (int)(Math.Floor((valObject.LegsCalfFat * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.LegsCalfFat = Rating;
+                    //Rating = (int)(Math.Floor((valObject.BodyOverall * PercentModFat)));
+                    //HighLowCheck(Rating);
+                    //valObject.BodyOverall = Rating;
 
                 }
                 decimal ExpMod = 1;
@@ -8893,6 +9050,13 @@ namespace MaddenEditor.Forms
 
 
                 }
+        }
+
+        private void changeOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampFormOptions form = new TrainingCampFormOptions();            
+            form.Show();
+
         }
 
 

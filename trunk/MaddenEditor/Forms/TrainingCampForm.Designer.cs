@@ -67,6 +67,8 @@ namespace MaddenEditor.Forms
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.cPUSimulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simCPUCampsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectTeam.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.depthChartDataGrid)).BeginInit();
@@ -441,7 +443,8 @@ namespace MaddenEditor.Forms
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cPUSimulationToolStripMenuItem});
+            this.cPUSimulationToolStripMenuItem,
+            this.optionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1051, 24);
@@ -462,6 +465,21 @@ namespace MaddenEditor.Forms
             this.simCPUCampsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.simCPUCampsToolStripMenuItem.Text = "Sim CPU Camps...";
             this.simCPUCampsToolStripMenuItem.Click += new System.EventHandler(this.simCPUCampsToolStripMenuItem_Click);
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeOptionsToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.optionsToolStripMenuItem.Text = "Options...";
+            // 
+            // changeOptionsToolStripMenuItem
+            // 
+            this.changeOptionsToolStripMenuItem.Name = "changeOptionsToolStripMenuItem";
+            this.changeOptionsToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.changeOptionsToolStripMenuItem.Text = "Change Options...";
+            this.changeOptionsToolStripMenuItem.Click += new System.EventHandler(this.changeOptionsToolStripMenuItem_Click);
             // 
             // TrainingCampForm
             // 
@@ -538,5 +556,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem cPUSimulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem simCPUCampsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeOptionsToolStripMenuItem;
     }
 }

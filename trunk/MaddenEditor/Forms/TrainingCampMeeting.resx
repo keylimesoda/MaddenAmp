@@ -123,6 +123,14 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>100, 17</value>
   </metadata>
+  <data name="ConditioningSldr.ToolTip" xml:space="preserve">
+    <value>The Conditioning slider dictates how much of a
+player's daily regimine is dedicated to conditioning.
+This includes all aerobic/cardio excercises, Dieting,
+and Weight training. The slider adversely effects
+the teams morale, which in part dictates each player's
+work ethic.</value>
+  </data>
   <data name="DownTimeLbl.ToolTip" xml:space="preserve">
     <value>Every one needs some R&amp;R every now and
 again. As this slider goes up, so does the 
@@ -190,14 +198,6 @@ Less experienced players will benefit more
 from film study than veterans, though the
 latter will see occaisional awareness
 advancement.</value>
-  </data>
-  <data name="ConditioningSldr.ToolTip" xml:space="preserve">
-    <value>The Conditioning slider dictates how much of a
-player's daily regimine is dedicated to conditioning.
-This includes all aerobic/cardio excercises, Dieting,
-and Weight training. The slider adversely effects
-the teams morale, which in part dictates each player's
-work ethic.</value>
   </data>
   <data name="OutdoorsRadioButton.ToolTip" xml:space="preserve">
     <value>Practicing Outdoors increases conditioning effects
