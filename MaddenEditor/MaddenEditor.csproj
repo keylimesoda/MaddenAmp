@@ -260,6 +260,12 @@
     <Compile Include="Forms\TrainingCampForm.Designer.cs">
       <DependentUpon>TrainingCampForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrainingCampFormOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampFormOptions.Designer.cs">
+      <DependentUpon>TrainingCampFormOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TrainingCampMeeting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -422,6 +428,10 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Forms\TrainingCampFormOptions.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrainingCampFormOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrainingCampTuneGUI.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TrainingCampTuneGUI.cs</DependentUpon>

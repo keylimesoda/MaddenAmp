@@ -1,11 +1,11 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                               MADDEN AMP 2.3.2
+                               MADDEN AMP 2.3.3
                                   
                         the power to Amplify your Franchise
 
-                                2nd April 2006
+                                10th July 2006
 
                                   readme.txt
 
