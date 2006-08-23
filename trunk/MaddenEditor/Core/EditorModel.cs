@@ -51,7 +51,8 @@ namespace MaddenEditor.Core
 	{
 		Ver2004,
 		Ver2005,	//Franchise contains 159 tables
-		Ver2006		//Franchise contains 183
+		Ver2006,	//Franchise contains 183 tables
+		Ver2007
 	}
 
 	/// <summary>
@@ -91,12 +92,16 @@ namespace MaddenEditor.Core
 	{
 		public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
+		public const int MADDEN_ROS_2006_TABLE_COUNT = 11;
+		public const int MADDEN_ROS_2007_TABLE_COUNT = 10;
 		public const int MADDEN_FRA_2004_TABLE_COUNT = 136;
 		public const int MADDEN_FRA_2005_TABLE_COUNT = 159;
 		public const int MADDEN_FRA_2006_TABLE_COUNT = 183;
+		public const int MADDEN_FRA_2007_TABLE_COUNT = 184;
 		public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
 		public const int MADDEN_ROS_2005_TEAM_FIELD_COUNT = 115;
 		public const int MADDEN_ROS_2006_TEAM_FIELD_COUNT = 111;
+		public const int MADDEN_ROS_2007_TEAM_FIELD_COUNT = 110;
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
@@ -194,6 +199,11 @@ namespace MaddenEditor.Core
 			{
 				Console.WriteLine(e.ToString());
 				throw new ApplicationException("Can't open file: " + e.ToString());
+			}
+			catch (ApplicationException e) 
+			{
+				Console.WriteLine("Exception occurred opening database: " + e.ToString());
+				throw e;
 			}
 
 			//We create a collection of database table names that we want to load
@@ -427,8 +437,8 @@ namespace MaddenEditor.Core
 			{
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
 				Console.WriteLine("Table count in {0} = {1}", fileName, tableCount);
-				//Set the filetype of this loaded file
-				if (tableCount == 11)
+				//Set the file type of this loaded file
+				if (tableCount == MADDEN_ROS_2006_TABLE_COUNT || tableCount == MADDEN_ROS_2007_TABLE_COUNT)
 				{
 					fileType = MaddenFileType.RosterFile;
 					//We need to find a way to distinguish between the different madden versions
@@ -440,6 +450,9 @@ namespace MaddenEditor.Core
 					Console.WriteLine("Franchise contains {0} tables", tableCount);
 					switch (tableCount)
 					{
+						case MADDEN_FRA_2007_TABLE_COUNT:
+							fileVersion = MaddenFileVersion.Ver2007;
+							break;
 						case MADDEN_FRA_2005_TABLE_COUNT:
 							fileVersion = MaddenFileVersion.Ver2005;
 							break;
@@ -524,6 +537,9 @@ namespace MaddenEditor.Core
 							case MADDEN_ROS_2006_TEAM_FIELD_COUNT:
 								fileVersion = MaddenFileVersion.Ver2006;
 								break;
+							case MADDEN_ROS_2007_TEAM_FIELD_COUNT:
+								fileVersion = MaddenFileVersion.Ver2007;
+								break;
 							default:
 								break;
 						}
@@ -539,7 +555,7 @@ namespace MaddenEditor.Core
 			}
 			catch (DllNotFoundException e)
 			{
-				Console.WriteLine(e.ToString());
+				ExceptionDialog.Show(e);
 			}
 
 			foreach (KeyValuePair<string, int> pair in tableOrder)

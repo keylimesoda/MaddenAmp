@@ -37,10 +37,19 @@ namespace MaddenEditor
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.Run(new MainForm());
-
-            Console.WriteLine("Exiting...");
+			try
+			{
+				Application.EnableVisualStyles();
+				Application.Run(new MainForm());
+			}
+			catch (ApplicationException e)
+			{
+				Console.WriteLine("Exception occured, exiting program: " + e.ToString());
+			}
+			finally
+			{
+				Console.WriteLine("Exiting...");
+			}
         }
     }
 }

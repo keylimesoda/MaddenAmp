@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 // MADDEN DRAFT EDIT
@@ -173,7 +174,15 @@ namespace MaddenEditor.Forms
 
 		void rosterFileLoaderThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-			model = new EditorModel(filePathToLoad, this);
+			try
+			{
+				model = new EditorModel(filePathToLoad, this);
+			}
+			catch(ApplicationException err) 
+			{
+				model = null;
+				ExceptionDialog.Show(err);
+			}
 		}
 
 		public void updateProgress(int percentage, string tablename)
@@ -190,7 +199,7 @@ namespace MaddenEditor.Forms
 		
 		private void InitialiseUI()
 		{
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision + "  - " + System.IO.Path.GetFileName(filePathToLoad);
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build + "  - " + System.IO.Path.GetFileName(filePathToLoad);
 
 			exportToolStripMenuItem.Enabled = true;
 			toolsToolStripMenuItem.Visible = true;
@@ -244,7 +253,7 @@ namespace MaddenEditor.Forms
 
 		private void CleanUI()
 		{
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
+			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
 			//Now clean up ready for reloading
 			searchPlayerForm = null;
 
@@ -270,6 +279,11 @@ namespace MaddenEditor.Forms
 
 		private void rosterFileLoaderThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			if (model == null)
+			{
+				this.Cursor = Cursors.Default;
+				return;
+			}
 			isInitialising = true;
 
 			try
