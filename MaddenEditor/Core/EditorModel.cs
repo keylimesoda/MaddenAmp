@@ -22,6 +22,7 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using MaddenEditor.Db;
@@ -97,7 +98,7 @@ namespace MaddenEditor.Core
 		public const int MADDEN_FRA_2004_TABLE_COUNT = 136;
 		public const int MADDEN_FRA_2005_TABLE_COUNT = 159;
 		public const int MADDEN_FRA_2006_TABLE_COUNT = 183;
-		public const int MADDEN_FRA_2007_TABLE_COUNT = 184;
+		public const int MADDEN_FRA_2007_TABLE_COUNT = 185;
 		public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
 		public const int MADDEN_ROS_2005_TEAM_FIELD_COUNT = 115;
 		public const int MADDEN_ROS_2006_TEAM_FIELD_COUNT = 111;
@@ -197,12 +198,12 @@ namespace MaddenEditor.Core
 			}
 			catch (DllNotFoundException e)
 			{
-				Console.WriteLine(e.ToString());
+				Trace.WriteLine(e.ToString());
 				throw new ApplicationException("Can't open file: " + e.ToString());
 			}
 			catch (ApplicationException e) 
 			{
-				Console.WriteLine("Exception occurred opening database: " + e.ToString());
+				Trace.WriteLine("Exception occurred opening database: " + e.ToString());
 				throw e;
 			}
 
@@ -436,18 +437,22 @@ namespace MaddenEditor.Core
 			try
 			{
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
-				Console.WriteLine("Table count in {0} = {1}", fileName, tableCount);
+				Trace.WriteLine("Table count in " + fileName + " = " + tableCount);
 				//Set the file type of this loaded file
 				if (tableCount == MADDEN_ROS_2006_TABLE_COUNT || tableCount == MADDEN_ROS_2007_TABLE_COUNT)
 				{
 					fileType = MaddenFileType.RosterFile;
-					//We need to find a way to distinguish between the different madden versions
-					//We will do this further down when we get the tables properties
+					//For roster files that aren't 2007 we will distinguish them later
+					//2007 doesn't contain the Coach slider settings
+					if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)
+					{
+						fileVersion = MaddenFileVersion.Ver2007;
+					}
 				}
 				else
 				{
 					fileType = MaddenFileType.FranchiseFile;
-					Console.WriteLine("Franchise contains {0} tables", tableCount);
+					Trace.WriteLine("Franchise contains " + tableCount + " tables");
 					switch (tableCount)
 					{
 						case MADDEN_FRA_2007_TABLE_COUNT:
@@ -472,7 +477,11 @@ namespace MaddenEditor.Core
 				tableOrder.Add(INJURY_TABLE, -1);
 				tableOrder.Add(COACH_TABLE, -1);
                 tableOrder.Add(DEPTH_CHART_TABLE, -1);
-				tableOrder.Add(COACH_SLIDER_TABLE, -1);
+				//We don't want to load this table in if its 2007 roster file
+				if (fileVersion != MaddenFileVersion.Ver2007 && fileType != MaddenFileType.RosterFile)
+				{
+					tableOrder.Add(COACH_SLIDER_TABLE, -1);
+				}
 				tableOrder.Add(CITY_TABLE, -1);
 				tableOrder.Add(UNIFORM_TABLE, -1);
 				//Make sure we only load some tables if we are a franchise file
@@ -572,6 +581,7 @@ namespace MaddenEditor.Core
 					}
 					//Something is wrong, we expected to have found a table
 					//for this table but we didnt find one, so die
+					Trace.WriteLine("Something is wrong so we are exiting");
 					result = false;
 					break;
 				}
@@ -598,7 +608,7 @@ namespace MaddenEditor.Core
 			TDB.TDBTableGetProperties(dbIndex, tableNumber, ref tableProps);
 
 			TableModel table = new TableModel(tableProps.Name, this, dbIndex);
-			Console.WriteLine("Processing Table: " + table.Name);
+			Trace.WriteLine("Processing Table: " + table.Name);
 
 			//For each field for this table, find the name and add it to a collection
 			//so we can get each of these for each record
@@ -639,7 +649,7 @@ namespace MaddenEditor.Core
 
 					foreach (TdbFieldProperties fieldProps in fieldList)
 					{
-						//Console.WriteLine("Processing field: " + fieldProps.Name + " of type " + fieldProps.FieldType.ToString());
+						//Trace.WriteLine("Processing field: " + fieldProps.Name + " of type " + fieldProps.FieldType.ToString());
 
 						switch (fieldProps.FieldType)
 						{
@@ -652,7 +662,7 @@ namespace MaddenEditor.Core
 								}
 								catch (Exception err)
 								{
-									Console.WriteLine(err.ToString());
+									Trace.WriteLine(err.ToString());
 								}
 								record.RegisterField(fieldProps.Name, val);
 								break;
@@ -667,7 +677,7 @@ namespace MaddenEditor.Core
 								record.RegisterField(fieldProps.Name, signedval);
 								break;
 							default:
-								Console.WriteLine("NOT SUPPORTED YET!!!");
+								Trace.WriteLine("NOT SUPPORTED YET!!!");
 								break;
 						}
 					}
@@ -681,7 +691,7 @@ namespace MaddenEditor.Core
 			}
 
 			tableModels.Add(table.Name, table);
-			Console.WriteLine("Finished processing Table: " + table.Name);
+			Trace.WriteLine("Finished processing Table: " + table.Name);
 			view.updateTableProgress(100, table.Name);
 			return true;
 		}
@@ -712,7 +722,7 @@ namespace MaddenEditor.Core
 			}
 			catch (DllNotFoundException e)
 			{
-				Console.WriteLine(e.ToString());
+				Trace.WriteLine(e.ToString());
 			}
 		}
 	}
