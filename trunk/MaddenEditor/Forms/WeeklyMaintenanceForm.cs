@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Spin16
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -1131,7 +1132,7 @@ namespace MaddenEditor.Forms
                             }
 
                             rightEnds[dcr.TeamId] = ((double)RE.CalculateOverallRating((int)MaddenPositions.RE,true)/100.0)*(0.7 * Math.Max(0, Math.Min(1, (85.0 - (double)RE.Strength) / 15.0)) + 0.3 * Math.Max(0, Math.Min(1, (130.0 - (double)RE.Weight) / 30.0))) * Math.Max(0, Math.Min(1, ((double)RE.Speed - 65.0) / 15.0));
-                            Console.WriteLine(RE.ToString() + " " + rightEnds[dcr.TeamId]);
+                            Trace.WriteLine(RE.ToString() + " " + rightEnds[dcr.TeamId]);
 
                             // Put this guy back as he was
                             RE.Awareness = awareness;
@@ -1275,10 +1276,10 @@ namespace MaddenEditor.Forms
                 sw.Close();
             }
 
-            Console.WriteLine("OP: " + squadRatings[19][(int)MaddenSquadRatings.OffensivePassing]);
-            Console.WriteLine("OR: " + squadRatings[19][(int)MaddenSquadRatings.OffensiveRunning]);
-            Console.WriteLine("DP: " + squadRatings[19][(int)MaddenSquadRatings.DefensivePassing]);
-            Console.WriteLine("DR: " + squadRatings[19][(int)MaddenSquadRatings.DefensiveRunning]);
+            Trace.WriteLine("OP: " + squadRatings[19][(int)MaddenSquadRatings.OffensivePassing]);
+            Trace.WriteLine("OR: " + squadRatings[19][(int)MaddenSquadRatings.OffensiveRunning]);
+            Trace.WriteLine("DP: " + squadRatings[19][(int)MaddenSquadRatings.DefensivePassing]);
+            Trace.WriteLine("DR: " + squadRatings[19][(int)MaddenSquadRatings.DefensiveRunning]);
 
             if (coachSim.Checked || coachGame.Checked)
             {
@@ -1323,7 +1324,7 @@ namespace MaddenEditor.Forms
                     coach.DefensiveAggression = 51;
 
                     if (coach.Position == (int)MaddenCoachPosition.HeadCoach)
-                        Console.WriteLine(model.TeamModel.GetTeamNameFromTeamId(coach.TeamId) + " " + coach.RunningBack2Sub);
+                        Trace.WriteLine(model.TeamModel.GetTeamNameFromTeamId(coach.TeamId) + " " + coach.RunningBack2Sub);
                      * */
                 }
             }

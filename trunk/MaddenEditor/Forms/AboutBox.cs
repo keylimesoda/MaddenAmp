@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -41,7 +41,7 @@ namespace MaddenEditor.Forms
 			//  - AssemblyInfo.cs
 			this.Text = String.Format("About {0}", AssemblyTitle);
 			this.labelProductName.Text = AssemblyProduct;
-			this.labelVersion.Text = "Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build; 
+			this.labelVersion.Text = "Version " + MaddenEditor.Core.Version.VersionString; 
 			this.labelCopyright.Text = AssemblyCopyright;
 			this.labelCompanyName.Text = AssemblyCompany;
 			this.textBoxDescription.Text = AssemblyDescription;

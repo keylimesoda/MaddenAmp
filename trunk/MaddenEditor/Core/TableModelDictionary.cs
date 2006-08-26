@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -78,7 +78,8 @@ namespace MaddenEditor.Core
 			//We want to process the table in another thread.
 			if (!model.ProcessTable(tableIndex))
 			{
-				throw new ApplicationException("Error Processing table: " + tableName);
+				Exception e = new ApplicationException("Error Processing table: " + tableName);
+				MaddenEditor.Forms.ExceptionDialog.Show(e);
 			}
 		}
 	}

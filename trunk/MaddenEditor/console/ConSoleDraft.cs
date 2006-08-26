@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * 
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -33,7 +33,7 @@ namespace MaddenEditor.ConSole
     {
         // Only data stored here is the reference back to the EditorModel.  
         // The point of this object is just to call
-        // functions that exist in DraftModel.  This is more or less a Console
+        // functions that exist in DraftModel.  This is more or less a Trace
         // front-end for the draft, to be replaced by a GUI by someone who knows
         // something about GUI's. :)
         //
@@ -46,9 +46,9 @@ namespace MaddenEditor.ConSole
             model = editorModel;
 
             draftModel = new DraftModel(model);
-            Console.WriteLine("# PGID Team   Pos  OVR INJ");
+            Trace.WriteLine("# PGID Team   Pos  OVR INJ");
             draftModel.DumpDraftResults();
-            Console.WriteLine("\n\n");
+            Trace.WriteLine("\n\n");
 
             // InitializeDraft makes all of the mandatory operations
             // to run a draft.  Other optional actions that need to
@@ -70,7 +70,7 @@ namespace MaddenEditor.ConSole
                 draftModel.MakeSelection(i, null);
             }
 
-            Console.WriteLine("# PGID Team   Pos  OVR INJ PlayerValue PickValue");
+            Trace.WriteLine("# PGID Team   Pos  OVR INJ PlayerValue PickValue");
             draftModel.DumpDraftResults();
 
         }

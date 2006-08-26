@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -774,7 +775,7 @@ namespace MaddenEditor.Forms
 
 				DialogResult dr = sfd.ShowDialog();
 
-				Console.WriteLine(sfd.FileName);
+				Trace.WriteLine(sfd.FileName);
 
 				dm.SavePicks(sfd.FileName);
 
@@ -941,7 +942,7 @@ namespace MaddenEditor.Forms
             }
             catch
             {
-                Console.WriteLine("Line 796");
+                Trace.WriteLine("Line 796");
                 while (true)
                 { }
             }
@@ -1013,7 +1014,7 @@ namespace MaddenEditor.Forms
 
 					DialogResult dr = sfd.ShowDialog();
 
-					Console.WriteLine(sfd.FileName);
+					Trace.WriteLine(sfd.FileName);
 
 					dm.SavePicks(sfd.FileName);
 
@@ -1089,7 +1090,7 @@ namespace MaddenEditor.Forms
 				draftTimer.Start();
 			}
 
-			//Console.WriteLine("Total MakePick: " + total.Subtract(DateTime.Now));
+			//Trace.WriteLine("Total MakePick: " + total.Subtract(DateTime.Now));
 			return true;
 		}
 
@@ -1398,14 +1399,14 @@ namespace MaddenEditor.Forms
 			}
 			else if (!preventTrades)
 			{
-				//Console.WriteLine(dm.tradeOffers.Count);
+				//Trace.WriteLine(dm.tradeOffers.Count);
 				if (skipping)
 				{
-					Console.WriteLine("skipping " + tradeProb);
+					Trace.WriteLine("skipping " + tradeProb);
 				}
 				if (!dm.tradeExists(HumanTeamId))
 				{
-					//Console.WriteLine("No Human trade");
+					//Trace.WriteLine("No Human trade");
 				}
 
 				// randomize the team that starts the trade bidding.
@@ -1416,7 +1417,7 @@ namespace MaddenEditor.Forms
 				{
                     i++;
                     if (i == 32) { i = 0; }
-                    Console.Write(i + " ");
+                    Trace.Write(i + " ");
 
                     if (i == CurrentSelectingId) { continue; }
 
@@ -1428,7 +1429,7 @@ namespace MaddenEditor.Forms
                     {
                         if (!dm.tradeExists(i))
                         {
-                            //Console.WriteLine("Initiating trade talks with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            //Trace.WriteLine("Initiating trade talks with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
                             TradeOffer to = dm.tradeInitialOffer(i, CurrentPick, (double)timeRemaining / (double)secondsPerPick);
 
                             if (to != null)
@@ -1522,7 +1523,7 @@ namespace MaddenEditor.Forms
                         }
                         else if (dm.tradePending(i))
                         {
-                            //Console.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
+                            //Trace.WriteLine("Continuing trade offer with " + model.TeamModel.GetTeamNameFromTeamId(i) + "...");
                             TradeOffer to = dm.tradeCounterOffer(i, (double)timeRemaining / (double)secondsPerPick);
 
                             if (to != null && CurrentSelectingId != HumanTeamId)
@@ -1534,7 +1535,7 @@ namespace MaddenEditor.Forms
                     }
 				}
 
-                Console.WriteLine("\n");
+                Trace.WriteLine("\n");
 
 				if (tradeDownForm != null && refreshTradeTeams)
 				{

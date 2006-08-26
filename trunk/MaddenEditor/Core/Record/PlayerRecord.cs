@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,13 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -130,9 +131,10 @@ namespace MaddenEditor.Core.Record
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
 
-        //2007
+        //2007 fields
         public const string PLAYER_EGO = "PEGO";
         public const string PLAYER_VALUE = "PVAL";
+		public const string PLAYER_ROLE = "PROL";
 
 
 		//Salary constants
@@ -225,7 +227,7 @@ namespace MaddenEditor.Core.Record
                 case (int)MaddenAttribute.EGO:
                     return Ego;
                 case (int)MaddenAttribute.VAL:
-                    return playerValue;          
+                    return PlayerValue;          
             }
 
             return -1;
@@ -311,7 +313,7 @@ namespace MaddenEditor.Core.Record
                     Ego = value;
                     break;
                 case (int)MaddenAttribute.VAL:
-                    playerValue = value;
+                    PlayerValue = value;
                     break;
 
             }
@@ -361,7 +363,7 @@ namespace MaddenEditor.Core.Record
 				}
 				else
 				{
-					Console.WriteLine("Severe Error!  Player does not contain field " + s + "!  Returning...");
+					Trace.WriteLine("Severe Error!  Player does not contain field " + s + "!  Returning...");
 					return;
 				}
 
@@ -1474,7 +1476,7 @@ namespace MaddenEditor.Core.Record
                 SetField(PLAYER_EGO, value);
             }
         }
-        public int playerValue
+        public int PlayerValue
         {
             get
             {
@@ -1485,9 +1487,6 @@ namespace MaddenEditor.Core.Record
                 SetField(PLAYER_VALUE, value);
             }
         }
-
-
-
 
 		public int CalculateOverallRating(int positionId)
 		{
@@ -1754,7 +1753,7 @@ namespace MaddenEditor.Core.Record
 				}
 
 				double tempVal = (double)((tempTotalSalary - tempSigningBonus) / divisor);
-				//Console.WriteLine("Value is " + tempVal);
+				//Trace.WriteLine("Value is " + tempVal);
 
 				estYearlySalary[ContractLength-i] = tempVal;
 
@@ -1772,9 +1771,9 @@ namespace MaddenEditor.Core.Record
 
 				estYearlySalary[ContractLength - 1] = estYearlySalary[ContractLength - 1] - estYearlySalary[i];
 				estSigningBonusArray[ContractLength - 1] = estSigningBonusArray[ContractLength - 1] - estSigningBonusArray[i];
-				//Console.WriteLine("Rounded = " + tempYearlySalary[i] + " SB: " + tempSigningBonusArray[i]);
+				//Trace.WriteLine("Rounded = " + tempYearlySalary[i] + " SB: " + tempSigningBonusArray[i]);
 			}
-			//Console.WriteLine("Rounded = " + tempYearlySalary[ContractLength - 1] + " SB: " + tempSigningBonusArray[ContractLength - 1]);
+			//Trace.WriteLine("Rounded = " + tempYearlySalary[ContractLength - 1] + " SB: " + tempSigningBonusArray[ContractLength - 1]);
 
 			if (!calculatedCapHit)
 			{
@@ -1788,7 +1787,7 @@ namespace MaddenEditor.Core.Record
 				capHit = tempCapHit;
 			}
 			
-			Console.WriteLine("Cap hit = " + capHit);
+			Trace.WriteLine("Cap hit = " + capHit);
 
 			if (ContainsField(SALARY_YEAR_0))
 			{

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,13 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -176,7 +177,7 @@ namespace MaddenEditor.Core
 
 		public void RemoveTeamFilter()
 		{
-			Console.WriteLine("Removing Team filter");
+			Trace.WriteLine("Removing Team filter");
 			currentTeamFilter = null;
 		}
 
@@ -192,7 +193,7 @@ namespace MaddenEditor.Core
 
 		public Dictionary<string, TableRecordModel> SearchForCoaches(String[] names)
 		{
-			Console.WriteLine("Starting search for " + names.ToString());
+			Trace.WriteLine("Starting search for " + names.ToString());
 			//This is not going to be efficient.
 			Dictionary<String, TableRecordModel> results = new Dictionary<String, TableRecordModel>();
 
@@ -247,7 +248,7 @@ namespace MaddenEditor.Core
 					}
 					catch (System.ArgumentException e)
 					{
-						Console.Write("Key already exists for coach sliders\n\r" + e.ToString());
+						Trace.Write("Key already exists for coach sliders\n\r" + e.ToString());
 					}
 				}
 			}

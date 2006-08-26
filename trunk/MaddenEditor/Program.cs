@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,13 +15,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 using MaddenEditor.Forms;
@@ -44,11 +45,11 @@ namespace MaddenEditor
 			}
 			catch (ApplicationException e)
 			{
-				Console.WriteLine("Exception occured, exiting program: " + e.ToString());
+				Trace.WriteLine("Exception occured, exiting program: " + e.ToString());
 			}
 			finally
 			{
-				Console.WriteLine("Exiting...");
+				Trace.WriteLine("Exiting...");
 			}
         }
     }
