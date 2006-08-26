@@ -1,0 +1,1048 @@
+#!/usr/bin/perl
+
+
+print "Content-type: text/html\n\n"; 
+
+use Data::Dumper;
+
+# Scale is just some overall scale that fixes the values of the rookies compared to the value of the draft picks.
+# We have several functions that determine player values relative to one another, but this scale factor sets their
+# inherent value.
+
+# $injfix isn't used anymore.
+
+my $scale = 28;
+my $injfix = 0;
+my $probs;
+my $favs;
+
+my $randomness = 1;
+my @values;
+
+# Keep this at 1 -- it doesn't really do anything for now.
+
+my $trade_slider = 1;
+
+# Read in the list of draft pick values determined by the trade value chart.  Store it in the array @values.
+
+open(VALUES, "<values.csv") or die "No values file\n";
+
+while(<VALUES>) {
+	chomp;
+	push @values, $_;
+}
+
+my $temp;
+my $players;
+my $roster;
+
+# Tell the script some stuff about the various positions.  This is a hash (dictionary in C language) with the
+# following structure.  The notation here is quantities in quotes are indexes in the hash, and quantities in 
+# CAPS are more or less arguments fed to the hash that depend on the team, player, whatever in question.
+#
+# $positions->{POSITION}->{"val"}->{SYSTEM} : Gives the relative value of this position for a 3-4 or 4-3 defense.
+# $positions->{POSITION}->{"suc"} : Relative need of having a successor at this position.
+# $positions->{POSITION}->{"ret"} : Typical retirement age at this position.
+# $positions->{POSITION}->{"backup"} : Importance of having a backup.  Note that it's higher for positions
+#	like HB, CB, and WR where certain formations require having more than just the starters on the field
+#	and/or play often in general.
+# $positions->{POSITION}->{"thresh"} : Sets the absolute minimum need in order to draft a guy at this position.
+#	If a guy's need falls below this, he won't be drafted.  For example, there's no need to take a K or P
+#	unless you *really* need one.
+
+
+my $positions = {
+"QB" =>  {"val" => {"43" => 100, "34" => 100}, "suc" => 1, "ret" => 35, "backup" => 0.7, "thresh" => 0}, 
+"DE" =>  {"val" => {"43" => 85, "34" => 55}, "suc" => 0.5, "ret" => 35, "backup" => 0.8, "thresh" => -1}, 
+"CB" =>  {"val" => {"43" => 80, "34" => 80}, "suc" => 0.7, "ret" => 32, "backup" => 0.9, "thresh" => -1}, 
+"LT" =>  {"val" => {"43" => 65, "34" => 65}, "suc" => 0.7, "ret" => 36, "backup" => 0.5, "thresh" => -1}, 
+"HB" =>  {"val" => {"43" => 60, "34" => 60}, "suc" => 0.8, "ret" => 33, "backup" => 1, "thresh" => -0.9}, 
+"WR" =>  {"val" => {"43" => 65, "34" => 65}, "suc" => 0.7, "ret" => 35, "backup" => 0.9, "thresh" => -1}, 
+"DT" =>  {"val" => {"43" => 60, "34" => 65}, "suc" => 0.4, "ret" => 35, "backup" => 0.8, "thresh" => -1}, 
+"RT" =>  {"val" => {"43" => 55, "34" => 55}, "suc" => 0.6, "ret" => 36, "backup" => 0.5, "thresh" => -1}, 
+"MLB" => {"val" => {"43" => 50, "34" => 60}, "suc" => 0.5, "ret" => 34, "backup" => 0.4, "thresh" => -0.8}, 
+"OLB" => {"val" => {"43" => 50, "34" => 65}, "suc" => 0.5, "ret" => 34, "backup" => 0.4, "thresh" => -0.8}, 
+"S" =>   {"val" => {"43" => 40, "34" => 40}, "suc" => 0.4, "ret" => 32, "backup" => 0.6, "thresh" => -0.9}, 
+"G" =>   {"val" => {"43" => 35, "34" => 35}, "suc" => 0.4, "ret" => 36, "backup" => 0.5, "thresh" => -0.8},
+"TE" =>  {"val" => {"43" => 25, "34" => 25}, "suc" => 0.6, "ret" => 32, "backup" => 0.6, "thresh" => -0.2}, 
+"FB" =>  {"val" => {"43" => 10, "34" => 10}, "suc" => 0.3, "ret" => 31, "backup" => 0.2, "thresh" => 0.5},
+"C" =>   {"val" => {"43" => 30, "34" => 30}, "suc" => 0.4, "ret" => 36, "backup" => 0.5, "thresh" => -0.8},
+"K" =>   {"val" => {"43" => 4, "34" => 4}, "suc" => 0.1, "ret" => 38, "backup" => 0.1, "thresh" => 0.75},
+"P" =>   {"val" => {"43" => 1, "34" => 1}, "suc" => 0.1, "ret" => 38, "backup" => 0.1, "thresh" => 0.75} };
+
+# Read in the draft order.  The file lists all 2005 picks, including compensatory, though we only use
+# through Round 3 for now.
+
+my @draftorder = ();
+
+open(DO, "<draftorder") or die "No draft order file\n";
+
+while(<DO>) {
+	chomp;
+	push @draftorder,$_;
+}
+
+# Since we want to output whether or not a pick is the result of a trade, just make a copy of the draftorder
+# array for reference.
+
+my @orig_draftorder = @draftorder;
+
+# Read in some data on the teams in the league.  Here's the different fields:
+#
+# $teams->{TEAM}->{"CON"} : Tells us how close the team is to winning the Superbowl.  5 means they're close
+#	to winning it, 1 means they're seriously rebuilding.  Most teams are 2-4.  In principle this should
+#	be calculated from the team's OVR rating -- here we input it by hand.  This is used in a few different
+#	places.  First, it's used to estimate progression.  The worse teams give more credit for progression
+#	to rookies.  The philosophy here is that a team with CON=1 is looking to win the SB in 5 years or so.
+#	Therefore, they are most concerned with how the rookies will compare to their current players 5 years
+#	down the road.  In particular, they assume the rookies will progress 2 points a year (an average value)
+#	when comparing to players on their roster.  It is also used to determine how badly a successor is 
+#	needed.  With the same logic, a contending team can afford to wait a few years longer to find a
+#	successor than a bottom feeder.  For example, the Cardinals have Warner who is 32, but they won't be 
+#	set to win the SB until he's 35/36.  At that point, he'll be ready to retire, so they need a successor
+#	now.  On the other hand, the Packers have Favre and he's about to retire, but since they can make one
+#	last push for the SB, finding a successor isn't quite as urgent.  Finally, CON is also used to 
+#	determine value of future picks.  In particular, 1st round picks for bottom feeders are worth 800,
+#	for SB contenders only 400.
+# $teams->{TEAM}->{"val"} : Number between 0 and 1 -- determines the extent to which a team drafts on need
+#	vs. best player available.
+# $teams->{TEAM}->{"sys"} : Whether they run a 34 or 43 defense.
+
+open(TEAMS, "<teams") or die "No teams file\n";
+
+while(<TEAMS>) {
+	chomp;
+	@line = split(/\t/);
+
+	$teams->{$line[0]}->{"CON"} = $line[1];
+	$teams->{$line[0]}->{"val"} = $line[2];
+	if ($line[3] == 0) {
+		$teams->{$line[0]}->{"sys"} = 43;	
+	} else {
+		$teams->{$line[0]}->{"sys"} = 34;
+	}
+}
+
+my $i = 1;
+my $numplayers = 1;
+
+# This is the current roster of players.  This gets slightly complicated.  Perl is weird about storing
+# a variable size array of hashes.  So what we do is store a variable size array of numbers that represents, 
+# the players at a given position on a given team, then those numbers index into a separate array of players
+# which stores the player data.  It's not much less efficient since that's more or less what the code would
+# do if it were storing an array of hashes anyway.
+#
+# $roster->{TEAM}->{POSITION} : Array of players at that position on that team.
+#
+# The players data structure is mostly self-explanatory.
+#
+# $players->[INDEX]->{'NAME'}, $players->[INDEX]->{'POS'}, $players->[INDEX]->{'OVR'}, 
+# $players->[INDEX]->{'AGE'}, $players->[INDEX]->{'INJ'}
+#
+# The only one that's slightly strange is $players->[INDEX]->{'VAL'} which stores the players "value"
+# compared to the draft trade value chart, more or less.  It's based on an empirical formula that we developed.
+
+
+open(ROSTER, "<roster.csv") or die "No roster file\n";
+
+while(<ROSTER>) {
+
+	chomp;
+	@line = split(/,/);
+
+	@pos = split(/:/,$line[3]);
+	$line[3] = substr($pos[1],1);
+
+	if ($line[3] eq "LOLB" or $line[3] eq "ROLB") {
+		$line[3] = "OLB";
+	} elsif ($line[3] eq "FS" or $line[3] eq "SS") {
+		$line[3] = "S";
+	} elsif ($line[3] eq "LG" or $line[3] eq "RG") {
+		$line[3] = "G";
+	} elsif ($line[3] eq "LE" or $line[3] eq "RE") {
+		$line[3] = "DE";
+	}
+
+	if ($line[6] < 60) { $line[6] = 60; }
+
+# the roster file we have is pretty messed up -- let's add 5 points to every OL.
+
+	if ($line[3] eq "G" or $line[3] eq "C" or $line[3] eq "LT" or $line[3] eq "RT") {
+		$line[4] += 5;
+	}
+
+	$players->[$i]->{'NAME'} = $line[1].", ".$line[2];
+	$players->[$i]->{'OVR'} = $line[4];
+	$players->[$i]->{'POS'} = $line[3];
+	$players->[$i]->{'AGE'} = $line[5] + 1;
+	$players->[$i]->{'INJ'} = $line[6];
+	$players->[$i]->{'VAL'} = $scale * 
+		$positions->{$line[3]}->{"val"}->{$teams->{$line[0]}->{"sys"}}*(1/100)*valcurve($line[4] + 
+		injury($line[6]) + (2 / $teams->{$line[0]}->{"CON"}) 
+		*(26-$line[5])*theta(26-$line[5]));
+
+	push @{$roster->{$line[0]}->{$line[3]}}, $i ;
+
+	$i++;
+	$numplayers++;
+}
+
+
+open(ROOKS,"<rooks.csv") or die "No rookie file\n";
+my $rooks;
+
+$i = 0;
+
+while(<ROOKS>){
+	chomp;
+	@line = split(/,/);
+
+	@pos = split(/:/,$line[2]);
+	$line[2] = substr($pos[1],1);
+
+	$rooks->[$i]->{"name"} = "$line[1] $line[0]";
+	$rooks->[$i]->{"pos"} = $line[2];
+	$rooks->[$i]->{"ovr"}->{"base"} = $line[3];
+	$rooks->[$i]->{"inj"} = $line[5];
+	$rooks->[$i]->{"drafted"} = 0;
+
+	$eor = $line[3] + injury($line[5]);
+	$val = $scale * $positions->{$line[2]}->{"val"}->{"43"}*valcurve($eor) / 100;
+
+	$rooks->[$i]->{"val"}->{"base"} = $val;
+
+	foreach( keys %$teams ){
+		$theteam = $_;
+
+		$rooks->[$i]->{"ovr"}->{$theteam} = $rooks->[$i]->{"ovr"}->{"base"} + specialrand();
+		$rooks->[$i]->{"valnp"}->{$theteam} = $scale * $positions->{$line[2]}->{"val"}->{$teams->{$theteam}->{"sys"}}*
+			valcurve($rooks->[$i]->{"ovr"}->{$theteam} + injury($line[5])) / 100;
+
+# "valest" is the value that other teams estimate for this team -- it should be used in determining what
+# what other teams think the currently drafting team will do, etc.  specialrand is called twice to 
+# increase the measurement error, so to speak.  Note that other teams may be off by as much as 6 OVR points 
+# on how the team in question evaluates this player, but that is highly unlikely (1 / 1000) to happen.
+
+		$rooks->[$i]->{"valest"}->{$theteam} = $scale * $positions->{$line[2]}->{"val"}->{$teams->{$theteam}->{"sys"}}*
+                        valcurve($rooks->[$i]->{"ovr"}->{$theteam} + injury($line[5]) 
+			+ $randomness*(specialrand() + specialrand())) / 100;
+
+		calcneed($i,$theteam);
+	}
+
+	$i++;
+}
+
+print "<html><table border=1 cellpadding=3 cellspacing=3>";
+print "<tr><th>Pick</th><th>Team</th><th>Player</th><th>Position</th><th>Scouted<br>Rating</th><th>True<br>Rating</th>".
+	"<th>Need as<br>Starter</th><th>Need as<br>Backup</th><th>Need as<br>Successor</th></tr>";
+
+$i = 0;
+foreach(@draftorder){
+
+	if ($i == 101) { last; }
+
+	findfavs($i);
+	calcprobs();
+
+	my $draftingteam = $_;
+
+	my $tradeups = {};
+
+	foreach(keys %$teams) {
+		my $j = $favs->{$_};
+		my $theteam = $_;
+
+		$valfrac = $teams->{$_}->{"val"} + 0.075*int($i/32);
+		$needfrac = 1 - $valfrac;
+
+		my $wantfrac = tanh($trade_slider * $rooks->[$j]->{"valnp"}->{$theteam} / $values[$i]) / 
+			tanh($trade_slider);
+
+		my $bestvalneed = $rooks->[$j]->{"val"}->{$theteam}*($needfrac*$rooks->[$j]->{"need"}->{$theteam}+$valfrac);
+
+		foreach(my $ri = 0; $ri < scalar @$rooks; $ri++) {
+			if ($ri == $j or $rooks->[$ri]->{"drafted"} == 1) {next;}
+
+			$thisvalneed = $rooks->[$ri]->{"val"}->{$theteam}*($needfrac*$rooks->[$ri]->{"need"}->{$theteam}+$valfrac);
+
+			$temp = tanh(2*($bestvalneed - $thisvalneed) / $thisvalneed);
+
+			if ($temp > 0.95 or $temp eq "nan" or $thisvalneed < 0) {$temp = 1;}
+
+			$wantfrac *= $temp;
+		}
+
+		my $probleft = 1;
+		my $wp = 0;
+
+		for (my $ip = $i; $theteam ne $draftorder[$ip] and $ip < scalar @draftorder; $ip++) {
+
+			$wp += $probs->[$j]->{$draftorder[$ip]} * $probleft * (1/2)*(1 - 1.014*tanh(($ip - $i - 6)/2));
+			$probleft *= (1 - $probs->[$j]->{$draftorder[$ip]});
+		}
+
+		$tradeups->{$_} = $wantfrac*$wp*$rooks->[$j]->{"valnp"}->{$_};
+	}
+
+	for (my $hb = 0; $hb < scalar keys %$tradeups; $hb++) {
+
+	my $highest_bidder = "";
+	my $highest_bid = 0;
+	foreach (keys %$tradeups) {
+		if ($tradeups->{$_} > $highest_bid) {
+			$highest_bid = $tradeups->{$_};
+			$highest_bidder = $_;
+		}
+	}
+
+	if ($highest_bidder eq "") { last; }
+
+# Find the minimum that the team will take to trade down.  Basically do the reverse of the above to determine
+# when to trade up.  Whereas before though we wanted to make sure that there weren't any players of similar value
+# available AND that guy was not going to be there when it came time to pick, the logical opposite for moving down is
+# that there are other players of similar value OR the specific guy we want will still be there.
+#
+# In other words !(a and b) <=> !a or !b
+
+	my $mintake;
+	my $j = $favs->{$draftingteam};
+	$theteam = $draftingteam;
+
+	if ($rooks->[$j]->{"valnp"}->{$theteam}*1.5 < $values[$i]) {
+# If there's just nobody of good value there, then they'll trade out regardless.
+
+		$mintake = $rooks->[$j]->{"valnp"}->{$theteam};
+#		print "Mintake 248: $mintake";
+	} else {
+
+		$valfrac = $teams->{$theteam}->{"val"} + 0.075*int($i/32);
+		$needfrac = 1 - $valfrac;
+
+#		print $draftingteam, " ", $highest_bidder, " ", $rooks->[$j]->{"name"}, " <br>";
+
+		$mintake = $rooks->[$j]->{"valnp"}->{$theteam} * 
+			tanh($trade_slider * $rooks->[$j]->{"valnp"}->{$theteam} / $values[$i]) / tanh($trade_slider);
+
+#		print "line 258: ", $mintake, "<br>";
+
+		my $bestvalneed = $rooks->[$j]->{"val"}->{$theteam}*($needfrac*$rooks->[$j]->{"need"}->{$theteam}+$valfrac);
+
+		my $wantfrac = 1;
+		foreach(my $ri = 0; $ri < scalar @$rooks; $ri++) {
+			if ($ri == $j or $rooks->[$ri]->{"drafted"} == 1) {next;}
+
+			$thisvalneed = $rooks->[$ri]->{"val"}->{$theteam}*($needfrac*$rooks->[$ri]->{"need"}->{$theteam}+$valfrac);
+
+			$temp = tanh(2*($bestvalneed - $thisvalneed) / $thisvalneed);
+
+			if ($temp > 0.95 or $temp eq "nan" or $thisvalneed < 0) {$temp = 1;}
+
+			$wantfrac -= $wantfrac*0.5*(1-$temp);
+		}
+
+		my $wp = $probs->[$j]->{$highest_bidder};
+		my $probleft = 1 - $wp;
+
+		for (my $ip = $i+1; $highest_bidder ne $draftorder[$ip] and $ip < scalar @draftorder; $ip++) {
+
+# This is very crude, particularly if you're sliding down more than a few spots.  But it'll do for now.  Could be 
+# directly improved by a more exactly computation in calcprobs().
+
+			$wp += $probs->[$j]->{$draftorder[$ip]} * $probleft;
+			$probleft *= (1 - $probs->[$j]->{$draftorder[$ip]});
+		}
+
+#		print "line 287<br>";
+
+		if ($wp == 1 and $wantfrac == 1) {
+			$mintake = 100000; # don't trade if he's got good value and there's nobody better to slide to
+		} else {
+			$mintake *= 1/(sqrt((1-$wp)**2 + (1-$wantfrac)**2));
+		}
+
+#		print "line 289<br>";
+
+#		print "line 291: ", $mintake, "<br>";
+#		print "highest_bid: $highest_bid <br>";
+	}
+
+#	if ($rooks->[$favs->{$draftingteam}]->{"valnp"}->{$draftingteam}*1.2 < $values[$i] and 
+#		$values[$i] < $highest_bid) {
+
+#	print "Mintake 304: $mintake Highest_bid: $highest_bid<br>";
+
+	if ($mintake < $rooks->[$favs->{$draftingteam}]->{"valnp"}->{$draftingteam}) {
+		$mintake = $rooks->[$favs->{$draftingteam}]->{"valnp"}->{$draftingteam};
+	}
+
+	if ($mintake < $highest_bid) {
+		my $tradelog = 1;
+#		print "<tr><td colspan=9>Trade Log:";
+
+#		print "<br><br>POSSIBLE TRADE<br><br>";
+
+#		my $swap = (1/6)*($rooks->[$favs->{$draftingteam}]->{"valnp"}->{$draftingteam} + $highest_bid
+#			+ 4*$values[$i]);
+		my $swap = (1/6)*($mintake + $highest_bid + 4*$values[$i]);
+
+		if ($swap < $mintake) {
+			$swap = (1/2)*($mintake + $highest_bid);
+		}
+
+		my $orig_swap = $swap;
+
+		my @toppicks; my @bottompicks; my @topicks; my @frompicks;
+
+		for ($ip = $i; $ip < scalar @draftorder; $ip++) {
+			if ($draftorder[$ip] eq $draftingteam) { push @toppicks, $ip; }
+			elsif ($draftorder[$ip] eq $highest_bidder) { push @bottompicks, $ip; }
+		}
+
+		push @topicks, $bottompicks[0];
+		push @frompicks, $toppicks[0];
+
+		$swap -= $values[$bottompicks[0]];
+
+# if they really want they guy, allow the option to trade next year's 1st rounder
+		if ($highest_bid > 1.3*$values[$i] and ($rooks->[$favs->{$highest_bidder}]->{"sn"}->{$highest_bidder} > 0.5 
+				or $rooks->[$favs->{$highest_bidder}]->{"yn"}->{$highest_bidder} > 0.5)) {
+			my $next2005 = shift @bottompicks;
+			unshift @bottompicks, 2006;
+			unshift @bottompicks, $next2005;
+		}
+
+		for ($ip = scalar @bottompicks - 1; $ip > 0; $ip--) {
+			if ($bottompicks[$ip] == 2006) {
+				if (400 + 100*(5-$teams->{$highest_bidder}->{"CON"}) > $swap) { last;}
+			} else {
+				if ($values[$bottompicks[$ip]] > $swap) { last; }
+			}
+		}
+
+# If we couldn't move up with just a single extra pick, then don't do the trade (for now...).
+		if ($ip != 0) {
+			if (abs(($swap - $values[$bottompicks[$ip+1]])/$orig_swap) < 0.03) {
+				push @topicks, $bottompicks[$ip+1];
+				$swap -= $values[$bottompicks[$ip+1]];
+			} else {
+				push @topicks, $bottompicks[$ip];
+
+				if ($bottompicks[$ip] == 2006) {
+					$swap -= 400 + 100*(5-$teams->{$highest_bidder}->{"CON"});
+				} else {
+					$swap -= $values[$bottompicks[$ip]];
+				}
+			}
+
+# If this gets us within 3%, then be done with it:
+
+			if (abs($swap / $orig_swap) < 0.03) {
+				for ($ip = scalar @toppicks - 1; $ip > 0; $ip--) {
+					if ($values[$toppicks[$ip]] > abs($swap)) { last; }
+				}
+
+				if ($ip != 0 and abs($swap + $values[$toppicks[$ip]]) < abs($swap + $values[$toppicks[$ip+1]])) {
+					if ($toppicks[$ip] > $topicks[1] or $topicks[1] == 2006) {
+						push @frompicks, $toppicks[$ip];
+						$swap += $values[$toppicks[$ip]];
+					}
+				} elsif ($ip != 0) {
+					if ($toppicks[$ip+1] > $topicks[1] or $topicks[1] == 2006) {
+						push @frompicks, $toppicks[$ip+1];
+						$swap += $values[$toppicks[$ip+1]];
+					}
+				}
+			}
+
+			if (abs($swap / $orig_swap) < 0.10) {
+
+			print "<tr><td colspan=9>";
+			print "<br><br>*** TRADE COMPLETED ***<br>\n";
+			print "<i>$draftingteam receive ";
+
+			foreach(@topicks) {
+				$draftorder[$_] = $draftingteam;
+				if ($_ == 2006) {
+					print "First Round pick in 2006 (";
+					print 400 + 100*(5-$teams->{$highest_bidder}->{"CON"});
+					print ") ";
+				} else {
+					print nn($_+1)," pick (".$values[$_].") ";
+				}
+
+				if (scalar @topicks == 2 and $_ != @topicks[1]) { print "and "; }
+			}
+
+			print "from $highest_bidder in exchange for the ";
+
+			foreach(@frompicks) {
+				$draftorder[$_] = $highest_bidder;
+				print nn($_+1)," pick (".$values[$_].") ";
+
+				if (scalar @frompicks == 2 and $_ != @frompicks[1]) { print "and "; }
+			}
+
+			print ".</i><br><br>\n";
+
+			print "$highest_bidder move up to select ", 
+				$rooks->[$favs->{$highest_bidder}]->{"name"},
+				 " who they perceive to have value ".int($rooks->[$favs->{$highest_bidder}]->{"valnp"}->{$highest_bidder}).".<br>";
+			print "$draftingteam would have selected ", $rooks->[$favs->{$draftingteam}]->{"name"}, " who they perceive to have value ".
+				int($rooks->[$favs->{$draftingteam}]->{"valnp"}->{$draftingteam}), ".<br>";
+			print "The value of this selection is ".$values[$i].".<br>";
+#			print "Mintake: $mintake  Highest_bid:  $highest_bid  Orig_swap:  $orig_swap";
+
+			$draftingteam = $highest_bidder;
+
+			last;
+			}
+		} else {
+#			print "\n$ip\n";
+#			print "Trade Rejected:  $draftingteam $highest_bidder\n";
+#			print "Diagnostics:\n",$highest_bidder, ", ", 
+#				$rooks->[$favs->{$highest_bidder}]->{"name"},
+#				 ", ", $highest_bid, "\n";
+#			print $draftingteam, ", ", $rooks->[$favs->{$draftingteam}]->{"name"}, ", ",
+#				$rooks->[$favs->{$draftingteam}]->{"valnp"}->{$draftingteam}, "\n";
+#			print $orig_swap, "\n";
+#			print Dumper(@bottompicks);
+		}
+	}
+	else { last; } 
+
+#	print "<br>$highest_bidder want to move up to select ".$rooks->[$favs->{$highest_bidder}]->{"name"}.
+#		" but do not have the picks to do so.";
+	$tradeups->{$highest_bidder} = 0;
+
+	}
+
+	if ($tradelog == 1) { print "</td></tr>"; }
+
+	my $theteam = $draftingteam;
+	$best = $favs->{$theteam};
+
+	print "<tr>";
+	print "<td align=center><h3>".($i+1)."</h3></td><td align=center><img src=/images/".$theteam.".gif>";
+
+	if ($draftingteam ne $orig_draftorder[$i]) {
+		print "<br><i>(from ".$orig_draftorder[$i].")</i>";
+	}
+
+#	my $hsp = "&nbsp;";
+	my $hsp = "";
+
+	print "</td><td align=center>$hsp$hsp$hsp".$rooks->[$best]->{"name"}."$hsp$hsp$hsp</td><td 
+align=center>".
+		$rooks->[$best]->{"pos"}."</td><td align=center>$hsp$hsp$hsp".$rooks->[$best]->{"ovr"}->{$theteam}.
+		"$hsp$hsp$hsp</td><td align=center>$hsp$hsp$hsp".$rooks->[$best]->{"ovr"}->{"base"}.
+		"$hsp$hsp$hsp</td>";
+
+	print "<td align=center>$hsp$hsp$hsp".int(100*$rooks->[$best]->{"sn"}->{$theteam})/100,"$hsp$hsp$hsp</td>";
+	print "<td align=center>$hsp$hsp$hsp$hsp".int(100*$rooks->[$best]->{"bn"}->{$theteam})/100,"$hsp$hsp$hsp$hsp</td>";
+	print "<td align=center>$hsp$hsp$hsp".int(100*$rooks->[$best]->{"yn"}->{$theteam})/100,"$hsp$hsp$hsp</td>";
+
+	print "</tr><tr><td colspan=9>";
+
+	print "$theteam' Draft Board:<br>";
+
+	my @draftboard = ();
+
+	for (my $db = 0; $db < 5; $db++) {
+
+		my $nextbest = -1;
+		my $nextbestprob = 0;
+		for(my $cr = 0; $cr < scalar @$rooks; $cr++) {
+			my $exit = 0;
+			foreach (@draftboard) {
+				if ($cr == $_) { $exit = 1; }
+			}
+
+			if ($exit == 1 or $rooks->[$cr]->{"drafted"} == 1) { next; }
+
+#			print $rooks->[$cr]->{"name"}." ".$probs->[$cr]->{$theteam}."<br>";
+
+			if ($probs->[$cr]->{$theteam} > $nextbestprob) {
+				$nextbest = $cr;
+				$nextbestprob = $probs->[$cr]->{$theteam};
+			}
+		}
+
+		if ($nextbest == -1) { last; }
+
+		print ($db+1);
+		print ". ";
+		print $rooks->[$nextbest]->{"name"}," (",$rooks->[$nextbest]->{"ovr"}->{$theteam},"/",$rooks->[$nextbest]->{"ovr"}->{"base"}.") ";
+
+		push @draftboard, $nextbest;
+	}
+
+	print "</td></tr>";
+
+	$rooks->[$best]->{"drafted"} = 1;
+
+#	print int($rooks->[$best]->{"val"}->{$theteam}*($needfrac*$rooks->[$best]->{"need"}->{$theteam}+$valfrac)), "\t", 
+#		int($rooks->[$best]->{"valnp"}->{$theteam}), "\t", 
+#		int($rooks->[$best]->{"val"}->{"base"}), "\t", 
+#		$rooks->[$best]->{"ovr"}->{$theteam}, "\t",
+#		$rooks->[$best]->{"ovr"}->{"base"}, "\t",
+#		int(100*$rooks->[$best]->{"need"}->{$theteam})/100, "\t",
+#		int(100*$rooks->[$best]->{"sn"}->{$theteam})/100, "\t",
+#		int(100*$rooks->[$best]->{"bn"}->{$theteam})/100, "\t",
+#		int(100*$rooks->[$best]->{"yn"}->{$theteam})/100, "\n";
+
+	$players->[$numplayers]->{'NAME'} = $rooks->[$best]->{"name"};
+	$players->[$numplayers]->{'OVR'} = $rooks->[$best]->{"ovr"}->{$theteam};
+	$players->[$numplayers]->{'POS'} = $rooks->[$best]->{"pos"};
+	$players->[$numplayers]->{'AGE'} = $rooks->[$best]->{"age"};
+	$players->[$numplayers]->{'INJ'} = $rooks->[$best]->{"inj"};
+	$players->[$numplayers]->{'VAL'} = $scale * $positions->{$rooks->[$best]->{"pos"}}->{"val"}->{$teams->{$theteam}->{"sys"}}*(1/100)*valcurve($rooks->[$best]->{"ovr"}->{$theteam} + injury($rooks->[$best]->{"inj"}) + (10 / $teams->{$theteam}->{"CON"}));
+	push @{$roster->{$theteam}->{$rooks->[$best]->{"pos"}}}, $numplayers;
+	$numplayers++;
+
+	my $rm = 0;
+	foreach (@$rooks) {
+		if ($_->{"pos"} eq $rooks->[$best]->{"pos"} and $_->{"drafted"} == 0) {
+			calcneed($rm,$theteam, 1);
+		}
+		$rm++;
+	}
+
+	$i++;
+
+#	if ($i%32 == 0 and $i != 0) {
+#		print "---- Press ENTER to Continue ----\n";
+#		while(<STDIN>) {
+#			last;
+#		}
+#	}
+}
+
+print "</table></html>";
+
+sub findfavs {
+	my $i = shift;
+
+	foreach (keys %$teams) {
+
+	my $max = 0;
+	my $best = -1;
+	my $theteam = $_;
+
+	$valfrac = $teams->{$theteam}->{"val"} + 0.075*int($i/32);
+	$needfrac = 1 - $valfrac;
+
+	foreach($j = 0; $j < scalar @$rooks; $j++){
+		my $pos = $rooks->[$j]->{"pos"};
+		my $sn = $rooks->[$j]->{"sn"}->{$theteam};
+		my $bn = $rooks->[$j]->{"bn"}->{$theteam};
+		my $yn = $rooks->[$j]->{"yn"}->{$theteam};
+
+		$ps = 0.5*(1 + $sn);
+		$rooks->[$j]->{"need"}->{$theteam} = $sn + tanh($i/45)*(1 - $ps)*$bn*$positions->{$pos}->{"backup"}
+			+ (1 - $ps)*$yn;
+
+#		print $pos, ": ", $positions->{$pos}->{"thresh"}, "\n";
+
+		$rooks->[$j]->{"needval"}->{$theteam} = $rooks->[$j]->{"val"}->{$theteam}*($needfrac*$rooks->[$j]->{"need"}->{$theteam}+$valfrac);
+
+# when is their next selection?  If the player is likely to still be there, based on his unprogressed value and the 
+# value of that pick, then pass on him for now, take someone else.
+
+		my $nextpick;
+		for(my $dr = $i+1; $dr < scalar @draftorder; $dr++) {
+			if ($draftorder[$dr] eq $theteam) {
+				$nextpick = $dr;
+				last;
+			}
+		}
+
+		if ($rooks->[$j]->{"val"}->{$theteam}*($needfrac*$rooks->[$j]->{"need"}->{$theteam}+$valfrac) > $max and 
+			$rooks->[$j]->{"need"}->{$theteam} > $positions->{$pos}->{"thresh"} and
+			($rooks->[$j]->{"valnp"}->{$theteam} > 1.2*$values[$nextpick+1] or $theteam ne $draftorder[$i]) and 
+			$rooks->[$j]->{"drafted"} eq 0){
+#		if ($rooks->[$j]->{"val"}->{"base"} > $max and $rooks->[$j]->{"drafted"} eq 0) {
+
+#			$max = $rooks->[$j]->{"val"}->{"base"};
+			$max = $rooks->[$j]->{"val"}->{$theteam}*($needfrac*$rooks->[$j]->{"need"}->{$theteam}+$valfrac);
+
+			$best = $j;
+		}
+	}
+
+# If we couldn't find a guy satisfying the above criteria, then just take the best guy available.
+	if ($best eq "-1") {
+		my $max = 0;
+
+		for ($j = 0; $j < scalar @$rooks; $j++) {
+			if ($rooks->[$j]->{"valnp"}->{$theteam} > $max and $rooks->[$j]->{"drafted"} == 0) {
+				$max = $rooks->[$j]->{"valnp"}->{$theteam};
+				$best = $j;
+			}
+		}
+
+#		print "Best available! $theteam Pick: $i  ".$rooks->[$best]->{"name"}."<br>";
+	}
+
+	$favs->{$_} = $best;
+
+	}
+}
+
+sub calcprobs() {
+
+	foreach(keys %$teams) {
+		my $tl = $_;
+
+		my $totalval = 1;
+
+		my $pl = $rooks->[$favs->{$tl}]->{"pos"};
+		my $psl = 0.5*(1 + $rooks->[$favs->{$tl}]->{"sn"}->{$tl});
+		$rooks->[$favs->{$tl}]->{"temp"} = ((1 - $teams->{$tl}->{"val"})*($rooks->[$favs->{$tl}]->{"sn"}->{$tl} + (1 - $psl)*
+			$rooks->[$favs->{$tl}]->{"bn"}->{$tl}*$positions->{$pl}->{"backup"}
+			+ (1 - $psl)*$rooks->[$favs->{$tl}]->{"yn"}->{$tl}) + $teams->{$tl}->{"val"}) 
+			* $rooks->[$favs->{$tl}]->{"valest"}->{$tl};
+
+		foreach(my $jl = 0; $jl < scalar @$rooks; $jl++) {
+
+			$psl = 0.5*(1 + $rooks->[$jl]->{"sn"}->{$tl});
+			$pl = $rooks->[$jl]->{"pos"};
+
+			$rooks->[$jl]->{"tempneed"} = $rooks->[$jl]->{"sn"}->{$tl} + (1 - $psl)*
+				$rooks->[$jl]->{"bn"}->{$tl}*$positions->{$pl}->{"backup"}
+				+ (1 - $psl)*$rooks->[$jl]->{"yn"}->{$tl};
+
+#			if ($rooks->[$jl]->{"name"} eq "Mike Nugent" and $rooks->[$jl]->{"tempneed"} > 0.75) {
+#				print $tl, ": ", $rooks->[$jl]->{"tempneed"}, "<br>";
+#			}
+
+			if ($rooks->[$jl]->{"drafted"} == 1 or $jl == $favs->{$tl} or
+				$rooks->[$jl]->{"tempneed"} < $positions->{$pl}->{"thresh"}) { next; }
+
+			$rooks->[$jl]->{"need"} = $rooks->[$jl]->{"tempneed"} * $rooks->[$jl]->{"valest"}->{$tl};
+
+			my $tempprob = exp(3*($rooks->[$jl]->{"temp"} - 
+				$rooks->[$favs->{$tl}]->{"temp"} ) / $rooks->[$favs->{$tl}]->{"temp"});
+
+#			if ($tempprob eq "nan") { print $rooks->[$jl]->{"name"}, " ", $teams->{$tl}->{"val"}, " ", $rooks->[$jl]->{"sn"}->{$tl}, " ", $tl, " ",
+#                                $rooks->[$jl]->{"bn"}->{$tl}, " ", $positions->{$pl}->{"backup"}, " ",
+#                                $rooks->[$jl]->{"yn"}->{$tl}, " ", 
+#                                $rooks->[$jl]->{"valest"}->{$tl},"\n"; }
+
+			if ($jl eq $favs->{$tl}) { $tempprob = 1; }
+
+			if ($tempprob < 0.33) {$tempprob = 0;}
+			$totalval += $tempprob;
+
+		}
+
+		if ($totalval eq "nan") { print "error"; die;}
+
+		foreach(my $jl = 0; $jl < scalar @$rooks; $jl++) {
+			$pl = $rooks->[$jl]->{"pos"};
+			
+			if ($rooks->[$jl]->{"drafted"} == 1 or
+                                $rooks->[$jl]->{"tempneed"} < $positions->{$pl}->{"thresh"}) { $probs->[$jl]->{$tl} = 0; next;}
+
+			my $tempprob = exp(3*($rooks->[$jl]->{"temp"} - 
+				$rooks->[$favs->{$tl}]->{"temp"} ) / $rooks->[$favs->{$tl}]->{"temp"});
+
+			if ($jl eq $favs->{$tl}) { $tempprob = 1; }
+
+			if ($tempprob < 0.33) {$probs->[$jl]->{$tl} = 0;}
+			else {
+				$probs->[$jl]->{$tl} = $tempprob / $totalval;
+			}
+
+#			if ($tl eq "Panthers" and $jl == 32) {
+#				print $rooks->[$favs->{$tl}]->{"temp"}, " ", $rooks->[$jl]->{"temp"}, " ", $probs->[$jl]->{$tl}, "\n";
+#			}
+
+#			$probs->[$jl]->{$tl} = 0.5;
+		}
+	}
+}
+
+sub valcurve {
+	my $temp = shift;
+	$temp = $temp / 10;
+
+	my $ret = -77.4609 + 30.4199*$temp - 4.32888*$temp**2 + 0.280661*$temp**3 - 0.00682204*$temp**4;
+
+	my $ret = exp($ret);
+
+	return $ret;
+}
+
+sub theta {
+	my $temp = shift;
+	if ($temp > 0){
+		return 1;
+	} else { return 0; }
+}
+
+sub tanh {
+	my $temp = shift;
+
+	if ($temp > 700) { return 1; }
+	elsif ($temp < -700) { return -1; }
+
+	return (exp($temp) - exp(-$temp))/(exp($temp) + exp(-$temp));
+}
+
+sub specialrand {
+	if ($randomness == 0) {
+		return 0;
+	}
+
+	$r = rand(10);
+
+	if ($r < 1) {return -2;}
+	elsif ($r < 3) {return -1;}
+	elsif ($r < 7) {return 0;}
+	elsif ($r < 9) {return 1;}
+	else { return 2;}
+}
+
+sub injury {
+	$inj = shift;
+
+	return $injfix + 0.318376*($inj - 75) - 0.004444*($inj - 75)**2 + 0.000066476*($inj - 75)**3;
+}
+
+sub findbest {
+
+	my $posfb = shift;
+	my $teamfb = shift;
+	my @toskip = ();
+
+	while ($temp = shift) {
+		push @toskip, $temp;
+	}
+
+	my $bpvloc = 0;
+	my $toretfb = -1;
+
+	for(my $k = 0; $k < scalar @{$roster->{$teamfb}->{$posfb}}; $k++){
+		my $skip = 0;
+
+		foreach (@toskip) {
+			if (@{$roster->{$teamfb}->{$posfb}}[$k] == $_) { $skip = 1; }
+		}
+
+		if ($skip == 1) {next;}
+
+		if($players->[@{$roster->{$teamfb}->{$posfb}}[$k]]->{"VAL"} > $bpvloc) {
+			$bpvloc = $players->[@{$roster->{$teamfb}->{$posfb}}[$k]]->{"VAL"};
+			$toretfb = @{$roster->{$teamfb}->{$posfb}}[$k];
+		}
+	}
+
+	return $toretfb;
+}
+
+sub getstarters {
+
+	my $posloc = shift;
+	my $teamloc = shift;
+
+	my @retarray = ();
+	my $bpid = -1;
+	my $bpvloc = 0;
+
+	$bpid = findbest($posloc, $teamloc);
+
+	push @retarray, $bpid;
+
+	if ($posloc eq "WR" or $posloc eq "CB" or ($posloc eq "DT" and $teams->{$teamloc}->{"sys"} eq "43") or 
+		$posloc eq "WR" or $posloc eq "G" or ($posloc eq "MLB" and $teams->{$teamloc}->{"sys"} eq "34")
+		or $posloc eq "OLB" or $posloc eq "DE" or $posloc eq "S") {
+
+		my $bpid2 = findbest($posloc, $teamloc, $bpid);
+
+		push @retarray, $bpid2;
+	}
+
+	return @retarray;
+}
+
+sub backup_need {
+	
+	my $rookid = shift;
+	my $teamloc = shift;
+
+	my @startersloc = ();
+
+	while($temp = shift) {
+		push @startersloc, $temp;
+	}
+
+	if (scalar @startersloc == 1) {
+
+		my $backupid = findbest($rooks->[$rookid]->{"pos"}, $teamloc, @startersloc);
+
+		if ($players->[$backupid]->{"VAL"} == 0) {
+			return 1;
+		} else {
+			return theta($rooks->[$rookid]->{"val"}->{$teamloc} - $players->[$backupid]->{"VAL"})*
+				tanh(($rooks->[$rookid]->{"val"}->{$teamloc} - $players->[$backupid]->{"VAL"})/ 
+					$players->[$backupid]->{"VAL"});
+		}
+
+	} elsif (scalar @startersloc == 2) {
+
+		my $toret = 0;
+		my $firstbackup = findbest($rooks->[$rookid]->{"pos"}, $teamloc, @startersloc);
+
+		if ($players->[$firstbackup]->{"VAL"} != 0) {
+			$toret += 0.75* theta($rooks->[$rookid]->{"val"}->{$teamloc} - $players->[$firstbackup]->{"VAL"})*
+				tanh(($rooks->[$rookid]->{"val"}->{$teamloc} - $players->[$firstbackup]->{"VAL"})/ 
+					$players->[$firstbackup]->{"VAL"});
+		}
+
+		my $secondbackup = findbest($rooks->[$rookid]->{"pos"}, $teamloc, @startersloc, $firstbackup);
+
+		if ($players->[$secondbackup]->{"VAL"} != 0) {
+			$toret += 0.25* theta($rooks->[$rookid]->{"val"}->{$teamloc} - $players->[$secondbackup]->{"VAL"})*
+				tanh(($rooks->[$rookid]->{"val"}->{$teamloc} - $players->[$secondbackup]->{"VAL"})/ 
+					$players->[$secondbackup]->{"VAL"});
+		}
+
+		return $toret;
+	} else {
+		print scalar @startersloc, " severe error!\n"; die;
+	}
+}
+
+
+sub calcneed {
+	my $cr = shift;
+	my $theteam = shift;
+
+	my $debug = shift;
+
+	my $pos = $rooks->[$cr]->{"pos"};
+
+	my $need = 0;
+	my $sn = 0; my $bn = 0;
+
+	my $eor = $rooks->[$cr]->{"ovr"}->{$theteam} + injury($rooks->[$cr]->{"inj"});
+	$teamval = $scale * $positions->{$pos}->{"val"}->{$teams->{$theteam}->{"sys"}}*valcurve($eor +  10 / $teams->{$theteam}->{"CON"}) / 100;
+
+	$rooks->[$cr]->{"val"}->{$theteam} = $teamval;
+
+	my @starters = getstarters($pos, $theteam);
+	my $starter = pop @starters;
+
+	my $bpv = $players->[$starter]->{"VAL"};
+	push @starters, $starter;
+
+	if ($bpv eq 0) {
+		$sn = 1;
+	} elsif ($bpv != $teamval) {
+		$sn = tanh(($teamval - $bpv) / $bpv);
+	}
+
+	if ($sn < 0) { $sn *= 1.313;}
+
+	$bn = backup_need($cr, $theteam, @starters);
+
+	if ($bn eq "nan") { print $rooks->[$cr]->{"name"}, " ", $theteam, " ", @starters, "\n"; }
+
+	my $bnt = 0;
+	foreach(@starters) {
+		$bnt += (1 - injury($players->[$_]->{"INJ"}) / 10) / (scalar(@starters));
+	}
+
+	$yn = youth_need($cr, $theteam, @starters);
+
+	$rooks->[$cr]->{"sn"}->{$theteam} = $sn;
+	$rooks->[$cr]->{"bn"}->{$theteam} = $bn * $bnt;
+	$rooks->[$cr]->{"yn"}->{$theteam} = $yn;
+
+#	if ($theteam eq "Packers" and $pos eq "QB") {
+#		print $rooks->[$cr]->{"name"}, "\t", $rooks->[$cr]->{"yn"}->{$theteam}, "\n";
+#	}
+}
+
+sub youth_need {
+	my $rookid = shift;
+	my $teamloc = shift;
+	my $pl = $rooks->[$rookid]->{"pos"};
+
+	my @sl = ();
+
+	while($temp = shift) {
+		push @sl, $temp;
+	}
+
+	my $oldest;
+	if (scalar @sl == 2) {
+		if ($players->[$sl[0]]->{"AGE"} > $players->[$sl[1]]->{"AGE"}) {
+			$oldest = $players->[$sl[0]]->{"AGE"};
+		} else {
+			$oldest = $players->[$sl[1]]->{"AGE"};
+		}
+	} else {
+		$oldest = $players->[$sl[0]]->{"AGE"};
+	}
+
+	$oldest += 1;
+
+	my $fac = 1 - 0.2*($positions->{$pl}->{"ret"} - $oldest + (1/2)*($teams->{$teamloc}->{'CON'} - 5));
+
+#	if ($teamloc eq "Packers" and $pl eq "QB") {
+#		print $positions->{$pl}->{"ret"}, " ", $oldest, " ", @sl, "\n";
+#	}
+
+	if ($fac < 0) { return 0; }
+	elsif ($fac > 1) { $fac = 1; }
+
+	my $nb;
+	my $found = -1;
+	for (my $count = 0; $count < scalar @{$roster->{$teamloc}->{$pl}} - scalar @sl; $count++) {
+		$nb = findbest($pl, $teamloc, @sl);
+
+		if ($positions->{$pl}->{"ret"} - $players->[$nb]->{"age"} + (1/2)*($teams->{$teamloc}->{'CON'} - 5) >= 5) {
+			$found = $nb;
+			last;
+		}
+
+		push @sl, $nb;
+	}
+
+	if ($found == -1) {
+		return $fac * $positions->{$pl}->{"suc"};
+	} else {
+
+		my $eor = $rooks->[$rookid]->{"ovr"}->{$teamloc} + injury($rooks->[$rookid]->{"inj"});
+		$rookval = $scale * $positions->{$pl}->{"val"}->{$teams->{$teamloc}->{"sys"}}*valcurve($eor + 10) / 100;
+
+		my $currval = $scale * $positions->{$pl}->{"val"}->{$teams->{$teamloc}->{"sys"}}*(1/100)*
+			valcurve($players->[$found]->{'OVR'} + 
+			injury($players->[$found]->{'INJ'}) + 
+			2 *(26-$players->[$found]->{'AGE'})*theta(26-$players->[$found]->{'AGE'}));
+
+		if ($currval >= $rookval) {
+			return 0;
+		} else {
+			return $fac * $positions->{$pl}->{"suc"}*tanh(($rookval - $currval) / $currval);
+		}
+	}
+}
+
+sub nn {
+	my $num = shift;
+
+	if ($num % 10 == 1 and $num != 11) {
+		return $num."st";
+	} elsif ($num % 10 == 2 and $num != 12) {
+		return $num."nd";
+	} elsif ($num % 10 == 3 and $num != 13) {
+		return $num."rd";
+	} else {
+		return $num."th";
+	}
+}
+
+
