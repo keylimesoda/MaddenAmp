@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -150,46 +150,8 @@ namespace MaddenEditor.Forms
 				SetNumericUpDown(playerToughness, record.Toughness, "Toughness");
 				SetNumericUpDown(playerMorale, record.Morale, "Morale");
 				SetNumericUpDown(playerImportance, record.Importance, "Importance");
-               //2007
-                SetNumericUpDown(playerEgo, record.Ego, "Player Ego");
-                SetNumericUpDown(playerValue, record.playerValue, "Player Value");
 
 				playerNFLIcon.Checked = record.NFLIcon;
-
-				/*
-				playerYearsPro.Value = record.YearsPro;
-				playerWeight.Value = record.Weight + 160;
-				playerHeightComboBox.SelectedIndex = record.Height - 65;
-				playerOverall.Value = record.Overall;
-				playerDominantHand.Checked = record.DominantHand;
-
-				playerSpeed.Value = record.Speed;
-				playerStrength.Value = record.Strength;
-				playerAwareness.Value = record.Awareness;
-				playerAgility.Value = record.Agility;
-				playerAcceleration.Value = record.Acceleration;
-				playerCatching.Value = record.Catching;
-				playerCarrying.Value = record.Carrying;
-				playerJumping.Value = record.Jumping;
-				playerBreakTackle.Value = record.BreakTackle;
-				playerTackle.Value = record.Tackle;
-				playerThrowPower.Value = record.ThrowPower;
-				playerThrowAccuracy.Value = record.ThrowAccuracy;
-				playerPassBlocking.Value = record.PassBlocking;
-				playerRunBlocking.Value = record.RunBlocking;
-				playerKickPower.Value = record.KickPower;
-				playerKickAccuracy.Value = record.KickAccuracy;
-				playerKickReturn.Value = record.KickReturn;
-				playerStamina.Value = record.Stamina;
-				playerInjury.Value = record.Injury;
-				playerToughness.Value = record.Toughness;
-				playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
-
-				playerMorale.Value = record.Morale;
-				playerNFLIcon.Checked = record.NFLIcon;
-
-				playerImportance.Value = record.Importance; */
-
 				
 				if (model.FileVersion >= MaddenFileVersion.Ver2005)
 				{
@@ -206,6 +168,23 @@ namespace MaddenEditor.Forms
 				else
 				{
 					cbTendancy.Enabled = false;
+				}
+
+				if (model.FileVersion == MaddenFileVersion.Ver2007)
+				{
+					lblEgo.Visible = true;
+					playerEgo.Visible = true;
+					lblValue.Visible = true;
+					playerValue.Visible = true;
+					SetNumericUpDown(playerEgo, record.Ego, "Player Ego");
+					SetNumericUpDown(playerValue, record.PlayerValue, "Player Value");
+				}
+				else
+				{
+					lblEgo.Visible = false;
+					playerEgo.Visible = false;
+					lblValue.Visible = false;
+					playerValue.Visible = false;
 				}
 				
 				playerProBowl.Checked = record.ProBowl;

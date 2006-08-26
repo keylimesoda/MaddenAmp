@@ -1,11 +1,11 @@
 
                   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-                               MADDEN AMP 2.3.3
+                               MADDEN AMP 3.0
                                   
                         the power to Amplify your Franchise
 
-                                10th July 2006
+                                26th August 2006
 
                                   readme.txt
 
@@ -24,7 +24,7 @@
 
 1. INTRODUCTION
 ===============
-Welcome to the newly renamed 'Madden Amp', an EA Sports Madden franchise utility 
+Welcome to the 'Madden Amp', an EA Sports Madden franchise utility 
 that is designed to maximise the benefits you get from Madden. This is more than
 an editor and as we release more versions we hope to bring you new and improved 
 features that help amplify your Madden experience.
@@ -87,13 +87,11 @@ I recommend
 http://tortoisesvn.tigris.org  
 
 You can retrieve the latest source at
-http://gommo.homelinux.net/svn/repos/maddeneditor/trunk
-
-(Note: If the checkout is slow be patient, I'm only on a 1500/256 ADSL connection 
- and I'm in Australia, so its probably coming from the other side of the world)
+https://svn.sourceforge.net/svnroot/maddenamp/trunk
 
 You will need to contact colin@tributech.com.au to get access rights to check
-code back in, but anyone is free to get the source code.
+code back in, but anyone is free to get the source code. You will require a 
+sourceforge account for checking in code.
 
 You can also browse the repository at the above address too.
 

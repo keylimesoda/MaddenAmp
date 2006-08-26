@@ -31,7 +31,9 @@ namespace MaddenEditor.Forms
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExceptionDialog));
 			this.tbException = new System.Windows.Forms.TextBox();
 			this.okButton = new System.Windows.Forms.Button();
-			this.lblException = new System.Windows.Forms.Label();
+			this.pbLogo = new System.Windows.Forms.PictureBox();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tbException
@@ -40,18 +42,18 @@ namespace MaddenEditor.Forms
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.tbException.BackColor = System.Drawing.SystemColors.ButtonFace;
-			this.tbException.Location = new System.Drawing.Point(12, 28);
+			this.tbException.Location = new System.Drawing.Point(12, 84);
 			this.tbException.Multiline = true;
 			this.tbException.Name = "tbException";
 			this.tbException.ReadOnly = true;
 			this.tbException.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.tbException.Size = new System.Drawing.Size(395, 172);
+			this.tbException.Size = new System.Drawing.Size(455, 219);
 			this.tbException.TabIndex = 0;
 			// 
 			// okButton
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.okButton.Location = new System.Drawing.Point(332, 206);
+			this.okButton.Location = new System.Drawing.Point(392, 309);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 31);
 			this.okButton.TabIndex = 5;
@@ -59,23 +61,40 @@ namespace MaddenEditor.Forms
 			this.okButton.UseVisualStyleBackColor = true;
 			this.okButton.Click += new System.EventHandler(this.okButton_Click);
 			// 
-			// lblException
+			// pbLogo
 			// 
-			this.lblException.AutoSize = true;
-			this.lblException.Location = new System.Drawing.Point(12, 9);
-			this.lblException.Name = "lblException";
-			this.lblException.Size = new System.Drawing.Size(116, 13);
-			this.lblException.TabIndex = 6;
-			this.lblException.Tag = "";
-			this.lblException.Text = "Exception has occured";
+			this.pbLogo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.pbLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pbLogo.BackgroundImage")));
+			this.pbLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.pbLogo.InitialImage = ((System.Drawing.Image)(resources.GetObject("pbLogo.InitialImage")));
+			this.pbLogo.Location = new System.Drawing.Point(180, 16);
+			this.pbLogo.Name = "pbLogo";
+			this.pbLogo.Size = new System.Drawing.Size(287, 50);
+			this.pbLogo.TabIndex = 7;
+			this.pbLogo.TabStop = false;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
+			this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.textBox1.Location = new System.Drawing.Point(12, 9);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(162, 69);
+			this.textBox1.TabIndex = 8;
+			this.textBox1.Text = "Sorry, but an error has occured in MaddenAmp. The information below can be emaile" +
+				"d to bugs@tributech.com.au in order for us to improve MaddenAmp.";
 			// 
 			// ExceptionDialog
 			// 
 			this.AcceptButton = this.okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(410, 240);
-			this.Controls.Add(this.lblException);
+			this.ClientSize = new System.Drawing.Size(470, 343);
+			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.pbLogo);
 			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.tbException);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -83,6 +102,7 @@ namespace MaddenEditor.Forms
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Exception occured in MaddenAmp";
+			((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -92,6 +112,7 @@ namespace MaddenEditor.Forms
 
 		private System.Windows.Forms.TextBox tbException;
 		private System.Windows.Forms.Button okButton;
-		private System.Windows.Forms.Label lblException;
+		private System.Windows.Forms.PictureBox pbLogo;
+		private System.Windows.Forms.TextBox textBox1;
 	}
 }

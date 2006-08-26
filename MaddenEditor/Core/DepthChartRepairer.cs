@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
@@ -82,7 +83,7 @@ namespace MaddenEditor.Core
 
 			for (int i = 0; i < 32; i++)
 			{
-				Console.WriteLine(teamOveralls[rankedTeams[i]]);
+				Trace.WriteLine(teamOveralls[rankedTeams[i]]);
 			}
 
 			List<int> conCutoffs = new List<int>();
@@ -118,7 +119,7 @@ namespace MaddenEditor.Core
 					tr.CON = 5;
 				}
 
-				Console.WriteLine(tr.Name + " " + teamOveralls[tr.TeamId] + " " + tr.CON);
+				Trace.WriteLine(tr.Name + " " + teamOveralls[tr.TeamId] + " " + tr.CON);
 
 				// Should add code here that increases CON if they've got an old QB
 				// who's above 90 or so and about to retire.
@@ -176,7 +177,7 @@ namespace MaddenEditor.Core
 
 				toReturn.Add((int)Math.Round(tempOverall + 2.0 * (tempOverall - 85.0)));
 
-				Console.WriteLine(model.TeamModel.GetTeamRecord(i).Name + " " + toReturn[i] + " " + model.TeamModel.GetTeamRecord(i).OverallRating);
+				Trace.WriteLine(model.TeamModel.GetTeamRecord(i).Name + " " + toReturn[i] + " " + model.TeamModel.GetTeamRecord(i).OverallRating);
 			}
 
 			return toReturn;
@@ -391,7 +392,7 @@ namespace MaddenEditor.Core
 
 						if (team == 31 && pos == depthChart[team].Count - 1 && depth == depthChart[team][pos].Count - 1)
 						{
-							Console.WriteLine("Last Player: " + model.PlayerModel.GetPlayerByPlayerId(rec.PlayerId).ToString());
+							Trace.WriteLine("Last Player: " + model.PlayerModel.GetPlayerByPlayerId(rec.PlayerId).ToString());
 						}
 					}
 				}

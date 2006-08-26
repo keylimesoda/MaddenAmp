@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -156,7 +157,7 @@ namespace MaddenEditor.Forms
 						err = err;
 						//A null reference exception happens when its trying to find teams that don't
 						//exist on the schedule, its ok
-						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
+						Trace.WriteLine("Team id no found when setting user controlled teams. This is ok");
 					}
 				}
 				//Also need to find the User controlled bit in the Head coaches record for this team
@@ -208,7 +209,7 @@ namespace MaddenEditor.Forms
 						err = err;
 						//A null reference exception happens when its trying to find teams that don't
 						//exist on the schedule, its ok
-						Console.WriteLine("Team id no found when setting user controlled teams. This is ok");
+						Trace.WriteLine("Team id no found when setting user controlled teams. This is ok");
 					}
 				}
 				//Also need to find the User controlled bit in the Head coaches record for this team

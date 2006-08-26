@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Spin16
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -25,6 +25,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -358,7 +359,7 @@ namespace MaddenEditor.Forms
                                 }
 
                                 if (sw == null)
-                                    Console.WriteLine("Adjusting " + player.ToString() + " " + player.TeamId + " " + player.YearsPro + " -- Current Overall: " + player.Overall + ", Target: " + j);
+                                    Trace.WriteLine("Adjusting " + player.ToString() + " " + player.TeamId + " " + player.YearsPro + " -- Current Overall: " + player.Overall + ", Target: " + j);
                                 else
                                     sw.WriteLine("Adjusting " + player.ToString() + " -- Current Overall: " + player.Overall + ", Target: " + j);
 
@@ -367,7 +368,7 @@ namespace MaddenEditor.Forms
                                     if (attributesByPosition[player.PositionId][m])
                                     {
                                         if (sw == null)
-                                            Console.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                            Trace.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
                                         else
                                             sw.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
                                     }
@@ -393,7 +394,7 @@ namespace MaddenEditor.Forms
                                 }
 
                                 if (sw == null)
-                                    Console.WriteLine("New attributes:");
+                                    Trace.WriteLine("New attributes:");
                                 else
                                     sw.WriteLine("New attributes:");
 
@@ -402,7 +403,7 @@ namespace MaddenEditor.Forms
                                     if (attributesByPosition[player.PositionId][m])
                                     {
                                         if (sw == null)
-                                            Console.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
+                                            Trace.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
                                         else
                                             sw.WriteLine("\t" + Enum.GetName(typeof(MaddenAttribute), m) + ": " + player.GetAttribute(m));
                                     }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,13 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using MaddenEditor.Db;
@@ -162,7 +163,7 @@ namespace MaddenEditor.Core
 						result.RegisterField(fieldProps.Name, signedval);
 						break;
 					default:
-						Console.WriteLine("NOT SUPPORTED YET!!!");
+						Trace.WriteLine("NOT SUPPORTED YET!!!");
 						break;
 				}
 			}
@@ -321,7 +322,7 @@ namespace MaddenEditor.Core
 						//First check to see if this record is going to be deleted
 						if (record.Deleted)
 						{
-							Console.Write("About to mark for deletion record " + record.RecNo);
+							Trace.Write("About to mark for deletion record " + record.RecNo);
 							//Mark record for deletion in DB
 
 							TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, false);

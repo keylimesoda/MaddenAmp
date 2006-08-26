@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -50,7 +51,7 @@ namespace MaddenEditor.Forms
 
 		void dgScheduleView_DataError(object sender, DataGridViewDataErrorEventArgs e)
 		{
-			Console.WriteLine(e.Exception.ToString());
+			Trace.WriteLine(e.Exception.ToString());
 		}
 
 		#region IEditorForm Members

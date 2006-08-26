@@ -1,5 +1,5 @@
 /******************************************************************************
- * Gommo's Madden Editor
+ * MaddenAmp
  * Copyright (C) 2005 Colin Goudie
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * http://gommo.homelinux.net/index.php/Projects/MaddenEditor
+ * http://maddenamp.sourceforge.net/
  * 
  * maddeneditor@tributech.com.au
  * 
@@ -73,7 +73,7 @@ namespace MaddenEditor.Forms
 
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
 
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
+			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString;
 
 			tabControl.Visible = false;
 			toolsToolStripMenuItem.Visible = false;
@@ -199,7 +199,7 @@ namespace MaddenEditor.Forms
 		
 		private void InitialiseUI()
 		{
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build + "  - " + System.IO.Path.GetFileName(filePathToLoad);
+			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString + "  - " + System.IO.Path.GetFileName(filePathToLoad);
 
 			exportToolStripMenuItem.Enabled = true;
 			toolsToolStripMenuItem.Visible = true;
@@ -253,7 +253,7 @@ namespace MaddenEditor.Forms
 
 		private void CleanUI()
 		{
-			this.Text = TITLE_STRING + " - v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
+			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString;
 			//Now clean up ready for reloading
 			searchPlayerForm = null;
 
@@ -292,7 +292,7 @@ namespace MaddenEditor.Forms
 			}
 			catch (Exception err)
 			{
-				Console.WriteLine(err.ToString());
+				Trace.WriteLine(err.ToString());
 			}
 
 			isInitialising = false;
@@ -737,9 +737,9 @@ namespace MaddenEditor.Forms
 
                     if (team.TeamId < 32 && !toSkip.Contains(team.TeamId))
                     {
-                        Console.WriteLine(team.Name + ":");
+                        Trace.WriteLine(team.Name + ":");
                         team.SimulateMinicamp();
-                        Console.WriteLine("");
+                        Trace.WriteLine("");
                     }
                 }
 
