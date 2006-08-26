@@ -42,7 +42,7 @@ namespace MaddenEditor.Forms
 		private bool isInitialising = false;
 
 		public PlayerEditControl()
-		{
+		{            
 			isInitialising = true;
 
 			InitializeComponent();
@@ -150,8 +150,9 @@ namespace MaddenEditor.Forms
 				SetNumericUpDown(playerToughness, record.Toughness, "Toughness");
 				SetNumericUpDown(playerMorale, record.Morale, "Morale");
 				SetNumericUpDown(playerImportance, record.Importance, "Importance");
-
-				playerThrowingStyle.Text = playerThrowingStyle.Items[record.ThrowingStyle].ToString();
+               //2007
+                SetNumericUpDown(playerEgo, record.Ego, "Player Ego");
+                SetNumericUpDown(playerValue, record.Value, "Player Value");
 
 				playerNFLIcon.Checked = record.NFLIcon;
 

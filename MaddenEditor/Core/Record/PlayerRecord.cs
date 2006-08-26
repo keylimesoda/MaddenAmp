@@ -130,6 +130,11 @@ namespace MaddenEditor.Core.Record
 		public const string HELMET_STYLE = "PHLM";
 		public const string FACE_MASK = "PFMK";
 
+        //2007
+        public const string PLAYER_EGO = "PEGO";
+        public const string PLAYER_VALUE = "PVAL";
+
+
 		//Salary constants
 		public const string SALARY_YEAR_0 = "PSA0";
 		public const string SIGNING_BONUS_YEAR_0 = "PSB0";
@@ -216,6 +221,11 @@ namespace MaddenEditor.Core.Record
                     return ThrowPower;
                 case (int)MaddenAttribute.YRP:
                     return YearsPro;
+                    //2007
+                case (int)MaddenAttribute.EGO:
+                    return Ego;
+                case (int)MaddenAttribute.VAL:
+                    return Value;          
             }
 
             return -1;
@@ -296,6 +306,14 @@ namespace MaddenEditor.Core.Record
                 case (int)MaddenAttribute.YRP:
                     YearsPro = value;
                     break;
+                //2007
+                case (int)MaddenAttribute.EGO:
+                    Ego = value;
+                    break;
+                case (int)MaddenAttribute.VAL:
+                    Value = value;
+                    break;
+
             }
         }
 
@@ -1443,6 +1461,33 @@ namespace MaddenEditor.Core.Record
 				SetField(DRAFT_ROUND, value);
 			}
 		}
+
+        //2007
+        public int Ego
+        {
+            get
+            {
+                return GetIntField(PLAYER_EGO);
+            }
+            set
+            {
+                SetField(PLAYER_EGO, value);
+            }
+        }
+        public int Value
+        {
+            get
+            {
+                return GetIntField(PLAYER_VALUE);
+            }
+            set
+            {
+                SetField(PLAYER_VALUE, value);
+            }
+        }
+
+
+
 
 		public int CalculateOverallRating(int positionId)
 		{

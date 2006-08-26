@@ -1003,7 +1003,9 @@ namespace MaddenEditor.Core.Record
         KPR,
         KAC,
         KRT,
-        TGH
+        TGH,
+        EGO,
+        VAL
     }
 
     public enum CombineStat
