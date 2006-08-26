@@ -225,7 +225,7 @@ namespace MaddenEditor.Core.Record
                 case (int)MaddenAttribute.EGO:
                     return Ego;
                 case (int)MaddenAttribute.VAL:
-                    return Value;          
+                    return playerValue;          
             }
 
             return -1;
@@ -311,7 +311,7 @@ namespace MaddenEditor.Core.Record
                     Ego = value;
                     break;
                 case (int)MaddenAttribute.VAL:
-                    Value = value;
+                    playerValue = value;
                     break;
 
             }
@@ -1474,7 +1474,7 @@ namespace MaddenEditor.Core.Record
                 SetField(PLAYER_EGO, value);
             }
         }
-        public int Value
+        public int playerValue
         {
             get
             {
