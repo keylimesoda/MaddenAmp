@@ -587,6 +587,8 @@ namespace MaddenEditor.Core
 				}
 				//result &= ProcessTable(pair.Value);
 			}
+
+			Trace.WriteLine("File type is : " + fileType.ToString() + " and version is : " + fileVersion.ToString());
 						
 			return result;
 		}
