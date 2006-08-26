@@ -152,7 +152,7 @@ namespace MaddenEditor.Forms
 				SetNumericUpDown(playerImportance, record.Importance, "Importance");
                //2007
                 SetNumericUpDown(playerEgo, record.Ego, "Player Ego");
-                SetNumericUpDown(playerValue, record.Value, "Player Value");
+                SetNumericUpDown(playerValue, record.playerValue, "Player Value");
 
 				playerNFLIcon.Checked = record.NFLIcon;
 
