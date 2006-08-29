@@ -111,6 +111,16 @@ namespace MaddenEditor.Forms
 			teamDefensivePlaybookCombo.SelectedIndex = 0;
 			teamOffensivePlaybookCombo.SelectedIndex = 0;
 
+			//Madden 2007 Doesn't have shoe colors anymore
+			if (model.FileVersion == MaddenFileVersion.Ver2007) 
+			{
+				gbShoeColor.Enabled = false;
+			}
+			else
+			{
+				gbShoeColor.Enabled = true;
+			}
+
 			//Load a team
 			LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
 
@@ -285,7 +295,7 @@ namespace MaddenEditor.Forms
 			}
 			catch (Exception e)
 			{
-				MessageBox.Show("Exception Occured loading this Team:\r\n" + e.ToString(), "Exception Loading Team", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Exception Occurred loading this Team:\r\n" + e.ToString(), "Exception Loading Team", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				LoadTeamInfo(lastLoadedRecord);
 				return;
 			}

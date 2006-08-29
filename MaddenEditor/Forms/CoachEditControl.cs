@@ -116,10 +116,17 @@ namespace MaddenEditor.Forms
 				coachDefAggression.Value = record.DefensiveAggression;
 				coachOffAggression.Value = record.OffensiveAggression;
 
-				//Priorities
-				SortedList<int, CoachPrioritySliderRecord> priorites = model.CoachModel.GetCurrentCoachSliders();
-				int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
-				if (priorites.Count != priorityCount)
+				//Priorities (NOTE: Madden 2007 rosters don't have coach sliders)
+				bool priorityMatches = false;
+				SortedList<int, CoachPrioritySliderRecord> priorites = null;
+				if (model.FileType != MaddenFileType.RosterFile && model.FileVersion != MaddenFileVersion.Ver2007)
+				{
+					priorites = model.CoachModel.GetCurrentCoachSliders();
+					int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+					priorityMatches = (priorityCount != priorites.Count);
+				}
+								
+				if (!priorityMatches)
 				{
 					for (int i = 0; i < Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length; i++)
 					{
