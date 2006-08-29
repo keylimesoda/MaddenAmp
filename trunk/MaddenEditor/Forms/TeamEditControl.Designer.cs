@@ -61,6 +61,11 @@ namespace MaddenEditor.Forms
 			this.btnDefaultUniDown = new System.Windows.Forms.Button();
 			this.btnDefaultUniUp = new System.Windows.Forms.Button();
 			this.dgDefaultUniforms = new System.Windows.Forms.DataGridView();
+			this.clmHomeAway = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.clmJerseyColor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.clmPantsColor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.clmThrowback = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.clmUniformObj = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.lblDefaultUniforms = new System.Windows.Forms.Label();
 			this.label24 = new System.Windows.Forms.Label();
 			this.label23 = new System.Windows.Forms.Label();
@@ -72,7 +77,7 @@ namespace MaddenEditor.Forms
 			this.pnlSecondary = new System.Windows.Forms.Panel();
 			this.btnPrimary = new System.Windows.Forms.Button();
 			this.pnlPrimary = new System.Windows.Forms.Panel();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.gbShoeColor = new System.Windows.Forms.GroupBox();
 			this.rbBlack = new System.Windows.Forms.RadioButton();
 			this.rbWhite = new System.Windows.Forms.RadioButton();
 			this.teamOverallRating = new System.Windows.Forms.NumericUpDown();
@@ -103,17 +108,12 @@ namespace MaddenEditor.Forms
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
-			this.clmHomeAway = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.clmJerseyColor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.clmPantsColor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.clmThrowback = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.clmUniformObj = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgDefaultUniforms)).BeginInit();
-			this.groupBox2.SuspendLayout();
+			this.gbShoeColor.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.teamOverallRating)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamReputation)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamDefensiveRating)).BeginInit();
@@ -174,7 +174,7 @@ namespace MaddenEditor.Forms
 			this.splitContainer1.Panel2.Controls.Add(this.pnlSecondary);
 			this.splitContainer1.Panel2.Controls.Add(this.btnPrimary);
 			this.splitContainer1.Panel2.Controls.Add(this.pnlPrimary);
-			this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
+			this.splitContainer1.Panel2.Controls.Add(this.gbShoeColor);
 			this.splitContainer1.Panel2.Controls.Add(this.teamOverallRating);
 			this.splitContainer1.Panel2.Controls.Add(this.label26);
 			this.splitContainer1.Panel2.Controls.Add(this.teamReputation);
@@ -537,6 +537,45 @@ namespace MaddenEditor.Forms
 			this.dgDefaultUniforms.TabIndex = 41;
 			this.dgDefaultUniforms.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgDefaultUniforms_CellClick);
 			// 
+			// clmHomeAway
+			// 
+			this.clmHomeAway.HeaderText = "Home/Away";
+			this.clmHomeAway.Name = "clmHomeAway";
+			this.clmHomeAway.ReadOnly = true;
+			this.clmHomeAway.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.clmHomeAway.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// clmJerseyColor
+			// 
+			this.clmJerseyColor.HeaderText = "Jersey Color";
+			this.clmJerseyColor.Name = "clmJerseyColor";
+			this.clmJerseyColor.ReadOnly = true;
+			this.clmJerseyColor.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.clmJerseyColor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// clmPantsColor
+			// 
+			this.clmPantsColor.HeaderText = "Pants Color";
+			this.clmPantsColor.Name = "clmPantsColor";
+			this.clmPantsColor.ReadOnly = true;
+			this.clmPantsColor.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.clmPantsColor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// clmThrowback
+			// 
+			this.clmThrowback.HeaderText = "Throwback";
+			this.clmThrowback.Name = "clmThrowback";
+			this.clmThrowback.ReadOnly = true;
+			this.clmThrowback.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.clmThrowback.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// clmUniformObj
+			// 
+			this.clmUniformObj.HeaderText = "Uniform Obj";
+			this.clmUniformObj.Name = "clmUniformObj";
+			this.clmUniformObj.ReadOnly = true;
+			this.clmUniformObj.Visible = false;
+			// 
 			// lblDefaultUniforms
 			// 
 			this.lblDefaultUniforms.AutoSize = true;
@@ -634,16 +673,16 @@ namespace MaddenEditor.Forms
 			this.pnlPrimary.Size = new System.Drawing.Size(24, 22);
 			this.pnlPrimary.TabIndex = 29;
 			// 
-			// groupBox2
+			// gbShoeColor
 			// 
-			this.groupBox2.Controls.Add(this.rbBlack);
-			this.groupBox2.Controls.Add(this.rbWhite);
-			this.groupBox2.Location = new System.Drawing.Point(416, 207);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(117, 77);
-			this.groupBox2.TabIndex = 7;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Team Shoe Color";
+			this.gbShoeColor.Controls.Add(this.rbBlack);
+			this.gbShoeColor.Controls.Add(this.rbWhite);
+			this.gbShoeColor.Location = new System.Drawing.Point(416, 207);
+			this.gbShoeColor.Name = "gbShoeColor";
+			this.gbShoeColor.Size = new System.Drawing.Size(117, 77);
+			this.gbShoeColor.TabIndex = 7;
+			this.gbShoeColor.TabStop = false;
+			this.gbShoeColor.Text = "Team Shoe Color";
 			// 
 			// rbBlack
 			// 
@@ -967,45 +1006,6 @@ namespace MaddenEditor.Forms
 			this.label10.TabIndex = 0;
 			this.label10.Text = "QB Rating";
 			// 
-			// clmHomeAway
-			// 
-			this.clmHomeAway.HeaderText = "Home/Away";
-			this.clmHomeAway.Name = "clmHomeAway";
-			this.clmHomeAway.ReadOnly = true;
-			this.clmHomeAway.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.clmHomeAway.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// clmJerseyColor
-			// 
-			this.clmJerseyColor.HeaderText = "Jersey Color";
-			this.clmJerseyColor.Name = "clmJerseyColor";
-			this.clmJerseyColor.ReadOnly = true;
-			this.clmJerseyColor.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.clmJerseyColor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// clmPantsColor
-			// 
-			this.clmPantsColor.HeaderText = "Pants Color";
-			this.clmPantsColor.Name = "clmPantsColor";
-			this.clmPantsColor.ReadOnly = true;
-			this.clmPantsColor.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.clmPantsColor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// clmThrowback
-			// 
-			this.clmThrowback.HeaderText = "Throwback";
-			this.clmThrowback.Name = "clmThrowback";
-			this.clmThrowback.ReadOnly = true;
-			this.clmThrowback.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.clmThrowback.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// clmUniformObj
-			// 
-			this.clmUniformObj.HeaderText = "Uniform Obj";
-			this.clmUniformObj.Name = "clmUniformObj";
-			this.clmUniformObj.ReadOnly = true;
-			this.clmUniformObj.Visible = false;
-			// 
 			// TeamEditControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1021,8 +1021,8 @@ namespace MaddenEditor.Forms
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgDefaultUniforms)).EndInit();
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
+			this.gbShoeColor.ResumeLayout(false);
+			this.gbShoeColor.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.teamOverallRating)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamReputation)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.teamDefensiveRating)).EndInit();
@@ -1096,7 +1096,7 @@ namespace MaddenEditor.Forms
 		private System.Windows.Forms.CheckBox filterLeagueCheckBox;
 		private System.Windows.Forms.CheckBox filterDivisionCheckBox;
 		private System.Windows.Forms.CheckBox filterConferenceCheckBox;
-		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.GroupBox gbShoeColor;
 		private System.Windows.Forms.RadioButton rbBlack;
 		private System.Windows.Forms.RadioButton rbWhite;
 		private System.Windows.Forms.Button btnSecondary;
