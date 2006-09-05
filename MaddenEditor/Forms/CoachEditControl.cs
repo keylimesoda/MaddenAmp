@@ -99,7 +99,7 @@ namespace MaddenEditor.Forms
 					fourThreeButton.Checked = false;
 				}
 
-				coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
+			//	coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
 
 				//Attributes
 				coachEthics.Value = (int)record.Ethics;
