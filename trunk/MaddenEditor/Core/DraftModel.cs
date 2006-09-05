@@ -129,8 +129,9 @@ namespace MaddenEditor.Core
 
 				//Trace.Writeline(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
+               
 				// FB's are way too low.  INCREASE their ratings./
-				if (rook.Player.PositionId == (int)MaddenPositions.FB)
+				if ((rook.Player.PositionId == (int)MaddenPositions.FB) && (math.mfv != MaddenFileVersion.Ver2007))
 				{
 					int bump = 3;
 
@@ -162,19 +163,34 @@ namespace MaddenEditor.Core
 					continue;
 				}
 
-				if (i < 15)
-				{
-					randMax = 3;
-				}
-				else if (i < 25)
-				{
-					randMax = 5;
-				}
-				else
-				{
-					randMax = ((i - 9.0) / 16.0) + 5.0;
-				}
+                if (math.mfv != MaddenFileVersion.Ver2007)
+                {
+                    if (i < 15)
+                    {
+                        randMax = 3;
+                    }
+                    else if (i < 25)
+                    {
+                        randMax = 5;
+                    }
+                    else
+                    {
+                        randMax = ((i - 9.0) / 16.0) + 5.0;
+                    }
+                }
+                else
+                {
+                    if (i < 5)
+                    {
+                        randMax = 8;
+                    }                    
+                    else
+                    {
+                        randMax = ((i - 9.0) / 16.0) + 8.0;
+                    }
 
+
+                }
 				// Subtract some random value, or the current value, whichever is less.
 				// Prevents players from having negative attributes, which I think will
 				// show up in the high 120's since it's probably an unsigned quantity.
@@ -246,7 +262,7 @@ namespace MaddenEditor.Core
 				double[] slopes =     new double[21] { 1.2, 1.2, 1, 1, 0.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 0.5, 1, 0.5, 1.5, 0.2, 0.3 };
 				double[] intercepts = new double[21] { 0, 5, 1, 1, 0, 0.5, 3, 4, 3, -.75, 8, 9, 2, 0, -0.75, 0, 0, 2, 3, 0, 1 };*/
 
-				/*                                     QB, HB, FB, WR,  TE,   LT,  LG,   C,  RG,  RT,  LE,  RE,   DT,  LL,   ML,  RL,  CB,  FS,  SS,   K, P */
+				/*                                  QB, HB, FB, WR,  TE,   LT,  LG,   C,  RG,  RT,  LE,  RE,   DT,  LL,   ML,  RL,  CB,  FS,  SS,   K, P */
 				double[] slopes = new double[21] { 2.4, 2.2, 1, 1.35, 0.8, 1.1, 0.5, 0.6, 0.6, 0.2, 0.7, 0.5, 0.6, 0.9, 0.35, 0.8, 1.2, 0.9, 1.2, 0.3, 0.3 };
 				double[] intercepts = new double[21] { -3.6, 2, 1, -.05, -1.2, 0, 4.5, 4.2, 4.2, 5.3, 8.9, 10.5, 3.2, 0.3, -1.05, -.9, -.6, 0.8, 3.9, -.3, 1 };
 
