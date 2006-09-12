@@ -64,99 +64,129 @@ namespace MaddenEditor.Forms
 			}
 			isInitialising = true;
 
-			try
-			{
-				//Load Coach General info
-				coachesName.Text = record.Name;
-				coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
+            try
+            {
+                //Load Coach General info
+                coachesName.Text = record.Name;
 
-				TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
+                // TO FIX not working right for 2007
+                // Shows Unemployed coaches and lists Positions as Head Coaches etc...
+                                
+                coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
 
-				cbTeamCombo.SelectedItem = (object)team;
+                TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
+                                
+                cbTeamCombo.SelectedItem = (object)team;
 
-				coachAge.Value = (int)record.Age;
-				cbSkinColor.SelectedIndex = (int)record.SkinColor;
-				coachSalary.Value = (decimal)((double)record.Salary / 100.0);
+                coachAge.Value = (int)record.Age;
+                cbSkinColor.SelectedIndex = (int)record.SkinColor;
+                coachpic.Value = (int)record.Coachpic;
+                coachSalary.Value = (decimal)((double)record.Salary / 100.0);
+                coachyearsleft.Value = (int)record.CoachYL;
+                coachQB.Value = (int)record.CoachQB;
+                coachRB.Value = (int)record.CoachRB;
+                coachWR.Value = (int)record.CoachWR;
+                coachOL.Value = (int)record.CoachOL;
+                coachDL.Value = (int)record.CoachDL;
+                coachLB.Value = (int)record.CoachLB;
+                coachDB.Value = (int)record.CoachDB;
+                coachKS.Value = (int)record.CoachKS;
+                coachPS.Value = (int)record.CoachPS;
+                      
+                //Win-Loss Records
+                coachPlayoffWins.Value = (int)record.PlayoffWins;
+                coachPlayoffLoses.Value = (int)record.PlayoffLoses;
+                coachSuperbowlWins.Value = (int)record.SuperBowlWins;
+                coachSuperBowlLoses.Value = (int)record.SuperBowlLoses;
+                coachWinningSeasons.Value = (int)record.WinningSeasons;
+                coachCareerWins.Value = (int)record.CareerWins;
+                coachCareerLoses.Value = (int)record.CareerLoses;
+                coachCareerTies.Value = (int)record.CareerTies;
 
-				//Win-Loss Records
-				coachPlayoffWins.Value = (int)record.PlayoffWins;
-				coachPlayoffLoses.Value = (int)record.PlayoffLoses;
-				coachSuperbowlWins.Value = (int)record.SuperBowlWins;
-				coachSuperBowlLoses.Value = (int)record.SuperBowlLoses;
-				coachWinningSeasons.Value = (int)record.WinningSeasons;
-				coachCareerWins.Value = (int)record.CareerWins;
-				coachCareerLoses.Value = (int)record.CareerLoses;
-				coachCareerTies.Value = (int)record.CareerTies;
+                if (record.DefensiveAlignment)
+                {
+                    threeFourButton.Checked = false;
+                    fourThreeButton.Checked = true;
+                }
+                else
+                {
+                    threeFourButton.Checked = true;
+                    fourThreeButton.Checked = false;
+                }
 
-				if (record.DefensiveAlignment)
-				{
-					threeFourButton.Checked = false;
-					fourThreeButton.Checked = true;
-				}
-				else
-				{
-					threeFourButton.Checked = true;
-					fourThreeButton.Checked = false;
-				}
 
-			//	coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
 
-				//Attributes
-				coachEthics.Value = (int)record.Ethics;
-				coachKnowledge.Value = (int)record.Knowledge;
-				coachMotivation.Value = (int)record.Motivation;
-				coachChemistry.Value = (int)record.Chemistry;
+                //Attributes
+                coachEthics.Value = (int)record.Ethics;
+                coachKnowledge.Value = (int)record.Knowledge;
+                coachMotivation.Value = (int)record.Motivation;
+                coachChemistry.Value = (int)record.Chemistry;
 
-				coachPassOff.Value = (int)record.OffensiveStrategy;
-				coachRunOff.Value = (int)(100 - record.OffensiveStrategy);
-				coachPassDef.Value = (int)record.DefensiveStrategy;
-				coachRunDef.Value = (int)(100 - record.DefensiveStrategy);
-				rb2.Value = (int)(100 - record.RunningBack2Sub);
-				rb1.Value = (int)(record.RunningBack2Sub);
-				coachDefAggression.Value = record.DefensiveAggression;
-				coachOffAggression.Value = record.OffensiveAggression;
+                coachPassOff.Value = (int)record.OffensiveStrategy;
+                coachRunOff.Value = (int)(100 - record.OffensiveStrategy);
+                coachPassDef.Value = (int)record.DefensiveStrategy;
+                coachRunDef.Value = (int)(100 - record.DefensiveStrategy);
+                rb2.Value = (int)(100 - record.RunningBack2Sub);
+                rb1.Value = (int)(record.RunningBack2Sub);
+                coachDefAggression.Value = record.DefensiveAggression;
+                coachOffAggression.Value = record.OffensiveAggression;
 
-				//Priorities (NOTE: Madden 2007 rosters don't have coach sliders)
-				bool priorityMatches = false;
-				SortedList<int, CoachPrioritySliderRecord> priorites = null;
-				if (model.FileType != MaddenFileType.RosterFile && model.FileVersion != MaddenFileVersion.Ver2007)
-				{
-					priorites = model.CoachModel.GetCurrentCoachSliders();
-					int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
-					priorityMatches = (priorityCount != priorites.Count);
-				}
-								
-				if (!priorityMatches)
-				{
-					for (int i = 0; i < Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length; i++)
-					{
-						prioritySliders[i].Value = 0;
-						priorityTypeSliders[i].Value = 0;
-						priorityDescriptionLabels[i].Text = "";
-						prioritySliders[i].Enabled = false;
-						priorityTypeSliders[i].Enabled = false;
-					}
-				}
-				else
-				{
-					int index = 0;
-					foreach (CoachPrioritySliderRecord priorRecord in priorites.Values)
-					{
-						prioritySliders[index].Value = priorRecord.Priority;
-						priorityTypeSliders[index].Value = priorRecord.PriorityType;
-						priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, priorRecord.PriorityType);
-						prioritySliders[index].Enabled = true;
-						priorityTypeSliders[index].Enabled = true;
-						index++;
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show("Exception Occured loading this Coach:\r\n" + e.ToString(), "Exception Loading Coach", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				LoadCoachInfo(lastLoadedRecord);
-				return;
-			}
+                //Priorities (NOTE: Madden 2007 rosters don't have coach sliders)
+                // Temp Fixed for 2007 files and backwards compatible
+                
+                if (model.FileVersion != MaddenFileVersion.Ver2007)
+                                
+                    coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
+
+                    bool priorityMatches = false;
+
+                    SortedList<int, CoachPrioritySliderRecord> priorites = null;
+
+                    if (model.FileType != MaddenFileType.RosterFile && model.FileVersion != MaddenFileVersion.Ver2007)
+                    {
+                        priorites = model.CoachModel.GetCurrentCoachSliders();
+                        int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+                        priorityMatches = (priorityCount != priorites.Count);
+                    }
+
+                
+                    if 
+                        (!priorityMatches & model.FileVersion != MaddenFileVersion.Ver2007)
+                    {
+                        int index = 0;
+                        foreach (CoachPrioritySliderRecord priorRecord in priorites.Values)
+                        {
+                            prioritySliders[index].Value = priorRecord.Priority;
+                            priorityTypeSliders[index].Value = priorRecord.PriorityType;
+                            priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, priorRecord.PriorityType);
+                            prioritySliders[index].Enabled = true;
+                            priorityTypeSliders[index].Enabled = true;
+                            index++;
+                        }
+                    }
+                                        
+                    else
+                    {
+
+                        for (int i = 0; i < Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length; i++)
+                        {
+                            prioritySliders[i].Value = 0;
+                            priorityTypeSliders[i].Value = 0;
+                            priorityDescriptionLabels[i].Text = "";
+                            prioritySliders[i].Enabled = false;
+                            priorityTypeSliders[i].Enabled = false;
+                        }
+
+                    }
+
+                    }
+                    
+            catch (Exception e)
+            {
+                MessageBox.Show("Exception Occured loading this Coach:\r\n" + e.ToString(), "Exception Loading Coach", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadCoachInfo(lastLoadedRecord);
+                return;
+            }
 			finally
 			{
 				isInitialising = false;
@@ -262,7 +292,8 @@ namespace MaddenEditor.Forms
 			{
 				coachDefensivePlaybook.Items.Add(rec);
 			}
-			coachDefensivePlaybook.SelectedIndex = 0;
+                  
+            coachDefensivePlaybook.SelectedIndex = 0;
 
 			//Create priority controls
 			int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
@@ -272,8 +303,8 @@ namespace MaddenEditor.Forms
 			for (int i = 0; i < numPositions; i++)
 			{
 				prioritySliders[i] = new NumericUpDown();
-				prioritySliders[i].Location = new Point(48, 11 + i * 26);
-				prioritySliders[i].Size = new Size(76, 20);
+				prioritySliders[i].Location = new Point(48, 22 + i * 26);
+				prioritySliders[i].Size = new Size(86, 20);
 				prioritySliders[i].Minimum = 0;
 				prioritySliders[i].Maximum = 100;
 				prioritySliders[i].Visible = true;
@@ -282,7 +313,7 @@ namespace MaddenEditor.Forms
 				priorityGroupBox.Controls.Add(prioritySliders[i]);
 
 				priorityTypeSliders[i] = new NumericUpDown();
-				priorityTypeSliders[i].Location = new Point(130, 11 + i * 26);
+				priorityTypeSliders[i].Location = new Point(140, 22 + i * 26);
 				priorityTypeSliders[i].Size = new Size(56, 20);
 				priorityTypeSliders[i].Minimum = 0;
 				priorityTypeSliders[i].Maximum = 2;
@@ -292,7 +323,7 @@ namespace MaddenEditor.Forms
 				priorityGroupBox.Controls.Add(priorityTypeSliders[i]);
 
 				priorityDescriptionLabels[i] = new Label();
-				priorityDescriptionLabels[i].Location = new Point(195, 13 + i * 26);
+				priorityDescriptionLabels[i].Location = new Point(205, 25 + i * 26);
 				priorityDescriptionLabels[i].Visible = true;
 				
 				priorityGroupBox.Controls.Add(priorityDescriptionLabels[i]);

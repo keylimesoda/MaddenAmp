@@ -45,9 +45,10 @@ namespace MaddenEditor.Core.Record
 		public const string AGE = "CAGE";
 		public const string POSITION = "COPS";
 		public const string SKIN_COLOR = "CSKI";
-
+        public const string COACHPIC = "CSXP";
 		public const string SALARY = "CSAL";
-		public const string SUPERBOWL_LOSES = "CSBL";
+        public const string COACHYL = "CCLN";
+        public const string SUPERBOWL_LOSES = "CSBL";
 		public const string SUPERBOWL_WINS = "CSBW";
 		public const string PLAYOFF_LOSES = "CCPL";
 		public const string PLAYFF_WINS = "CCPW";
@@ -148,7 +149,17 @@ namespace MaddenEditor.Core.Record
 				SetField(SKIN_COLOR, value);
 			}
 		}
-
+        public int Coachpic
+        {
+            get
+            {
+                return GetIntField(COACHPIC);
+            }
+            set
+            {
+                SetField(COACHPIC, value);
+            }
+        }
 		public int Position
 		{
 			get
@@ -173,7 +184,117 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public int SuperBowlWins
+        public int CoachYL
+        {
+            get
+            {
+                return GetIntField(COACHYL);
+            }
+            set
+            {
+                SetField(COACHYL, value);
+            }
+        }
+        public int CoachQB
+        {
+            get
+            {
+                return GetIntField(QB_RATING);
+            }
+            set
+            {
+                SetField(QB_RATING, value);
+            }
+        }
+        public int CoachRB
+        {
+            get
+            {
+                return GetIntField(RB_RATING);
+            }
+            set
+            {
+                SetField(RB_RATING, value);
+            }
+        }
+        public int CoachWR
+        {
+            get
+            {
+                return GetIntField(WR_RATING);
+            }
+            set
+            {
+                SetField(WR_RATING, value);
+            }
+        }
+        public int CoachOL
+        {
+            get
+            {
+                return GetIntField(OL_RATING);
+            }
+            set
+            {
+                SetField(OL_RATING, value);
+            }
+        }
+        public int CoachDL
+        {
+            get
+            {
+                return GetIntField(DL_RATING);
+            }
+            set
+            {
+                SetField(DL_RATING, value);
+            }
+        }
+        public int CoachLB
+        {
+            get
+            {
+                return GetIntField(LB_RATING);
+            }
+            set
+            {
+                SetField(LB_RATING, value);
+            }
+        }
+        public int CoachDB
+        {
+            get
+            {
+                return GetIntField(DB_RATING);
+            }
+            set
+            {
+                SetField(DB_RATING, value);
+            }
+        }
+        public int CoachKS
+        {
+            get
+            {
+                return GetIntField(KICK_RATING);
+            }
+            set
+            {
+                SetField(KICK_RATING, value);
+            }
+        }
+        public int CoachPS
+        {
+            get
+            {
+                return GetIntField(PUNT_RATING);
+            }
+            set
+            {
+                SetField(PUNT_RATING, value);
+            }
+        }
+        public int SuperBowlWins
 		{
 			get
 			{
