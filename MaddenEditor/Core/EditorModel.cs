@@ -53,7 +53,7 @@ namespace MaddenEditor.Core
 		Ver2004,
 		Ver2005,	//Franchise contains 159 tables
 		Ver2006,	//Franchise contains 183 tables
-		Ver2007
+		Ver2007     //Franchise contains 185 tables
 	}
 
 	/// <summary>
