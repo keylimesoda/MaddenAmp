@@ -651,6 +651,85 @@ namespace MaddenEditor.Forms
 
         }
 
+        private void coachQB_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachQB = (int)coachQB.Value;
+            }
+
+        }
+
+        private void coachRB_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachRB = (int)coachRB.Value;
+            }
+
+        }
+
+        private void coachWR_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachWR = (int)coachWR.Value;
+            }
+        }
+
+        private void coachOL_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachOL = (int)coachOL.Value;
+            }
+
+        }
+
+        private void coachDL_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachDL = (int)coachDL.Value;
+            }
+
+        }
+
+        private void coachLB_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachLB = (int)coachLB.Value;
+            }
+        }
+
+        private void coachDB_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachDB = (int)coachDB.Value;
+            }
+
+        }
+
+        private void coachKS_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachKS = (int)coachKS.Value;
+            }
+
+        }
+
+        private void coachPS_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.CoachPS = (int)coachPS.Value;
+            }
+
+        }
+
     }
     	
 }
