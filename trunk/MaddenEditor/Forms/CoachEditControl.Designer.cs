@@ -238,6 +238,7 @@ namespace MaddenEditor.Forms
             this.coachpic.Name = "coachpic";
             this.coachpic.Size = new System.Drawing.Size(69, 20);
             this.coachpic.TabIndex = 31;
+            this.coachpic.ValueChanged += new System.EventHandler(this.coachpic_ValueChanged);
             // 
             // label54
             // 
@@ -259,6 +260,7 @@ namespace MaddenEditor.Forms
             this.coachyearsleft.Name = "coachyearsleft";
             this.coachyearsleft.Size = new System.Drawing.Size(69, 20);
             this.coachyearsleft.TabIndex = 29;
+            this.coachyearsleft.ValueChanged += new System.EventHandler(this.coachyearsleft_ValueChanged);
             // 
             // label9
             // 
