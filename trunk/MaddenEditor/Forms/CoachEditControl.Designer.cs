@@ -649,6 +649,7 @@ namespace MaddenEditor.Forms
             this.coachPS.Name = "coachPS";
             this.coachPS.Size = new System.Drawing.Size(56, 20);
             this.coachPS.TabIndex = 31;
+            this.coachPS.ValueChanged += new System.EventHandler(this.coachPS_ValueChanged);
             // 
             // coachKS
             // 
@@ -661,6 +662,7 @@ namespace MaddenEditor.Forms
             this.coachKS.Name = "coachKS";
             this.coachKS.Size = new System.Drawing.Size(56, 20);
             this.coachKS.TabIndex = 30;
+            this.coachKS.ValueChanged += new System.EventHandler(this.coachKS_ValueChanged);
             // 
             // coachDB
             // 
@@ -673,6 +675,7 @@ namespace MaddenEditor.Forms
             this.coachDB.Name = "coachDB";
             this.coachDB.Size = new System.Drawing.Size(56, 20);
             this.coachDB.TabIndex = 29;
+            this.coachDB.ValueChanged += new System.EventHandler(this.coachDB_ValueChanged);
             // 
             // coachLB
             // 
@@ -685,6 +688,7 @@ namespace MaddenEditor.Forms
             this.coachLB.Name = "coachLB";
             this.coachLB.Size = new System.Drawing.Size(56, 20);
             this.coachLB.TabIndex = 28;
+            this.coachLB.ValueChanged += new System.EventHandler(this.coachLB_ValueChanged);
             // 
             // coachDL
             // 
@@ -697,6 +701,7 @@ namespace MaddenEditor.Forms
             this.coachDL.Name = "coachDL";
             this.coachDL.Size = new System.Drawing.Size(56, 20);
             this.coachDL.TabIndex = 27;
+            this.coachDL.ValueChanged += new System.EventHandler(this.coachDL_ValueChanged);
             // 
             // coachOL
             // 
@@ -709,6 +714,7 @@ namespace MaddenEditor.Forms
             this.coachOL.Name = "coachOL";
             this.coachOL.Size = new System.Drawing.Size(56, 20);
             this.coachOL.TabIndex = 26;
+            this.coachOL.ValueChanged += new System.EventHandler(this.coachOL_ValueChanged);
             // 
             // coachWR
             // 
@@ -721,6 +727,7 @@ namespace MaddenEditor.Forms
             this.coachWR.Name = "coachWR";
             this.coachWR.Size = new System.Drawing.Size(56, 20);
             this.coachWR.TabIndex = 25;
+            this.coachWR.ValueChanged += new System.EventHandler(this.coachWR_ValueChanged);
             // 
             // coachRB
             // 
@@ -733,6 +740,7 @@ namespace MaddenEditor.Forms
             this.coachRB.Name = "coachRB";
             this.coachRB.Size = new System.Drawing.Size(56, 20);
             this.coachRB.TabIndex = 24;
+            this.coachRB.ValueChanged += new System.EventHandler(this.coachRB_ValueChanged);
             // 
             // coachQB
             // 
@@ -745,6 +753,7 @@ namespace MaddenEditor.Forms
             this.coachQB.Name = "coachQB";
             this.coachQB.Size = new System.Drawing.Size(56, 20);
             this.coachQB.TabIndex = 23;
+            this.coachQB.ValueChanged += new System.EventHandler(this.coachQB_ValueChanged);
             // 
             // label53
             // 
