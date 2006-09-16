@@ -52,7 +52,9 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml">
+      <HintPath>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.XML.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="ConSole\ConSoleDraft.cs" />
@@ -419,7 +421,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="football.ico" />
     <None Include="Uniform Mappings.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -436,6 +437,9 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <Content Include="tune.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Forms\ExceptionDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
@@ -475,7 +479,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)Libs\tdbaccess.dll $(ProjectDir)$(OutDir)
+mkdir $(ProjectDir)$(OutDir)Conditioning\TrainingCamp
+copy $(ProjectDir)tune.txt $(ProjectDir)$(OutDir)Conditioning\TrainingCamp\tune.txt</PostBuildEvent>
   </PropertyGroup>
 </Project>
