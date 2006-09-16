@@ -152,6 +152,42 @@ namespace MaddenEditor.Core
 			defensivePlayBookList.Add(new GenericRecord("Cover 2", 3));
 			defensivePlayBookList.Add(new GenericRecord("Balanced D", 4));
 			defensivePlayBookList.Add(new GenericRecord("QB Contain", 5));
+			defensivePlayBookList.Add(new GenericRecord("6", 6));
+			defensivePlayBookList.Add(new GenericRecord("7", 7));
+			defensivePlayBookList.Add(new GenericRecord("8", 8));
+			defensivePlayBookList.Add(new GenericRecord("9", 9));
+			defensivePlayBookList.Add(new GenericRecord("10", 10));
+			defensivePlayBookList.Add(new GenericRecord("11", 11));
+			defensivePlayBookList.Add(new GenericRecord("12", 12));
+			defensivePlayBookList.Add(new GenericRecord("13", 13));
+			defensivePlayBookList.Add(new GenericRecord("14", 14));
+			defensivePlayBookList.Add(new GenericRecord("15", 15));
+			defensivePlayBookList.Add(new GenericRecord("16", 16));
+			defensivePlayBookList.Add(new GenericRecord("17", 17));
+			defensivePlayBookList.Add(new GenericRecord("18", 18));
+			defensivePlayBookList.Add(new GenericRecord("19", 19));
+			defensivePlayBookList.Add(new GenericRecord("20", 20));
+			defensivePlayBookList.Add(new GenericRecord("21", 21));
+			defensivePlayBookList.Add(new GenericRecord("22", 22));
+			defensivePlayBookList.Add(new GenericRecord("23", 23));
+			defensivePlayBookList.Add(new GenericRecord("24", 24));
+			defensivePlayBookList.Add(new GenericRecord("25", 25));
+			defensivePlayBookList.Add(new GenericRecord("26", 26));
+			defensivePlayBookList.Add(new GenericRecord("27", 27));
+			defensivePlayBookList.Add(new GenericRecord("28", 28));
+			defensivePlayBookList.Add(new GenericRecord("29", 29));
+			defensivePlayBookList.Add(new GenericRecord("30", 30));
+			defensivePlayBookList.Add(new GenericRecord("31", 31));
+			defensivePlayBookList.Add(new GenericRecord("32", 32));
+			defensivePlayBookList.Add(new GenericRecord("33", 33));
+			defensivePlayBookList.Add(new GenericRecord("34", 34));
+			defensivePlayBookList.Add(new GenericRecord("35", 35));
+			defensivePlayBookList.Add(new GenericRecord("36", 36));
+			defensivePlayBookList.Add(new GenericRecord("37", 37));
+			defensivePlayBookList.Add(new GenericRecord("38", 38));
+			defensivePlayBookList.Add(new GenericRecord("39", 39));
+			defensivePlayBookList.Add(new GenericRecord("40", 40));
+			
 		}
 
 		// MADDEN DRAFT EDIT
