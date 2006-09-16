@@ -131,7 +131,7 @@ namespace MaddenEditor.Core
 
                
 				// FB's are way too low.  INCREASE their ratings./
-				if ((rook.Player.PositionId == (int)MaddenPositions.FB) && (math.mfv != MaddenFileVersion.Ver2007))
+				if (rook.Player.PositionId == (int)MaddenPositions.FB)
 				{
 					int bump = 3;
 
