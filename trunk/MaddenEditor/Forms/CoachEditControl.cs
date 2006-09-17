@@ -71,7 +71,7 @@ namespace MaddenEditor.Forms
 
                 // TO FIX not working right for 2007
                 // Shows Unemployed coaches and lists Positions as Head Coaches etc...
-
+                // While team field is blank
                 coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
 
                 TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
@@ -132,12 +132,20 @@ namespace MaddenEditor.Forms
                 coachOffAggression.Value = record.OffensiveAggression;
 
                 //Priorities (NOTE: Madden 2007 rosters don't have coach sliders)
-                // Temp Fixed for 2007 files and backwards compatible
+                //Temp Fixed for 2007 files and backwards compatible
+                //Was going to make the priorities not visible for 2007
+                //Then decided to just remove the tab since it isn't needed.
 
+                if (model.FileVersion == MaddenFileVersion.Ver2007)
+                    tabcontrol.TabPages.RemoveByKey("tabPage2");
+                    //priorityGroupBox.Visible = false;
+                
+                
                 if (model.FileVersion != MaddenFileVersion.Ver2007)
 
                     coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
 
+                
                 bool priorityMatches = false;
 
                 SortedList<int, CoachPrioritySliderRecord> priorites = null;

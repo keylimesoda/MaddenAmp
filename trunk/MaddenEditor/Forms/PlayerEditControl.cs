@@ -30,6 +30,7 @@ using System.Windows.Forms;
 
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.Record.Stats;
 
 namespace MaddenEditor.Forms
 {
@@ -86,7 +87,9 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		public void LoadPlayerInfo(PlayerRecord record)
+		
+        
+        public void LoadPlayerInfo(PlayerRecord record)
 		{
 			if (record == null)
 			{
@@ -96,7 +99,7 @@ namespace MaddenEditor.Forms
 			}
 
 			isInitialising = true;
-
+            
 			try
 			{
 				firstNameTextBox.Text = record.FirstName;
@@ -288,6 +291,150 @@ namespace MaddenEditor.Forms
 					playerInjuryReserve.Checked = injury.InjuryReserve;
 					injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
 				}
+                
+                
+                // Career Offense Stats
+
+                CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
+                CareerOffenseGroupBox.Enabled = true;
+                if (careeroffensestats == null)
+                {
+                    // Disable Offensive Stats
+                    CareerOffenseGroupBox.Enabled = false;
+                    pass_att.Value = 0;
+                    pass_comp.Value = 0;
+                    pass_yds.Value = 0;
+                    pass_int.Value = 0;
+                    pass_long.Value = 0;
+                    pass_tds.Value = 0;
+                    receiving_recs.Value = 0;
+                    receiving_drops.Value = 0;
+                    receiving_tds.Value = 0;
+                    receiving_yds.Value = 0;
+                    receiving_yac.Value = 0;
+                    receiving_long.Value = 0;
+                    fumbles.Value = 0;
+                    rushingattempts.Value = 0;
+                    rushingyards.Value = 0;
+                    rushing_tds.Value = 0;
+                    rushing_long.Value = 0;
+                    rushing_yac.Value = 0;
+                    rushing_20.Value = 0;
+                    rushing_bt.Value = 0;
+                    
+                }
+                else
+
+                {
+                    // set all the values of the numericupdown boxes
+                    
+                    pass_att.Value = (int)careeroffensestats.Pass_att;
+                    pass_comp.Value = (int)careeroffensestats.Pass_comp;
+                    pass_yds.Value = (int)careeroffensestats.Pass_yds;
+                    pass_int.Value = (int)careeroffensestats.Pass_int;
+                    pass_long.Value = (int)careeroffensestats.Pass_long;
+                    pass_tds.Value = (int)careeroffensestats.Pass_tds;
+                    receiving_recs.Value = (int)careeroffensestats.Receiving_recs;
+                    receiving_drops.Value = (int)careeroffensestats.Receiving_drops;
+                    receiving_tds.Value = (int)careeroffensestats.Receiving_tds;
+                    receiving_yds.Value = (int)careeroffensestats.Receiving_yards;
+                    receiving_yac.Value = (int)careeroffensestats.Receiving_yac;
+                    receiving_long.Value = (int)careeroffensestats.Receiving_long;
+                    fumbles.Value = (int)careeroffensestats.Fumbles;
+                    rushingattempts.Value = (int)careeroffensestats.RushingAttempts;
+                    rushingyards.Value = (int)careeroffensestats.RushingYards;
+                    rushing_tds.Value = (int)careeroffensestats.Rushing_tds;
+                    rushing_long.Value = (int)careeroffensestats.Rushing_long;
+                    rushing_yac.Value = (int)careeroffensestats.Rushing_yac;
+                    rushing_20.Value = (int)careeroffensestats.Rushing_20;
+                    rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
+                    
+                }
+
+                CareerStatsOffensiveLineRecord careerOLstats = model.PlayerModel.GetPlayersOLCareer(record.PlayerId);
+                CareerOLGroupBox.Enabled = true;
+                if (careerOLstats == null)
+                {
+                    // Disable Offensive Line Stats GroupBox
+                    CareerOLGroupBox.Enabled = false;
+                    pancakes.Value = 0;
+                    sacksallowed.Value = 0;
+                }
+                else
+                {
+                    pancakes.Value = careerOLstats.Pancakes;
+                    sacksallowed.Value = careerOLstats.SacksAllowed;
+                }
+
+                
+                CareerStatsDefenseRecord careerdefensestats = model.PlayerModel.GetPlayersDefenseCareer(record.PlayerId);
+                CareerDefenseGroupBox.Enabled = true;
+                if (careerdefensestats == null)
+                {
+                    // Disable Defensive Stats
+                    CareerDefenseGroupBox.Enabled = false;
+                    passesdefended.Value = 0;
+                    tackles.Value = 0;
+                    tacklesforloss.Value = 0;
+                    sacks.Value = 0;
+                    blocks.Value = 0;
+                    fumblesrecovered.Value = 0;
+                    fumblesforced.Value = 0;
+                    fumbleyards.Value = 0;
+                    fumbles_td.Value = 0;
+                    safeties.Value = 0;
+                    def_int.Value = 0;
+                    int_td.Value = 0;
+                    int_yards.Value = 0;
+                    int_long.Value = 0;
+
+
+                }
+
+                else
+                {
+                    passesdefended.Value = careerdefensestats.PassesDefended;
+                    tackles.Value = careerdefensestats.Tackles;
+                    tacklesforloss.Value = careerdefensestats.TacklesForLoss;
+                    sacks.Value = careerdefensestats.Sacks;
+                    blocks.Value = careerdefensestats.Blocks;
+                    safeties.Value = careerdefensestats.Safeties;
+                    fumblesrecovered.Value = careerdefensestats.FumblesRecovered;
+                    fumblesforced.Value = careerdefensestats.FumblesForced;
+                    fumbleyards.Value = careerdefensestats.FumbleYards;
+                    fumbles_td.Value = careerdefensestats.Fumbles_td;
+                    def_int.Value = careerdefensestats.Def_int;
+                    int_long.Value = careerdefensestats.Int_long;
+                    int_td.Value = careerdefensestats.Int_td;
+                    int_yards.Value = careerdefensestats.Int_yards;
+
+                }
+
+
+                CareerGamesPlayedRecord careergamesplayed = model.PlayerModel.GetPlayersGamesCareer(record.PlayerId);
+                
+                // enable boxes default
+                gamesplayed.Enabled = true;
+                gamesstarted.Enabled = true;
+
+                if (careergamesplayed == null)
+                {
+                    // Disable Games Played boxes
+                    
+                    gamesstarted.Enabled = false;
+                    gamesplayed.Enabled = false;
+                    gamesplayed.Value = 0;
+                    gamesstarted.Value = 0;
+                    
+                }
+
+                else
+                {
+                    gamesplayed.Value = careergamesplayed.GamesPlayed;
+                    gamesstarted.Value = careergamesplayed.GamesStarted;
+
+                }
+
 			}
 			catch (Exception e)
 			{
@@ -1383,7 +1530,329 @@ namespace MaddenEditor.Forms
 			{
 				model.PlayerModel.CurrentPlayerRecord.FaceId = (int)cbFaceId.Value;
 			}
-		}
-		
-	}
+        }
+
+
+
+        #region Career Stats Functions
+
+    
+        private void pass_att_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_att = (int)pass_att.Value;
+            }
+        }
+
+        private void pass_comp_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_comp = (int)pass_comp.Value;
+            }
+        }
+
+        private void pass_yds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_yds = (int)pass_yds.Value;
+            }
+        }
+
+        private void pass_tds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_tds = (int)pass_tds.Value;
+            }
+        }
+
+        private void pass_int_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_int = (int)pass_int.Value;
+            }
+        }
+
+        private void pass_long_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_long = (int)pass_long.Value;
+            }
+        }
+
+        private void pass_sacked_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_sacked = (int)pass_sacked.Value;
+            }
+        }
+
+        private void receiving_recs_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_recs = (int)receiving_recs.Value;
+            }
+        }
+
+        private void receiving_yds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_yards = (int)receiving_yds.Value;
+            }
+        }
+
+        private void receiving_tds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_tds = (int)receiving_tds.Value;
+            }
+        }
+
+        private void receiving_drops_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_drops = (int)receiving_drops.Value;
+            }
+        }
+
+        private void receiving_long_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_long = (int)receiving_long.Value;
+            }
+        }
+
+        private void receiving_yac_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_yac = (int)receiving_yac.Value;
+            }
+        }
+
+        private void rushingattempts_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).RushingAttempts = (int)rushingattempts.Value;
+            }
+        }
+
+        private void rushingyards_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).RushingYards = (int)rushingyards.Value;
+            }
+        }
+
+        private void rushing_tds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_tds = (int)rushing_tds.Value;
+            }
+        }
+
+        private void fumbles_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fumbles = (int)fumbles.Value;
+            }
+        }
+
+        private void rushing_20_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_20 = (int)rushing_20.Value;
+            }
+        }
+
+        private void rushing_long_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_long = (int)rushing_long.Value;
+            }
+        }
+
+        private void rushing_bt_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_bt = (int)rushing_bt.Value;
+            }
+        }
+
+        private void rushing_yac_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_yac = (int)rushing_yac.Value;
+            }
+        }
+                            
+        private void pancakes_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOLCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pancakes = (int)pancakes.Value;
+            }
+        }
+
+        private void sacksallowed_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersOLCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).SacksAllowed = (int)sacksallowed.Value;
+            }
+        }
+
+        
+
+        private void tackles_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Tackles = (int)tackles.Value;
+            }
+        }
+
+        private void tacklesforloss_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).TacklesForLoss = (int)tacklesforloss.Value;
+            }
+        }
+
+        private void sacks_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Sacks = (int)sacks.Value;
+            }
+        }
+
+        private void fumblesforced_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumblesForced = (int)fumblesforced.Value;
+            }
+        }
+
+        private void fumblesrecovered_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumblesRecovered = (int)fumblesrecovered.Value;
+            }
+        }
+
+        private void fumbles_td_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fumbles_td = (int)fumbles_td.Value;
+            }
+        }
+
+        private void fumbleyards_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumbleYards = (int)fumbleyards.Value;
+            }
+        }
+
+        private void blocks_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Blocks = (int)blocks.Value;
+            }
+        }
+
+        private void safeties_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Safeties = (int)safeties.Value;
+            }
+        }
+
+        private void passesdefended_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).PassesDefended = (int)passesdefended.Value;
+            }
+        }
+
+        private void def_int_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Def_int = (int)def_int.Value;
+            }
+        }
+
+        private void int_td_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_td = (int)int_td.Value;
+            }
+        }
+
+        private void int_yards_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_yards = (int)int_yards.Value;
+            }
+        }
+
+        private void int_long_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_long = (int)int_long.Value;
+            }
+        }
+
+        
+        private void gamesstarted_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesStarted = (int)gamesstarted.Value;
+            }
+        }
+
+        private void gamesplayed_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed = (int)gamesplayed.Value;
+            }
+        }
+        #endregion
+
+
+    }
 }

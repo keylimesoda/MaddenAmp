@@ -34,12 +34,14 @@ namespace MaddenEditor.Core.Record.Stats
         public const string BLOCKS = "clbl";
         public const string FUMBLES_FORCED = "clff";
         public const string FUMBLES_RECOVERED = "clfr";
+        public const string FUMBLES_TD = "clft";
         public const string FUMBLE_YARDS = "clfy";
         public const string SAFETIES = "clsa";
         public const string SACKS = "clsk";
         public const string INTERCEPTIONS = "csin";
         public const string INTERCEPTION_YARDS = "csiy";
         public const string INTERCEPTION_LONG = "cslR";
+        public const string INTERCEPTION_TD = "csit";
         public const string PLAYER_ID = "PGID";
 
         public CareerStatsDefenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
@@ -132,6 +134,18 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        public int Fumbles_td
+        {
+            get
+            {
+                return GetIntField(FUMBLES_TD);
+            }
+            set
+            {
+                SetField(FUMBLES_TD, value);
+            }
+        }
+
         public int Safeties
         {
             get
@@ -156,7 +170,7 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
-        public int Interceptions
+        public int Def_int
         {
             get
             {
@@ -168,7 +182,7 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
-        public int InterceptionYards
+        public int Int_yards
         {
             get
             {
@@ -180,7 +194,7 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
-        public int InterceptionLong
+        public int Int_long
         {
             get
             {
@@ -191,6 +205,19 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(INTERCEPTION_LONG, value);
             }
         }
+
+        public int Int_td
+        {
+            get
+            {
+                return GetIntField(INTERCEPTION_TD);
+            }
+            set
+            {
+                SetField(INTERCEPTION_TD, value);
+            }
+        }
+
 
         public int PlayerId
         {

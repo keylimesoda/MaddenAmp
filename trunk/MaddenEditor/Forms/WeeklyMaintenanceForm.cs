@@ -1969,7 +1969,7 @@ namespace MaddenEditor.Forms
                             {
                                 seasonStatsDefense[stat.PlayerId].Interceptions--;
                                 if (!preseason)
-                                    careerStatsDefense[stat.PlayerId].Interceptions--;
+                                    careerStatsDefense[stat.PlayerId].Def_int--;
                             }
 
                             int subtractFrom = rand.Next(interceptees[previousOpponents[stat.TeamId]].Count);
@@ -1983,7 +1983,7 @@ namespace MaddenEditor.Forms
                             {
                                 seasonStatsOffense[QBPGID].Interceptions--;
                                 if (!preseason)
-                                    careerStatsOffense[QBPGID].Interceptions--;
+                                    careerStatsOffense[QBPGID].Pass_int--;
 
                                 teamStats[stat.TeamId].InterceptionsCaught--;
                                 teamStats[previousOpponents[stat.TeamId]].InterceptionsThrown--;
@@ -2028,7 +2028,7 @@ namespace MaddenEditor.Forms
                             {
                                 seasonStatsOffense[QBPGID].Sacks--;
                                 if (!preseason)
-                                    careerStatsOffense[QBPGID].Sacks--;
+                                    careerStatsOffense[QBPGID].Pass_sacked--;
 
                                 if (OLPGID >= 0)
                                 {
@@ -2070,7 +2070,7 @@ namespace MaddenEditor.Forms
                     {
                         seasonStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
                         if (!preseason)
-                            careerStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+                            careerStatsOffense[stat.PlayerId].Receiving_yards += yardsToAdd;
                     }
 
                     maxPassers[stat.TeamId].PassingYards += yardsToAdd;
@@ -2079,7 +2079,7 @@ namespace MaddenEditor.Forms
                     {
                         seasonStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
                         if (!preseason)
-                            careerStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+                            careerStatsOffense[maxPassers[stat.TeamId].PlayerId].Pass_yds += yardsToAdd;
 
                         teamStats[stat.TeamId].TotalYards += yardsToAdd;
                         teamStats[stat.TeamId].TotalOffense += yardsToAdd;

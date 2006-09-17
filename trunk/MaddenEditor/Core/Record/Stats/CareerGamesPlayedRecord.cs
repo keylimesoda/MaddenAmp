@@ -26,10 +26,12 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.Stats
 {
-    class CareerGamesPlayedRecord : TableRecordModel
+    public class CareerGamesPlayedRecord : TableRecordModel
     {
         public const string PLAYER_ID = "PGID";
-        public const string SEASON = "SEYR";
+        // There are no season stats in the career table.
+        // But there is a field 'cgdp'  no idea what it is used for.
+        // public const string SEASON = "SEYR";
         public const string GAMES_PLAYED = "cgmp";
         public const string GAMES_STARTED = "cgms";
 
