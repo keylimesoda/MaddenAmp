@@ -26,7 +26,7 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.Stats
 {
-    class CareerStatsOffensiveLineRecord : TableRecordModel
+    public class CareerStatsOffensiveLineRecord : TableRecordModel
     {
         public const string PANCAKES = "copa";
         public const string SACKS_ALLOWED = "cosa";

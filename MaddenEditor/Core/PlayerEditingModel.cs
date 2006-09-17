@@ -27,6 +27,7 @@ using System.Text;
 using System.IO;
 
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.Record.Stats;
 
 namespace MaddenEditor.Core
 {
@@ -365,9 +366,86 @@ namespace MaddenEditor.Core
 				}
 			}
 			return null;
-		}
+        }
 
-		public void ChangePlayersTeam(TeamRecord newTeam)
+        #region Career Stats
+
+        public CareerStatsOffenseRecord GetPlayersOffenseCareer(int playerId)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.CAREER_STATS_OFFENSE_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                CareerStatsOffenseRecord offensecareer = (CareerStatsOffenseRecord)record;
+                if (playerId == offensecareer.PlayerId)
+                {
+                    return offensecareer;
+                }
+            }
+            return null;
+        }
+
+        public CareerStatsDefenseRecord GetPlayersDefenseCareer(int playerId)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.CAREER_STATS_DEFENSE_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                CareerStatsDefenseRecord defensecareer = (CareerStatsDefenseRecord)record;
+                if (playerId == defensecareer.PlayerId)
+                {
+                    return defensecareer;
+                }
+            }
+            return null;
+        }
+
+        public CareerStatsOffensiveLineRecord GetPlayersOLCareer(int playerId)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.CAREER_STATS_OFFENSIVE_LINE_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                CareerStatsOffensiveLineRecord offensivelinecareer = (CareerStatsOffensiveLineRecord)record;
+                if (playerId == offensivelinecareer.PlayerId)
+                {
+                    return offensivelinecareer;
+                }
+            }
+            return null;
+        }
+
+        public CareerGamesPlayedRecord GetPlayersGamesCareer(int playerId)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.CAREER_GAMES_PLAYED_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                CareerGamesPlayedRecord gamesplayedcareer = (CareerGamesPlayedRecord)record;
+                if (playerId == gamesplayedcareer.PlayerId)
+                {
+                    return gamesplayedcareer;
+                }
+            }
+            return null;
+        }
+
+        #endregion
+
+
+        public void ChangePlayersTeam(TeamRecord newTeam)
 		{
 			//Don't do anything if the team is same as the current players team
 			if (CurrentPlayerRecord.TeamId != newTeam.TeamId)
