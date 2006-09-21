@@ -163,6 +163,40 @@ namespace MaddenEditor.Core
 					continue;
 				}
 
+                // MLB's are way to high in 2007. Decrease their ratings./
+                if ((rook.Player.PositionId == (int)MaddenPositions.MLB) && (math.mfv == MaddenFileVersion.Ver2007))
+                {
+                    int bump = 4;
+
+                    rook.Player.Speed -= rand.Next(bump) + 3;
+                    rook.Player.Agility -= rand.Next(bump) + 3;
+                    rook.Player.Acceleration -= rand.Next(bump) + 3;
+                    rook.Player.Jumping -= rand.Next(bump) + 3;
+
+                    rook.Player.Strength -= rand.Next(bump) + 3;
+
+                    rook.Player.Awareness -= rand.Next(bump) + 3;
+                    rook.Player.Tackle -= rand.Next(bump) + 3;
+
+                    rook.Player.Catching -= rand.Next(bump) + 3;
+                    rook.Player.Carrying -= rand.Next(bump) + 3;
+                    rook.Player.BreakTackle -= rand.Next(bump) + 3;
+                    rook.Player.ThrowAccuracy -= rand.Next(bump) + 3;
+                    rook.Player.ThrowPower -= rand.Next(bump) + 3;
+                    rook.Player.PassBlocking -= rand.Next(bump) + 3;
+                    rook.Player.RunBlocking -= rand.Next(bump) + 3;
+
+                    rook.Player.KickAccuracy -= rand.Next(bump) + 3;
+                    rook.Player.KickPower -= rand.Next(bump) + 3;
+
+                    rook.Player.Overall = rook.Player.CalculateOverallRating(rook.Player.PositionId);
+                    //Trace.Writeline(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
+
+                    rook.ActualValue = LocalMath.ValueScale * positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43) * math.valcurve(rook.Player.Overall + math.injury(rook.Player.Injury, positionData[rook.Player.PositionId].DurabilityNeed));
+                    continue;
+                }
+
+
                 if (math.mfv != MaddenFileVersion.Ver2007)
                 {
                     if (i < 15)
