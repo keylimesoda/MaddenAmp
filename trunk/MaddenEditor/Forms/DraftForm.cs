@@ -731,7 +731,7 @@ namespace MaddenEditor.Forms
 
 		void autoPickBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
-			if (threadToDo == 1)
+           if (threadToDo == 1)
 			{
 				draftTimer.Stop();
 
@@ -846,7 +846,7 @@ namespace MaddenEditor.Forms
 			}
 			else if (threadToDo == 7)
 			{
-				progressBar.Value = e.ProgressPercentage;
+			//	progressBar.Value = e.ProgressPercentage;
 			}
 			else if (threadToDo == 8)
 			{
@@ -860,17 +860,21 @@ namespace MaddenEditor.Forms
 			}
 			else if (threadToDo == 10)
 			{
-                wishlistData.Rows.Remove(rowToRemove);
-                rerankBoard();
+                //wishlistData.Rows.Remove(rowToRemove);
+                //rerankBoard();
                 
-                wishlistGrid.Invalidate(true);
-				wishlistGrid.Update();
+                //wishlistGrid.Invalidate(true);
+                //wishlistGrid.Update();
 			}
             else if (threadToDo == 11)
             {
                 RookieGrid.Invalidate(true);
                 RookieGrid.Update();
             }
+
+     
+
+
 		}
 
 		private bool MakePick(RookieRecord drafted)

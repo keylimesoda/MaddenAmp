@@ -216,15 +216,15 @@ namespace MaddenEditor.Core
                 {
                     if (i < 5)
                     {
-                        randMax = 7;
+                        randMax = 6;
                     }
-                    else if (i < 93)
+                    else if (i < 128)
                     {
-                        randMax = 8;
+                        randMax = 7;
                     }
                     else
                     {
-                        randMax = ((i - 9.0) / 16.0) + 8.0;
+                        randMax = ((i - 9.0) / 16.0) + 7.0;
                     }
 
 
