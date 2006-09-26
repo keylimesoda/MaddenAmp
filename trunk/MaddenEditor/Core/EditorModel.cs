@@ -116,7 +116,7 @@ namespace MaddenEditor.Core
 		public const string CITY_TABLE = "CITY";
 		public const string SCHEDULE_TABLE = "SCHD";
 		public const string UNIFORM_TABLE = "TUNI";
-		// Madden 2006 specific tables
+		// Madden 2005+ specific tables
 		public const string GAME_OPTIONS_TABLE = "GOPT";
         // MADDEN DRAFT EDIT
         public const string DRAFT_PICK_TABLE = "DRPK";
@@ -145,7 +145,10 @@ namespace MaddenEditor.Core
         public const string CAREER_STATS_OFFENSIVE_LINE_TABLE = "PCOL";
         public const string SEASON_GAMES_PLAYED_TABLE = "PSNG";
         public const string CAREER_GAMES_PLAYED_TABLE = "PCNG";
-
+        public const string CAREER_STATS_KICKPUNT_TABLE = "PCKI";
+        public const string SEASON_STATS_KICKPUNT_TABLE = "PSKI";
+        public const string CAREER_STATS_KICKPUNT_RETURN_TABLE = "PCKP";
+        public const string SEASON_STATS_KICKPUNT_RETURN_TABLE = "PSKP";
 		private List<string[]> draftClassFields;
 
         public bool draftStarted = false;
@@ -507,6 +510,13 @@ namespace MaddenEditor.Core
                     tableOrder.Add(CAREER_STATS_OFFENSIVE_LINE_TABLE, -1);
                     tableOrder.Add(SEASON_GAMES_PLAYED_TABLE, -1);
                     tableOrder.Add(CAREER_GAMES_PLAYED_TABLE, -1);
+                    tableOrder.Add(CAREER_STATS_KICKPUNT_TABLE, -1);
+                    tableOrder.Add(SEASON_STATS_KICKPUNT_TABLE, -1);
+                    tableOrder.Add(CAREER_STATS_KICKPUNT_RETURN_TABLE, -1);
+                    tableOrder.Add(SEASON_STATS_KICKPUNT_RETURN_TABLE, -1);
+                    
+                    
+                    
                     tableOrder.Add(FRANCHISE_TIME_TABLE, -1);
 
                     tableOrder.Add(SCOUTING_STATE_TABLE, -1);

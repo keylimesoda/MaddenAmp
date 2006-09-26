@@ -282,6 +282,8 @@ namespace MaddenEditor.Forms
             this.label98 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
             this.statsPage = new System.Windows.Forms.TabPage();
+            this.statsyear = new System.Windows.Forms.ComboBox();
+            this.label152 = new System.Windows.Forms.Label();
             this.CareerOLGroupBox = new System.Windows.Forms.GroupBox();
             this.sacksallowed = new System.Windows.Forms.NumericUpDown();
             this.label122 = new System.Windows.Forms.Label();
@@ -367,8 +369,74 @@ namespace MaddenEditor.Forms
             this.label113 = new System.Windows.Forms.Label();
             this.label112 = new System.Windows.Forms.Label();
             this.label111 = new System.Windows.Forms.Label();
-            this.label152 = new System.Windows.Forms.Label();
-            this.statsyear = new System.Windows.Forms.ComboBox();
+            this.STStats = new System.Windows.Forms.TabPage();
+            this.label185 = new System.Windows.Forms.Label();
+            this.KickPuntReturnGroupBox = new System.Windows.Forms.GroupBox();
+            this.label184 = new System.Windows.Forms.Label();
+            this.label183 = new System.Windows.Forms.Label();
+            this.label182 = new System.Windows.Forms.Label();
+            this.label181 = new System.Windows.Forms.Label();
+            this.label180 = new System.Windows.Forms.Label();
+            this.prtd = new System.Windows.Forms.NumericUpDown();
+            this.prl = new System.Windows.Forms.NumericUpDown();
+            this.pryds = new System.Windows.Forms.NumericUpDown();
+            this.pra = new System.Windows.Forms.NumericUpDown();
+            this.krtd = new System.Windows.Forms.NumericUpDown();
+            this.krl = new System.Windows.Forms.NumericUpDown();
+            this.kryds = new System.Windows.Forms.NumericUpDown();
+            this.kra = new System.Windows.Forms.NumericUpDown();
+            this.label179 = new System.Windows.Forms.Label();
+            this.label178 = new System.Windows.Forms.Label();
+            this.label177 = new System.Windows.Forms.Label();
+            this.label176 = new System.Windows.Forms.Label();
+            this.KickPuntGroupBox = new System.Windows.Forms.GroupBox();
+            this.fgl = new System.Windows.Forms.NumericUpDown();
+            this.label186 = new System.Windows.Forms.Label();
+            this.touchbacks = new System.Windows.Forms.NumericUpDown();
+            this.kickoffs = new System.Windows.Forms.NumericUpDown();
+            this.label175 = new System.Windows.Forms.Label();
+            this.label174 = new System.Windows.Forms.Label();
+            this.label173 = new System.Windows.Forms.Label();
+            this.label172 = new System.Windows.Forms.Label();
+            this.label171 = new System.Windows.Forms.Label();
+            this.label170 = new System.Windows.Forms.Label();
+            this.label169 = new System.Windows.Forms.Label();
+            this.label168 = new System.Windows.Forms.Label();
+            this.label167 = new System.Windows.Forms.Label();
+            this.puntblk = new System.Windows.Forms.NumericUpDown();
+            this.puntatt = new System.Windows.Forms.NumericUpDown();
+            this.punttb = new System.Windows.Forms.NumericUpDown();
+            this.puntin20 = new System.Windows.Forms.NumericUpDown();
+            this.puntny = new System.Windows.Forms.NumericUpDown();
+            this.puntlong = new System.Windows.Forms.NumericUpDown();
+            this.puntyds = new System.Windows.Forms.NumericUpDown();
+            this.xpb = new System.Windows.Forms.NumericUpDown();
+            this.fgm_129 = new System.Windows.Forms.NumericUpDown();
+            this.xpm = new System.Windows.Forms.NumericUpDown();
+            this.fgm_3039 = new System.Windows.Forms.NumericUpDown();
+            this.fgbl = new System.Windows.Forms.NumericUpDown();
+            this.fgm_4049 = new System.Windows.Forms.NumericUpDown();
+            this.fgm = new System.Windows.Forms.NumericUpDown();
+            this.fgm_50 = new System.Windows.Forms.NumericUpDown();
+            this.xpa = new System.Windows.Forms.NumericUpDown();
+            this.label164 = new System.Windows.Forms.Label();
+            this.label166 = new System.Windows.Forms.Label();
+            this.label163 = new System.Windows.Forms.Label();
+            this.label155 = new System.Windows.Forms.Label();
+            this.label162 = new System.Windows.Forms.Label();
+            this.label165 = new System.Windows.Forms.Label();
+            this.label161 = new System.Windows.Forms.Label();
+            this.label156 = new System.Windows.Forms.Label();
+            this.fga_129 = new System.Windows.Forms.NumericUpDown();
+            this.fga_3039 = new System.Windows.Forms.NumericUpDown();
+            this.fga = new System.Windows.Forms.NumericUpDown();
+            this.fga_4049 = new System.Windows.Forms.NumericUpDown();
+            this.label157 = new System.Windows.Forms.Label();
+            this.fga_50 = new System.Windows.Forms.NumericUpDown();
+            this.label158 = new System.Windows.Forms.Label();
+            this.label159 = new System.Windows.Forms.Label();
+            this.label160 = new System.Windows.Forms.Label();
+            this.STSeason = new System.Windows.Forms.ComboBox();
             this.playerSplitContainer.Panel1.SuspendLayout();
             this.playerSplitContainer.Panel2.SuspendLayout();
             this.playerSplitContainer.SuspendLayout();
@@ -486,6 +554,41 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.pass_yds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pass_comp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pass_att)).BeginInit();
+            this.STStats.SuspendLayout();
+            this.KickPuntReturnGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.prtd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.prl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pryds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pra)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.krtd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.krl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kra)).BeginInit();
+            this.KickPuntGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fgl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.touchbacks)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kickoffs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntblk)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntatt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.punttb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntin20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntny)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntlong)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntyds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xpb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_129)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xpm)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_3039)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgbl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_4049)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_50)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xpa)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_129)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_3039)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_4049)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_50)).BeginInit();
             this.SuspendLayout();
             // 
             // playerSplitContainer
@@ -1124,6 +1227,7 @@ namespace MaddenEditor.Forms
             this.tabControl.Controls.Add(this.playerInjuryPage);
             this.tabControl.Controls.Add(this.contractPage);
             this.tabControl.Controls.Add(this.statsPage);
+            this.tabControl.Controls.Add(this.STStats);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -4010,6 +4114,24 @@ namespace MaddenEditor.Forms
             this.statsPage.TabIndex = 4;
             this.statsPage.Text = "Stats";
             // 
+            // statsyear
+            // 
+            this.statsyear.Enabled = false;
+            this.statsyear.FormattingEnabled = true;
+            this.statsyear.Location = new System.Drawing.Point(401, 465);
+            this.statsyear.Name = "statsyear";
+            this.statsyear.Size = new System.Drawing.Size(76, 21);
+            this.statsyear.TabIndex = 130;
+            // 
+            // label152
+            // 
+            this.label152.AutoSize = true;
+            this.label152.Location = new System.Drawing.Point(352, 469);
+            this.label152.Name = "label152";
+            this.label152.Size = new System.Drawing.Size(43, 13);
+            this.label152.TabIndex = 129;
+            this.label152.Text = "Season";
+            // 
             // CareerOLGroupBox
             // 
             this.CareerOLGroupBox.Controls.Add(this.sacksallowed);
@@ -5030,23 +5152,802 @@ namespace MaddenEditor.Forms
             this.label111.TabIndex = 0;
             this.label111.Text = "Pass Yds";
             // 
-            // label152
+            // STStats
             // 
-            this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(352, 469);
-            this.label152.Name = "label152";
-            this.label152.Size = new System.Drawing.Size(43, 13);
-            this.label152.TabIndex = 129;
-            this.label152.Text = "Season";
+            this.STStats.BackColor = System.Drawing.SystemColors.Control;
+            this.STStats.Controls.Add(this.label185);
+            this.STStats.Controls.Add(this.KickPuntReturnGroupBox);
+            this.STStats.Controls.Add(this.KickPuntGroupBox);
+            this.STStats.Controls.Add(this.STSeason);
+            this.STStats.Location = new System.Drawing.Point(4, 22);
+            this.STStats.Name = "STStats";
+            this.STStats.Padding = new System.Windows.Forms.Padding(3);
+            this.STStats.Size = new System.Drawing.Size(530, 557);
+            this.STStats.TabIndex = 5;
+            this.STStats.Text = "S/T Stats";
             // 
-            // statsyear
+            // label185
             // 
-            this.statsyear.Enabled = false;
-            this.statsyear.FormattingEnabled = true;
-            this.statsyear.Location = new System.Drawing.Point(401, 465);
-            this.statsyear.Name = "statsyear";
-            this.statsyear.Size = new System.Drawing.Size(76, 21);
-            this.statsyear.TabIndex = 130;
+            this.label185.AutoSize = true;
+            this.label185.Location = new System.Drawing.Point(380, 456);
+            this.label185.Name = "label185";
+            this.label185.Size = new System.Drawing.Size(43, 13);
+            this.label185.TabIndex = 27;
+            this.label185.Text = "Season";
+            // 
+            // KickPuntReturnGroupBox
+            // 
+            this.KickPuntReturnGroupBox.Controls.Add(this.label184);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label183);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label182);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label181);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label180);
+            this.KickPuntReturnGroupBox.Controls.Add(this.prtd);
+            this.KickPuntReturnGroupBox.Controls.Add(this.prl);
+            this.KickPuntReturnGroupBox.Controls.Add(this.pryds);
+            this.KickPuntReturnGroupBox.Controls.Add(this.pra);
+            this.KickPuntReturnGroupBox.Controls.Add(this.krtd);
+            this.KickPuntReturnGroupBox.Controls.Add(this.krl);
+            this.KickPuntReturnGroupBox.Controls.Add(this.kryds);
+            this.KickPuntReturnGroupBox.Controls.Add(this.kra);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label179);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label178);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label177);
+            this.KickPuntReturnGroupBox.Controls.Add(this.label176);
+            this.KickPuntReturnGroupBox.Location = new System.Drawing.Point(21, 293);
+            this.KickPuntReturnGroupBox.Name = "KickPuntReturnGroupBox";
+            this.KickPuntReturnGroupBox.Size = new System.Drawing.Size(494, 143);
+            this.KickPuntReturnGroupBox.TabIndex = 26;
+            this.KickPuntReturnGroupBox.TabStop = false;
+            this.KickPuntReturnGroupBox.Text = "Kick/Punt Return Totals";
+            // 
+            // label184
+            // 
+            this.label184.AutoSize = true;
+            this.label184.Location = new System.Drawing.Point(14, 57);
+            this.label184.Name = "label184";
+            this.label184.Size = new System.Drawing.Size(43, 13);
+            this.label184.TabIndex = 16;
+            this.label184.Text = "KR Yds";
+            // 
+            // label183
+            // 
+            this.label183.AutoSize = true;
+            this.label183.Location = new System.Drawing.Point(239, 113);
+            this.label183.Name = "label183";
+            this.label183.Size = new System.Drawing.Size(43, 13);
+            this.label183.TabIndex = 15;
+            this.label183.Text = "PR Tds";
+            // 
+            // label182
+            // 
+            this.label182.AutoSize = true;
+            this.label182.Location = new System.Drawing.Point(233, 84);
+            this.label182.Name = "label182";
+            this.label182.Size = new System.Drawing.Size(49, 13);
+            this.label182.TabIndex = 14;
+            this.label182.Text = "PR Long";
+            // 
+            // label181
+            // 
+            this.label181.AutoSize = true;
+            this.label181.Location = new System.Drawing.Point(239, 57);
+            this.label181.Name = "label181";
+            this.label181.Size = new System.Drawing.Size(43, 13);
+            this.label181.TabIndex = 13;
+            this.label181.Text = "PR Yds";
+            // 
+            // label180
+            // 
+            this.label180.AutoSize = true;
+            this.label180.Location = new System.Drawing.Point(244, 31);
+            this.label180.Name = "label180";
+            this.label180.Size = new System.Drawing.Size(38, 13);
+            this.label180.TabIndex = 12;
+            this.label180.Text = "PR Att";
+            // 
+            // prtd
+            // 
+            this.prtd.Location = new System.Drawing.Point(288, 109);
+            this.prtd.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.prtd.Name = "prtd";
+            this.prtd.Size = new System.Drawing.Size(89, 20);
+            this.prtd.TabIndex = 11;
+            this.prtd.ValueChanged += new System.EventHandler(this.prtd_ValueChanged);
+            // 
+            // prl
+            // 
+            this.prl.Location = new System.Drawing.Point(288, 80);
+            this.prl.Maximum = new decimal(new int[] {
+            105,
+            0,
+            0,
+            0});
+            this.prl.Name = "prl";
+            this.prl.Size = new System.Drawing.Size(89, 20);
+            this.prl.TabIndex = 10;
+            this.prl.ValueChanged += new System.EventHandler(this.prl_ValueChanged);
+            // 
+            // pryds
+            // 
+            this.pryds.Location = new System.Drawing.Point(288, 53);
+            this.pryds.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.pryds.Name = "pryds";
+            this.pryds.Size = new System.Drawing.Size(89, 20);
+            this.pryds.TabIndex = 9;
+            this.pryds.ValueChanged += new System.EventHandler(this.pryds_ValueChanged);
+            // 
+            // pra
+            // 
+            this.pra.Location = new System.Drawing.Point(288, 27);
+            this.pra.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.pra.Name = "pra";
+            this.pra.Size = new System.Drawing.Size(89, 20);
+            this.pra.TabIndex = 8;
+            this.pra.ValueChanged += new System.EventHandler(this.pra_ValueChanged);
+            // 
+            // krtd
+            // 
+            this.krtd.Location = new System.Drawing.Point(66, 109);
+            this.krtd.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.krtd.Name = "krtd";
+            this.krtd.Size = new System.Drawing.Size(82, 20);
+            this.krtd.TabIndex = 7;
+            this.krtd.ValueChanged += new System.EventHandler(this.krtd_ValueChanged);
+            // 
+            // krl
+            // 
+            this.krl.Location = new System.Drawing.Point(66, 80);
+            this.krl.Maximum = new decimal(new int[] {
+            105,
+            0,
+            0,
+            0});
+            this.krl.Name = "krl";
+            this.krl.Size = new System.Drawing.Size(82, 20);
+            this.krl.TabIndex = 6;
+            this.krl.ValueChanged += new System.EventHandler(this.krl_ValueChanged);
+            // 
+            // kryds
+            // 
+            this.kryds.Location = new System.Drawing.Point(66, 53);
+            this.kryds.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.kryds.Name = "kryds";
+            this.kryds.Size = new System.Drawing.Size(82, 20);
+            this.kryds.TabIndex = 5;
+            this.kryds.ValueChanged += new System.EventHandler(this.kryds_ValueChanged);
+            // 
+            // kra
+            // 
+            this.kra.Location = new System.Drawing.Point(66, 27);
+            this.kra.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.kra.Name = "kra";
+            this.kra.Size = new System.Drawing.Size(82, 20);
+            this.kra.TabIndex = 4;
+            this.kra.ValueChanged += new System.EventHandler(this.kra_ValueChanged);
+            // 
+            // label179
+            // 
+            this.label179.AutoSize = true;
+            this.label179.Location = new System.Drawing.Point(14, 113);
+            this.label179.Name = "label179";
+            this.label179.Size = new System.Drawing.Size(43, 13);
+            this.label179.TabIndex = 3;
+            this.label179.Text = "KR Tds";
+            // 
+            // label178
+            // 
+            this.label178.AutoSize = true;
+            this.label178.Location = new System.Drawing.Point(8, 84);
+            this.label178.Name = "label178";
+            this.label178.Size = new System.Drawing.Size(49, 13);
+            this.label178.TabIndex = 2;
+            this.label178.Text = "KR Long";
+            // 
+            // label177
+            // 
+            this.label177.AutoSize = true;
+            this.label177.Location = new System.Drawing.Point(17, 57);
+            this.label177.Name = "label177";
+            this.label177.Size = new System.Drawing.Size(0, 13);
+            this.label177.TabIndex = 1;
+            // 
+            // label176
+            // 
+            this.label176.AutoSize = true;
+            this.label176.Location = new System.Drawing.Point(19, 31);
+            this.label176.Name = "label176";
+            this.label176.Size = new System.Drawing.Size(38, 13);
+            this.label176.TabIndex = 0;
+            this.label176.Text = "KR Att";
+            // 
+            // KickPuntGroupBox
+            // 
+            this.KickPuntGroupBox.Controls.Add(this.fgl);
+            this.KickPuntGroupBox.Controls.Add(this.label186);
+            this.KickPuntGroupBox.Controls.Add(this.touchbacks);
+            this.KickPuntGroupBox.Controls.Add(this.kickoffs);
+            this.KickPuntGroupBox.Controls.Add(this.label175);
+            this.KickPuntGroupBox.Controls.Add(this.label174);
+            this.KickPuntGroupBox.Controls.Add(this.label173);
+            this.KickPuntGroupBox.Controls.Add(this.label172);
+            this.KickPuntGroupBox.Controls.Add(this.label171);
+            this.KickPuntGroupBox.Controls.Add(this.label170);
+            this.KickPuntGroupBox.Controls.Add(this.label169);
+            this.KickPuntGroupBox.Controls.Add(this.label168);
+            this.KickPuntGroupBox.Controls.Add(this.label167);
+            this.KickPuntGroupBox.Controls.Add(this.puntblk);
+            this.KickPuntGroupBox.Controls.Add(this.puntatt);
+            this.KickPuntGroupBox.Controls.Add(this.punttb);
+            this.KickPuntGroupBox.Controls.Add(this.puntin20);
+            this.KickPuntGroupBox.Controls.Add(this.puntny);
+            this.KickPuntGroupBox.Controls.Add(this.puntlong);
+            this.KickPuntGroupBox.Controls.Add(this.puntyds);
+            this.KickPuntGroupBox.Controls.Add(this.xpb);
+            this.KickPuntGroupBox.Controls.Add(this.fgm_129);
+            this.KickPuntGroupBox.Controls.Add(this.xpm);
+            this.KickPuntGroupBox.Controls.Add(this.fgm_3039);
+            this.KickPuntGroupBox.Controls.Add(this.fgbl);
+            this.KickPuntGroupBox.Controls.Add(this.fgm_4049);
+            this.KickPuntGroupBox.Controls.Add(this.fgm);
+            this.KickPuntGroupBox.Controls.Add(this.fgm_50);
+            this.KickPuntGroupBox.Controls.Add(this.xpa);
+            this.KickPuntGroupBox.Controls.Add(this.label164);
+            this.KickPuntGroupBox.Controls.Add(this.label166);
+            this.KickPuntGroupBox.Controls.Add(this.label163);
+            this.KickPuntGroupBox.Controls.Add(this.label155);
+            this.KickPuntGroupBox.Controls.Add(this.label162);
+            this.KickPuntGroupBox.Controls.Add(this.label165);
+            this.KickPuntGroupBox.Controls.Add(this.label161);
+            this.KickPuntGroupBox.Controls.Add(this.label156);
+            this.KickPuntGroupBox.Controls.Add(this.fga_129);
+            this.KickPuntGroupBox.Controls.Add(this.fga_3039);
+            this.KickPuntGroupBox.Controls.Add(this.fga);
+            this.KickPuntGroupBox.Controls.Add(this.fga_4049);
+            this.KickPuntGroupBox.Controls.Add(this.label157);
+            this.KickPuntGroupBox.Controls.Add(this.fga_50);
+            this.KickPuntGroupBox.Controls.Add(this.label158);
+            this.KickPuntGroupBox.Controls.Add(this.label159);
+            this.KickPuntGroupBox.Controls.Add(this.label160);
+            this.KickPuntGroupBox.Location = new System.Drawing.Point(21, 6);
+            this.KickPuntGroupBox.Name = "KickPuntGroupBox";
+            this.KickPuntGroupBox.Size = new System.Drawing.Size(494, 278);
+            this.KickPuntGroupBox.TabIndex = 25;
+            this.KickPuntGroupBox.TabStop = false;
+            this.KickPuntGroupBox.Text = "Kicking/Punting Totals";
+            // 
+            // fgl
+            // 
+            this.fgl.Location = new System.Drawing.Point(58, 93);
+            this.fgl.Name = "fgl";
+            this.fgl.Size = new System.Drawing.Size(64, 20);
+            this.fgl.TabIndex = 48;
+            this.fgl.ValueChanged += new System.EventHandler(this.fgl_ValueChanged);
+            // 
+            // label186
+            // 
+            this.label186.AutoSize = true;
+            this.label186.Location = new System.Drawing.Point(5, 97);
+            this.label186.Name = "label186";
+            this.label186.Size = new System.Drawing.Size(48, 13);
+            this.label186.TabIndex = 47;
+            this.label186.Text = "FG Long";
+            // 
+            // touchbacks
+            // 
+            this.touchbacks.Location = new System.Drawing.Point(306, 249);
+            this.touchbacks.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.touchbacks.Name = "touchbacks";
+            this.touchbacks.Size = new System.Drawing.Size(77, 20);
+            this.touchbacks.TabIndex = 46;
+            this.touchbacks.ValueChanged += new System.EventHandler(this.touchbacks_ValueChanged);
+            // 
+            // kickoffs
+            // 
+            this.kickoffs.Location = new System.Drawing.Point(130, 249);
+            this.kickoffs.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.kickoffs.Name = "kickoffs";
+            this.kickoffs.Size = new System.Drawing.Size(78, 20);
+            this.kickoffs.TabIndex = 45;
+            this.kickoffs.ValueChanged += new System.EventHandler(this.kickoffs_ValueChanged);
+            // 
+            // label175
+            // 
+            this.label175.AutoSize = true;
+            this.label175.Location = new System.Drawing.Point(233, 253);
+            this.label175.Name = "label175";
+            this.label175.Size = new System.Drawing.Size(67, 13);
+            this.label175.TabIndex = 44;
+            this.label175.Text = "Touchbacks";
+            // 
+            // label174
+            // 
+            this.label174.AutoSize = true;
+            this.label174.Location = new System.Drawing.Point(77, 253);
+            this.label174.Name = "label174";
+            this.label174.Size = new System.Drawing.Size(45, 13);
+            this.label174.TabIndex = 43;
+            this.label174.Text = "Kickoffs";
+            // 
+            // label173
+            // 
+            this.label173.AutoSize = true;
+            this.label173.Location = new System.Drawing.Point(352, 106);
+            this.label173.Name = "label173";
+            this.label173.Size = new System.Drawing.Size(45, 13);
+            this.label173.TabIndex = 42;
+            this.label173.Text = "Net Yds";
+            // 
+            // label172
+            // 
+            this.label172.AutoSize = true;
+            this.label172.Location = new System.Drawing.Point(351, 166);
+            this.label172.Name = "label172";
+            this.label172.Size = new System.Drawing.Size(46, 13);
+            this.label172.TabIndex = 41;
+            this.label172.Text = "Punt TB";
+            // 
+            // label171
+            // 
+            this.label171.AutoSize = true;
+            this.label171.Location = new System.Drawing.Point(347, 136);
+            this.label171.Name = "label171";
+            this.label171.Size = new System.Drawing.Size(50, 13);
+            this.label171.TabIndex = 40;
+            this.label171.Text = "Inside 20";
+            // 
+            // label170
+            // 
+            this.label170.AutoSize = true;
+            this.label170.Location = new System.Drawing.Point(341, 78);
+            this.label170.Name = "label170";
+            this.label170.Size = new System.Drawing.Size(56, 13);
+            this.label170.TabIndex = 39;
+            this.label170.Text = "Punt Long";
+            // 
+            // label169
+            // 
+            this.label169.AutoSize = true;
+            this.label169.Location = new System.Drawing.Point(350, 195);
+            this.label169.Name = "label169";
+            this.label169.Size = new System.Drawing.Size(47, 13);
+            this.label169.TabIndex = 38;
+            this.label169.Text = "Punt Blk";
+            // 
+            // label168
+            // 
+            this.label168.AutoSize = true;
+            this.label168.Location = new System.Drawing.Point(347, 49);
+            this.label168.Name = "label168";
+            this.label168.Size = new System.Drawing.Size(50, 13);
+            this.label168.TabIndex = 37;
+            this.label168.Text = "Punt Yds";
+            // 
+            // label167
+            // 
+            this.label167.AutoSize = true;
+            this.label167.Location = new System.Drawing.Point(352, 24);
+            this.label167.Name = "label167";
+            this.label167.Size = new System.Drawing.Size(45, 13);
+            this.label167.TabIndex = 36;
+            this.label167.Text = "Punt Att";
+            // 
+            // puntblk
+            // 
+            this.puntblk.Location = new System.Drawing.Point(401, 191);
+            this.puntblk.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.puntblk.Name = "puntblk";
+            this.puntblk.Size = new System.Drawing.Size(75, 20);
+            this.puntblk.TabIndex = 35;
+            this.puntblk.ValueChanged += new System.EventHandler(this.puntblk_ValueChanged);
+            // 
+            // puntatt
+            // 
+            this.puntatt.Location = new System.Drawing.Point(401, 20);
+            this.puntatt.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.puntatt.Name = "puntatt";
+            this.puntatt.Size = new System.Drawing.Size(75, 20);
+            this.puntatt.TabIndex = 34;
+            this.puntatt.ValueChanged += new System.EventHandler(this.puntatt_ValueChanged);
+            // 
+            // punttb
+            // 
+            this.punttb.Location = new System.Drawing.Point(401, 162);
+            this.punttb.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.punttb.Name = "punttb";
+            this.punttb.Size = new System.Drawing.Size(75, 20);
+            this.punttb.TabIndex = 33;
+            this.punttb.ValueChanged += new System.EventHandler(this.punttb_ValueChanged);
+            // 
+            // puntin20
+            // 
+            this.puntin20.Location = new System.Drawing.Point(401, 132);
+            this.puntin20.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.puntin20.Name = "puntin20";
+            this.puntin20.Size = new System.Drawing.Size(75, 20);
+            this.puntin20.TabIndex = 32;
+            this.puntin20.ValueChanged += new System.EventHandler(this.puntin20_ValueChanged);
+            // 
+            // puntny
+            // 
+            this.puntny.Location = new System.Drawing.Point(401, 102);
+            this.puntny.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.puntny.Name = "puntny";
+            this.puntny.Size = new System.Drawing.Size(75, 20);
+            this.puntny.TabIndex = 31;
+            this.puntny.ValueChanged += new System.EventHandler(this.puntny_ValueChanged);
+            // 
+            // puntlong
+            // 
+            this.puntlong.Location = new System.Drawing.Point(401, 74);
+            this.puntlong.Name = "puntlong";
+            this.puntlong.Size = new System.Drawing.Size(75, 20);
+            this.puntlong.TabIndex = 30;
+            this.puntlong.ValueChanged += new System.EventHandler(this.puntlong_ValueChanged);
+            // 
+            // puntyds
+            // 
+            this.puntyds.Location = new System.Drawing.Point(401, 45);
+            this.puntyds.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.puntyds.Name = "puntyds";
+            this.puntyds.Size = new System.Drawing.Size(75, 20);
+            this.puntyds.TabIndex = 29;
+            this.puntyds.ValueChanged += new System.EventHandler(this.puntyds_ValueChanged);
+            // 
+            // xpb
+            // 
+            this.xpb.Location = new System.Drawing.Point(190, 67);
+            this.xpb.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.xpb.Name = "xpb";
+            this.xpb.Size = new System.Drawing.Size(69, 20);
+            this.xpb.TabIndex = 28;
+            this.xpb.ValueChanged += new System.EventHandler(this.xpb_ValueChanged);
+            // 
+            // fgm_129
+            // 
+            this.fgm_129.Location = new System.Drawing.Point(188, 141);
+            this.fgm_129.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fgm_129.Name = "fgm_129";
+            this.fgm_129.Size = new System.Drawing.Size(71, 20);
+            this.fgm_129.TabIndex = 21;
+            this.fgm_129.ValueChanged += new System.EventHandler(this.fgm_129_ValueChanged);
+            // 
+            // xpm
+            // 
+            this.xpm.Location = new System.Drawing.Point(190, 40);
+            this.xpm.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.xpm.Name = "xpm";
+            this.xpm.Size = new System.Drawing.Size(69, 20);
+            this.xpm.TabIndex = 23;
+            this.xpm.ValueChanged += new System.EventHandler(this.xpm_ValueChanged);
+            // 
+            // fgm_3039
+            // 
+            this.fgm_3039.Location = new System.Drawing.Point(188, 167);
+            this.fgm_3039.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fgm_3039.Name = "fgm_3039";
+            this.fgm_3039.Size = new System.Drawing.Size(71, 20);
+            this.fgm_3039.TabIndex = 20;
+            this.fgm_3039.ValueChanged += new System.EventHandler(this.fgm_3039_ValueChanged);
+            // 
+            // fgbl
+            // 
+            this.fgbl.Location = new System.Drawing.Point(58, 67);
+            this.fgbl.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fgbl.Name = "fgbl";
+            this.fgbl.Size = new System.Drawing.Size(64, 20);
+            this.fgbl.TabIndex = 27;
+            this.fgbl.ValueChanged += new System.EventHandler(this.fgbl_ValueChanged);
+            // 
+            // fgm_4049
+            // 
+            this.fgm_4049.Location = new System.Drawing.Point(188, 193);
+            this.fgm_4049.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fgm_4049.Name = "fgm_4049";
+            this.fgm_4049.Size = new System.Drawing.Size(71, 20);
+            this.fgm_4049.TabIndex = 19;
+            this.fgm_4049.ValueChanged += new System.EventHandler(this.fgm_4049_ValueChanged);
+            // 
+            // fgm
+            // 
+            this.fgm.Location = new System.Drawing.Point(58, 40);
+            this.fgm.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fgm.Name = "fgm";
+            this.fgm.Size = new System.Drawing.Size(64, 20);
+            this.fgm.TabIndex = 26;
+            this.fgm.ValueChanged += new System.EventHandler(this.fgm_ValueChanged);
+            // 
+            // fgm_50
+            // 
+            this.fgm_50.Location = new System.Drawing.Point(188, 219);
+            this.fgm_50.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fgm_50.Name = "fgm_50";
+            this.fgm_50.Size = new System.Drawing.Size(71, 20);
+            this.fgm_50.TabIndex = 18;
+            this.fgm_50.ValueChanged += new System.EventHandler(this.fgm_50_ValueChanged);
+            // 
+            // xpa
+            // 
+            this.xpa.Location = new System.Drawing.Point(190, 16);
+            this.xpa.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.xpa.Name = "xpa";
+            this.xpa.Size = new System.Drawing.Size(69, 20);
+            this.xpa.TabIndex = 24;
+            this.xpa.ValueChanged += new System.EventHandler(this.xpa_ValueChanged);
+            // 
+            // label164
+            // 
+            this.label164.AutoSize = true;
+            this.label164.Location = new System.Drawing.Point(14, 222);
+            this.label164.Name = "label164";
+            this.label164.Size = new System.Drawing.Size(63, 13);
+            this.label164.TabIndex = 15;
+            this.label164.Text = "FG 50+ Yds";
+            // 
+            // label166
+            // 
+            this.label166.AutoSize = true;
+            this.label166.Location = new System.Drawing.Point(205, 123);
+            this.label166.Name = "label166";
+            this.label166.Size = new System.Drawing.Size(34, 13);
+            this.label166.TabIndex = 17;
+            this.label166.Text = "Made";
+            // 
+            // label163
+            // 
+            this.label163.AutoSize = true;
+            this.label163.Location = new System.Drawing.Point(5, 196);
+            this.label163.Name = "label163";
+            this.label163.Size = new System.Drawing.Size(72, 13);
+            this.label163.TabIndex = 14;
+            this.label163.Text = "FG 40-49 Yds";
+            // 
+            // label155
+            // 
+            this.label155.AutoSize = true;
+            this.label155.Location = new System.Drawing.Point(24, 44);
+            this.label155.Name = "label155";
+            this.label155.Size = new System.Drawing.Size(30, 13);
+            this.label155.TabIndex = 6;
+            this.label155.Text = "FGM";
+            // 
+            // label162
+            // 
+            this.label162.AutoSize = true;
+            this.label162.Location = new System.Drawing.Point(5, 168);
+            this.label162.Name = "label162";
+            this.label162.Size = new System.Drawing.Size(72, 13);
+            this.label162.TabIndex = 13;
+            this.label162.Text = "FG 30-30 Yds";
+            // 
+            // label165
+            // 
+            this.label165.AutoSize = true;
+            this.label165.Location = new System.Drawing.Point(92, 123);
+            this.label165.Name = "label165";
+            this.label165.Size = new System.Drawing.Size(55, 13);
+            this.label165.TabIndex = 16;
+            this.label165.Text = "Attempted";
+            // 
+            // label161
+            // 
+            this.label161.AutoSize = true;
+            this.label161.Location = new System.Drawing.Point(8, 144);
+            this.label161.Name = "label161";
+            this.label161.Size = new System.Drawing.Size(69, 13);
+            this.label161.TabIndex = 12;
+            this.label161.Text = "FG  1-29 Yds";
+            // 
+            // label156
+            // 
+            this.label156.AutoSize = true;
+            this.label156.Location = new System.Drawing.Point(26, 20);
+            this.label156.Name = "label156";
+            this.label156.Size = new System.Drawing.Size(28, 13);
+            this.label156.TabIndex = 7;
+            this.label156.Text = "FGA";
+            // 
+            // fga_129
+            // 
+            this.fga_129.Location = new System.Drawing.Point(87, 141);
+            this.fga_129.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fga_129.Name = "fga_129";
+            this.fga_129.Size = new System.Drawing.Size(71, 20);
+            this.fga_129.TabIndex = 4;
+            this.fga_129.ValueChanged += new System.EventHandler(this.fga_129_ValueChanged);
+            // 
+            // fga_3039
+            // 
+            this.fga_3039.Location = new System.Drawing.Point(87, 165);
+            this.fga_3039.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fga_3039.Name = "fga_3039";
+            this.fga_3039.Size = new System.Drawing.Size(71, 20);
+            this.fga_3039.TabIndex = 3;
+            this.fga_3039.ValueChanged += new System.EventHandler(this.fga_3039_ValueChanged);
+            // 
+            // fga
+            // 
+            this.fga.Location = new System.Drawing.Point(58, 16);
+            this.fga.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fga.Name = "fga";
+            this.fga.Size = new System.Drawing.Size(64, 20);
+            this.fga.TabIndex = 22;
+            this.fga.ValueChanged += new System.EventHandler(this.fga_ValueChanged);
+            // 
+            // fga_4049
+            // 
+            this.fga_4049.Location = new System.Drawing.Point(87, 193);
+            this.fga_4049.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fga_4049.Name = "fga_4049";
+            this.fga_4049.Size = new System.Drawing.Size(71, 20);
+            this.fga_4049.TabIndex = 2;
+            this.fga_4049.ValueChanged += new System.EventHandler(this.fga_4049_ValueChanged);
+            // 
+            // label157
+            // 
+            this.label157.AutoSize = true;
+            this.label157.Location = new System.Drawing.Point(15, 71);
+            this.label157.Name = "label157";
+            this.label157.Size = new System.Drawing.Size(39, 13);
+            this.label157.TabIndex = 8;
+            this.label157.Text = "FG Blk";
+            // 
+            // fga_50
+            // 
+            this.fga_50.Location = new System.Drawing.Point(87, 219);
+            this.fga_50.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.fga_50.Name = "fga_50";
+            this.fga_50.Size = new System.Drawing.Size(71, 20);
+            this.fga_50.TabIndex = 1;
+            this.fga_50.ValueChanged += new System.EventHandler(this.fga_50_ValueChanged);
+            // 
+            // label158
+            // 
+            this.label158.AutoSize = true;
+            this.label158.Location = new System.Drawing.Point(157, 20);
+            this.label158.Name = "label158";
+            this.label158.Size = new System.Drawing.Size(28, 13);
+            this.label158.TabIndex = 9;
+            this.label158.Text = "XPA";
+            // 
+            // label159
+            // 
+            this.label159.AutoSize = true;
+            this.label159.Location = new System.Drawing.Point(155, 44);
+            this.label159.Name = "label159";
+            this.label159.Size = new System.Drawing.Size(30, 13);
+            this.label159.TabIndex = 10;
+            this.label159.Text = "XPM";
+            // 
+            // label160
+            // 
+            this.label160.AutoSize = true;
+            this.label160.Location = new System.Drawing.Point(146, 71);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(39, 13);
+            this.label160.TabIndex = 11;
+            this.label160.Text = "XP Blk";
+            // 
+            // STSeason
+            // 
+            this.STSeason.Enabled = false;
+            this.STSeason.FormattingEnabled = true;
+            this.STSeason.Location = new System.Drawing.Point(430, 452);
+            this.STSeason.Name = "STSeason";
+            this.STSeason.Size = new System.Drawing.Size(85, 21);
+            this.STSeason.TabIndex = 0;
             // 
             // PlayerEditControl
             // 
@@ -5185,6 +6086,44 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.pass_yds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pass_comp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pass_att)).EndInit();
+            this.STStats.ResumeLayout(false);
+            this.STStats.PerformLayout();
+            this.KickPuntReturnGroupBox.ResumeLayout(false);
+            this.KickPuntReturnGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.prtd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.prl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pryds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pra)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.krtd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.krl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kra)).EndInit();
+            this.KickPuntGroupBox.ResumeLayout(false);
+            this.KickPuntGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fgl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.touchbacks)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kickoffs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntblk)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntatt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.punttb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntin20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntny)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntlong)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntyds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xpb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_129)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xpm)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_3039)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgbl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_4049)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgm_50)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xpa)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_129)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_3039)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_4049)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fga_50)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -5532,5 +6471,73 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.GroupBox CareerOLGroupBox;
         private System.Windows.Forms.ComboBox statsyear;
         private System.Windows.Forms.Label label152;
+        private System.Windows.Forms.TabPage STStats;
+        private System.Windows.Forms.Label label155;
+        private System.Windows.Forms.NumericUpDown fga_129;
+        private System.Windows.Forms.NumericUpDown fga_3039;
+        private System.Windows.Forms.NumericUpDown fga_4049;
+        private System.Windows.Forms.NumericUpDown fga_50;
+        private System.Windows.Forms.ComboBox STSeason;
+        private System.Windows.Forms.Label label164;
+        private System.Windows.Forms.Label label163;
+        private System.Windows.Forms.Label label162;
+        private System.Windows.Forms.Label label161;
+        private System.Windows.Forms.Label label160;
+        private System.Windows.Forms.Label label159;
+        private System.Windows.Forms.Label label158;
+        private System.Windows.Forms.Label label157;
+        private System.Windows.Forms.Label label156;
+        private System.Windows.Forms.GroupBox KickPuntGroupBox;
+        private System.Windows.Forms.NumericUpDown xpb;
+        private System.Windows.Forms.NumericUpDown xpm;
+        private System.Windows.Forms.NumericUpDown fgbl;
+        private System.Windows.Forms.NumericUpDown fgm;
+        private System.Windows.Forms.NumericUpDown xpa;
+        private System.Windows.Forms.NumericUpDown fga;
+        private System.Windows.Forms.NumericUpDown fgm_129;
+        private System.Windows.Forms.NumericUpDown fgm_3039;
+        private System.Windows.Forms.NumericUpDown fgm_4049;
+        private System.Windows.Forms.NumericUpDown fgm_50;
+        private System.Windows.Forms.Label label166;
+        private System.Windows.Forms.Label label165;
+        private System.Windows.Forms.GroupBox KickPuntReturnGroupBox;
+        private System.Windows.Forms.Label label173;
+        private System.Windows.Forms.Label label172;
+        private System.Windows.Forms.Label label171;
+        private System.Windows.Forms.Label label170;
+        private System.Windows.Forms.Label label169;
+        private System.Windows.Forms.Label label168;
+        private System.Windows.Forms.Label label167;
+        private System.Windows.Forms.NumericUpDown puntblk;
+        private System.Windows.Forms.NumericUpDown puntatt;
+        private System.Windows.Forms.NumericUpDown punttb;
+        private System.Windows.Forms.NumericUpDown puntin20;
+        private System.Windows.Forms.NumericUpDown puntny;
+        private System.Windows.Forms.NumericUpDown puntlong;
+        private System.Windows.Forms.NumericUpDown puntyds;
+        private System.Windows.Forms.NumericUpDown touchbacks;
+        private System.Windows.Forms.NumericUpDown kickoffs;
+        private System.Windows.Forms.Label label175;
+        private System.Windows.Forms.Label label174;
+        private System.Windows.Forms.Label label183;
+        private System.Windows.Forms.Label label182;
+        private System.Windows.Forms.Label label181;
+        private System.Windows.Forms.Label label180;
+        private System.Windows.Forms.NumericUpDown prtd;
+        private System.Windows.Forms.NumericUpDown prl;
+        private System.Windows.Forms.NumericUpDown pryds;
+        private System.Windows.Forms.NumericUpDown pra;
+        private System.Windows.Forms.NumericUpDown krtd;
+        private System.Windows.Forms.NumericUpDown krl;
+        private System.Windows.Forms.NumericUpDown kryds;
+        private System.Windows.Forms.NumericUpDown kra;
+        private System.Windows.Forms.Label label179;
+        private System.Windows.Forms.Label label178;
+        private System.Windows.Forms.Label label177;
+        private System.Windows.Forms.Label label176;
+        private System.Windows.Forms.Label label184;
+        private System.Windows.Forms.Label label185;
+        private System.Windows.Forms.Label label186;
+        private System.Windows.Forms.NumericUpDown fgl;
 	}
 }

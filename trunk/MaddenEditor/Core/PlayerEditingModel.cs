@@ -442,6 +442,42 @@ namespace MaddenEditor.Core
             return null;
         }
 
+        public CareerPuntKickRecord GetPlayersCareerPuntKick(int playerId)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.CAREER_STATS_KICKPUNT_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                CareerPuntKickRecord puntkickrecord = (CareerPuntKickRecord)record;
+                if (playerId == puntkickrecord.PlayerId)
+                {
+                    return puntkickrecord;
+                }
+            }
+            return null;
+        }
+
+        public CareerPKReturnRecord GetPlayersCareerPKReturn(int playerId)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.CAREER_STATS_KICKPUNT_RETURN_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                CareerPKReturnRecord pkreturnrecord = (CareerPKReturnRecord)record;
+                if (playerId == pkreturnrecord.PlayerId)
+                {
+                    return pkreturnrecord;
+                }
+            }
+            return null;
+        }
+        
         #endregion
 
 

@@ -290,9 +290,10 @@ namespace MaddenEditor.Forms
 					playerInjuryLength.Value = injury.InjuryLength;
 					playerInjuryReserve.Checked = injury.InjuryReserve;
 					injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
-				}
-                
-                
+                }
+
+                #region Career Stats
+
                 // Career Offense Stats
 
                 CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
@@ -387,8 +388,6 @@ namespace MaddenEditor.Forms
                     int_td.Value = 0;
                     int_yards.Value = 0;
                     int_long.Value = 0;
-
-
                 }
 
                 else
@@ -407,7 +406,6 @@ namespace MaddenEditor.Forms
                     int_long.Value = careerdefensestats.Int_long;
                     int_td.Value = careerdefensestats.Int_td;
                     int_yards.Value = careerdefensestats.Int_yards;
-
                 }
 
 
@@ -420,22 +418,117 @@ namespace MaddenEditor.Forms
                 if (careergamesplayed == null)
                 {
                     // Disable Games Played boxes
-                    
                     gamesstarted.Enabled = false;
                     gamesplayed.Enabled = false;
                     gamesplayed.Value = 0;
                     gamesstarted.Value = 0;
-                    
                 }
 
                 else
                 {
                     gamesplayed.Value = careergamesplayed.GamesPlayed;
                     gamesstarted.Value = careergamesplayed.GamesStarted;
-
                 }
 
-			}
+                // Career Punt Kick Stats
+
+                CareerPuntKickRecord careerpuntkick = model.PlayerModel.GetPlayersCareerPuntKick(record.PlayerId);
+                KickPuntGroupBox.Enabled = true;
+                if (careerpuntkick == null)
+                {
+                    //set all kick punt stats =0 and disable
+                    KickPuntGroupBox.Enabled = false;
+                    fga.Value = 0;
+                    fgm.Value = 0;
+                    fgbl.Value = 0;
+                    fgl.Value = 0;
+                    xpa.Value = 0;
+                    xpm.Value = 0;
+                    xpb.Value = 0;
+                    fga_129.Value = 0;
+                    fga_3039.Value = 0;
+                    fga_4049.Value = 0;
+                    fga_50.Value = 0;
+                    fgm_129.Value = 0;
+                    fgm_3039.Value = 0;
+                    fgm_4049.Value = 0;
+                    fgm_50.Value = 0;
+                    puntatt.Value = 0;
+                    puntyds.Value = 0;
+                    puntlong.Value = 0;
+                    puntin20.Value = 0;
+                    puntny.Value = 0;
+                    punttb.Value = 0;
+                    puntblk.Value = 0;
+                    touchbacks.Value = 0;
+                    kickoffs.Value = 0;
+
+                }
+                else
+                {
+                    // set kick punt stats = record
+                    fga.Value = careerpuntkick.Fga;
+                    fgm.Value = careerpuntkick.Fgm;
+                    fgbl.Value = careerpuntkick.Fgbl;
+                    fgl.Value = careerpuntkick.Fgl;
+                    xpa.Value = careerpuntkick.Xpa;
+                    xpm.Value = careerpuntkick.Xpm;
+                    xpb.Value = careerpuntkick.Xpb;
+                    fga_129.Value = careerpuntkick.Fga_129;
+                    fga_3039.Value = careerpuntkick.Fga_3039;
+                    fga_4049.Value = careerpuntkick.Fga_4049;
+                    fga_50.Value = careerpuntkick.Fga_50;
+                    fgm_129.Value = careerpuntkick.Fgm_129;
+                    fgm_3039.Value = careerpuntkick.Fgm_3039;
+                    fgm_4049.Value = careerpuntkick.Fgm_4049;
+                    fgm_50.Value = careerpuntkick.Fgm_50;
+                    puntatt.Value = careerpuntkick.Puntatt;
+                    puntblk.Value = careerpuntkick.Puntblk;
+                    puntin20.Value = careerpuntkick.Puntin20;
+                    puntlong.Value = careerpuntkick.Puntlong;
+                    puntny.Value = careerpuntkick.Puntny;
+                    punttb.Value = careerpuntkick.Punttb;
+                    puntyds.Value = careerpuntkick.Puntyds;
+                    touchbacks.Value = careerpuntkick.Touchbacks;
+                    kickoffs.Value = careerpuntkick.Kickoffs;
+
+                }
+    
+                CareerPKReturnRecord careerpkreturn = model.PlayerModel.GetPlayersCareerPKReturn(record.PlayerId);
+                KickPuntReturnGroupBox.Enabled = true;
+                if (careerpkreturn == null)
+                {
+                    KickPuntReturnGroupBox.Enabled = false;
+                    // set return values = 0
+                    kra.Value = 0;
+                    kryds.Value = 0;
+                    krl.Value = 0;
+                    krtd.Value = 0;
+                    pra.Value = 0;
+                    pryds.Value = 0;
+                    prl.Value = 0;
+                    prtd.Value = 0;
+                }
+               
+                else
+                {
+                    // set return values = record
+                    kra.Value = careerpkreturn.Kra;
+                    kryds.Value = careerpkreturn.Kryds;
+                    krl.Value = careerpkreturn.Krl;
+                    krtd.Value = careerpkreturn.Krtd;
+                    pra.Value = careerpkreturn.Pra;
+                    pryds.Value = careerpkreturn.Pryds;
+                    prl.Value = careerpkreturn.Prl;
+                    prtd.Value = careerpkreturn.Prtd;
+                }
+                
+                STSeason.Enabled = false;
+
+#endregion
+
+
+            }
 			catch (Exception e)
 			{
 				MessageBox.Show("Exception Occured loading this Player:\r\nCaused by " + e.Source + "\r\n" + e.ToString(), "Exception Loading Player", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1851,7 +1944,270 @@ namespace MaddenEditor.Forms
                 model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed = (int)gamesplayed.Value;
             }
         }
+       
+
+        private void fga_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga = (int)fga.Value;
+            }
+        }
+
+        private void fgm_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm = (int)fgm.Value;
+            }
+        }
+
+        private void fgbl_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgbl = (int)fgbl.Value;
+            }
+        }
+
+        private void fgl_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgl = (int)fgl.Value;
+            }
+        }
+
+        private void xpa_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Xpa = (int)xpa.Value;
+            }
+        }
+
+        private void xpm_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Xpm = (int)xpm.Value;
+            }
+        }
+
+        private void xpb_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Xpb = (int)xpb.Value;
+            }
+        }
+
+        private void fga_129_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_129 = (int)fga_129.Value;
+            }
+        }
+
+        private void fga_3039_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_3039 = (int)fga_3039.Value;
+            }
+        }
+
+        private void fga_4049_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_4049 = (int)fga_4049.Value;
+            }
+        }
+
+        private void fga_50_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_50 = (int)fga_50.Value;
+            }
+        }
+
+        private void fgm_129_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_129 = (int)fgm_129.Value;
+            }
+        }
+
+        private void fgm_3039_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_3039 = (int)fgm_3039.Value;
+            }
+        }
+
+        private void fgm_4049_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_4049 = (int)fgm_4049.Value;
+            }
+        }
+
+        private void fgm_50_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_50 = (int)fgm_50.Value;
+            }
+        }
+
+        private void kickoffs_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kickoffs = (int)kickoffs.Value;
+            }
+        }
+
+        private void touchbacks_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Touchbacks = (int)touchbacks.Value;
+            }
+        }
+
+        private void puntatt_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntatt = (int)puntatt.Value;
+            }
+        }
+
+        private void puntyds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntyds = (int)puntyds.Value;
+            }
+        }
+
+        private void puntlong_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntlong = (int)puntlong.Value;
+            }
+        }
+
+        private void puntny_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntny = (int)puntny.Value;
+            }
+        }
+
+        private void puntin20_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntin20 = (int)puntin20.Value;
+            }
+        }
+
+        private void punttb_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Punttb = (int)punttb.Value;
+            }
+        }
+
+        private void puntblk_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntblk = (int)puntblk.Value;
+            }
+        }
+
+        private void kra_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kra = (int)kra.Value;
+            }
+        }
+
+        private void kryds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kryds = (int)kryds.Value;
+            }
+        }
+
+        private void krl_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Krl = (int)krl.Value;
+            }
+        }
+
+        private void krtd_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Krtd = (int)krtd.Value;
+            }
+        }
+
+        private void pra_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pra = (int)pra.Value;
+            }
+        }
+
+        private void pryds_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pryds = (int)pryds.Value;
+            }
+        }
+
+        private void prl_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Prl = (int)prl.Value;
+            }
+        }
+
+        private void prtd_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Prtd = (int)prtd.Value;
+            }
+        }
+
         #endregion
+
+
+
+
+
 
 
     }
