@@ -85,10 +85,14 @@
     <Compile Include="Core\Record\Stats\BoxScoreOffensiveLineRecord.cs" />
     <Compile Include="Core\Record\Stats\BoxScoreTeamRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerGamesPlayedRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerPKReturnRecord.cs" />
+    <Compile Include="Core\Record\Stats\CareerPuntKickRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsOffenseRecord.cs" />
     <Compile Include="Core\Record\Stats\CareerStatsOffensiveLineRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonGamesPlayedRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonPKReturnRecord.cs" />
+    <Compile Include="Core\Record\Stats\SeasonPuntKickRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffensiveLineRecord.cs" />
@@ -437,6 +441,7 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <None Include="Resources\background.png" />
     <Content Include="tune.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
