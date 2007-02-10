@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DOCUMENT type="Advanced Installer" CreateVersion="4.6.3" version="4.7.1" modules="enterprise" RootPath="." Language="en">
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
+    <ROW Property="AI_MINDOTNETVERSION" Value="2.0"/>
+    <ROW Property="AI_MINXRESOLUTION" Value="800"/>
+    <ROW Property="AI_MINYRESOLUTION" Value="600"/>
+    <ROW Property="ALLUSERS" Value="2"/>
+    <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
+    <ROW Property="ARPHELPLINK" Value="http://maddenamp.sourceforge.net/"/>
+    <ROW Property="ARPPRODUCTICON" Value="controlPanelIcon.exe"/>
+    <ROW Property="ARPURLINFOABOUT" Value="http://maddenamp.sourceforge.net/"/>
+    <ROW Property="ARPURLUPDATEINFO" Value="http://maddenamp.sourceforge.net/"/>
+    <ROW Property="BannerBitmap" Value="default_banner.bmp" Type="1"/>
+    <ROW Property="DialogBitmap" Value="default_dialog.bmp" Type="1"/>
+    <ROW Property="Manufacturer" Value="Tributech" ValueLocId="*"/>
+    <ROW Property="ProductCode" Value="1033:{C8AAB4E6-02E9-4E5B-AD87-D3E5FE8FFA1C} "/>
+    <ROW Property="ProductLanguage" Value="1033"/>
+    <ROW Property="ProductName" Value="MaddenAmp" ValueLocId="*"/>
+    <ROW Property="ProductVersion" Value="3.1"/>
+    <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
+    <ROW Property="UpgradeCode" Value="{75E38423-B7FD-4EF3-926D-B8BE7D79FC6B}"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
+    <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="Conditioning_DIR" Directory_Parent="APPDIR" DefaultDir="Condit~1|Conditioning"/>
+    <ROW Directory="DesktopFolder" Directory_Parent="TARGETDIR" DefaultDir="Deskto~1|DesktopFolder" IsPseudoRoot="1"/>
+    <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
+    <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
+    <ROW Directory="TrainingCamp_DIR" Directory_Parent="Conditioning_DIR" DefaultDir="Traini~1|TrainingCamp"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
+    <ROW Component="LumenWorks.Framework.IO.dll" ComponentId="{0C7C2001-AEB2-45DF-930C-0AA1063E50B9}" Directory_="APPDIR" Attributes="0" KeyPath="LumenWorks.Framework.IO.dll" FullKeyPath="APPDIR\LumenWorks.Framework.IO.dll"/>
+    <ROW Component="LumenWorks.Framework.IO.pdb" ComponentId="{D059353A-3ADB-4C51-80DF-B6F470489CC8}" Directory_="APPDIR" Attributes="0" KeyPath="tune.txt_1" FullKeyPath="APPDIR"/>
+    <ROW Component="MaddenEditor.exe" ComponentId="{5A3C4B0D-D74C-417F-B7E1-64D4888460B7}" Directory_="APPDIR" Attributes="0" KeyPath="MaddenEditor.exe" FullKeyPath="APPDIR\MaddenEditor.exe"/>
+    <ROW Component="SHORTCUTDIR" ComponentId="{095DAA0A-CDA8-428F-B04C-18BF177AB797}" Directory_="SHORTCUTDIR" Attributes="0"/>
+    <ROW Component="readme.rtf" ComponentId="{BAEAEE27-C2A0-4AEE-AD98-9C44FFB961C7}" Directory_="APPDIR" Attributes="0" KeyPath="readme.rtf" FullKeyPath="APPDIR\readme.rtf"/>
+    <ROW Component="tdbaccess.dll" ComponentId="{3C0150B1-D48F-4F75-B033-231B426680D4}" Directory_="APPDIR" Attributes="0" KeyPath="tdbaccess.dll" FullKeyPath="APPDIR\tdbaccess.dll"/>
+    <ROW Component="tune.txt" ComponentId="{18B75A51-0CE7-497F-9332-DAE641D1E19A}" Directory_="TrainingCamp_DIR" Attributes="0" KeyPath="tune.txt" FullKeyPath="APPDIR\Conditioning\TrainingCamp"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="tune.txt LumenWorks.Framework.IO.dll LumenWorks.Framework.IO.pdb MaddenEditor.exe tdbaccess.dll SHORTCUTDIR readme.rtf"/>
+    <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="LumenWorks.Framework.IO.dll" Component_="LumenWorks.Framework.IO.dll" FileName="LumenW~1.dll|LumenWorks.Framework.IO.dll" Attributes="0" SourcePath="MaddenEditor\bin\Release\LumenWorks.Framework.IO.dll" SelfReg="false" Sequence="2"/>
+    <ROW File="MaddenEditor.exe" Component_="MaddenEditor.exe" FileName="Madden~1.exe|MaddenEditor.exe" Attributes="0" SourcePath="MaddenEditor\bin\Release\MaddenEditor.exe" SelfReg="false" Sequence="3"/>
+    <ROW File="Uniform_Mappings.csv" Component_="LumenWorks.Framework.IO.pdb" FileName="Unifor~1.csv|Uniform Mappings.csv" Attributes="0" SourcePath="MaddenEditor\bin\Release\Uniform Mappings.csv" SelfReg="false" Sequence="6"/>
+    <ROW File="readme.rtf" Component_="readme.rtf" FileName="readme.rtf" Attributes="0" SourcePath="readme.rtf" SelfReg="false" Sequence="7"/>
+    <ROW File="tdbaccess.dll" Component_="tdbaccess.dll" FileName="tdbacc~1.dll|tdbaccess.dll" Attributes="0" SourcePath="MaddenEditor\bin\Release\tdbaccess.dll" SelfReg="false" Sequence="4"/>
+    <ROW File="tune.txt" Component_="tune.txt" FileName="tune.txt" Attributes="0" SourcePath="MaddenEditor\bin\Release\Conditioning\TrainingCamp\tune.txt" SelfReg="false" Sequence="1"/>
+    <ROW File="tune.txt_1" Component_="LumenWorks.Framework.IO.pdb" FileName="tune.txt" Attributes="0" SourcePath="MaddenEditor\bin\Release\tune.txt" SelfReg="false" Sequence="5"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
+    <ROW Path="&lt;ui.ail&gt;"/>
+    <ROW Path="&lt;ui_en.ail&gt;"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
+    <ROW Fragment="FolderDlg.aip" Path="&lt;FolderDlg.aip&gt;"/>
+    <ROW Fragment="LicenseAgreementDlg.aip" Path="&lt;LicenseAgreementDlg.aip&gt;"/>
+    <ROW Fragment="ReadmeDlg.aip" Path="&lt;ReadmeDlg.aip&gt;"/>
+    <ROW Fragment="StaticUIStrings.aip" Path="&lt;StaticUIStrings.aip&gt;"/>
+    <ROW Fragment="UI.aip" Path="&lt;UI.aip&gt;"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiAppSearchComponent">
+    <ROW Property="AI_DOTNETSEARCH" Signature_="AI_DotNetSearchSgn"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiBinaryComponent">
+    <ROW Name="aicustact.dll" SourcePath="&lt;aicustact.dll&gt;"/>
+    <ROW Name="default_banner.bmp" SourcePath="&lt;default-banner.bmp&gt;"/>
+    <ROW Name="default_dialog.bmp" SourcePath="&lt;default-dialog.bmp&gt;"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
+    <ROW Dialog_="LicenseAgreementDlg" Control="AgreementText" Type="FileScrollableText" X="20" Y="60" Width="330" Height="120" Attributes="7" Text="license.rtf" Control_Next="Buttons" TextLocId="Control.Text.LicenseAgreementDlg#AgreementText"/>
+    <ROW Dialog_="ReadmeDlg" Control="ReadmeText" Type="FileScrollableText" X="20" Y="60" Width="330" Height="150" Attributes="7" Text="readme.rtf" Control_Next="BottomLine" TextLocId="Control.Text.ReadmeDlg#ReadmeText"/>
+    <ROW Dialog_="FolderDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Cancel" MsiKey="FolderDlg#BottomLine"/>
+    <ROW Dialog_="ReadmeDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Back" MsiKey="ReadmeDlg#BottomLine"/>
+    <ROW Dialog_="LicenseAgreementDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Back" MsiKey="LicenseAgreementDlg#BottomLine"/>
+    <ROW Dialog_="BrowseDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="OK" MsiKey="BrowseDlg#BottomLine"/>
+    <ROW Dialog_="CustomizeDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Back" MsiKey="CustomizeDlg#BottomLine"/>
+    <ROW Dialog_="DiskCostDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="VolumeList" MsiKey="DiskCostDlg#BottomLine"/>
+    <ROW Dialog_="FilesInUse" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Title" MsiKey="FilesInUse#BottomLine"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Description" MsiKey="MaintenanceTypeDlg#BottomLine"/>
+    <ROW Dialog_="OutOfDiskDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="VolumeList" MsiKey="OutOfDiskDlg#BottomLine"/>
+    <ROW Dialog_="OutOfRbDiskDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Text2" MsiKey="OutOfRbDiskDlg#BottomLine"/>
+    <ROW Dialog_="ProgressDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Back" MsiKey="ProgressDlg#BottomLine"/>
+    <ROW Dialog_="VerifyReadyDlg" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="Back" MsiKey="VerifyReadyDlg#BottomLine"/>
+    <ROW Dialog_="MsiRMFilesInUse" Control="BottomLine" Type="Line" X="5" Y="234" Width="368" Height="0" Attributes="1" Control_Next="OK" MsiKey="MsiRMFilesInUse#BottomLine"/>
+    <ATTRIBUTE name="DeletedRows" value="BrowseDlg#Logo@CustomizeDlg#Logo@OutOfRbDiskDlg#Logo@ReadmeDlg#Logo@ProgressDlg#Logo@DiskCostDlg#Logo@FilesInUse#Logo@FolderDlg#Logo@LicenseAgreementDlg#Logo@MaintenanceTypeDlg#Logo@MsiRMFilesInUse#Logo@OutOfDiskDlg#Logo@VerifyReadyDlg#Logo"/>
+    <ATTRIBUTE name="FixedSizeBitmaps" value="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
+    <ROW Dialog_="FolderDlg" Control_="Back" Event="NewDialog" Argument="WelcomeDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="WelcomeDlg" Control_="Next" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="ReadmeDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="FolderDlg" Control_="Next" Event="NewDialog" Argument="LicenseAgreementDlg" Condition="AI_INSTALL" Ordering="4"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceWelcomeDlg" Condition="AI_MAINT" Ordering="1"/>
+    <ROW Dialog_="MaintenanceWelcomeDlg" Control_="Next" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT" Ordering="2"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="PatchWelcomeDlg" Condition="AI_PATCH" Ordering="1"/>
+    <ROW Dialog_="PatchWelcomeDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_PATCH" Ordering="3"/>
+    <ROW Dialog_="LicenseAgreementDlg" Control_="Back" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="LicenseAgreementDlg" Control_="Next" Event="NewDialog" Argument="ReadmeDlg" Condition="AI_INSTALL AND IAgree = &quot;Yes&quot;" Ordering="1"/>
+    <ROW Dialog_="ReadmeDlg" Control_="Back" Event="NewDialog" Argument="LicenseAgreementDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="ReadmeDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_INSTALL" Ordering="1"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCreateFolderComponent">
+    <ROW Directory_="SHORTCUTDIR" Component_="SHORTCUTDIR"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
+    <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
+    <ROW Action="AI_PREPARE_UPGRADE" Type="1" Source="aicustact.dll" Target="PrepareUpgrade"/>
+    <ROW Action="AI_RESTORE_LOCATION" Type="1" Source="aicustact.dll" Target="RestoreLocation"/>
+    <ROW Action="AI_STORE_LOCATION" Type="51" Source="ARPINSTALLLOCATION" Target="[APPDIR]"/>
+    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder]\[ProductName]"/>
+    <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
+    <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiDrLocatorComponent">
+    <ROW Signature_="AI_DotNetSearchSgn" Path="[SystemFolder]" Depth="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
+    <ROW Name="SystemFolder_msiexec.exe" SourcePath="&lt;uninstall.ico&gt;" Index="0"/>
+    <ROW Name="controlPanelIcon.exe" SourcePath="..\maddeneditor\MaddenEditor\football.ico" Index="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
+    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="740"/>
+    <ROW Action="AI_STORE_LOCATION" Condition="Not Installed" Sequence="1545"/>
+    <ROW Action="AI_PREPARE_UPGRADE" Condition="AI_UPGRADE=&quot;No&quot; AND (Not Installed)" Sequence="1300"/>
+    <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstallUISequenceComponent">
+    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="740"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
+    <ROW Condition="AI_DOTNETSEARCH" Description="[ProductName] can not be installed on systems with .NET Framework version smaller than [AI_MINDOTNETVERSION]"/>
+    <ROW Condition="ScreenX &gt;= 800 AND ScreenY &gt;= 600" Description="[ProductName] can not be installed on systems with screen resolution smaller than [AI_MINXRESOLUTION] x [AI_MINYRESOLUTION]."/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiMediaComponent">
+    <ATTRIBUTE name="CabsLocation" value="1"/>
+    <ATTRIBUTE name="Compress" value="1"/>
+    <ATTRIBUTE name="InstallationType" value="4"/>
+    <ATTRIBUTE name="Package" value="6"/>
+    <ATTRIBUTE name="PackageName" value="MaddenAmp-[|ProductVersion]-Setup"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
+    <ROW Shortcut="MaddenEditor.exe" Directory_="SHORTCUTDIR" Name="Madden~1.exe|MaddenEditor.exe" Component_="MaddenEditor.exe" Target="[#MaddenEditor.exe]" Description="MaddenEditor.exe" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="MaddenEditor.exe_1" Directory_="DesktopFolder" Name="Madden~1.exe|MaddenEditor.exe" Component_="MaddenEditor.exe" Target="[#MaddenEditor.exe]" Description="MaddenEditor.exe" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="Readme" Directory_="SHORTCUTDIR" Name="Readme" Component_="readme.rtf" Target="[#readme.rtf]" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="Uninstall" Directory_="SHORTCUTDIR" Name="Uninst~1|Uninstall" Component_="LumenWorks.Framework.IO.dll" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFolder_msiexec.exe" IconIndex="0" ShowCmd="1"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiSignatureComponent">
+    <ROW Signature="AI_DotNetSearchSgn" FileName="mscoree.dll" MinVersion="2.0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiUpgradeComponent">
+    <ROW UpgradeCode="UpgradeCode" VersionMax="ProductVersion" Attributes="1025"/>
+    <ROW UpgradeCode="UpgradeCode" VersionMin="ProductVersion" Attributes="2"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
+    <ROW DisplayName=".NET Framework ver 2.0" SetupFileUrl="http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&amp;DisplayLang=en" Location="2" ExactSize="0" TargetOS="2" SearchType="0" SearchString="[SystemFolder]mscoree.dll" VerMin="2.0" Sequence="1"/>
+    <ATTRIBUTE name="ExtractionFolder" value="[AppDataFolder][|Manufacturer]\[|ProductName]\install"/>
+  </COMPONENT>
+</DOCUMENT>

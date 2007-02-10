@@ -112,57 +112,57 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "&File";
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.openToolStripMenuItem.Text = "&Open ...";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.closeToolStripMenuItem.Text = "&Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(167, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(156, 6);
 			// 
 			// exportToolStripMenuItem
 			// 
 			this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-			this.exportToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.exportToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.exportToolStripMenuItem.Text = "&Export Players ...";
 			this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(167, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(156, 6);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.saveToolStripMenuItem.Text = "&Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(156, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -179,65 +179,65 @@ namespace MaddenEditor.Forms
             this.depthChartEditorToolStripMenuItem,
             this.globalPlayerAttrEditorToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "Tools";
 			// 
 			// playerEditingToolStripMenuItem
 			// 
 			this.playerEditingToolStripMenuItem.Name = "playerEditingToolStripMenuItem";
-			this.playerEditingToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.playerEditingToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.playerEditingToolStripMenuItem.Text = "Player Editor ...";
 			this.playerEditingToolStripMenuItem.Click += new System.EventHandler(this.playerEditingToolStripMenuItem_Click);
 			// 
 			// coachPlayerToolStripMenuItem
 			// 
 			this.coachPlayerToolStripMenuItem.Name = "coachPlayerToolStripMenuItem";
-			this.coachPlayerToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.coachPlayerToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.coachPlayerToolStripMenuItem.Text = "Coach Editor ...";
 			this.coachPlayerToolStripMenuItem.Click += new System.EventHandler(this.coachPlayerToolStripMenuItem_Click);
 			// 
 			// teamEditorToolStripMenuItem
 			// 
 			this.teamEditorToolStripMenuItem.Name = "teamEditorToolStripMenuItem";
-			this.teamEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.teamEditorToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.teamEditorToolStripMenuItem.Text = "Team Editor ...";
 			this.teamEditorToolStripMenuItem.Click += new System.EventHandler(this.teamEditorToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator11
 			// 
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
-			this.toolStripSeparator11.Size = new System.Drawing.Size(212, 6);
+			this.toolStripSeparator11.Size = new System.Drawing.Size(209, 6);
 			// 
 			// searchforPlayerToolStripMenuItem
 			// 
 			this.searchforPlayerToolStripMenuItem.Name = "searchforPlayerToolStripMenuItem";
-			this.searchforPlayerToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.searchforPlayerToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.searchforPlayerToolStripMenuItem.Text = "Search for Player ...";
 			this.searchforPlayerToolStripMenuItem.Click += new System.EventHandler(this.searchforPlayerToolStripMenuItem_Click);
 			// 
 			// searchforCoachesToolStripMenuItem
 			// 
 			this.searchforCoachesToolStripMenuItem.Name = "searchforCoachesToolStripMenuItem";
-			this.searchforCoachesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.searchforCoachesToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.searchforCoachesToolStripMenuItem.Text = "Search for Coaches ...";
 			this.searchforCoachesToolStripMenuItem.Click += new System.EventHandler(this.searchforCoachesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(212, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(209, 6);
 			// 
 			// depthChartEditorToolStripMenuItem
 			// 
 			this.depthChartEditorToolStripMenuItem.Name = "depthChartEditorToolStripMenuItem";
-			this.depthChartEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.depthChartEditorToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.depthChartEditorToolStripMenuItem.Text = "Depth Chart Editor ...";
 			this.depthChartEditorToolStripMenuItem.Click += new System.EventHandler(this.depthChartEditorToolStripMenuItem_Click);
 			// 
 			// globalPlayerAttrEditorToolStripMenuItem
 			// 
 			this.globalPlayerAttrEditorToolStripMenuItem.Name = "globalPlayerAttrEditorToolStripMenuItem";
-			this.globalPlayerAttrEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+			this.globalPlayerAttrEditorToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.globalPlayerAttrEditorToolStripMenuItem.Text = "Global Player Attr Editor ...";
 			this.globalPlayerAttrEditorToolStripMenuItem.Click += new System.EventHandler(this.globalPlayerAttrEditorToolStripMenuItem_Click);
 			// 
@@ -268,155 +268,155 @@ namespace MaddenEditor.Forms
             this.offSeasonConditioningTrainingCampToolStripMenuItem,
             this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem});
 			this.franchiseToolStripMenuItem.Name = "franchiseToolStripMenuItem";
-			this.franchiseToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+			this.franchiseToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
 			this.franchiseToolStripMenuItem.Text = "Franchise";
 			// 
 			// editScheduleToolStripMenuItem
 			// 
 			this.editScheduleToolStripMenuItem.Name = "editScheduleToolStripMenuItem";
-			this.editScheduleToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.editScheduleToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.editScheduleToolStripMenuItem.Text = "Edit Schedule ...";
 			this.editScheduleToolStripMenuItem.Click += new System.EventHandler(this.editScheduleToolStripMenuItem_Click);
 			// 
 			// editFranchiseOptionsToolStripMenuItem
 			// 
 			this.editFranchiseOptionsToolStripMenuItem.Name = "editFranchiseOptionsToolStripMenuItem";
-			this.editFranchiseOptionsToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.editFranchiseOptionsToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.editFranchiseOptionsToolStripMenuItem.Text = "Edit Franchise Options ...";
 			this.editFranchiseOptionsToolStripMenuItem.Click += new System.EventHandler(this.editFranchiseOptionsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(277, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(293, 6);
 			// 
 			// setTeamCaptainsToolStripMenuItem
 			// 
 			this.setTeamCaptainsToolStripMenuItem.Name = "setTeamCaptainsToolStripMenuItem";
-			this.setTeamCaptainsToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.setTeamCaptainsToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.setTeamCaptainsToolStripMenuItem.Text = "Set Team Captains ...";
 			this.setTeamCaptainsToolStripMenuItem.Click += new System.EventHandler(this.setTeamCaptainsToolStripMenuItem_Click);
 			// 
 			// setUserControlledTeamsToolStripMenuItem
 			// 
 			this.setUserControlledTeamsToolStripMenuItem.Name = "setUserControlledTeamsToolStripMenuItem";
-			this.setUserControlledTeamsToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.setUserControlledTeamsToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.setUserControlledTeamsToolStripMenuItem.Text = "Set User Controlled Teams ...";
 			this.setUserControlledTeamsToolStripMenuItem.Click += new System.EventHandler(this.setUserControlledTeamsToolStripMenuItem_Click);
 			// 
 			// setGameInjuriesToolStripMenuItem
 			// 
 			this.setGameInjuriesToolStripMenuItem.Name = "setGameInjuriesToolStripMenuItem";
-			this.setGameInjuriesToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.setGameInjuriesToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.setGameInjuriesToolStripMenuItem.Text = "Set Game Injuries ...";
 			this.setGameInjuriesToolStripMenuItem.Click += new System.EventHandler(this.setGameInjuriesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(277, 6);
+			this.toolStripSeparator6.Size = new System.Drawing.Size(293, 6);
 			// 
 			// draftMenuItem
 			// 
 			this.draftMenuItem.Name = "draftMenuItem";
-			this.draftMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.draftMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.draftMenuItem.Text = "Enter Draft";
 			this.draftMenuItem.Click += new System.EventHandler(this.enterDraftToolStripMenuItem_Click);
 			// 
 			// moveTradedDraftPicksToolStripMenuItem
 			// 
 			this.moveTradedDraftPicksToolStripMenuItem.Name = "moveTradedDraftPicksToolStripMenuItem";
-			this.moveTradedDraftPicksToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.moveTradedDraftPicksToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.moveTradedDraftPicksToolStripMenuItem.Text = "Move Traded Draft Picks";
 			this.moveTradedDraftPicksToolStripMenuItem.Click += new System.EventHandler(this.moveTradedDraftPicksToolStripMenuItem_Click);
 			// 
 			// importDraftClassToolStripMenuItem
 			// 
 			this.importDraftClassToolStripMenuItem.Name = "importDraftClassToolStripMenuItem";
-			this.importDraftClassToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.importDraftClassToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.importDraftClassToolStripMenuItem.Text = "Import Draft Class";
 			this.importDraftClassToolStripMenuItem.Click += new System.EventHandler(this.importDraftClassToolStripMenuItem_Click);
 			// 
 			// exportDraftClassToolStripMenuItem
 			// 
 			this.exportDraftClassToolStripMenuItem.Name = "exportDraftClassToolStripMenuItem";
-			this.exportDraftClassToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.exportDraftClassToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.exportDraftClassToolStripMenuItem.Text = "Export Draft Class";
 			this.exportDraftClassToolStripMenuItem.Click += new System.EventHandler(this.exportDraftClassToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(280, 22);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(296, 22);
 			this.toolStripMenuItem1.Text = "Clear Rookie Games Played";
 			this.toolStripMenuItem1.Click += new System.EventHandler(this.clearRookieGamesPlayedToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(277, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(293, 6);
 			// 
 			// weeklyMaintenanceToolStripMenuItem
 			// 
 			this.weeklyMaintenanceToolStripMenuItem.Name = "weeklyMaintenanceToolStripMenuItem";
-			this.weeklyMaintenanceToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.weeklyMaintenanceToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.weeklyMaintenanceToolStripMenuItem.Text = "Weekly Maintenance";
 			this.weeklyMaintenanceToolStripMenuItem.Click += new System.EventHandler(this.weeklyMaintenanceToolStripMenuItem_Click);
 			// 
 			// fixProgressionToolStripMenuItem
 			// 
 			this.fixProgressionToolStripMenuItem.Name = "fixProgressionToolStripMenuItem";
-			this.fixProgressionToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.fixProgressionToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.fixProgressionToolStripMenuItem.Text = "Fix Progression";
 			this.fixProgressionToolStripMenuItem.Click += new System.EventHandler(this.fixProgressionToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator9
 			// 
 			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(277, 6);
+			this.toolStripSeparator9.Size = new System.Drawing.Size(293, 6);
 			// 
 			// depthChartMenuItem
 			// 
 			this.depthChartMenuItem.Name = "depthChartMenuItem";
-			this.depthChartMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.depthChartMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.depthChartMenuItem.Text = "Reorder Depth Charts (No Prog)";
 			this.depthChartMenuItem.Click += new System.EventHandler(this.depthChartMenuItem_Click);
 			// 
 			// depthChartProgMenuItem
 			// 
 			this.depthChartProgMenuItem.Name = "depthChartProgMenuItem";
-			this.depthChartProgMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.depthChartProgMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.depthChartProgMenuItem.Text = "Reorder Depth Charts (w/ Prog)";
 			this.depthChartProgMenuItem.Click += new System.EventHandler(this.depthChartProgMenuItem_Click);
 			// 
 			// toolStripSeparator8
 			// 
 			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			this.toolStripSeparator8.Size = new System.Drawing.Size(277, 6);
+			this.toolStripSeparator8.Size = new System.Drawing.Size(293, 6);
 			// 
 			// simulateCPUMinicampsToolStripMenuItem
 			// 
 			this.simulateCPUMinicampsToolStripMenuItem.Name = "simulateCPUMinicampsToolStripMenuItem";
-			this.simulateCPUMinicampsToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.simulateCPUMinicampsToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.simulateCPUMinicampsToolStripMenuItem.Text = "Simulate CPU Minicamps";
 			this.simulateCPUMinicampsToolStripMenuItem.Click += new System.EventHandler(this.simulateCPUMinicampsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator10
 			// 
 			this.toolStripSeparator10.Name = "toolStripSeparator10";
-			this.toolStripSeparator10.Size = new System.Drawing.Size(277, 6);
+			this.toolStripSeparator10.Size = new System.Drawing.Size(293, 6);
 			// 
 			// offSeasonConditioningTrainingCampToolStripMenuItem
 			// 
 			this.offSeasonConditioningTrainingCampToolStripMenuItem.Name = "offSeasonConditioningTrainingCampToolStripMenuItem";
-			this.offSeasonConditioningTrainingCampToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.offSeasonConditioningTrainingCampToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.offSeasonConditioningTrainingCampToolStripMenuItem.Text = "Off-Season Conditioning / Training Camp";
 			this.offSeasonConditioningTrainingCampToolStripMenuItem.Click += new System.EventHandler(this.offSeasonConditioningTrainingCampToolStripMenuItem_Click);
 			// 
 			// tUNEtxtGUIEditorforTrainingCampToolStripMenuItem
 			// 
 			this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem.Name = "tUNEtxtGUIEditorforTrainingCampToolStripMenuItem";
-			this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem.Text = "TUNE.txt GUI editor (for Training Camp)";
 			this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem.Click += new System.EventHandler(this.tUNEtxtGUIEditorforTrainingCampToolStripMenuItem_Click);
 			// 
@@ -426,20 +426,20 @@ namespace MaddenEditor.Forms
             this.aboutToolStripMenuItem,
             this.developerBiosToolStripMenuItem1});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-			this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.helpToolStripMenuItem.Text = "&Help";
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
 			this.aboutToolStripMenuItem.Text = "About ...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// developerBiosToolStripMenuItem1
 			// 
 			this.developerBiosToolStripMenuItem1.Name = "developerBiosToolStripMenuItem1";
-			this.developerBiosToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
+			this.developerBiosToolStripMenuItem1.Size = new System.Drawing.Size(167, 22);
 			this.developerBiosToolStripMenuItem1.Text = "Developer Bio\'s ...";
 			this.developerBiosToolStripMenuItem1.Click += new System.EventHandler(this.developerBiosToolStripMenuItem_Click);
 			// 
@@ -465,7 +465,7 @@ namespace MaddenEditor.Forms
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(67, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(73, 17);
 			this.toolStripStatusLabel1.Text = "Processing   ";
 			// 
 			// toolStripProgressBar
@@ -498,7 +498,7 @@ namespace MaddenEditor.Forms
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+			this.BackgroundImage = global::MaddenEditor.Properties.Resources.background;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.ClientSize = new System.Drawing.Size(792, 566);
 			this.Controls.Add(this.tabControl);
