@@ -99,6 +99,7 @@ namespace MaddenEditor.Forms
 			}
 
 			isInitialising = true;
+			SuspendLayout();
             
 			try
 			{
@@ -294,241 +295,242 @@ namespace MaddenEditor.Forms
 
                 #region Career Stats
 
-                // Career Offense Stats
+                // Career Offense Stats (Only do if in franchise)
+				if (model.FileType == MaddenFileType.FranchiseFile)
+				{
+					//Make controls visual
+					
 
-                CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
-                CareerOffenseGroupBox.Enabled = true;
-                if (careeroffensestats == null)
-                {
-                    // Disable Offensive Stats
-                    CareerOffenseGroupBox.Enabled = false;
-                    pass_att.Value = 0;
-                    pass_comp.Value = 0;
-                    pass_yds.Value = 0;
-                    pass_int.Value = 0;
-                    pass_long.Value = 0;
-                    pass_tds.Value = 0;
-                    receiving_recs.Value = 0;
-                    receiving_drops.Value = 0;
-                    receiving_tds.Value = 0;
-                    receiving_yds.Value = 0;
-                    receiving_yac.Value = 0;
-                    receiving_long.Value = 0;
-                    fumbles.Value = 0;
-                    rushingattempts.Value = 0;
-                    rushingyards.Value = 0;
-                    rushing_tds.Value = 0;
-                    rushing_long.Value = 0;
-                    rushing_yac.Value = 0;
-                    rushing_20.Value = 0;
-                    rushing_bt.Value = 0;
-                    
-                }
-                else
+					CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
+					CareerOffenseGroupBox.Enabled = true;
+					if (careeroffensestats == null)
+					{
+						// Disable Offensive Stats
+						CareerOffenseGroupBox.Enabled = false;
+						pass_att.Value = 0;
+						pass_comp.Value = 0;
+						pass_yds.Value = 0;
+						pass_int.Value = 0;
+						pass_long.Value = 0;
+						pass_tds.Value = 0;
+						receiving_recs.Value = 0;
+						receiving_drops.Value = 0;
+						receiving_tds.Value = 0;
+						receiving_yds.Value = 0;
+						receiving_yac.Value = 0;
+						receiving_long.Value = 0;
+						fumbles.Value = 0;
+						rushingattempts.Value = 0;
+						rushingyards.Value = 0;
+						rushing_tds.Value = 0;
+						rushing_long.Value = 0;
+						rushing_yac.Value = 0;
+						rushing_20.Value = 0;
+						rushing_bt.Value = 0;
 
-                {
-                    // set all the values of the numericupdown boxes
-                    
-                    pass_att.Value = (int)careeroffensestats.Pass_att;
-                    pass_comp.Value = (int)careeroffensestats.Pass_comp;
-                    pass_yds.Value = (int)careeroffensestats.Pass_yds;
-                    pass_int.Value = (int)careeroffensestats.Pass_int;
-                    pass_long.Value = (int)careeroffensestats.Pass_long;
-                    pass_tds.Value = (int)careeroffensestats.Pass_tds;
-                    receiving_recs.Value = (int)careeroffensestats.Receiving_recs;
-                    receiving_drops.Value = (int)careeroffensestats.Receiving_drops;
-                    receiving_tds.Value = (int)careeroffensestats.Receiving_tds;
-                    receiving_yds.Value = (int)careeroffensestats.Receiving_yards;
-                    receiving_yac.Value = (int)careeroffensestats.Receiving_yac;
-                    receiving_long.Value = (int)careeroffensestats.Receiving_long;
-                    fumbles.Value = (int)careeroffensestats.Fumbles;
-                    rushingattempts.Value = (int)careeroffensestats.RushingAttempts;
-                    rushingyards.Value = (int)careeroffensestats.RushingYards;
-                    rushing_tds.Value = (int)careeroffensestats.Rushing_tds;
-                    rushing_long.Value = (int)careeroffensestats.Rushing_long;
-                    rushing_yac.Value = (int)careeroffensestats.Rushing_yac;
-                    rushing_20.Value = (int)careeroffensestats.Rushing_20;
-                    rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
-                    
-                }
+					}
+					else
+					{
+						// set all the values of the numericupdown boxes
 
-                CareerStatsOffensiveLineRecord careerOLstats = model.PlayerModel.GetPlayersOLCareer(record.PlayerId);
-                CareerOLGroupBox.Enabled = true;
-                if (careerOLstats == null)
-                {
-                    // Disable Offensive Line Stats GroupBox
-                    CareerOLGroupBox.Enabled = false;
-                    pancakes.Value = 0;
-                    sacksallowed.Value = 0;
-                }
-                else
-                {
-                    pancakes.Value = careerOLstats.Pancakes;
-                    sacksallowed.Value = careerOLstats.SacksAllowed;
-                }
+						pass_att.Value = (int)careeroffensestats.Pass_att;
+						pass_comp.Value = (int)careeroffensestats.Pass_comp;
+						pass_yds.Value = (int)careeroffensestats.Pass_yds;
+						pass_int.Value = (int)careeroffensestats.Pass_int;
+						pass_long.Value = (int)careeroffensestats.Pass_long;
+						pass_tds.Value = (int)careeroffensestats.Pass_tds;
+						receiving_recs.Value = (int)careeroffensestats.Receiving_recs;
+						receiving_drops.Value = (int)careeroffensestats.Receiving_drops;
+						receiving_tds.Value = (int)careeroffensestats.Receiving_tds;
+						receiving_yds.Value = (int)careeroffensestats.Receiving_yards;
+						receiving_yac.Value = (int)careeroffensestats.Receiving_yac;
+						receiving_long.Value = (int)careeroffensestats.Receiving_long;
+						fumbles.Value = (int)careeroffensestats.Fumbles;
+						rushingattempts.Value = (int)careeroffensestats.RushingAttempts;
+						rushingyards.Value = (int)careeroffensestats.RushingYards;
+						rushing_tds.Value = (int)careeroffensestats.Rushing_tds;
+						rushing_long.Value = (int)careeroffensestats.Rushing_long;
+						rushing_yac.Value = (int)careeroffensestats.Rushing_yac;
+						rushing_20.Value = (int)careeroffensestats.Rushing_20;
+						rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
 
-                
-                CareerStatsDefenseRecord careerdefensestats = model.PlayerModel.GetPlayersDefenseCareer(record.PlayerId);
-                CareerDefenseGroupBox.Enabled = true;
-                if (careerdefensestats == null)
-                {
-                    // Disable Defensive Stats
-                    CareerDefenseGroupBox.Enabled = false;
-                    passesdefended.Value = 0;
-                    tackles.Value = 0;
-                    tacklesforloss.Value = 0;
-                    sacks.Value = 0;
-                    blocks.Value = 0;
-                    fumblesrecovered.Value = 0;
-                    fumblesforced.Value = 0;
-                    fumbleyards.Value = 0;
-                    fumbles_td.Value = 0;
-                    safeties.Value = 0;
-                    def_int.Value = 0;
-                    int_td.Value = 0;
-                    int_yards.Value = 0;
-                    int_long.Value = 0;
-                }
+					}
 
-                else
-                {
-                    passesdefended.Value = careerdefensestats.PassesDefended;
-                    tackles.Value = careerdefensestats.Tackles;
-                    tacklesforloss.Value = careerdefensestats.TacklesForLoss;
-                    sacks.Value = careerdefensestats.Sacks;
-                    blocks.Value = careerdefensestats.Blocks;
-                    safeties.Value = careerdefensestats.Safeties;
-                    fumblesrecovered.Value = careerdefensestats.FumblesRecovered;
-                    fumblesforced.Value = careerdefensestats.FumblesForced;
-                    fumbleyards.Value = careerdefensestats.FumbleYards;
-                    fumbles_td.Value = careerdefensestats.Fumbles_td;
-                    def_int.Value = careerdefensestats.Def_int;
-                    int_long.Value = careerdefensestats.Int_long;
-                    int_td.Value = careerdefensestats.Int_td;
-                    int_yards.Value = careerdefensestats.Int_yards;
-                }
+					CareerStatsOffensiveLineRecord careerOLstats = model.PlayerModel.GetPlayersOLCareer(record.PlayerId);
+					CareerOLGroupBox.Enabled = true;
+					if (careerOLstats == null)
+					{
+						// Disable Offensive Line Stats GroupBox
+						CareerOLGroupBox.Enabled = false;
+						pancakes.Value = 0;
+						sacksallowed.Value = 0;
+					}
+					else
+					{
+						pancakes.Value = careerOLstats.Pancakes;
+						sacksallowed.Value = careerOLstats.SacksAllowed;
+					}
 
 
-                CareerGamesPlayedRecord careergamesplayed = model.PlayerModel.GetPlayersGamesCareer(record.PlayerId);
-                
-                // enable boxes default
-                gamesplayed.Enabled = true;
-                gamesstarted.Enabled = true;
+					CareerStatsDefenseRecord careerdefensestats = model.PlayerModel.GetPlayersDefenseCareer(record.PlayerId);
+					CareerDefenseGroupBox.Enabled = true;
+					if (careerdefensestats == null)
+					{
+						// Disable Defensive Stats
+						CareerDefenseGroupBox.Enabled = false;
+						passesdefended.Value = 0;
+						tackles.Value = 0;
+						tacklesforloss.Value = 0;
+						sacks.Value = 0;
+						blocks.Value = 0;
+						fumblesrecovered.Value = 0;
+						fumblesforced.Value = 0;
+						fumbleyards.Value = 0;
+						fumbles_td.Value = 0;
+						safeties.Value = 0;
+						def_int.Value = 0;
+						int_td.Value = 0;
+						int_yards.Value = 0;
+						int_long.Value = 0;
+					}
 
-                if (careergamesplayed == null)
-                {
-                    // Disable Games Played boxes
-                    gamesstarted.Enabled = false;
-                    gamesplayed.Enabled = false;
-                    gamesplayed.Value = 0;
-                    gamesstarted.Value = 0;
-                }
+					else
+					{
+						passesdefended.Value = careerdefensestats.PassesDefended;
+						tackles.Value = careerdefensestats.Tackles;
+						tacklesforloss.Value = careerdefensestats.TacklesForLoss;
+						sacks.Value = careerdefensestats.Sacks;
+						blocks.Value = careerdefensestats.Blocks;
+						safeties.Value = careerdefensestats.Safeties;
+						fumblesrecovered.Value = careerdefensestats.FumblesRecovered;
+						fumblesforced.Value = careerdefensestats.FumblesForced;
+						fumbleyards.Value = careerdefensestats.FumbleYards;
+						fumbles_td.Value = careerdefensestats.Fumbles_td;
+						def_int.Value = careerdefensestats.Def_int;
+						int_long.Value = careerdefensestats.Int_long;
+						int_td.Value = careerdefensestats.Int_td;
+						int_yards.Value = careerdefensestats.Int_yards;
+					}
 
-                else
-                {
-                    gamesplayed.Value = careergamesplayed.GamesPlayed;
-                    gamesstarted.Value = careergamesplayed.GamesStarted;
-                }
 
-                // Career Punt Kick Stats
+					CareerGamesPlayedRecord careergamesplayed = model.PlayerModel.GetPlayersGamesCareer(record.PlayerId);
 
-                CareerPuntKickRecord careerpuntkick = model.PlayerModel.GetPlayersCareerPuntKick(record.PlayerId);
-                KickPuntGroupBox.Enabled = true;
-                if (careerpuntkick == null)
-                {
-                    //set all kick punt stats =0 and disable
-                    KickPuntGroupBox.Enabled = false;
-                    fga.Value = 0;
-                    fgm.Value = 0;
-                    fgbl.Value = 0;
-                    fgl.Value = 0;
-                    xpa.Value = 0;
-                    xpm.Value = 0;
-                    xpb.Value = 0;
-                    fga_129.Value = 0;
-                    fga_3039.Value = 0;
-                    fga_4049.Value = 0;
-                    fga_50.Value = 0;
-                    fgm_129.Value = 0;
-                    fgm_3039.Value = 0;
-                    fgm_4049.Value = 0;
-                    fgm_50.Value = 0;
-                    puntatt.Value = 0;
-                    puntyds.Value = 0;
-                    puntlong.Value = 0;
-                    puntin20.Value = 0;
-                    puntny.Value = 0;
-                    punttb.Value = 0;
-                    puntblk.Value = 0;
-                    touchbacks.Value = 0;
-                    kickoffs.Value = 0;
+					// enable boxes default
+					gamesplayed.Enabled = true;
+					gamesstarted.Enabled = true;
 
-                }
-                else
-                {
-                    // set kick punt stats = record
-                    fga.Value = careerpuntkick.Fga;
-                    fgm.Value = careerpuntkick.Fgm;
-                    fgbl.Value = careerpuntkick.Fgbl;
-                    fgl.Value = careerpuntkick.Fgl;
-                    xpa.Value = careerpuntkick.Xpa;
-                    xpm.Value = careerpuntkick.Xpm;
-                    xpb.Value = careerpuntkick.Xpb;
-                    fga_129.Value = careerpuntkick.Fga_129;
-                    fga_3039.Value = careerpuntkick.Fga_3039;
-                    fga_4049.Value = careerpuntkick.Fga_4049;
-                    fga_50.Value = careerpuntkick.Fga_50;
-                    fgm_129.Value = careerpuntkick.Fgm_129;
-                    fgm_3039.Value = careerpuntkick.Fgm_3039;
-                    fgm_4049.Value = careerpuntkick.Fgm_4049;
-                    fgm_50.Value = careerpuntkick.Fgm_50;
-                    puntatt.Value = careerpuntkick.Puntatt;
-                    puntblk.Value = careerpuntkick.Puntblk;
-                    puntin20.Value = careerpuntkick.Puntin20;
-                    puntlong.Value = careerpuntkick.Puntlong;
-                    puntny.Value = careerpuntkick.Puntny;
-                    punttb.Value = careerpuntkick.Punttb;
-                    puntyds.Value = careerpuntkick.Puntyds;
-                    touchbacks.Value = careerpuntkick.Touchbacks;
-                    kickoffs.Value = careerpuntkick.Kickoffs;
+					if (careergamesplayed == null)
+					{
+						// Disable Games Played boxes
+						gamesstarted.Enabled = false;
+						gamesplayed.Enabled = false;
+						gamesplayed.Value = 0;
+						gamesstarted.Value = 0;
+					}
 
-                }
-    
-                CareerPKReturnRecord careerpkreturn = model.PlayerModel.GetPlayersCareerPKReturn(record.PlayerId);
-                KickPuntReturnGroupBox.Enabled = true;
-                if (careerpkreturn == null)
-                {
-                    KickPuntReturnGroupBox.Enabled = false;
-                    // set return values = 0
-                    kra.Value = 0;
-                    kryds.Value = 0;
-                    krl.Value = 0;
-                    krtd.Value = 0;
-                    pra.Value = 0;
-                    pryds.Value = 0;
-                    prl.Value = 0;
-                    prtd.Value = 0;
-                }
-               
-                else
-                {
-                    // set return values = record
-                    kra.Value = careerpkreturn.Kra;
-                    kryds.Value = careerpkreturn.Kryds;
-                    krl.Value = careerpkreturn.Krl;
-                    krtd.Value = careerpkreturn.Krtd;
-                    pra.Value = careerpkreturn.Pra;
-                    pryds.Value = careerpkreturn.Pryds;
-                    prl.Value = careerpkreturn.Prl;
-                    prtd.Value = careerpkreturn.Prtd;
-                }
-                
-                STSeason.Enabled = false;
+					else
+					{
+						gamesplayed.Value = careergamesplayed.GamesPlayed;
+						gamesstarted.Value = careergamesplayed.GamesStarted;
+					}
 
+					// Career Punt Kick Stats
+
+					CareerPuntKickRecord careerpuntkick = model.PlayerModel.GetPlayersCareerPuntKick(record.PlayerId);
+					KickPuntGroupBox.Enabled = true;
+					if (careerpuntkick == null)
+					{
+						//set all kick punt stats =0 and disable
+						KickPuntGroupBox.Enabled = false;
+						fga.Value = 0;
+						fgm.Value = 0;
+						fgbl.Value = 0;
+						fgl.Value = 0;
+						xpa.Value = 0;
+						xpm.Value = 0;
+						xpb.Value = 0;
+						fga_129.Value = 0;
+						fga_3039.Value = 0;
+						fga_4049.Value = 0;
+						fga_50.Value = 0;
+						fgm_129.Value = 0;
+						fgm_3039.Value = 0;
+						fgm_4049.Value = 0;
+						fgm_50.Value = 0;
+						puntatt.Value = 0;
+						puntyds.Value = 0;
+						puntlong.Value = 0;
+						puntin20.Value = 0;
+						puntny.Value = 0;
+						punttb.Value = 0;
+						puntblk.Value = 0;
+						touchbacks.Value = 0;
+						kickoffs.Value = 0;
+
+					}
+					else
+					{
+						// set kick punt stats = record
+						fga.Value = careerpuntkick.Fga;
+						fgm.Value = careerpuntkick.Fgm;
+						fgbl.Value = careerpuntkick.Fgbl;
+						fgl.Value = careerpuntkick.Fgl;
+						xpa.Value = careerpuntkick.Xpa;
+						xpm.Value = careerpuntkick.Xpm;
+						xpb.Value = careerpuntkick.Xpb;
+						fga_129.Value = careerpuntkick.Fga_129;
+						fga_3039.Value = careerpuntkick.Fga_3039;
+						fga_4049.Value = careerpuntkick.Fga_4049;
+						fga_50.Value = careerpuntkick.Fga_50;
+						fgm_129.Value = careerpuntkick.Fgm_129;
+						fgm_3039.Value = careerpuntkick.Fgm_3039;
+						fgm_4049.Value = careerpuntkick.Fgm_4049;
+						fgm_50.Value = careerpuntkick.Fgm_50;
+						puntatt.Value = careerpuntkick.Puntatt;
+						puntblk.Value = careerpuntkick.Puntblk;
+						puntin20.Value = careerpuntkick.Puntin20;
+						puntlong.Value = careerpuntkick.Puntlong;
+						puntny.Value = careerpuntkick.Puntny;
+						punttb.Value = careerpuntkick.Punttb;
+						puntyds.Value = careerpuntkick.Puntyds;
+						touchbacks.Value = careerpuntkick.Touchbacks;
+						kickoffs.Value = careerpuntkick.Kickoffs;
+
+					}
+
+					CareerPKReturnRecord careerpkreturn = model.PlayerModel.GetPlayersCareerPKReturn(record.PlayerId);
+					KickPuntReturnGroupBox.Enabled = true;
+					if (careerpkreturn == null)
+					{
+						KickPuntReturnGroupBox.Enabled = false;
+						// set return values = 0
+						kra.Value = 0;
+						kryds.Value = 0;
+						krl.Value = 0;
+						krtd.Value = 0;
+						pra.Value = 0;
+						pryds.Value = 0;
+						prl.Value = 0;
+						prtd.Value = 0;
+					}
+
+					else
+					{
+						// set return values = record
+						kra.Value = careerpkreturn.Kra;
+						kryds.Value = careerpkreturn.Kryds;
+						krl.Value = careerpkreturn.Krl;
+						krtd.Value = careerpkreturn.Krtd;
+						pra.Value = careerpkreturn.Pra;
+						pryds.Value = careerpkreturn.Pryds;
+						prl.Value = careerpkreturn.Prl;
+						prtd.Value = careerpkreturn.Prtd;
+					}
+
+					STSeason.Enabled = false;
+				}
 #endregion
-
-
-            }
+	        }
 			catch (Exception e)
 			{
 				MessageBox.Show("Exception Occured loading this Player:\r\nCaused by " + e.Source + "\r\n" + e.ToString(), "Exception Loading Player", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -537,6 +539,7 @@ namespace MaddenEditor.Forms
 			}
 			finally
 			{
+				ResumeLayout();
 				isInitialising = false;
 			}
 			lastLoadedRecord = record;
