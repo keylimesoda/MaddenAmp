@@ -488,7 +488,7 @@ namespace MaddenEditor.Core
 			{
 				CurrentPlayerRecord.TeamId = newTeam.TeamId;
 				//Also have to ensure we update this players injuries in the injury table
-				//and remove this player scoutingForm any depth charts
+				//and remove this player from any depth charts
 				foreach (TableRecordModel record in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
 				{
 					if (record.Deleted)
@@ -514,26 +514,42 @@ namespace MaddenEditor.Core
 		/// and it needs to be moved into the depth chart editing model
 		/// </summary>
 		/// <param name="playerId"></param>
-		private void RemovePlayerFromDepthChart(int playerId)
+		public void RemovePlayerFromDepthChart(int playerId)
 		{
 			List<DepthChartRecord> oldDepthChartRecords = new List<DepthChartRecord>();
 
 			//Now at the moment we are just going to remove him from all depth charts
-			foreach (TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
-			{
-				if (record.Deleted)
-					continue;
+            
+            // Getting an invalid exception error, if player has more than one slot
+            // on the depth chart. ie Center and Long Snapper...
+            // Temp fixed, used your current olddepthchartrecords to remove them
+            
+            foreach (TableRecordModel record in model.TableModels[EditorModel.DEPTH_CHART_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                    continue;
+ 
+                DepthChartRecord depthRecord = (DepthChartRecord)record;
+                 
+                    if (depthRecord.PlayerId == playerId)
+                    {
+                        // Can't delete yet, unless player exists only once in depth chart
+                        // or we get exception error.  Go ahead and delay deleting until
+                        // completely finished...
 
-				DepthChartRecord depthRecord = (DepthChartRecord)record;
-
-				if (depthRecord.PlayerId == playerId)
-				{
-					depthRecord.SetDeleteFlag(true);
-					//Now record the position and team and depth cause we want to fix up
-					//the other players ordering in that same position
-					oldDepthChartRecords.Add(depthRecord);
-				}
-			}
+                        // depthRecord.SetDeleteFlag(true);
+                        
+                        //Now record the position and team and depth cause we want to fix up
+                        //the other players ordering in that same position
+                        oldDepthChartRecords.Add(depthRecord);
+                    }
+                
+            }
+            // Now delete all the depth chart records for this player.
+            for (int count = 0; count < oldDepthChartRecords.Count; count++)
+            {
+                oldDepthChartRecords[count].SetDeleteFlag(true);
+            }
 
 			//Now we have a list of the old depth charts that this player belongs too, we need to fix each 
 			//one up. This is not going to be very efficient :)
