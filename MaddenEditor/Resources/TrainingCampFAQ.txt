@@ -1,0 +1,246 @@
+New feature-set included in upcoming release:
+
+1)Training Camp – This is an entirely new utility now available with Madden Amp. 
+2)Training Camp ‘Tune.txt’ GUI for easy modification to your ‘Tune.txt’ file that governs training camp activities and their effects. 
+
+
+Training Camp / Off-season conditioning FAQ:
+
+-FEATURES:
+
+-Training Camp:
+
+This in depth utility gives you the ability to guide your team through two grueling weeks of an NFL training camp, on a day-by-day basis. It’s complete with a daily weather engine that may influence your daily decision where to hold practices. Outdoors or indoors? 
+
+The first week of Camp is called Hell Week, as the focus in on conditioning and positional drills. Select each player’s daily weight training regimen, his cardio / aerobic routine and select which positional drills he will focus on. 
+Be prepared to see a drop in team morale during Hell Week. This can be countered by increasing the ‘Down Time’ coaching slider for a blanket effect or by leaving unallocated time for certain unhappy individuals. The unallocated time is converted to down time for that player.
+
+The second week of camp is less focused on conditioning and more focused on team drills and film study. 
+
+Do you call for LIVE team scrimmages and risk injury? Or do you settle for half-speed scrimmages? The choice is yours. 
+Decide how much time your players spend watching film. This will benefit the younger players more than the veterans, but you are never too old to learn. (This influences AWARENESS increases)
+
+-Weather Engine- 
+
+The weather changes on a daily basis. It could be sunny and warm one day, then Sunny with temperatures over 100 degrees the next. 
+Do you practice outdoors and run the risk of heat exhaustion or do you opt for the cool confines of the air conditioned indoor facility, where the hard turf increases injury chances. 
+
+Maybe the wind speed is such that it will reduce the risk of heat exhaustion. The choice is yours.
+
+Or perhaps it’s sunny and windy? The wind reduces the effectiveness of QB throwing accuracy/kicking accuracy drills but also increase the effectiveness of throwing power/kicking power.
+
+Or it might be rainy. Practice outdoors and see an increase to awareness as players are forced to focus a bit more. Carrying and Catching drills are accented as well.
+
+Of course, you don’t want players getting sick though…
+
+-Injury Engine- 
+
+Training Camp features a fully integrated injury engine with QB specific injury types. Most injuries you’ll encounter are minor causing a player to miss a few days of camp (where there progress begins to decrement due to missing valuable camp time) but in some instances severe injuries do occur. 
+
+If the injury causes a player to miss an extended amount of time carrying over beyond the 14 days of training camp, the injury will be displayed as such when you load your franchise within Madden. 
+
+Yes, players can be hurt for the entire season in Training Camp. 
+
+This goes for both human teams as well as CPU teams.
+
+When running CPU simulation the CPU engine simulates not only serious injuries that carry over beyond training camp but it also calculates how many days a player was active for camp (due to injury) and adjusts that players gain/losses accordingly. The .txt file generated for CPU simulation shows who missed days from camp for each team, and how many days they missed since this effects player progression.
+
+Age attribute declination-
+This is run once at the onset of camp and decrements players physical attributes according to their age. For example, a 33 yr old WR might loose 2-3 points in speed during this process. 
+
+What this means is that during Training Camp, he could focus on speed training and come out of camp back at what he was before age declination was run. Never better though. Once a player hits a certain age, his speed, agility, and acceleration simply won’t get any higher. 
+
+Players will have to work to maintain their edge.
+
+DDP- (Dynamic Daily Processing)
+Yes, I made this up. What it means is that each day of camp you’ll dynamically see each player’s progression. If the daily processing function determines that an attribute is increased/decreased beyond its original it’ll be reflected by color. Red means a decrease below the original, blue an increase.
+
+-CPU Simulation-
+
+When run, the utility simulate training camp on all CPU owned teams including full injury integration. Prior to executing it compiles your Tune.txt file and uses those ratings when determining gains. 
+
+So human and CPU teams make use of the same Tune.txt file. If you increase something in the Tune.txt you’ll see it reflected by all teams. Not just human teams…
+
+-Off-season Conditioning:
+
+This utility simulates players showing up to Training Camp in better/worse shape than when the previous season ended. 
+Head Coach Motivation plays a role in determining gain/loss frequency as well as to what degree those changes are.
+Other factors influencing a change in weight are:
+-Age
+-Position
+-Current weight
+
+Older players will have more of a tendency to put on weight than younger players. 
+The effects of weight changes have a ripple effect on that player. For instance, an OL puts on 12 lbs in the off-season. His speed may decrease along with agility and acceleration. His injury rating may dip a bit as might his jumping ability. His run blocking will actually increase due to mass gained.
+
+On the other hand, say an OL looses 10 lbs. He might see a boost to acceleration or agility, perhaps speed. His pass blocking might increase due to less weight being carried around.
+
+Each player’s attributes are referenced against that positions MEAN or average. So an OL with a 31 speed who looses 10 lbs stands a higher chance of seeing a slight gain in speed than an OL with a 50 speed. (Presuming the OL Speed MEAN was 50)
+
+-Off-season Scenario mode:
+This mode, if enabled, requires the user to make certain decisions based on events that transpire.
+
+
+-WHEN DO I RUN OFF-SEASON CONDITIONING AND/OR TRAINING CAMP?
+
+-Run BOTH utilities? 
+
+Just prior to any pre-season week one games being played (be sure to skip the mini-camp option when prompted within Madden) click on the ‘Franchise’ toolstrip and select ‘Off-Season Conditioning / Training Camp’
+
+The first screen you’ll see is Off-Season Conditioning. This utility simulates players showing up to camp in better/worse shape than when the previous season ended and is based in part on your head coaches Motivation rating, the players age and position and their current weight. The frequency of weight gains has been increased in this release. The amount gained has been decreased. 
+
+The reasoning is that it makes training camp more fun if some of your players are a little overweight reporting to camp. This way you can try ‘whipping them into shape’
+
+To run Off-season Conditioning on ALL CPU teams simply click the ‘Sim CPU teams’ toolstrip. A .txt report of each teams gains/losses can be found in the applications install directory within the Conditioning folder.
+
+Now run it for the human controlled teams by checking the box and selecting your team from the drop down. 
+
+You’re now ready to proceed to Training Camp.
+
+Click the green ‘Proceed’ button, or if you close out of the Off-season Conditioning screen you can re-enter and select ‘Skip’ to be taken directly to Training Camp. 
+
+On the toolstrip within Training Camp you’ll see ‘Sim CPU camps’ option. Select this now and Training Camp will be processed for all teams. Be patient during this process. It may take a few seconds.
+
+When that completes simply select your team from the drop down and follow the on screen prompts.
+
+-Off-season Conditioning:
+
+This utility simulates players showing up to Training Camp in better/worse shape than when the previous season ended. 
+Head Coach Motivation plays a role in determining gain/loss frequency as well as to what degree those changes are.
+Other factors influencing a change in weight are:
+-Age
+-Position
+-Current weight
+
+Older players will have more of a tendency to put on weight than younger players. 
+The effects of weight changes have a ripple effect on that player. For instance, an OL puts on 12 lbs in the off-season. His speed may decrease along with agility and acceleration. His injury rating may dip a bit as might his jumping ability. His run blocking will actually increase due to mass gained.
+
+On the other hand, say an OL looses 10 lbs. He might see a boost to acceleration or agility, perhaps speed. His pass blocking might increase due to less weight being carried around.
+
+Each player’s attributes are referenced against that positions MEAN or average. So an OL with a 31 speed who looses 10 lbs stands a higher chance of seeing a slight gain in speed than an OL with a 50 speed. (Presuming the OL Speed MEAN was 50)
+
+-Off-season Scenario mode:
+This mode, if enabled, requires the user to make certain decisions based on events that transpire.
+
+
+-Run Off-Season Conditioning only?
+
+Just prior to any pre-season week one games being played (be sure to skip the mini-camp option when prompted within Madden) click on the ‘Franchise’ toolstrip and select ‘Off-Season Conditioning / Training Camp’
+
+The first screen you’ll see is Off-Season Conditioning. This utility simulates players showing up to camp in better/worse shape than when the previous season ended and is based in part on your head coaches Motivation rating, the players age and position and their current weight. The frequency of weight gains has been increased in this release. The amount gained has been decreased. 
+
+To run Off-season Conditioning on ALL CPU teams simply click the ‘Sim CPU teams’ toolstrip. A .txt report of each teams gains/losses can be found in the applications install directory within the Conditioning folder.
+
+Now run it for the human controlled teams by checking the box and selecting your team from the drop down. 
+
+Close out of the Off-season Conditioning screen and save your franchise upon leaving Madden Amp.
+
+-Run Training Camp only?
+
+Just prior to any pre-season week one games being played (be sure to skip the mini-camp option when prompted within Madden) click on the ‘Franchise’ toolstrip and select ‘Off-Season Conditioning / Training Camp’
+
+The first screen you’ll see is Off-Season Conditioning.
+
+Select the ‘Skip’ button to proceed to Training Camp.
+
+On the toolstrip within Training Camp you’ll see ‘Sim CPU camps’ option. Select this now and Training Camp will be processed for all teams. Be patient during this process. It may take a few seconds.
+
+When that completes simply select your team from the drop down and follow the on screen prompts.
+
+
+-ACCESS AND USAGE:
+
+Off-season Conditioning / Training Camp and the Tune.txt GUI links are now located under the ‘Franchise’ toolstrip. 
+
+**NOTE Training Camp is a fourteen day stage based utility. Daily training time can be allotted either by positional grouping or by individual allotments; the latter of which takes longer. 
+
+I’ve designed Training Camp in such a way that at ANY time while on the Player Allotment screen you can save your Training Camp progress by simply closing the Training Camp window and saving your franchise upon leaving Madden Amp. 
+
+All Training Camp progress (in terms of allotments) is dynamically saved each time you make a change. 
+
+**NOTE: IF YOU EXIT TRAINING CAMP ON A SCREEN OTHER THAN PLAYER ALLOTMENT YOU’LL NEED TO RESTART CAMP. ALSO, DO NOT MAKE OTHER CHANGES TO YOUR FRANCHISE FILE WHILE RUNNING TRAINING CAMP.
+
+-Tune.txt GUI:
+
+Located under the ‘Franchise’ toolstrip is the link to access the GUI that allows you to modify the Tune.txt file that governs the rate at which player’s progress in various drills/activites.
+
+Each time you access the GUI it creates a backup of your current Tune.txt file w/out overwriting anything.
+
+The first column defines the type of activity and cannot be edited. The second column defines the activities name and can be edited freely. The third column contains the activities description and can also be edited freely.
+
+The remaining columns define the value that the Training Camp engine uses when running its daily processing function. The values can be negative or positive and can also contain decimals. 
+
+Use the values in the default Tune.txt as a starting point. 
+
+**The Tune.txt values for each activity are representing what 1% would do if allocated as such during player allotment. The values in the Tune.txt file are multiplied by the ‘Rank’ or % assigned to the player for the activity.
+
+The Inj_Chance column denotes the ‘Risk’ value associated with the particular activity. The higher the rating the more dangerous the activity. 
+
+**SAVE the Tune.txt frequently when making multiple changes to the file at one time.
+
+Detailed look at the makeup of DDP listed in the order the events are proceesed by the engine...
+
+-Coaching Staff Positional Attributes: 
+Each of your four coach's are integrated into Training Camp, with each's Positional player attributes used to determine a variable I called PCM (Positional Coaching Modifier) 
+
+For Offensive Players this involves the Head Coach and Offensive Coordinator. For defensive players Head Coach and defensive coordinator and for kickers it's the head coach and special teams coach. 
+
+The PCM is then applied to each Positional Drill to simulate the effect coaching has on positional drills. 
+
+-Daily Morale Modifier:
+There's a Daily Morale Modifier that is determined prior to any daily processing. This takes creates a variable consisting of the head coach and applicable coordinator's Chemistry ratings along with the total Downtime (from user input via the Downtime coaching slider) and any unassigned player allocations which are at this point converted to downtime for the current player. 
+
+This variable then modifies the player's current morale AFTER daily processing, to simulate how the coaching staff influenced team morale throughout the day.
+
+-Current Morale Effect:
+This involves the players current morale (prior to the Daily Morale modifier being applied) and also factors in any unassigned time for this player. This variable simulates the player's effort for each task assigned that day.
+
+-Injured?:
+Next, DDP looks at the player's injury status. If injured the player is held out of activites for the day and his overall progress pool is decremented simulating his missing of a full day's workout. The Daily Morale Modifer is assigned and his injury status is updated. DDP then move onto the next player.
+
+-Healthy:
+If healthy enought to practice DDP now processes the players attribute pools. These pools are saved in external files and increment/decrement each time DDP is run. More on this later. 
+
+Other modifers influencing pool processing are:
+-Diet: Don't screw with your player's daily diets. They don't like it. Neither do their stomachs  )
+-Windspeed (reduces accuracy drills for QB's and K/P, but increases Throwing Power/Kicking power drills)
+-Heavy Rain awareness bonus. If you choose to hold practice outdoors in a heavy rain, a bonus is granted to each player's awareness pool to simulate his having to be more focused in the inclimate weather.
+-Catch Bonus is active when any rain is in the forecast and applies to any drill benefiting the Catching attribute. This is due to each player having to focus harder to catch the slick ball.
+-Toughness Bonus is applied to the toughness rating of each player for practicing in heavy rain.
+
+-Injury_Chance:
+The injury chance is a derivative of the cumulative sum of each positional drill's Injury_Chance tune.txt entry * the rank, or percent assigned to each drill. This increases the player's chance of suffering an injury.
+
+-Team Drills:
+Once done with Hell Week your team can start team practices. These practices help bolster player 'Awareness' as well as providing position specific attribute bonues. The Injury_Chance for each position EXCEPT QB's is incremented depending on the speed of the scrimmage; i.e. half-speed or live.
+
+-Film Study:
+Like Team Drills, once you're done with Hell Week you gain access to the Film Study coaching slider. The higher the slider, the more time spent in film study.
+The effect of film study is heavily dependent on experience with less experienced players benefiting more from it than veterans, but rest assured veterans do in fact benefit from film study; just to a lesser extent than less experienced players.
+
+-Injury Engine is processed:
+If the coach opted for an indoor practice each player's Injury_Chance is elevated to simulate the increase in injury frequency when playing on turf. The player's injury attribute is the prime player in determing injury chances though a player's toughness rating helps buffer this. The injury_chance comes into play here increasing the chances of an injury.
+
+
+Now the attribute pools are referencd to determine if an attribute gain occured.
+
+First though, DDP determines if a player weight change occured. The logic behind this is taken directly from OffSeason Conditioning; that being a change in player weight dynamically alters his physical appearance as well as simply changing his listed weight. As weight drops so does fat, while muscle increases. And vica versa.
+
+For each attribute the following formula is employed:
+
+Note: ValObject is the current player, SpdMean is the Speed average for all players at that position. spdPool is the running total of points for that players speed pool.
+
+AttributeDifferential = (1 - ((decimal)valObject.Speed / (SpdMean))
+
+Rating = (valObject.Speed + (AttributeDifferential * (spdPool))
+
+if (Rating > ValObject.Speed)
+{
+spd = 0;
+}
+valObject.Speed = Rating;
+
+If the player's initial speed is greater than the mean than a significant reduction is applied to the Attributedifferential. In addition, should a speed gain be determined to be true and the player is 29 or older DDP checks that player's new speed is less than or equal to the player's speed rating PRIOR to Age declination being processed at the onset of camp.
+
+If a gain was made the running pool total is reset to zero.
+

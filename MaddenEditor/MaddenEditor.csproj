@@ -176,6 +176,12 @@
     <Compile Include="Forms\ExportForm.Designer.cs">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrainingCampFAQ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainingCampFAQ.Designer.cs">
+      <DependentUpon>TrainingCampFAQ.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GameInjuryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -441,13 +447,19 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\background.png" />
+    <Content Include="Resources\TrainingCampFAQ.txt" />
     <Content Include="tune.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Forms\ExceptionDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainingCampFAQ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrainingCampFAQ.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrainingCampFormOptions.resx">
       <SubType>Designer</SubType>
