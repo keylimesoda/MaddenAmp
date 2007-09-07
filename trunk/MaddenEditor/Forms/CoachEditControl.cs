@@ -136,12 +136,12 @@ namespace MaddenEditor.Forms
                 //Was going to make the priorities not visible for 2007
                 //Then decided to just remove the tab since it isn't needed.
 
-                if (model.FileVersion == MaddenFileVersion.Ver2007)
+                if ((model.FileVersion == MaddenFileVersion.Ver2007) | (model.FileVersion == MaddenFileVersion.Ver2008))
                     tabcontrol.TabPages.RemoveByKey("tabPage2");
                     //priorityGroupBox.Visible = false;
-                
-                
-                if (model.FileVersion != MaddenFileVersion.Ver2007)
+
+
+                if ((model.FileVersion == MaddenFileVersion.Ver2007) | (model.FileVersion == MaddenFileVersion.Ver2008))
 
                     coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
 
@@ -150,7 +150,7 @@ namespace MaddenEditor.Forms
 
                 SortedList<int, CoachPrioritySliderRecord> priorites = null;
 
-                if (model.FileType != MaddenFileType.RosterFile && model.FileVersion != MaddenFileVersion.Ver2007)
+                if (model.FileType != MaddenFileType.RosterFile && model.FileVersion != MaddenFileVersion.Ver2007 && model.FileVersion != MaddenFileVersion.Ver2008)
                 {
                     priorites = model.CoachModel.GetCurrentCoachSliders();
                     int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
@@ -159,7 +159,7 @@ namespace MaddenEditor.Forms
 
 
                 if
-                    (!priorityMatches & model.FileVersion != MaddenFileVersion.Ver2007)
+                    (!priorityMatches & model.FileVersion != MaddenFileVersion.Ver2007 & model.FileVersion != MaddenFileVersion.Ver2008)
                 {
                     int index = 0;
                     foreach (CoachPrioritySliderRecord priorRecord in priorites.Values)

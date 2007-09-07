@@ -53,7 +53,9 @@ namespace MaddenEditor.Core
 		Ver2004,
 		Ver2005,	//Franchise contains 159 tables
 		Ver2006,	//Franchise contains 183 tables
-		Ver2007     //Franchise contains 185 tables
+        Ver2007,    //Franchise contains 185 tables
+        Ver2008	    //Franchise contains 191 tables       
+
 	}
 
 	/// <summary>
@@ -95,14 +97,20 @@ namespace MaddenEditor.Core
 		public const int FREE_AGENT_TEAM_ID = 1009;
 		public const int MADDEN_ROS_2006_TABLE_COUNT = 11;
 		public const int MADDEN_ROS_2007_TABLE_COUNT = 10;
+        public const int MADDEN_ROS_2008_TABLE_COUNT = 10;
+
 		public const int MADDEN_FRA_2004_TABLE_COUNT = 136;
 		public const int MADDEN_FRA_2005_TABLE_COUNT = 159;
 		public const int MADDEN_FRA_2006_TABLE_COUNT = 183;
 		public const int MADDEN_FRA_2007_TABLE_COUNT = 185;
+        public const int MADDEN_FRA_2008_TABLE_COUNT = 191;
+
 		public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
 		public const int MADDEN_ROS_2005_TEAM_FIELD_COUNT = 115;
 		public const int MADDEN_ROS_2006_TEAM_FIELD_COUNT = 111;
 		public const int MADDEN_ROS_2007_TEAM_FIELD_COUNT = 110;
+        public const int MADDEN_ROS_2008_TEAM_FIELD_COUNT = 110;
+
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
@@ -227,16 +235,16 @@ namespace MaddenEditor.Core
 			teamEditingModel = new TeamEditingModel(this);
 			coachEditingModel = new CoachEditingModel(this);
 
-			if (fileType == MaddenFileType.FranchiseFile)
-			{
-				//Get the SalaryCapRecord for its info
-				salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
-				if (FileVersion == MaddenFileVersion.Ver2006)
-				{
-					//Get the only GameOptions Record for its info
-					gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
-				}
-			}
+            if (fileType == MaddenFileType.FranchiseFile)
+            {
+                //Get the SalaryCapRecord for its info
+                salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
+                if (FileVersion == MaddenFileVersion.Ver2006)
+                {
+                    //Get the only GameOptions Record for its info
+                    gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
+                }
+            }
 		}
 		#endregion
 
@@ -442,15 +450,20 @@ namespace MaddenEditor.Core
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
 				Trace.WriteLine("Table count in " + fileName + " = " + tableCount);
 				//Set the file type of this loaded file
-				if (tableCount == MADDEN_ROS_2006_TABLE_COUNT || tableCount == MADDEN_ROS_2007_TABLE_COUNT)
+                if (tableCount == MADDEN_ROS_2006_TABLE_COUNT || tableCount == MADDEN_ROS_2007_TABLE_COUNT)
 				{
 					fileType = MaddenFileType.RosterFile;
 					//For roster files that aren't 2007 we will distinguish them later
 					//2007 doesn't contain the Coach slider settings
-					if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)
+                    if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)
 					{
 						fileVersion = MaddenFileVersion.Ver2007;
 					}
+                    //else if (tableCount == MADDEN_ROS_2008_TABLE_COUNT)
+                    //{
+                    //    fileVersion = MaddenFileVersion.Ver2008;
+                    //}
+
 				}
 				else
 				{
@@ -458,6 +471,9 @@ namespace MaddenEditor.Core
 					Trace.WriteLine("Franchise contains " + tableCount + " tables");
 					switch (tableCount)
 					{
+                        case MADDEN_FRA_2008_TABLE_COUNT:
+                            fileVersion = MaddenFileVersion.Ver2008;
+                            break;
 						case MADDEN_FRA_2007_TABLE_COUNT:
 							fileVersion = MaddenFileVersion.Ver2007;
 							break;
@@ -480,8 +496,8 @@ namespace MaddenEditor.Core
 				tableOrder.Add(INJURY_TABLE, -1);
 				tableOrder.Add(COACH_TABLE, -1);
                 tableOrder.Add(DEPTH_CHART_TABLE, -1);
-				//We don't want to load this table in if its 2007 roster file
-				if (fileVersion != MaddenFileVersion.Ver2007 && fileType != MaddenFileType.RosterFile)
+				//We don't want to load this table in if its 2007/2008 roster file
+                if (fileVersion != MaddenFileVersion.Ver2007 && fileVersion != MaddenFileVersion.Ver2008 && fileType != MaddenFileType.RosterFile)
 				{
 					tableOrder.Add(COACH_SLIDER_TABLE, -1);
 				}
@@ -558,9 +574,10 @@ namespace MaddenEditor.Core
 								break;
 							case MADDEN_ROS_2007_TEAM_FIELD_COUNT:
 								fileVersion = MaddenFileVersion.Ver2007;
-								break;
-							default:
-								break;
+								break;                                
+                            //default:
+                            //    fileVersion = MaddenFileVersion.Ver2008;
+                            //    break;
 						}
 					}
 

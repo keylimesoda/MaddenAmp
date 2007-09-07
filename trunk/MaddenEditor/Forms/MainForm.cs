@@ -889,5 +889,12 @@ namespace MaddenEditor.Forms
 
 			teamEditControl.InitialiseUI();
 		}
+
+        private void trainingCampFAQToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainingCampFAQ form = new TrainingCampFAQ(model);
+            form.Show();
+
+        }
     }
 }

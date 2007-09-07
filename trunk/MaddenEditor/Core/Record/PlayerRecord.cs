@@ -136,6 +136,8 @@ namespace MaddenEditor.Core.Record
         public const string PLAYER_VALUE = "PVAL";
 		public const string PLAYER_ROLE = "PROL";
 
+        //2008 fields
+        public const string PLAYER_WEAPONS = "PRL2";
 
 		//Salary constants
 		public const string SALARY_YEAR_0 = "PSA0";
