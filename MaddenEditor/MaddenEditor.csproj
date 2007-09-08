@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1717,0414</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -447,7 +448,7 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="app.config" />
     <None Include="Resources\background.png" />
     <Content Include="Resources\TrainingCampFAQ.txt" />
     <Content Include="tune.txt">
