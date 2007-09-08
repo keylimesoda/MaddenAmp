@@ -330,7 +330,7 @@ namespace MaddenEditor.Core
                 if (mfv == MaddenFileVersion.Ver2008)
                 {
 
-                    return 0.12 * Math.Exp(-132.4476238 + 9.8668569 * EOVR - 0.310497039 * Math.Pow(EOVR, 2) +
+                    return 0.8 * Math.Exp(-132.4476238 + 9.8668569 * EOVR - 0.310497039 * Math.Pow(EOVR, 2) +
                     0.00499479989 * Math.Pow(EOVR, 3) - 0.0000417310844 * Math.Pow(EOVR, 4) +
                     1.668293269 * Math.Pow(10, -7) * Math.Pow(EOVR, 5) -
                     2.34097 * Math.Pow(10, -10) * Math.Pow(EOVR, 6));
@@ -338,6 +338,7 @@ namespace MaddenEditor.Core
 
                 }
 			{
+                //.364
 				return 0.364 * Math.Exp(-77.4609 + 30.4199 * temp - 4.32888 * Math.Pow(temp, 2) + 0.280661 * Math.Pow(temp, 3) - 0.00682204 * Math.Pow(temp, 4));
 			}
 		}
