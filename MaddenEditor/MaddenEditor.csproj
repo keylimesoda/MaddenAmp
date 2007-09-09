@@ -433,6 +433,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="football.ico" />
+    <None Include="Resources\background.png" />
     <None Include="Uniform Mappings.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -448,8 +449,6 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
-    <None Include="app.config" />
-    <None Include="Resources\background.png" />
     <Content Include="Resources\TrainingCampFAQ.txt" />
     <Content Include="tune.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

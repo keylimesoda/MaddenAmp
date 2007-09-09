@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT type="Advanced Installer" CreateVersion="4.6.3" version="4.7.1" modules="enterprise" RootPath="." Language="en">
+<DOCUMENT type="Advanced Installer" CreateVersion="4.6.3" version="5.0" modules="enterprise" RootPath="." Language="en">
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_MINDOTNETVERSION" Value="2.0"/>
     <ROW Property="AI_MINXRESOLUTION" Value="800"/>
@@ -13,10 +13,10 @@
     <ROW Property="BannerBitmap" Value="default_banner.bmp" Type="1"/>
     <ROW Property="DialogBitmap" Value="default_dialog.bmp" Type="1"/>
     <ROW Property="Manufacturer" Value="Tributech" ValueLocId="*"/>
-    <ROW Property="ProductCode" Value="1033:{C8AAB4E6-02E9-4E5B-AD87-D3E5FE8FFA1C} "/>
+    <ROW Property="ProductCode" Value="1033:{A007E733-1157-42B4-ACD3-7446C8888677} "/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="MaddenAmp" ValueLocId="*"/>
-    <ROW Property="ProductVersion" Value="3.1"/>
+    <ROW Property="ProductVersion" Value="3.5"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{75E38423-B7FD-4EF3-926D-B8BE7D79FC6B}"/>
   </COMPONENT>
@@ -50,6 +50,9 @@
     <ROW File="tune.txt" Component_="tune.txt" FileName="tune.txt" Attributes="0" SourcePath="MaddenEditor\bin\Release\Conditioning\TrainingCamp\tune.txt" SelfReg="false" Sequence="1"/>
     <ROW File="tune.txt_1" Component_="LumenWorks.Framework.IO.pdb" FileName="tune.txt" Attributes="0" SourcePath="MaddenEditor\bin\Release\tune.txt" SelfReg="false" Sequence="5"/>
   </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
+    <ROW BuildName="DefaultBuild" BuildOrder="1" BuildType="1" PackageName="MaddenAmp-[|ProductVersion]-Setup" InstallationType="4" CabsLocation="1" PackageType="1" FilesInsideExe="true" ExeIconPath="MaddenEditor\football.ico" ExtractionFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\install"/>
+  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
     <ROW Path="&lt;ui.ail&gt;"/>
     <ROW Path="&lt;ui_en.ail&gt;"/>
@@ -62,7 +65,10 @@
     <ROW Fragment="UI.aip" Path="&lt;UI.aip&gt;"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiAppSearchComponent">
-    <ROW Property="AI_DOTNETSEARCH" Signature_="AI_DotNetSearchSgn"/>
+    <ROW Property="AI_DOTNET10_SEARCH" Signature_="AI_DotNet10SearchSgn"/>
+    <ROW Property="AI_DOTNET11_SEARCH" Signature_="AI_DotNet11SearchSgn"/>
+    <ROW Property="AI_DOTNET20_SEARCH" Signature_="AI_DotNet20SearchSgn"/>
+    <ROW Property="AI_DOTNET30_SEARCH" Signature_="AI_DotNet30SearchSgn"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiBinaryComponent">
     <ROW Name="aicustact.dll" SourcePath="&lt;aicustact.dll&gt;"/>
@@ -114,12 +120,9 @@
     <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
     <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
   </COMPONENT>
-  <COMPONENT cid="caphyon.advinst.msicomp.MsiDrLocatorComponent">
-    <ROW Signature_="AI_DotNetSearchSgn" Path="[SystemFolder]" Depth="0"/>
-  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="SystemFolder_msiexec.exe" SourcePath="&lt;uninstall.ico&gt;" Index="0"/>
-    <ROW Name="controlPanelIcon.exe" SourcePath="..\maddeneditor\MaddenEditor\football.ico" Index="0"/>
+    <ROW Name="controlPanelIcon.exe" SourcePath="MaddenEditor\football.ico" Index="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="740"/>
@@ -131,15 +134,14 @@
     <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="740"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
-    <ROW Condition="AI_DOTNETSEARCH" Description="[ProductName] can not be installed on systems with .NET Framework version smaller than [AI_MINDOTNETVERSION]"/>
+    <ROW Condition="(AI_DOTNET20_SEARCH = &quot;#1&quot;) OR (AI_DOTNET30_SEARCH = &quot;#1&quot;)" Description="[ProductName] can not be installed on systems with .NET Framework version smaller than [AI_MINDOTNETVERSION]" DescriptionLocId="AI.LaunchCondition.DotNET"/>
     <ROW Condition="ScreenX &gt;= 800 AND ScreenY &gt;= 600" Description="[ProductName] can not be installed on systems with screen resolution smaller than [AI_MINXRESOLUTION] x [AI_MINYRESOLUTION]."/>
   </COMPONENT>
-  <COMPONENT cid="caphyon.advinst.msicomp.MsiMediaComponent">
-    <ATTRIBUTE name="CabsLocation" value="1"/>
-    <ATTRIBUTE name="Compress" value="1"/>
-    <ATTRIBUTE name="InstallationType" value="4"/>
-    <ATTRIBUTE name="Package" value="6"/>
-    <ATTRIBUTE name="PackageName" value="MaddenAmp-[|ProductVersion]-Setup"/>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiRegLocatorComponent">
+    <ROW Signature_="AI_DotNet10SearchSgn" Root="2" Key="SOFTWARE\Microsoft\.NETFramework\policy\v1.0" Name="3705" Type="2"/>
+    <ROW Signature_="AI_DotNet11SearchSgn" Root="2" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v1.1.4322" Name="Install" Type="2"/>
+    <ROW Signature_="AI_DotNet20SearchSgn" Root="2" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727" Name="Install" Type="2"/>
+    <ROW Signature_="AI_DotNet30SearchSgn" Root="2" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.0\Setup" Name="InstallSuccess" Type="2"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
     <ROW Shortcut="MaddenEditor.exe" Directory_="SHORTCUTDIR" Name="Madden~1.exe|MaddenEditor.exe" Component_="MaddenEditor.exe" Target="[#MaddenEditor.exe]" Description="MaddenEditor.exe" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
@@ -147,15 +149,14 @@
     <ROW Shortcut="Readme" Directory_="SHORTCUTDIR" Name="Readme" Component_="readme.rtf" Target="[#readme.rtf]" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
     <ROW Shortcut="Uninstall" Directory_="SHORTCUTDIR" Name="Uninst~1|Uninstall" Component_="LumenWorks.Framework.IO.dll" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFolder_msiexec.exe" IconIndex="0" ShowCmd="1"/>
   </COMPONENT>
-  <COMPONENT cid="caphyon.advinst.msicomp.MsiSignatureComponent">
-    <ROW Signature="AI_DotNetSearchSgn" FileName="mscoree.dll" MinVersion="2.0"/>
-  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiUpgradeComponent">
-    <ROW UpgradeCode="UpgradeCode" VersionMax="ProductVersion" Attributes="1025"/>
-    <ROW UpgradeCode="UpgradeCode" VersionMin="ProductVersion" Attributes="2"/>
+    <ROW UpgradeCode="[|UpgradeCode]" VersionMax="[|ProductVersion]" Attributes="1025" ActionProperty="OLDPRODUCTS"/>
+    <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
-    <ROW DisplayName=".NET Framework ver 2.0" SetupFileUrl="http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&amp;DisplayLang=en" Location="2" ExactSize="0" TargetOS="2" SearchType="0" SearchString="[SystemFolder]mscoree.dll" VerMin="2.0" Sequence="1"/>
-    <ATTRIBUTE name="ExtractionFolder" value="[AppDataFolder][|Manufacturer]\[|ProductName]\install"/>
+    <ROW PrereqKey="0" DisplayName=".NET Framework ver 2.0" SetupFileUrl="http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&amp;DisplayLang=en" Location="2" ExactSize="0" Operator="0" Sequence="1"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.PreReqSearchComponent">
+    <ROW Prereq="0" SearchType="0" SearchString="[SystemFolder]mscoree.dll" VerMin="2.0" Order="1"/>
   </COMPONENT>
 </DOCUMENT>
