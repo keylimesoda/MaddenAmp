@@ -36,6 +36,8 @@ namespace MaddenEditor.Core.Record
 		
 		public const string TEAM_ID = "TGID";
 		public const string PLAYER_ID = "PGID";
+        // New addition, 
+        public const string NFL_ID = "POID";
 		public const string COLLEGE_ID = "PCOL";
 		public const string AGE = "PAGE";
 		public const string JERSEY_NUMBER = "PJEN";
@@ -445,6 +447,18 @@ namespace MaddenEditor.Core.Record
 				SetField(PLAYER_ID, value);
 			}
 		}
+
+        public int NFLID
+        {
+            get
+            {
+                return GetIntField(NFL_ID);
+            }
+            set
+            {
+                SetField(NFL_ID, value);
+            }
+        }
 
 		public int CollegeId
 		{

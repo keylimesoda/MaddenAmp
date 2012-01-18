@@ -66,17 +66,25 @@ namespace MaddenEditor.Forms
 
             try
             {
+                // For some reason 2005 is giving jets,colts head coach
+                // an out of range skin color to start with, giving an error
+                // so adding a temp fix for it.
+                if (record.SkinColor > 4)
+                    record.SkinColor = 3;
+
                 //Load Coach General info
                 coachesName.Text = record.Name;
 
                 // TO FIX not working right for 2007
                 // Shows Unemployed coaches and lists Positions as Head Coaches etc...
-                // While team field is blank
+                // While team field is blank.  1023 = unemployed.
                 coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
-
+                
                 TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
 
                 cbTeamCombo.SelectedItem = (object)team;
+                if (record.TeamId == 1023)
+                    cbTeamCombo.Text = "(Unemployed)";
 
                 coachAge.Value = (int)record.Age;
                 cbSkinColor.SelectedIndex = (int)record.SkinColor;
@@ -289,8 +297,13 @@ namespace MaddenEditor.Forms
             isInitialising = true;
             foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
             {
-                cbTeamCombo.Items.Add(rec);
-                filterTeamComboBox.Items.Add(rec);
+                // Only add these to lists for actual teams.  Gets rid of AFC,NFC,Free Agents
+                // which gives a "no record" anyway.
+                if (rec.GetIntField("TGID") < 1009)
+                {
+                    cbTeamCombo.Items.Add(rec);
+                    filterTeamComboBox.Items.Add(rec);
+                }
             }
 
             filterPositionComboBox.SelectedIndex = 0;

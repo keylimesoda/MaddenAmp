@@ -67,7 +67,7 @@ namespace MaddenEditor.Core
 		public TradeDownForm tradeDownForm;
 		public DraftForm df;
 
-		// futureTradedPicks[fromTeam][round] = toTeam;
+        // futureTradedPicks[fromTeam][round] = toTeam;
 		public Dictionary<int, Dictionary<int, int>> futureTradedPicks = new Dictionary<int, Dictionary<int, int>>();
 
 		// We ran into problems with seeding of random numbers.  Let's create a single
@@ -90,6 +90,242 @@ namespace MaddenEditor.Core
 		 * 
 		 * depthChartValues[teamId][PositionId][Depth] */
 		private List<List<List<double>>> depthChartValues;
+
+        // Adding values for coaches scouting ability
+        // teamscout[teamID][coachposition][coachrecord]
+        public static bool enhance = false;
+        public List<List<List<CoachRecord>>> teamscout = new List<List<List<CoachRecord>>>();
+        
+        // Setup each team's coaching staff.
+        public void InitCoachScouting()
+        {
+            
+            for (int i = 0; i< 32; i++)
+            {
+                teamscout.Add(new List<List<CoachRecord>>());
+                
+                for (int j = 0; j < 4; j++)
+                {
+                    teamscout[i].Add(new List<CoachRecord>());
+                }
+            }
+            // Initialize each team's scouting ability.
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+            {
+                CoachRecord coach = (CoachRecord)rec;
+
+                // Is this a team coach
+                if (coach.TeamId >= 0 && coach.TeamId <= 31)
+                {
+                    // Add to our list of coaches
+                    teamscout[coach.TeamId][coach.Position].Add(coach);
+                    
+                }
+                    
+            }
+        }
+
+        public void customrookies()
+        {
+            List<PlayerRecord> customdc = new List<PlayerRecord>();
+            int ovrmin = 40;
+            int ovrmax = 85;
+            int impact = rand.Next(5, 10);
+            int grade_a = rand.Next(10, 20);
+            int grade_b = 48 - (impact + grade_a);
+            int grade_c = 128 - (impact + grade_a + grade_b);
+            int grade_d = 192 - (impact + grade_a + grade_b + grade_c);
+            int grade_f = 257 - (impact + grade_a + grade_b + grade_c + grade_d);
+            int tempovr = 0;
+
+
+
+            // Generate customized draft class.
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                PlayerRecord player = (PlayerRecord)rec;
+                if (player.YearsPro == 0 && player.FirstName != "New" && player.LastName != "Player")
+                    customdc.Add(player);
+            }
+
+            // Sort the class from lowest OVR to highest, helps with not having
+            // several players of same position rated alike.
+           
+            customdc.Sort(delegate(PlayerRecord p1, PlayerRecord p2)
+                { 
+                    return p1.Overall.CompareTo(p2.Overall);
+                }
+                );
+          
+            for (int i = 0; i < customdc.Count; i++)
+            {
+
+                if (impact == 0)
+                    ovrmax = 79;
+                if (grade_f == 0)
+                    ovrmin = 51;
+
+                tempovr = rand.Next(ovrmin, ovrmax);
+                                
+                if (customdc[i].Overall != tempovr)
+                {
+                    // Change the OVR of the player
+                    // make separate method for this?
+                    customdc[i] = customOVR(customdc[i], tempovr);
+
+                }
+
+                if (tempovr >= 80 && tempovr <= 85)
+                    impact--;
+                if (tempovr >= 76 && tempovr <= 79)
+                    grade_a--;
+                if (tempovr >= 68 && tempovr <= 75)
+                    grade_b--;
+                if (tempovr >= 60 && tempovr <= 67)
+                    grade_c--;
+                if (tempovr >= 51 && tempovr <= 59)
+                    grade_d--;
+                if (tempovr <= 50)
+                    grade_f--;
+
+
+            }
+
+        }
+
+        // change to work with rookie record
+        public PlayerRecord customOVR(PlayerRecord changeOVR, int newovr)
+        {
+            decimal tempovr = Convert.ToDecimal(newovr - 28.0);
+            decimal totalchange = tempovr;
+            decimal thischange = 0;
+            int change = rand.Next(1, 100);
+            int parts = rand.Next(1, 3);
+            switch (changeOVR.PositionId)
+            {
+                case (int)MaddenPositions.QB:
+                    // make type changes 70% of the values
+                    // and other ones, 30% total, to a max of 3 changes.
+                    // based on random "parts"
+                    if (change >= 1 && change <= 33)
+                    {
+                        changeOVR.Tendancy = 1;
+                        // scrambler...
+                        // to change SPD,AGI,BTK,ACC
+                        // speed is around 12% of his total pts. random 9-15% for rookie topped
+                        // out at 85 ovr, speed could be as much as 93.
+                        // need to keep track of points changed...
+                        thischange = tempovr * (Convert.ToDecimal(rand.Next(9, 14)) + Convert.ToDecimal(rand.NextDouble())) / 100;
+                        totalchange -= System.Math.Ceiling(thischange);
+                        changeOVR.Speed = (int)System.Math.Floor((thischange * 5) + 50);
+
+                        thischange = tempovr * (Convert.ToDecimal(rand.Next(2, 3)) + Convert.ToDecimal(rand.NextDouble())) / 100;
+                        totalchange -= System.Math.Ceiling(thischange);
+                        changeOVR.BreakTackle = (int)System.Math.Floor((thischange * (decimal)12.5) + 50);
+
+                        thischange = tempovr * (Convert.ToDecimal(rand.Next(4, 5)) + Convert.ToDecimal(rand.NextDouble()) + (decimal).50) / 100;
+                        totalchange -= System.Math.Ceiling(thischange);
+                        changeOVR.Agility = (int)System.Math.Floor((thischange * (decimal)12.50) + 50);
+
+                        // acceleration doesn't seem to be part of the equation
+                        changeOVR.Acceleration = (int)rand.Next(65, 90);
+                        //totalchange = System.Math.Floor(totalchange);
+                        //Done with the big 3 for scrambler, now use whatever points are left
+                        //for the rest of his abilities.
+                        // we could be above where we should be for total if we
+                        // got top values for all random above, since we already
+                        // generated a random (3) we will use it to determine which 
+                        // stats lose out to make the difference...
+                        // of the points left thp=38% tha=45% awr=17% (max29%) max awr for rookie=80
+
+                        int awr = 0;
+                        int tha = 0;
+                        int thp = 0;
+                        if (parts == 1)
+                        {
+                            // THP takes the hit
+                            awr = rand.Next(5, 29);
+                            tha = rand.Next(30, 60);
+                            thp = 100 - awr - tha;
+                        }
+                        if (parts == 2)
+                        {
+                            // THA takes the hit
+                            awr = rand.Next(5, 29);
+                            thp = rand.Next(30,55);
+                            tha = 100 - awr - thp;
+                        }
+                        if (parts == 3)
+                        {
+                            // AWR takes hit...which stat goes first
+                            int first = rand.Next(1, 10);
+                            if (first <= 5)
+                            {
+                                thp = rand.Next(30, 55);
+                                tha = rand.Next(71 - thp, 94 - thp);
+                            }
+                            else
+                            {
+                                tha = rand.Next(30, 60);
+                                thp = rand.Next(71 - thp, 94 - thp);
+                            }
+                            awr = 100 - thp - tha;
+                        }
+
+                        thischange = totalchange * (Convert.ToDecimal(thp) + Convert.ToDecimal(rand.NextDouble())) / 100;
+                        //totalchange -= thischange;
+                        changeOVR.ThrowPower = (int)System.Math.Floor((thischange * 10 / (decimal)4.9) + 50);
+
+                        thischange = tempovr * (Convert.ToDecimal(tha) + Convert.ToDecimal(rand.NextDouble())) / 100;
+                        //totalchange -= thischange;
+                        changeOVR.ThrowAccuracy = (int)System.Math.Floor((thischange * 10 / (decimal)5.8) + 50);
+
+                        thischange = tempovr * (Convert.ToDecimal(awr) + Convert.ToDecimal(rand.NextDouble())) / 100;
+                        //totalchange -= thischange;
+                        changeOVR.Awareness = (int)System.Math.Floor((thischange * (decimal)2.5) + 50);
+                        changeOVR.Overall = changeOVR.CalculateOverallRating(changeOVR.PositionId, false);
+                    }
+        
+
+
+                    if (change >= 34 && change <= 67)
+                    {
+                        // pocket
+                    }
+                    if (change >= 68 && change <= 100)
+                    {
+                        // balanced
+                    }
+                    
+
+
+
+
+
+
+
+
+                    break;
+                    
+                case (int)MaddenPositions.HB:
+                    break;
+
+                case (int)MaddenPositions.FB:
+                    break;
+
+
+
+                    
+
+
+
+            }
+            return changeOVR;
+
+        }
+
+
+        
 
 		public void SavePicks(string saveFile)
 		{
@@ -1891,7 +2127,14 @@ namespace MaddenEditor.Core
 				ImportRookies(customclass);
 			}
 
+            // Insert custom rookie generation here.
+            if (enhance && customclass==null)
+            {
+                customrookies();
+            }
+                 
             string analysis = AnalyzeDraftClass(true);
+           
             bool repairRooks = false;
 
             if (recommendation <= 0)
@@ -1902,23 +2145,28 @@ namespace MaddenEditor.Core
                 {
                     return;
                 }
+
                 else if (action == 1)
                 {
                     repairRooks = true;
                 }
             }
-
+                
+            
+            
             dcr = new DepthChartRepairer(model, positionData);
 
-            draftConfigForm.ReportProgress(25);
+            //draftConfigForm.ReportProgress(25);
 			ExtractRookies();
-			draftConfigForm.ReportProgress(35);
+			//draftConfigForm.ReportProgress(35);
 
+            
             if (repairRooks)
             {
                 RepairRookies();
             }
-            draftConfigForm.ReportProgress(45);
+            
+            //draftConfigForm.ReportProgress(45);
 			//            DumpRookies();
 
 			depthChart = dcr.ReorderDepthCharts(true);
@@ -3098,7 +3346,10 @@ namespace MaddenEditor.Core
 				record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerId));
 
 				record.InitializeDictionaries(dcr.awarenessAdjust);
+                record.Player.Overall = rand.Next(01, 100);
 				rookies.Add(record.PlayerId, record);
+                
+                
 			}
 		}
 

@@ -896,5 +896,10 @@ namespace MaddenEditor.Forms
             form.Show();
 
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

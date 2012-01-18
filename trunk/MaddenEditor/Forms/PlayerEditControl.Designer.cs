@@ -37,6 +37,8 @@ namespace MaddenEditor.Forms
             this.playerDominantHand = new System.Windows.Forms.CheckBox();
             this.playerYearsPro = new System.Windows.Forms.NumericUpDown();
             this.playerJerseyNumber = new System.Windows.Forms.NumericUpDown();
+            this.label35 = new System.Windows.Forms.Label();
+            this.playerPortraitId = new System.Windows.Forms.NumericUpDown();
             this.positionComboBox = new System.Windows.Forms.ComboBox();
             this.teamComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -132,9 +134,7 @@ namespace MaddenEditor.Forms
             this.playerLeftTatooCombo = new System.Windows.Forms.ComboBox();
             this.label65 = new System.Windows.Forms.Label();
             this.playerFaceShape = new System.Windows.Forms.NumericUpDown();
-            this.label35 = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
-            this.playerPortraitId = new System.Windows.Forms.NumericUpDown();
             this.cbFaceId = new System.Windows.Forms.NumericUpDown();
             this.label63 = new System.Windows.Forms.Label();
             this.playerHairStyleCombo = new System.Windows.Forms.ComboBox();
@@ -437,11 +437,13 @@ namespace MaddenEditor.Forms
             this.label159 = new System.Windows.Forms.Label();
             this.label160 = new System.Windows.Forms.Label();
             this.STSeason = new System.Windows.Forms.ComboBox();
+            this.AddStat = new System.Windows.Forms.Button();
             this.playerSplitContainer.Panel1.SuspendLayout();
             this.playerSplitContainer.Panel2.SuspendLayout();
             this.playerSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerYearsPro)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerJerseyNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerPortraitId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerAge)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -477,7 +479,6 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.playerSpeed)).BeginInit();
             this.playerAppearancePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerFaceShape)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playerPortraitId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbFaceId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerRearShape)).BeginInit();
@@ -607,6 +608,8 @@ namespace MaddenEditor.Forms
             this.playerSplitContainer.Panel1.Controls.Add(this.playerDominantHand);
             this.playerSplitContainer.Panel1.Controls.Add(this.playerYearsPro);
             this.playerSplitContainer.Panel1.Controls.Add(this.playerJerseyNumber);
+            this.playerSplitContainer.Panel1.Controls.Add(this.label35);
+            this.playerSplitContainer.Panel1.Controls.Add(this.playerPortraitId);
             this.playerSplitContainer.Panel1.Controls.Add(this.positionComboBox);
             this.playerSplitContainer.Panel1.Controls.Add(this.teamComboBox);
             this.playerSplitContainer.Panel1.Controls.Add(this.label9);
@@ -952,7 +955,6 @@ namespace MaddenEditor.Forms
             // 
             // createPlayerButton
             // 
-            this.createPlayerButton.Enabled = false;
             this.createPlayerButton.Location = new System.Drawing.Point(29, 337);
             this.createPlayerButton.Name = "createPlayerButton";
             this.createPlayerButton.Size = new System.Drawing.Size(75, 23);
@@ -990,6 +992,28 @@ namespace MaddenEditor.Forms
             this.playerJerseyNumber.Size = new System.Drawing.Size(51, 20);
             this.playerJerseyNumber.TabIndex = 6;
             this.playerJerseyNumber.ValueChanged += new System.EventHandler(this.playerJerseyNumber_ValueChanged);
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(8, 296);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(52, 13);
+            this.label35.TabIndex = 51;
+            this.label35.Text = "Portrait Id";
+            // 
+            // playerPortraitId
+            // 
+            this.playerPortraitId.Location = new System.Drawing.Point(63, 292);
+            this.playerPortraitId.Maximum = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            0});
+            this.playerPortraitId.Name = "playerPortraitId";
+            this.playerPortraitId.Size = new System.Drawing.Size(53, 20);
+            this.playerPortraitId.TabIndex = 25;
+            this.playerPortraitId.ValueChanged += new System.EventHandler(this.playerExperiencePoints_ValueChanged);
             // 
             // positionComboBox
             // 
@@ -1995,9 +2019,7 @@ namespace MaddenEditor.Forms
             this.playerAppearancePage.Controls.Add(this.playerLeftTatooCombo);
             this.playerAppearancePage.Controls.Add(this.label65);
             this.playerAppearancePage.Controls.Add(this.playerFaceShape);
-            this.playerAppearancePage.Controls.Add(this.label35);
             this.playerAppearancePage.Controls.Add(this.label64);
-            this.playerAppearancePage.Controls.Add(this.playerPortraitId);
             this.playerAppearancePage.Controls.Add(this.cbFaceId);
             this.playerAppearancePage.Controls.Add(this.label63);
             this.playerAppearancePage.Controls.Add(this.playerHairStyleCombo);
@@ -2173,15 +2195,6 @@ namespace MaddenEditor.Forms
             this.playerFaceShape.Visible = false;
             this.playerFaceShape.ValueChanged += new System.EventHandler(this.playerFaceShape_ValueChanged);
             // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(368, 488);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(52, 13);
-            this.label35.TabIndex = 51;
-            this.label35.Text = "Portrait Id";
-            // 
             // label64
             // 
             this.label64.AutoSize = true;
@@ -2190,19 +2203,6 @@ namespace MaddenEditor.Forms
             this.label64.Size = new System.Drawing.Size(43, 13);
             this.label64.TabIndex = 55;
             this.label64.Text = "Face Id";
-            // 
-            // playerPortraitId
-            // 
-            this.playerPortraitId.Location = new System.Drawing.Point(437, 484);
-            this.playerPortraitId.Maximum = new decimal(new int[] {
-            8192,
-            0,
-            0,
-            0});
-            this.playerPortraitId.Name = "playerPortraitId";
-            this.playerPortraitId.Size = new System.Drawing.Size(53, 20);
-            this.playerPortraitId.TabIndex = 25;
-            this.playerPortraitId.ValueChanged += new System.EventHandler(this.playerExperiencePoints_ValueChanged);
             // 
             // cbFaceId
             // 
@@ -4098,6 +4098,7 @@ namespace MaddenEditor.Forms
             // statsPage
             // 
             this.statsPage.BackColor = System.Drawing.SystemColors.Control;
+            this.statsPage.Controls.Add(this.AddStat);
             this.statsPage.Controls.Add(this.statsyear);
             this.statsPage.Controls.Add(this.label152);
             this.statsPage.Controls.Add(this.CareerOLGroupBox);
@@ -4122,6 +4123,7 @@ namespace MaddenEditor.Forms
             this.statsyear.Name = "statsyear";
             this.statsyear.Size = new System.Drawing.Size(76, 21);
             this.statsyear.TabIndex = 130;
+            this.statsyear.SelectedIndexChanged += new System.EventHandler(this.statsyear_SelectedIndexChanged);
             // 
             // label152
             // 
@@ -5949,6 +5951,15 @@ namespace MaddenEditor.Forms
             this.STSeason.Size = new System.Drawing.Size(85, 21);
             this.STSeason.TabIndex = 0;
             // 
+            // AddStat
+            // 
+            this.AddStat.Location = new System.Drawing.Point(402, 499);
+            this.AddStat.Name = "AddStat";
+            this.AddStat.Size = new System.Drawing.Size(75, 23);
+            this.AddStat.TabIndex = 131;
+            this.AddStat.Text = "Add Stat";
+            this.AddStat.UseVisualStyleBackColor = true;
+            // 
             // PlayerEditControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5962,6 +5973,7 @@ namespace MaddenEditor.Forms
             this.playerSplitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.playerYearsPro)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerJerseyNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerPortraitId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerAge)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -6001,7 +6013,6 @@ namespace MaddenEditor.Forms
             this.playerAppearancePage.ResumeLayout(false);
             this.playerAppearancePage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerFaceShape)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playerPortraitId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbFaceId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerRearShape)).EndInit();
@@ -6539,5 +6550,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label label185;
         private System.Windows.Forms.Label label186;
         private System.Windows.Forms.NumericUpDown fgl;
+        private System.Windows.Forms.Button AddStat;
 	}
 }

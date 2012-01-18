@@ -53,9 +53,8 @@ namespace MaddenEditor.Core
 		Ver2004,
 		Ver2005,	//Franchise contains 159 tables
 		Ver2006,	//Franchise contains 183 tables
-        Ver2007,    //Franchise contains 185 tables
-        Ver2008	    //Franchise contains 191 tables       
-
+		Ver2007,    //Franchise contains 185 tables
+        Ver2008,    //Franchise contains 191 tables        
 	}
 
 	/// <summary>
@@ -86,15 +85,17 @@ namespace MaddenEditor.Core
 		K,
 		P
 	}
+   
 
 	/// <summary>
 	/// This class is the main application model class. It is responsible for
 	/// creating all editing models that are manipulated by the GUI.
 	/// </summary>
 	public class EditorModel
-	{
-		public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
+	{        
+        public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
+        public const int RETIRED_TEAM_ID = 1014;
 		public const int MADDEN_ROS_2006_TABLE_COUNT = 11;
 		public const int MADDEN_ROS_2007_TABLE_COUNT = 10;
         public const int MADDEN_ROS_2008_TABLE_COUNT = 10;
@@ -104,14 +105,16 @@ namespace MaddenEditor.Core
 		public const int MADDEN_FRA_2006_TABLE_COUNT = 183;
 		public const int MADDEN_FRA_2007_TABLE_COUNT = 185;
         public const int MADDEN_FRA_2008_TABLE_COUNT = 191;
-
-		public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
+       
+    	public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
 		public const int MADDEN_ROS_2005_TEAM_FIELD_COUNT = 115;
 		public const int MADDEN_ROS_2006_TEAM_FIELD_COUNT = 111;
 		public const int MADDEN_ROS_2007_TEAM_FIELD_COUNT = 110;
         public const int MADDEN_ROS_2008_TEAM_FIELD_COUNT = 110;
 
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
+        // adding Retired for team name
+        public const string RETIRED = "Retired";
 		public const string PLAYER_TABLE = "PLAY";
 		public const string TEAM_TABLE = "TEAM";
 		public const string INJURY_TABLE = "INJY";
@@ -179,10 +182,13 @@ namespace MaddenEditor.Core
 		private SalaryCapRecord salaryCapRecord = null;
 		private GameOptionRecord gameOptionsRecord = null;
 
+        public static int totalplayers = 0;
+                     
 		#region Constructors
 		public EditorModel(string filename, MainForm form)
 		{
-			view = form;
+            totalplayers = 0;
+            view = form;
 			this.fileName = filename;
 
 			// MADDEN DRAFT EDIT
@@ -471,10 +477,11 @@ namespace MaddenEditor.Core
 					Trace.WriteLine("Franchise contains " + tableCount + " tables");
 					switch (tableCount)
 					{
-                        case MADDEN_FRA_2008_TABLE_COUNT:
+
+						case MADDEN_FRA_2008_TABLE_COUNT:
                             fileVersion = MaddenFileVersion.Ver2008;
                             break;
-						case MADDEN_FRA_2007_TABLE_COUNT:
+                        case MADDEN_FRA_2007_TABLE_COUNT:
 							fileVersion = MaddenFileVersion.Ver2007;
 							break;
 						case MADDEN_FRA_2005_TABLE_COUNT:
@@ -496,8 +503,8 @@ namespace MaddenEditor.Core
 				tableOrder.Add(INJURY_TABLE, -1);
 				tableOrder.Add(COACH_TABLE, -1);
                 tableOrder.Add(DEPTH_CHART_TABLE, -1);
-				//We don't want to load this table in if its 2007/2008 roster file
-                if (fileVersion != MaddenFileVersion.Ver2007 && fileVersion != MaddenFileVersion.Ver2008 && fileType != MaddenFileType.RosterFile)
+				//We don't want to load this table in if its 2007 or roster file
+				if (fileVersion < MaddenFileVersion.Ver2007 && fileType != MaddenFileType.RosterFile)
 				{
 					tableOrder.Add(COACH_SLIDER_TABLE, -1);
 				}
@@ -574,12 +581,21 @@ namespace MaddenEditor.Core
 								break;
 							case MADDEN_ROS_2007_TEAM_FIELD_COUNT:
 								fileVersion = MaddenFileVersion.Ver2007;
-								break;                                
+
+								break;                            
+							default:
+								break;
+                            
                             //default:
                             //    fileVersion = MaddenFileVersion.Ver2008;
                             //    break;
-						}
+
+						}                      
+
 					}
+                    if (tableProps.Name.Equals(PLAYER_TABLE))
+                        totalplayers = tableProps.RecordCount;
+
 
 					//If we found a table we want to process, then store its
 					//order number in our tableOrder Hashmap
@@ -753,6 +769,7 @@ namespace MaddenEditor.Core
 			{
 				Trace.WriteLine(e.ToString());
 			}
-		}
+		}       
+
 	}
 }
