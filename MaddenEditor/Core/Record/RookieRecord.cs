@@ -49,6 +49,8 @@ namespace MaddenEditor.Core.Record
 
         private double power = 10;
 
+        public int changeovr;
+
         // Has structure ratings[TeamId][RatingType][Attribute]
         public Dictionary<int, Dictionary<int, Dictionary<int, double>>> ratings;
 
@@ -143,7 +145,9 @@ namespace MaddenEditor.Core.Record
                 {
                     backupNeed = math.need(values[team.TeamId][thePosition][(int)ValueType.WithProg], depthChartValues[numStarters]);
                 }
-            } else {
+            } 
+            else 
+            {
                 if (thePosition != (int)MaddenPositions.CB && thePosition != (int)MaddenPositions.WR)
                 {
                     if (depthChartValues.Count <= numStarters)

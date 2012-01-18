@@ -295,6 +295,7 @@ namespace MaddenEditor.Core
 
 			//Add the new record to our list of records
 			recordList.Add(newRecord);
+            
 
 			return newRecord;
 		}

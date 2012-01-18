@@ -1526,55 +1526,55 @@ namespace MaddenEditor.Forms
                 if (stat.Season != currentSeason)
                     continue;
 
-                passingYards += stat.PassingYards;
-                passingAttempts += stat.PassingAttempts;
-                rushingAttempts += stat.RushingAttempts;
-                fumbles += stat.Fumbles;
+                passingYards += stat.SeaPassYds;
+                passingAttempts += stat.SeaPassAtt;
+                rushingAttempts += stat.SeaRushAtt;
+                fumbles += stat.SeaFumbles;
 
                 if (top10passingYards.Count < 10)
                 {
-                    top10passingYards.Add(stat.PassingYards);
+                    top10passingYards.Add(stat.SeaPassYds);
                     top10passingYards.Sort();
                 }
-                else if (top10passingYards[0] < stat.PassingYards)
+                else if (top10passingYards[0] < stat.SeaPassYds)
                 {
-                    top10passingYards.Add(stat.PassingYards);
+                    top10passingYards.Add(stat.SeaPassYds);
                     top10passingYards.Sort();
                     top10passingYards.RemoveAt(0);
                 }
 
                 if (top10rushingYards.Count < 10)
                 {
-                    top10rushingYards.Add(stat.RushingYards);
+                    top10rushingYards.Add(stat.SeaRushYds);
                     top10rushingYards.Sort();
                 }
-                else if (top10rushingYards[0] < stat.RushingYards)
+                else if (top10rushingYards[0] < stat.SeaRushYds)
                 {
-                    top10rushingYards.Add(stat.RushingYards);
+                    top10rushingYards.Add(stat.SeaRushYds);
                     top10rushingYards.Sort();
                     top10rushingYards.RemoveAt(0);
                 }
 
                 if (top10rushingAttempts.Count < 10)
                 {
-                    top10rushingAttempts.Add(stat.RushingAttempts);
+                    top10rushingAttempts.Add(stat.SeaRushAtt);
                     top10rushingAttempts.Sort();
                 }
-                else if (top10rushingAttempts[0] < stat.RushingAttempts)
+                else if (top10rushingAttempts[0] < stat.SeaRushAtt)
                 {
-                    top10rushingAttempts.Add(stat.RushingAttempts);
+                    top10rushingAttempts.Add(stat.SeaRushAtt);
                     top10rushingAttempts.Sort();
                     top10rushingAttempts.RemoveAt(0);
                 }
 
-                if (stat.PassingAttempts < 25 && stat.RushingAttempts > 100 && top10rushingAverage.Count < 10)
+                if (stat.SeaPassAtt < 25 && stat.SeaRushAtt > 100 && top10rushingAverage.Count < 10)
                 {
-                    top10rushingAverage.Add((double)stat.RushingYards / (double)stat.RushingAttempts);
+                    top10rushingAverage.Add((double)stat.SeaRushAtt / (double)stat.SeaRushAtt);
                     top10rushingAverage.Sort();
                 }
-                else if (stat.PassingAttempts < 25 && stat.RushingAttempts > 100 && top10rushingAverage[0] < (double)stat.RushingYards / (double)stat.RushingAttempts)
+                else if (stat.SeaPassAtt < 25 && stat.SeaRushAtt > 100 && top10rushingAverage[0] < (double)stat.SeaRushYds / (double)stat.SeaRushAtt)
                 {
-                    top10rushingAverage.Add((double)stat.RushingYards / (double)stat.RushingAttempts);
+                    top10rushingAverage.Add((double)stat.SeaRushYds / (double)stat.SeaRushAtt);
                     top10rushingAverage.Sort();
                     top10rushingAverage.RemoveAt(0);
                 }
@@ -1614,7 +1614,7 @@ namespace MaddenEditor.Forms
                     if (stat.Season != currentSeason)
                         continue;
 
-                    if (stat.RushingAttempts == top10rushingAttempts[i])
+                    if (stat.SeaRushAtt == top10rushingAttempts[i])
                     {
                         player = model.PlayerModel.GetPlayerByPlayerId(stat.PlayerId);
                         break;
@@ -1981,7 +1981,7 @@ namespace MaddenEditor.Forms
 
                             if (currentWeek < 19)
                             {
-                                seasonStatsOffense[QBPGID].Interceptions--;
+                                seasonStatsOffense[QBPGID].SeaPassInt--;
                                 if (!preseason)
                                     careerStatsOffense[QBPGID].Pass_int--;
 
@@ -2026,7 +2026,7 @@ namespace MaddenEditor.Forms
 
                             if (currentWeek < 19)
                             {
-                                seasonStatsOffense[QBPGID].Sacks--;
+                                seasonStatsOffense[QBPGID].SeaSacked--;
                                 if (!preseason)
                                     careerStatsOffense[QBPGID].Pass_sacked--;
 
@@ -2068,7 +2068,7 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        seasonStatsOffense[stat.PlayerId].ReceivingYards += yardsToAdd;
+                        seasonStatsOffense[stat.PlayerId].SeaRecYds += yardsToAdd;
                         if (!preseason)
                             careerStatsOffense[stat.PlayerId].Receiving_yards += yardsToAdd;
                     }
@@ -2077,7 +2077,7 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        seasonStatsOffense[maxPassers[stat.TeamId].PlayerId].PassingYards += yardsToAdd;
+                        seasonStatsOffense[maxPassers[stat.TeamId].PlayerId].SeaPassYds += yardsToAdd;
                         if (!preseason)
                             careerStatsOffense[maxPassers[stat.TeamId].PlayerId].Pass_yds += yardsToAdd;
 
@@ -2093,7 +2093,7 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        seasonStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
+                        seasonStatsOffense[stat.PlayerId].SeaRushAtt -= rushAttemptsSubtracted;
                         if (!preseason)
                             careerStatsOffense[stat.PlayerId].RushingAttempts -= rushAttemptsSubtracted;
                     }
@@ -2105,7 +2105,7 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        seasonStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
+                        seasonStatsOffense[stat.PlayerId].SeaRushYds += rushYardsToAdd;
                         if (!preseason)
                             careerStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
 
@@ -2144,11 +2144,11 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        seasonStatsOffense[startingRBs[i].PlayerId].RushingAttempts += carriesToMove;
-                        seasonStatsOffense[startingRBs[i].PlayerId].RushingYards += HBYardsToAdd;
+                        seasonStatsOffense[startingRBs[i].PlayerId].SeaRushAtt += carriesToMove;
+                        seasonStatsOffense[startingRBs[i].PlayerId].SeaRushYds += HBYardsToAdd;
 
-                        seasonStatsOffense[startingFBs[i].PlayerId].RushingAttempts -= carriesToMove;
-                        seasonStatsOffense[startingFBs[i].PlayerId].RushingYards -= FBYardsToSubtract;
+                        seasonStatsOffense[startingFBs[i].PlayerId].SeaRushAtt -= carriesToMove;
+                        seasonStatsOffense[startingFBs[i].PlayerId].SeaRushYds -= FBYardsToSubtract;
 
                         if (!preseason)
                         {
@@ -2189,8 +2189,8 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        seasonStatsOffense[startingRBs[i].PlayerId].RushingAttempts -= carries;
-                        seasonStatsOffense[startingRBs[i].PlayerId].RushingYards -= yards;
+                        seasonStatsOffense[startingRBs[i].PlayerId].SeaRushAtt -= carries;
+                        seasonStatsOffense[startingRBs[i].PlayerId].SeaRushYds -= yards;
 
                         if (!preseason)
                         {
@@ -2243,7 +2243,7 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        backupRBSeason.RushingAttempts += carries;
+                        backupRBSeason.SeaRushAtt += carries;
                         if (!preseason)
                             backupRBCareer.RushingAttempts += carries;
                     }
@@ -2255,7 +2255,7 @@ namespace MaddenEditor.Forms
 
                     if (currentWeek < 19)
                     {
-                        backupRBSeason.RushingYards += backupYards;
+                        backupRBSeason.SeaRushYds += backupYards;
                         if (!preseason)
                             backupRBCareer.RushingYards += backupYards;
 

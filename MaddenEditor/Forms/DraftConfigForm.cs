@@ -100,7 +100,8 @@ namespace MaddenEditor.Forms
 			}
 
 			progressBar.Visible = true;
-			backgroundWorker.RunWorkerAsync();
+			//backgrounWorker.RunWorkerAsync();
+            bg1();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -158,7 +159,8 @@ namespace MaddenEditor.Forms
             return -1;
         }
 
-		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+//		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void bg1()
 		{
             // This method will run on a thread other than the UI thread.
             // Be sure not to manipulate any Windows Forms controls created
@@ -188,22 +190,32 @@ namespace MaddenEditor.Forms
 				File.Copy(fileName, newFile);
 			}
 
-			ReportProgress(15);
-			draftModel.InitializeDraft(humanId, this, customclass);
+			//ReportProgress(15);
+            draftModel.InitCoachScouting();
+            draftModel.InitializeDraft(humanId, this, customclass);
 
             if (continueLoading)
             {
-                ReportProgress(55);
-                draftModel.FixDraftOrder();
-                ReportProgress(75);
+                //ReportProgress(55);
+                // Fix this for people who want to stay with Madden's Original order
+                //draftModel.FixDraftOrder();
+                //ReportProgress(75);
                 draftModel.InitializeScouting();
 
-                ReportProgress(100);
+                //ReportProgress(100);
             }
+            if (continueLoading)
+            {
+                scoutingForm = new ScoutingForm(model, humanId, secs, draftModel, true);
+                scoutingForm.Show();
+            }
+
+            this.Cursor = Cursors.Default;
+            this.Close();
 		}
 
 
-
+/*
 		private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			progressBar.Value = e.ProgressPercentage;
@@ -225,5 +237,15 @@ namespace MaddenEditor.Forms
 		{
 			backgroundWorker.ReportProgress(percentage);
 		}
+
+ */
+        // Optional Draft Rules...
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            DraftModel.enhance = false;
+            if (checkBox1.Checked)
+            DraftModel.enhance = true;
+        
+        }
     }
 }

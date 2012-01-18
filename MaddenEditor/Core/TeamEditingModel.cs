@@ -30,7 +30,8 @@ namespace MaddenEditor.Core
 {
 	public class TeamEditingModel
 	{
-		public const int NO_TEAM_ID = 1023;
+        public const int RETIRED = 1014;
+        public const int NO_TEAM_ID = 1023;
 		public const int PROBOWL_TEAM_AFC = 1010; //??
 		public const int PROBOWL_TEAM_NFC = 1011; //??
 
@@ -526,8 +527,11 @@ namespace MaddenEditor.Core
 			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
 				TeamRecord teamRecord = (TeamRecord)record;
-				teamNameList.Add(teamRecord.TeamId, teamRecord.Name);
+				teamNameList.Add(teamRecord.TeamId, teamRecord.Name);                
 			}
+            
+            // adding Retired for a team name for players
+            teamNameList.Add(EditorModel.RETIRED_TEAM_ID, EditorModel.RETIRED);
 		}
 
 		private void CreateTeamRecords()
@@ -536,7 +540,7 @@ namespace MaddenEditor.Core
 
 			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				TeamRecord tr = (TeamRecord)record;
+				TeamRecord tr = (TeamRecord)record;                
 				teamRecords.Add(tr.TeamId, tr);
 			}
 		}
@@ -574,7 +578,8 @@ namespace MaddenEditor.Core
 			}
 			if (teamNameList.ContainsKey(teamid))
 				return teamNameList[teamid];
-			else
+			
+            else
 				return EditorModel.UNKNOWN_TEAM_NAME;
 		}
 

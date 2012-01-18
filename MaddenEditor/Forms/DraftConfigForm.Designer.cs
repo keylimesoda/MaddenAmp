@@ -64,6 +64,7 @@ namespace MaddenEditor.Forms
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.draftClass = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.minutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seconds)).BeginInit();
             this.SuspendLayout();
@@ -73,7 +74,7 @@ namespace MaddenEditor.Forms
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(29, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(59, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Your Team";
             // 
@@ -91,7 +92,7 @@ namespace MaddenEditor.Forms
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 61);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 13);
+            this.label2.Size = new System.Drawing.Size(73, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Time Per Pick";
             // 
@@ -119,7 +120,7 @@ namespace MaddenEditor.Forms
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(132, 61);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(12, 13);
+            this.label3.Size = new System.Drawing.Size(16, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "M";
             // 
@@ -128,14 +129,14 @@ namespace MaddenEditor.Forms
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(191, 61);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(10, 13);
+            this.label4.Size = new System.Drawing.Size(14, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "S";
             // 
             // startButton
             // 
             this.startButton.Enabled = false;
-            this.startButton.Location = new System.Drawing.Point(37, 173);
+            this.startButton.Location = new System.Drawing.Point(37, 200);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(71, 23);
             this.startButton.TabIndex = 7;
@@ -144,7 +145,7 @@ namespace MaddenEditor.Forms
             // 
             // exitButton
             // 
-            this.exitButton.Location = new System.Drawing.Point(133, 173);
+            this.exitButton.Location = new System.Drawing.Point(133, 200);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(70, 23);
             this.exitButton.TabIndex = 8;
@@ -159,7 +160,7 @@ namespace MaddenEditor.Forms
             this.autoSave.Location = new System.Drawing.Point(43, 97);
             this.autoSave.Name = "autoSave";
             this.autoSave.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.autoSave.Size = new System.Drawing.Size(152, 17);
+            this.autoSave.Size = new System.Drawing.Size(156, 17);
             this.autoSave.TabIndex = 10;
             this.autoSave.Text = "Auto-Backup Franchise File";
             // 
@@ -171,20 +172,22 @@ namespace MaddenEditor.Forms
             this.overwrite.Location = new System.Drawing.Point(43, 120);
             this.overwrite.Name = "overwrite";
             this.overwrite.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.overwrite.Size = new System.Drawing.Size(151, 17);
+            this.overwrite.Size = new System.Drawing.Size(155, 17);
             this.overwrite.TabIndex = 11;
             this.overwrite.Text = "Overwrite Previous Backup";
             // 
             // backgroundWorker
             // 
+            /*
             this.backgroundWorker.WorkerReportsProgress = true;
             this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
             this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
             // 
+             */
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(2, 209);
+            this.progressBar.Location = new System.Drawing.Point(2, 236);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(237, 16);
             this.progressBar.TabIndex = 12;
@@ -196,15 +199,28 @@ namespace MaddenEditor.Forms
             this.draftClass.Location = new System.Drawing.Point(50, 143);
             this.draftClass.Name = "draftClass";
             this.draftClass.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.draftClass.Size = new System.Drawing.Size(138, 17);
+            this.draftClass.Size = new System.Drawing.Size(142, 17);
             this.draftClass.TabIndex = 13;
             this.draftClass.Text = "Load Custom Draft Class";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.Location = new System.Drawing.Point(68, 166);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(117, 17);
+            this.checkBox1.TabIndex = 14;
+            this.checkBox1.Text = "Optional Enhanced";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // DraftConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 231);
+            this.ClientSize = new System.Drawing.Size(241, 263);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.draftClass);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.overwrite);
@@ -219,8 +235,8 @@ namespace MaddenEditor.Forms
             this.Controls.Add(this.teamChooser);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximumSize = new System.Drawing.Size(247, 263);
-            this.MinimumSize = new System.Drawing.Size(247, 263);
+            this.MaximumSize = new System.Drawing.Size(247, 295);
+            this.MinimumSize = new System.Drawing.Size(247, 295);
             this.Name = "DraftConfigForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Draft Options";
@@ -248,5 +264,6 @@ namespace MaddenEditor.Forms
 		private System.ComponentModel.BackgroundWorker backgroundWorker;
 		private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.CheckBox draftClass;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

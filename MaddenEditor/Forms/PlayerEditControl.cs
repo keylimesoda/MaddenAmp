@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
 using MaddenEditor.Core.Record.Stats;
+using MaddenEditor.Db;
 
 namespace MaddenEditor.Forms
 {
@@ -107,7 +108,9 @@ namespace MaddenEditor.Forms
 				lastNameTextBox.Text = record.LastName;
 
 				TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
-				teamComboBox.SelectedItem = (object)team;
+                teamComboBox.SelectedItem = (object)team;
+                if (record.TeamId == 1014)
+                    teamComboBox.Text = "Retired";                 
 
 				positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
 				collegeComboBox.Text = collegeComboBox.Items[record.CollegeId].ToString();
@@ -293,20 +296,24 @@ namespace MaddenEditor.Forms
 					injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
                 }
 
-                #region Career Stats
+                #region Career/Season Stats
 
                 // Career Offense Stats (Only do if in franchise)
 				if (model.FileType == MaddenFileType.FranchiseFile)
 				{
 					//Make controls visual
-					
-
 					CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
-					CareerOffenseGroupBox.Enabled = true;
-					if (careeroffensestats == null)
+                    // Get current year's stats
+                    SeasonStatsOffenseRecord seasonoffense = model.PlayerModel.GetOstats(record.PlayerId, (int)statsyear.SelectedIndex-20); 
+                    CareerOffenseGroupBox.Enabled = true;
+                    statsyear.Enabled = true;
+                    AddStat.Enabled = false;
+                    
+					if (careeroffensestats == null && statsyear.Text == "Career" || seasonoffense == null)
 					{
-						// Disable Offensive Stats
-						CareerOffenseGroupBox.Enabled = false;
+                        AddStat.Enabled = true;
+                        // Disable Offensive Stats                        
+                        CareerOffenseGroupBox.Enabled = false;
 						pass_att.Value = 0;
 						pass_comp.Value = 0;
 						pass_yds.Value = 0;
@@ -327,34 +334,60 @@ namespace MaddenEditor.Forms
 						rushing_yac.Value = 0;
 						rushing_20.Value = 0;
 						rushing_bt.Value = 0;
-
 					}
-					else
-					{
-						// set all the values of the numericupdown boxes
+                    if (careeroffensestats != null && statsyear.Text == "Career")
+                    {
+                        CareerOffenseGroupBox.Enabled = true;
+                     
+                        // set all the values of the numericupdown boxes
+                        pass_att.Value = (int)careeroffensestats.Pass_att;
+                        pass_comp.Value = (int)careeroffensestats.Pass_comp;
+                        pass_yds.Value = (int)careeroffensestats.Pass_yds;
+                        pass_int.Value = (int)careeroffensestats.Pass_int;
+                        pass_long.Value = (int)careeroffensestats.Pass_long;
+                        pass_tds.Value = (int)careeroffensestats.Pass_tds;
+                        receiving_recs.Value = (int)careeroffensestats.Receiving_recs;
+                        receiving_drops.Value = (int)careeroffensestats.Receiving_drops;
+                        receiving_tds.Value = (int)careeroffensestats.Receiving_tds;
+                        receiving_yds.Value = (int)careeroffensestats.Receiving_yards;
+                        receiving_yac.Value = (int)careeroffensestats.Receiving_yac;
+                        receiving_long.Value = (int)careeroffensestats.Receiving_long;
+                        fumbles.Value = (int)careeroffensestats.Fumbles;
+                        rushingattempts.Value = (int)careeroffensestats.RushingAttempts;
+                        rushingyards.Value = (int)careeroffensestats.RushingYards;
+                        rushing_tds.Value = (int)careeroffensestats.Rushing_tds;
+                        rushing_long.Value = (int)careeroffensestats.Rushing_long;
+                        rushing_yac.Value = (int)careeroffensestats.Rushing_yac;
+                        rushing_20.Value = (int)careeroffensestats.Rushing_20;
+                        rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
+                    }
 
-						pass_att.Value = (int)careeroffensestats.Pass_att;
-						pass_comp.Value = (int)careeroffensestats.Pass_comp;
-						pass_yds.Value = (int)careeroffensestats.Pass_yds;
-						pass_int.Value = (int)careeroffensestats.Pass_int;
-						pass_long.Value = (int)careeroffensestats.Pass_long;
-						pass_tds.Value = (int)careeroffensestats.Pass_tds;
-						receiving_recs.Value = (int)careeroffensestats.Receiving_recs;
-						receiving_drops.Value = (int)careeroffensestats.Receiving_drops;
-						receiving_tds.Value = (int)careeroffensestats.Receiving_tds;
-						receiving_yds.Value = (int)careeroffensestats.Receiving_yards;
-						receiving_yac.Value = (int)careeroffensestats.Receiving_yac;
-						receiving_long.Value = (int)careeroffensestats.Receiving_long;
-						fumbles.Value = (int)careeroffensestats.Fumbles;
-						rushingattempts.Value = (int)careeroffensestats.RushingAttempts;
-						rushingyards.Value = (int)careeroffensestats.RushingYards;
-						rushing_tds.Value = (int)careeroffensestats.Rushing_tds;
-						rushing_long.Value = (int)careeroffensestats.Rushing_long;
-						rushing_yac.Value = (int)careeroffensestats.Rushing_yac;
-						rushing_20.Value = (int)careeroffensestats.Rushing_20;
-						rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
+                    if (seasonoffense != null && statsyear.Text != "Career")
+                    {
+                        CareerOffenseGroupBox.Enabled = true;
+                        // set all the values of the numericupdown boxes
+                        pass_att.Value = (int)seasonoffense.SeaPassAtt;
+                        pass_comp.Value = (int)seasonoffense.SeaComp;
+                        pass_yds.Value = (int)seasonoffense.SeaPassYds;
+                        pass_int.Value = (int)seasonoffense.SeaPassInt;
+                        pass_long.Value = (int)seasonoffense.SeaPassLong;
+                        pass_tds.Value = (int)seasonoffense.SeaPassTd;
+                        receiving_recs.Value = (int)seasonoffense.SeaRec;
+                        receiving_drops.Value = (int)seasonoffense.SeaDrops;
+                        receiving_tds.Value = (int)seasonoffense.SeaRecTd;
+                        receiving_yds.Value = (int)seasonoffense.SeaRecYds;
+                        receiving_yac.Value = (int)seasonoffense.SeaRecYac;
+                        receiving_long.Value = (int)seasonoffense.SeaRecLong;
+                        fumbles.Value = (int)seasonoffense.SeaFumbles;
+                        rushingattempts.Value = (int)seasonoffense.SeaRushAtt;
+                        rushingyards.Value = (int)seasonoffense.SeaRushYds;
+                        rushing_tds.Value = (int)seasonoffense.SeaRushTd;
+                        rushing_long.Value = (int)seasonoffense.SeaRushLong;
+                        rushing_yac.Value = (int)seasonoffense.SeaRushYac;
+                        rushing_20.Value = (int)seasonoffense.SeaRush20;
+                        rushing_bt.Value = (int)seasonoffense.SeaRushBtk;
 
-					}
+                    }
 
 					CareerStatsOffensiveLineRecord careerOLstats = model.PlayerModel.GetPlayersOLCareer(record.PlayerId);
 					CareerOLGroupBox.Enabled = true;
@@ -609,17 +642,24 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		private void createPlayerButton_Click(object sender, EventArgs e)
+		// TO DO : Fix This, need to set all player info to some sort of defaults
+        // before it is displayed.  Set player ID #  Need to reset everything to defaults
+
+        
+        private void createPlayerButton_Click(object sender, EventArgs e)
 		{
 			PlayerRecord newRecord = model.PlayerModel.CreateNewPlayerRecord();
-
-			//Add the player to free agents
+            // Add the player to free agents
 			newRecord.TeamId = EditorModel.FREE_AGENT_TEAM_ID;
-			//Need to set unique PLAYER ID
+			// Need to set unique PLAYER ID
+            newRecord.PlayerId = EditorModel.totalplayers;
+            // This sets unique POID
+            newRecord.NFLID = newRecord.PlayerId + 30759;
 
 			//Most variables start off at zero but some can't like height and weight so set them
-			newRecord.Height = 75;
-
+            newRecord.Height = 72; // 6'0"
+            newRecord.Weight = 40; // 200#
+            model.PlayerModel.CurrentPlayerRecord = newRecord;
 			LoadPlayerInfo(newRecord);
 		}
 
@@ -641,12 +681,21 @@ namespace MaddenEditor.Forms
 		#region IEditorForm Members
 
 		public void InitialiseUI()
-		{
-			foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+		{ 
+            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
 			{
-				teamComboBox.Items.Add(record);
-				filterTeamComboBox.Items.Add(record);
+               
+                // Only add specific teams to the combo box, not AFC and NFC
+                if (record.GetIntField("TGID") != 1010 && record.GetIntField("TGID") != 1011)
+                {
+                    teamComboBox.Items.Add(record);
+                    filterTeamComboBox.Items.Add(record);
+                }                              
+
 			}
+            // Add Retired to the combo box
+            teamComboBox.Items.Add(EditorModel.RETIRED);
+            filterTeamComboBox.Items.Add(EditorModel.RETIRED);
 			
 			foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
 			{
@@ -684,12 +733,27 @@ namespace MaddenEditor.Forms
 				capRoomLabel.Visible = true;
 			}
 
-			LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+            // Season/Career stats box
+            int year = 2005;
+            if (model.FileVersion == MaddenFileVersion.Ver2006)
+                year = 2006;
+            if (model.FileVersion == MaddenFileVersion.Ver2007)
+                year = 2007;
+            if (model.FileVersion == MaddenFileVersion.Ver2008)
+                year = 2008;
+            
+            for (int t = -20; t < 21; t++)                       
+                statsyear.Items.Add(year + t);
+            statsyear.Items.Add("Career");
+
+            statsyear.SelectedIndex = 20;
+            
+            LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
 
 			
 		}
 
-		public void CleanUI()
+        public void CleanUI()
 		{
 			teamComboBox.Items.Clear();
 			filterPositionComboBox.Items.Clear();
@@ -821,7 +885,11 @@ namespace MaddenEditor.Forms
 		{
 			if (!isInitialising)
 			{
-				model.PlayerModel.ChangePlayersTeam(((TeamRecord)teamComboBox.SelectedItem));
+				// add code to handle "Retired"
+                if ((string)teamComboBox.Text != "Retired")
+                    model.PlayerModel.ChangePlayersTeam(((TeamRecord)teamComboBox.SelectedItem));
+                if ((string)teamComboBox.Text == "Retired")
+                    model.PlayerModel.CurrentPlayerRecord.TeamId = 1014;
 			}
 		}
 
@@ -1637,18 +1705,26 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_att = (int)pass_att.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_att = (int)pass_att.Value;
+                else
+                    model.PlayerModel.GetOstats(model.PlayerModel.CurrentPlayerRecord.PlayerId, (int)statsyear.SelectedIndex - 20).SeaPassAtt = (int)pass_att.Value;
             }
         }
 
+        
         private void pass_comp_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_comp = (int)pass_comp.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_comp = (int)pass_comp.Value;
+                else
+                    model.PlayerModel.GetOstats(model.PlayerModel.CurrentPlayerRecord.PlayerId, (int)statsyear.SelectedIndex - 20).SeaComp = (int)pass_comp.Value;
             }
         }
 
+        // TO DO : Fix the rest of these...
         private void pass_yds_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
@@ -2206,6 +2282,16 @@ namespace MaddenEditor.Forms
         }
 
         #endregion
+
+        private void statsyear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);   
+
+
+            }
+        }
 
 
 

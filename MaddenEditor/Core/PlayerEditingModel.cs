@@ -368,7 +368,41 @@ namespace MaddenEditor.Core
 			return null;
         }
 
-        #region Career Stats
+        #region Stats
+
+        public SeasonStatsOffenseRecord GetOstats(int playerId, int season)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.SEASON_STATS_OFFENSE_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                    continue;
+
+                SeasonStatsOffenseRecord SeaOff = (SeasonStatsOffenseRecord)record;
+                if (playerId == SeaOff.PlayerId && season == SeaOff.Season)
+                {
+                    return SeaOff;
+                }
+            }
+            return null;
+        }
+
+        public SeasonStatsDefenseRecord GetDstats(int playerId, int season)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.SEASON_STATS_DEFENSE_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                    continue;
+
+                SeasonStatsDefenseRecord SeaDef = (SeasonStatsDefenseRecord)record;
+                if (playerId == SeaDef.PlayerId && season == SeaDef.Season)
+                {
+                    return SeaDef;
+                }
+            }
+            return null;
+        }
+
+
 
         public CareerStatsOffenseRecord GetPlayersOffenseCareer(int playerId)
         {
@@ -602,7 +636,11 @@ namespace MaddenEditor.Core
 
 		public PlayerRecord CreateNewPlayerRecord()
 		{
-			return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].CreateNewRecord(false);
+			// Either we have to set this bool to true to allow the creation of a
+            // new table, or we have to check first if we have one marked for deletion
+            // otherwise it replaces one that is already active I think?
+            
+            return (PlayerRecord)model.TableModels[EditorModel.PLAYER_TABLE].CreateNewRecord(true);
 		}
 	}
 }

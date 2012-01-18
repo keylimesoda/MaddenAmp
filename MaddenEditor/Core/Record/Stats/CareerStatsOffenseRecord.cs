@@ -10,7 +10,7 @@ namespace MaddenEditor.Core.Record.Stats
         public const string PASS_ATT = "caat";
         public const string PASS_COMP = "cacm";
         public const string PASS_INT = "cain";
-        public const string PASS_LONG = "caIN";
+        public const string PASS_LONG = "calN";
         public const string PASS_SACKED = "casa";
         public const string PASS_YDS = "caya";
         public const string PASS_TDS = "catd";
@@ -25,7 +25,7 @@ namespace MaddenEditor.Core.Record.Stats
         
         //RB Stats
         public const string RUSHING_TDS = "cutd";
-        public const string RUSHING_LONG = "cuIN";
+        public const string RUSHING_LONG = "culN";
         public const string FUMBLES = "cufu";
         public const string RUSHING_ATTEMPTS = "cuat";
         public const string RUSHING_YARDS = "cuya";
