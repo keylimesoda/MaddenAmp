@@ -460,16 +460,13 @@ namespace MaddenEditor.Core
 				{
 					fileType = MaddenFileType.RosterFile;
 					//For roster files that aren't 2007 we will distinguish them later
-					//2007 doesn't contain the Coach slider settings
+					//2007-2008 doesn't contain the Coach slider settings
+                    //2007-2008 Roster tabke counts are the same, will distinguish them later
                     if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)
 					{
 						fileVersion = MaddenFileVersion.Ver2007;
 					}
-                    //else if (tableCount == MADDEN_ROS_2008_TABLE_COUNT)
-                    //{
-                    //    fileVersion = MaddenFileVersion.Ver2008;
-                    //}
-
+                    
 				}
 				else
 				{
@@ -566,6 +563,7 @@ namespace MaddenEditor.Core
 					TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
 
 					//We use the player table to work out what version a roster file is
+                    //2007-2008 have the same count, so will add a check afterwards to distinguish them
 					if (FileType == MaddenFileType.RosterFile && tableProps.Name.Equals(PLAYER_TABLE))
 					{
 						switch (tableProps.FieldCount)
@@ -584,13 +582,18 @@ namespace MaddenEditor.Core
 
 								break;                            
 							default:
-								break;
-                            
-                            //default:
-                            //    fileVersion = MaddenFileVersion.Ver2008;
-                            //    break;
+								break;                            
+						}
 
-						}                      
+                        //  Here we check for v2008  Check for field PRL2 (Player Weapon) which is new in v2008
+                        for (int i = 0; i < tableProps.FieldCount; i++)
+                        {
+                            TdbFieldProperties fieldProps = new TdbFieldProperties();
+                            fieldProps.Name = new string((char)0, 5);
+                            TDB.TDBFieldGetProperties(dbIndex, tableProps.Name, i, ref fieldProps);
+                            if (fieldProps.Name == "PRL2")
+                                fileVersion = MaddenFileVersion.Ver2008;
+                        }
 
 					}
                     if (tableProps.Name.Equals(PLAYER_TABLE))
