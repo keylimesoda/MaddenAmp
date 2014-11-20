@@ -29,56 +29,145 @@ namespace MaddenEditor.Core.Record
 {
 	public class TeamRecord : TableRecordModel
 	{
-		public const string TEAM_NAME = "TDNA";
-		public const string TEAM_LONG_NAME = "TLNA";
-		public const string TEAM_SHORT_NAME = "TSNA";
-		public const string TEAM_NICK_NAME = "TMNC";
-		public const string TEAM_ID = "TGID";
-		public const string REPUTATION = "TREP";
+		// TEAM
 
-		//Colours
-		public const string SECONDARY_BLUE = "TB2B";
-		public const string PRIMARY_BLUE = "TBCB";
-		public const string SECONDARY_GREEN = "TB2G";
-		public const string PRIMARY_GREEN = "TBCG";
-		public const string SECONDARY_RED = "TB2R";
-		public const string PRIMARY_RED = "TBCR";
-		public const string CUSTOM_ART_FILE = "CART";
-
-		public const string CITY_ID = "CYID";
-		public const string CONFERENCE_ID = "CGID";
-		public const string DIVISION_ID = "DGID";
-		public const string LEAGUE_ID = "LGID";
-
-		public const string TEAM_SALARY = "TMSA";
-
+        public const string CUSTOM_ART_FILE = "CART";
+        public const string CONFERENCE_ID = "CGID";
+        public const string CTHT = "CTHT";
+        public const string CITY_ID = "CYID";
+        public const string DIVISION_ID = "DGID";
+        public const string DIVISION_ORDER = "DISN";
+        public const string FRANCHISE_ID = "FRID";
+        public const string JJNM = "JJNM";
+        public const string LEAGUE_ID = "LGID";
+        public const string OAC1 = "OAC1";
+        public const string OAC2 = "OAC2";
+        public const string OAC3 = "OAC3";
+        public const string OAC4 = "OAC4";
+        public const string OAC5 = "OAC5";
+        public const string OCBW = "OCBW";
+        public const string OCPW = "OCPW";
+        public const string OCRW = "OCRW";
+        public const string OCTW = "OCTW";
+        public const string ONFD = "ONFD";
+        public const string OTPF = "OTPF";
+        public const string OWFI = "OWFI";
+        public const string OWFW = "OWFW";
+        public const string STADIUM_ID = "SGID";
+        public const string T2YC = "T2YC";                          // 2008?
+        public const string TAss = "TAss";
+        public const string TAth = "TAth";
+        public const string TAUO = "TAUO";
+        public const string SECONDARY_BLUE = "TB2B";
+        public const string SECONDARY_GREEN = "TB2G";
+        public const string SECONDARY_RED = "TB2R";
+        public const string PRIMARY_BLUE = "TBCB";
+        public const string PRIMARY_GREEN = "TBCG";
+        public const string PRIMARY_RED = "TBCR";
+        public const string TCDO = "TCDO";
+        public const string TCHE = "TCHE";
+        public const string SALARY_CAP_PENALTY_THIS_YEAR = "TCP0";
+        public const string SALARY_CAP_PENALTY_NEXT_YEAR = "TCP1";
+        public const string SEASON_CONF_POINTS_AGAINST = "TCPA";
+        public const string SEASON_CONF_POINTS_SCORED = "TCPF";
+        public const string TCRP = "TCRP";
+        public const string TCTX = "TCTX";
+        public const string CONF_WIN_PERC = "TCWP";
+        public const string SEASON_DEFENSE_RANK = "TDER";
+        public const string TEAM_NAME = "TDNA";
+        public const string SEASON_DIV_POINTS_AGAINST = "TDPA";
+        public const string DEFENSIVE_PLAYBOOK = "TDPB";
+        public const string SEASON_DIV_POINTS_SCORED = "TDPF";
+        public const string TEAM_ORDER = "TDRI";
+        public const string DIV_WIN_PERC = "TDWP";
+        public const string TEZ1 = "TEZ1";
+        public const string TEZ2 = "TEZ2";
+        public const string TFCA = "TFCA";
+        public const string TFCR = "TFCR";
+        public const string TFET = "TFET";
+        public const string TFLO = "TFLO";
+        public const string TFTL = "TFTL";
+        public const string TEAM_ID = "TGID";
+        public const string TGPT = "TGPT";
+        public const string TGRP = "TGRP";
+        public const string TEAM_LOGO = "TLGL";
+        public const string TEAM_HELMET_LOGO = "TLGS";
+        public const string TEAM_LONG_NAME = "TLNA";
+        public const string TEAM_SHORT_NAME = "TLSA";
+        public const string TMFL = "TMFL";
+        public const string TEAM_NICK_NAME = "TMNC";
+        public const string TMPS = "TMPS";
+        public const string TMRE = "TMRE";
+        public const string TEAM_SALARY = "TMSA";
+        public const string NON_CONF_LOSSES = "TNCL";
+        public const string NON_CONF_TIES = "TNCT";
+        public const string NON_CONF_WINS = "TNCW";
+        public const string SEASON_OFFENSE_RANK = "TOFR";
+        public const string TEAM_ORIGINAL_ID = "TOID";
+        public const string OFFENSIVE_PLAYBOOK = "TOPB";
+        public const string TEAM_ROSTER_ORDER = "TORD";
+        public const string PREVIOUS_CON_STANDING = "TPCS";
+        public const string PREVIOUS_DIV_STANDING = "TPDS";
+        public const string TPNS = "TPNS";
+        public const string PREVIOUS_SEASON_LOSSES = "TPSL";
+        public const string PREVIOUS_SEASON_TIES = "TPST";
+        public const string PREVIOUS_SEASON_WINS = "TPSW";
+        public const string DB_RATING = "TRDB";
+        public const string DEFENSIVE_RATING = "TRDE";
+        public const string DL_RATING = "TRDL";
+        public const string REPUTATION = "TREP";
+        public const string LB_RATING = "TRLB";
+        public const string OFFENSIVE_RATING = "TROF";
+        public const string OL_RATING = "TROL";
+        public const string OVERALL_RATING = "TROV";
 		public const string QB_RATING = "TRQB";
 		public const string RB_RATING = "TRRB";
-		public const string OL_RATING = "TROL";
-		public const string WR_RATING = "TWRR";
+        public const string ST_RATING = "TRST";
+        public const string TEAM_RIVAL_1 = "TRV1";
+        public const string TEAM_RIVAL_2 = "TRV2";
+        public const string TEAM_RIVAL_3 = "TRV3";
+        public const string SEASON_AWAY_LOSSES = "tsal";
+        public const string SEASON_AWAY_TIES = "tsat";
+        public const string SEASON_AWAY_WINS = "tsaw";
+        public const string SEASON_BIGGEST_LOSS = "tsbl";
+        public const string SEASON_BIGGEST_WIN = "tsbw";
+        public const string SEASON_CONF_LOSSES = "tscl";
+        public const string SEASON_CURRENT_STREAK = "TSCS";
+        public const string SEASON_CONF_STANDING = "tscs";
+        public const string SEASON_CONF_TIES = "tsct";
+        public const string SEASON_CONF_WINS = "tscw";
+        public const string TSDI = "tsdi";
+        public const string SEASON_DIV_LOSSES = "tsdl";
+        public const string SEASON_DIV_STANDING = "TSDS";
+        public const string SEASON_DIV_WINS = "TSDW";
+        public const string SEASON_HOME_LOSSES = "TSHL";
+        public const string TEAM_SHOE_COLOR = "TSHO";               // 2004-2006 only?
+        public const string SEASON_HOME_TIES = "tsht";
+        public const string SEASON_HOME_WINS = "tshw";
+        public const string TSID = "TSID";
+        public const string SEASON_LOSSES = "TSLO";
+        public const string TSLW = "TSLW";
+        public const string TSNA = "TSNA";
+        public const string TSNS = "tsns";
+        public const string TSOW = "TSOW";
+        public const string SEASON_POINTS_ALLOWED = "TSPA";
+        public const string SEASON_POINTS_SCORED = "TSPF";
+        public const string SEASON_TIES = "TSTI";
+        public const string SEASON_WINS = "TSWI";
+        public const string TEAM_TYPE = "TTYP";
+        public const string TUAW = "TUAW";
+        public const string TUFT = "TUFT";
+        public const string TUHO = "TUHO";
+        public const string TVIS = "TVIS";
+        public const string TVQS = "TVQS";
+        public const string WINNING_PERCENTAGE = "TWPC";
+		public const string WR_RATING = "TWRR";	
 		
-		public const string DB_RATING = "TRDB";
-		public const string LB_RATING = "TRLB";
-		public const string DL_RATING = "TRDL";
-		public const string ST_RATING = "TRST";
+		
+		
 
-		public const string DEFENSIVE_RATING = "TRDE";
-		public const string OFFENSIVE_RATING = "TROF";
-		public const string OVERALL_RATING = "TROV";
 
-		public const string OFFENSIVE_PLAYBOOK = "TOPB";
-		public const string DEFENSIVE_PLAYBOOK = "TDPB";
 
-		public const string DIVISION_ORDER = "DISN";
-		public const string TEAM_ROSTER_ORDER = "TORD";
-		public const string TEAM_ORDER = "TDRI";
-		public const string TEAM_TYPE = "TTYP";
-
-		public const string TEAM_SHOE_COLOR = "TSHO";
-
-		public const string TEAM_RIVAL_1 = "TRV1";
-		public const string TEAM_RIVAL_2 = "TRV2";
-		public const string TEAM_RIVAL_3 = "TRV3";
         // MADDEN DRAFT EDIT
         private int wins;
         private int playoffExit;

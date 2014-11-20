@@ -28,27 +28,47 @@ namespace MaddenEditor.Core.Record.Stats
 {
     public class SeasonStatsTeamRecord : TableRecordModel
     {
-        public const string TOTAL_YARDS = "tsTy";
-        public const string TOTAL_OFFENSE = "tsoy";
-        public const string PASSING_YARDS = "tsop";
-        public const string RUSHING_YARDS = "tsor";
-        public const string PASSING_TDS = "tdPt";
-        public const string RUSHING_TDS = "tsrt";
-        public const string FIRST_DOWNS = "ts1d";
-        public const string THIRD_DOWN_ATTEMPTS = "ts3d";
-        public const string THIRD_DOWN_CONVERSIONS = "ts3c";
-        public const string FOURTH_DOWN_ATTEMPTS = "ts4d";
-        public const string FOURTH_DOWN_CONVERSIONS = "ts4c";
-        public const string SACKS_ALLOWED = "tssa";
-        public const string PASSING_YARDS_ALLOWED = "tsdp";
-        public const string RUSHING_YARDS_ALLOWED = "tsdy";
-        public const string SACKS = "tssk";
-        public const string INTERCEPTIONS_CAUGHT = "tsDi";
-        public const string FUMBLES_RECOVERED = "tsfr";
-        public const string INTERCEPTIONS_THROWN = "tspi";
-        public const string FUMBLES_LOST = "tsfl";
-
+        // tsse        
+        
         public const string TEAM_ID = "TGID";
+        public const string FIRST_DOWNS = "ts1d";
+        public const string OFFENSE_2PT_ATT = "ts2a";
+        public const string OFFENSE_2PT_CONV = "ts2c"; 
+        public const string THIRD_DOWN_CONVERSIONS = "ts3c";
+        public const string THIRD_DOWN_ATTEMPTS = "ts3d";
+        public const string FOURTH_DOWN_CONVERSIONS = "ts4c";
+        public const string FOURTH_DOWN_ATTEMPTS = "ts4d";  
+        public const string DEFENSE_REDZONE_FG = "tsdf";
+        public const string DEFENSIVE_INT = "tsDi";
+        public const string DEFENSE_PASS_YDS = "tsdp";
+        public const string DEFENSE_REDZONE_ATT = "tsdr";
+        public const string DEFENSE_REDZONE_TD = "tsdt";
+        public const string DEFENSE_RUSH_YDS = "tsdy";
+        public const string FUMBLES_LOST = "tsfl";        
+        public const string FUMBLES_RECOVERED = "tsfr";       
+        public const string OFFENSE_TURNOVERS = "tsga";        
+        public const string OFFENSE_REDZONE_FG = "tsof";
+        public const string OFFENSE_PASS_YDS = "tsop";
+        public const string OFFENSE_RUSH_YARDS = "tsor";
+        public const string OFFENSE_REDZONE_TD = "tsot";
+        public const string OFFENSE_YARDS = "tsoy";
+        public const string OFFENSE_REDZONE_ATT = "tsoz";
+        public const string OFFENSE_PASS_ATT = "tspa";
+        // tspd not used
+        public const string PENALTIES = "tspe";
+        //   tsPi not used
+        public const string OFFENSE_PASS_INT = "tspi";  
+        public const string OFFENSE_PASS_TDS = "tsPt";        
+        public const string PENALTY_YARDS = "tsPy"; 
+       
+        public const string OFFENSE_RUSH_ATT = "tsra";
+        public const string OFFENSE_RUSH_TD = "tsrt";
+        public const string OFFENSE_SACKS_ALLOWED = "tssa"; 
+        public const string DEFENSE_SACKS = "tssk";
+        public const string DEFENSE_TURNOVERS = "tsta";
+        public const string TOTAL_YARDS = "tsTy";
+        // tsty not used
+           
 
         public SeasonStatsTeamRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -56,6 +76,7 @@ namespace MaddenEditor.Core.Record.Stats
 
         }
 
+        
         public int TeamId
         {
             get
@@ -67,139 +88,6 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(TEAM_ID, value);
             }
         }
-
-        public int PassingYards
-        {
-            get
-            {
-                return GetIntField(PASSING_YARDS);
-            }
-            set
-            {
-                SetField(PASSING_YARDS, value);
-            }
-        }
-
-        public int RushingYards
-        {
-            get
-            {
-                return GetIntField(RUSHING_YARDS);
-            }
-            set
-            {
-                SetField(RUSHING_YARDS, value);
-            }
-        }
-
-        public int InterceptionsThrown
-        {
-            get
-            {
-                return GetIntField(INTERCEPTIONS_THROWN);
-            }
-            set
-            {
-                SetField(INTERCEPTIONS_THROWN, value);
-            }
-        }
-
-        public int PassingYardsAllowed
-        {
-            get
-            {
-                return GetIntField(PASSING_YARDS_ALLOWED);
-            }
-            set
-            {
-                SetField(PASSING_YARDS_ALLOWED, value);
-            }
-        }
-
-        public int RushingYardsAllowed
-        {
-            get
-            {
-                return GetIntField(RUSHING_YARDS_ALLOWED);
-            }
-            set
-            {
-                SetField(RUSHING_YARDS_ALLOWED, value);
-            }
-        }
-
-        public int Sacks
-        {
-            get
-            {
-                return GetIntField(SACKS);
-            }
-            set
-            {
-                SetField(SACKS, value);
-            }
-        }
-
-        public int InterceptionsCaught
-        {
-            get
-            {
-                return GetIntField(INTERCEPTIONS_CAUGHT);
-            }
-            set
-            {
-                SetField(INTERCEPTIONS_CAUGHT, value);
-            }
-        }
-
-        public int TotalYards
-        {
-            get
-            {
-                return GetIntField(TOTAL_YARDS);
-            }
-            set
-            {
-                SetField(TOTAL_YARDS, value);
-            }
-        }
-
-        public int TotalOffense
-        {
-            get
-            {
-                return GetIntField(TOTAL_OFFENSE);
-            }
-            set
-            {
-                SetField(TOTAL_OFFENSE, value);
-            }
-        }
-
-        public int PassingTDs
-        {
-            get
-            {
-                return GetIntField(PASSING_TDS);
-            }
-            set
-            {
-                SetField(PASSING_TDS, value);
-            }
-        }
-
-        public int RushingTDs
-        {
-            get
-            {
-                return GetIntField(RUSHING_TDS);
-            }
-            set
-            {
-                SetField(RUSHING_TDS, value);
-            }
-        }
-
         public int FirstDowns
         {
             get
@@ -211,7 +99,16 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(FIRST_DOWNS, value);
             }
         }
-
+        public int Offense2ptAtt
+        {
+            get { return GetIntField(OFFENSE_2PT_ATT); }
+            set { SetField(OFFENSE_2PT_ATT, value); }
+        }
+        public int Offense2ptConv
+        {
+            get { return GetIntField(OFFENSE_2PT_CONV); }
+            set { SetField(OFFENSE_2PT_CONV, value); }
+        }
         public int ThirdDownAttempts
         {
             get
@@ -223,7 +120,6 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(THIRD_DOWN_ATTEMPTS, value);
             }
         }
-
         public int ThirdDownConversions
         {
             get
@@ -235,7 +131,6 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(THIRD_DOWN_CONVERSIONS, value);
             }
         }
-
         public int FourthDownAttempts
         {
             get
@@ -247,7 +142,6 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(FOURTH_DOWN_ATTEMPTS, value);
             }
         }
-
         public int FourthDownConversions
         {
             get
@@ -258,32 +152,43 @@ namespace MaddenEditor.Core.Record.Stats
             {
                 SetField(FOURTH_DOWN_CONVERSIONS, value);
             }
+        }        
+        public int DefenseRedzoneFG
+        {
+            get { return GetIntField(DEFENSE_REDZONE_FG); }
+            set { SetField(DEFENSE_REDZONE_FG, value); }
         }
-
-        public int SacksAllowed
+        public int DefenseInt
         {
             get
             {
-                return GetIntField(SACKS_ALLOWED);
+                return GetIntField(DEFENSIVE_INT);
             }
             set
             {
-                SetField(SACKS_ALLOWED, value);
+                SetField(DEFENSIVE_INT, value);
             }
         }
-
-        public int FumblesRecovered
+        public int DefensePassYds
         {
-            get
-            {
-                return GetIntField(FUMBLES_RECOVERED);
-            }
-            set
-            {
-                SetField(FUMBLES_RECOVERED, value);
-            }
+            get { return GetIntField(DEFENSE_PASS_YDS); }
+            set { SetField(DEFENSE_PASS_YDS, value); }
         }
-
+        public int DefenseRushYds
+        {
+            get { return GetIntField(DEFENSE_RUSH_YDS); }
+            set { SetField(DEFENSE_RUSH_YDS, value); }
+        }
+        public int defenseRedzoneAtt
+        {
+            get { return GetIntField(DEFENSE_REDZONE_ATT); }
+            set { SetField(DEFENSE_REDZONE_ATT, value); }
+        }
+        public int DefenseRedzoneTD
+        {
+            get { return GetIntField(DEFENSE_REDZONE_TD); }
+            set { SetField(DEFENSE_REDZONE_TD, value); }
+        }       
         public int FumblesLost
         {
             get
@@ -295,5 +200,186 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(FUMBLES_LOST, value);
             }
         }
+        public int FumblesRecovered
+        {
+            get
+            {
+                return GetIntField(FUMBLES_RECOVERED);
+            }
+            set
+            {
+                SetField(FUMBLES_RECOVERED, value);
+            }
+        }                
+        public int OffenseTurnovers
+        {
+            get { return GetIntField(OFFENSE_TURNOVERS); }
+            set { SetField(OFFENSE_TURNOVERS, value); }
+        }       
+        public int OffenseRedzoneFG
+        {
+            get { return GetIntField(OFFENSE_REDZONE_FG); }
+            set { SetField(OFFENSE_REDZONE_FG, value); }
+        }
+        public int OffensePassYards
+        {
+            get
+            {
+                return GetIntField(OFFENSE_PASS_YDS);
+            }
+            set
+            {
+                SetField(OFFENSE_PASS_YDS, value);
+            }
+        }
+        public int RushingYards
+        {
+            get
+            {
+                return GetIntField(OFFENSE_RUSH_YARDS);
+            }
+            set
+            {
+                SetField(OFFENSE_RUSH_YARDS, value);
+            }
+        }
+        public int OffenseRedzoneTD
+        {
+            get { return GetIntField(OFFENSE_REDZONE_TD); }
+            set { SetField(OFFENSE_REDZONE_TD, value); }
+        }        
+        public int OffenseYards
+        {
+            get
+            {
+                return GetIntField(OFFENSE_YARDS);
+            }
+            set
+            {
+                SetField(OFFENSE_YARDS, value);
+            }
+        }        
+        public int OffenseRedzoneAtt
+        {
+            get { return GetIntField(OFFENSE_REDZONE_ATT); }
+            set { SetField(OFFENSE_REDZONE_ATT, value); }
+        }
+        public int OffensePassAtt
+        {
+            get { return GetIntField(OFFENSE_PASS_ATT); }
+            set { SetField(OFFENSE_PASS_ATT, value); }
+        }
+        
+        public int Penalties
+        {
+            get { return GetIntField(PENALTIES); }
+            set { SetField(PENALTIES, value); }
+        }
+
+        public int OffensePassInt
+        {
+            get
+            {
+                return GetIntField(OFFENSE_PASS_INT);
+            }
+            set
+            {
+                SetField(OFFENSE_PASS_INT, value);
+            }
+        }
+        public int OffensePassTDs
+        {
+            get
+            {
+                return GetIntField(OFFENSE_PASS_TDS);
+            }
+            set
+            {
+                SetField(OFFENSE_PASS_TDS, value);
+            }
+        }        
+        public int PenaltyYds
+        {
+            get { return GetIntField(PENALTY_YARDS); }
+            set { SetField(PENALTY_YARDS, value); }
+        }               
+        public int RushingAttempts
+        {
+            get
+            {
+                return GetIntField(OFFENSE_RUSH_ATT);
+            }
+            set
+            {
+                SetField(OFFENSE_RUSH_ATT, value);
+            }
+        }
+        public int RushingTDs
+        {
+            get
+            {
+                return GetIntField(OFFENSE_RUSH_TD);
+            }
+            set
+            {
+                SetField(OFFENSE_RUSH_TD, value);
+            }
+        }
+        public int SacksAllowed
+        {
+            get
+            {
+                return GetIntField(OFFENSE_SACKS_ALLOWED);
+            }
+            set
+            {
+                SetField(OFFENSE_SACKS_ALLOWED, value);
+            }
+        }        
+        public int Sacks
+        {
+            get
+            {
+                return GetIntField(DEFENSE_SACKS);
+            }
+            set
+            {
+                SetField(DEFENSE_SACKS, value);
+            }
+        }
+        public int DefenseTurnovers
+        {
+            get { return GetIntField(DEFENSE_TURNOVERS); }
+            set { SetField(DEFENSE_TURNOVERS, value); }
+        }
+        public int TotalYards
+        {
+            get
+            {
+                return GetIntField(TOTAL_YARDS);
+            }
+            set
+            {
+                SetField(TOTAL_YARDS, value);
+            }
+        }       
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

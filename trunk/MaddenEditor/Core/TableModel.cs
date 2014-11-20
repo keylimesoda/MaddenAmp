@@ -210,9 +210,15 @@ namespace MaddenEditor.Core
 				case EditorModel.SCHEDULE_TABLE:
 					newRecord = new ScheduleRecord(recno, this, parentModel);
 					break;
+                
+                case EditorModel.STADIUM_TABLE:
+                    newRecord = new StadiumRecord(recno, this, parentModel);
+                    break;
+
 				case EditorModel.UNIFORM_TABLE:
 					newRecord = new UniformRecord(recno, this, parentModel);
 					break;
+
 				// MADDEN DRAFT EDIT
 				case EditorModel.DRAFT_PICK_TABLE:
 					newRecord = new DraftPickRecord(recno, this, parentModel);
@@ -246,7 +252,7 @@ namespace MaddenEditor.Core
                     newRecord = new FranchiseTimeRecord(recno, this, parentModel);
                     break;
                 case EditorModel.BOXSCORE_TEAM_TABLE:
-                    newRecord = new BoxScoreTeamRecord(recno, this, parentModel);
+                    newRecord = new BoxScoreTeamStats(recno, this, parentModel);
                     break;
                 case EditorModel.BOXSCORE_OFFENSIVE_LINE_TABLE:
                     newRecord = new BoxScoreOffensiveLineRecord(recno, this, parentModel);
@@ -266,10 +272,16 @@ namespace MaddenEditor.Core
                 case EditorModel.CAREER_STATS_KICKPUNT_TABLE:
                     newRecord = new CareerPuntKickRecord(recno, this, parentModel);
                     break;
+                case EditorModel.SEASON_STATS_KICKPUNT_TABLE:
+                    newRecord = new SeasonPuntKickRecord(recno, this, parentModel);
+                    break;
                 case EditorModel.CAREER_STATS_KICKPUNT_RETURN_TABLE:
                     newRecord = new CareerPKReturnRecord(recno, this, parentModel);
                     break;
-               case EditorModel.SCOUTING_STATE_TABLE:
+                case EditorModel.SEASON_STATS_KICKPUNT_RETURN_TABLE:
+                    newRecord = new SeasonPKReturnRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.SCOUTING_STATE_TABLE:
                     newRecord = new ScoutingStateRecord(recno, this, parentModel);
                     break;
                 case EditorModel.RFA_STATE_TABLE:
@@ -291,6 +303,13 @@ namespace MaddenEditor.Core
 				case EditorModel.GAME_OPTIONS_TABLE:
 					newRecord = new GameOptionRecord(recno, this, parentModel);
 					break;
+                case EditorModel.PLAYER_AWARDS_TABLE:
+                    newRecord = new Awards(recno, this, parentModel);                    
+                    break;
+                case EditorModel.FREE_AGENT_PLAYERS:
+                    newRecord = new FreeAgentPlayers(recno, this, parentModel);
+                    break;
+                    
 			}
 
 			//Add the new record to our list of records

@@ -26,18 +26,24 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.Stats
 {
-    class SeasonGamesPlayedRecord : TableRecordModel
+    public class SeasonGamesPlayedRecord : TableRecordModel
     {
+        // PSNG
+
         public const string PLAYER_ID = "PGID";
         public const string SEASON = "SEYR";
+        public const string GAMES_DOWNS_PLAYED = "sgdp";
         public const string GAMES_PLAYED = "sgmp";
         public const string GAMES_STARTED = "sgms";
+        public const string PREVIOUS_TEAM = "sgYY";        
 
         public SeasonGamesPlayedRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
         }
+
+        #region Get / Set
 
         public int PlayerId
         {
@@ -86,5 +92,19 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(GAMES_STARTED, value);
             }
         }
+
+        public int DownsPlayed
+        {
+            get { return GetIntField(GAMES_DOWNS_PLAYED); }
+            set { SetField(GAMES_DOWNS_PLAYED, value); }
+        }
+
+        public int PreviousTeam
+        {
+            get { return GetIntField(PREVIOUS_TEAM); }
+            set { SetField(PREVIOUS_TEAM, value); }
+        }
+
+        #endregion
     }
 }

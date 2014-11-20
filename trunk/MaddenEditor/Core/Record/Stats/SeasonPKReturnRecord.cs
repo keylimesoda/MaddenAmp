@@ -29,7 +29,8 @@ namespace MaddenEditor.Core.Record.Stats
 {
     public class SeasonPKReturnRecord : TableRecordModel
     {
-        // punt and kick returner stats 
+        //  PSKP
+
         public const string PLAYER_ID = "PGID";
         public const string SEASON = "SEYR";
         public const string KICK_RETURN_ATT = "srka";
@@ -47,6 +48,8 @@ namespace MaddenEditor.Core.Record.Stats
 
         }
 
+        #region Get / Set
+
         public int PlayerId
         {
             get
@@ -56,6 +59,18 @@ namespace MaddenEditor.Core.Record.Stats
             set
             {
                 SetField(PLAYER_ID, value);
+            }
+        }
+
+        public int Season
+        {
+            get
+            {
+                return GetIntField(SEASON);
+            }
+            set
+            {
+                SetField(SEASON, value);
             }
         }
 
@@ -154,6 +169,9 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(PUNT_RETURN_YARDS, value);
             }
         }
+
+        #endregion
+
     }
 }
 

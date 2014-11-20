@@ -85,7 +85,7 @@ namespace MaddenEditor.Forms
             Dictionary<int, double> playedGamesFactor = new Dictionary<int, double>();
             Dictionary<int, double> startedGamesFactor = new Dictionary<int, double>();
 
-            int currentSeason = model.FranchiseTime.Season;
+            int currentSeason = model.FranchiseTime.Year;
             Dictionary<int, int> gamesPlayed = new Dictionary<int, int>();
             Dictionary<int, int> gamesPlayedLastYear = new Dictionary<int, int>();
             Dictionary<int, int> gamesStarted = new Dictionary<int, int>();

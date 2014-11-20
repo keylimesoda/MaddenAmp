@@ -55,7 +55,7 @@ namespace MaddenEditor.Core.Record
 		public const string OVERTIME = "GFOT";
 		public const string TIED_GAME = "GFTG";
 
-		public const string WEIGHTING = "SEWT";
+		public const string WEEKTYPE = "SEWT";
 
 		public const string HUMAN_USER = "GFHU";
 
@@ -210,7 +210,7 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				int val = GetIntField(WEIGHTING);
+				int val = GetIntField(WEEKTYPE);
 				foreach (GenericRecord rec in gameWeightings)
 				{
 					if (rec.Id == val)
@@ -223,7 +223,7 @@ namespace MaddenEditor.Core.Record
 			}
 			set
 			{
-				SetField(WEIGHTING, value.Id);
+				SetField(WEEKTYPE, value.Id);
 			}
 		}
 

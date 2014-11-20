@@ -39,57 +39,504 @@ namespace MaddenEditor.Core.Record
 
 	public class CoachRecord : TableRecordModel
 	{
-		public const string NAME = "CLNA";
-		public const string COACH_ID = "CCID";
-		public const string TEAM_ID = "TGID";
-		public const string AGE = "CAGE";
-		public const string POSITION = "COPS";
-		public const string SKIN_COLOR = "CSKI";
-        public const string COACHPIC = "CSXP";
-		public const string SALARY = "CSAL";
-        public const string COACHYL = "CCLN";
+        // COCH
+        
+        public const string AGE = "CAGE";
+        public const string BIGGEST_LOSS_MARGIN = "CBLM";
+        public const string BODY_SIZE = "CBSZ";
+        public const string BIGGEST_WIN_MARGIN = "CBWM";
+        public const string CHEMISTRY = "CCHM";
+        public const string COACH_ID = "CCID";
+        public const string CONTRACT_LENGTH = "CCLN";
+        public const string CAREER_LOSSES = "CCLO";
+        public const string CAREER_LONGEST_LOSING_STREAK = "CCLS";
+        public const string PLAYOFF_LOSSES = "CCPL";
+        public const string PLAYOFFS_MADE = "CCPM";
+        public const string CCPR = "CCPR";
+        public const string PLAYFF_WINS = "CCPW";
+        public const string CCTC = "CCTC";
+        public const string CAREER_TIES = "CCTI";
+        public const string CAREER_WINS = "CCWI";
+        public const string WINNING_SEASONS = "CCWS";
+        public const string DEFENSE = "CDEF";
+        public const string DEFENSIVE_PLAYBOOK = "CDID";
+        public const string DEF_AGGR = "CDTA";
+        public const string DEF_STRAT = "CDTR";
+        public const string DEFENSE_TYPE = "CDTY";
+        public const string CDWS = "CDWS";
+        public const string ETHICS = "CETH";
+        public const string CFCO = "CFCO";
+        public const string DRAFT_PLAYER = "CFDA";
+        public const string SIGN_DRAFT_PICKS = "CFDP";
+        public const string CFEX = "CFEX";
+        public const string SIGN_FREE_AGENTS = "CFFA";
+        public const string FILL_ROSTERS = "CFFR";
+        public const string CFHL = "CFHL";
+        public const string RESIGN_PLAYERS = "CFRP";
+        public const string MANAGE_DEPTH = "CFRR";
+        public const string CFSH = "CFSH";
+        public const string USER_CONTROLLED = "CFUC";
+        public const string CHAR = "CHAR";
+        public const string HEIGHT = "CHGT";
+        public const string HEADHAIR_ID = "CHID";
+        public const string CHSD = "CHSD";
+        public const string CHTY = "CHTY";
+        public const string KNOWLEDGE = "CKNW";
+        public const string LAST_TEAM = "CLCT";
+        public const string NAME = "CLNA";
+        public const string CLTF = "CLTF";
+        public const string CLTR = "CLTR";
+        public const string MOTIVATION = "CMOT";
+        public const string COAP = "COAP";
+        public const string COCI = "COCI";
+        public const string COCT = "COCT";
+        public const string CODA = "CODA";
+        public const string CODP = "CODP";
+        public const string COEX = "COEX";
+        public const string COFA = "COFA";
+        public const string OFFENSE = "COFF";
+        public const string COFR = "COFR";
+        public const string COPL = "COPL";
+        public const string POSITION = "COPS";
+        public const string CORP = "CORP";
+        public const string CORR = "CORR";
+        public const string OFF_AGGR = "COTA";
+        public const string OFF_STRAT = "COTR";
+        public const string COTY = "COTY";
+        public const string CPAG = "CPAG";
+        public const string OFFENSE_PLAYBOOK_ID = "CPID";
+        public const string CPSF = "CPSF";
+        public const string CPWS = "CPWS";
+        public const string APPROVAL_RATING = "CRAT";
+        public const string RB_CARRY_DIST = "CRBT";
+        public const string DB_RATING = "CRDB";
+        public const string DL_RATING = "CRDL";
+        public const string KICK_RATING = "CRKS";
+        public const string LB_RATING = "CRLB";
+        public const string OL_RATING = "CROL";
+        public const string PUNT_RATING = "CRPS";
+        public const string QB_RATING = "CRQB";
+        public const string RB_RATING = "CRRB";
+        public const string S_RATING = "CRSA";
+        public const string WR_RATING = "CRWR";
+        public const string CRWS = "CRWS";
+        public const string CONTRACT_YEARS_LEFT = "CRYL";               //  Don't think this is correct
+        public const string SALARY = "CSAL";
         public const string SUPERBOWL_LOSES = "CSBL";
-		public const string SUPERBOWL_WINS = "CSBW";
-		public const string PLAYOFF_LOSES = "CCPL";
-		public const string PLAYFF_WINS = "CCPW";
-		public const string WINNING_SEASONS = "CCWS";
-		public const string CAREER_WINS = "CCWI";
-		public const string CAREER_LOSES = "CCLO";
-		public const string CAREER_TIES = "CCTI";
+        public const string CSBS = "CSBS";
+        public const string SUPERBOWL_WINS = "CSBW";
+        public const string SKIN_COLOR = "CSKI";
+        public const string CSLM = "CSLM";
+        public const string SEASON_LOSSES = "CSLO";
+        public const string CSLS = "CSLS";
+        public const string CSPA = "CSPA";
+        public const string CSPC = "CSPC";
+        public const string CSPF = "CSPF";
+        public const string SEASON_TIES = "CSTI";
+        public const string SEASON_WINS = "CSWI";
+        public const string SEASON_BIGGEST_WIN_MARGIN = "CSWM";
+        public const string SEASON_WINNING_STREAK = "CSWS";
+        public const string COACHPIC = "CSXP";
+        public const string COACH_GLASSES = "CTgw";
+        public const string CTHG = "CThg";
+        public const string CWPL = "CWPL";
+        public const string CWST = "CWST";
+        public const string CWWS = "CWWS";
+        public const string TEAM_ID = "TGID";
 
-		public const string DEFENSE_TYPE = "CDTY";
-		public const string DEFENSIVE_PLAYBOOK = "CDID";
-
-		public const string OFF_STRAT = "COTR";
-		public const string DEF_STRAT = "CDTR";
-		public const string RUNNING_BACK_SUB = "CRBT";
-		public const string OFF_AGGR = "COTA";
-		public const string DEF_AGGR = "CDTA";
 		
-		public const string DB_RATING = "CRDB";
-		public const string LB_RATING = "CRLB";
-		public const string QB_RATING = "CRQB";
-		public const string RB_RATING = "CRRB";
-		public const string OL_RATING = "CROL";
-		public const string DL_RATING = "CRDL";
-		public const string WR_RATING = "CRWR";
-		public const string KICK_RATING = "CRKS";
-		public const string PUNT_RATING = "CRPS";
-
-		public const string ETHICS = "CETH";
-		public const string KNOWLEDGE = "CKNW";
-		public const string MOTIVATION = "CMOT";
-		public const string CHEMISTRY = "CCHM";
-
-		public const string USER_CONTROLLED = "CFUC";
-
 		public CoachRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
 		}
 
-		public string Name
+        #region Get / Set
+
+        public int Age
+        {
+            get
+            {
+                return GetIntField(AGE);
+            }
+            set
+            {
+                SetField(AGE, value);
+            }
+        }
+        public int BiggestLossMargin
+        {
+            get { return GetIntField(BIGGEST_LOSS_MARGIN); }
+            set { SetField(BIGGEST_LOSS_MARGIN, value); }
+        }        
+        public int BodySize
+        {
+            get { return GetIntField(BODY_SIZE); }
+            set { SetField(BODY_SIZE, value); }
+        }
+        public int BiggestWinMargin
+        {
+            get { return GetIntField(BIGGEST_WIN_MARGIN); }
+            set { SetField(BIGGEST_WIN_MARGIN, value); }
+        }
+        public int Chemistry
+        {
+            get
+            {
+                return GetIntField(CHEMISTRY);
+            }
+            set
+            {
+                SetField(CHEMISTRY, value);
+            }
+        }
+        public int CoachId
+        {
+            get
+            {
+                return GetIntField(COACH_ID);
+            }
+            set
+            {
+                SetField(COACH_ID, value);
+            }
+        }
+        public int ContractLength
+        {
+            get
+            {
+                return GetIntField(CONTRACT_LENGTH);
+            }
+            set
+            {
+                SetField(CONTRACT_LENGTH, value);
+            }
+        }
+        public int CareerLosses
+        {
+            get
+            {
+                return GetIntField(CAREER_LOSSES);
+            }
+            set
+            {
+                SetField(CAREER_LOSSES, value);
+            }
+        }
+        public int CareerLosingStreak
+        {
+            get { return GetIntField(CAREER_LONGEST_LOSING_STREAK); }
+            set { SetField(CAREER_LONGEST_LOSING_STREAK, value); }
+        }
+        public int PlayoffLosses
+        {
+            get
+            {
+                return GetIntField(PLAYOFF_LOSSES);
+            }
+            set
+            {
+                SetField(PLAYOFF_LOSSES, value);
+            }
+        }
+        public int PlayoffsMade
+        {
+            get { return GetIntField(PLAYOFFS_MADE); }
+            set { SetField(PLAYOFFS_MADE, value); }
+        }
+        public int Ccpr
+        {
+            get { return GetIntField(CCPR); }
+            set { SetField(CCPR, value); }
+        }
+        public int Cctc
+        {
+            get { return GetIntField(CCTC); }
+            set { SetField(CCTC, value); }
+        }
+        public int Cdws
+        {
+            get { return GetIntField(CDWS); }
+            set { SetField(CDWS, value); }
+        }
+        public int DefenseRating
+        {
+            get { return GetIntField(DEFENSE); }
+            set { SetField(DEFENSE, value); }
+        }
+        public int cfco
+        {
+            get { return GetIntField(CFCO); }
+            set { SetField(CFCO, value); }             
+        }
+        public bool DraftPlayer
+        {
+            get { return GetIntField(DRAFT_PLAYER) ==1; }
+            set { SetField(DRAFT_PLAYER, Convert.ToInt32(value)); }
+        }
+        public bool SignDraftPicks
+        {
+            get { return GetIntField(SIGN_DRAFT_PICKS) == 1; }
+            set { SetField(SIGN_DRAFT_PICKS, Convert.ToInt32(value)); }
+        }
+        public int Cfex
+        {
+            get { return GetIntField(CFEX); }
+            set { SetField(CFEX, value); }
+        }
+        public bool SignFreeAgents
+        {
+            get { return GetIntField(SIGN_FREE_AGENTS) == 1; }
+            set { SetField(SIGN_FREE_AGENTS, Convert.ToInt32(value)); }
+        }
+        public bool FillRosters
+        {
+            get { return GetIntField(FILL_ROSTERS) == 1; }
+            set { SetField(FILL_ROSTERS, Convert.ToInt32(value)); }
+        }
+        public int cfhl
+        {
+            get { return GetIntField(CFHL); }
+            set { SetField(CFHL, value); }
+        }
+        public bool ResignPlayers
+        {
+            get { return GetIntField(RESIGN_PLAYERS) == 1; }
+            set { SetField(RESIGN_PLAYERS, Convert.ToInt32(value)); }
+        }
+        public bool ManageDepth
+        {
+            get { return GetIntField(MANAGE_DEPTH) == 1; }
+            set { SetField(MANAGE_DEPTH, Convert.ToInt32(value)); }
+        }
+        public int Cfsh
+        {
+            get { return GetIntField(CFSH); }
+            set { SetField(CFSH, value); }
+        }
+        public int Char
+        {
+            get { return GetIntField(CHAR); }
+            set { SetField(CHAR, value); }
+        }
+        public int height
+        {
+            get { return GetIntField(HEIGHT); }
+            set { SetField(HEIGHT, value); }
+        }
+        public int HeadHair
+        {
+            get { return GetIntField(HEADHAIR_ID); }
+            set { SetField(HEADHAIR_ID, value); }
+        }
+        public int Chsd
+        {
+            get { return GetIntField(CHSD); }
+            set { SetField(CHSD, value); }
+        }
+        public int Chty
+        {
+            get { return GetIntField(CHTY); }
+            set { SetField(CHTY, value); }
+        }
+        public int LastTeam
+        {
+            get { return GetIntField(LAST_TEAM); }
+            set { SetField(LAST_TEAM, value); }
+        }
+        public int Cltf
+        {
+            get { return GetIntField(CLTF); }
+            set { SetField(CLTF, value); }
+        }
+        public int Cltr
+        {
+            get { return GetIntField(CLTR); }
+            set { SetField(CLTR, value); }
+        }
+        public int Coap
+        {
+            get { return GetIntField(COAP); }
+            set { SetField(COAP, value); }
+        }
+        public int Coci
+        {
+            get { return GetIntField(COCI); }
+            set { SetField(COCI, value); }
+        }
+        public int Coct
+        {
+            get { return GetIntField(COCT); }
+            set { SetField(COCT, value); }
+        }
+        public int Coda
+        {
+            get { return GetIntField(CODA); }
+            set { SetField(CODA, value); }
+        }
+        public int Codp
+        {
+            get { return GetIntField(CODP); }
+            set { SetField(CODP, value); }
+        }
+        public int Coex
+        {
+            get { return GetIntField(COEX); }
+            set { SetField(COEX, value); }
+        }
+        public int Cofa
+        {
+            get { return GetIntField(COFA); }
+            set { SetField(COFA, value); }
+        }
+        public int Offense
+        {
+            get { return GetIntField(OFFENSE); }
+            set { SetField(OFFENSE, value); }
+        }
+        public int Cofr
+        {
+            get { return GetIntField(COFR); }
+            set { SetField(COFR, value); }
+        }
+        public int Copl
+        {
+            get { return GetIntField(COPL); }
+            set { SetField(COPL, value); }
+        }
+        public int Corp
+        {
+            get { return GetIntField(CORP); }
+            set { SetField(CORP, value); }
+        }
+        public int Corr
+        {
+            get { return GetIntField(CORR); }
+            set { SetField(CORR, value); }
+        }
+        public int Coty
+        {
+            get { return GetIntField(COTY); }
+            set { SetField(COTY, value); }
+        }
+        public int Cpag
+        {
+            get { return GetIntField(CPAG); }
+            set { SetField(CPAG, value); }
+        }
+        public int Cpsf
+        {
+            get { return GetIntField(CPSF); }
+            set { SetField(CPSF, value); }
+        }
+        public int Cpws
+        {
+            get { return GetIntField(CPWS); }
+            set { SetField(CPWS, value); }
+        }
+        public int ApprovalRating
+        {
+            get { return GetIntField(APPROVAL_RATING); }
+            set { SetField(APPROVAL_RATING, value); }
+        }
+        public int Crsa
+        {
+            get { return GetIntField(S_RATING); }
+            set { SetField(S_RATING, value); }
+        }
+        public int Crws
+        {
+            get { return GetIntField(CRWS); }
+            set { SetField(CRWS, value); }
+        }
+        public int ContractYearsLeft
+        {
+            get { return GetIntField(CONTRACT_YEARS_LEFT); }
+            set { SetField(CONTRACT_YEARS_LEFT, value); }
+        }
+        public int Csbs
+        {
+            get { return GetIntField(CSBS); }
+            set { SetField(CSBS, value); }
+        }
+        public int Cslm
+        {
+            get { return GetIntField(CSLM); }
+            set { SetField(CSLM, value); }
+        }
+        public int SeasonLosses
+        {
+            get { return GetIntField(SEASON_LOSSES); }
+            set { SetField(SEASON_LOSSES, value); }
+        }
+        public int Csls
+        {
+            get { return GetIntField(CSLS); }
+            set { SetField(CSLS, value); }
+        }
+        public int Cspa
+        {
+            get { return GetIntField(CSPA); }
+            set { SetField(CSPA, value); }
+        }
+        public int Cspc
+        {
+            get { return GetIntField(CSPC); }
+            set { SetField(CSPC, value); }
+        }
+        public int Cspf
+        {
+            get { return GetIntField(CSPF); }
+            set { SetField(CSPF, value); }
+        }
+        public int SeasonTies
+        {
+            get { return GetIntField(SEASON_TIES); }
+            set { SetField(SEASON_TIES, value); }
+        }
+        public int SeasonWins
+        {
+            get { return GetIntField(SEASON_WINS); }
+            set { SetField(SEASON_WINS, value); }
+        }
+        public int SeasonBigWin
+        {
+            get { return GetIntField(SEASON_BIGGEST_WIN_MARGIN); }
+            set { SetField(SEASON_BIGGEST_WIN_MARGIN, value); }
+        }
+        public int SeasonWinStreak
+        {
+            get { return GetIntField(SEASON_WINNING_STREAK); }
+            set { SetField(SEASON_WINNING_STREAK, value); }
+        }
+        public bool CoachGlasses
+        {
+            get { return GetIntField(COACH_GLASSES)==1; }
+            set { SetField(COACH_GLASSES, Convert.ToInt32(value)); }
+        }
+        public int Cthg
+        {
+            get { return GetIntField(CTHG); }
+            set { SetField(CTHG, value); }
+        }
+        public int Cwpl
+        {
+            get { return GetIntField(CWPL); }
+            set { SetField(CWPL, value); }
+        }
+        public int Cwst
+        {
+            get { return GetIntField(CWST); }
+            set { SetField(CWST, value); }
+        }
+        public int Cwws
+        {
+            get { return GetIntField(CWWS); }
+            set { SetField(CWWS, value); }
+        }
+
+        
+        public string Name
 		{
 			get
 			{
@@ -100,19 +547,7 @@ namespace MaddenEditor.Core.Record
 				SetField(NAME, value);
 			}
 		}
-
-		public int CoachId
-		{
-			get
-			{
-				return GetIntField(COACH_ID);
-			}
-			set
-			{
-				SetField(COACH_ID, value);
-			}
-		}
-
+		
 		public int TeamId
 		{
 			get
@@ -124,19 +559,6 @@ namespace MaddenEditor.Core.Record
 				SetField(TEAM_ID, value);
 			}
 		}
-
-		public int Age
-		{
-			get
-			{
-				return GetIntField(AGE);
-			}
-			set
-			{
-				SetField(AGE, value);
-			}
-		}
-
 		public int SkinColor
 		{
 			//The skin color is 0-4 but it is reversed
@@ -171,7 +593,6 @@ namespace MaddenEditor.Core.Record
 				SetField(POSITION, value);
 			}
 		}
-
 		public int Salary
 		{
 			get
@@ -183,18 +604,7 @@ namespace MaddenEditor.Core.Record
 				SetField(SALARY, value);
 			}
 		}
-
-        public int CoachYL
-        {
-            get
-            {
-                return GetIntField(COACHYL);
-            }
-            set
-            {
-                SetField(COACHYL, value);
-            }
-        }
+       
         public int CoachQB
         {
             get
@@ -283,17 +693,7 @@ namespace MaddenEditor.Core.Record
                 SetField(KICK_RATING, value);
             }
         }
-        public int CoachPS
-        {
-            get
-            {
-                return GetIntField(PUNT_RATING);
-            }
-            set
-            {
-                SetField(PUNT_RATING, value);
-            }
-        }
+        
         public int SuperBowlWins
 		{
 			get
@@ -305,7 +705,6 @@ namespace MaddenEditor.Core.Record
 				SetField(SUPERBOWL_WINS, value);
 			}
 		}
-
 		public int SuperBowlLoses
 		{
 			get
@@ -317,19 +716,7 @@ namespace MaddenEditor.Core.Record
 				SetField(SUPERBOWL_LOSES, value);
 			}
 		}
-
-		public int PlayoffLoses
-		{
-			get
-			{
-				return GetIntField(PLAYOFF_LOSES);
-			}
-			set
-			{
-				SetField(PLAYOFF_LOSES, value);
-			}
-		}
-
+		
 		public int PlayoffWins
 		{
 			get
@@ -341,7 +728,6 @@ namespace MaddenEditor.Core.Record
 				SetField(PLAYFF_WINS, value);
 			}
 		}
-
 		public int WinningSeasons
 		{
 			get
@@ -353,7 +739,6 @@ namespace MaddenEditor.Core.Record
 				SetField(WINNING_SEASONS, value);
 			}
 		}
-
 		public int CareerWins
 		{
 			get
@@ -365,19 +750,7 @@ namespace MaddenEditor.Core.Record
 				SetField(CAREER_WINS, value);
 			}
 		}
-
-		public int CareerLoses
-		{
-			get
-			{
-				return GetIntField(CAREER_LOSES);
-			}
-			set
-			{
-				SetField(CAREER_LOSES, value);
-			}
-		}
-
+		
 		public int CareerTies
 		{
 			get
@@ -389,8 +762,7 @@ namespace MaddenEditor.Core.Record
 				SetField(CAREER_TIES, value);
 			}
 		}
-
-		public bool DefensiveAlignment
+		public bool DefenseType
 		{
 			get
 			{
@@ -408,7 +780,6 @@ namespace MaddenEditor.Core.Record
 				}
 			}
 		}
-
 		public int DefensivePlaybook
 		{
 			get
@@ -419,8 +790,7 @@ namespace MaddenEditor.Core.Record
 			{
 				SetField(DEFENSIVE_PLAYBOOK, value);
 			}
-		}
-		
+		}		
 		public int OffensiveStrategy
 		{
 			get
@@ -432,7 +802,6 @@ namespace MaddenEditor.Core.Record
 				SetField(OFF_STRAT, value);
 			}
 		}
-
 		public int DefensiveStrategy
 		{
 			get
@@ -444,7 +813,6 @@ namespace MaddenEditor.Core.Record
 				SetField(DEF_STRAT, value);
 			}
 		}
-
 		public int DefensiveBackRating
 		{
 			get
@@ -456,7 +824,6 @@ namespace MaddenEditor.Core.Record
 				SetField(DB_RATING, value);
 			}
 		}
-
 		public int LinebackerRating
 		{
 			get
@@ -468,7 +835,6 @@ namespace MaddenEditor.Core.Record
 				SetField(LB_RATING, value);
 			}
 		}
-
 		public int QuarterbackRating
 		{
 			get
@@ -480,7 +846,6 @@ namespace MaddenEditor.Core.Record
 				SetField(QB_RATING, value);
 			}
 		}
-
 		public int RunningbackRating
 		{
 			get
@@ -492,7 +857,6 @@ namespace MaddenEditor.Core.Record
 				SetField(RB_RATING, value);
 			}
 		}
-
 		public int OffensiveLineRating
 		{
 			get
@@ -504,7 +868,6 @@ namespace MaddenEditor.Core.Record
 				SetField(OL_RATING, value);
 			}
 		}
-
 		public int DefensiveLineRating
 		{
 			get
@@ -516,7 +879,6 @@ namespace MaddenEditor.Core.Record
 				SetField(DL_RATING, value);
 			}
 		}
-
 		public int WideReceiverRating
 		{
 			get
@@ -528,7 +890,6 @@ namespace MaddenEditor.Core.Record
 				SetField(WR_RATING, value);
 			}
 		}
-
 		public int KickerRating
 		{
 			get
@@ -540,7 +901,6 @@ namespace MaddenEditor.Core.Record
 				SetField(KICK_RATING, value);
 			}
 		}
-
 		public int PuntRating
 		{
 			get
@@ -552,8 +912,7 @@ namespace MaddenEditor.Core.Record
 				SetField(PUNT_RATING, value);
 			}
 		}
-
-		public int Ethics
+        public int Ethics
 		{
 			get
 			{
@@ -564,7 +923,6 @@ namespace MaddenEditor.Core.Record
 				SetField(ETHICS, value);
 			}
 		}
-
 		public int Knowledge
 		{
 			get
@@ -576,7 +934,6 @@ namespace MaddenEditor.Core.Record
 				SetField(KNOWLEDGE, value);
 			}
 		}
-
 		public int Motivation
 		{
 			get
@@ -588,31 +945,18 @@ namespace MaddenEditor.Core.Record
 				SetField(MOTIVATION, value);
 			}
 		}
-
-		public int Chemistry
+		
+		public int RBCarryDist
 		{
 			get
 			{
-				return GetIntField(CHEMISTRY);
+				return GetIntField(RB_CARRY_DIST);
 			}
 			set
 			{
-				SetField(CHEMISTRY, value);
+				SetField(RB_CARRY_DIST, value);
 			}
 		}
-
-		public int RunningBack2Sub
-		{
-			get
-			{
-				return GetIntField(RUNNING_BACK_SUB);
-			}
-			set
-			{
-				SetField(RUNNING_BACK_SUB, value);
-			}
-		}
-
 		public int OffensiveAggression
 		{
 			get
@@ -624,7 +968,6 @@ namespace MaddenEditor.Core.Record
 				SetField(OFF_AGGR, value);
 			}
 		}
-
 		public int DefensiveAggression
 		{
 			get
@@ -636,7 +979,6 @@ namespace MaddenEditor.Core.Record
 				SetField(DEF_AGGR, value);
 			}
 		}
-
 		public bool HumanControlled
 		{
 			get
@@ -647,6 +989,14 @@ namespace MaddenEditor.Core.Record
 			{
 				SetField(USER_CONTROLLED, Convert.ToInt32(value));
 			}
-		}
-	}
+        }
+
+
+
+
+
+
+
+        #endregion
+    }
 }

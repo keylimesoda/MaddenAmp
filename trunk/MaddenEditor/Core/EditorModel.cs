@@ -63,7 +63,8 @@ namespace MaddenEditor.Core
 	/// </summary>
 	public enum MaddenPositions
 	{
-		QB = 0,
+		// 21 positions
+        QB = 0,
 		HB,
 		FB,
 		WR,
@@ -85,8 +86,57 @@ namespace MaddenEditor.Core
 		K,
 		P
 	}
-   
 
+    public enum PlayerRoles
+    {
+        QBFuture = 0,
+        ClutchKick = 1,
+        TeamCapt = 2,
+        NFLIcon = 3,
+        UnderAchiever = 4,
+        TeamMentor = 5,
+        TeamLeader = 6,
+        ProjectPlayer = 7,
+        TeamDistraction = 8,
+        CaptComeback = 9,
+        GameManager = 10,
+        ReturnSpec = 11,
+        FirstRndPick = 12,
+        FanFave = 13,
+        InjuryProne = 14,
+        FumbleProne = 15,
+        FutureStar = 16,
+        PrecisePasser = 17,
+        CanonArm = 18,
+        Scrambler = 19,
+        FranchiseQB = 20,
+        PowerRB = 21,
+        ElusiveRB = 22,
+        SpeedRB= 23,
+        RunBlocker = 24,
+        PassBlocker = 25,
+        RoadBlock = 26,
+        ForceNature = 27,
+        HeavyHitter = 28,
+        ContainCB = 29,
+        QuickCB = 30,
+        BigHitter = 31,
+        CoverS = 32,
+        Hitman = 33,
+        FutureRB = 34,
+        GotoGuy = 35,
+        DeepThreat = 36,
+        PossWR = 37,
+        ShutdownCB = 38,
+        PassRusher = 39,
+        RunStopper = 40,
+        DefEnforcer = 41,
+        Playmaker = 42,
+        //ReservedA = 43,
+        //ReservedB = 44,
+        NONE = 45,
+    }
+    
 	/// <summary>
 	/// This class is the main application model class. It is responsible for
 	/// creating all editing models that are manipulated by the GUI.
@@ -96,6 +146,8 @@ namespace MaddenEditor.Core
         public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
         public const int RETIRED_TEAM_ID = 1014;
+        public const int MADDEN_ROS_2004_TABLE_COUNT = 11;
+        public const int MADDEN_ROS_2005_TABLE_COUNT = 11;
 		public const int MADDEN_ROS_2006_TABLE_COUNT = 11;
 		public const int MADDEN_ROS_2007_TABLE_COUNT = 10;
         public const int MADDEN_ROS_2008_TABLE_COUNT = 10;
@@ -106,82 +158,85 @@ namespace MaddenEditor.Core
 		public const int MADDEN_FRA_2007_TABLE_COUNT = 185;
         public const int MADDEN_FRA_2008_TABLE_COUNT = 191;
        
-    	public const int MADDEN_ROS_2004_TEAM_FIELD_COUNT = 112;
-		public const int MADDEN_ROS_2005_TEAM_FIELD_COUNT = 115;
-		public const int MADDEN_ROS_2006_TEAM_FIELD_COUNT = 111;
-		public const int MADDEN_ROS_2007_TEAM_FIELD_COUNT = 110;
-        public const int MADDEN_ROS_2008_TEAM_FIELD_COUNT = 110;
+    	public const int MADDEN_ROS_2004_PLAY_FIELD_COUNT = 112;
+		public const int MADDEN_ROS_2005_PLAY_FIELD_COUNT = 115;
+		public const int MADDEN_ROS_2006_PLAY_FIELD_COUNT = 111;
+		public const int MADDEN_ROS_2007_PLAY_FIELD_COUNT = 110;
+        public const int MADDEN_ROS_2008_PLAY_FIELD_COUNT = 110;
 
 		public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";
         // adding Retired for team name
         public const string RETIRED = "Retired";
-		public const string PLAYER_TABLE = "PLAY";
-		public const string TEAM_TABLE = "TEAM";
-		public const string INJURY_TABLE = "INJY";
-		public const string COACH_TABLE = "COCH";
-		public const string SALARY_CAP_TABLE = "SLRI";
-		public const string DEPTH_CHART_TABLE = "DCHT";
-		public const string COACH_SLIDER_TABLE = "CPSE";
-		public const string TEAM_CAPTAIN_TABLE = "TCPT";
-		public const string OWNER_TABLE = "OWNR";
-		public const string CITY_TABLE = "CITY";
-		public const string SCHEDULE_TABLE = "SCHD";
-		public const string UNIFORM_TABLE = "TUNI";
-		// Madden 2005+ specific tables
-		public const string GAME_OPTIONS_TABLE = "GOPT";
-        // MADDEN DRAFT EDIT
-        public const string DRAFT_PICK_TABLE = "DRPK";
-        public const string DRAFTED_PLAYERS_TABLE = "DRPL";
 
-        // franchise state tables
-        public const string FRANCHISE_TIME_TABLE = "SEAI";
-        public const string DRAFT_STATE_TABLE = "DRIN";
-        public const string FREE_AGENCY_STATE_TABLE = "FAIN";
-        public const string RESIGN_PLAYERS_STATE_TABLE = "REIN";
-        public const string RFA_STATE_TABLE = "RFIN";
-        public const string SCOUTING_STATE_TABLE = "SCIN";
-        public const string FRANCHISE_STAGE_TABLE = "MOIN";
-
-        // stats
+        //  Table Names
+        // AWPL
+        public const string PLAYER_AWARDS_TABLE = "AYPL";
         public const string BOXSCORE_DEFENSE_TABLE = "BDEF";
         public const string BOXSCORE_OFFENSE_TABLE = "BOFF";
-        public const string SEASON_STATS_OFFENSE_TABLE = "PSOF";
-        public const string SEASON_STATS_DEFENSE_TABLE = "PSDE";
-        public const string CAREER_STATS_OFFENSE_TABLE = "PCOF";
-        public const string CAREER_STATS_DEFENSE_TABLE = "PCDE";
-        public const string TEAM_STATS_TABLE = "TSSE";
-        public const string BOXSCORE_TEAM_TABLE = "BTES";
         public const string BOXSCORE_OFFENSIVE_LINE_TABLE = "BOLN";
-        public const string SEASON_STATS_OFFENSIVE_LINE_TABLE = "PSOL";
-        public const string CAREER_STATS_OFFENSIVE_LINE_TABLE = "PCOL";
-        public const string SEASON_GAMES_PLAYED_TABLE = "PSNG";
-        public const string CAREER_GAMES_PLAYED_TABLE = "PCNG";
+        public const string BOXSCORE_SCORING_SUMMARY = "BSCS";
+        public const string BOXSCORE_TEAM_TABLE = "BTES";
+        public const string CITY_TABLE = "CITY";
+        public const string COACH_TABLE = "COCH";
+        public const string COACH_SLIDER_TABLE = "CPSE";
+        public const string DEPTH_CHART_TABLE = "DCHT";
+        public const string DRAFT_STATE_TABLE = "DRIN";
+        public const string DRAFT_PICK_TABLE = "DRPK";
+        public const string DRAFTED_PLAYERS_TABLE = "DRPL";
+        public const string FREE_AGENCY_STATE_TABLE = "FAIN";
+        public const string FREE_AGENT_PLAYERS = "FAPL";
+        public const string GAME_OPTIONS_TABLE = "GOPT";
+        public const string INJURY_TABLE = "INJY";
+        public const string FRANCHISE_STAGE_TABLE = "MOIN";
+        public const string OWNER_TABLE = "OWNR";
+        public const string CAREER_STATS_DEFENSE_TABLE = "PCDE";
         public const string CAREER_STATS_KICKPUNT_TABLE = "PCKI";
-        public const string SEASON_STATS_KICKPUNT_TABLE = "PSKI";
         public const string CAREER_STATS_KICKPUNT_RETURN_TABLE = "PCKP";
+        public const string CAREER_GAMES_PLAYED_TABLE = "PCNG";
+        public const string CAREER_STATS_OFFENSE_TABLE = "PCOF";
+        public const string CAREER_STATS_OFFENSIVE_LINE_TABLE = "PCOL";
+        public const string PLAYER_TABLE = "PLAY";
+        public const string SEASON_STATS_DEFENSE_TABLE = "PSDE";
+        public const string SEASON_STATS_KICKPUNT_TABLE = "PSKI";
         public const string SEASON_STATS_KICKPUNT_RETURN_TABLE = "PSKP";
-		private List<string[]> draftClassFields;
-
+        public const string SEASON_GAMES_PLAYED_TABLE = "PSNG";
+        public const string SEASON_STATS_OFFENSE_TABLE = "PSOF";
+        public const string SEASON_STATS_OFFENSIVE_LINE_TABLE = "PSOL";
+        public const string RESIGN_PLAYERS_STATE_TABLE = "REIN";
+        public const string RFA_STATE_TABLE = "RFIN";                       // 2005+
+        public const string SCHEDULE_TABLE = "SCHD";
+        public const string SCOUTING_STATE_TABLE = "SCIN";
+        public const string FRANCHISE_TIME_TABLE = "SEAI";
+        public const string SALARY_CAP_TABLE = "SLRI";
+        public const string STADIUM_TABLE = "STAD";
+        public const string TEAM_CAPTAIN_TABLE = "TCPT";
+		public const string TEAM_TABLE = "TEAM";
+        public const string TEAM_GAME_RECORDS = "TMGR";   
+        public const string TEAM_SEASON_RECORDS = "TMSR";
+        public const string TEAM_STATS_TABLE = "TSSE";        
+        public const string UNIFORM_TABLE = "TUNI";
+                       
+        private List<string[]> draftClassFields;
         public bool draftStarted = false;
-        // MADDEN DRAFT EDIT
-
-		private bool dirty = false;
+        private bool dirty = false;
 		private int dbIndex = -1;
 		private int tableCount = 0;
 		private string fileName = "";
 		private MainForm view = null;
 		private TableModelDictionary tableModels = null;
 		private MaddenFileType fileType = MaddenFileType.RosterFile;
-		private MaddenFileVersion fileVersion = MaddenFileVersion.Ver2005; //Assume 2005
+        private MaddenFileVersion fileVersion = MaddenFileVersion.Ver2004;
 		private Dictionary<string, int> tableOrder = null;
 		
 		// Editing model objects
 		private PlayerEditingModel playerEditingModel = null;
 		private CoachEditingModel coachEditingModel = null;
 		private TeamEditingModel teamEditingModel = null;
+        private StadiumEditingModel stadiumEditingModel = null;
 		private SalaryCapRecord salaryCapRecord = null;
 		private GameOptionRecord gameOptionsRecord = null;
 
+        public static MGMT Manager = new MGMT();
         public static int totalplayers = 0;
                      
 		#region Constructors
@@ -240,18 +295,19 @@ namespace MaddenEditor.Core
 			playerEditingModel = new PlayerEditingModel(this);
 			teamEditingModel = new TeamEditingModel(this);
 			coachEditingModel = new CoachEditingModel(this);
+            stadiumEditingModel = new StadiumEditingModel(this);
+                      
 
             if (fileType == MaddenFileType.FranchiseFile)
-            {
-                //Get the SalaryCapRecord for its info
+            {                
                 salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
-                if (FileVersion == MaddenFileVersion.Ver2006)
-                {
-                    //Get the only GameOptions Record for its info
-                    gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
-                }
+                gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
             }
+
+            //Manager.SetModel(this);
+            //Manager.InitMain();
 		}
+
 		#endregion
 
 		#region Madden Draft Edit
@@ -394,6 +450,10 @@ namespace MaddenEditor.Core
 				return teamEditingModel;
 			}
 		}
+        public StadiumEditingModel StadiumModel
+        {
+            get { return stadiumEditingModel; }
+        }
 		/// <summary>
 		/// The SalaryCapRecord object. There is only ever one record in this table
 		/// </summary>
@@ -428,7 +488,7 @@ namespace MaddenEditor.Core
 		/// <summary>
 		/// The Dirty flag indicates wether or not changes have been made to the loaded objects
 		/// and therefore these changes need to be saved in order to be persisted
-		/// </summary>
+		/// </summary>        
 		public bool Dirty
 		{
 			get
@@ -443,6 +503,7 @@ namespace MaddenEditor.Core
 			}
 		}
 
+       
 		/// <summary>
 		/// This is the main function that processes the database file and loads the 
 		/// tables into objects in memory
@@ -456,17 +517,11 @@ namespace MaddenEditor.Core
 				tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
 				Trace.WriteLine("Table count in " + fileName + " = " + tableCount);
 				//Set the file type of this loaded file
-                if (tableCount == MADDEN_ROS_2006_TABLE_COUNT || tableCount == MADDEN_ROS_2007_TABLE_COUNT)
+                if (tableCount == 10 || tableCount == 11)
 				{
-					fileType = MaddenFileType.RosterFile;
-					//For roster files that aren't 2007 we will distinguish them later
-					//2007-2008 doesn't contain the Coach slider settings
-                    //2007-2008 Roster tabke counts are the same, will distinguish them later
-                    if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)
-					{
+					fileType = MaddenFileType.RosterFile;					                 
+                    if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)					
 						fileVersion = MaddenFileVersion.Ver2007;
-					}
-                    
 				}
 				else
 				{
@@ -474,7 +529,6 @@ namespace MaddenEditor.Core
 					Trace.WriteLine("Franchise contains " + tableCount + " tables");
 					switch (tableCount)
 					{
-
 						case MADDEN_FRA_2008_TABLE_COUNT:
                             fileVersion = MaddenFileVersion.Ver2008;
                             break;
@@ -487,38 +541,51 @@ namespace MaddenEditor.Core
 						case MADDEN_FRA_2006_TABLE_COUNT:
 							fileVersion = MaddenFileVersion.Ver2006;
 							break;
-						default:
-							//Madden 2004 file
+						default:							
 							fileVersion = MaddenFileVersion.Ver2004;
 							break;
 					}
 				}
-				//Initialise the tableOrder with the Table names we want to 
-				//process
-				tableOrder.Add(TEAM_TABLE, -1);
-				tableOrder.Add(PLAYER_TABLE, -1);
-				tableOrder.Add(INJURY_TABLE, -1);
-				tableOrder.Add(COACH_TABLE, -1);
-                tableOrder.Add(DEPTH_CHART_TABLE, -1);
-				//We don't want to load this table in if its 2007 or roster file
-				if (fileVersion < MaddenFileVersion.Ver2007 && fileType != MaddenFileType.RosterFile)
-				{
-					tableOrder.Add(COACH_SLIDER_TABLE, -1);
-				}
-				tableOrder.Add(CITY_TABLE, -1);
-				tableOrder.Add(UNIFORM_TABLE, -1);
-				//Make sure we only load some tables if we are a franchise file
+
+                if (FileType == MaddenFileType.RosterFile)
+                {
+                    tableOrder.Add(CITY_TABLE, -1);
+                    if (fileVersion < MaddenFileVersion.Ver2007)
+                        tableOrder.Add(COACH_SLIDER_TABLE, -1);
+                    tableOrder.Add(COACH_TABLE, -1);
+                    // CTMP
+                    // CTMU
+                    tableOrder.Add(DEPTH_CHART_TABLE, -1);
+                    tableOrder.Add(INJURY_TABLE, -1);
+                    tableOrder.Add(PLAYER_TABLE, -1);
+                    tableOrder.Add(STADIUM_TABLE, -1);
+                    tableOrder.Add(UNIFORM_TABLE, -1);
+                    tableOrder.Add(TEAM_TABLE, -1);
+                }
+				
+				// Make sure we only load some tables if we are a franchise file
 				if (fileType == MaddenFileType.FranchiseFile)
 				{
-					tableOrder.Add(SALARY_CAP_TABLE, -1);
+                    tableOrder.Add(CITY_TABLE, -1);
+                    if (fileVersion < MaddenFileVersion.Ver2007)
+                        tableOrder.Add(COACH_SLIDER_TABLE, -1);
+                    tableOrder.Add(COACH_TABLE, -1);
+                    // CTMP
+                    // CTMU
+                    tableOrder.Add(DEPTH_CHART_TABLE, -1);
+                    tableOrder.Add(INJURY_TABLE, -1);
+                    tableOrder.Add(PLAYER_TABLE, -1);
+                    tableOrder.Add(STADIUM_TABLE, -1);
+                    tableOrder.Add(UNIFORM_TABLE, -1);
+                    tableOrder.Add(TEAM_TABLE, -1);                    
+                    tableOrder.Add(SALARY_CAP_TABLE, -1);
 					tableOrder.Add(OWNER_TABLE, -1);
-					tableOrder.Add(SCHEDULE_TABLE, -1);
-					// MADDEN DRAFT EDIT
+					tableOrder.Add(SCHEDULE_TABLE, -1);					
                     tableOrder.Add(DRAFT_PICK_TABLE, -1);
                     tableOrder.Add(DRAFTED_PLAYERS_TABLE, -1);
-
                     tableOrder.Add(BOXSCORE_OFFENSE_TABLE, -1);
                     tableOrder.Add(BOXSCORE_DEFENSE_TABLE, -1);
+                    tableOrder.Add(BOXSCORE_SCORING_SUMMARY, -1);
                     tableOrder.Add(SEASON_STATS_DEFENSE_TABLE, -1);
                     tableOrder.Add(SEASON_STATS_OFFENSE_TABLE, -1);
                     tableOrder.Add(CAREER_STATS_DEFENSE_TABLE, -1);
@@ -534,58 +601,53 @@ namespace MaddenEditor.Core
                     tableOrder.Add(SEASON_STATS_KICKPUNT_TABLE, -1);
                     tableOrder.Add(CAREER_STATS_KICKPUNT_RETURN_TABLE, -1);
                     tableOrder.Add(SEASON_STATS_KICKPUNT_RETURN_TABLE, -1);
-                    
-                    
-                    
+                    tableOrder.Add(PLAYER_AWARDS_TABLE, -1);
+                    tableOrder.Add(TEAM_SEASON_RECORDS, -1);
+                    tableOrder.Add(TEAM_GAME_RECORDS, -1);
                     tableOrder.Add(FRANCHISE_TIME_TABLE, -1);
-
                     tableOrder.Add(SCOUTING_STATE_TABLE, -1);
-                    tableOrder.Add(RFA_STATE_TABLE, -1);
+                    if (fileVersion > MaddenFileVersion.Ver2004)
+                        tableOrder.Add(RFA_STATE_TABLE, -1);
                     tableOrder.Add(RESIGN_PLAYERS_STATE_TABLE, -1);
                     tableOrder.Add(FREE_AGENCY_STATE_TABLE, -1);
                     tableOrder.Add(DRAFT_STATE_TABLE, -1);
                     tableOrder.Add(FRANCHISE_STAGE_TABLE, -1);
-                    // MADDEN DRAFT EDIT
-					if (fileVersion >= MaddenFileVersion.Ver2005)
-					{
+                    
+					if (fileVersion >= MaddenFileVersion.Ver2005)					
 						tableOrder.Add(TEAM_CAPTAIN_TABLE, -1);
-					}
-					if (fileVersion >= MaddenFileVersion.Ver2006)
-					{
-						tableOrder.Add(GAME_OPTIONS_TABLE, -1);
-					}
+					
+					//if (fileVersion >= MaddenFileVersion.Ver2006)					
+						tableOrder.Add(GAME_OPTIONS_TABLE, -1);					
 				}
 
-				for (int j = 0; j < tableCount; j++)
-				{
-					TdbTableProperties tableProps = new TdbTableProperties();
-					tableProps.Name = new string((char)0, 5);
-					TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
 
-					//We use the player table to work out what version a roster file is
-                    //2007-2008 have the same count, so will add a check afterwards to distinguish them
-					if (FileType == MaddenFileType.RosterFile && tableProps.Name.Equals(PLAYER_TABLE))
-					{
-						switch (tableProps.FieldCount)
-						{
-							case MADDEN_ROS_2004_TEAM_FIELD_COUNT:
-								fileVersion = MaddenFileVersion.Ver2004;
-								break;
-							case MADDEN_ROS_2005_TEAM_FIELD_COUNT:
-								fileVersion = MaddenFileVersion.Ver2005;
-								break;
-							case MADDEN_ROS_2006_TEAM_FIELD_COUNT:
-								fileVersion = MaddenFileVersion.Ver2006;
-								break;
-							case MADDEN_ROS_2007_TEAM_FIELD_COUNT:
-								fileVersion = MaddenFileVersion.Ver2007;
 
-								break;                            
-							default:
-								break;                            
-						}
+                for (int j = 0; j < tableCount; j++)
+                {
+                    TdbTableProperties tableProps = new TdbTableProperties();
+                    tableProps.Name = new string((char)0, 5);
+                    TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
 
-                        //  Here we check for v2008  Check for field PRL2 (Player Weapon) which is new in v2008
+                    // We use the player table to work out what version a roster file is.                   
+                    if (fileType == MaddenFileType.RosterFile && tableProps.Name.Equals(PLAYER_TABLE))
+                    {
+                        switch (tableProps.FieldCount)
+                        {
+                            case MADDEN_ROS_2004_PLAY_FIELD_COUNT:
+                                fileVersion = MaddenFileVersion.Ver2004;
+                                break;
+                            case MADDEN_ROS_2005_PLAY_FIELD_COUNT:
+                                fileVersion = MaddenFileVersion.Ver2005;
+                                break;
+                            case MADDEN_ROS_2006_PLAY_FIELD_COUNT:
+                                fileVersion = MaddenFileVersion.Ver2006;
+                                break;
+                            default:
+                                fileVersion = MaddenFileVersion.Ver2007;
+                                break;
+                        }
+
+                        // We check for field PRL2 (Player Weapon) which is new in v2008
                         for (int i = 0; i < tableProps.FieldCount; i++)
                         {
                             TdbFieldProperties fieldProps = new TdbFieldProperties();
@@ -594,19 +656,19 @@ namespace MaddenEditor.Core
                             if (fieldProps.Name == "PRL2")
                                 fileVersion = MaddenFileVersion.Ver2008;
                         }
+                    }
 
-					}
                     if (tableProps.Name.Equals(PLAYER_TABLE))
                         totalplayers = tableProps.RecordCount;
 
-
-					//If we found a table we want to process, then store its
-					//order number in our tableOrder Hashmap
-					if (tableOrder.ContainsKey(tableProps.Name))
-					{
-						tableOrder[tableProps.Name] = j;
-					}
-				}
+                    // If we found a table we want to process, then store its
+                    // order number in our tableOrder Hashmap
+                    if (tableOrder.ContainsKey(tableProps.Name))
+                    {
+                        tableOrder[tableProps.Name] = j;
+                    }
+                }
+				
 			}
 			catch (DllNotFoundException e)
 			{
@@ -616,17 +678,8 @@ namespace MaddenEditor.Core
 			foreach (KeyValuePair<string, int> pair in tableOrder)
 			{
 				if (pair.Value == -1)
-				{
-					//This could simply mean we have hit a table 
-					//that doesnt exist in a madden 2004 database
-					if (pair.Key.Equals(TEAM_CAPTAIN_TABLE))
-					{
-						//This is ok but mark our file as a Madden2004 database
-						fileVersion = MaddenFileVersion.Ver2004;
-						continue;
-					}
-					//Something is wrong, we expected to have found a table
-					//for this table but we didnt find one, so die
+				{		
+					// Something is wrong, we expected to find this table but did not
 					Trace.WriteLine("Something is wrong so we are exiting");
 					result = false;
 					break;
@@ -634,8 +687,7 @@ namespace MaddenEditor.Core
 				//result &= ProcessTable(pair.Value);
 			}
 
-			Trace.WriteLine("File type is : " + fileType.ToString() + " and version is : " + fileVersion.ToString());
-						
+			Trace.WriteLine("File type is : " + fileType.ToString() + " and version is : " + fileVersion.ToString());						
 			return result;
 		}
 		/// <summary>
@@ -667,8 +719,9 @@ namespace MaddenEditor.Core
 				fieldProps.Name = new string((char)0, 5);
 				TDB.TDBFieldGetProperties(dbIndex, tableProps.Name, i, ref fieldProps);
 				//Add this field to the list
-				fieldList.Add(fieldProps);
+				fieldList.Add(fieldProps);                
 			}
+            
 			//Add the field list to the tablemodel
 			table.SetFieldList(fieldList);
 
@@ -682,9 +735,9 @@ namespace MaddenEditor.Core
 
 				if (deleted)
 				{
-					//If this record is deleted advance the index only
-                    //What this means is that any initial records marked as deleted we will never
-                    //use unless the database is compacted.
+					// If this record is deleted advance the index only
+                    // What this means is that any initial records marked as deleted we will never
+                    // use unless the database is compacted.
 
 					index++;
 					continue;
@@ -694,10 +747,9 @@ namespace MaddenEditor.Core
 
 				if (record != null)
 				{
-
 					foreach (TdbFieldProperties fieldProps in fieldList)
-					{
-						//Trace.WriteLine("Processing field: " + fieldProps.Name + " of type " + fieldProps.FieldType.ToString());
+                    {      
+                        //Trace.WriteLine("Processing field: " + fieldProps.Name + " of type " + fieldProps.FieldType.ToString());
 
 						switch (fieldProps.FieldType)
 						{
@@ -729,6 +781,13 @@ namespace MaddenEditor.Core
 								break;
 						}
 					}
+
+                    foreach (TdbFieldProperties fieldProps in fieldList)
+                    {
+                         
+
+                    }
+
 				}
 
 				index++;

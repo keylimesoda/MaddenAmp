@@ -2422,7 +2422,7 @@ namespace MaddenEditor.Forms
             model.CoachModel.SetPositionFilter(0);
             model.CoachModel.SetTeamFilter(CPUteam.ToString());
             model.CoachModel.GetNextCoachRecord();
-            int Wins = model.CoachModel.CurrentCoachRecord.CareerLoses;
+            int Wins = model.CoachModel.CurrentCoachRecord.CareerLosses;
             int Losses = model.CoachModel.CurrentCoachRecord.CareerWins;            
             int SeasonsExp = (int)((Wins + Losses) / 16);
             double CoachProgMod = 0.0;
@@ -2763,7 +2763,7 @@ namespace MaddenEditor.Forms
         }
         private void CoachProgression()
         {
-            int Wins = model.CoachModel.CurrentCoachRecord.CareerLoses;
+            int Wins = model.CoachModel.CurrentCoachRecord.CareerLosses;
             int Losses = model.CoachModel.CurrentCoachRecord.CareerWins;
             int SeasonsExp = (int)((Wins + Losses) / 16);
             double CoachProgMod = 0.0;

@@ -1315,7 +1315,7 @@ namespace MaddenEditor.Forms
 
                     coach.OffensiveAggression = offAggbase;
                     coach.DefensiveAggression = defAggbase;
-                    coach.RunningBack2Sub = 60 + (int)Math.Min(Math.Max(40 * Math.Tanh((squadRatings[coach.TeamId][4] - squadRatings[coach.TeamId][5]) / 12), 0), 30);
+                    coach.RBCarryDist = 60 + (int)Math.Min(Math.Max(40 * Math.Tanh((squadRatings[coach.TeamId][4] - squadRatings[coach.TeamId][5]) / 12), 0), 30);
 
                     /*
                     coach.OffensiveStrategy = 53;
@@ -1337,7 +1337,7 @@ namespace MaddenEditor.Forms
             foreach (CoachRecord coach in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
             {
                 if (coach.TeamId == TeamId && coach.Position == (int)MaddenCoachPosition.HeadCoach)
-                    return coach.RunningBack2Sub;
+                    return coach.RBCarryDist;
             }
 
             return -1;
@@ -1461,7 +1461,7 @@ namespace MaddenEditor.Forms
 
         private void dumpStatsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int currentSeason = model.FranchiseTime.Season;
+            int currentSeason = model.FranchiseTime.Year;
 
             int passingOffense = 0;
             int rushingOffense = 0;
@@ -1488,10 +1488,10 @@ namespace MaddenEditor.Forms
 
             foreach (SeasonStatsTeamRecord stat in model.TableModels[EditorModel.TEAM_STATS_TABLE].GetRecords())
             {
-                passingOffense += stat.PassingYards;
+                passingOffense += stat.OffensePassYards;
                 rushingOffense += stat.RushingYards;
                 sacks += stat.Sacks;
-                interceptions += stat.InterceptionsCaught;
+                interceptions += stat.DefenseInt;
                 fumblesRecovered += stat.FumblesRecovered;
                 firstDowns += stat.FirstDowns;
                 thirdDownAttempts += stat.ThirdDownAttempts;
@@ -1647,7 +1647,7 @@ namespace MaddenEditor.Forms
 
         private void RepairWeek(int currentWeek)
         {
-            int currentSeason = model.FranchiseTime.Season;
+            int currentSeason = model.FranchiseTime.Year;
 
             bool preseason = true;
             foreach (ScheduleRecord rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
@@ -1670,7 +1670,7 @@ namespace MaddenEditor.Forms
             Dictionary<int, CareerStatsDefenseRecord> careerStatsDefense = new Dictionary<int, CareerStatsDefenseRecord>();
             Dictionary<int, CareerStatsOffensiveLineRecord> careerStatsOffensiveLine = new Dictionary<int,CareerStatsOffensiveLineRecord>();
             Dictionary<int, SeasonStatsTeamRecord> teamStats = new Dictionary<int, SeasonStatsTeamRecord>();
-            Dictionary<int, BoxScoreTeamRecord> teamBoxScores = new Dictionary<int, BoxScoreTeamRecord>();
+            Dictionary<int, BoxScoreTeamStats> teamBoxScores = new Dictionary<int, BoxScoreTeamStats>();
 
             foreach (SeasonStatsDefenseRecord stat in model.TableModels[EditorModel.SEASON_STATS_DEFENSE_TABLE].GetRecords())
             {
@@ -1718,9 +1718,9 @@ namespace MaddenEditor.Forms
                 }
             }
 
-            foreach (BoxScoreTeamRecord stat in model.TableModels[EditorModel.BOXSCORE_TEAM_TABLE].GetRecords())
+            foreach (BoxScoreTeamStats stat in model.TableModels[EditorModel.BOXSCORE_TEAM_TABLE].GetRecords())
             {
-                if (stat.Season == currentSeason && stat.Week == currentWeek - 1 && !humanControlled.Contains(stat.TeamId))
+                if (stat.Season == currentSeason && stat.WeekNumber == currentWeek - 1 && !humanControlled.Contains(stat.TeamId))
                     teamBoxScores[stat.TeamId] = stat;
             }
 
@@ -1848,25 +1848,25 @@ namespace MaddenEditor.Forms
                 // fix first downs, etc.
                 foreach (int i in teamBoxScores.Keys)
                 {
-                    int firstDownsAdd = (int)Math.Round((double)teamBoxScores[i].FirstDowns * (firstDownMultiplier - 1.0));
-                    teamBoxScores[i].FirstDowns += firstDownsAdd;
+                    int firstDownsAdd = (int)Math.Round((double)teamBoxScores[i].OffenseFirstDowns * (firstDownMultiplier - 1.0));
+                    teamBoxScores[i].OffenseFirstDowns += firstDownsAdd;
 
                     if (currentWeek < 19)
                         teamStats[i].FirstDowns += firstDownsAdd;
 
-                    for (int j = 0; j < teamBoxScores[i].ThirdDownAttempts; j++)
+                    for (int j = 0; j < teamBoxScores[i].Offense3rd_Att; j++)
                     {
                         if (rand.NextDouble() > thirdDownAttemptsProbability)
                         {
-                            teamBoxScores[i].ThirdDownAttempts--;
+                            teamBoxScores[i].Offense3rd_Att--;
 
                             if (currentWeek < 19)
                                 teamStats[i].ThirdDownAttempts--;
 
-                            if (teamBoxScores[i].ThirdDownAttempts < teamBoxScores[i].ThirdDownConversions ||
+                            if (teamBoxScores[i].Offense3rd_Att < teamBoxScores[i].Offense3rd_Conv ||
                                 rand.NextDouble() > thirdDownConversionsProbability)
                             {
-                                teamBoxScores[i].ThirdDownConversions--;
+                                teamBoxScores[i].Offense3rd_Conv--;
 
                                 if (currentWeek < 19)
                                     teamStats[i].ThirdDownConversions--;
@@ -1874,19 +1874,19 @@ namespace MaddenEditor.Forms
                         }
                     }
 
-                    for (int j = 0; j < teamBoxScores[i].FourthDownAttempts; j++)
+                    for (int j = 0; j < teamBoxScores[i].Offense4th_Att; j++)
                     {
                         if (rand.NextDouble() > fourthDownAttemptsProbability)
                         {
-                            teamBoxScores[i].FourthDownAttempts--;
+                            teamBoxScores[i].Offense4th_Att--;
 
                             if (currentWeek < 19)
                                 teamStats[i].FourthDownAttempts--;
 
-                            if (teamBoxScores[i].FourthDownAttempts < teamBoxScores[i].FourthDownConversions ||
+                            if (teamBoxScores[i].Offense4th_Att < teamBoxScores[i].Offense4th_Conv ||
                                 rand.NextDouble() > fourthDownConversionsProbability)
                             {
-                                teamBoxScores[i].FourthDownConversions--;
+                                teamBoxScores[i].Offense4th_Conv--;
 
                                 if (currentWeek < 19)
                                     teamStats[i].FourthDownConversions--;
@@ -1935,13 +1935,13 @@ namespace MaddenEditor.Forms
                     {
                         int frs = stat.FumblesRecovered;
 
-                        for (int i = 0; i < frs && teamBoxScores[previousOpponents[stat.TeamId]].FumblesLost > 0 && teamBoxScores[stat.TeamId].FumblesRecovered > 0; i++)
+                        for (int i = 0; i < frs && teamBoxScores[previousOpponents[stat.TeamId]].OffenseFumblesLost > 0 && teamBoxScores[stat.TeamId].DefenseFumblesRecovered > 0; i++)
                         {
                             if (rand.NextDouble() > fumbleRecoveredProbability)
                             {
                                 stat.FumblesRecovered--;
-                                teamBoxScores[stat.TeamId].FumblesRecovered--;
-                                teamBoxScores[previousOpponents[stat.TeamId]].FumblesLost--;
+                                teamBoxScores[stat.TeamId].DefenseFumblesRecovered--;
+                                teamBoxScores[previousOpponents[stat.TeamId]].OffenseFumblesLost--;
 
                                 if (currentWeek < 19)
                                 {
@@ -1962,8 +1962,8 @@ namespace MaddenEditor.Forms
                         {
                             // should also subtract from int yards, long int, defensive TDs?
                             stat.Interceptions--;
-                            teamBoxScores[stat.TeamId].InterceptionsCaught--;
-                            teamBoxScores[previousOpponents[stat.TeamId]].InterceptionsThrown--;
+                            teamBoxScores[stat.TeamId].DefenseInt--;
+                            teamBoxScores[previousOpponents[stat.TeamId]].OffensePassInt--;
 
                             if (currentWeek < 19)
                             {
@@ -1985,8 +1985,8 @@ namespace MaddenEditor.Forms
                                 if (!preseason)
                                     careerStatsOffense[QBPGID].Pass_int--;
 
-                                teamStats[stat.TeamId].InterceptionsCaught--;
-                                teamStats[previousOpponents[stat.TeamId]].InterceptionsThrown--;
+                                teamStats[stat.TeamId].DefenseInt--;
+                                teamStats[previousOpponents[stat.TeamId]].OffensePassInt--;
                             }
                         }
                     }
@@ -1996,7 +1996,7 @@ namespace MaddenEditor.Forms
                         if (rand.NextDouble() > sackProbability)
                         {
                             stat.Sacks--;
-                            teamBoxScores[stat.TeamId].Sacks--;
+                            teamBoxScores[stat.TeamId].DefenseSacks--;
                             //teamBoxScores[previousOpponents[stat.TeamId]].SacksAllowed--;
 
                             if (currentWeek < 19)
@@ -2041,8 +2041,8 @@ namespace MaddenEditor.Forms
                                 teamStats[previousOpponents[stat.TeamId]].SacksAllowed--;
 
                                 // we need to add back about 9 yards for every sack we take away.
-                                teamStats[previousOpponents[stat.TeamId]].PassingYards += 9;
-                                teamStats[previousOpponents[stat.TeamId]].TotalOffense += 9;
+                                teamStats[previousOpponents[stat.TeamId]].OffensePassYards += 9;
+                                teamStats[previousOpponents[stat.TeamId]].OffenseYards += 9;
                                 teamStats[previousOpponents[stat.TeamId]].TotalYards += 9;
                             }
                         }
@@ -2064,7 +2064,7 @@ namespace MaddenEditor.Forms
 
                     int yardsToAdd = (int)Math.Round((double)stat.ReceivingYards * (passingYardsMultiplier - 1.0));
                     stat.ReceivingYards += yardsToAdd;
-                    teamBoxScores[stat.TeamId].PassingYards += yardsToAdd;
+                    teamBoxScores[stat.TeamId].OffensePassYards += yardsToAdd;
 
                     if (currentWeek < 19)
                     {
@@ -2082,14 +2082,14 @@ namespace MaddenEditor.Forms
                             careerStatsOffense[maxPassers[stat.TeamId].PlayerId].Pass_yds += yardsToAdd;
 
                         teamStats[stat.TeamId].TotalYards += yardsToAdd;
-                        teamStats[stat.TeamId].TotalOffense += yardsToAdd;
-                        teamStats[stat.TeamId].PassingYards += yardsToAdd;
-                        teamStats[previousOpponents[stat.TeamId]].PassingYardsAllowed += yardsToAdd;
+                        teamStats[stat.TeamId].OffenseYards += yardsToAdd;
+                        teamStats[stat.TeamId].OffensePassYards += yardsToAdd;
+                        teamStats[previousOpponents[stat.TeamId]].DefensePassYds += yardsToAdd;
                     }
 
                     int rushAttemptsSubtracted = (int)Math.Round((double)stat.RushingAttempts * (1.0 - rushingAttemptsMultiplier));
                     stat.RushingAttempts -= rushAttemptsSubtracted;
-                    teamBoxScores[stat.TeamId].RushingAttempts -= rushAttemptsSubtracted;
+                    teamBoxScores[stat.TeamId].OffenseRushAtt -= rushAttemptsSubtracted;
 
                     if (currentWeek < 19)
                     {
@@ -2100,7 +2100,7 @@ namespace MaddenEditor.Forms
 
                     int rushYardsToAdd = (int)Math.Round((double)stat.RushingYards * (rushingYardsMultiplier - 1.0));
                     stat.RushingYards += rushYardsToAdd;
-                    teamBoxScores[stat.TeamId].RushingYards += rushYardsToAdd;
+                    teamBoxScores[stat.TeamId].OffenseRushYards += rushYardsToAdd;
 //                    teamBoxScores[previousOpponents[stat.TeamId]].RushingYardsAllowed += rushYardsToAdd;
 
                     if (currentWeek < 19)
@@ -2110,9 +2110,9 @@ namespace MaddenEditor.Forms
                             careerStatsOffense[stat.PlayerId].RushingYards += rushYardsToAdd;
 
                         teamStats[stat.TeamId].TotalYards += rushYardsToAdd;
-                        teamStats[stat.TeamId].TotalOffense += rushYardsToAdd;
+                        teamStats[stat.TeamId].OffenseYards += rushYardsToAdd;
                         teamStats[stat.TeamId].RushingYards += rushYardsToAdd;
-                        teamStats[previousOpponents[stat.TeamId]].RushingYardsAllowed += rushYardsToAdd;
+                        teamStats[previousOpponents[stat.TeamId]].DefenseRushYds += rushYardsToAdd;
                     }
                 }
 
@@ -2140,7 +2140,7 @@ namespace MaddenEditor.Forms
                     startingFBs[i].RushingAttempts -= carriesToMove;
                     startingFBs[i].RushingYards -= FBYardsToSubtract;
 
-                    teamBoxScores[i].RushingYards += HBYardsToAdd - FBYardsToSubtract;
+                    teamBoxScores[i].OffenseRushYards += HBYardsToAdd - FBYardsToSubtract;
 
                     if (currentWeek < 19)
                     {
@@ -2160,9 +2160,9 @@ namespace MaddenEditor.Forms
                         }
 
                         teamStats[i].TotalYards += HBYardsToAdd - FBYardsToSubtract;
-                        teamStats[i].TotalOffense += HBYardsToAdd - FBYardsToSubtract;
+                        teamStats[i].OffenseYards += HBYardsToAdd - FBYardsToSubtract;
                         teamStats[i].RushingYards += HBYardsToAdd - FBYardsToSubtract;
-                        teamStats[previousOpponents[i]].RushingYardsAllowed += HBYardsToAdd - FBYardsToSubtract;
+                        teamStats[previousOpponents[i]].DefenseRushYds += HBYardsToAdd - FBYardsToSubtract;
                     }
                 }
 
@@ -2183,8 +2183,8 @@ namespace MaddenEditor.Forms
 
                     startingRBs[i].RushingAttempts -= carries;
                     startingRBs[i].RushingYards -= yards;
-                    teamBoxScores[i].RushingAttempts -= carries;
-                    teamBoxScores[i].RushingYards -= yards;
+                    teamBoxScores[i].OffenseRushAtt -= carries;
+                    teamBoxScores[i].OffenseRushYards -= yards;
                     //teamBoxScores[previousOpponents[i]].RushingYardsAllowed -= yards;
 
                     if (currentWeek < 19)
@@ -2199,9 +2199,9 @@ namespace MaddenEditor.Forms
                         }
 
                         teamStats[i].TotalYards -= yards;
-                        teamStats[i].TotalOffense -= yards;
+                        teamStats[i].OffenseYards -= yards;
                         teamStats[i].RushingYards -= yards;
-                        teamStats[previousOpponents[i]].RushingYardsAllowed -= yards;
+                        teamStats[previousOpponents[i]].DefenseRushYds -= yards;
                     }
 
                     BoxScoreOffenseRecord backupRBBox = null;
@@ -2218,7 +2218,7 @@ namespace MaddenEditor.Forms
                         backupRBBox.Week = currentWeek - 1;
                         backupRBBox.Season = currentSeason;
                         backupRBBox.GameNumber = startingRBs[i].GameNumber;
-                        backupRBBox.Weight = startingRBs[i].Weight;
+                        backupRBBox.WeekType = startingRBs[i].WeekType;
                     }
 
                     if (seasonStatsOffense.ContainsKey(backupRBIDs[i]))
@@ -2239,7 +2239,7 @@ namespace MaddenEditor.Forms
                     }
 
                     backupRBBox.RushingAttempts += carries;
-                    teamBoxScores[backupRBBox.TeamId].RushingAttempts += carries;
+                    teamBoxScores[backupRBBox.TeamId].OffenseRushAtt += carries;
 
                     if (currentWeek < 19)
                     {
@@ -2250,7 +2250,7 @@ namespace MaddenEditor.Forms
 
                     int backupYards = (int)Math.Round((double)yards * yardageMultipler);
                     backupRBBox.RushingYards += backupYards;
-                    teamBoxScores[backupRBBox.TeamId].RushingYards += backupYards;
+                    teamBoxScores[backupRBBox.TeamId].OffenseRushYards += backupYards;
                     //teamBoxScores[previousOpponents[backupRBBox.TeamId]].RushingYardsAllowed += backupYards;
 
                     if (currentWeek < 19)
@@ -2260,9 +2260,9 @@ namespace MaddenEditor.Forms
                             backupRBCareer.RushingYards += backupYards;
 
                         teamStats[i].TotalYards += backupYards;
-                        teamStats[i].TotalOffense += backupYards;
+                        teamStats[i].OffenseYards += backupYards;
                         teamStats[i].RushingYards += backupYards;
-                        teamStats[previousOpponents[i]].RushingYardsAllowed += backupYards;
+                        teamStats[previousOpponents[i]].DefenseRushYds += backupYards;
                     }
                 }
         }

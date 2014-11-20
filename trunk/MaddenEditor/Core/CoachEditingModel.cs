@@ -41,9 +41,19 @@ namespace MaddenEditor.Core
 		/** Reference to our EditorModel */
 		private EditorModel model = null;
 
+        private IList<GenericRecord> coachskincolor = null;
+
 		public CoachEditingModel(EditorModel model)
 		{
 			this.model = model;
+
+            coachskincolor = new List<GenericRecord>();
+            coachskincolor.Add(new GenericRecord("Light", 0));
+            coachskincolor.Add(new GenericRecord("Medium", 1));
+            coachskincolor.Add(new GenericRecord("Dark", 2));
+            coachskincolor.Add(new GenericRecord("Medium Dark 1", 3));
+            coachskincolor.Add(new GenericRecord("Medium Dark 2", 4));
+            coachskincolor.Add(new GenericRecord("Medium Dark 3", 7));
 		}
 
 		public CoachRecord CurrentCoachRecord
@@ -170,7 +180,27 @@ namespace MaddenEditor.Core
 			return record;
 		}
 
-		public void SetTeamFilter(string teamname)
+        public CoachRecord GetCoachRecord(int recno)
+        {
+            return (CoachRecord)model.TableModels[EditorModel.COACH_TABLE].GetRecord(recno);
+        }
+
+        public CoachRecord GetCoachById(int id)
+        {
+            foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+            {
+                if (((CoachRecord)record).CoachId == id)
+                    return (CoachRecord)record;
+            }
+            return null;
+        }
+
+        public IList<GenericRecord> CoachSkinColor
+        {
+            get { return coachskincolor; }
+        }
+        
+        public void SetTeamFilter(string teamname)
 		{
 			currentTeamFilter = teamname;
 		}

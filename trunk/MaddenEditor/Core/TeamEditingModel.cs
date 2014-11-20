@@ -30,6 +30,7 @@ namespace MaddenEditor.Core
 {
 	public class TeamEditingModel
 	{
+        
         public const int RETIRED = 1014;
         public const int NO_TEAM_ID = 1023;
 		public const int PROBOWL_TEAM_AFC = 1010; //??
@@ -103,7 +104,7 @@ namespace MaddenEditor.Core
 			cityList = new List<GenericRecord>();
 			foreach (TableRecordModel rec in model.TableModels[EditorModel.CITY_TABLE].GetRecords())
 			{
-				cityList.Add(new GenericRecord(((CityRecord)rec).Name, ((CityRecord)rec).CityId));
+				cityList.Add(new GenericRecord(((CityRecord)rec).CityName, ((CityRecord)rec).CityId));
 			}
 
 			offensivePlayBookList = new List<GenericRecord>();
@@ -386,7 +387,7 @@ namespace MaddenEditor.Core
 		{
 			get
 			{
-				return (TeamRecord)model.TableModels[EditorModel.TEAM_TABLE].GetRecord(currentTeamRecord);
+				return (TeamRecord)model.TableModels[EditorModel.TEAM_TABLE].GetRecord(currentTeamRecord);                
 			}
 			set
 			{

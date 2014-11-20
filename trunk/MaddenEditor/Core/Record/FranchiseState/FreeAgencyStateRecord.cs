@@ -28,8 +28,17 @@ namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class FreeAgencyStateRecord : TableRecordModel
     {
-        public const string IN_FREE_AGENCY = "SOST";
+        // FAIN
+
+        
         public const string DAYS_REMAINING = "PSOD";
+        public const string IN_FREE_AGENCY = "SOST";
+        public const string TIDE = "TIDE";
+        public const string TILD = "TILD";
+        public const string TIPD = "TIPD";
+        public const string TITL = "TITL";
+
+
 
         public FreeAgencyStateRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -37,6 +46,7 @@ namespace MaddenEditor.Core.Record.FranchiseState
 
         }
 
+        
         public int DaysRemaining
         {
             get
@@ -60,5 +70,27 @@ namespace MaddenEditor.Core.Record.FranchiseState
                 SetField(IN_FREE_AGENCY, (value == true ? 1 : 0));
             }
         }
+
+        public int Tide
+        {
+            get { return GetIntField(TIDE); }
+            set { SetField(TIDE, value); }
+        }
+        public int Tild
+        {
+            get { return GetIntField(TILD); }
+            set { SetField(TILD, value); }
+        }
+        public int Tipd
+        {
+            get { return GetIntField(TIPD); }
+            set { SetField(TIPD, value); }
+        }
+        public int Titl
+        {
+            get { return GetIntField(TITL); }
+            set { SetField(TITL, value); }
+        }
+
     }
 }

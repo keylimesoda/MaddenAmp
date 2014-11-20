@@ -112,7 +112,7 @@ namespace MaddenEditor.Forms
 			teamOffensivePlaybookCombo.SelectedIndex = 0;
 
 			//Madden 2007 Doesn't have shoe colors anymore
-			if (model.FileVersion == MaddenFileVersion.Ver2007) 
+			if (model.FileVersion >= MaddenFileVersion.Ver2007) 
 			{
 				gbShoeColor.Enabled = false;
 			}
@@ -184,7 +184,7 @@ namespace MaddenEditor.Forms
 
 				teamReputation.Value = record.Reputation;
 
-				if (model.FileVersion != MaddenFileVersion.Ver2006)
+				if (model.FileVersion <= MaddenFileVersion.Ver2006)
 				{
 					rbWhite.Checked = (record.ShoeColor == 0);
 					rbBlack.Checked = (record.ShoeColor == 1);
