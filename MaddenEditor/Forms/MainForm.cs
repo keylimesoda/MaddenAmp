@@ -27,9 +27,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
-// MADDEN DRAFT EDIT
 using System.IO;
-// MADDEN DRAFT EDIT
 using System.Windows.Forms;
 //using MaddenEditor.ConSole;
 
@@ -57,21 +55,21 @@ namespace MaddenEditor.Forms
 		private PlayerEditControl playerEditControl = null;
 		private CoachEditControl coachEditControl = null;
 		private TeamEditControl teamEditControl = null;
+        private StadiumEditForm stadiumeditor = null;
 
 		private TabPage playerPage = null;
 		private TabPage coachPage = null;
 		private TabPage teamPage = null;
+        private TabPage stadiumPage = null;
 
 		private delegate void saveMenuDelegate(bool enabled);
-
-		/// <summary>
-		/// Constructor for the MainForm
-		/// </summary>
+        
 		public MainForm()
 		{
 			InitializeComponent();
 
 			rosterFileLoaderThread.DoWork += new DoWorkEventHandler(rosterFileLoaderThread_DoWork);
+            
 
 			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString;
 
@@ -79,12 +77,86 @@ namespace MaddenEditor.Forms
 			toolsToolStripMenuItem.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
 			statusStrip.Visible = false;
-			exportToolStripMenuItem.Enabled = false;
+			exportToolStripMenuItem.Enabled = false;            
 
 			isInitialising = false;
 		}
 
-		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void InitialiseUI()
+        {   
+            this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString + "  - " + System.IO.Path.GetFileName(filePathToLoad);
+
+            exportToolStripMenuItem.Enabled = true;
+            toolsToolStripMenuItem.Visible = true;
+            processingTableLabel.Text = "";
+            statusStrip.Visible = false;
+            toolStripProgressBar.Value = 0;
+
+            if (model.FileType == MaddenFileType.FranchiseFile)
+            {
+                franchiseToolStripMenuItem.Visible = true;
+                setGameInjuriesToolStripMenuItem.Enabled = false;
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                {
+                    //2004 version don't support Team Captain editing
+                    setTeamCaptainsToolStripMenuItem.Enabled = false;
+                    //2004 version has issues at the moment with changing user controlled teams
+                    setUserControlledTeamsToolStripMenuItem.Enabled = false;
+                }
+                if (model.FileVersion >= MaddenFileVersion.Ver2005)
+                {
+                    setTeamCaptainsToolStripMenuItem.Enabled = true;
+                    setUserControlledTeamsToolStripMenuItem.Enabled = true;
+                }
+                if (model.FileVersion >= MaddenFileVersion.Ver2006)
+                {
+                    setGameInjuriesToolStripMenuItem.Enabled = true;
+                }
+            }
+
+            this.Cursor = Cursors.Default;
+        }
+
+        private void CleanUI()
+        {
+            this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString;
+            //Now clean up ready for reloading
+            searchPlayerForm = null;
+
+            if (playerEditControl != null)
+            {
+                playerEditControl.CleanUI();
+            }
+            if (coachEditControl != null)
+            {
+                coachEditControl.CleanUI();
+            }
+            if (teamEditControl != null)
+            {
+                teamEditControl.CleanUI();
+            }
+
+            exportToolStripMenuItem.Enabled = false;
+            tabControl.Visible = false;
+            toolsToolStripMenuItem.Visible = false;
+            processingTableLabel.Text = "";
+            franchiseToolStripMenuItem.Visible = false;
+        }
+
+        void rosterFileLoaderThread_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                model = new EditorModel(filePathToLoad, this);                                
+            }
+            catch (ApplicationException err)
+            {
+                model = null;
+                ExceptionDialog.Show(err);
+            }            
+        }
+        
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Close();
 			//if (CheckSave())
@@ -154,15 +226,11 @@ namespace MaddenEditor.Forms
 					try
 					{
 						this.Cursor = Cursors.WaitCursor;
-
 						CleanUI();
 						statusStrip.Visible = true;
-
 						rosterFileLoaderThread.RunWorkerAsync();
-
 						break;
 						//Now the model is opened.
-
 					}
 					catch (ApplicationException err)
 					{
@@ -172,18 +240,7 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		void rosterFileLoaderThread_DoWork(object sender, DoWorkEventArgs e)
-		{
-			try
-			{
-				model = new EditorModel(filePathToLoad, this);
-			}
-			catch(ApplicationException err) 
-			{
-				model = null;
-				ExceptionDialog.Show(err);
-			}
-		}
+		
 
 		public void updateProgress(int percentage, string tablename)
 		{
@@ -197,41 +254,7 @@ namespace MaddenEditor.Forms
 			BeginInvoke(new ProgressChangedEventHandler(rosterFileLoaderThread_ProgressChanged), new object[] { null, e });
 		}
 		
-		private void InitialiseUI()
-		{
-			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString + "  - " + System.IO.Path.GetFileName(filePathToLoad);
-
-			exportToolStripMenuItem.Enabled = true;
-			toolsToolStripMenuItem.Visible = true;
-			processingTableLabel.Text = "";
-			statusStrip.Visible = false;
-			toolStripProgressBar.Value = 0;
-
-			if (model.FileType == MaddenFileType.FranchiseFile)
-			{
-				franchiseToolStripMenuItem.Visible = true;
-				setGameInjuriesToolStripMenuItem.Enabled = false;
-				if (model.FileVersion == MaddenFileVersion.Ver2004)
-				{
-					//2004 version don't support Team Captain editing
-					setTeamCaptainsToolStripMenuItem.Enabled = false;
-					//2004 version has issues at the moment with changing user controlled teams
-					setUserControlledTeamsToolStripMenuItem.Enabled = false;
-				}
-				if (model.FileVersion >= MaddenFileVersion.Ver2005)
-				{
-					setTeamCaptainsToolStripMenuItem.Enabled = true;
-					setUserControlledTeamsToolStripMenuItem.Enabled = true;
-				}
-				if (model.FileVersion >= MaddenFileVersion.Ver2006)
-				{
-					setGameInjuriesToolStripMenuItem.Enabled = true;
-				}
-			}
-
-			this.Cursor = Cursors.Default;
-		}
-
+		
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			isInitialising = true;
@@ -251,32 +274,7 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		private void CleanUI()
-		{
-			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString;
-			//Now clean up ready for reloading
-			searchPlayerForm = null;
-
-			if (playerEditControl != null)
-			{
-				playerEditControl.CleanUI();
-			}
-			if (coachEditControl != null)
-			{
-				coachEditControl.CleanUI();
-			}
-			if (teamEditControl != null)
-			{
-				teamEditControl.CleanUI();
-			}
-
-			exportToolStripMenuItem.Enabled = false;
-			tabControl.Visible = false;
-			toolsToolStripMenuItem.Visible = false;
-			processingTableLabel.Text = "";
-			franchiseToolStripMenuItem.Visible = false;
-		}
-
+		
 		private void rosterFileLoaderThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (model == null)
@@ -330,8 +328,7 @@ namespace MaddenEditor.Forms
 		public bool Dirty
 		{
 			set
-			{
-				
+			{				
 				if (InvokeRequired)
 				{
 					object[] args = { value };
@@ -848,8 +845,8 @@ namespace MaddenEditor.Forms
 			tabControl.Dock = DockStyle.Fill;
 			tabControl.Controls.Add(playerPage);
 			playerPage.Controls.Add(playerEditControl);
-			
-			playerEditControl.Dock = DockStyle.Fill;
+
+            playerEditControl.Dock = DockStyle.Fill;
 
 			playerEditControl.Model = model;
 
@@ -899,7 +896,44 @@ namespace MaddenEditor.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            
+        }
+        
+        private void Manager_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
 
         }
+
+        private void StadiumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (stadiumeditor == null)
+                InitializeStadiumPage();
+            tabControl.SelectedTab = stadiumPage;
+        }
+
+        private void InitializeStadiumPage()
+        {
+            stadiumeditor = new StadiumEditForm();
+            stadiumPage = new TabPage("Stadium Editor");
+            tabControl.Visible = true;
+            tabControl.Dock = DockStyle.Fill;
+            tabControl.Controls.Add(stadiumPage);
+            stadiumPage.Controls.Add(stadiumeditor);
+            stadiumeditor.Dock = DockStyle.Fill;
+            stadiumeditor.Model = model;
+            stadiumeditor.InitialiseUI();
+        }
+       
+        
+
+       
+
+        
+        
     }
 }

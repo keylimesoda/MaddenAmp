@@ -28,26 +28,35 @@ namespace MaddenEditor.Core.Record.Stats
 {
     public class SeasonStatsDefenseRecord : TableRecordModel
     {
+        //  PSDE
+
+        public const string PLAYER_ID = "PGID";        
         public const string PASSES_DEFENDED = "sdpd";
         public const string TACKLES = "sdta";
         public const string TACKLES_FOR_LOSS = "sdtl";
+        public const string SEASON = "SEYR";
         public const string BLOCKS = "slbl";
         public const string FUMBLES_FORCED = "slff";
         public const string FUMBLES_RECOVERED = "slfr";
+        public const string FUMBLES_TD = "slft";
         public const string FUMBLE_YARDS = "slfy";
         public const string SAFETIES = "slsa";
         public const string SACKS = "slsk";
         public const string INTERCEPTIONS = "ssin";
+        public const string INTERCEPTION_TD = "ssit";
         public const string INTERCEPTION_YARDS = "ssiy";
         public const string INTERCEPTION_LONG = "sslR";
-        public const string PLAYER_ID = "PGID";
-        public const string SEASON = "SEYR";
+        
+        
+        
 
         public SeasonStatsDefenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
         }
+
+        #region Get / Set
 
         public int PassesDefended
         {
@@ -133,6 +142,18 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        public int FumbleTDS
+        {
+            get
+            {
+                return GetIntField(FUMBLES_TD);
+            }
+            set
+            {
+                SetField(FUMBLES_TD, value);
+            }
+        }
+
         public int Safeties
         {
             get
@@ -193,6 +214,18 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        public int InterceptionTDS
+        {
+            get
+            {
+                return GetIntField(INTERCEPTION_TD);
+            }
+            set
+            {
+                SetField(INTERCEPTION_TD, value);
+            }
+        }
+
         public int PlayerId
         {
             get
@@ -216,5 +249,7 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(SEASON, value);
             }
         }
+
+        #endregion
     }
 }

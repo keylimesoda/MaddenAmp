@@ -28,10 +28,11 @@ namespace MaddenEditor.Core.Record
 {
 	public class DepthChartRecord : TableRecordModel
 	{
-        public const string PLAYER_ID = "PGID";
-        public const string TEAM_ID = "TGID";
-        public const string POSITION_ID = "PPOS";
         public const string DEPTH_ORDER = "ddep";
+        public const string PLAYER_ID = "PGID";
+        public const string POSITION_ID = "PPOS";        
+        public const string TEAM_ID = "TGID";
+       
 
 		public DepthChartRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)

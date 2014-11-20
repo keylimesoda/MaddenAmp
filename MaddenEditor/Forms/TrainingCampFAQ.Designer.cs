@@ -34,7 +34,7 @@ namespace MaddenEditor.Forms
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 12);
+            this.richTextBox1.Location = new System.Drawing.Point(14, 21);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(598, 434);
             this.richTextBox1.TabIndex = 0;

@@ -1,3 +1,24 @@
+/******************************************************************************
+ * MaddenAmp
+ * Copyright (C) 2014 Stingray68
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * http://maddenamp.sourceforge.net/
+ * 
+ * maddeneditor@tributech.com.au
+ *****************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,41 +27,47 @@ namespace MaddenEditor.Core.Record.Stats
 {
     public class SeasonStatsOffenseRecord : TableRecordModel
     {
-        // QB Stats
-        public const string SEA_PASS_INT = "sain";
-        public const string SEA_SACKED = "sasa";
-        public const string SEA_PASS_YDS = "saya";
-        public const string SEA_PASS_ATT = "saat";
-        public const string SEA_PASS_LONG = "saln";
-        public const string SEA_COMP = "sacm";
-        public const string SEA_PASS_TD = "satd";
+        //  PSOF
 
-        // WR Stats
-        public const string SEA_REC_YDS = "scya";
+        #region Fields
+
+        public const string PLAYER_ID = "PGID";
+        public const string SEA_PASS_ATT = "saat";
+        public const string SEA_PASS_COMEBACKS = "sacb";                        //  2008
+        public const string SEA_COMP = "sacm";
+        public const string SEA_PASS_FIRST_DOWNS = "safd";                      //  2008
+        public const string SEA_PASS_INT = "sain";
+        public const string SEA_PASS_LONG = "saln";
+        public const string SEA_SACKED = "sasa";
+        public const string SEA_PASS_TD = "satd"; 
+        public const string SEA_PASS_YDS = "saya";
         public const string SEA_REC = "scca";
         public const string SEA_DROPS = "scdr";
         public const string SEA_REC_LONG = "scrL";
         public const string SEA_REC_TD = "sctd";
+        public const string SEA_REC_YDS = "scya";
         public const string SEA_REC_YAC = "scyc";
-        
-        // RB Stats
-        public const string SEA_FUMBLES = "sufu";
+        public const string SEASON = "SEYR";
+        public const string SEA_RUSH_20 = "su2y";
         public const string SEA_RUSH_ATT = "suat";
-        public const string SEA_RUSH_YDS = "suya";
         public const string SEA_RUSH_BTK = "subt";
+        public const string SEA_FUMBLES = "sufu";
         public const string SEA_RUSH_LONG = "suln";
         public const string SEA_RUSH_TD = "sutd";
+        public const string SEA_RUSH_YDS = "suya";
         public const string SEA_RUSH_YAC = "suyh";
-        public const string SEA_RUSH_20 = "su2y";
 
-        public const string PLAYER_ID = "PGID";
-        public const string SEASON = "SEYR";
+        #endregion
 
-		public SeasonStatsOffenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
+        public SeasonStatsOffenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
         }
+
+        #region Get / Set
+
+        #region Passing Stats
 
         public int SeaPassInt
         {
@@ -126,7 +153,21 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        public int SeaComebacks
+        {
+            get { return GetIntField(SEA_PASS_COMEBACKS); }
+            set { SetField(SEA_PASS_COMEBACKS, value); }
+        }
+        
+        public int SeaFirstDowns
+        {
+            get { return GetIntField(SEA_PASS_FIRST_DOWNS); }
+            set { SetField(SEA_PASS_FIRST_DOWNS, value); }
+        }
 
+        #endregion
+
+        #region Receiving Stats
 
         public int SeaRecYds
         {
@@ -200,6 +241,9 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        #endregion
+
+        #region Rushing Stats
 
         public int SeaFumbles
         {
@@ -297,6 +341,9 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        #endregion
+
+        #region Common Fields
 
         public int PlayerId
         {
@@ -321,5 +368,10 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(SEASON, value);
             }
         }
+
+        #endregion 
+
+        #endregion
+
     }
 }

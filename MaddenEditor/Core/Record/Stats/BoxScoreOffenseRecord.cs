@@ -39,7 +39,7 @@ namespace MaddenEditor.Core.Record.Stats
         public const string SEASON = "SEYR";
         public const string WEEK = "SEWN";
         public const string TEAM_ID = "TGID";
-        public const string WEIGHT = "SEWT";
+        public const string WEEK_TYPE = "SEWT";
         public const string GAME_NUMBER = "SGNM";
 
 		public BoxScoreOffenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
@@ -48,15 +48,15 @@ namespace MaddenEditor.Core.Record.Stats
 
         }
 
-        public int Weight
+        public int WeekType
         {
             get
             {
-                return GetIntField(WEIGHT);
+                return GetIntField(WEEK_TYPE);
             }
             set
             {
-                SetField(WEIGHT, value);
+                SetField(WEEK_TYPE, value);
             }
         }
 

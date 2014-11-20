@@ -36,6 +36,7 @@ namespace MaddenEditor.Forms
 		private Developer david;
 		private Developer colin;
 		private Developer josh;
+        private Developer steve;
 
 		public DeveloperBioForm()
 		{
@@ -49,13 +50,18 @@ namespace MaddenEditor.Forms
 
 			colin = new Developer("Colin Goudie", 
 								  "gommo",
-								  "Developer & Maintainer. Original designer of MaddenAmp that has evolved into Madden Amp", 
+								  "Developer & Maintainer. Original designer of MaddenEditor that has evolved into Madden Amp", 
 								  "MaddenEditor.Resources.ColinBio.txt");
 
 			josh = new Developer("Josh",
 				                 "Spin16",
 								 "Developer. Designed Draft Engine and Logic", 
 								 "MaddenEditor.Resources.JoshBio.txt");
+
+            steve = new Developer("Steve", 
+                                "Stingray68", 
+                                "Developer.  Bug fixes, Stats, Player and Coach Portraits", 
+                                "MaddenEditor.Resources.SteveBio.txt");
 
 			LoadDeveloper(colin);
 		}
@@ -89,7 +95,10 @@ namespace MaddenEditor.Forms
 		{
 			LoadDeveloper(josh);
 		}
-
+        private void SteveButton_Click(object sender, EventArgs e)
+        {
+            LoadDeveloper(steve);
+        }  
 		private void LoadDeveloper(Developer dev)
 		{
 			tbBioText.Text = dev.Bio;
@@ -133,5 +142,7 @@ namespace MaddenEditor.Forms
 				get { return bio; }
 			}
 		}
-	}
+
+              
+    }
 }

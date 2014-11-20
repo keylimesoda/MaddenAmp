@@ -29,6 +29,7 @@ namespace MaddenEditor.Forms
 		private void InitializeComponent()
 		{
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.WearsGlassesCheckbox = new System.Windows.Forms.CheckBox();
             this.coachpic = new System.Windows.Forms.NumericUpDown();
             this.label54 = new System.Windows.Forms.Label();
             this.coachyearsleft = new System.Windows.Forms.NumericUpDown();
@@ -145,6 +146,7 @@ namespace MaddenEditor.Forms
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -199,6 +201,7 @@ namespace MaddenEditor.Forms
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.WearsGlassesCheckbox);
             this.splitContainer1.Panel1.Controls.Add(this.coachpic);
             this.splitContainer1.Panel1.Controls.Add(this.label54);
             this.splitContainer1.Panel1.Controls.Add(this.coachyearsleft);
@@ -227,9 +230,20 @@ namespace MaddenEditor.Forms
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.Text = "splitContainer1";
             // 
+            // WearsGlassesCheckbox
+            // 
+            this.WearsGlassesCheckbox.AutoSize = true;
+            this.WearsGlassesCheckbox.Location = new System.Drawing.Point(78, 191);
+            this.WearsGlassesCheckbox.Name = "WearsGlassesCheckbox";
+            this.WearsGlassesCheckbox.Size = new System.Drawing.Size(97, 17);
+            this.WearsGlassesCheckbox.TabIndex = 29;
+            this.WearsGlassesCheckbox.Text = "Wears Glasses";
+            this.WearsGlassesCheckbox.UseVisualStyleBackColor = true;
+            this.WearsGlassesCheckbox.CheckedChanged += new System.EventHandler(this.WearsGlassesCheckbox_CheckedChanged);
+            // 
             // coachpic
             // 
-            this.coachpic.Location = new System.Drawing.Point(78, 186);
+            this.coachpic.Location = new System.Drawing.Point(78, 214);
             this.coachpic.Maximum = new decimal(new int[] {
             300,
             0,
@@ -243,7 +257,7 @@ namespace MaddenEditor.Forms
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(21, 190);
+            this.label54.Location = new System.Drawing.Point(21, 218);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(54, 13);
             this.label54.TabIndex = 30;
@@ -251,7 +265,7 @@ namespace MaddenEditor.Forms
             // 
             // coachyearsleft
             // 
-            this.coachyearsleft.Location = new System.Drawing.Point(78, 243);
+            this.coachyearsleft.Location = new System.Drawing.Point(78, 271);
             this.coachyearsleft.Maximum = new decimal(new int[] {
             7,
             0,
@@ -265,7 +279,7 @@ namespace MaddenEditor.Forms
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(20, 247);
+            this.label9.Location = new System.Drawing.Point(20, 275);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 13);
             this.label9.TabIndex = 28;
@@ -282,13 +296,13 @@ namespace MaddenEditor.Forms
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.coachDefensivePlaybook);
             this.groupBox3.Controls.Add(this.fourThreeButton);
             this.groupBox3.Controls.Add(this.threeFourButton);
-            this.groupBox3.Location = new System.Drawing.Point(23, 277);
+            this.groupBox3.Location = new System.Drawing.Point(23, 305);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(163, 98);
             this.groupBox3.TabIndex = 6;
@@ -306,8 +320,8 @@ namespace MaddenEditor.Forms
             // 
             // coachDefensivePlaybook
             // 
-            this.coachDefensivePlaybook.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachDefensivePlaybook.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.coachDefensivePlaybook.FormattingEnabled = true;
             this.coachDefensivePlaybook.Location = new System.Drawing.Point(21, 68);
             this.coachDefensivePlaybook.Name = "coachDefensivePlaybook";
@@ -337,15 +351,9 @@ namespace MaddenEditor.Forms
             // 
             // cbSkinColor
             // 
-            this.cbSkinColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbSkinColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSkinColor.FormattingEnabled = true;
-            this.cbSkinColor.Items.AddRange(new object[] {
-            "Light 1",
-            "Light 2",
-            "Light 3",
-            "Medium",
-            "Dark"});
             this.cbSkinColor.Location = new System.Drawing.Point(78, 157);
             this.cbSkinColor.Name = "cbSkinColor";
             this.cbSkinColor.Size = new System.Drawing.Size(93, 21);
@@ -364,10 +372,10 @@ namespace MaddenEditor.Forms
             // 
             // coachSalary
             // 
-            this.coachSalary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachSalary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.coachSalary.DecimalPlaces = 2;
-            this.coachSalary.Location = new System.Drawing.Point(78, 215);
+            this.coachSalary.Location = new System.Drawing.Point(78, 243);
             this.coachSalary.Maximum = new decimal(new int[] {
             16383,
             0,
@@ -380,7 +388,7 @@ namespace MaddenEditor.Forms
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(39, 219);
+            this.label26.Location = new System.Drawing.Point(39, 247);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(36, 13);
             this.label26.TabIndex = 15;
@@ -388,8 +396,8 @@ namespace MaddenEditor.Forms
             // 
             // coachAge
             // 
-            this.coachAge.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachAge.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.coachAge.Location = new System.Drawing.Point(78, 126);
             this.coachAge.Maximum = new decimal(new int[] {
             99,
@@ -412,8 +420,8 @@ namespace MaddenEditor.Forms
             // 
             // cbTeamCombo
             // 
-            this.cbTeamCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbTeamCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbTeamCombo.FormattingEnabled = true;
             this.cbTeamCombo.Location = new System.Drawing.Point(78, 94);
             this.cbTeamCombo.Name = "cbTeamCombo";
@@ -423,8 +431,8 @@ namespace MaddenEditor.Forms
             // 
             // coachesPositionCombo
             // 
-            this.coachesPositionCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachesPositionCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.coachesPositionCombo.FormattingEnabled = true;
             this.coachesPositionCombo.Items.AddRange(new object[] {
             "Head Coach",
@@ -448,8 +456,8 @@ namespace MaddenEditor.Forms
             // 
             // coachesName
             // 
-            this.coachesName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachesName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.coachesName.Location = new System.Drawing.Point(78, 32);
             this.coachesName.Name = "coachesName";
             this.coachesName.Size = new System.Drawing.Size(140, 20);
@@ -467,8 +475,8 @@ namespace MaddenEditor.Forms
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.filterPositionComboBox);
             this.groupBox1.Controls.Add(this.filterPositionCheckBox);
             this.groupBox1.Controls.Add(this.filterTeamComboBox);
@@ -484,8 +492,8 @@ namespace MaddenEditor.Forms
             // 
             // filterPositionComboBox
             // 
-            this.filterPositionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.filterPositionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.filterPositionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.filterPositionComboBox.FormattingEnabled = true;
             this.filterPositionComboBox.Items.AddRange(new object[] {
@@ -512,8 +520,8 @@ namespace MaddenEditor.Forms
             // 
             // filterTeamComboBox
             // 
-            this.filterTeamComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.filterTeamComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.filterTeamComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.filterTeamComboBox.FormattingEnabled = true;
             this.filterTeamComboBox.Location = new System.Drawing.Point(67, 32);
@@ -1568,6 +1576,7 @@ namespace MaddenEditor.Forms
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.coachpic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachyearsleft)).EndInit();
@@ -1739,6 +1748,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.NumericUpDown coachQB;
         private System.Windows.Forms.NumericUpDown coachpic;
         private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.CheckBox WearsGlassesCheckbox;
 
 
 	}

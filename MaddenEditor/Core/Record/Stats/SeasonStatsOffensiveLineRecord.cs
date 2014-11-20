@@ -26,18 +26,24 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.Stats
 {
-    class SeasonStatsOffensiveLineRecord : TableRecordModel
+    public class SeasonStatsOffensiveLineRecord : TableRecordModel
     {
+        //  PSOL
+
+        public const string PLAYER_ID = "PGID";
+        public const string SEASON = "SEYR";
         public const string PANCAKES = "sopa";
         public const string SACKS_ALLOWED = "sosa";
-        public const string SEASON = "SEYR";
-        public const string PLAYER_ID = "PGID";
+        
+        
 
         public SeasonStatsOffensiveLineRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
         }
+
+        #region Get / Set
 
         public int Pancakes
         {
@@ -86,5 +92,8 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(SEASON, value);
             }
         }
+
+        #endregion
+
     }
 }

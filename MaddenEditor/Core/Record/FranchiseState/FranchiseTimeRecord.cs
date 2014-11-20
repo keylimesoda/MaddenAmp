@@ -28,8 +28,31 @@ namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class FranchiseTimeRecord : TableRecordModel
     {
-        public const string SEASON = "SEYR";
-        public const string WEEK = "SEWN";
+        // SEAI
+
+        public const string SBRW = "SBRW";
+        public const string SEFP = "SEFP";
+        public const string SEOW = "SEOW";
+        public const string SERB = "SERB";
+        public const string SERW = "SERW";
+        public const string SESI = "SESI";
+        public const string SEST = "SEST";
+        public const string SESW = "SESW";
+        public const string WEEK_NUMBER = "SEWN";
+        public const string WEEK_TYPE = "SEWT";
+        public const string YEAR = "SEYR";
+        public const string SFRW = "SFRW";
+        public const string GAME_OFTHE_WEEK = "SGOW";
+        public const string SNCP = "SNCP";
+        public const string SNDP = "SNDP";
+        public const string SNPB = "SNPB";
+        public const string SNPW = "SNPW";
+        public const string SNWP = "SNWP";
+        public const string SSYE = "SSYE";
+
+        
+        // Week Type 0 preseason, 25 regular season, 50 wildcard, 75 divisional, 100 conference
+        // 125 SB, 150 Pro Bowl, 200 Initial ?
 
 		public FranchiseTimeRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -37,28 +60,121 @@ namespace MaddenEditor.Core.Record.FranchiseState
 
         }
 
-        public int Season
+        #region Get/Set
+        public int Sbrw
         {
-            get
-            {
-                return GetIntField(SEASON);
-            }
-            set
-            {
-                SetField(SEASON, value);
-            }
+            get { return GetIntField(SBRW); }
+            set { SetField(SBRW, value); }
         }
-
+        public int Sefp
+        {
+            get { return GetIntField(SEFP); }
+            set { SetField(SEFP, value); }
+        }
+        public int Seow
+        {
+            get { return GetIntField(SEOW); }
+            set { SetField(SEOW, value); }
+        }
+        public int Serb
+        {
+            get { return GetIntField(SERB); }
+            set { SetField(SERB, value); }
+        }
+        public int Serw
+        {
+            get { return GetIntField(SERW); }
+            set { SetField(SERW, value); }
+        }
+        public int Sesi
+        {
+            get { return GetIntField(SESI); }
+            set { SetField(SESI, value); }            
+        }
+        public int Sest
+        {
+            get { return GetIntField(SEST); }
+            set { SetField(SEST, value); }
+        }
+        public int Sesw
+        {
+            get { return GetIntField(SESW); }
+            set { SetField(SESW, value); }
+        }
         public int Week
         {
             get
             {
-                return GetIntField(WEEK);
+                return GetIntField(WEEK_NUMBER);
             }
             set
             {
-                SetField(WEEK, value);
+                SetField(WEEK_NUMBER, value);
             }
         }
+        public int WeekType
+        {
+            get
+            {
+                return GetIntField(WEEK_TYPE);
+            }
+            set
+            {
+                SetField(WEEK_TYPE, value);
+            }
+        }
+        public int Year
+        {
+            get
+            {
+                return GetIntField(YEAR);
+            }
+            set
+            {
+                SetField(YEAR, value);
+            }
+        }
+        public int Sfrw
+        {
+            get { return GetIntField(SFRW); }
+            set { SetField(SFRW, value); }
+        }
+        public int GameofWeek
+        {
+            get { return GetIntField(GAME_OFTHE_WEEK); }
+            set { SetField(GAME_OFTHE_WEEK, value); }
+        }
+        public int Sncp
+        {
+            get { return GetIntField(SNCP); }
+            set { SetField(SNCP, value); }
+        }
+        public int Sndp
+        {
+            get { return GetIntField(SNDP); }
+            set { SetField(SNDP, value); }
+        }
+        public int Snpb
+        {
+            get { return GetIntField(SNPB); }
+            set { SetField(SNPB, value); }
+        }
+        public int Snpw
+        {
+            get { return GetIntField(SNPW); }
+            set { SetField(SNPW, value); }
+        }
+        public int Snwp
+        {
+            get { return GetIntField(SNWP); }
+            set { SetField(SNWP, value); }
+        }
+        public int Ssye
+        {
+            get { return GetIntField(SSYE); }
+            set { SetField(SSYE, value); }
+        }
+
+        #endregion
     }
 }

@@ -28,12 +28,13 @@ namespace MaddenEditor.Core.Record.Stats
 {
     public class CareerGamesPlayedRecord : TableRecordModel
     {
-        public const string PLAYER_ID = "PGID";
-        // There are no season stats in the career table.
-        // But there is a field 'cgdp'  no idea what it is used for.
-        // public const string SEASON = "SEYR";
+        // PCNG
+
+        public const string DOWNS_PLAYED = "cgdp";
         public const string GAMES_PLAYED = "cgmp";
         public const string GAMES_STARTED = "cgms";
+        public const string PLAYER_ID = "PGID";
+                
 
         public CareerGamesPlayedRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -76,5 +77,12 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(GAMES_STARTED, value);
             }
         }
+
+        public int DownsPlayed
+        {
+            get { return GetIntField(DOWNS_PLAYED); }
+            set { SetField(DOWNS_PLAYED, value); }
+        }
+
     }
 }

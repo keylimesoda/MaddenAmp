@@ -29,6 +29,9 @@ namespace MaddenEditor.Core.Record.Stats
 {
     public class SeasonPuntKickRecord : TableRecordModel
     {
+        //  PSKI
+
+
         // Kicker stats
         public const string PLAYER_ID = "PGID";
         public const string SEASON = "SEYR";
@@ -73,6 +76,18 @@ namespace MaddenEditor.Core.Record.Stats
             set
             {
                 SetField(PLAYER_ID, value);
+            }
+        }
+
+        public int Season
+        {
+            get
+            {
+                return GetIntField(SEASON);
+            }
+            set
+            {
+                SetField(SEASON, value);
             }
         }
 

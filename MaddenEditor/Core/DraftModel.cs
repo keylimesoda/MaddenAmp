@@ -34,7 +34,6 @@ namespace MaddenEditor.Core
 {
 	public class DraftModel
 	{
-
 		private int currentPickIndex = 0;
 		/** The current Team Filter */
 		private string currentTeamFilter = null;
@@ -118,8 +117,7 @@ namespace MaddenEditor.Core
                 if (coach.TeamId >= 0 && coach.TeamId <= 31)
                 {
                     // Add to our list of coaches
-                    teamscout[coach.TeamId][coach.Position].Add(coach);
-                    
+                    teamscout[coach.TeamId][coach.Position].Add(coach);                    
                 }
                     
             }
@@ -3574,11 +3572,7 @@ namespace MaddenEditor.Core
 			return toReturn;
 		}
 
-		public DraftModel(EditorModel model)
-		{
-			this.model = model;
-			math = new LocalMath(model.FileVersion);
-		}
+		
 
 		public DraftPickRecord GetDraftPickRecord(int recno)
 		{
@@ -4555,6 +4549,13 @@ namespace MaddenEditor.Core
 
 
 		}
+
+
+        public DraftModel(EditorModel model)
+        {
+            this.model = model;
+            math = new LocalMath(model.FileVersion);
+        }
 
 		/*
         private void AssignRookieScoutedAttributes()

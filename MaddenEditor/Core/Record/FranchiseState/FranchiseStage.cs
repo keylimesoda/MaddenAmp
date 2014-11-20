@@ -26,16 +26,33 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.FranchiseState
 {
+    //  MOIN
+
     public class FranchiseStageRecord : TableRecordModel
     {
         public const string MCSA = "MCSA";
+        public const string MISB = "MISB";
         public const string MNAI = "MNAI";
         public const string MPSA = "MPSA";
+        public const string MTYP = "MTYP";
+
+        //  MCSA
+        // 5 = Train camp
+        // 7 = Preseason
+        // 8 = preseason progression
+        // 9 = season
+        // 12 = advance to offseason
+        // 14 = offesason - owner mode, sign coaches
+        // 15 = offseason - roster mgmt
+        // 17 = pre free agency
+        // 18 = 1st free agency
+        // 20 = rookie workouts
+        // 21 = draft
+
 
         public FranchiseStageRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
-
         }
 
         public int Mcsa
@@ -50,6 +67,12 @@ namespace MaddenEditor.Core.Record.FranchiseState
             }
         }
 
+        public int Misb
+        {
+            get { return GetIntField(MISB); }
+            set { SetField(MISB, value); }
+        }
+        
         public int Mnai
         {
             get
@@ -73,5 +96,12 @@ namespace MaddenEditor.Core.Record.FranchiseState
                 SetField(MPSA, value);
             }
         }
+
+        public int Mtyp
+        {
+            get { return GetIntField(MTYP); }
+            set { SetField(MTYP, value); }
+        }
+
     }
 }

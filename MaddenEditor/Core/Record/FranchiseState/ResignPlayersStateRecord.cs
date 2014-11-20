@@ -28,13 +28,10 @@ namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class ResignPlayersStateRecord : TableRecordModel
     {
+        //  REIN
+
         public const string IN_RESIGN = "ROST";
 
-        public ResignPlayersStateRecord(int record, TableModel tableModel, EditorModel EditorModel)
-			: base(record, tableModel, EditorModel)
-		{
-
-        }
 
         public bool AtResignPlayersStage
         {
@@ -47,5 +44,14 @@ namespace MaddenEditor.Core.Record.FranchiseState
                 SetField(IN_RESIGN, (value == true ? 1 : 0));
             }
         }
+        
+        
+        public ResignPlayersStateRecord(int record, TableModel tableModel, EditorModel EditorModel)
+			: base(record, tableModel, EditorModel)
+		{
+
+        }
+
+        
     }
 }
