@@ -309,12 +309,13 @@ namespace MaddenEditor.Core
                 case EditorModel.FREE_AGENT_PLAYERS:
                     newRecord = new FreeAgentPlayers(recno, this, parentModel);
                     break;
-                    
+                case EditorModel.PROGRESSION_TABLE:
+                    newRecord = new ProgressionRecord(recno, this, parentModel);
+                    break;                    
 			}
 
 			//Add the new record to our list of records
-			recordList.Add(newRecord);
-            
+			recordList.Add(newRecord);            
 
 			return newRecord;
 		}

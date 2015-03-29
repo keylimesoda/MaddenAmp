@@ -28,122 +28,94 @@ namespace MaddenEditor.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.teamCombo = new System.Windows.Forms.ComboBox();
-			this.addTeamButton = new System.Windows.Forms.Button();
-			this.teamsList = new System.Windows.Forms.ListBox();
-			this.removeSelectedButton = new System.Windows.Forms.Button();
-			this.applyButton = new System.Windows.Forms.Button();
-			this.cancelButton = new System.Windows.Forms.Button();
-			this.addAllButton = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 9);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(35, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Teams";
-			// 
-			// teamCombo
-			// 
-			this.teamCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.teamCombo.FormattingEnabled = true;
-			this.teamCombo.Location = new System.Drawing.Point(53, 6);
-			this.teamCombo.Name = "teamCombo";
-			this.teamCombo.Size = new System.Drawing.Size(163, 21);
-			this.teamCombo.TabIndex = 1;
-			this.teamCombo.SelectedIndexChanged += new System.EventHandler(this.teamCombo_SelectedIndexChanged);
-			// 
-			// addTeamButton
-			// 
-			this.addTeamButton.Location = new System.Drawing.Point(222, 4);
-			this.addTeamButton.Name = "addTeamButton";
-			this.addTeamButton.Size = new System.Drawing.Size(75, 23);
-			this.addTeamButton.TabIndex = 2;
-			this.addTeamButton.Text = "Add";
-			this.addTeamButton.Click += new System.EventHandler(this.addTeamButton_Click);
-			// 
-			// teamsList
-			// 
-			this.teamsList.FormattingEnabled = true;
-			this.teamsList.Location = new System.Drawing.Point(12, 33);
-			this.teamsList.Name = "teamsList";
-			this.teamsList.ScrollAlwaysVisible = true;
-			this.teamsList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.teamsList.Size = new System.Drawing.Size(361, 199);
-			this.teamsList.TabIndex = 3;
-			// 
-			// removeSelectedButton
-			// 
-			this.removeSelectedButton.Location = new System.Drawing.Point(13, 238);
-			this.removeSelectedButton.Name = "removeSelectedButton";
-			this.removeSelectedButton.Size = new System.Drawing.Size(105, 23);
-			this.removeSelectedButton.TabIndex = 4;
-			this.removeSelectedButton.Text = "Remove Selected";
-			this.removeSelectedButton.Click += new System.EventHandler(this.removeSelectedButton_Click);
-			// 
-			// applyButton
-			// 
-			this.applyButton.Location = new System.Drawing.Point(222, 238);
-			this.applyButton.Name = "applyButton";
-			this.applyButton.Size = new System.Drawing.Size(75, 23);
-			this.applyButton.TabIndex = 5;
-			this.applyButton.Text = "Apply";
-			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
-			// 
-			// cancelButton
-			// 
-			this.cancelButton.Location = new System.Drawing.Point(303, 238);
-			this.cancelButton.Name = "cancelButton";
-			this.cancelButton.Size = new System.Drawing.Size(75, 23);
-			this.cancelButton.TabIndex = 6;
-			this.cancelButton.Text = "Cancel";
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-			// 
-			// addAllButton
-			// 
-			this.addAllButton.Location = new System.Drawing.Point(303, 4);
-			this.addAllButton.Name = "addAllButton";
-			this.addAllButton.Size = new System.Drawing.Size(75, 23);
-			this.addAllButton.TabIndex = 7;
-			this.addAllButton.Text = "Add All";
-			this.addAllButton.Click += new System.EventHandler(this.addAllButton_Click);
-			// 
-			// UserControlledTeamForm
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(385, 266);
-			this.Controls.Add(this.addAllButton);
-			this.Controls.Add(this.cancelButton);
-			this.Controls.Add(this.applyButton);
-			this.Controls.Add(this.removeSelectedButton);
-			this.Controls.Add(this.teamsList);
-			this.Controls.Add(this.addTeamButton);
-			this.Controls.Add(this.teamCombo);
-			this.Controls.Add(this.label1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.Name = "UserControlledTeamForm";
-			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Select User Controlled Teams";
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            this.RecommendedButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBox1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // RecommendedButton
+            // 
+            this.RecommendedButton.Location = new System.Drawing.Point(185, 19);
+            this.RecommendedButton.Name = "RecommendedButton";
+            this.RecommendedButton.Size = new System.Drawing.Size(176, 44);
+            this.RecommendedButton.TabIndex = 8;
+            this.RecommendedButton.Text = "Use Recommended Settings";
+            this.RecommendedButton.UseVisualStyleBackColor = true;
+            this.RecommendedButton.Click += new System.EventHandler(this.RecommendedButton_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.RecommendedButton);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(984, 79);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Preferences";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(6, 50);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(136, 17);
+            this.checkBox2.TabIndex = 10;
+            this.checkBox2.Text = "Play All Division Games";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 19);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(108, 17);
+            this.checkBox1.TabIndex = 9;
+            this.checkBox1.Text = "Sim Away Games";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(367, 19);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(611, 44);
+            this.textBox1.TabIndex = 11;
+            this.textBox1.Text = "Recommended settings include Simming away games, playing all home and divisional " +
+    "games.  Setting All teams head coaches to user control, but only for the draftin" +
+    "g of players.";
+            // 
+            // UserControlledTeamForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(1008, 866);
+            this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "UserControlledTeamForm";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Select User Controlled Teams";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox teamCombo;
-		private System.Windows.Forms.Button addTeamButton;
-		private System.Windows.Forms.ListBox teamsList;
-		private System.Windows.Forms.Button removeSelectedButton;
-		private System.Windows.Forms.Button applyButton;
-		private System.Windows.Forms.Button cancelButton;
-		private System.Windows.Forms.Button addAllButton;
+        private System.Windows.Forms.Button RecommendedButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox textBox1;
 	}
 }

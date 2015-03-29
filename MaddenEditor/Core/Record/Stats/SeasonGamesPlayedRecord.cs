@@ -35,7 +35,8 @@ namespace MaddenEditor.Core.Record.Stats
         public const string GAMES_DOWNS_PLAYED = "sgdp";
         public const string GAMES_PLAYED = "sgmp";
         public const string GAMES_STARTED = "sgms";
-        public const string PREVIOUS_TEAM = "sgYY";        
+        public const string PREVIOUS_TEAM = "sgYY";
+        
 
         public SeasonGamesPlayedRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -105,6 +106,7 @@ namespace MaddenEditor.Core.Record.Stats
             set { SetField(PREVIOUS_TEAM, value); }
         }
 
+        
         #endregion
     }
 }

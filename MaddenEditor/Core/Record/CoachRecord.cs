@@ -105,7 +105,7 @@ namespace MaddenEditor.Core.Record
         public const string COTY = "COTY";
         public const string CPAG = "CPAG";
         public const string OFFENSE_PLAYBOOK_ID = "CPID";
-        public const string CPSF = "CPSF";
+        public const string FACE_ID = "CPSF";
         public const string CPWS = "CPWS";
         public const string APPROVAL_RATING = "CRAT";
         public const string RB_CARRY_DIST = "CRBT";
@@ -424,10 +424,10 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(CPAG); }
             set { SetField(CPAG, value); }
         }
-        public int Cpsf
+        public int FaceId
         {
-            get { return GetIntField(CPSF); }
-            set { SetField(CPSF, value); }
+            get { return GetIntField(FACE_ID); }
+            set { SetField(FACE_ID, value); }
         }
         public int Cpws
         {

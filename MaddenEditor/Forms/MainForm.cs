@@ -74,7 +74,7 @@ namespace MaddenEditor.Forms
 			this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString;
 
 			tabControl.Visible = false;
-			toolsToolStripMenuItem.Visible = false;
+			ErrorCheck.Visible = false;
 			franchiseToolStripMenuItem.Visible = false;
 			statusStrip.Visible = false;
 			exportToolStripMenuItem.Enabled = false;            
@@ -87,7 +87,7 @@ namespace MaddenEditor.Forms
             this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString + "  - " + System.IO.Path.GetFileName(filePathToLoad);
 
             exportToolStripMenuItem.Enabled = true;
-            toolsToolStripMenuItem.Visible = true;
+            ErrorCheck.Visible = true;
             processingTableLabel.Text = "";
             statusStrip.Visible = false;
             toolStripProgressBar.Value = 0;
@@ -101,7 +101,7 @@ namespace MaddenEditor.Forms
                     //2004 version don't support Team Captain editing
                     setTeamCaptainsToolStripMenuItem.Enabled = false;
                     //2004 version has issues at the moment with changing user controlled teams
-                    setUserControlledTeamsToolStripMenuItem.Enabled = false;
+                    //setUserControlledTeamsToolStripMenuItem.Enabled = false;
                 }
                 if (model.FileVersion >= MaddenFileVersion.Ver2005)
                 {
@@ -138,7 +138,7 @@ namespace MaddenEditor.Forms
 
             exportToolStripMenuItem.Enabled = false;
             tabControl.Visible = false;
-            toolsToolStripMenuItem.Visible = false;
+            ErrorCheck.Visible = false;
             processingTableLabel.Text = "";
             franchiseToolStripMenuItem.Visible = false;
         }
@@ -927,6 +927,11 @@ namespace MaddenEditor.Forms
             stadiumeditor.Dock = DockStyle.Fill;
             stadiumeditor.Model = model;
             stadiumeditor.InitialiseUI();
+        }
+
+        private void ErrorCheckMenuItem_Click(object sender, EventArgs e)
+        {
+            model.CoachModel.CheckCoaches();
         }
        
         

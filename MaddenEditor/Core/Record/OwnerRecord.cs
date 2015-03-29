@@ -31,12 +31,12 @@ namespace MaddenEditor.Core.Record
 		public const string TEAM_ID = "TGID";
 		public const string USER_CONTROLLED = "CFUC";
 		public const string RELOCATION_YEAR = "OFYR";
-		public const string COMPUTER_CONTROL_1 = "CFDA";
-		public const string COMPUTER_CONTROL_2 = "CFFA";
-		public const string COMPUTER_CONTROL_3 = "CFDP";
-		public const string COMPUTER_CONTROL_4 = "CFRP";
-		public const string COMPUTER_CONTROL_5 = "CFFR";
-		public const string COMPUTER_CONTROL_6 = "CFRR";
+		public const string DRAFT_PLAYERS = "CFDA";
+		public const string SIGN_FREE_AGENTS = "CFFA";
+		public const string SIGN_DRAFT_PICKS = "CFDP";
+		public const string RESIGN_PLAYERS = "CFRP";
+		public const string FILL_ROSTERS = "CFFR";
+		public const string REORDER_DEPTH_CHARTS = "CFRR";
 		public const string COMPUTER_CONTROL_7 = "CFEX";
 
 		public OwnerRecord(int record, TableModel tableModel, EditorModel EditorModel)
@@ -94,75 +94,75 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public bool ComputerControl1
+		public bool DraftPlayers
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_1) == 1);
+				return (GetIntField(DRAFT_PLAYERS) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_1, Convert.ToInt32(value));
+				SetField(DRAFT_PLAYERS, Convert.ToInt32(value));
 			}
 		}
 
-		public bool ComputerControl2
+		public bool SignFreeAgents
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_2) == 1);
+				return (GetIntField(SIGN_FREE_AGENTS) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_2, Convert.ToInt32(value));
+				SetField(SIGN_FREE_AGENTS, Convert.ToInt32(value));
 			}
 		}
 
-		public bool ComputerControl3
+		public bool SignDraftPicks
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_3) == 1);
+				return (GetIntField(SIGN_DRAFT_PICKS) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_3, Convert.ToInt32(value));
+				SetField(SIGN_DRAFT_PICKS, Convert.ToInt32(value));
 			}
 		}
 
-		public bool ComputerControl4
+		public bool ResignPlayers
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_4) == 1);
+				return (GetIntField(RESIGN_PLAYERS) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_4, Convert.ToInt32(value));
+				SetField(RESIGN_PLAYERS, Convert.ToInt32(value));
 			}
 		}
 
-		public bool ComputerControl5
+		public bool FillRosters
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_5) == 1);
+				return (GetIntField(FILL_ROSTERS) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_5, Convert.ToInt32(value));
+				SetField(FILL_ROSTERS, Convert.ToInt32(value));
 			}
 		}
 
-		public bool ComputerControl6
+		public bool ReorderDepthCharts
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_6) == 1);
+				return (GetIntField(REORDER_DEPTH_CHARTS) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_6, Convert.ToInt32(value));
+				SetField(REORDER_DEPTH_CHARTS, Convert.ToInt32(value));
 			}
 		}
 

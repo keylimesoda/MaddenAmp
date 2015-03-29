@@ -163,10 +163,6 @@ namespace MaddenEditor.Core.Record
         public const string WINNING_PERCENTAGE = "TWPC";
 		public const string WR_RATING = "TWRR";	
 		
-		
-		
-
-
 
         // MADDEN DRAFT EDIT
         private int wins;
