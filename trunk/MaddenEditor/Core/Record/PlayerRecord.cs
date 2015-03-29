@@ -193,7 +193,7 @@ namespace MaddenEditor.Core.Record
 			return FirstName + " " + LastName + " (" + Enum.GetNames(typeof(MaddenPositions))[PositionId].ToString() + ")";
 		}
 
-        #region Get/SER
+        #region Get/SET
 
         public string FirstName
 		{

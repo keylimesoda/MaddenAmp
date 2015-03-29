@@ -34,7 +34,7 @@ namespace MaddenEditor.Core.Record.Stats
         public const string GAMES_PLAYED = "cgmp";
         public const string GAMES_STARTED = "cgms";
         public const string PLAYER_ID = "PGID";
-                
+        public const string CAREER_GAMES_PLAYED = "cgpl";                                           //  2004 only   
 
         public CareerGamesPlayedRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -82,6 +82,12 @@ namespace MaddenEditor.Core.Record.Stats
         {
             get { return GetIntField(DOWNS_PLAYED); }
             set { SetField(DOWNS_PLAYED, value); }
+        }
+        
+        public int GamesPlayed04
+        {
+            get { return GetIntField(CAREER_GAMES_PLAYED); }
+            set { SetField(CAREER_GAMES_PLAYED, value); }
         }
 
     }

@@ -97,7 +97,7 @@
     <Compile Include="Core\Record\GameOptionRecord.cs" />
     <Compile Include="Core\Record\GenericRecord.cs" />
     <Compile Include="Core\Record\OwnerRecord.cs" />
-    <Compile Include="Core\Record\ProgressionModel.cs" />
+    <Compile Include="Core\Record\ProgressionRecord.cs" />
     <Compile Include="Core\Record\RookieRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\Record\ScheduleRecord.cs" />

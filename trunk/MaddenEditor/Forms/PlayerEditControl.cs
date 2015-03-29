@@ -47,6 +47,8 @@ namespace MaddenEditor.Forms
         private PlayerRecord lastLoadedRecord = null;
 
         private bool isInitialising = false;
+
+        int year = 0;
                  
         
         public PlayerEditControl()
@@ -349,16 +351,16 @@ namespace MaddenEditor.Forms
             int currentyear = model.FranchiseTime.Year;
             int currentweek = model.FranchiseTime.Week;
 
-            // Season/Career stats box
-            int year = 2005;
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
+            // Season/Career stats combobox
+            int year = 2003;    
+            if (model.FileVersion == MaddenFileVersion.Ver2005)
                 year = 2004;
             if (model.FileVersion == MaddenFileVersion.Ver2006)
-                year = 2006;
+                year = 2005;
             if (model.FileVersion == MaddenFileVersion.Ver2007)
-                year = 2007;
+                year = 2006;
             if (model.FileVersion == MaddenFileVersion.Ver2008)
-                year = 2008;
+                year = 2007;
             statsyear.Items.Clear();
             statsyear.Items.Add("Career");
             int endyear = currentyear + year;
@@ -373,32 +375,39 @@ namespace MaddenEditor.Forms
         public void LoadPlayerStats(PlayerRecord record, int index)
         {
             isInitialising = true;
-            int year = 0;
-            //  Career = index 0, otherwise season is determined by current year            
+
+            bool career = false;
+            if (index == 0)
+                career = true;
+            year = 0;
+
+            int baseyear = 2003;
+            if (model.FileVersion == MaddenFileVersion.Ver2005)
+                baseyear = 2004;
+            if (model.FileVersion == MaddenFileVersion.Ver2006)
+                baseyear = 2005;
+            if (model.FileVersion == MaddenFileVersion.Ver2007)
+                baseyear = 2006;
+            if (model.FileVersion == MaddenFileVersion.Ver2008)
+                baseyear = 2007;
+       
             if (index > 0)
-            {
-                int endyear = model.FranchiseTime.Year;
-                int startyear = model.FranchiseTime.Year - record.YearsPro + 1;
-                List<int> statyears = new List<int>();
+                year = (int)statsyear.SelectedItem - baseyear;
 
-                for (int c = endyear; c > startyear; c--)
-                    statyears.Add(c);
-                year = statyears[index - 1];
-            }
+            #region Offense Stats
 
-            // Get Offense Stats
             CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
             SeasonStatsOffenseRecord seasonoffense = model.PlayerModel.GetOffStats(record.PlayerId, year);
 
             // Set controls
             CareerOffenseGroupBox.Enabled = true;
-            AddOStats.Enabled = false;
-            statsyear.Enabled = false;
+            AddOStats.Enabled = false;            
             if (record.YearsPro > 0)
                 statsyear.Enabled = true;
+            else statsyear.Enabled = false;
 
             //  Set career stats
-            if (careeroffensestats != null && index == 0)
+            if (career && careeroffensestats != null)
             {
                 pass_att.Value = (int)careeroffensestats.Pass_att;
                 pass_comp.Value = (int)careeroffensestats.Pass_comp;
@@ -423,7 +432,7 @@ namespace MaddenEditor.Forms
             }
 
             // Set season stats
-            if (seasonoffense != null && index != 0)
+            else if (seasonoffense != null && !career)
             {
                 // set all the values of the numericupdown boxes
                 pass_att.Value = (int)seasonoffense.SeaPassAtt;
@@ -448,13 +457,15 @@ namespace MaddenEditor.Forms
                 rushing_bt.Value = (int)seasonoffense.SeaRushBtk;
 
             }
-            //  No stats available for selection.
+            
             else
             {
-                //  Turn on Add Stats if the player could have stats
+                //  No career/season offense stats
+                CareerOffenseGroupBox.Enabled = false;
                 if (record.YearsPro > 0)
                     AddOStats.Enabled = true;
-                CareerOffenseGroupBox.Enabled = false;
+                else AddOStats.Enabled = false;                
+
                 pass_att.Value = 0;
                 pass_comp.Value = 0;
                 pass_yds.Value = 0;
@@ -477,16 +488,21 @@ namespace MaddenEditor.Forms
                 rushing_bt.Value = 0;
             }
 
-            //  Offensive line
+            #endregion
+
+
+
+            #region Offensive Line Stats
+
             CareerOLGroupBox.Enabled = true;
             AddOLStat.Enabled = false;
 
             CareerStatsOffensiveLineRecord careerOLstats = model.PlayerModel.GetPlayersOLCareer(record.PlayerId);
             SeasonStatsOffensiveLineRecord seaOLstats = model.PlayerModel.GetOLstats(record.PlayerId, year);
 
-            if (careerOLstats != null && index == 0 || index != 0 && seaOLstats != null)
+            if (careerOLstats != null && career || !career && seaOLstats != null)
             {
-                if (index == 0)
+                if (career)
                 {
                     pancakes.Value = careerOLstats.Pancakes;
                     sacksallowed.Value = careerOLstats.SacksAllowed;
@@ -507,6 +523,9 @@ namespace MaddenEditor.Forms
                 sacksallowed.Value = 0;
             }
 
+            #endregion
+
+
             //  Defensive Stats
 
             CareerStatsDefenseRecord careerdefensestats = model.PlayerModel.GetPlayersDefenseCareer(record.PlayerId);
@@ -515,7 +534,7 @@ namespace MaddenEditor.Forms
             CareerDefenseGroupBox.Enabled = true;
             AddDefStats.Enabled = false;
 
-            if (careerdefensestats != null && index == 0)
+            if (career && careerdefensestats != null)
             {
 
                 passesdefended.Value = careerdefensestats.PassesDefended;
@@ -534,7 +553,7 @@ namespace MaddenEditor.Forms
                 int_yards.Value = careerdefensestats.Int_yards;
             }
 
-            if (seasondefensestats != null && index != 0)
+            else if (!career && seasondefensestats != null)
             {
                 passesdefended.Value = seasondefensestats.PassesDefended;
                 tackles.Value = seasondefensestats.Tackles;
@@ -554,11 +573,12 @@ namespace MaddenEditor.Forms
 
             else
             {
+                CareerDefenseGroupBox.Enabled = false;
+
                 if (record.YearsPro > 0)
                     AddDefStats.Enabled = true;
+                else AddDefStats.Enabled = false;
 
-                // Disable Defensive Stats
-                CareerDefenseGroupBox.Enabled = false;
                 passesdefended.Value = 0;
                 tackles.Value = 0;
                 tacklesforloss.Value = 0;
@@ -575,9 +595,6 @@ namespace MaddenEditor.Forms
                 int_long.Value = 0;
             }
 
-
-
-
             CareerGamesPlayedRecord careergamesplayed = model.PlayerModel.GetPlayersGamesCareer(record.PlayerId);
             SeasonGamesPlayedRecord seasongamesplayed = model.PlayerModel.GetSeasonGames(record.PlayerId, year);
 
@@ -586,12 +603,22 @@ namespace MaddenEditor.Forms
             gamesstarted.Enabled = true;
             AddGamesStats.Enabled = false;
 
-            if (careergamesplayed != null && index == 0)
+            if (career && careergamesplayed != null)
             {
-                gamesplayed.Value = careergamesplayed.GamesPlayed;
-                gamesstarted.Value = careergamesplayed.GamesStarted;
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                {
+                    gamesplayed.Value = careergamesplayed.GamesPlayed04;
+                    gamesstarted.Value = 0;
+                    gamesstarted.Enabled = false;
+                }
+                else
+                {
+                    gamesplayed.Value = careergamesplayed.GamesPlayed;
+                    gamesstarted.Value = careergamesplayed.GamesStarted;
+                }
+
             }
-            if (seasongamesplayed != null && index != 0)
+            else if (!career && seasongamesplayed != null)
             {
                 gamesplayed.Value = seasongamesplayed.GamesPlayed;
                 gamesstarted.Value = seasongamesplayed.GamesStarted;
@@ -601,9 +628,13 @@ namespace MaddenEditor.Forms
             {
                 if (record.YearsPro > 0)
                     AddGamesStats.Enabled = true;
-                // Disable Games Played boxes
-                gamesstarted.Enabled = false;
-                gamesplayed.Enabled = false;
+                else
+                {
+                    AddGamesStats.Enabled = false;
+                    gamesstarted.Enabled = false;
+                    gamesplayed.Enabled = false;
+                }
+
                 gamesplayed.Value = 0;
                 gamesstarted.Value = 0;
             }
@@ -616,7 +647,7 @@ namespace MaddenEditor.Forms
             KickPuntGroupBox.Enabled = true;
             AddKPStats.Enabled = false;
 
-            if (careerpuntkick != null && index == 0)
+            if (career && careerpuntkick != null)
             {
                 // set kick punt stats = record
                 fga.Value = careerpuntkick.Fga;
@@ -646,7 +677,7 @@ namespace MaddenEditor.Forms
 
             }
 
-            if (seasonpuntkick != null && index != 0)
+            else if (!career && seasonpuntkick != null)
             {
                 // set kick punt stats = record
                 fga.Value = seasonpuntkick.Fga;
@@ -673,7 +704,6 @@ namespace MaddenEditor.Forms
                 puntyds.Value = seasonpuntkick.Puntyds;
                 touchbacks.Value = seasonpuntkick.Touchbacks;
                 kickoffs.Value = seasonpuntkick.Kickoffs;
-
             }
 
             else
@@ -715,7 +745,7 @@ namespace MaddenEditor.Forms
             KickPuntReturnGroupBox.Enabled = true;
             AddKRPRStats.Enabled = false;
 
-            if (careerpkreturn != null && index == 0)
+            if (career && careerpkreturn != null)
             {
                 // set return values = record
                 kra.Value = careerpkreturn.Kra;
@@ -728,7 +758,7 @@ namespace MaddenEditor.Forms
                 prtd.Value = careerpkreturn.Prtd;
             }
 
-            if (seasonpkreturn != null && index != 0)
+            else if (!career && seasonpkreturn != null)
             {
                 // set return values = record
                 kra.Value = seasonpkreturn.Kra;
@@ -1901,9 +1931,10 @@ namespace MaddenEditor.Forms
         }
 
 
+        //  TO DO :  some still need fixed
+        #region Stats Functions
 
-        #region Career Stats Functions
-
+        #region Offense Stats
 
         private void pass_att_ValueChanged(object sender, EventArgs e)
         {
@@ -1912,10 +1943,9 @@ namespace MaddenEditor.Forms
                 if (statsyear.Text == "Career")
                     model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_att = (int)pass_att.Value;
                 else
-                    model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, (int)statsyear.SelectedIndex).SeaPassAtt = (int)pass_att.Value;
+                    model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaPassAtt = (int)pass_att.Value;
             }
         }
-
 
         private void pass_comp_ValueChanged(object sender, EventArgs e)
         {
@@ -1924,16 +1954,18 @@ namespace MaddenEditor.Forms
                 if (statsyear.Text == "Career")
                     model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_comp = (int)pass_comp.Value;
                 else
-                    model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, (int)statsyear.SelectedIndex).SeaComp = (int)pass_comp.Value;
+                    model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaComp = (int)pass_comp.Value;
             }
         }
 
-        // TO DO : Fix the rest of these...
         private void pass_yds_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_yds = (int)pass_yds.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_yds = (int)pass_yds.Value;
+                else
+                    model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaPassYds = (int)pass_yds.Value;
             }
         }
 
@@ -1941,7 +1973,10 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_tds = (int)pass_tds.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_tds = (int)pass_tds.Value;
+                else
+                    model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaPassTd = (int)pass_tds.Value;
             }
         }
 
@@ -1949,7 +1984,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_int = (int)pass_int.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_int = (int)pass_int.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaPassInt = (int)pass_int.Value;
             }
         }
 
@@ -1957,7 +1994,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_long = (int)pass_long.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_long = (int)pass_long.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaPassLong = (int)pass_long.Value;
             }
         }
 
@@ -1965,7 +2004,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_sacked = (int)pass_sacked.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pass_sacked = (int)pass_sacked.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaSacked = (int)pass_sacked.Value;
             }
         }
 
@@ -1973,7 +2014,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_recs = (int)receiving_recs.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_recs = (int)receiving_recs.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRec = (int)receiving_recs.Value;
             }
         }
 
@@ -1981,7 +2024,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_yards = (int)receiving_yds.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_yards = (int)receiving_yds.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRecYds = (int)receiving_yds.Value;
             }
         }
 
@@ -1989,7 +2034,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_tds = (int)receiving_tds.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_tds = (int)receiving_tds.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRecTd = (int)receiving_tds.Value;
             }
         }
 
@@ -1997,7 +2044,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_drops = (int)receiving_drops.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_drops = (int)receiving_drops.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaDrops = (int)receiving_drops.Value;
             }
         }
 
@@ -2005,7 +2054,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_long = (int)receiving_long.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_long = (int)receiving_long.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRecLong = (int)receiving_long.Value;
             }
         }
 
@@ -2013,7 +2064,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_yac = (int)receiving_yac.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Receiving_yac = (int)receiving_yac.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRecYac = (int)receiving_yac.Value;
             }
         }
 
@@ -2021,7 +2074,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).RushingAttempts = (int)rushingattempts.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).RushingAttempts = (int)rushingattempts.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRushAtt = (int)rushingattempts.Value;
             }
         }
 
@@ -2029,7 +2084,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).RushingYards = (int)rushingyards.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).RushingYards = (int)rushingyards.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRushYds = (int)rushingyards.Value;
             }
         }
 
@@ -2037,7 +2094,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_tds = (int)rushing_tds.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_tds = (int)rushing_tds.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRushTd = (int)rushing_tds.Value;
             }
         }
 
@@ -2045,7 +2104,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fumbles = (int)fumbles.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fumbles = (int)fumbles.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaFumbles = (int)fumbles.Value;
             }
         }
 
@@ -2053,7 +2114,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_20 = (int)rushing_20.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_20 = (int)rushing_20.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRush20 = (int)rushing_20.Value;
             }
         }
 
@@ -2061,7 +2124,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_long = (int)rushing_long.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_long = (int)rushing_long.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRushLong = (int)rushing_long.Value;
             }
         }
 
@@ -2069,7 +2134,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_bt = (int)rushing_bt.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_bt = (int)rushing_bt.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRushBtk = (int)rushing_bt.Value;
             }
         }
 
@@ -2077,15 +2144,23 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_yac = (int)rushing_yac.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Rushing_yac = (int)rushing_yac.Value;
+                else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaRushYac = (int)rushing_yac.Value;
             }
         }
+
+        #endregion
+        
+        #region OLine Stats
 
         private void pancakes_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOLCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pancakes = (int)pancakes.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOLCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pancakes = (int)pancakes.Value;
+                else model.PlayerModel.GetOLstats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Pancakes = (int)pancakes.Value;
             }
         }
 
@@ -2093,17 +2168,23 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersOLCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).SacksAllowed = (int)sacksallowed.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersOLCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).SacksAllowed = (int)sacksallowed.Value;
+                else model.PlayerModel.GetOLstats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SacksAllowed = (int)sacksallowed.Value;
             }
         }
 
-
+        #endregion
+                
+        #region Defense Stats
 
         private void tackles_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Tackles = (int)tackles.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Tackles = (int)tackles.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Tackles = (int)tackles.Value;
             }
         }
 
@@ -2111,7 +2192,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).TacklesForLoss = (int)tacklesforloss.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).TacklesForLoss = (int)tacklesforloss.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).TacklesForLoss = (int)tacklesforloss.Value;
             }
         }
 
@@ -2119,7 +2202,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Sacks = (int)sacks.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Sacks = (int)sacks.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Sacks = (int)sacks.Value;
             }
         }
 
@@ -2127,7 +2212,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumblesForced = (int)fumblesforced.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumblesForced = (int)fumblesforced.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).FumblesForced = (int)fumblesforced.Value;
             }
         }
 
@@ -2135,7 +2222,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumblesRecovered = (int)fumblesrecovered.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumblesRecovered = (int)fumblesrecovered.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).FumblesRecovered = (int)fumblesrecovered.Value;
             }
         }
 
@@ -2143,7 +2232,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fumbles_td = (int)fumbles_td.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fumbles_td = (int)fumbles_td.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).FumbleTDS = (int)fumbles_td.Value;
             }
         }
 
@@ -2151,7 +2242,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumbleYards = (int)fumbleyards.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).FumbleYards = (int)fumbleyards.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).FumbleYards = (int)fumbleyards.Value;
             }
         }
 
@@ -2159,7 +2252,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Blocks = (int)blocks.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Blocks = (int)blocks.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Blocks = (int)blocks.Value;
             }
         }
 
@@ -2167,7 +2262,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Safeties = (int)safeties.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Safeties = (int)safeties.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Safeties = (int)safeties.Value;
             }
         }
 
@@ -2175,7 +2272,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).PassesDefended = (int)passesdefended.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).PassesDefended = (int)passesdefended.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).PassesDefended = (int)passesdefended.Value;
             }
         }
 
@@ -2183,7 +2282,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Def_int = (int)def_int.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Def_int = (int)def_int.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Interceptions = (int)def_int.Value;
             }
         }
 
@@ -2191,7 +2292,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_td = (int)int_td.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_td = (int)int_td.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).InterceptionTDS = (int)int_td.Value;
             }
         }
 
@@ -2199,7 +2302,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_yards = (int)int_yards.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_yards = (int)int_yards.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).InterceptionYards = (int)int_yards.Value;
             }
         }
 
@@ -2207,33 +2312,55 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_long = (int)int_long.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersDefenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Int_long = (int)int_long.Value;
+                else model.PlayerModel.GetDefenseStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).InterceptionLong = (int)int_long.Value;
             }
         }
 
+        #endregion
+                
+        #region Games Played
 
         private void gamesstarted_ValueChanged(object sender, EventArgs e)
         {
-            if (!isInitialising)
+            if (!isInitialising && model.FileVersion != MaddenFileVersion.Ver2004)
             {
-                model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesStarted = (int)gamesstarted.Value;
+                if (statsyear.Text == "Career")                
+                    model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesStarted = (int)gamesstarted.Value;
+                else model.PlayerModel.GetSeasonGames(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).GamesStarted = (int)gamesstarted.Value;
             }
         }
-
+        
         private void gamesplayed_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed = (int)gamesplayed.Value;
-            }
+                if (statsyear.Text == "Career")
+                {
+                    if (model.FileVersion == MaddenFileVersion.Ver2004)
+                        model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed04 = (int)gamesplayed.Value;
+                    else model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed = (int)gamesplayed.Value;
+                }
+                else
+                {
+                    model.PlayerModel.GetSeasonGames(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).GamesPlayed = (int)gamesplayed.Value;
+                }
+            }           
         }
 
+        #endregion
+
+        //fix
+        #region Punt/Kick
 
         private void fga_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga = (int)fga.Value;
+                if (statsyear.Text == "Career")
+                    model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga = (int)fga.Value;
+                else model.PlayerModel.GetPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).Fga = (int)fga.Value;
             }
         }
 
@@ -2241,6 +2368,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm = (int)fgm.Value;
             }
         }
@@ -2249,6 +2377,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgbl = (int)fgbl.Value;
             }
         }
@@ -2257,6 +2386,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgl = (int)fgl.Value;
             }
         }
@@ -2265,6 +2395,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Xpa = (int)xpa.Value;
             }
         }
@@ -2273,6 +2404,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Xpm = (int)xpm.Value;
             }
         }
@@ -2281,6 +2413,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Xpb = (int)xpb.Value;
             }
         }
@@ -2289,6 +2422,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_129 = (int)fga_129.Value;
             }
         }
@@ -2297,6 +2431,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_3039 = (int)fga_3039.Value;
             }
         }
@@ -2305,6 +2440,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_4049 = (int)fga_4049.Value;
             }
         }
@@ -2313,6 +2449,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fga_50 = (int)fga_50.Value;
             }
         }
@@ -2321,6 +2458,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_129 = (int)fgm_129.Value;
             }
         }
@@ -2329,6 +2467,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_3039 = (int)fgm_3039.Value;
             }
         }
@@ -2337,6 +2476,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_4049 = (int)fgm_4049.Value;
             }
         }
@@ -2345,6 +2485,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Fgm_50 = (int)fgm_50.Value;
             }
         }
@@ -2353,6 +2494,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kickoffs = (int)kickoffs.Value;
             }
         }
@@ -2361,6 +2503,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Touchbacks = (int)touchbacks.Value;
             }
         }
@@ -2369,6 +2512,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntatt = (int)puntatt.Value;
             }
         }
@@ -2377,6 +2521,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntyds = (int)puntyds.Value;
             }
         }
@@ -2385,6 +2530,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntlong = (int)puntlong.Value;
             }
         }
@@ -2393,6 +2539,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntny = (int)puntny.Value;
             }
         }
@@ -2401,6 +2548,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntin20 = (int)puntin20.Value;
             }
         }
@@ -2409,6 +2557,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Punttb = (int)punttb.Value;
             }
         }
@@ -2417,14 +2566,20 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Puntblk = (int)puntblk.Value;
             }
         }
+
+        #endregion
+
+        #region Punt/Kick Returns
 
         private void kra_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kra = (int)kra.Value;
             }
         }
@@ -2433,6 +2588,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kryds = (int)kryds.Value;
             }
         }
@@ -2441,6 +2597,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Krl = (int)krl.Value;
             }
         }
@@ -2449,6 +2606,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Krtd = (int)krtd.Value;
             }
         }
@@ -2457,6 +2615,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pra = (int)pra.Value;
             }
         }
@@ -2465,6 +2624,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Pryds = (int)pryds.Value;
             }
         }
@@ -2473,6 +2633,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Prl = (int)prl.Value;
             }
         }
@@ -2481,12 +2642,17 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
+                if (statsyear.Text == "Career")
                 model.PlayerModel.GetPlayersCareerPKReturn(model.PlayerModel.CurrentPlayerRecord.PlayerId).Prtd = (int)prtd.Value;
             }
         }
 
         #endregion
 
+        #endregion
+
+        
+        
         private void statsyear_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isInitialising)
@@ -2496,13 +2662,12 @@ namespace MaddenEditor.Forms
                     LoadPlayerStats(model.PlayerModel.CurrentPlayerRecord, 0);
             }
 
-            if (!isInitialising)
+            else
             {
                 //  Get Stats for year or career as selected
                 if (model.FileType == MaddenFileType.FranchiseFile)
                     LoadPlayerStats(model.PlayerModel.CurrentPlayerRecord, (int)statsyear.SelectedIndex);
             }
-
         }
 
 
@@ -2518,11 +2683,47 @@ namespace MaddenEditor.Forms
             
         }
 
-              
+        public void FixCareerStats(PlayerRecord player)
+        {            
+            int baseyear = 2003;
+            if (model.FileVersion == MaddenFileVersion.Ver2005)
+                baseyear = 2004;
+            if (model.FileVersion == MaddenFileVersion.Ver2006)
+                baseyear = 2005;
+            if (model.FileVersion == MaddenFileVersion.Ver2007)
+                baseyear = 2006;
+            if (model.FileVersion == MaddenFileVersion.Ver2008)
+                baseyear = 2007;
 
-        
+            //  offense
+            int totalpassatt = 0;
+            int totalpasscomp = 0;
 
-        
+
+            for (int count = 0; count < player.YearsPro; count++)
+            {
+                if ((string)statsyear.Items[count] == "Career")
+                    continue;
+                else
+                {
+                    int year = (int)statsyear.Items[0] - baseyear;
+
+                    SeasonStatsOffenseRecord off = model.PlayerModel.GetOffStats(player.PlayerId, year);
+                    if (off == null)
+                        continue;
+                    totalpassatt += off.SeaPassAtt;
+                    totalpasscomp += off.SeaComp;
+                }
+             
+                
+
+            }
+            
+        }
+
+
+
+
 
         private void PlayerRolecomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2532,7 +2733,6 @@ namespace MaddenEditor.Forms
                     model.PlayerModel.CurrentPlayerRecord.PlayerRole = 45;
                 else 
                     model.PlayerModel.CurrentPlayerRecord.PlayerRole = PlayerRolecomboBox.SelectedIndex;
-
             }
         }
 
@@ -2544,7 +2744,6 @@ namespace MaddenEditor.Forms
                     model.PlayerModel.CurrentPlayerRecord.PlayerWeapon = 45;
                 else
                     model.PlayerModel.CurrentPlayerRecord.PlayerWeapon = PlayerWeaponcomboBox.SelectedIndex;
-
             }
         }
 

@@ -29,7 +29,48 @@ using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Core
 {
-	public class ScheduleEditingModel
+
+/*      Current Scheduling Formula
+
+            AFC East 	AFC North 	AFC South 	AFC West
+1st Place 	Patriots 	Bengals 	Colts 		Broncos
+2nd Place 	Jets 		Steelers 	Titans 		Chiefs
+3rd Place 	Dolphins 	Ravens 		Jaguars 	Chargers
+4th Place 	Bills 		Browns 		Texans 		Raiders
+		
+            NFC East 	NFC North 	NFC South 	NFC West
+1st Place 	Eagles 		Packers 	Panthers 	Seahawks
+2nd Place 	Cowboys 	Bears 		Saints 		49ers
+3rd Place 	Giants 		Lions 		Falcons 	Cardinals
+4th Place 	Redskins 	Vikings 	Buccaneers 	Rams
+
+
+This chart of the 2013 season standings displays an application of the NFL scheduling formula. The Seahawks in 2013 finished in first place in the NFC West. 
+Thus, in 2014, the Seahawks will play two games against each of the teams in it's division.  One game against each team in the NFC East and AFC West
+and one game each against the first-place finishers in the NFC North and NFC South.
+
+Currently, the thirteen opponents each team faces over the 16-game regular season schedule are set using a pre-determined formula:[3]
+
+Each team plays twice against each of the other three teams in its division: once at home, and once on the road (six games).
+
+Each team plays once against each of the four teams from another division within its own conference, with the assigned division based on a three-year rotation: two at home, and two on the road 
+(four games).
+
+Each team plays once against one team from each of the other two divisions within its conference, based on the final division standings from the prior season: one at home, one on the road (two games).
+Each team plays once against each of the four teams from a division in the other conference, with the assigned division based on a four-year rotation: two at home, and two on the road (four games).
+
+This schedule was designed so all teams are guaranteed to play every other team in their own conference at least once every three years, and to play every team in the other conference exactly once every
+four years. Additionally, the schedule guarantees that each team will both host and visit every other team within its conference at least once every six years, and will host and visit every team in the 
+other conference exactly once every eight years. Finally, it guarantees a similar schedule for every team in a division each season, as all four teams will play fourteen out of their sixteen games against 
+common opponents or each other.
+
+Although this scheduling formula determines each of the thirty-two teams' respective opponents, the league usually does not release the final regular schedule with specific dates and times until the 
+spring; the NFL needs several months to coordinate the entire season schedule so that, among other reasons, games are worked around various scheduling conflicts, and that it helps maximize TV ratings.
+ 
+*/  
+
+
+    public class ScheduleEditingModel
 	{
 		// I dont like doing this but this will mean a team has not been decided yet
 		public const string UNDECIDED_TEAM = "T.B.A.";

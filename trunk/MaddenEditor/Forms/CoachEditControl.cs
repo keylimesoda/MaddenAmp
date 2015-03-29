@@ -95,6 +95,8 @@ namespace MaddenEditor.Forms
 
                 WearsGlassesCheckbox.Checked = record.CoachGlasses;
                 coachpic.Value = (int)record.Coachpic;
+                CoachFaceID_UpDown.Value = (int)record.FaceId;
+                CoachHeadID_UpDown.Value = (int)record.HeadHair;
                 coachSalary.Value = (decimal)((double)record.Salary / 100.0);
                 coachyearsleft.Value = (int)record.ContractLength;
                 coachQB.Value = (int)record.CoachQB;
@@ -768,6 +770,18 @@ namespace MaddenEditor.Forms
         private void WearsGlassesCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             model.CoachModel.CurrentCoachRecord.CoachGlasses = WearsGlassesCheckbox.Checked;
+        }
+
+        private void CoachFaceID_UpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if(!isInitialising)
+                model.CoachModel.CurrentCoachRecord.FaceId = (int)CoachFaceID_UpDown.Value;
+        }
+
+        private void CoachHeadID_UpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.HeadHair = (int)CoachHeadID_UpDown.Value;
         }
 
         

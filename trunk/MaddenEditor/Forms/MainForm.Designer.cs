@@ -39,7 +39,7 @@ namespace MaddenEditor.Forms
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ErrorCheck = new System.Windows.Forms.ToolStripMenuItem();
             this.playerEditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coachPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.teamEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +50,7 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ErrorCheckMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.franchiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MaddenManager = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
@@ -96,7 +97,7 @@ namespace MaddenEditor.Forms
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
+            this.ErrorCheck,
             this.franchiseToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -172,9 +173,9 @@ namespace MaddenEditor.Forms
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // toolsToolStripMenuItem
+            // ErrorCheck
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ErrorCheck.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.playerEditingToolStripMenuItem,
             this.coachPlayerToolStripMenuItem,
             this.teamEditorToolStripMenuItem,
@@ -184,10 +185,11 @@ namespace MaddenEditor.Forms
             this.searchforCoachesToolStripMenuItem,
             this.toolStripSeparator3,
             this.depthChartEditorToolStripMenuItem,
-            this.globalPlayerAttrEditorToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            this.globalPlayerAttrEditorToolStripMenuItem,
+            this.ErrorCheckMenuItem});
+            this.ErrorCheck.Name = "ErrorCheck";
+            this.ErrorCheck.Size = new System.Drawing.Size(48, 20);
+            this.ErrorCheck.Text = "Tools";
             // 
             // playerEditingToolStripMenuItem
             // 
@@ -255,6 +257,14 @@ namespace MaddenEditor.Forms
             this.globalPlayerAttrEditorToolStripMenuItem.Text = "Global Player Attr Editor ...";
             this.globalPlayerAttrEditorToolStripMenuItem.Click += new System.EventHandler(this.globalPlayerAttrEditorToolStripMenuItem_Click);
             // 
+            // ErrorCheckMenuItem
+            // 
+            this.ErrorCheckMenuItem.Enabled = false;
+            this.ErrorCheckMenuItem.Name = "ErrorCheckMenuItem";
+            this.ErrorCheckMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.ErrorCheckMenuItem.Text = "Error Check";
+            this.ErrorCheckMenuItem.Click += new System.EventHandler(this.ErrorCheckMenuItem_Click);
+            // 
             // franchiseToolStripMenuItem
             // 
             this.franchiseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -290,6 +300,7 @@ namespace MaddenEditor.Forms
             // 
             // MaddenManager
             // 
+            this.MaddenManager.Enabled = false;
             this.MaddenManager.Name = "MaddenManager";
             this.MaddenManager.Size = new System.Drawing.Size(296, 22);
             this.MaddenManager.Text = "Madden Manager";
@@ -572,7 +583,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem ErrorCheck;
 		private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.StatusStrip statusStrip;
@@ -624,5 +635,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripMenuItem StadiumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ErrorCheckMenuItem;
     }
 }

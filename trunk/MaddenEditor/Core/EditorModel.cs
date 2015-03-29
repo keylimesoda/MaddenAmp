@@ -206,6 +206,7 @@ namespace MaddenEditor.Core
         public const string RFA_STATE_TABLE = "RFIN";                       // 2005+
         public const string SCHEDULE_TABLE = "SCHD";
         public const string SCOUTING_STATE_TABLE = "SCIN";
+        public const string PROGRESSION_TABLE = "SCWE";                     // 2005+
         public const string FRANCHISE_TIME_TABLE = "SEAI";
         public const string SALARY_CAP_TABLE = "SLRI";
         public const string STADIUM_TABLE = "STAD";
@@ -607,7 +608,11 @@ namespace MaddenEditor.Core
                     tableOrder.Add(FRANCHISE_TIME_TABLE, -1);
                     tableOrder.Add(SCOUTING_STATE_TABLE, -1);
                     if (fileVersion > MaddenFileVersion.Ver2004)
+                    {
                         tableOrder.Add(RFA_STATE_TABLE, -1);
+                        tableOrder.Add(PROGRESSION_TABLE, -1);
+                    }
+
                     tableOrder.Add(RESIGN_PLAYERS_STATE_TABLE, -1);
                     tableOrder.Add(FREE_AGENCY_STATE_TABLE, -1);
                     tableOrder.Add(DRAFT_STATE_TABLE, -1);

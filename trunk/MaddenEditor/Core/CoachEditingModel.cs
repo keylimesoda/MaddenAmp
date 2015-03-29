@@ -41,6 +41,10 @@ namespace MaddenEditor.Core
 		/** Reference to our EditorModel */
 		private EditorModel model = null;
 
+        private List<List<CoachRecord>> TeamCoaches = null;
+        private List<CoachRecord> employed = new List<CoachRecord>();
+
+
         private IList<GenericRecord> coachskincolor = null;
 
 		public CoachEditingModel(EditorModel model)
@@ -374,6 +378,90 @@ namespace MaddenEditor.Core
 
 			return result;
 		}
+
+        public bool CheckCoaches()
+        {
+
+            #region Setup lists of employed and unemployed coaches
+            TeamCoaches = new List<List<CoachRecord>>();
+            List<CoachRecord> duplicates = new List<CoachRecord>();
+            List<CoachRecord> available = new List<CoachRecord>();
+            
+            for (int c = 0; c < 33; c++)            
+                TeamCoaches.Add(new List<CoachRecord>());
+            
+            foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+            {
+                if (record.Deleted == true)
+                    continue;
+
+                bool exists = false;
+                foreach (CoachRecord rec in duplicates)
+                    if (((CoachRecord)record).CoachId == rec.CoachId)
+                        exists = true;
+                if (exists && record.Deleted == false)
+                {
+                    duplicates.Add((CoachRecord)record);
+                    continue;
+                }
+
+                if (((CoachRecord)record).TeamId >= 1 && ((CoachRecord)record).TeamId <= 32 && !exists)
+                {
+                    employed.Add((CoachRecord)record);
+                    continue;
+                }
+
+                if (((CoachRecord)record).TeamId == 1023 && !exists)
+                    available.Add((CoachRecord)record);
+            }
+            #endregion
+
+            for (int c = 0; c < employed.Count; c++)            
+                TeamCoaches[employed[c].TeamId].Add(employed[c]);
+
+            for (int team = 1; team < 33; team++)
+            {
+                for (int pos = 0; pos < 4; pos++)
+                {
+                    bool exists = false;
+
+                    foreach (CoachRecord rec in this.TeamCoaches[team])
+                    {
+                        if (rec.Position == pos)
+                        {
+                            if (exists)
+                            {
+                                rec.TeamId = 1023;
+                                this.TeamCoaches[team].Remove(rec);
+                                employed.Remove(rec);
+                                available.Add(rec);
+                            }
+
+                            else exists = true;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        //  No coach at this position.  Find one and add
+                        if (available.Count > 0)
+                        {
+                            available[0].TeamId = team;
+                            TeamCoaches[team].Add(available[0]);
+                            available.RemoveAt(0);
+                        }
+                    }
+                }
+
+            }
+
+
+            //foreach (CoachRecord rec in duplicates)                                                                 //  Remove any duplicates
+            //    rec.SetDeleteFlag(true);
+
+            return true;
+        }
+
 
 	}
 }

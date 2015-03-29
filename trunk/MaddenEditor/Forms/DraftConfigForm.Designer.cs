@@ -176,15 +176,6 @@ namespace MaddenEditor.Forms
             this.overwrite.TabIndex = 11;
             this.overwrite.Text = "Overwrite Previous Backup";
             // 
-            // backgroundWorker
-            // 
-            /*
-            this.backgroundWorker.WorkerReportsProgress = true;
-            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
-            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
-            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
-            // 
-             */
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(2, 236);
@@ -219,7 +210,7 @@ namespace MaddenEditor.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 263);
+            this.ClientSize = new System.Drawing.Size(231, 257);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.draftClass);
             this.Controls.Add(this.progressBar);
