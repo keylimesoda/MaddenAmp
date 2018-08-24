@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using MaddenEditor.Core;
@@ -55,6 +56,7 @@ namespace MaddenEditor.Forms
 		double tradeProb;
 		bool preventTrades = false;
 		string tradeLog;
+        bool pickssaved = false;
 
 		LocalMath math;
 
@@ -111,7 +113,6 @@ namespace MaddenEditor.Forms
 
 			statusLabel.Text = "Ready.";
 
-
 			autoPickBackgroundWorker.WorkerReportsProgress = true;
             autoPickBackgroundWorker.WorkerSupportsCancellation = true;
 
@@ -120,74 +121,63 @@ namespace MaddenEditor.Forms
 			autoPickBackgroundWorker.ProgressChanged += new ProgressChangedEventHandler(autoPickBackgroundWorker_ProgressChanged);
 		}
 
-		private void DraftForm_Load(object sender, EventArgs e)
-		{
-			this.Invalidate();
+        private void DraftForm_Load(object sender, EventArgs e)
+        {
+            this.Invalidate();
 
-			pickProb = 1 - Math.Pow(0.5, 1.0 / secondsPerPick);
-			tradeProb = 1 - Math.Pow(0.5, 60.0 / secondsPerPick);
-			tradeProbPerm = tradeProb;
+            pickProb = 1 - Math.Pow(0.5, 1.0 / secondsPerPick);
+            tradeProb = 1 - Math.Pow(0.5, 60.0 / secondsPerPick);
+            tradeProbPerm = tradeProb;
 
-			/*
-			dm = new DraftModel(model);
-			dm.InitializeDraft(HumanTeamId);
+            // s68 changed the init code to check for resume
+            int temppick = 0;            
 
-			dm.FixDraftOrder();
-			 * */
+            foreach (DraftedPlayers drafted in model.TableModels[EditorModel.DRAFTED_PLAYERS_TABLE].GetRecords())
+            {
+                if (drafted.DraftPickNumber < dm.ResumePick)
+                {
+                    if (temppick < drafted.DraftPickNumber)
+                        temppick = drafted.DraftPickNumber;                    
+                }                
+            }
+                        
+            InitializeDataGrids();
+            InitializeComboBoxes();            
 
-			InitializeDataGrids();
-			InitializeComboBoxes();
+            CurrentPick = temppick;
 
-			CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
-			selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
-			selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+            if (CurrentPick != 0)
+            {
+                CurrentPick++;
+                pickLabel.Text = pickToString(CurrentPick, 0, false);
+            }
 
-			if (CurrentSelectingId == HumanTeamId)
-			{
-				selectingLabel.ForeColor = System.Drawing.Color.Red;
+            CurrentSelectingId = model.TeamModel.GetTeamIdFromTeamName((string)draftPickData.Rows[CurrentPick]["Team"]);
+            selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+            selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+
+            if (CurrentSelectingId == HumanTeamId)
+            {
+                selectingLabel.ForeColor = System.Drawing.Color.Red;
                 pickLabel.ForeColor = System.Drawing.Color.Red;
                 SkipButton.Enabled = false;
                 draftButton.Enabled = true;
-			}
+            }
 
-			random = new Random(unchecked((int)DateTime.Now.Ticks));
+            random = new Random(unchecked((int)DateTime.Now.Ticks));
 
-			dm.SetTradeParameters(CurrentPick);
+            dm.SetTradeParameters(CurrentPick);
 
-			timeRemaining = (int)secondsPerPick;
-			clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
-			draftTimer.Start();
-
-			/*
-			for (int i = 0; i < 32*7; i++)
-			{
-				if (draftPickData.Rows[i]["Team"].Equals(model.TeamModel.GetTeamNameFromTeamId(HumanTeamId))) {
-
-
-				RookieRecord drafted = dm.MakeSelection(i, null);
-
-				draftPickData.Rows[i]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
-				draftPickData.Rows[i]["Player"] = drafted.Player.FirstName + " " + drafted.Player.LastName;
-
-				for (int j = 0; j < rookieData.Rows.Count; j++)
-				{
-					if (drafted.PlayerId == (int)rookieData.Rows[j]["PGID"])
-					{
-						rookieData.Rows[j]["Drafted By"] = draftPickData.Rows[i]["Team"];
-						break;
-					}
-				}
-			}
- */
-
-		}
+            timeRemaining = (int)secondsPerPick;
+            clock.Text = Math.Floor((double)timeRemaining / 60) + ":" + seconds(timeRemaining % 60);
+            draftTimer.Start();
+        }
 
 		private void InitializeDataGrids()
 		{
-
 			draftPickData.Columns.Add(AddColumn("Pick", "System.Int16"));
 			draftPickData.Columns.Add(AddColumn("Team", "System.String"));
-			draftPickData.Columns.Add(AddColumn("Position", "System.String"));
+			draftPickData.Columns.Add(AddColumn("Pos", "System.String"));
 			draftPickData.Columns.Add(AddColumn("Player", "System.String"));
 
 			for (int i = 0; i < 32 * 7; i++)
@@ -205,24 +195,42 @@ namespace MaddenEditor.Forms
 					}
 				}
 
+                RookieRecord rookie = null;
+                foreach (RookieRecord rr in model.TableModels[EditorModel.DRAFTED_PLAYERS_TABLE].GetRecords())
+                {
+                    RookieRecord rook = (RookieRecord)rr;
+                    if (rook.DraftPickNumber == i)
+                    {
+                        rookie = rook;
+                        break;
+                    }                    
+                }
+
 				DataRow dr = draftPickData.NewRow();
 				dr["Pick"] = i + 1;
 				dr["Team"] = model.TeamModel.GetTeamRecord(dpRecord.CurrentTeamId).Name;
-				dr["Position"] = "";
-				dr["Player"] = "";
+                if (rookie != null)
+                {
+                    string pos = Enum.GetNames(typeof(MaddenPositions))[rookie.Player.PositionId].ToString();
+                    dr["Pos"] = pos;
+                }
+                else dr["Pos"] = "";
+                if (rookie != null)
+                    dr["Player"] = rookie.Player.FirstName + rookie.Player.LastName;
+                else
+                    dr["Player"] = "";
 				draftPickData.Rows.Add(dr);
 			}
 
 			draftPickBinding.DataSource = draftPickData;
 			DraftResults.DataSource = draftPickBinding;
 			DraftResults.Columns["Pick"].Width = 34;
-			DraftResults.Columns["Position"].Width = 47;
+			DraftResults.Columns["Pos"].Width = 47;
 			DraftResults.Columns["Team"].Width = 75;
-			DraftResults.Columns["Player"].Width = DraftResults.Width - DraftResults.Columns["Position"].Width
+			DraftResults.Columns["Player"].Width = DraftResults.Width - DraftResults.Columns["Pos"].Width
 				- DraftResults.Columns["Team"].Width - DraftResults.Columns["Pick"].Width;
 
 			DraftResults.RowHeadersVisible = false;
-
 
 			depthChartData.Columns.Add(AddColumn("Player", "System.String"));
 			depthChartData.Columns.Add(AddColumn("Depth", "System.Int16"));
@@ -268,7 +276,7 @@ namespace MaddenEditor.Forms
 
 			draftBoardData.Columns.Add(AddColumn("Rank", "System.Int16"));
 			draftBoardData.Columns.Add(AddColumn("Player", "System.String"));
-			draftBoardData.Columns.Add(AddColumn("Position", "System.String"));
+			draftBoardData.Columns.Add(AddColumn("Pos", "System.String"));
 			draftBoardData.Columns.Add(AddColumn("projectedpick", "System.Int16"));
 			draftBoardData.Columns.Add(AddColumn("Proj. Rd.", "System.String"));
 
@@ -276,18 +284,19 @@ namespace MaddenEditor.Forms
 
 			DraftBoardGrid.DataSource = draftBoardBinding;
 			DraftBoardGrid.Columns["Rank"].Width = 38;
-			DraftBoardGrid.Columns["Position"].Width = 47;
+			DraftBoardGrid.Columns["Pos"].Width = 47;
 			DraftBoardGrid.Columns["projectedpick"].Visible = false;
 			DraftBoardGrid.Columns["Proj. Rd."].Width = 60;
 			DraftBoardGrid.Columns["Player"].Width = DraftBoardGrid.Width - DraftBoardGrid.Columns["Rank"].Width
-				- DraftBoardGrid.Columns["Position"].Width - DraftBoardGrid.Columns["Proj. Rd."].Width - 15;
+				- DraftBoardGrid.Columns["Pos"].Width - DraftBoardGrid.Columns["Proj. Rd."].Width - 15;
 
 
 			DraftBoardGrid.RowHeadersVisible = false;
 
 			rookieData.Columns.Add(AddColumn("PGID", "System.Int32"));
 			rookieData.Columns.Add(AddColumn("Player", "System.String"));
-			rookieData.Columns.Add(AddColumn("Position", "System.String"));
+			rookieData.Columns.Add(AddColumn("Pos", "System.String"));
+            rookieData.Columns.Add(AddColumn("College", "System.String"));
 
             rookieData.Columns.Add(AddColumn("group", "System.String"));
             rookieData.Columns.Add(AddColumn("subgroup", "System.String"));
@@ -331,7 +340,9 @@ namespace MaddenEditor.Forms
             RookieGrid.Columns["subgroup"].Visible = false;
 
 			RookieGrid.Columns["Player"].Width = 86;
-			RookieGrid.Columns["Position"].Width = 47;
+			RookieGrid.Columns["Pos"].Width = 30;
+            RookieGrid.Columns["College"].Width = 90;
+
 			RookieGrid.Columns["Drafted By"].Width = 89;
 			RookieGrid.Columns["Hrs Scouted"].Width = 74;
 			RookieGrid.Columns["All Proj."].Width = 50;
@@ -382,18 +393,19 @@ namespace MaddenEditor.Forms
 			rookieData.Clear();
 			foreach (KeyValuePair<int, RookieRecord> rook in dm.GetRookies(-1))
 			{
-                if ((rook.Value.DraftedTeam < 32 && showDraftedPlayers.Checked == false) ||
+                if ((rook.Value.DraftPickTeam < 32 && showDraftedPlayers.Checked == false) ||
                     (rook.Value.PreCombineScoutedHours[HumanTeamId] == 0 && rook.Value.PostCombineScoutedHours[HumanTeamId] == 0 && listScoutedOnly.Checked == true))
                     continue;
 
 				DataRow dr = rookieData.NewRow();
-				if (rook.Value.DraftedTeam < 32)
-					dr["Drafted By"] = model.TeamModel.GetTeamNameFromTeamId(rook.Value.DraftedTeam) + " (" + (rook.Value.DraftPickNumber + 1) + ")";
+				if (rook.Value.DraftPickTeam < 32)
+					dr["Drafted By"] = model.TeamModel.GetTeamNameFromTeamId(rook.Value.DraftPickTeam) + " (" + (rook.Value.DraftPickNumber + 1) + ")";
 
 				dr["picknumber"] = rook.Value.DraftPickNumber;
 				dr["PGID"] = rook.Key;
 				dr["Player"] = rook.Value.Player.FirstName + " " + rook.Value.Player.LastName;
-				dr["Position"] = Enum.GetNames(typeof(MaddenPositions))[rook.Value.Player.PositionId].ToString();
+				dr["Pos"] = Enum.GetNames(typeof(MaddenPositions))[rook.Value.Player.PositionId].ToString();
+                dr["College"] = model.Colleges[rook.Value.Player.CollegeId].name;
 
                 dr["group"] = "";
                 dr["subgroup"] = "";
@@ -528,7 +540,7 @@ namespace MaddenEditor.Forms
 			draftPickBinding.RemoveFilter();
 			if (!(cb.SelectedItem.Equals("All")))
 			{
-				draftPickBinding.Filter = "Position='" + cb.SelectedItem + "'";
+				draftPickBinding.Filter = "Pos='" + cb.SelectedItem + "'";
 			}
 		}
 
@@ -554,7 +566,7 @@ namespace MaddenEditor.Forms
             if (RookiePositionFilter.SelectedIndex > 0 && RookiePositionFilter.SelectedIndex != 22)
             {
                 if (RookiePositionFilter.SelectedIndex < 22)
-                    rookieBinding.Filter = "Position='" + RookiePositionFilter.SelectedItem + "'";
+                    rookieBinding.Filter = "Pos='" + RookiePositionFilter.SelectedItem + "'";
                 else
                 {
                     int group = RookiePositionFilter.SelectedIndex - 23;
@@ -658,18 +670,19 @@ namespace MaddenEditor.Forms
 				DataRow dr = draftBoardData.NewRow();
 				dr["Rank"] = count;
 				dr["Player"] = rook.Player.FirstName + " " + rook.Player.LastName;
-				dr["Position"] = Enum.GetNames(typeof(MaddenPositions))[rook.Player.PositionId].ToString();
+				dr["Pos"] = Enum.GetNames(typeof(MaddenPositions))[rook.Player.PositionId].ToString();
 				dr["projectedpick"] = rook.EstimatedPickNumber[(int)RookieRecord.RatingType.Final];
 				dr["Proj. Rd."] = rook.EstimatedRound[(int)RookieRecord.RatingType.Final];
 				draftBoardData.Rows.Add(dr);
 				count++;
 			}
 		}
-
-
+        
 		private void depthChartFilterChanged(object sender, EventArgs e)
 		{
-			UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)depthChartTeam.SelectedItem), depthChartPosition.SelectedIndex);
+            if (depthChartTeam.SelectedItem == null || depthChartPosition.SelectedItem == null)
+                return;
+            UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)depthChartTeam.SelectedItem), depthChartPosition.SelectedIndex);
 		}
 
 		private void UpdateDepthChart(int TeamId, int PositionId)
@@ -777,9 +790,8 @@ namespace MaddenEditor.Forms
 
 				Trace.WriteLine(sfd.FileName);
 
-				dm.SavePicks(sfd.FileName);
-
-				MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
+				if(dm.SavePicks(sfd.FileName))
+				    MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
 			}
 			else if (threadToDo == 4)
 			{
@@ -871,10 +883,6 @@ namespace MaddenEditor.Forms
                 RookieGrid.Invalidate(true);
                 RookieGrid.Update();
             }
-
-     
-
-
 		}
 
 		private bool MakePick(RookieRecord drafted)
@@ -906,12 +914,12 @@ namespace MaddenEditor.Forms
 
 			drafted = dm.MakeSelection(CurrentPick, drafted);
 
-			draftPickData.Rows[CurrentPick]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
+			draftPickData.Rows[CurrentPick]["Pos"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
 			draftPickData.Rows[CurrentPick]["Player"] = drafted.Player.FirstName + " " + drafted.Player.LastName;
 
 			for (int j = 0; j < rookieData.Rows.Count; j++)
 			{
-				if (drafted.PlayerId == (int)rookieData.Rows[j]["PGID"])
+				if (drafted.PlayerID == (int)rookieData.Rows[j]["PGID"])
 				{
 					if (showDraftedPlayers.Checked)
 					{
@@ -952,7 +960,7 @@ namespace MaddenEditor.Forms
             }
              * */
 
-            rowToRemove = wishlistRow(drafted.PlayerId);
+            rowToRemove = wishlistRow(drafted.PlayerID);
             if (rowToRemove != null)
 			{
 				if (skipping)
@@ -1005,9 +1013,9 @@ namespace MaddenEditor.Forms
 					string filename = model.GetFileName();
 					string path = filename.Substring(0, filename.LastIndexOf('\\'));
 					string file = filename.Substring(filename.LastIndexOf('\\') + 1);
-					string fileNoExt = file.Substring(0, file.LastIndexOf('.'));
-
-					MessageBox.Show("Draft complete.\n\nYou will now be prompted to save the file needed\nto transfer future draft picks.");
+					string fileNoExt = file.Substring(0, file.LastIndexOf('.'));                    
+                    
+                    MessageBox.Show("Draft complete.\n\nYou will now be prompted to save the file needed\nto transfer future draft picks.");
 
 					SaveFileDialog sfd = new SaveFileDialog();
 					sfd.InitialDirectory = path + "\\";
@@ -1019,13 +1027,20 @@ namespace MaddenEditor.Forms
 					DialogResult dr = sfd.ShowDialog();
 
 					Trace.WriteLine(sfd.FileName);
-
-					dm.SavePicks(sfd.FileName);
-
-					MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
+                                        
+					if (dm.SavePicks(sfd.FileName))
+					    MessageBox.Show("Draft pick data saved.\n\nTo load this data, save your franchise file within Madden\nat the \"Training Camp\" stage, load your franchise file in Madden Editor,\ngo to the \"Franchise\" menu, choose \"Move Traded Draft Picks\",\nand load the file you just saved.\n\nYou may close this form now and save your file from the main editor screen.");
                 }
 
                 dm.ClearRookieGameRecords();
+                // s68 - correct original rookie ratings since they apparently get changed in the draft process
+                foreach (PlayerRecord play in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+                {
+                    if (play.YearsPro == 0)
+                    {
+                        play.Overall = dm.OriginalRatings[play.PlayerId];
+                    }
+                }
 
 				return false;
 			}
@@ -1305,12 +1320,12 @@ namespace MaddenEditor.Forms
 
 				// (3) CPU team makes pick
 
-				draftPickData.Rows[CurrentPick]["Position"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
+				draftPickData.Rows[CurrentPick]["Pos"] = Enum.GetNames(typeof(MaddenPositions))[drafted.Player.PositionId].ToString();
 				draftPickData.Rows[CurrentPick]["Player"] = drafted.Player.FirstName + " " + drafted.Player.LastName;
 
 				for (int j = 0; j < rookieData.Rows.Count; j++)
 				{
-					if (drafted.PlayerId == (int)rookieData.Rows[j]["PGID"])
+					if (drafted.PlayerID == (int)rookieData.Rows[j]["PGID"])
 					{
 						if (showDraftedPlayers.Checked)
 						{
@@ -1652,7 +1667,7 @@ namespace MaddenEditor.Forms
 
 			SelectedPlayer = (int)((DataRowView)dgv.Rows[e.RowIndex].DataBoundItem).Row[0];
 
-			if (HumanTeamId == CurrentSelectingId && !(dm.GetRookies(-1)[SelectedPlayer].DraftedTeam < 32))
+			if (HumanTeamId == CurrentSelectingId && !(dm.GetRookies(-1)[SelectedPlayer].DraftPickTeam < 32))
 			{
 				PlayerToDraft.Text = dm.GetRookies(-1)[SelectedPlayer].Player.ToString();
 			}
@@ -1680,7 +1695,7 @@ namespace MaddenEditor.Forms
 				{
 				}
 
-				if (!(toDraft.DraftedTeam < 32))
+				if (!(toDraft.DraftPickTeam < 32))
 				{
 					MakePick(toDraft);
 					if (humanBackedUp > 0)
@@ -1803,6 +1818,15 @@ namespace MaddenEditor.Forms
 
 			skipping = false;
 			quitSkipping = false;
+
+            // current pick text not updating
+            // getting error here when pick is >= draftpickdata rows
+            if (CurrentPick < draftPickData.Rows.Count)
+            {
+                selectingLabel.Text = "On the Clock: " + (string)draftPickData.Rows[CurrentPick]["Team"];
+                selectingLabel.TextAlign = ContentAlignment.MiddleCenter;
+                pickLabel.Text = pickToString(CurrentPick, 0, false);
+            }
 		}
 
 		private void skippingFinished(object sender, RunWorkerCompletedEventArgs e)
@@ -1945,11 +1969,11 @@ namespace MaddenEditor.Forms
 			else if ((short)DraftResults.SelectedRows[0].Cells["Pick"].Value <= CurrentPick && stickyDepthCharts.Checked)
 			{
 				depthChartTeam.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Team"].Value;
-				depthChartPosition.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Position"].Value;
+				depthChartPosition.SelectedItem = (string)DraftResults.SelectedRows[0].Cells["Pos"].Value;
 
 				try
 				{
-					UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftResults.SelectedRows[0].Cells["Position"].Value, true));
+					UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)DraftResults.SelectedRows[0].Cells["Team"].Value), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftResults.SelectedRows[0].Cells["Pos"].Value, true));
 				}
 				catch
 				{
@@ -1968,8 +1992,8 @@ namespace MaddenEditor.Forms
 			if (stickyDepthCharts.Checked)
 			{
 				depthChartTeam.SelectedItem = (string)draftBoardTeam.SelectedItem;
-				depthChartPosition.SelectedItem = (string)DraftBoardGrid.SelectedRows[0].Cells["Position"].Value;
-				UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)draftBoardTeam.SelectedItem), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftBoardGrid.SelectedRows[0].Cells["Position"].Value, true));
+				depthChartPosition.SelectedItem = (string)DraftBoardGrid.SelectedRows[0].Cells["Pos"].Value;
+				UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName((string)draftBoardTeam.SelectedItem), (int)Enum.Parse(typeof(MaddenPositions), (string)DraftBoardGrid.SelectedRows[0].Cells["Pos"].Value, true));
 			}
 		}
 
@@ -1991,14 +2015,14 @@ namespace MaddenEditor.Forms
 					draftedby = draftedby.Split(' ')[0];
 
 					depthChartTeam.SelectedItem = draftedby;
-					depthChartPosition.SelectedItem = (string)RookieGrid.SelectedRows[0].Cells["Position"].Value;
-					UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName(draftedby), (int)Enum.Parse(typeof(MaddenPositions), (string)RookieGrid.SelectedRows[0].Cells["Position"].Value, true));
+					depthChartPosition.SelectedItem = (string)RookieGrid.SelectedRows[0].Cells["Pos"].Value;
+					UpdateDepthChart(model.TeamModel.GetTeamIdFromTeamName(draftedby), (int)Enum.Parse(typeof(MaddenPositions), (string)RookieGrid.SelectedRows[0].Cells["Pos"].Value, true));
 				}
 				else
 				{
 					depthChartTeam.SelectedItem = model.TeamModel.GetTeamNameFromTeamId(HumanTeamId);
-					depthChartPosition.SelectedItem = (string)RookieGrid.SelectedRows[0].Cells["Position"].Value;
-					UpdateDepthChart(HumanTeamId, (int)Enum.Parse(typeof(MaddenPositions), (string)RookieGrid.SelectedRows[0].Cells["Position"].Value, true));
+					depthChartPosition.SelectedItem = (string)RookieGrid.SelectedRows[0].Cells["Pos"].Value;
+					UpdateDepthChart(HumanTeamId, (int)Enum.Parse(typeof(MaddenPositions), (string)RookieGrid.SelectedRows[0].Cells["Pos"].Value, true));
 				}
 			}
 		}
@@ -2028,7 +2052,7 @@ namespace MaddenEditor.Forms
 		private void RookieGrid_DoubleClick(object sender, EventArgs e)
 		{
             RookieRecord rook = dm.rookies[(int)((DataRowView)RookieGrid.SelectedRows[0].DataBoundItem).Row["PGID"]];
-			if (rook.DraftedTeam < 32)
+			if (rook.DraftPickTeam < 32)
 			{
 				return;
 			}
@@ -2037,7 +2061,7 @@ namespace MaddenEditor.Forms
 
 			if (CurrentSelectingId == HumanTeamId)
 			{
-				SelectedPlayer = (short)rook.PlayerId;
+				SelectedPlayer = (short)rook.PlayerID;
 				PlayerToDraft.Text = dm.GetRookies(-1)[SelectedPlayer].Player.ToString();
 			}
 		}
@@ -2173,9 +2197,120 @@ namespace MaddenEditor.Forms
 			}
 		}
 
-		private void DraftResults_Scroll(object sender, ScrollEventArgs e)
-		{
+        private void exportDraftResultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<PlayerRecord> playerList = new List<PlayerRecord>();
 
-		}
+            foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                    continue;
+                PlayerRecord playerRecord = (PlayerRecord)record;
+                if (playerRecord.YearsPro != 0)
+                    continue;
+                playerList.Add(playerRecord);
+            }
+
+            //Bring up a save dialog
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            Stream myStream = null;
+
+            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            fileDialog.RestoreDirectory = true;
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = fileDialog.OpenFile()) != null)
+                    {
+                        StreamWriter wText = new StreamWriter(myStream);
+
+                        //Output the headers first
+                        StringBuilder hbuilder = new StringBuilder();
+                        hbuilder.Append("Pick");
+                        hbuilder.Append("Team");
+                        hbuilder.Append("From");
+                        hbuilder.Append("Pos,");
+                        hbuilder.Append("First Name,");
+                        hbuilder.Append("Last Name,");
+                        hbuilder.Append("College");
+                        wText.WriteLine(hbuilder.ToString());
+
+                        for (int p = 1; p <= 32 * 7; p++)
+                        {
+                            StringBuilder builder = new StringBuilder();
+                            builder.Append(p.ToString());
+                            builder.Append(",");
+
+                            foreach (TableRecordModel rec in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+                            {
+                                DraftPickRecord dpr = (DraftPickRecord)rec;
+                                if (dpr.PickNumber == p)
+                                {
+                                    builder.Append(model.TeamModel.GetTeamNameFromTeamId(dpr.CurrentTeamId));
+                                    builder.Append(",");
+                                    if (dpr.CurrentTeamId != dpr.OriginalTeamId)
+                                    {
+                                        builder.Append(model.TeamModel.GetTeamNameFromTeamId(dpr.OriginalTeamId));
+                                        builder.Append(",");
+                                    }
+                                    else
+                                    {
+                                        builder.Append(" ");
+                                        builder.Append(",");
+                                    }
+
+                                }
+                            }
+
+                            foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+                            {
+                                if (rec.Deleted)
+                                    continue;
+                                PlayerRecord pr = (PlayerRecord)rec;
+                                if (pr.YearsPro != 0)
+                                    continue;
+                                if ((pr.DraftRound - 1) * 32 + pr.DraftRoundIndex == p)
+                                {
+                                    string pos = Enum.GetNames(typeof(MaddenPositions))[pr.PositionId].ToString();
+                                    builder.Append(pos);
+                                    builder.Append(",");
+                                    builder.Append(pr.FirstName);
+                                    builder.Append(",");
+                                    builder.Append(pr.LastName);
+                                    builder.Append(",");
+                                    string college = model.Colleges[pr.CollegeId].name;
+                                    builder.Append(college);
+                                }
+                            }
+
+                            wText.WriteLine(builder.ToString());
+                            wText.Flush();
+                        }
+
+                        myStream.Close();
+                    }
+
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            this.Cursor = Cursors.Default;
+            DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void depthChartTeam_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+		
+                
 	}
 }

@@ -417,5 +417,10 @@ namespace MaddenEditor.Forms
 			DialogResult = DialogResult.Cancel;
 			this.Close();
 		}
+
+        private void attributeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 }
 }

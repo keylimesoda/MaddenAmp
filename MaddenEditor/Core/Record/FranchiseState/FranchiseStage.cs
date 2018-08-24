@@ -30,40 +30,44 @@ namespace MaddenEditor.Core.Record.FranchiseState
 
     public class FranchiseStageRecord : TableRecordModel
     {
-        public const string MCSA = "MCSA";
-        public const string MISB = "MISB";
-        public const string MNAI = "MNAI";
-        public const string MPSA = "MPSA";
-        public const string MTYP = "MTYP";
-
-        //  MCSA
+        //  Stages                                          STEP    Previous
         // 5 = Train camp
         // 7 = Preseason
         // 8 = preseason progression
-        // 9 = season
-        // 12 = advance to offseason
-        // 14 = offesason - owner mode, sign coaches
-        // 15 = offseason - roster mgmt
-        // 17 = pre free agency
-        // 18 = 1st free agency
+        // 9 = Regular Season
+        // 9 = Wildcard PO                                  160     8
+        // 12 = advance to offseason                        0
+        // 14 = offesason - owner mode, sign coaches        70
+        // 15 = offseason - roster mgmt                     70
+        // 16 = resign players                              97      15
+        // 17 = pre free agency                             157     16
+        // 18 = 1st free agency                             731     17
         // 20 = rookie workouts
         // 21 = draft
+        // 23 = sign draft picks
+        // 24 = sign free agents
 
+        
+        public const string CURRENT_STAGE = "MCSA";     // 5bit
+        public const string MISB = "MISB";              // 1bit
+        public const string STEP = "MNAI";              // 13bit    // 2004 11bit
+        public const string PREVIOUS_STAGE = "MPSA";    // 5bit
+        public const string MTYP = "MTYP";              // 5bit
 
         public FranchiseStageRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
         }
 
-        public int Mcsa
+        public int CurrentStage
         {
             get
             {
-                return GetIntField(MCSA);
+                return GetIntField(CURRENT_STAGE);
             }
             set
             {
-                SetField(MCSA, value);
+                SetField(CURRENT_STAGE, value);
             }
         }
 
@@ -73,27 +77,27 @@ namespace MaddenEditor.Core.Record.FranchiseState
             set { SetField(MISB, value); }
         }
         
-        public int Mnai
+        public int Step
         {
             get
             {
-                return GetIntField(MNAI);
+                return GetIntField(STEP);
             }
             set
             {
-                SetField(MNAI, value);
+                SetField(STEP, value);
             }
         }
 
-        public int Mpsa
+        public int PreviousStage
         {
             get
             {
-                return GetIntField(MPSA);
+                return GetIntField(PREVIOUS_STAGE);
             }
             set
             {
-                SetField(MPSA, value);
+                SetField(PREVIOUS_STAGE, value);
             }
         }
 

@@ -26,8 +26,11 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.Stats
 {
+    // PCDE
+
     public class CareerStatsDefenseRecord : TableRecordModel
     {
+        public const string BIG_HITS = "cdbh";                  // 2007-2008
         public const string PASSES_DEFENDED = "cdpd";
         public const string TACKLES = "cdta";
         public const string TACKLES_FOR_LOSS = "cdtl";
@@ -38,10 +41,11 @@ namespace MaddenEditor.Core.Record.Stats
         public const string FUMBLE_YARDS = "clfy";
         public const string SAFETIES = "clsa";
         public const string SACKS = "clsk";
+        public const string CATCHES_ALLOWED = "csca";           // 2007-2008
         public const string INTERCEPTIONS = "csin";
-        public const string INTERCEPTION_YARDS = "csiy";
-        public const string INTERCEPTION_LONG = "cslR";
         public const string INTERCEPTION_TD = "csit";
+        public const string INTERCEPTION_YARDS = "csiy";
+        public const string INTERCEPTION_LONG = "cslR";        
         public const string PLAYER_ID = "PGID";
 
         public CareerStatsDefenseRecord(int record, TableModel tableModel, EditorModel EditorModel)
@@ -217,8 +221,7 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(INTERCEPTION_TD, value);
             }
         }
-
-
+        
         public int PlayerId
         {
             get
@@ -230,5 +233,19 @@ namespace MaddenEditor.Core.Record.Stats
                 SetField(PLAYER_ID, value);
             }
         }
+
+        public int CatchesAllowed
+        {
+            get { return GetIntField(CATCHES_ALLOWED); }
+            set { SetField(CATCHES_ALLOWED, value); }
+        }
+
+        public int BigHits
+        {
+            get { return GetIntField(BIG_HITS); }
+            set { SetField(BIG_HITS, value); }
+        }
+
+
     }
 }

@@ -29,8 +29,7 @@ namespace MaddenEditor.Core.Record.FranchiseState
     public class FreeAgencyStateRecord : TableRecordModel
     {
         // FAIN
-
-        
+                
         public const string DAYS_REMAINING = "PSOD";
         public const string IN_FREE_AGENCY = "SOST";
         public const string TIDE = "TIDE";

@@ -81,7 +81,7 @@ namespace MaddenEditor.Core.Record
         public const string SSl2 = "SSl2";                              // 2005
         public const string SSl3 = "SSl3";                              // 2005
         public const string SSlc = "SSlc";                              // 2005
-        public const string SSYL = "SSYL";                              // 2005
+        public const string SPONSOR_YEARS_LEFT = "SSYL";                // 2005
         public const string SSft = "SSft";
         public const string SPECIAL_LOGO = "ST35";                              // 2006-2008
         public const string STcl = "STcl";
@@ -323,6 +323,10 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(SPECIAL_LOGO); }
             set { SetField(SPECIAL_LOGO, value); }
         }
-
+        public int SponsorYearsLeft
+        {
+            get { return GetIntField(SPONSOR_YEARS_LEFT); }
+            set { SetField(SPONSOR_YEARS_LEFT, value); }
+        }
 	}
 }

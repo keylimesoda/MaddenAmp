@@ -28,24 +28,10 @@ namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class RFAStateRecord : TableRecordModel
     {
-        //  RFIN
+        //  RFIN   2005+
 
         public const string IN_RFA_STAGE = "SOST";
-
-
-
-        public bool AtRFAStage
-        {
-            get
-            {
-                return (GetIntField(IN_RFA_STAGE) == 1);
-            }
-            set
-            {
-                SetField(IN_RFA_STAGE, (value == true ? 1 : 0));
-            }
-        }
-        
+               
         
         public RFAStateRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -53,6 +39,14 @@ namespace MaddenEditor.Core.Record.FranchiseState
 
         }
 
-        
+        #region Get/Set
+
+        public bool AtRFAStage
+        {
+            get { return (GetIntField(IN_RFA_STAGE) == 1); }
+            set { SetField(IN_RFA_STAGE, (value == true ? 1 : 0)); }
+        }
+
+        #endregion
     }
 }

@@ -26,6 +26,8 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record.FranchiseState
 {
+    // scin
+
     public enum ScoutingStage
     {
         Initial=0

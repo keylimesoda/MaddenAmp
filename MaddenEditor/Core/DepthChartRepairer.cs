@@ -379,7 +379,7 @@ namespace MaddenEditor.Core
 						}
 						else
 						{
-							rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].CreateNewRecord(false);
+							rec = (DepthChartRecord)model.TableModels[EditorModel.DEPTH_CHART_TABLE].CreateNewRecord(true);
 						}
 
 						//rec.SetDeleteFlag(false);
@@ -406,11 +406,6 @@ namespace MaddenEditor.Core
 			model.TableModels[EditorModel.DEPTH_CHART_TABLE].Save();
 		}
 
-/*        public Dictionary<int, List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies, int con, bool freshOverall)
-        {
-
-        }
-        */
 		public List<List<PlayerRecord>> SortDepthChart(int TeamToSort, bool withProgression, Dictionary<int, RookieRecord> rookies)
 		{
             // Find a list of injured players
@@ -523,7 +518,7 @@ namespace MaddenEditor.Core
 			{
 				foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 				{
-					if (TeamToSort != rook.Value.DraftedTeam) { continue; }
+					if (TeamToSort != rook.Value.DraftPickTeam) { continue; }
 
 					foreach (KeyValuePair<int, double> pair in awarenessAdjust[rook.Value.Player.PositionId])
 					{
@@ -534,11 +529,11 @@ namespace MaddenEditor.Core
 
 						if (withProgression)
 						{
-							valuesByPosition[pair.Key][rook.Value.PlayerId] = rook.Value.values[TeamToSort][pair.Key][(int)RookieRecord.ValueType.WithProg];
+							valuesByPosition[pair.Key][rook.Value.PlayerID] = rook.Value.values[TeamToSort][pair.Key][(int)RookieRecord.ValueType.WithProg];
 						}
 						else
 						{
-							valuesByPosition[pair.Key][rook.Value.PlayerId] = rook.Value.values[TeamToSort][pair.Key][(int)RookieRecord.ValueType.NoProg];
+							valuesByPosition[pair.Key][rook.Value.PlayerID] = rook.Value.values[TeamToSort][pair.Key][(int)RookieRecord.ValueType.NoProg];
 						}
 					}
 

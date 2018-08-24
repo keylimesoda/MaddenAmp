@@ -95,8 +95,10 @@ namespace MaddenEditor.Forms
 
                 if (to.allowFuturePicksFromHigher)
                 {
-                    int startRound = to.pickNumber / 32 + 3;
-                    for (int i = startRound; i <= 7; i++)
+                    // This was preventing all future draft picks from being eligible to be traded
+                    // changed to 1 instead of startRound
+                    //int startRound = to.pickNumber / 32 + 3;
+                    for (int i = 1; i <= 7; i++)
                     {
                         if (!dm.futureTradedPicks[to.HigherTeam].ContainsKey(i))
                         {

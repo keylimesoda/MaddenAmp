@@ -30,7 +30,8 @@ namespace MaddenEditor.Core.Record.Stats
     {
         //  PSDE
 
-        public const string PLAYER_ID = "PGID";        
+        public const string PLAYER_ID = "PGID";
+        public const string BIG_HITS = "sdbh";
         public const string PASSES_DEFENDED = "sdpd";
         public const string TACKLES = "sdta";
         public const string TACKLES_FOR_LOSS = "sdtl";
@@ -42,11 +43,11 @@ namespace MaddenEditor.Core.Record.Stats
         public const string FUMBLE_YARDS = "slfy";
         public const string SAFETIES = "slsa";
         public const string SACKS = "slsk";
+        public const string CATCHES_ALLOWED = "ssca";
         public const string INTERCEPTIONS = "ssin";
         public const string INTERCEPTION_TD = "ssit";
         public const string INTERCEPTION_YARDS = "ssiy";
         public const string INTERCEPTION_LONG = "sslR";
-        
         
         
 
@@ -248,6 +249,18 @@ namespace MaddenEditor.Core.Record.Stats
             {
                 SetField(SEASON, value);
             }
+        }
+
+        public int BigHits
+        {
+            get { return GetIntField(BIG_HITS); }
+            set { SetField(BIG_HITS, value); }
+        }
+
+        public int CatchesAllowed
+        {
+            get { return GetIntField(CATCHES_ALLOWED); }
+            set { SetField(CATCHES_ALLOWED, value); }
         }
 
         #endregion

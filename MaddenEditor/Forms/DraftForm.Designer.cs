@@ -85,6 +85,8 @@ namespace MaddenEditor.Forms
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.selectingLabel = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportDraftResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.draftHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -146,17 +148,16 @@ namespace MaddenEditor.Forms
             this.RookieGrid.Name = "RookieGrid";
             this.RookieGrid.ReadOnly = true;
             this.RookieGrid.RowTemplate.Height = 16;
-            this.RookieGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.RookieGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.RookieGrid.ShowEditingIcon = false;
             this.RookieGrid.Size = new System.Drawing.Size(965, 167);
             this.RookieGrid.TabIndex = 1;
             this.RookieGrid.TabStop = false;
             this.RookieGrid.Text = "dataGridView1";
-            this.RookieGrid.Sorted += new System.EventHandler(this.fixSort);
-            this.RookieGrid.DoubleClick += new System.EventHandler(this.RookieGrid_DoubleClick);
-            this.RookieGrid.Click += new System.EventHandler(this.RookieGrid_Click);
             this.RookieGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellClick);
+            this.RookieGrid.Sorted += new System.EventHandler(this.fixSort);
+            this.RookieGrid.Click += new System.EventHandler(this.RookieGrid_Click);
+            this.RookieGrid.DoubleClick += new System.EventHandler(this.RookieGrid_DoubleClick);
             // 
             // label1
             // 
@@ -219,6 +220,7 @@ namespace MaddenEditor.Forms
             this.depthChartTeam.Name = "depthChartTeam";
             this.depthChartTeam.Size = new System.Drawing.Size(108, 21);
             this.depthChartTeam.TabIndex = 7;
+            this.depthChartTeam.SelectedIndexChanged += new System.EventHandler(this.depthChartTeam_SelectedIndexChanged);
             this.depthChartTeam.SelectedValueChanged += new System.EventHandler(this.depthChartFilterChanged);
             // 
             // label4
@@ -447,24 +449,25 @@ namespace MaddenEditor.Forms
             // 
             // statusStrip
             // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(18, 18);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.progressBar,
             this.statusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 674);
+            this.statusStrip.Location = new System.Drawing.Point(0, 668);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1016, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1008, 24);
             this.statusStrip.TabIndex = 28;
             this.statusStrip.Text = "statusStrip1";
             // 
             // progressBar
             // 
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 16);
+            this.progressBar.Size = new System.Drawing.Size(100, 18);
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(42, 17);
+            this.statusLabel.Size = new System.Drawing.Size(42, 19);
             this.statusLabel.Text = "Ready.";
             // 
             // selectingLabel
@@ -480,26 +483,43 @@ namespace MaddenEditor.Forms
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(18, 18);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem,
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1016, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
             this.menuStrip1.TabIndex = 32;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportDraftResultsToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // exportDraftResultsToolStripMenuItem
+            // 
+            this.exportDraftResultsToolStripMenuItem.Name = "exportDraftResultsToolStripMenuItem";
+            this.exportDraftResultsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.exportDraftResultsToolStripMenuItem.Text = "Export Draft Results";
+            this.exportDraftResultsToolStripMenuItem.Click += new System.EventHandler(this.exportDraftResultsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.draftHelpToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(40, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem1.Text = "Help";
             // 
             // draftHelpToolStripMenuItem
             // 
             this.draftHelpToolStripMenuItem.Name = "draftHelpToolStripMenuItem";
-            this.draftHelpToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.draftHelpToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.draftHelpToolStripMenuItem.Text = "Draft Help";
             this.draftHelpToolStripMenuItem.Click += new System.EventHandler(this.draftHelpToolStripMenuItem_Click);
             // 
@@ -617,9 +637,9 @@ namespace MaddenEditor.Forms
             // 
             this.pickLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pickLabel.ForeColor = System.Drawing.Color.Black;
-            this.pickLabel.Location = new System.Drawing.Point(322, 66);
+            this.pickLabel.Location = new System.Drawing.Point(328, 66);
             this.pickLabel.Name = "pickLabel";
-            this.pickLabel.Size = new System.Drawing.Size(375, 19);
+            this.pickLabel.Size = new System.Drawing.Size(362, 19);
             this.pickLabel.TabIndex = 38;
             this.pickLabel.Text = "Round 1, Pick 1";
             this.pickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -628,7 +648,7 @@ namespace MaddenEditor.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 696);
+            this.ClientSize = new System.Drawing.Size(1008, 692);
             this.Controls.Add(this.pickLabel);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -640,7 +660,7 @@ namespace MaddenEditor.Forms
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1024, 730);
+            this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimumSize = new System.Drawing.Size(1022, 730);
             this.Name = "DraftForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -718,6 +738,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox listScoutedOnly;
         private System.Windows.Forms.Label pickLabel;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportDraftResultsToolStripMenuItem;
 
     }
 }

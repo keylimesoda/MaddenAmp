@@ -31,33 +31,35 @@ using System.IO;
 
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Db;
 
 namespace MaddenEditor.Forms
 {
-	public partial class ExportForm : Form, IEditorForm
-	{
-		private EditorModel model = null;
-
-		public ExportForm(EditorModel model)
-		{
-			this.model = model;
-			InitializeComponent();
-		}
+    public partial class ExportForm : Form, IEditorForm
+    {
+        private bool isInitializing = false;
+        private EditorModel model = null;
+        public List<string> tables_avail = new List<string>();
+        public List<string> tables_export = new List<string>();
+        public Dictionary<string, List<string>> fields_avail = new Dictionary<string, List<string>>();
+        public Dictionary<string, List<string>> fields_export = new Dictionary<string, List<string>>();
+        
+        public ExportForm(EditorModel model)
+        {
+            this.model = model;
+            InitializeComponent();
+        }
 
         #region IEditorForm Members
 
-
         public EditorModel Model
-		{
-			set {  }
-		}
-
-       
-        
+        {            
+            set { }
+        }
 
         # region College List for Export
         // Would like to use the list in PlayerEditControl but how to do it?
-        string[] collegenames = 
+        public string[] collegenames = 
             {
             "Abilene Chr.",
             "Air Force",
@@ -339,110 +341,288 @@ namespace MaddenEditor.Forms
             };
         # endregion
 
-
-
-
         public void InitialiseUI()
-		{
-			foreach (TeamRecord team in model.TeamModel.GetTeams())
-			{
-				filterTeamCombo.Items.Add(team);
-			}
+        {
+            isInitializing = true;
+            InitTables();
 
-			foreach (string position in Enum.GetNames(typeof(MaddenPositions)))
-			{
-				filterPositionCombo.Items.Add(position);
-			}
+            ColumnHeader header = new ColumnHeader();
+            header.Text = "Tables";
+            header.Name = "Tables";            
+            AvailTables_ListView.Columns.Add(header);
+            AvailTables_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            InitAvailableTablesList();            
+            
+            header = new ColumnHeader();
+            header.Text = "Export Tables";
+            header.Name = "Export Tables";
+            ExportTables_ListView.Columns.Add(header);
+            ExportTables_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            InitExportTables();
 
-			filterPositionCombo.Text = filterPositionCombo.Items[0].ToString();
-			filterTeamCombo.Text = filterTeamCombo.Items[0].ToString();
-		}
+            header = new ColumnHeader();
+            header.Text = "Fields";
+            header.Name = "Fields";
+            AvailFields_ListView.Columns.Add(header);
+            AvailFields_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);            
 
-		public void CleanUI()
-		{
-			filterTeamCombo.Items.Clear();
-			filterPositionCombo.Items.Clear();
-		}
+            header = new ColumnHeader();
+            header.Text = "Export Fields";
+            header.Name = "Export Fields";
+            ExportFields_ListView.Columns.Add(header);
+            ExportFields_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
-		#endregion
+            foreach (TeamRecord team in model.TeamModel.GetTeams())
+            {
+                filterTeamCombo.Items.Add(team);
+            }
 
-		private void filterTeamCombo_SelectedIndexChanged(object sender, EventArgs e)
-		{
+            foreach (string position in Enum.GetNames(typeof(MaddenPositions)))
+            {
+                filterPositionCombo.Items.Add(position);
+            }
 
-		}
+            filterPositionCombo.Text = filterPositionCombo.Items[0].ToString();
+            filterTeamCombo.Text = filterTeamCombo.Items[0].ToString();
+            isInitializing = false;
+        }
 
-		private void filterPositionCombo_SelectedIndexChanged(object sender, EventArgs e)
-		{
+        public void CleanUI()
+        {
+            AvailTables_ListView.Items.Clear();
+            filterTeamCombo.Items.Clear();
+            filterPositionCombo.Items.Clear();
+        }
 
-		}
+        #endregion
 
-		private void cancelButton_Click(object sender, EventArgs e)
-		{
-			DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
+        public string ConvertBE(string name)
+        {
+            char[] charArray = name.ToCharArray();
+            Array.Reverse(charArray);
+            string rev = new string(charArray);
+            return rev;
+        }
 
-		private void ExportButton_Click(object sender, EventArgs e)
-		{
-			this.Cursor = Cursors.WaitCursor;
-			int teamID = -1;
-			int positionID = -1;
+        public void InitTables()
+        {
+            AvailTables_ListView.Items.Clear();
+            tables_avail.Clear();
+            fields_avail.Clear();
+            tables_export.Clear();
 
-			if (filterTeamCheckbox.Checked)
-			{
-				//Get the team id for the team selected in the combobox
-				teamID = ((TeamRecord)(filterTeamCombo.SelectedItem)).TeamId;
-			}
+            foreach (KeyValuePair<string, int> pair in model.TableNames)
+            {
+                string name = pair.Key;
+                if (model.BigEndian)
+                    name = ConvertBE(pair.Key);
+                tables_avail.Add(name);
+                AvailTables_ListView.Items.Add(name);
+                
+                if (!model.TableModels.ContainsKey(pair.Key))
+                {
+                    model.ProcessTable(model.TableNames[pair.Key]);
+                }
 
-			if (filterPositionCheckbox.Checked)
-			{
-				//Get the position id for the position selected in the combobox
-				positionID = filterPositionCombo.SelectedIndex;
-			}
+                TableModel table = model.TableModels[name];
+                List<TdbFieldProperties> props = table.GetFieldList();
+                List<string> fields = new List<string>();
+                foreach (TdbFieldProperties p in props)
+                    fields.Add(p.Name);
+                fields.Sort();
+                fields_avail.Add(name, new List<string>(fields));
+                fields_export.Add(name, new List<string>(fields));
+            }
+        }
+        
+        public void InitAvailableTablesList()
+        {
+            AvailTables_ListView.Items.Clear();
+            foreach (string s in tables_avail)
+            {
+                AvailTables_ListView.Items.Add(s);
+            }
+        }
 
-			List<PlayerRecord> playerList = new List<PlayerRecord>();
-			
-			foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
-			{
-				if (record.Deleted)
-				{
-					continue;
-				}
+        public void InitExportTables()
+        {
+            ExportTables_ListView.Items.Clear();
+            foreach (string s in tables_export)
+            {
+                ExportTables_ListView.Items.Add(s);
+            }
+        }
 
-				PlayerRecord playerRecord = (PlayerRecord)record;
+        public void InitAvailableFields(string name)
+        {
+            AvailFields_ListView.Items.Clear();
+            foreach (string f in fields_avail[name])
+            {
+                AvailFields_ListView.Items.Add(f);
+            }
+        }
+       
+        public void InitExportFields(string name)
+        {
+            ExportFields_ListView.Items.Clear();
+            foreach (string s in fields_export[name])
+                ExportFields_ListView.Items.Add(s);
+        }
 
-				if (teamID != -1 && playerRecord.TeamId != teamID)
-				{
-					continue;
-				}
 
-				if (positionID != -1 && playerRecord.PositionId != positionID)
-				{
-					continue;
-				}
+        private void ExportPlay_Button_Click(object sender, EventArgs e)
+        {
+            if (tables_export.Count == 0)
+                return;
 
-				if (filterDraftClassCheckbox.Checked && playerRecord.YearsPro != 0)
-				{
-					continue;
-				}
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+            folderDialog.Description = "Choose DIR for Table Extraction";
+
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                string folder = folderDialog.SelectedPath;
+
+                foreach (string t in tables_export)
+                {
+                    try
+                    {
+                        string tablename = t;
+                        if (model.BigEndian)
+                            tablename = ConvertBE(t);
+
+                        StreamWriter writer = new StreamWriter(Path.Combine(folder, (t + ".csv")));
+                        StringBuilder hbuilder = new StringBuilder();
+
+                        if (!model.TableModels.ContainsKey(t))
+                        {
+                            model.ProcessTable(model.TableNames[tablename]);
+                        }
+
+                        TableModel table = model.TableModels[t];
+
+                        List<TdbFieldProperties> props = table.GetFieldList();
+                        foreach (string field in fields_export[t])
+                        {
+                            foreach (TdbFieldProperties tdb in props)
+                            {
+                                if (field == tdb.Name)
+                                {
+                                    // These are already fixed for big endian
+                                    string fieldname = tdb.Name;
+                                    hbuilder.Append(fieldname);
+                                    hbuilder.Append(",");
+                                }
+                            }
+                        }
+
+                        writer.WriteLine(hbuilder.ToString());
+                        writer.Flush();
+
+                        foreach (TableRecordModel rec in table.GetRecords())
+                        {
+                            if (rec.Deleted)
+                                continue;
+                            StringBuilder builder = new StringBuilder();
+
+                            foreach (string field in fields_export[t])
+                            {
+                                foreach (TdbFieldProperties tdb in props)
+                                {
+                                    if (field == tdb.Name)
+                                    {
+                                        if (tdb.FieldType == TdbFieldType.tdbString)
+                                            builder.Append(rec.GetStringField(tdb.Name));
+                                        else if (tdb.FieldType == TdbFieldType.tdbFloat)
+                                            builder.Append(rec.GetFloatField(tdb.Name));
+                                        else
+                                        {
+                                            int test = rec.GetIntField(tdb.Name);
+                                            builder.Append(test);
+                                        }
+                                        builder.Append(",");
+                                    }
+                                }
+                            }
+
+                            writer.WriteLine(builder.ToString());
+                            writer.Flush();
+                        }
+
+                        writer.Close();
+                    }
+
+                    catch (IOException err)
+                    {
+                        err = err;
+                        MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+
+            }
+        }
+       
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            int teamID = -1;
+            int positionID = -1;
+
+            if (filterTeamCheckbox.Checked)
+            {
+                //Get the team id for the team selected in the combobox
+                teamID = ((TeamRecord)(filterTeamCombo.SelectedItem)).TeamId;
+            }
+
+            if (filterPositionCheckbox.Checked)
+            {
+                //Get the position id for the position selected in the combobox
+                positionID = filterPositionCombo.SelectedIndex;
+            }
+
+            List<PlayerRecord> playerList = new List<PlayerRecord>();
+
+            foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (record.Deleted)
+                {
+                    continue;
+                }
+
+                PlayerRecord playerRecord = (PlayerRecord)record;
+
+                if (teamID != -1 && playerRecord.TeamId != teamID)
+                {
+                    continue;
+                }
+
+                if (positionID != -1 && playerRecord.PositionId != positionID)
+                {
+                    continue;
+                }
+
+                if (filterDraftClassCheckbox.Checked && playerRecord.YearsPro != 0)
+                {
+                    continue;
+                }
                 if (playerRecord.FirstName == "New" && playerRecord.LastName == "Player")
                     continue;
 
-				//This player needs to be added to our list for export
-				playerList.Add(playerRecord);
-			}
+                //This player needs to be added to our list for export
+                playerList.Add(playerRecord);
+            }
 
-			//Bring up a save dialog
-			SaveFileDialog fileDialog = new SaveFileDialog();
-			Stream myStream = null;
+            //Bring up a save dialog
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            Stream myStream = null;
 
-			fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
-			fileDialog.RestoreDirectory = true;
-		
-			if (fileDialog.ShowDialog() == DialogResult.OK)
-			{
-				try
-				{
+            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            fileDialog.RestoreDirectory = true;
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
                     if ((myStream = fileDialog.OpenFile()) != null)
                     {
                         StreamWriter wText = new StreamWriter(myStream);
@@ -455,10 +635,10 @@ namespace MaddenEditor.Forms
                         // If Draft Class use College instead
                         if (filterDraftClassCheckbox.Checked)
                             hbuilder.Append("College,");
-                        else                        
+                        else
                             hbuilder.Append("Team,");
-                        
-                        
+
+
                         hbuilder.Append("Age,");
                         hbuilder.Append("Height,");
                         hbuilder.Append("Weight,");
@@ -530,17 +710,52 @@ namespace MaddenEditor.Forms
                             builder.Append(rec.Weight + 160);
                             builder.Append(",");
 
-                            if (rec.Tendancy == 2)
+                            if (rec.Tendency == 2)
                                 builder.Append("BAL");
                             else
                             {
                                 switch (positionID)
                                 {
                                     case (int)MaddenPositions.QB:
-                                        if (rec.Tendancy == 0)
-                                            builder.Append("POC");
-                                        else builder.Append("SCR");
-                                        break;
+                                        {
+                                            if (rec.Tendency == 0)
+                                                builder.Append("POC");
+                                            else builder.Append("SCR");
+                                            break;
+                                        }
+                                    case (int)MaddenPositions.HB:
+                                        {
+                                            if (rec.Tendency == 0)
+                                                builder.Append("POW");
+                                            else builder.Append("SPD");
+                                            break;
+                                        }
+                                    case (int)MaddenPositions.FB:
+                                    case (int)MaddenPositions.TE:
+                                        {
+                                            if (rec.Tendency == 0)
+                                                builder.Append("BLK");
+                                            else builder.Append("REC");
+                                            break;
+                                        }
+                                    case (int)MaddenPositions.WR:
+                                        {
+                                            if (rec.Tendency == 0)
+                                                builder.Append("POS");
+                                            else builder.Append("SPD");
+                                            break;
+                                        }
+                                    case (int)MaddenPositions.LT:
+                                    case (int)MaddenPositions.LG:
+                                    case (int)MaddenPositions.C:
+                                    case (int)MaddenPositions.RG:
+                                    case (int)MaddenPositions.RT:
+                                        {
+                                            if (rec.Tendency == 0)
+                                                builder.Append("RUN");
+                                            else builder.Append("PAS");
+                                            break;
+                                        }
                                 }
                             }
 
@@ -565,7 +780,7 @@ namespace MaddenEditor.Forms
                                         builder.Append(rec.Agility);
                                         builder.Append(",");
                                         builder.Append(rec.BreakTackle);
-                                        builder.Append(",");                                        
+                                        builder.Append(",");
                                         break;
                                 }
                             }
@@ -614,7 +829,7 @@ namespace MaddenEditor.Forms
                                 builder.Append(",");
                                 builder.Append(rec.Importance);
                                 builder.Append(",");
-                                builder.Append(rec.Morale);                                
+                                builder.Append(rec.Morale);
                             }
 
                             wText.WriteLine(builder.ToString());
@@ -623,18 +838,171 @@ namespace MaddenEditor.Forms
 
                         myStream.Close();
                     }
-					
-				}
-				catch(IOException err)
-				{
-					err = err;
-					MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
-			}
 
-			this.Cursor = Cursors.Default;
-			DialogResult = DialogResult.OK;
-			this.Close();
-		}
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            this.Cursor = Cursors.Default;
+            DialogResult = DialogResult.OK;
+            this.Close();
+        }
+        
+        private void Import_Button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            Stream myStream = null;
+            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            fileDialog.RestoreDirectory = true;
+
+            
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = fileDialog.OpenFile()) != null)
+                    {
+                        StreamReader sr = new StreamReader(myStream);
+                        string header = sr.ReadLine();                  
+
+
+                        
+                    }
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                this.Cursor = Cursors.Default;
+                DialogResult = DialogResult.OK;
+                this.Close();
+            }
+
+
+        }
+
+        private void AddExportTables_Button_Click(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                isInitializing = true;
+
+                foreach (ListViewItem i in AvailTables_ListView.SelectedItems)
+                {
+                    string name = i.Text;                   
+
+                    if (!tables_export.Contains(name))
+                        tables_export.Add(name);                    
+                }
+                InitExportTables();
+
+                isInitializing = false;
+            }
+        }
+
+        private void RemoveExportTables_Button_Click(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                isInitializing = true;
+
+                foreach (ListViewItem i in ExportTables_ListView.SelectedItems)
+                {
+                    string name = i.Text;                    
+                    if (tables_export.Contains(name))
+                        tables_export.Remove(name);
+                }
+
+                InitExportTables();
+
+                isInitializing = false;
+            }
+        }
+
+        private void filterTeamCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void filterPositionCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void ExportTables_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ExportTables_ListView.SelectedItems.Count == 0)
+                    return;
+            if (!isInitializing)
+            {
+                isInitializing = true;
+                string tablename = ExportTables_ListView.SelectedItems[0].Text;
+                InitAvailableFields(tablename);
+                InitExportFields(tablename);
+                isInitializing = false;
+            }
+        }
+
+        private void AddFields_Button_Click(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                isInitializing = true;
+                string tablename = ExportTables_ListView.SelectedItems[0].Text;
+                List<string> newfields = new List<string>();
+                foreach (ListViewItem i in AvailFields_ListView.SelectedItems)
+                    newfields.Add(i.Text);
+                if (fields_export.ContainsKey(tablename))
+                {
+                    List<string> existing = new List<string>(fields_export[tablename]);
+                    foreach (string s in newfields)
+                        if (!existing.Contains(s))
+                            existing.Add(s);
+                    fields_export[tablename] = existing;
+                }
+                else fields_export.Add(tablename, newfields);
+
+                InitExportFields(tablename);
+                isInitializing = false;
+            }
+        }
+        
+        private void RemoveFields_Button_Click(object sender, EventArgs e)
+        {
+            isInitializing = true;
+            string tablename = ExportTables_ListView.SelectedItems[0].Text;
+            List<string> exportlist = new List<string>();
+            List<string> avail = fields_avail[tablename];
+
+            foreach (ListViewItem x in ExportFields_ListView.SelectedItems)
+                exportlist.Add(x.Text);
+            foreach (string s in exportlist)
+                fields_export[tablename].Remove(s);
+
+            InitExportFields(tablename);
+
+            isInitializing = false;
+        }
+
+        
+
+    }
 }
-}
+        
+            
+        
+         
+        

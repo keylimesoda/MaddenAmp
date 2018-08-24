@@ -69,9 +69,9 @@ namespace MaddenEditor.Forms
 		private static string ReadResource(string file)
 		{
 			Assembly assembly = Assembly.GetExecutingAssembly();
-			TextReader textReader = new StreamReader(assembly.GetManifestResourceStream(file));
-			string result = textReader.ReadToEnd();
-			textReader.Close();
+			StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(file));
+			string result = reader.ReadToEnd();
+			reader.Close();
 
 			return result;
 		}

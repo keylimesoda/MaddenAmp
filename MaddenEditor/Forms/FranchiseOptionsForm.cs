@@ -76,7 +76,7 @@ namespace MaddenEditor.Forms
 				cbSalaryCap.Enabled = true;
 				cbTradeDeadline.Enabled = true;
 				cbOwnerMode.Enabled = true;
-				cbCapPenalties.Checked = model.GameOptionModel.CapPenalty;
+				cbCapPenalties.Checked = model.GameOptionModel.SalaryCapPenalty;
 				cbSalaryCap.Checked = model.GameOptionModel.SalaryCap;
 				cbTradeDeadline.Checked = model.GameOptionModel.TradeDeadline;
 				cbOwnerMode.Checked = model.GameOptionModel.OwnerMode;
@@ -109,7 +109,7 @@ namespace MaddenEditor.Forms
 			model.GameOptionModel.OwnerMode = cbOwnerMode.Checked;
 			model.GameOptionModel.TradeDeadline = cbTradeDeadline.Checked;
 			model.GameOptionModel.SalaryCap = cbSalaryCap.Checked;
-			model.GameOptionModel.CapPenalty = cbCapPenalties.Checked;
+			model.GameOptionModel.SalaryCapPenalty = cbCapPenalties.Checked;
 
 			DialogResult = DialogResult.OK;
 		}

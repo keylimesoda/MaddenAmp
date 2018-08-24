@@ -69,9 +69,9 @@ namespace MaddenEditor.Forms
 			tbInGameInjury.Value = gameRecord.InGameInjury;
 			localInGameInjury = gameRecord.InGameInjury;
 
-			nudSimInjury.Value = gameRecord.SimInjury;
-			tbSimInjury.Value = gameRecord.SimInjury;
-			localSimInjury = gameRecord.SimInjury;
+			nudSimInjury.Value = gameRecord.SimInjury_Freq;
+			tbSimInjury.Value = gameRecord.SimInjury_Freq;
+			localSimInjury = gameRecord.SimInjury_Freq;
 		}
 
 		public void CleanUI()
@@ -84,7 +84,7 @@ namespace MaddenEditor.Forms
 		private void applyButton_Click(object sender, EventArgs e)
 		{
 			//Apply changes and close
-			gameRecord.SimInjury = localSimInjury;
+			gameRecord.SimInjury_Freq = localSimInjury;
 			gameRecord.InGameInjury = localInGameInjury;
 
 			this.Close();

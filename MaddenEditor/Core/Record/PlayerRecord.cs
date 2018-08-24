@@ -29,42 +29,74 @@ using System.Windows.Forms;
 
 namespace MaddenEditor.Core.Record
 {
-	public class PlayerRecord : TableRecordModel
-	{
-        // PLAY
-
+    public enum Rating
+    {
+        STR = 0,
+        AGI = 1,
+        SPD = 2,
+        ACC = 3,
+        AWR = 4,
+        CTH = 5,
+        CAR = 6,
+        THP = 7,
+        THA = 8,
+        KPW = 9,
+        KAC = 10,
+        BTK = 11,
+        TAK = 12,
+        PBK = 13,
+        RBK = 14,
+        JMP = 15,
+        KRT = 16,
+        IMP = 17,
+        INJ = 18
+    }
+    
+    public class PlayerRecord : TableRecordModel
+	{   
+        // table name "PLAY"
+        #region Record members
         public const string ACCELERATION = "PACC";
         public const string AGE = "PAGE";
         public const string AGILITY = "PAGI";
         public const string AWARENESS = "PAWR";
+        public const string BALL_CARRIER_VISION = "PBCV";       // 2019
+        public const string BREAK_TACKLE_19 = "PBKT";           // 2019
         public const string NASAL_STRIP = "PBRE";
+        public const string BLOCK_SHEDDING = "PBSG";            // 2019
+        public const string BREAK_SACK = "PBSK";                //2019
         public const string BREAK_TACKLE = "PBTK";
         public const string CARRYING = "PCAR";
-        public const string PCEL = "PCEL";                      // Not sure what this is
+        public const string PCEL = "PCEL";                      // 2004-2006 celebration?  replaced by ego 2007-2008
         public const string EQP_PAD_SHELF = "PCHS";
         public const string PLAYER_COMMENT = "PCMT";
         public const string COLLEGE_ID = "PCOL";
         public const string CONTRACT_LENGTH = "PCON";
-        public const string SKIN_COLOR = "PCPH";
-        public const string SALARY_CURRENT = "PCSA";
+        public const string CAREER_PHASE = "PCPH";
+        public const string SALARY_CURRENT = "PCSA";            // franchise only
         public const string CATCHING = "PCTH";
-        public const string PCTS = "PCTS";                      // ?
+        public const string PCTS = "PCTS";                      // 2007-2008 ??
         public const string CONTRACT_YRS_LEFT = "PCYL";
         public const string DRAFT_ROUND_INDEX = "PDPI";
         public const string DRAFT_ROUND = "PDRO";
+        public const string DEEP_ROUTE = "PDRR";                //2019
         public const string PLAYER_EGO = "PEGO";                // 2007-2008
+        public const string ELUSIVE = "PELU";                   // 2019
+        public const string PEPS = "PEPS";                      // 2019
         public const string EYE_PAINT = "PEYE";
         public const string ARMS_FAT = "PFAS";
         public const string LEGS_CALF_FAT = "PFCS";
         public const string FACE_ID = "PFEx";
-        public const string FACE_SHAPE = "PFGE";                // 2004 field
+        public const string FACE_SHAPE = "PFGE";                // 2004 field, 2005
         public const string PFGS = "PFGS";                      // ?
         public const string HOLDOUT = "PFHO";                   // ?
         public const string LEGS_THIGH_FAT = "PFHS";
         public const string FACE_MASK = "PFMK";
+        public const string FINESSE_MOVES = "PFMS";             //2019
         public const string FIRST_NAME = "PFNA";
         public const string PRO_BOWL = "PFPB";
         public const string BODY_FAT = "PFTS";
+        public const string FACE_ID_19 = "PGHE";                //2019
         public const string PLAYER_ID = "PGID";
         public const string SLEEVES_A = "PGSL";
         public const string DOMINANT_HAND = "PHAN";
@@ -72,6 +104,8 @@ namespace MaddenEditor.Core.Record
         public const string HAIR_STYLE = "PHED";
         public const string HEIGHT = "PHGT";
         public const string HELMET_STYLE = "PHLM";
+        public const string HOMESTATE = "PHSN";                 //2019
+        public const string HOMETOWN = "PHTN";                  //2019
         public const string NFL_ICON = "PICN";
         public const string IMPORTANCE = "PIMP";
         public const string INJURY = "PINJ";
@@ -82,44 +116,72 @@ namespace MaddenEditor.Core.Record
         public const string KICK_ACCURACY = "PKAC";
         public const string KICK_POWER = "PKPR";
         public const string KICK_RETURN = "PKRT";
+        public const string BIRTHDAY = "PLBD";                  //2019
+        public const string LEAD_BLOCK = "PLBK";                // 2019
+        public const string CATCH_TRAFFIC = "PLCI";             //2019
         public const string LEFT_ELBOW_A = "PLEL";
         public const string PLFH = "PLFH";                      // ?
         public const string LEFT_HAND_A = "PLHA";
+        public const string HIT_POWER = "PLHT";                 //2019
+        public const string HAND_WARMER = "PLHW";               //2019
         public const string LAST_HEALTHY_YEAR = "PLHY";         // not sure about this one
+        public const string IMPACT_BLOCKING = "PLIB";           // 2019
+        public const string JUKE_MOVE = "PLJM";                 //2019
+        public const string MAN_COVERAGE = "PLMC";              // 2019
         public const string LAST_NAME = "PLNA";
-        public const string PLPL = "PLPL";                      // ?
-        public const string LEFT_ANKLE = "PLSH";
+        public const string PRESS_COVER = "PLPE";               //2019
+        public const string PLPL = "PLPL";                      // progession related?
+        public const string PLAYER_MOVES = "PLPm";              //2019
+        public const string PLAYER_POTENTIAL = "PLPO";          //2019
+        public const string PLAY_RECOGNITION = "PLPR";          // 2019
+        public const string PURSUIT = "PLPU";                   //2019
+        public const string RELEASE = "PLRL";                   //2019
+        public const string ROUTE_RUNNING = "PLRR";             //2019
+        public const string TRUCKING = "PLTR";                  //2019
+        public const string STIFF_ARM = "PLSA";                 //2019
+        public const string SPEC_CATCH = "PLSC";                //2019
+        public const string LEFT_SHOE = "PLSH";
+        public const string SPIN_MOVE = "PLSM";                 //2019
         public const string EQP_SHOES = "PLSS";
         public const string LEFT_KNEE = "PLTH";
+        public const string PLAYER_TOWEL = "PLTL";              //2019
         public const string LEFT_WRIST_A = "PLWR";
+        public const string ZONE_COVERAGE = "PLZC";             // 2019
         public const string ARMS_MUSCLE = "PMAS";
         public const string LEGS_CALF_MUSCLE = "PMCS";
         public const string REAR_FAT = "PMGS";
         public const string LEGS_THIGH_MUSCLE = "PMHS";
         public const string MORALE = "PMOR";
         public const string MOUTHPIECE = "PMPC";
+        public const string MEDIUM_ROUTE_RUN = "PMRR";          //2019
         public const string BODY_WEIGHT = "PMTS";
         public const string MUSCLE = "PMUS";
         public const string NECK_ROLL = "PNEK";
         public const string NFL_ID = "POID";
-        public const string PREVIOUS_POSITION_ID = "POPS";                      // ?
+        public const string ORIGINAL_POSITION_ID = "POPS";      // 2005+  not in 2019
         public const string OVERALL = "POVR";
+        public const string PASSBLOCK_FOOTWORK = "PPBF";        //2019
         public const string PASS_BLOCKING = "PPBK";
-        public const string PPGA = "PPGA";                      // ?
+        public const string PASSBLOCK_STRENGTH = "PPBS";        //2019
+        public const string PLAYED_GAMES = "PPGA";              // progression period games played
+        public const string PLAY_ACTION = "PPLA";               //2019
         public const string POSITION_ID = "PPOS";
-        public const string PPSP = "PPSP";
+        public const string PPSP = "PPSP";                      // progression related?
         public const string PREVIOUS_TEAM_ID = "PPTI";
+        public const string QB_STYLE = "PQBS";                  //2019
         public const string REAR_SHAPE = "PQGS";
         public const string EQP_FLAK_JACKET = "PQTS";
+        public const string RUN_BLOCK_FINESSE = "PRBF";         // 2019
         public const string RUN_BLOCKING = "PRBK";
+        public const string RUNBLOCK_STRENGTH = "PRBS";         //2019
         public const string RIGHT_ELBOW_A = "PREL";
         public const string RIGHT_HAND_A = "PRHA";
         public const string PLAYER_ROLE = "PROL";               // 2007
         public const string PLAYER_WEAPON = "PRL2";             // 2008
-        public const string RIGHT_ANKLE = "PRSH";
+        public const string RIGHT_SHOE = "PRSH";
         public const string RIGHT_KNEE = "PRTH";
         public const string RIGHT_WRIST_A = "PRWR";
-        public const string SALARY_YEAR_0 = "PSA0";
+        public const string SALARY_YEAR_0 = "PSA0";             
         public const string SALARY_YEAR_1 = "PSA1";
         public const string SALARY_YEAR_2 = "PSA2";
         public const string SALARY_YEAR_3 = "PSA3";
@@ -127,67 +189,100 @@ namespace MaddenEditor.Core.Record
         public const string SALARY_YEAR_5 = "PSA5";
         public const string SALARY_YEAR_6 = "PSA6";
         public const string SIGNING_BONUS_YEAR_0 = "PSB0";
-        public const string SIGNING_BONUS_YEAR_1 = "PSB1";
+        public const string SIGNING_BONUS_YEAR_1 = "PSB1";      
         public const string SIGNING_BONUS_YEAR_2 = "PSB2";
         public const string SIGNING_BONUS_YEAR_3 = "PSB3";
         public const string SIGNING_BONUS_YEAR_4 = "PSB4";
         public const string SIGNING_BONUS_YEAR_5 = "PSB5";
         public const string SIGNING_BONUS_YEAR_6 = "PSB6";
-        public const string SIGNING_BONUS = "PSBO";
+        public const string SIGNING_BONUS_TOTAL = "PSBO";
         public const string BODY_OVERALL = "PSBS";
         public const string PSKI = "PSKI";                      // ?
         public const string SPEED = "PSPD";
         public const string STAMINA = "PSTA";
         public const string PSTM = "PSTM";                      // ?
+        public const string QB_STANCE = "PSTN";                 //2019
         public const string STRENGTH = "PSTR";
         public const string THROWING_STYLE = "PSTY";
         public const string PORTRAIT_ID = "PSXP";
+        public const string THROW_DEEP = "PTAD";                //2019
         public const string TACKLE = "PTAK";
         public const string LEFT_TATTOO = "PTAL";
+        public const string THROW_MEDIUM = "PTAM";              //2019
         public const string RIGHT_TATTOO = "PTAR";
+        public const string THROW_SHORT = "PTAS";               //2019
         public const string TENDENCY = "PTEN";
         public const string TOUGHNESS = "PTGH";
         public const string THROW_ACCURACY = "PTHA";
         public const string THROW_POWER = "PTHP";
+        public const string THROW_ON_RUN = "PTOR";              //2019
         public const string LEGS_THIGH_PADS = "PTPS";           // 2004-2005
-        public const string TOTAL_SALARY = "PTSA";              // 2008
+        public const string TOTAL_SALARY = "PTSA";              
         public const string SLEEVES_B = "PTSL";
         public const string EQP_PAD_HEIGHT = "PTSS";
+        public const string THROW_PRESSURE = "PTUP";            //2019
         public const string PUCL = "PUCL";                      // ?
         public const string BODY_MUSCLE = "PUTS";
-        public const string PLAYER_VALUE = "PVAL";              // 2008
-        public const string PVCO = "PVCO";                      // ?
+        public const string PLAYER_VALUE = "PVAL";              // 2008, this is 0-7 values
+        public const string PVCO = "PVCO";                      // previous contract length?
         public const string VISOR = "PVIS";
-        public const string PREVIOUS_SIGNING_BONUS_TOTAL = "PVSB";        
+        public const string PREVIOUS_SIGNING_BONUS_TOTAL = "PVSB";
+        public const string PREVIOUS_TOTAL_SALARY = "PVTS";
         public const string WEIGHT = "PWGT";
+        public const string PWIN = "PWIN";
         public const string EQP_PAD_WIDTH = "PWSS";
         public const string YRS_PRO = "PYRP";
+        public const string YEARS_WITH_TEAM = "PYWT";
+        public const string SHORT_ROUTE_RUN = "SRRN";           //2019
 		public const string TEAM_ID = "TGID";
         public const string LEFT_ELBOW_B = "TLEL"; 
         public const string LEFT_HAND_B = "TLHA";
         public const string LEFT_WRIST_B = "TLWR";
+        public const string BIG_HITTER = "TRBH";                //2019
+        public const string DL_BULLRUSH = "TRBR";               //2019
+        public const string COVERS_BALL = "TRCB";               //2019
+        public const string CLUTCH = "TRCL";                    //2019
+        public const string CATCH_HIGH = "TRCT";                //2019        
+        public const string DROP_PASSES = "TRDO";               //2019
+        public const string DEEP_BALL = "TRDP";                 //2019
+        public const string DL_SPINMOVE = "TRDS";               //2019
         public const string RIGHT_ELBOW_B = "TREL";
+        public const string TRFB = "TRFB";                      //2019
+        public const string FORCE_PASSES = "TRFP";              //2019
+        public const string FIGHT_FOR_YARDS = "TRFY";           //2019
 		public const string RIGHT_HAND_B = "TRHA";
-        public const string RIGHT_WRIST_B = "TRWR";    
+        public const string HIGH_MOTOR = "TRHM";                //2019
+        public const string TRIC = "TRIC";                      //2019
+        public const string TRJR = "TRJR";                      //2019 
+        public const string PLAYS_BALL = "TRPB";                //2019
+        public const string STRIPS_BALL = "TRSB";               //2019
+        public const string SIDELINE_CATCH = "TRSC";            //2019
+        public const string SENSE_PRESSURE = "TRSP";            //2019
+        public const string DL_SWIM = "TRSW";                   //2019
+        public const string THROW_AWAY = "TRTA";                //2019
+        public const string TACKLE_LOW = "TRTL";                //2019
+        public const string TUCK_AND_RUN = "TRTR";              //2019
+        public const string THROW_SPIRAL = "TRTS";              //2019
+        public const string RIGHT_WRIST_B = "TRWR";             //  not in 2019
+        public const string TRWU = "TRWU";                      //2019 
+        public const string PRESSURE_MAX = "TSPM";              //2019
 
+        #endregion
 
-
-		private bool calculatedCapHit = false;
-		private int capHit = 0;
-		private int capHitDifference = 0;
-		double[] estYearlySalary = new double[7];
-		double[] estSigningBonusArray = new double[7];
-
-        public bool Starter = false;
-        public int backupValue = 0;
-
-		public PlayerRecord(int record, TableModel tableModel, EditorModel EditorModel)
+        public PlayerRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
 
 		}
 
+        private bool calculatedCapHit = false;
+        private int capHit = 0;
+        private int capHitDifference = 0;
+        double[] estYearlySalary = new double[7];
+        double[] estSigningBonusArray = new double[7];
 
+        public bool Starter = false;
+        public int backupValue = 0;
 		public override string ToString()
 		{
 			return FirstName + " " + LastName + " (" + Enum.GetNames(typeof(MaddenPositions))[PositionId].ToString() + ")";
@@ -200,10 +295,11 @@ namespace MaddenEditor.Core.Record
 			get
 			{
 				//The first time we access this record we should calculate this players cap hit
-				if (!calculatedCapHit)
-				{
-					CalculateCapHit(false);
-				}
+                //this is wrong...fix
+				//if (!calculatedCapHit)
+				//{
+				//	CalculateCapHit(false);
+				//}
 				return GetStringField(FIRST_NAME);
 			}
 			set
@@ -695,7 +791,6 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(CONTRACT_LENGTH, value);
-				CalculateCapHit(true);
 			}
 		}
 
@@ -708,7 +803,6 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(CONTRACT_YRS_LEFT, value);
-				CalculateCapHit(true);
 			}
 		}
 
@@ -721,7 +815,6 @@ namespace MaddenEditor.Core.Record
 			set
 			{
 				SetField(PREVIOUS_SIGNING_BONUS_TOTAL, value);
-				//CalculateCapHit(true);
 			}
 		}
 
@@ -743,19 +836,13 @@ namespace MaddenEditor.Core.Record
 			}
 		}
         		
-		public int ThrowingStyle
+		public bool SideArmed
 		{
-			get
-			{
-				return GetIntField(THROWING_STYLE);
-			}
-			set
-			{
-				SetField(THROWING_STYLE, value);
-			}
+			get	{ return GetIntField(THROWING_STYLE) == 1; }
+            set { SetField(THROWING_STYLE, Convert.ToInt32(value)); }
 		}
         
-		public int Tendancy
+		public int Tendency
 		{
 			get
 			{
@@ -797,7 +884,7 @@ namespace MaddenEditor.Core.Record
             set { SetField(PLAYER_COMMENT, value); }
         }
 
-        public int PlayerJerseyInitials
+        public int JerseyInitials
         {
             get { return GetIntField(PLAYER_JERSEY_INITIALS); }
             set { SetField(PLAYER_JERSEY_INITIALS, value); }
@@ -809,10 +896,10 @@ namespace MaddenEditor.Core.Record
             set { SetField(TOTAL_SALARY, value); }
         }
 
-        public int PreviousPositionId
+        public int OriginalPositionId
         {
-            get { return GetIntField(PREVIOUS_POSITION_ID); }
-            set { SetField(PREVIOUS_POSITION_ID, value); }
+            get { return GetIntField(ORIGINAL_POSITION_ID); }
+            set { SetField(ORIGINAL_POSITION_ID, value); }
         }
 
         public int Pcel
@@ -846,10 +933,10 @@ namespace MaddenEditor.Core.Record
             set { SetField(JERSEY, Convert.ToInt32(value)); }
         }
 
-        public int Plfh
+        public bool Plfh
         {
-            get { return GetIntField(PLFH); }
-            set { SetField(PLFH, value); }
+            get { return GetIntField(PLFH)==1; }
+            set { SetField(PLFH, Convert.ToInt32(value)); }
         }
 
         public int LastHealthy
@@ -870,18 +957,18 @@ namespace MaddenEditor.Core.Record
             set { SetField(PPSP, value); }
         }
 
-        public int Ppga
+        public int PlayedGames
         {
-            get { return GetIntField(PPGA); }
-            set { SetField(PPGA, value); }
+            get { return GetIntField(PLAYED_GAMES); }
+            set { SetField(PLAYED_GAMES, value); }
         }
         
         public int SigningBonus
         {
-            get { return GetIntField(SIGNING_BONUS); }
+            get { return GetIntField(SIGNING_BONUS_TOTAL); }
             set 
             { 
-                SetField(SIGNING_BONUS, value);
+                SetField(SIGNING_BONUS_TOTAL, value);
                 CalculateCapHit(true);
             }
         }
@@ -914,89 +1001,115 @@ namespace MaddenEditor.Core.Record
         public int Salary0
         {
             get { return GetIntField(SALARY_YEAR_0); }
-            set { SetField(SALARY_YEAR_0, value); }
+            set { SetField(SALARY_YEAR_0, value);
+            FixCurrentSalary();
+            }
         }
         public int Salary1
         {
             get { return GetIntField(SALARY_YEAR_1); }
-            set { SetField(SALARY_YEAR_1, value); }
+            set { SetField(SALARY_YEAR_1, value);
+            FixCurrentSalary();
+            }
         }
         public int Salary2
         {
             get { return GetIntField(SALARY_YEAR_2); }
-            set { SetField(SALARY_YEAR_2, value); }
+            set { SetField(SALARY_YEAR_2, value);
+            FixCurrentSalary();
+            }
         }
         public int Salary3
         {
             get { return GetIntField(SALARY_YEAR_3); }
-            set { SetField(SALARY_YEAR_3, value); }
+            set { SetField(SALARY_YEAR_3, value);
+            FixCurrentSalary();
+            }
         }
         public int Salary4
         {
             get { return GetIntField(SALARY_YEAR_4); }
-            set { SetField(SALARY_YEAR_4, value); }
+            set { SetField(SALARY_YEAR_4, value);
+            FixCurrentSalary();
+            }
         }
         public int Salary5
         {
             get { return GetIntField(SALARY_YEAR_5); }
-            set { SetField(SALARY_YEAR_5, value); }
+            set { SetField(SALARY_YEAR_5, value); 
+                FixCurrentSalary(); }
         }
         public int Salary6
         {
             get { return GetIntField(SALARY_YEAR_6); }
-            set { SetField(SALARY_YEAR_6, value); }
+            set { SetField(SALARY_YEAR_6, value);
+            FixCurrentSalary();
+            }
         }
         public int Bonus0
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_0); }
-            set { SetField(SIGNING_BONUS_YEAR_0, value); }
+            set { SetField(SIGNING_BONUS_YEAR_0, value);
+            FixCurrentSalary(); }
         }
         public int Bonus1
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_1); }
-            set { SetField(SIGNING_BONUS_YEAR_1, value); }
+            set { SetField(SIGNING_BONUS_YEAR_1, value);
+            FixCurrentSalary();
+            }
         }
         public int Bonus2
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_2); }
-            set { SetField(SIGNING_BONUS_YEAR_2, value); }
+            set { SetField(SIGNING_BONUS_YEAR_2, value);
+            FixCurrentSalary();
+            }
         }
         public int Bonus3
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_3); }
-            set { SetField(SIGNING_BONUS_YEAR_3, value); }
+            set { SetField(SIGNING_BONUS_YEAR_3, value);
+            FixCurrentSalary();
+            }
         }
         public int Bonus4
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_4); }
-            set { SetField(SIGNING_BONUS_YEAR_4, value); }
+            set { SetField(SIGNING_BONUS_YEAR_4, value);
+            FixCurrentSalary();
+            }
         }
         public int Bonus5
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_5); }
-            set { SetField(SIGNING_BONUS_YEAR_5, value); }
+            set { SetField(SIGNING_BONUS_YEAR_5, value);
+            FixCurrentSalary();
+            }
         }
         public int Bonus6
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_6); }
-            set { SetField(SIGNING_BONUS_YEAR_6, value); }
+            set { SetField(SIGNING_BONUS_YEAR_6, value);
+            FixCurrentSalary();
+            }
         }
 
-
-
-
-
-        #region Appearance / Equipment
-        public int RightKnee
+        public int BonusTotal
         {
-            get
-            {
-                return GetIntField(RIGHT_KNEE);
-            }
+            get { return GetIntField(SIGNING_BONUS_TOTAL); }
             set
             {
-                SetField(RIGHT_KNEE, value);
+                SetField(SIGNING_BONUS_TOTAL, value);
+                FixCurrentSalary();
             }
+        }
+
+        #region Appearance / Equipment
+        public bool RightKnee
+        {
+            get { return GetIntField(RIGHT_KNEE) == 1; }
+            set { SetField(RIGHT_KNEE, Convert.ToInt32(value)); }
         }
 
         public int LeftElbow
@@ -1234,40 +1347,34 @@ namespace MaddenEditor.Core.Record
             }
         }
 
-        public int LeftAnkle
+        public int LeftShoe
         {
             get
             {
-                return GetIntField(LEFT_ANKLE);
+                return GetIntField(LEFT_SHOE);
             }
             set
             {
-                SetField(LEFT_ANKLE, value);
+                SetField(LEFT_SHOE, value);
             }
         }
 
-        public int RightAnkle
+        public int RightShoe
         {
             get
             {
-                return GetIntField(RIGHT_ANKLE);
+                return GetIntField(RIGHT_SHOE);
             }
             set
             {
-                SetField(RIGHT_ANKLE, value);
+                SetField(RIGHT_SHOE, value);
             }
         }
 
-        public int LeftKnee
+        public bool LeftKnee
         {
-            get
-            {
-                return GetIntField(LEFT_KNEE);
-            }
-            set
-            {
-                SetField(LEFT_KNEE, value);
-            }
+            get { return GetIntField(LEFT_KNEE) == 1; }
+            set { SetField(LEFT_KNEE, Convert.ToInt32(value)); }
         }
 
         public int BodyMuscle
@@ -1452,25 +1559,19 @@ namespace MaddenEditor.Core.Record
 
         public int EyePaint
         {
-            get
-            {
-                return GetIntField(EYE_PAINT);
-            }
-            set
-            {
-                SetField(EYE_PAINT, value);
-            }
+            get { return GetIntField(EYE_PAINT); }
+            set { SetField(EYE_PAINT, value); }            
         }
 
-        public int SkinType
+        public int CareerPhase
         {
             get
             {
-                return GetIntField(SKIN_COLOR);
+                return GetIntField(CAREER_PHASE);
             }
             set
             {
-                SetField(SKIN_COLOR, value);
+                SetField(CAREER_PHASE, value);
             }
         }
 
@@ -1487,7 +1588,17 @@ namespace MaddenEditor.Core.Record
         }
 
         #endregion
-        
+        public int PreviousTotalSalary
+        {
+            get { return GetIntField(PREVIOUS_TOTAL_SALARY); }
+            set { SetField(PREVIOUS_TOTAL_SALARY, value); }
+        }
+        public int Pwin
+        {
+            get { return GetIntField(PWIN); }
+            set { SetField(PWIN, value); }
+        }
+
         // 2007
         public int Ego
         {
@@ -1534,8 +1645,467 @@ namespace MaddenEditor.Core.Record
                 SetField(PLAYER_WEAPON, value);
             }
         }
+        public int YearsWithTeam
+        {
+            get { return GetIntField(YEARS_WITH_TEAM); }
+            set { SetField(YEARS_WITH_TEAM, value); }
+        }
+
+        //2019
+        public int ImpactBlocking
+        {
+            get { return GetIntField(IMPACT_BLOCKING); }
+            set { SetField(IMPACT_BLOCKING, value); }
+        }
+        public int BreakTackle19
+        {
+            get { return GetIntField(BREAK_TACKLE_19); }
+            set { SetField(BREAK_TACKLE_19, value); }
+        }
+        public int LeadBlock
+        {
+            get { return GetIntField(LEAD_BLOCK); }
+            set { SetField(LEAD_BLOCK, value); }
+        }
+        public int RunBlockFinesse
+        {
+            get { return GetIntField(RUN_BLOCK_FINESSE); }
+            set { SetField(RUN_BLOCK_FINESSE, value); }
+        }
+        public int ZoneCoverage
+        {
+            get { return GetIntField(ZONE_COVERAGE); }
+            set { SetField(ZONE_COVERAGE, value); }
+        }
+        public int ManCoverage
+        {
+            get { return GetIntField(MAN_COVERAGE); }
+            set { SetField(MAN_COVERAGE, value); }
+        }
+        public int PlayRecognition
+        {
+            get { return GetIntField(PLAY_RECOGNITION); }
+            set { SetField(PLAY_RECOGNITION, value); }
+        }
+        public int Pursuit
+        {
+            get { return GetIntField(PURSUIT); }
+            set { SetField(PURSUIT, value); }
+        }
+        public int BlockShedding
+        {
+            get { return GetIntField(BLOCK_SHEDDING); }
+            set { SetField(BLOCK_SHEDDING, value); }
+        }
+        public int Trucking
+        {
+            get { return GetIntField(TRUCKING); }
+            set { SetField(TRUCKING, value); }
+        }
+        public int Elusive
+        {
+            get { return GetIntField(ELUSIVE); }
+            set { SetField(ELUSIVE, value); }
+        }
+        public int RB_Vision
+        {
+            get { return GetIntField(BALL_CARRIER_VISION); }
+            set { SetField(BALL_CARRIER_VISION, value); }
+        }
+        public int StiffArm
+        {
+            get { return GetIntField(STIFF_ARM); }
+            set { SetField(STIFF_ARM, value); }
+        }
+        public int SpinMove
+        {
+            get { return GetIntField(SPIN_MOVE); }
+            set { SetField(SPIN_MOVE, value); }
+        }
+        public int JukeMove
+        {
+            get { return GetIntField(JUKE_MOVE); }
+            set { SetField(JUKE_MOVE, value); }
+        }
+        public int ShortRoute
+        {
+            get { return GetIntField(SHORT_ROUTE_RUN); }
+            set { SetField(SHORT_ROUTE_RUN, value); }
+        }
+        public int MediumRoute
+        {
+            get { return GetIntField(MEDIUM_ROUTE_RUN); }
+            set { SetField(MEDIUM_ROUTE_RUN, value); }
+        }
+        public int DeepRoute
+        {
+            get { return GetIntField(DEEP_ROUTE); }
+            set { SetField(DEEP_ROUTE, value); }
+        }
+        public int CatchTraffic
+        {
+            get { return GetIntField(CATCH_TRAFFIC); }
+            set { SetField(CATCH_TRAFFIC, value); }
+        }
+        public int SpecCatch
+        {
+            get { return GetIntField(SPEC_CATCH); }
+            set { SetField(SPEC_CATCH, value); }
+        }
+        public int Release
+        {
+            get { return GetIntField(RELEASE); }
+            set { SetField(RELEASE, value); }
+        }
+        public int ThrowShort
+        {
+            get { return GetIntField(THROW_SHORT); }
+            set { SetField(THROW_SHORT, value); }
+        }
+        public int ThrowMedium
+        {
+            get { return GetIntField(THROW_MEDIUM); }
+            set { SetField(THROW_MEDIUM, value); }
+        }
+        public int ThrowDeep
+        {
+            get { return GetIntField(THROW_DEEP); }
+            set { SetField(THROW_DEEP, value); }
+        }
+        public int ThrowOnRun
+        {
+            get { return GetIntField(THROW_ON_RUN); }
+            set { SetField(THROW_ON_RUN, value); }
+        }
+        public int ThrowPressure
+        {
+            get { return GetIntField(THROW_PRESSURE); }
+            set { SetField(THROW_PRESSURE, value); }
+        }
+        public int BreakSack
+        {
+            get { return GetIntField(BREAK_SACK); }
+            set { SetField(BREAK_SACK, value); }
+        }
+        public int PlayAction
+        {
+            get { return GetIntField(PLAY_ACTION); }
+            set { SetField(PLAY_ACTION, value); }
+        }
+        public int HitPower
+        {
+            get { return GetIntField(HIT_POWER); }
+            set { SetField(HIT_POWER, value); }
+        }
+        public int PowerMoves
+        {
+            get { return GetIntField(PLAYER_MOVES); }
+            set { SetField(PLAYER_MOVES, value); }
+        }
+        public int FinesseMoves
+        {
+            get { return GetIntField(FINESSE_MOVES); }
+            set { SetField(FINESSE_MOVES, value); }
+        }
+        public string Hometown
+        {
+            get { return GetStringField(HOMETOWN); }
+            set { SetField(HOMETOWN, value); }
+        }
+        public int PressCover
+        {
+            get { return GetIntField(PRESS_COVER); }
+            set { SetField(PRESS_COVER, value); }
+        }
+        public bool FightYards
+        {
+            get { return (GetIntField(FIGHT_FOR_YARDS) == 1); }
+            set { SetField(FIGHT_FOR_YARDS, Convert.ToInt32(value)); }
+        }
+        public int ForcePasses
+        {
+            get { return GetIntField(FORCE_PASSES); }
+            set { SetField(FORCE_PASSES, value); }
+        }
+        public int PassBlockFootwork
+        {
+            get { return GetIntField(PASSBLOCK_FOOTWORK); }
+            set { SetField(PASSBLOCK_FOOTWORK, value); }
+        }
+        public int PassBlockStrength
+        {
+            get { return GetIntField(PASSBLOCK_STRENGTH); }
+            set { SetField(PASSBLOCK_STRENGTH, value); }
+        }
+        public int PlaysBall
+        {
+            get { return GetIntField(PLAYS_BALL); }
+            set { SetField(PLAYS_BALL, value); }
+        }
+        public int Potential
+        {
+            get { return GetIntField(PLAYER_POTENTIAL); }
+            set { SetField(PLAYER_POTENTIAL, value); }
+        }
+        public int QBStance
+        {
+            get { return GetIntField(QB_STANCE); }
+            set { SetField(QB_STANCE, value); }
+        }
+        public int QBStyle
+        {
+            get { return GetIntField(QB_STYLE); }
+            set { SetField(QB_STYLE, value); }
+        }
+        public int RouteRunning
+        {
+            get { return GetIntField(ROUTE_RUNNING); }
+            set { SetField(ROUTE_RUNNING, value); }
+        }
+        public int RunBlockStrength
+        {
+            get { return GetIntField(RUNBLOCK_STRENGTH); }
+            set { SetField(RUNBLOCK_STRENGTH, value); }
+        }
+        public int SensePressure
+        {
+            get { return GetIntField(SENSE_PRESSURE); }
+            set { SetField(SENSE_PRESSURE, value); }
+        }
+        public bool SidelineCatch
+        {
+            get { return (GetIntField(SIDELINE_CATCH) == 1); }
+            set { SetField(SIDELINE_CATCH, Convert.ToInt32(value)); }
+        }
+        public bool ThrowAway
+        {
+            get { return (GetIntField(THROW_AWAY) == 1); }
+            set { SetField(THROW_AWAY, Convert.ToInt32(value)); }
+        }
+        public bool ThrowSpiral
+        {
+            get { return (GetIntField(THROW_SPIRAL) == 1); }
+            set { SetField(THROW_SPIRAL, Convert.ToInt32(value)); }
+        }
+        public int TuckRun
+        {
+            get { return GetIntField(TUCK_AND_RUN); }
+            set { SetField(TUCK_AND_RUN, value); }
+        }
+        public bool PlayerTowel
+        {
+            get { return (GetIntField(PLAYER_TOWEL) == 1); }
+            set { SetField(PLAYER_TOWEL, Convert.ToInt32(value)); }
+        }
+        public bool DLBullrush
+        {
+            get { return (GetIntField(DL_BULLRUSH) == 1); }
+            set { SetField(DL_BULLRUSH, Convert.ToInt32(value)); }
+        }
+        public bool DLSpinmove
+        {
+            get { return (GetIntField(DL_SPINMOVE) == 1); }
+            set { SetField(DL_SPINMOVE, Convert.ToInt32(value)); }
+        }
+        public bool DLSwim
+        {
+            get { return (GetIntField(DL_SWIM) == 1); }
+            set { SetField(DL_SWIM, Convert.ToInt32(value)); }
+        }
+        public bool HighMotor
+        {
+            get { return (GetIntField(HIGH_MOTOR) == 1); }
+            set { SetField(HIGH_MOTOR, Convert.ToInt32(value)); }
+        }
+        public int HomeState
+        {
+            get { return GetIntField(HOMESTATE); }
+            set { SetField(HOMESTATE, value); }
+        }
+        public bool HandWarmer
+        {
+            get { return (GetIntField(HAND_WARMER) == 1); }
+            set { SetField(HAND_WARMER, Convert.ToInt32(value)); }
+        }
+        public bool DropPasses
+        {
+            get { return (GetIntField(DROP_PASSES) == 1); }
+            set { SetField(DROP_PASSES, Convert.ToInt32(value)); }
+        }
+        public bool BigHitter
+        {
+            get { return (GetIntField(BIG_HITTER) == 1); }
+            set { SetField(BIG_HITTER, Convert.ToInt32(value)); }
+        }
+        public int CoversBall
+        {
+            get { return GetIntField(COVERS_BALL); }
+            set { SetField(COVERS_BALL, value); }
+        }
+        public bool Clutch
+        {
+            get { return (GetIntField(CLUTCH) == 1); }
+            set { SetField(CLUTCH, Convert.ToInt32(value)); }
+        }
+        public int FaceID_19
+        {
+            get { return GetIntField(FACE_ID_19); }
+            set { SetField(FACE_ID_19, value); }
+        }
+        public bool TackleLow
+        {
+            get { return (GetIntField(TACKLE_LOW) == 1); }
+            set { SetField(TACKLE_LOW, Convert.ToInt32(value)); }
+        }
+        public bool StripsBall
+        {
+            get { return (GetIntField(STRIPS_BALL) == 1); }
+            set { SetField(STRIPS_BALL, Convert.ToInt32(value)); }
+        }
+        public int PressureMax
+        {
+            get { return GetIntField(PRESSURE_MAX); }
+            set { SetField(PRESSURE_MAX, value); }
+        }
+        public string Asset
+        {
+            get { return GetStringField(PEPS); }
+            set { SetField(PEPS, value); }
+        }
+        public bool CatchHigh
+        {
+            get { return (GetIntField(CATCH_HIGH) == 1); }
+            set { SetField(CATCH_HIGH, Convert.ToInt32(value)); }
+        }
+        public int DeepBall
+        {
+            get { return GetIntField(DEEP_BALL); }
+            set { SetField(DEEP_BALL, value); }
+        }
+        public bool Trfb
+        {
+            get { return (GetIntField(TRFB) == 1); }
+            set { SetField(TRFB, Convert.ToInt32(value)); }
+        }
+        public int Tric
+        {
+            get { return GetIntField(TRIC); }
+            set { SetField(TRIC, value); }
+        }
+        public bool Trjr
+        {
+            get { return (GetIntField(TRFB) == 1); }
+            set { SetField(TRFB, Convert.ToInt32(value)); }
+        }
+        public bool Trwu
+        {
+            get { return (GetIntField(TRWU) == 1); }
+            set { SetField(TRWU, Convert.ToInt32(value)); }
+        }
+        public int Birthday
+        {
+            get { return GetIntField(BIRTHDAY); }
+            set { SetField(BIRTHDAY, value); }
+        }
+
+
 
         #endregion
+
+        public int GetRating(int AttributeID)
+        {
+            switch (AttributeID)
+            {
+                case (int)Rating.ACC:
+                    return Acceleration;                
+                case (int)Rating.AGI:
+                    return Agility;
+                case (int)Rating.AWR:
+                    return Awareness;
+                case (int)Rating.BTK:
+                    return BreakTackle;
+                case (int)Rating.CAR:
+                    return Carrying;
+                case (int)Rating.CTH:
+                    return Catching;
+                case (int)Rating.INJ:
+                    return Injury;
+                case (int)Rating.JMP:
+                    return Jumping;
+                case (int)Rating.KAC:
+                    return KickAccuracy;
+                case (int)Rating.KPW:
+                    return KickPower;
+                case (int)Rating.KRT:
+                    return KickReturn;                
+                case (int)Rating.PBK:
+                    return PassBlocking;
+                case (int)Rating.RBK:
+                    return RunBlocking;
+                case (int)Rating.SPD:
+                    return Speed;                
+                case (int)Rating.STR:
+                    return Strength;
+                case (int)Rating.TAK:
+                    return Tackle;                
+                case (int)Rating.THA:
+                    return ThrowAccuracy;
+                case (int)Rating.THP:
+                    return ThrowPower;
+                case (int)Rating.IMP:
+                    return Importance;
+            }
+
+            return -1;
+        }
+
+        public int GetBits(int orig, int start, int run)
+        {
+            int mask = ((1 << run) - 1) << start;
+            int bits = orig & mask;
+            return bits;
+        }
+
+        public string GetBirthday()
+        {            
+            // s68 - I find bit shifting confusing, got this formula from xnanthol's madden 360 roster reader
+            // and adjusted the year.
+            string bd = "";
+            int month = ((this.Birthday & 0x00000780) >> 7) + 1;
+            int day = ((this.Birthday & 0x0000F800) >> 11);
+            int year = (this.Birthday & 0x0000007F ) +1940;
+            
+            bd = month.ToString() + "/" + day.ToString() + "/" + year.ToString();
+            return bd;
+        }
+        public void SetBirthday(string bday)
+        {
+            // s68, Got this function from xanathol's xbox 360 roster editor, adjusted year
+            int bd = 0;
+            int temp = 0;
+            string[] arr = bday.ToString().Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (arr.Length != 3)
+                return;
+
+            temp = Convert.ToInt32(arr[1]);
+            if (temp < 1) temp = 1;
+            if (temp > 31) temp = 31;
+            bd |= ((0x0000001F & temp) << 11);
+
+            temp = Convert.ToInt32(arr[0]);
+            if (temp < 1) temp = 1;
+            if (temp > 12) temp = 12;
+            bd |= ((0x0000000F & (temp - 1)) << 7);
+
+            temp = Convert.ToInt32(arr[2]);
+            if (temp < 1956) temp = 1956;
+            temp -= 1940;
+            bd |= (0x0000007F & temp);
+
+            this.Birthday = bd;
+        }
+
 
         #region Madden Draft Edit
 
@@ -1736,7 +2306,471 @@ namespace MaddenEditor.Core.Record
                 index++;
             }
         }
-                
+
+        public int CalcOverall19(int PositionID)
+        {
+            switch (PositionID)
+            {
+                case (int)MaddenPositions.QB:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(ThrowPower) / 3.0) +
+                                (Convert.ToDouble(ThrowShort) / 4.0) +
+                                (Convert.ToDouble(ThrowMedium) / 4.0) +
+                                (Convert.ToDouble(ThrowDeep) / 6.75) +
+                                (Convert.ToDouble(PlayAction) / 7.0) +
+                                (Convert.ToDouble(Speed) / 14.0) +
+                                (Convert.ToDouble(ThrowOnRun) / 24.0) +
+                                (Convert.ToDouble(Agility) / 24.0) +
+                                (Convert.ToDouble(Acceleration) / 38.0)
+                            ) - 50.13, 0
+                        )
+                    );
+
+                case (int)MaddenPositions.HB:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Speed) / 3.75) +
+                                (Convert.ToDouble(Awareness) / 3.75) +
+                                (Convert.ToDouble(Carrying) / 3.75) +
+                                (Convert.ToDouble(RB_Vision) / 3.75) +
+                                (Convert.ToDouble(Agility) / 7.5) +
+                                (Convert.ToDouble(Acceleration) / 7.5) +
+                                (Convert.ToDouble(Trucking) / 7.5) +
+                                (Convert.ToDouble(Elusive) / 7.5) +
+                                (Convert.ToDouble(SpinMove) / 11.0) +
+                                (Convert.ToDouble(JukeMove) / 11.0) +
+                                (Convert.ToDouble(Strength) / 24.0) +
+                                (Convert.ToDouble(Catching) / 24.0) +
+                                (Convert.ToDouble(StiffArm) / 24.0) +
+                                (Convert.ToDouble(RouteRunning) / 24.0)
+                            ) - 80.95, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.FB:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 2.75) +
+                                (Convert.ToDouble(ImpactBlocking) / 3.0) +
+                                (Convert.ToDouble(RunBlockStrength) / 4.0) +
+                                (Convert.ToDouble(Carrying) / 4.0) +
+                                (Convert.ToDouble(Acceleration) / 6.0) +
+                                (Convert.ToDouble(RunBlockFinesse) / 6.0) +
+                                (Convert.ToDouble(PassBlockStrength) / 6.0) +
+                                (Convert.ToDouble(Speed) / 6.0) +
+                                (Convert.ToDouble(Trucking) / 6.0) +
+                                (Convert.ToDouble(Strength) / 10.0) +
+                                (Convert.ToDouble(Agility) / 12.0) +
+                                (Convert.ToDouble(RB_Vision) / 12.0) +
+                                (Convert.ToDouble(StiffArm) / 12.0) +
+                                (Convert.ToDouble(PassBlockFootwork) / 12.0) +
+                                (Convert.ToDouble(Catching) / 12.0) +
+                                (Convert.ToDouble(Elusive) / 18.0)
+                            ) - 112, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.TE:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 4.0) +
+                                (Convert.ToDouble(RouteRunning) / 6.0) +
+                                (Convert.ToDouble(CatchTraffic) / 5.0) +
+                                (Convert.ToDouble(Catching) / 5.0) +
+                                (Convert.ToDouble(Speed) / 6.0) +
+                                (Convert.ToDouble(RunBlockStrength) / 6.0) +
+                                (Convert.ToDouble(RunBlockFinesse) / 6.0) +
+                                (Convert.ToDouble(Strength) / 6.0) +
+                                (Convert.ToDouble(ImpactBlocking) / 7.0) +
+                                (Convert.ToDouble(SpecCatch) / 10.0) +
+                                (Convert.ToDouble(Agility) / 10.0) +
+                                (Convert.ToDouble(Acceleration) / 10.0) +
+                                (Convert.ToDouble(Elusive) / 20.0) +
+                                (Convert.ToDouble(Release) / 20.0) +
+                                (Convert.ToDouble(Carrying) / 20.0) +
+                                (Convert.ToDouble(RB_Vision) / 20.0) +
+                                (Convert.ToDouble(Trucking) / 20.0) +
+                                (Convert.ToDouble(PassBlockStrength) / 20.0) +
+                                (Convert.ToDouble(PassBlockFootwork) / 20.0) +
+                                (Convert.ToDouble(Jumping) / 20.0) +
+                                (Convert.ToDouble(SpinMove) / 34.0) +
+                                (Convert.ToDouble(JukeMove) / 34.0) +
+                                (Convert.ToDouble(StiffArm) / 51.0)
+                            ) - 97.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.WR:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Speed) / 6.5) +
+                                (Convert.ToDouble(Awareness) / 3.5) +
+                                (Convert.ToDouble(Carrying) / 6.5) +
+                                (Convert.ToDouble(Catching) / 6.5) +
+                                (Convert.ToDouble(RouteRunning) / 6.5) +
+                                (Convert.ToDouble(CatchTraffic) / 9.0) +
+                                (Convert.ToDouble(Release) / 9.0) +
+                                (Convert.ToDouble(Acceleration) / 10.0) +
+                                (Convert.ToDouble(Agility) / 12.0) +
+                                (Convert.ToDouble(Elusive) / 14.0) +
+                                (Convert.ToDouble(SpecCatch) / 14.0) +
+                                (Convert.ToDouble(Jumping) / 15.0) +
+                                (Convert.ToDouble(Strength) / 35.0) +
+                                (Convert.ToDouble(RB_Vision) / 35.0) +
+                                (Convert.ToDouble(Trucking) / 55.0) +
+                                (Convert.ToDouble(StiffArm) / 55.0) +
+                                (Convert.ToDouble(SpinMove) / 55.0) +
+                                (Convert.ToDouble(JukeMove) / 55.0)
+                            ) - 52.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.LT:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(PassBlockStrength) / 3.5) +
+                                (Convert.ToDouble(Awareness) / 4.0) +
+                                (Convert.ToDouble(PassBlockFootwork) / 4.0) +
+                                (Convert.ToDouble(Strength) / 4.0) +
+                                (Convert.ToDouble(RunBlockStrength) / 5.0) +
+                                (Convert.ToDouble(RunBlockFinesse) / 7.0) +
+                                (Convert.ToDouble(ImpactBlocking) / 10.0) +
+                                (Convert.ToDouble(Speed) / 18.0) +
+                                (Convert.ToDouble(Agility) / 18.0) +
+                                (Convert.ToDouble(Acceleration) / 18.0)
+                            ) - 55.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.RT:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(RunBlockStrength) / 3.5) +
+                                (Convert.ToDouble(PassBlockStrength) / 3.5) +
+                                (Convert.ToDouble(RunBlockFinesse) / 4.0) +
+                                (Convert.ToDouble(PassBlockFootwork) / 5.0) +
+                                (Convert.ToDouble(Strength) / 4.0) +
+                                (Convert.ToDouble(ImpactBlocking) / 8.0) +
+                                (Convert.ToDouble(Agility) / 16.0) +
+                                (Convert.ToDouble(Speed) / 16.0) +
+                                (Convert.ToDouble(Acceleration) / 16.0)
+                            ) - 74.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.LG:
+                case (int)MaddenPositions.RG:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(RunBlockFinesse) / 3.0) +
+                                (Convert.ToDouble(Strength) / 4.0) +
+                                (Convert.ToDouble(RunBlockStrength) / 4.0) +
+                                (Convert.ToDouble(ImpactBlocking) / 6.0) +
+                                (Convert.ToDouble(PassBlockStrength) / 6.0) +
+                                (Convert.ToDouble(PassBlockFootwork) / 6.0) +
+                                (Convert.ToDouble(Agility) / 8.0) +
+                                (Convert.ToDouble(Acceleration) / 8.0) +
+                                (Convert.ToDouble(Speed) / 16.0)
+                            ) - 76.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.C:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(RunBlockStrength) / 4.0) +
+                                (Convert.ToDouble(RunBlockFinesse) / 4.0) +
+                                (Convert.ToDouble(PassBlockStrength) / 4.0) +
+                                (Convert.ToDouble(PassBlockFootwork) / 4.0) +
+                                (Convert.ToDouble(Strength) / 5.0) +
+                                (Convert.ToDouble(ImpactBlocking) / 7.0) +
+                                (Convert.ToDouble(Agility) / 14.0) +
+                                (Convert.ToDouble(Speed) / 14.0) +
+                                (Convert.ToDouble(Acceleration) / 14.0)
+                            ) - 74.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.LE:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(PowerMoves) / 4.0) +
+                                (Convert.ToDouble(FinesseMoves) / 4.0) +
+                                (Convert.ToDouble(Speed) / 5.0) +
+                                (Convert.ToDouble(Acceleration) / 5.0) +
+                                (Convert.ToDouble(Tackle) / 5.0) +
+                                (Convert.ToDouble(BlockShedding) / 5.0) +
+                                (Convert.ToDouble(PlayRecognition) / 6.0) +
+                                (Convert.ToDouble(Strength) / 9.0) +
+                                (Convert.ToDouble(Agility) / 9.0) +
+                                (Convert.ToDouble(Pursuit) / 9.0) +
+                                (Convert.ToDouble(HitPower) / 27.0)
+                            ) - 87.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.RE:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 4.0) +
+                                (Convert.ToDouble(PowerMoves) / 4.5) +
+                                (Convert.ToDouble(FinesseMoves) / 4.5) +
+                                (Convert.ToDouble(Speed) / 5.0) +
+                                (Convert.ToDouble(Acceleration) / 5.0) +
+                                (Convert.ToDouble(Tackle) / 6.0) +
+                                (Convert.ToDouble(BlockShedding) / 6.0) +
+                                (Convert.ToDouble(PlayRecognition) / 8.0) +
+                                (Convert.ToDouble(Strength) / 9.0) +
+                                (Convert.ToDouble(Agility) / 9.0) +
+                                (Convert.ToDouble(Pursuit) / 9.0) +
+                                (Convert.ToDouble(HitPower) / 29.0)
+                            ) - 67.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.DT:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Strength) / 3.0) +
+                                (Convert.ToDouble(Awareness) / 3.75) +
+                                (Convert.ToDouble(PowerMoves) / 5.0) +
+                                (Convert.ToDouble(FinesseMoves) / 5.0) +
+                                (Convert.ToDouble(BlockShedding) / 5.0) +
+                                (Convert.ToDouble(Tackle) / 6.0) +
+                                (Convert.ToDouble(Speed) / 10.0) +
+                                (Convert.ToDouble(Acceleration) / 10.0) +
+                                (Convert.ToDouble(PlayRecognition) / 10.0) +
+                                (Convert.ToDouble(Agility) / 40.0) +
+                                (Convert.ToDouble(Pursuit) / 40.0)
+                            ) - 52.85, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.ROLB:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(Tackle) / 5.0) +
+                                (Convert.ToDouble(PlayRecognition) / 5.0) +
+                                (Convert.ToDouble(Speed) / 7.0) +
+                                (Convert.ToDouble(PowerMoves) / 7.0) +
+                                (Convert.ToDouble(FinesseMoves) / 7.0) +
+                                (Convert.ToDouble(BlockShedding) / 10.0) +
+                                (Convert.ToDouble(Strength) / 10.0) +
+                                (Convert.ToDouble(Acceleration) / 10.0) +
+                                (Convert.ToDouble(Pursuit) / 10.0) +
+                                (Convert.ToDouble(ZoneCoverage) / 10.0) +
+                                (Convert.ToDouble(ManCoverage) / 13.0) +
+                                (Convert.ToDouble(Agility) / 21.0) +
+                                (Convert.ToDouble(HitPower) / 21.0) +
+                                (Convert.ToDouble(Catching) / 36.0)
+                            ) - 65.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.LOLB:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(Tackle) / 5.0) +
+                                (Convert.ToDouble(PlayRecognition) / 5.0) +
+                                (Convert.ToDouble(Speed) / 7.0) +
+                                (Convert.ToDouble(PowerMoves) / 7.0) +
+                                (Convert.ToDouble(FinesseMoves) / 7.0) +
+                                (Convert.ToDouble(BlockShedding) / 10.0) +
+                                (Convert.ToDouble(Strength) / 10.0) +
+                                (Convert.ToDouble(Acceleration) / 10.0) +
+                                (Convert.ToDouble(Pursuit) / 10.0) +
+                                (Convert.ToDouble(ZoneCoverage) / 10.0) +
+                                (Convert.ToDouble(ManCoverage) / 13.0) +
+                                (Convert.ToDouble(Agility) / 20.0) +
+                                (Convert.ToDouble(HitPower) / 20.0) +
+                                (Convert.ToDouble(Catching) / 34.0)
+                            ) - 65.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.MLB:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Tackle) / 3.0) +
+                                (Convert.ToDouble(Awareness) / 4.0) +
+                                (Convert.ToDouble(BlockShedding) / 4.0) +
+                                (Convert.ToDouble(PlayRecognition) / 4.0) +
+                                (Convert.ToDouble(Pursuit) / 6.0) +
+                                (Convert.ToDouble(Speed) / 8.0) +
+                                (Convert.ToDouble(Strength) / 12.0) +
+                                (Convert.ToDouble(Agility) / 12.0) +
+                                (Convert.ToDouble(Acceleration) / 12.0) +
+                                (Convert.ToDouble(HitPower) / 12.0) +
+                                (Convert.ToDouble(PowerMoves) / 15.0) +
+                                (Convert.ToDouble(FinesseMoves) / 15.0) +
+                                (Convert.ToDouble(ZoneCoverage) / 15.0) +
+                                (Convert.ToDouble(ManCoverage) / 25.0)
+                            ) - 80.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.CB:
+                    // 3, 4, 4, 4, 5.5, 5.5, 10, 10, 10, 10, 20... -77
+                    /*
+                                        return Convert.ToInt32(
+                                            Math.Round(
+                                                (
+                                                    ( Convert.ToDouble(ManCoverage)		/8.0 ) +
+                                                    ( Convert.ToDouble(Speed)			/5.0 ) +
+                                                    ( Convert.ToDouble(Acceleration)	/5.0 ) +
+                                                    ( Convert.ToDouble(Awareness)		/3.5 ) +
+                                                    ( Convert.ToDouble(PlayRecognition)	/30.0 ) +
+                                                    ( Convert.ToDouble(ZoneCoverage)	/10.0 ) +
+                                                    ( Convert.ToDouble(Agility)			/10.0 ) +
+                                                    ( Convert.ToDouble(Tackle)		/15.0 ) +
+                                                    ( Convert.ToDouble(Jumping)			/15.0 ) +
+                                                    ( Convert.ToDouble(Press)			/20.0 ) +
+                                                    ( Convert.ToDouble(Strength)		/30.0 )
+                                                ) - 20.4, 0
+                                            )
+                                        );
+
+                                        return Convert.ToInt32(
+                                            Math.Round(
+                                                (
+                                                    ( Convert.ToDouble(ManCoverage)		/3.2 ) +
+                                                    ( Convert.ToDouble(Speed)			/4.318181818181818 ) +
+                                                    ( Convert.ToDouble(Acceleration)	/4.352941176470588 ) +
+                                                    ( Convert.ToDouble(Awareness)		/4.352941176470588 ) +
+                                                    ( Convert.ToDouble(PlayRecognition)	/6.642857142857143 ) +
+                                                    ( Convert.ToDouble(ZoneCoverage)	/6.642857142857143 ) +
+                                                    ( Convert.ToDouble(Agility)			/12.57142857142857 ) +
+                                                    ( Convert.ToDouble(Tackle)		/14.5 ) +
+                                                    ( Convert.ToDouble(Jumping)			/14.5 ) +
+                                                    ( Convert.ToDouble(Press)			/14.5 ) +
+                                                    ( Convert.ToDouble(Strength)		/25.33333333333333333 )
+                                                ) + 12.0, 0
+                                            )
+                                        );
+                    */
+                    return Convert.ToInt32(
+                        Math.Min(Math.Round(Convert.ToDouble(ManCoverage) / 3.2, 0), 28) +
+                        Math.Min(Math.Round(Convert.ToDouble(Speed) / 4.318181818181818, 0), 22) +
+                        Math.Min(Math.Round(Convert.ToDouble(Acceleration) / 4.352941176470588, 0), 21) +
+                        Math.Min(Math.Round(Convert.ToDouble(Awareness) / 4.352941176470588, 0), 22) +
+                        Math.Min(Math.Round(Convert.ToDouble(PlayRecognition) / 6.642857142857143, 0), 16) +
+                        Math.Min(Math.Round(Convert.ToDouble(ZoneCoverage) / 6.642857142857143, 0), 16) +
+                        Math.Min(Math.Round(Convert.ToDouble(Agility) / 12.57142857142857, 0), 8) +
+                        Math.Min(Math.Round(Convert.ToDouble(Tackle) / 14.5, 0), 7) +
+                        Math.Min(Math.Round(Convert.ToDouble(Jumping) / 14.5, 0), 7) +
+                        Math.Min(Math.Round(Convert.ToDouble(PressCover) / 14.5, 0), 5) +
+                        Math.Min(Math.Round(Convert.ToDouble(Strength) / 25.33333333333333333, 0), 4)
+                    ) - 49;
+
+                case (int)MaddenPositions.FS:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 4.0) +
+                                (Convert.ToDouble(ZoneCoverage) / 4.0) +
+                                (Convert.ToDouble(Speed) / 6.0) +
+                                (Convert.ToDouble(Tackle) / 6.0) +
+                                (Convert.ToDouble(PlayRecognition) / 6.0) +
+                                (Convert.ToDouble(Agility) / 10.0) +
+                                (Convert.ToDouble(Acceleration) / 10.0) +
+                                (Convert.ToDouble(Jumping) / 10.0) +
+                                (Convert.ToDouble(Pursuit) / 10.0) +
+                                (Convert.ToDouble(ManCoverage) / 10.0) +
+                                (Convert.ToDouble(Strength) / 18.0) +
+                                (Convert.ToDouble(HitPower) / 21.0) +
+                                (Convert.ToDouble(Catching) / 30.0)
+                            ) - 45.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.SS:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 3.0) +
+                                (Convert.ToDouble(Tackle) / 4.0) +
+                                (Convert.ToDouble(PlayRecognition) / 4.0) +
+                                (Convert.ToDouble(ZoneCoverage) / 4.0) +
+                                (Convert.ToDouble(Speed) / 6.0) +
+                                (Convert.ToDouble(Pursuit) / 6.0) +
+                                (Convert.ToDouble(Strength) / 9.0) +
+                                (Convert.ToDouble(ManCoverage) / 9.0) +
+                                (Convert.ToDouble(HitPower) / 9.0) +
+                                (Convert.ToDouble(Catching) / 14.0) +
+                                (Convert.ToDouble(Agility) / 16.0) +
+                                (Convert.ToDouble(Acceleration) / 16.0) +
+                                (Convert.ToDouble(Jumping) / 16.0)
+                            ) - 72.0, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.K:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 2.0) +
+                                (Convert.ToDouble(KickPower) / 2.0) +
+                                (Convert.ToDouble(KickAccuracy) / 0.8)
+                            ) - 114, 0
+                        )
+                    );
+
+
+                case (int)MaddenPositions.P:
+                    return Convert.ToInt32(
+                        Math.Round(
+                            (
+                                (Convert.ToDouble(Awareness) / 1.25) +
+                                (Convert.ToDouble(KickPower) / 1.25) +
+                                (Convert.ToDouble(KickAccuracy) / 1.25)
+                            ) - 127.0, 0
+                        )
+                    );
+            }
+            return this.Overall;
+        }
+		
+        
+        
         public int CalculateOverallRating(int positionId)
 		{
 			return CalculateOverallRating(positionId, false);
@@ -1927,22 +2961,36 @@ namespace MaddenEditor.Core.Record
 
 			return (int)tempOverall;
 		}
+                
+        public DataGridViewRow GetDataRow(int positionId)
+        {
+            DataGridViewRow viewRow = new DataGridViewRow();
+
+            DataGridViewTextBoxCell posCell = new DataGridViewTextBoxCell();
+            posCell.Value = Enum.GetNames(typeof(MaddenPositions))[PositionId];
+            DataGridViewTextBoxCell nameCell = new DataGridViewTextBoxCell();
+            nameCell.Value = FirstName + " " + LastName;
+            DataGridViewTextBoxCell ovrCell = new DataGridViewTextBoxCell();
+            ovrCell.Value = CalculateOverallRating(positionId);
+            DataGridViewTextBoxCell playerCell = new DataGridViewTextBoxCell();
+            playerCell.Value = this;
+            viewRow.Cells.Add(posCell);
+            viewRow.Cells.Add(nameCell);
+            viewRow.Cells.Add(ovrCell);
+            viewRow.Cells.Add(playerCell);
+
+            posCell.ReadOnly = true;
+            nameCell.ReadOnly = true;
+            ovrCell.ReadOnly = true;
+            playerCell.ReadOnly = true;
+
+            return viewRow;
+        }
 
         #endregion
-
-
+        
         #region Salary Signing Bonus Functions
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         public int GetSalaryAtYear(int year)
 		{
@@ -1972,128 +3020,110 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public int CapHit
+		// fix all the salary cap functions
+
+        public int CapHit
 		{
 			get
 			{
 				return capHit;
 			}
-		}
+		}	
 
-		public int CapHitDifference
-		{
-			get
-			{
-				return capHitDifference;
-			}
-		}
+        public void FixCurrentSalary()
+        {            
+            if (ContainsField(SALARY_YEAR_0))
+            {
+                if (ContractYearsLeft == 0)
+                {
+                    CurrentSalary = 0;
+                    return;
+                }
+                int tempsal = CurrentSalary;
+                int year = ContractLength - ContractYearsLeft;
+                CurrentSalary = GetIntField("PSA" + year) + GetIntField("PSB" + year);                
+            }
+        }
+        		
+        private void CalculateCapHit(bool causeDirty)
+        {
+            if (ContractLength == 0 || ContractLength > 7)
+                return;
+            double perc = 1;
 
-		private void CalculateCapHit(bool causeDirty)
-		{
-			double tempSigningBonus = SigningBonus;
-			double tempSigningBonusPerYear = tempSigningBonus / ContractLength;
-			double tempTotalSalary = TotalSalary;
-			
-			for (int i=0; i < 7; i++)
-			{
-				estYearlySalary[i] = 0;
-				estSigningBonusArray[i] = 0;
-			}
+            // Salaries are not allowed to increase more than 30% each year, for rookies this is 25%
+            double x = 1.30;
+            if (YearsPro == 0)
+                x = 1.25;
+            for (int t = 1; t < ContractLength; t++)
+            {
+                perc += Math.Pow(x, t);
+            }
+            double tempsal = (double)(TotalSalary - BonusTotal)/ (perc * 100);
 
-			if (ContractLength == 0 || ContractLength > 7)
-			{
-				return;
-			}
+            //reset values
+            for (int i = 0; i < 7; i++)
+            {
+                estYearlySalary[i] = 0;
+                estSigningBonusArray[i] = 0;
+            }
+            double last = 0;
+            for (int i = 0; i < ContractLength; i++)
+            {
+                if (i < ContractLength - 1)
+                    estYearlySalary[i] = Math.Round(tempsal * Math.Pow(x, i) * 100, 0);
+                else estYearlySalary[i] = TotalSalary - BonusTotal - last;
+                estSigningBonusArray[i] = (double)BonusTotal / ContractLength;
+                last += estYearlySalary[i];
+            }
 
-			for (int i = ContractLength; i > 1; i--)
-			{
-				double specval = (tempSigningBonus / tempTotalSalary > 0.2 ? 1.3 : 1 + 1.5 * (tempSigningBonus / tempTotalSalary));
-				double divisor = 1 + specval;
-				
-				for (int j = i - 1; j > 1; j--)
-				{
-					divisor += Math.Pow(specval, j);
-				}
+            if (ContainsField(SALARY_YEAR_0))
+            {
+                //We are a franchise file so save back our yearly stuff
+                for (int i = 0; i < 7; i++)
+                {
+                    string key = "PSA" + i;
+                    SetField(key, (int)estYearlySalary[i], causeDirty);
+                    key = "PSB" + i;
+                    SetField(key, (int)estSigningBonusArray[i], causeDirty);
+                }
+            }
 
-				double tempVal = (double)((tempTotalSalary - tempSigningBonus) / divisor);
-				//Trace.WriteLine("Value is " + tempVal);
+            if (causeDirty)
+                FixCurrentSalary();
+        }
 
-				estYearlySalary[ContractLength-i] = tempVal;
+        public void ClearContract()
+        {
+            ContractLength = 0;
+            ContractYearsLeft = 0;
+            BonusTotal = 0;
+            TotalSalary = 0;
 
-				tempSigningBonus -= tempSigningBonusPerYear;
-				tempTotalSalary -= (tempVal + tempSigningBonusPerYear);
-			}
-			//Calculate last year of contract
-			//Round other years first
-			estYearlySalary[ContractLength - 1] = TotalSalary - SigningBonus;
-			estSigningBonusArray[ContractLength - 1] = SigningBonus;
-			for (int i = 0; i < ContractLength - 1; i++)
-			{
-				estYearlySalary[i] = Math.Round(estYearlySalary[i]);
-				estSigningBonusArray[i] = Math.Round(tempSigningBonusPerYear);
+            if (ContainsField(SALARY_YEAR_0))
+            {
+                Salary0 = 0;
+                Salary1 = 0; 
+                Salary2 = 0;
+                Salary3 = 0;
+                Salary4 = 0;
+                Salary5 = 0;
+                Salary6 = 0;
+                Bonus0 = 0;
+                Bonus1 = 0;
+                Bonus2 = 0;
+                Bonus3 = 0;
+                Bonus4 = 0;
+                Bonus5 = 0;
+                Bonus6 = 0;
+                CurrentSalary = 0;
+            }
+        }
+        
+        
+        #endregion
 
-				estYearlySalary[ContractLength - 1] = estYearlySalary[ContractLength - 1] - estYearlySalary[i];
-				estSigningBonusArray[ContractLength - 1] = estSigningBonusArray[ContractLength - 1] - estSigningBonusArray[i];
-				//Trace.WriteLine("Rounded = " + tempYearlySalary[i] + " SB: " + tempSigningBonusArray[i]);
-			}
-			//Trace.WriteLine("Rounded = " + tempYearlySalary[ContractLength - 1] + " SB: " + tempSigningBonusArray[ContractLength - 1]);
-
-			if (!calculatedCapHit)
-			{
-				capHit = (int)(estYearlySalary[ContractLength - ContractYearsLeft] + estSigningBonusArray[ContractLength - ContractYearsLeft]);
-				calculatedCapHit = true;
-			}
-			else
-			{
-				int tempCapHit = (int)(estYearlySalary[ContractLength - ContractYearsLeft] + estSigningBonusArray[ContractLength - ContractYearsLeft]);
-				capHitDifference = tempCapHit - capHit;
-				capHit = tempCapHit;
-                CurrentSalary = capHit;
-
-			}
-			
-			Trace.WriteLine("Cap hit = " + capHit);
-
-			if (ContainsField(SALARY_YEAR_0))
-			{
-				//We are a franchise file so save back our yearly stuff
-				for (int i = 0; i < 7; i++)
-				{
-					string key = "PSA" + i;
-					SetField(key, (int)estYearlySalary[i], causeDirty);
-					key = "PSB" + i;
-					SetField(key, (int)estSigningBonusArray[i], causeDirty);
-				}
-			}
-		}
-
-		#endregion
-
-		public DataGridViewRow GetDataRow(int positionId)
-		{
-			DataGridViewRow viewRow = new DataGridViewRow();
-
-			DataGridViewTextBoxCell posCell = new DataGridViewTextBoxCell();
-			posCell.Value = Enum.GetNames(typeof(MaddenPositions))[PositionId];
-			DataGridViewTextBoxCell nameCell = new DataGridViewTextBoxCell();
-			nameCell.Value = FirstName + " " + LastName;
-			DataGridViewTextBoxCell ovrCell = new DataGridViewTextBoxCell();
-			ovrCell.Value = CalculateOverallRating(positionId);
-			DataGridViewTextBoxCell playerCell = new DataGridViewTextBoxCell();
-			playerCell.Value = this;
-			viewRow.Cells.Add(posCell);
-			viewRow.Cells.Add(nameCell);
-			viewRow.Cells.Add(ovrCell);
-			viewRow.Cells.Add(playerCell);
-
-			posCell.ReadOnly = true;
-			nameCell.ReadOnly = true;
-			ovrCell.ReadOnly = true;
-			playerCell.ReadOnly = true;
-
-			return viewRow;
-		}
-
+		
         
 
 

@@ -25,14 +25,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.Drawing.Imaging;
 using System.Text;
 using System.Windows.Forms;
 
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
+using MaddenEditor.Core.DatEditor;
 
 namespace MaddenEditor.Forms
 {
+    //  Fix changing coach's team
+    
     public partial class CoachEditControl : UserControl, IEditorForm
     {
         private bool isInitialising = false;
@@ -40,258 +44,29 @@ namespace MaddenEditor.Forms
         private NumericUpDown[] prioritySliders = null;
         private NumericUpDown[] priorityTypeSliders = null;
         private Label[] priorityDescriptionLabels = null;
-
         private EditorModel model = null;
-
         private CoachRecord lastLoadedRecord = null;
+        private int currentcoachrow = 0;
 
+        private AmpConfig _config;
+        public AmpConfig config
+        {
+            get { return _config; }
+            set { _config = value; }
+        }
+        private MGMT _manager;
+        public MGMT Manager
+        {
+            get { return _manager; }
+            set { _manager = value; }
+        }
+        
         public CoachEditControl()
         {
             isInitialising = true;
-
             InitializeComponent();
-
             isInitialising = false;
         }
-
-        public void LoadCoachInfo(CoachRecord record)
-        {
-            if (record == null)
-            {
-                MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-                return;
-            }
-            isInitialising = true;
-
-            try
-            {
-                // For some reason 2005 is giving jets,colts head coach
-                // an out of range skin color to start with, giving an error
-                // so adding a temp fix for it.
-                
-
-                //Load Coach General info
-                coachesName.Text = record.Name;
-
-                // TO FIX not working right for 2007
-                // Shows Unemployed coaches and lists Positions as Head Coaches etc...
-                // While team field is blank.  1023 = unemployed.
-                coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
-                
-                TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
-
-                cbTeamCombo.SelectedItem = (object)team;
-                if (record.TeamId == 1023)
-                    cbTeamCombo.Text = "(Unemployed)";
-
-                coachAge.Value = (int)record.Age;
-                foreach (Object obj in model.CoachModel.CoachSkinColor)
-                    if (((GenericRecord)obj).Id == record.SkinColor)
-                    {
-                        cbSkinColor.SelectedItem = obj;
-                        break;
-                    }
-
-                WearsGlassesCheckbox.Checked = record.CoachGlasses;
-                coachpic.Value = (int)record.Coachpic;
-                CoachFaceID_UpDown.Value = (int)record.FaceId;
-                CoachHeadID_UpDown.Value = (int)record.HeadHair;
-                coachSalary.Value = (decimal)((double)record.Salary / 100.0);
-                coachyearsleft.Value = (int)record.ContractLength;
-                coachQB.Value = (int)record.CoachQB;
-                coachRB.Value = (int)record.CoachRB;
-                coachWR.Value = (int)record.CoachWR;
-                coachOL.Value = (int)record.CoachOL;
-                coachDL.Value = (int)record.CoachDL;
-                coachLB.Value = (int)record.CoachLB;
-                coachDB.Value = (int)record.CoachDB;
-                coachKS.Value = (int)record.CoachKS;
-                coachPS.Value = (int)record.PuntRating;
-
-                //Win-Loss Records
-                coachPlayoffWins.Value = (int)record.PlayoffWins;
-                coachPlayoffLoses.Value = (int)record.PlayoffLosses;
-                coachSuperbowlWins.Value = (int)record.SuperBowlWins;
-                coachSuperBowlLoses.Value = (int)record.SuperBowlLoses;
-                coachWinningSeasons.Value = (int)record.WinningSeasons;
-                coachCareerWins.Value = (int)record.CareerWins;
-                coachCareerLoses.Value = (int)record.CareerLosses;
-                coachCareerTies.Value = (int)record.CareerTies;
-
-                if (record.DefenseType)
-                {
-                    threeFourButton.Checked = false;
-                    fourThreeButton.Checked = true;
-                }
-                else
-                {
-                    threeFourButton.Checked = true;
-                    fourThreeButton.Checked = false;
-                }
-
-
-
-                //Attributes
-                coachEthics.Value = (int)record.Ethics;
-                coachKnowledge.Value = (int)record.Knowledge;
-                coachMotivation.Value = (int)record.Motivation;
-                coachChemistry.Value = (int)record.Chemistry;
-
-                coachPassOff.Value = (int)record.OffensiveStrategy;
-                coachRunOff.Value = (int)(100 - record.OffensiveStrategy);
-                coachPassDef.Value = (int)record.DefensiveStrategy;
-                coachRunDef.Value = (int)(100 - record.DefensiveStrategy);
-                rb2.Value = (int)(100 - record.RBCarryDist);
-                rb1.Value = (int)(record.RBCarryDist);
-                coachDefAggression.Value = record.DefensiveAggression;
-                coachOffAggression.Value = record.OffensiveAggression;
-
-                //Priorities (NOTE: Madden 2007 rosters don't have coach sliders)
-                //Temp Fixed for 2007 files and backwards compatible
-                //Was going to make the priorities not visible for 2007
-                //Then decided to just remove the tab since it isn't needed.
-
-                if ((model.FileVersion == MaddenFileVersion.Ver2007) | (model.FileVersion == MaddenFileVersion.Ver2008))
-                    tabcontrol.TabPages.RemoveByKey("tabPage2");
-                    //priorityGroupBox.Visible = false;
-
-
-                if ((model.FileVersion == MaddenFileVersion.Ver2007) | (model.FileVersion == MaddenFileVersion.Ver2008))
-
-                    coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
-
-                
-                bool priorityMatches = false;
-
-                SortedList<int, CoachPrioritySliderRecord> priorites = null;
-
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                {
-                    priorites = model.CoachModel.GetCurrentCoachSliders();
-                    int priorityCount = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
-                    priorityMatches = (priorityCount != priorites.Count);
-                }
-
-
-                if
-                    (!priorityMatches & model.FileVersion != MaddenFileVersion.Ver2007 & model.FileVersion != MaddenFileVersion.Ver2008)
-                {
-                    int index = 0;
-                    foreach (CoachPrioritySliderRecord priorRecord in priorites.Values)
-                    {
-                        prioritySliders[index].Value = priorRecord.Priority;
-                        priorityTypeSliders[index].Value = priorRecord.PriorityType;
-                        priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, priorRecord.PriorityType);
-                        prioritySliders[index].Enabled = true;
-                        priorityTypeSliders[index].Enabled = true;
-                        index++;
-                    }
-                }
-
-                else
-                {
-
-                    for (int i = 0; i < Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length; i++)
-                    {
-                        prioritySliders[i].Value = 0;
-                        priorityTypeSliders[i].Value = 0;
-                        priorityDescriptionLabels[i].Text = "";
-                        prioritySliders[i].Enabled = false;
-                        priorityTypeSliders[i].Enabled = false;
-                    }
-
-                }
-
-            }
-
-            catch (Exception e)
-            {
-                MessageBox.Show("Exception Occured loading this Coach:\r\n" + e.ToString(), "Exception Loading Coach", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoadCoachInfo(lastLoadedRecord);
-                return;
-            }
-            finally
-            {
-                isInitialising = false;
-            }
-            lastLoadedRecord = record;
-        }
-
-        private string DecodePriorityType(CoachSliderPlayerPositions pos, int type)
-        {
-            if (type == 2)
-            {
-                return "Balanced";
-            }
-
-            switch (pos)
-            {
-                case CoachSliderPlayerPositions.QB:
-                    return (type == 0 ? "Pocket" : "Scrambling");
-                case CoachSliderPlayerPositions.HB:
-                    return (type == 0 ? "Power" : "Speed");
-                case CoachSliderPlayerPositions.FB:
-                case CoachSliderPlayerPositions.TE:
-                    return (type == 0 ? "Blocking" : "Receiving");
-                case CoachSliderPlayerPositions.WR:
-                    return (type == 0 ? "Possession" : "Speed");
-                case CoachSliderPlayerPositions.T:
-                case CoachSliderPlayerPositions.G:
-                case CoachSliderPlayerPositions.C:
-                    return (type == 0 ? "Run Blocking" : "Pass Blocking");
-                case CoachSliderPlayerPositions.DE:
-                case CoachSliderPlayerPositions.DT:
-                    return (type == 0 ? "Pass Rushing" : "Run Stopping");
-                case CoachSliderPlayerPositions.OLB:
-                case CoachSliderPlayerPositions.MLB:
-                    return (type == 0 ? "Coverage" : "Run Stopping");
-                case CoachSliderPlayerPositions.CB:
-                case CoachSliderPlayerPositions.SS:
-                case CoachSliderPlayerPositions.FS:
-                    return (type == 0 ? "Coverage" : "Hard Hitting");
-                case CoachSliderPlayerPositions.K:
-                case CoachSliderPlayerPositions.P:
-                    return (type == 0 ? "Power" : "Accurate");
-            }
-
-            return "";
-        }
-
-        #region Coaches General Settings
-
-        private void coachesName_Leave(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.CoachModel.CurrentCoachRecord.Name = coachesName.Text;
-            }
-        }
-
-        private void coachesPositionCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (model.CoachModel.ChangeCoachPosition((MaddenCoachPosition)coachesPositionCombo.SelectedIndex))
-                {
-                    LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
-                }
-                else
-                {
-                    coachesPositionCombo.SelectedIndex = model.CoachModel.CurrentCoachRecord.Position;
-                }
-            }
-        }
-
-        private void coachTeamCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.CoachModel.CurrentCoachRecord.TeamId = ((TeamRecord)cbTeamCombo.SelectedItem).TeamId;
-            }
-        }
-
-        #endregion
 
         #region IEditorForm Members
 
@@ -310,13 +85,24 @@ namespace MaddenEditor.Forms
             foreach (GenericRecord rec in model.CoachModel.CoachSkinColor)
                 cbSkinColor.Items.Add(rec);
 
+            filterTeamComboBox.Items.Add("ALL");
+            if (Manager.stream_model != null)
+            {
+                model.CoachModel.manager = this.Manager;
+                filterTeamComboBox.Items.Add("Unemployed");
+            }
+
             foreach (TableRecordModel rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
             {
-                // Only add these to lists for actual teams.  Gets rid of AFC,NFC,Free Agents
-                // which gives a "no record" anyway.
-                if (rec.GetIntField("TGID") < 1009)
+                // Don't add NFC/AFC Pro Bowl values here, keep free agents and use the table from streameddata if possible                
+                if (rec.Deleted)
+                    continue;
+                TeamRecord team = (TeamRecord)rec;
+                
+                if (team.TeamId != 1010 && team.TeamId != 1011)
                 {
-                    cbTeamCombo.Items.Add(rec);
+                    CoachTeamCombo.Items.Add(rec);
+                    coachPreviousTeam.Items.Add(rec);
                     filterTeamComboBox.Items.Add(rec);
                 }
             }
@@ -328,11 +114,17 @@ namespace MaddenEditor.Forms
             {
                 coachDefensivePlaybook.Items.Add(rec);
             }
-
             coachDefensivePlaybook.SelectedIndex = 0;
 
+            foreach (GenericRecord rec in model.TeamModel.OffensivePlaybookList)
+            {
+                coachOffensivePlaybook.Items.Add(rec);
+            }
+            coachOffensivePlaybook.SelectedIndex = 0;
+
+
             //Create priority controls
-            int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+            int numPositions = Enum.GetNames(typeof(PlayerDraftedPositions)).Length;
             prioritySliders = new NumericUpDown[numPositions];
             priorityTypeSliders = new NumericUpDown[numPositions];
             priorityDescriptionLabels = new Label[numPositions];
@@ -364,20 +156,383 @@ namespace MaddenEditor.Forms
 
                 priorityGroupBox.Controls.Add(priorityDescriptionLabels[i]);
             }
-            isInitialising = false;
-            LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
-        }
 
-        
+            if (Manager.CoachPortDAT.isterf)
+            {
+                ImportCoachPic_Button.Visible = true;
+                ExportCoachPic_Button.Visible = true;
+            }
+            else
+            {
+                ImportCoachPic_Button.Visible = false;
+                ExportCoachPic_Button.Visible = false;
+            }
+
+            InitCoachList();
+
+            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            {
+                coachAsset.Enabled = true;
+            }
+            else
+            {
+                coachAsset.Enabled = false;
+                coachAsset.Text = "";
+            }
+
+            isInitialising = false;
+        }
 
         public void CleanUI()
         {
-            cbTeamCombo.Items.Clear();
+            CoachTeamCombo.Items.Clear();
             filterTeamComboBox.Items.Clear();
         }
 
         #endregion
 
+        
+        
+        
+        public void LoadCoachInfo(CoachRecord record)
+        {
+            if (record == null)
+            {
+                MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            isInitialising = true;
+
+            try
+            {
+                //Load Coach General info
+                coachesName.Text = record.Name;
+
+                // TO FIX not working right for 2007
+                // Shows Unemployed coaches and lists Positions as Head Coaches etc...
+                // While team field is blank.  1009 = unemployed.
+                coachesPositionCombo.Text = coachesPositionCombo.Items[record.Position].ToString(); ;
+                
+
+                TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
+                TeamRecord prvteam = model.TeamModel.GetTeamRecord(record.LastTeamFranchise);
+                if (record.TeamId == 1023)      // have to fix this
+                    record.TeamId = 1009;
+                if (record.TeamId == 1009)
+                {
+                    CoachTeamCombo.Text = "Free Agents";
+                    coachPreviousTeam.Text = "Free Agents";
+                }
+                else
+                {
+                    CoachTeamCombo.SelectedItem = (object)team;
+                    coachPreviousTeam.SelectedItem = (object)prvteam;
+                }
+
+                coachAge.Value = (int)record.Age;
+
+                // this isnt right for all versions
+                foreach (Object obj in model.CoachModel.CoachSkinColor)
+                {
+                    if (((GenericRecord)obj).Id == record.SkinColor)
+                    {
+                        cbSkinColor.SelectedItem = obj;
+                        break;
+                    }
+                }
+
+                WearsGlassesCheckbox.Checked = record.CoachGlasses;
+                FormerPlayer_Checkbox.Checked = record.WasPlayer;
+                coachpic.Value = (int)record.Coachpic;
+                CoachFaceID_UpDown.Value = (int)record.FaceId;
+                CoachHeadID_UpDown.Value = (int)record.HeadHair;
+                coachSalary.Value = (decimal)((double)record.Salary / 100.0);
+                coachyearsleft.Value = (int)record.ContractLength;
+                Approval.Value = (int)record.ApprovalRating;
+                BodySize.Value = (int)record.BodySize;
+
+                CoachOff.Value = (int)record.Offense;
+                CoachDef.Value = (int)record.DefenseRating;
+                CoachSafetyUpDown.Value = (int)record.CoachS;
+                coachQB.Value = (int)record.CoachQB;
+                coachRB.Value = (int)record.CoachRB;
+                coachWR.Value = (int)record.CoachWR;
+                coachOL.Value = (int)record.CoachOL;
+                coachDL.Value = (int)record.CoachDL;
+                coachLB.Value = (int)record.CoachLB;
+                coachDB.Value = (int)record.CoachDB;
+                coachKS.Value = (int)record.CoachKS;
+                coachPS.Value = (int)record.CoachPS;
+
+                //Win-Loss Records
+                coachPlayoffWins.Value = (int)record.PlayoffWins;
+                coachPlayoffLoses.Value = (int)record.PlayoffLosses;
+                coachSuperbowlWins.Value = (int)record.SuperBowlWins;
+                coachSuperBowlLoses.Value = (int)record.SuperBowlLoses;
+                coachWinningSeasons.Value = (int)record.WinningSeasons;
+                coachCareerWins.Value = (int)record.CareerWins;
+                coachCareerLoses.Value = (int)record.CareerLosses;
+                coachCareerTies.Value = (int)record.CareerTies;
+                PlayoffsMade.Value = (int)record.PlayoffsMade;
+                coachSeasonWins.Value = (int)record.SeasonWins;
+                coachSeasonLosses.Value = (int)record.SeasonLosses;
+                coachSeasonTies.Value = (int)record.SeasonTies;
+
+                threeFourButton.Checked = false;
+                fourThreeButton.Checked = false;
+                if (record.DefenseType == 95)
+                    fourThreeButton.Checked = true;
+                else if (record.DefenseType == 5)
+                    threeFourButton.Checked = true;
+                else
+                {
+                    // have seen this get corrupted, change it to 4-3
+                    record.DefenseType = 95;
+                    fourThreeButton.Checked = true;
+                }
+
+                //Attributes
+                coachEthics.Value = (int)record.Ethics;
+                coachKnowledge.Value = (int)record.Knowledge;
+                coachMotivation.Value = (int)record.Motivation;
+                coachChemistry.Value = (int)record.Chemistry;
+                coachPassOff.Value = (int)record.OffensiveStrategy;
+                coachRunOff.Value = (int)(100 - record.OffensiveStrategy);
+                coachPassDef.Value = (int)record.DefensiveStrategy;
+                coachRunDef.Value = (int)(100 - record.DefensiveStrategy);
+                rb2.Value = (int)(100 - record.RBCarryDist);
+                rb1.Value = (int)(record.RBCarryDist);
+                coachDefAggression.Value = record.DefensiveAggression;
+                coachOffAggression.Value = record.OffensiveAggression;
+
+                coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
+                coachOffensivePlaybook.SelectedIndex = (int)record.OffensivePlaybook;
+
+                // Set slider values to 0
+                for (int i = 0; i < Enum.GetNames(typeof(PlayerDraftedPositions)).Length; i++)
+                {
+                    prioritySliders[i].Value = 0;
+                    priorityTypeSliders[i].Value = 0;
+                    priorityDescriptionLabels[i].Text = "";
+                    prioritySliders[i].Enabled = false;
+                    priorityTypeSliders[i].Enabled = false;
+                }
+                //Priorities (NOTE: Madden 2007-2008 don't have coach sliders)
+                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                {
+                    if (tabcontrol.TabPages.Contains(tabPage2))
+                        tabcontrol.TabPages.Remove(tabPage2);
+                }
+                else
+                {
+                    if (!tabcontrol.TabPages.Contains(tabPage2))
+                    {
+                        tabcontrol.TabPages.Add(tabPage2);
+                    }
+
+                    if (!record.wasinstreamed)
+                    {
+                        bool priorityMatches = false;
+                        SortedList<int, CoachPrioritySliderRecord> priorites = null;
+                        if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                        {
+                            priorites = model.CoachModel.GetCurrentCoachSliders();
+                            int priorityCount = Enum.GetNames(typeof(PlayerDraftedPositions)).Length;
+                            priorityMatches = (priorityCount != priorites.Count);
+                        }
+
+                        if (!priorityMatches)
+                        {
+                            int index = 0;
+                            foreach (CoachPrioritySliderRecord priorRecord in priorites.Values)
+                            {
+                                prioritySliders[index].Value = priorRecord.Priority;
+                                priorityTypeSliders[index].Value = priorRecord.PriorityType;
+                                priorityDescriptionLabels[index].Text = DecodePriorityType((PlayerDraftedPositions)index, priorRecord.PriorityType);
+                                prioritySliders[index].Enabled = true;
+                                priorityTypeSliders[index].Enabled = true;
+                                index++;
+                            }
+                        }
+                    }
+                }
+
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                {
+                    coachAsset.Text = record.Asset;
+                }
+            }
+
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Exception Occured loading this Coach:\r\n" + e.ToString(), "Exception Loading Coach", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadCoachInfo(lastLoadedRecord);
+                return;
+            }
+            finally
+            {
+                isInitialising = false;
+            }
+
+            lastLoadedRecord = record;
+            DisplayCoachPort();
+            isInitialising = false;
+        }
+
+        public void InitCoachList()
+        {
+            model.CoachModel.InitCoachList();
+
+            CoachGridView.Rows.Clear();
+            CoachGridView.Refresh();
+            CoachGridView.MultiSelect = false;
+            CoachGridView.RowHeadersVisible = false;
+            CoachGridView.AutoGenerateColumns = false;
+            CoachGridView.AllowUserToAddRows = false;
+            CoachGridView.ColumnCount = 2;
+            CoachGridView.Columns[0].Name = "ID";
+            CoachGridView.Columns[0].Width = 35;
+            CoachGridView.Columns[1].Name = "Coach";
+            CoachGridView.Columns[1].Width = 100;
+
+            foreach (KeyValuePair<int, string> Coach in model.CoachModel.CoachNames)
+            {
+                object[] o = { (int)Coach.Key, (string)Coach.Value };
+                CoachGridView.Rows.Add(o);
+            }
+            if (model.CoachModel.CoachNames.Count > 0)
+            {
+                CoachGridView.Rows[0].Selected = true;
+                currentcoachrow = 0;
+                LoadCoachInfo(model.CoachModel.GetCoachById((int)CoachGridView.Rows[0].Cells[0].Value));
+            }
+
+            else MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+        
+        private void CoachGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            if (!isInitialising)
+            {
+                DataGridViewRow row = CoachGridView.Rows[e.RowIndex];
+                int r = (int)row.Cells[0].Value;
+                //if (r == currentcoachrow)
+                //    return;
+                //else
+                //{
+                    CoachGridView.Rows[currentcoachrow].Selected = false;
+                    LoadCoachInfo(model.CoachModel.GetCoachById(r));
+                    CoachGridView.Rows[e.RowIndex].Selected = true;
+                    currentcoachrow = e.RowIndex;
+                //}
+            }
+        }
+        
+        
+        
+        public void DisplayCoachPort()
+        {            
+            CoachPortBox.BackColor = Color.White;
+            if (!Manager.CoachPortDAT.isterf)
+                return;
+
+            int portid = model.CoachModel.CurrentCoachRecord.Coachpic + 1;
+
+            if (Manager.CoachPortDAT.ParentTerf.files >= portid)
+            {
+                if (Manager.CoachPortDAT.ParentTerf.Data.DataFiles[portid].filetype == "MMAP")
+                    CoachPortBox.Image = Manager.CoachPortDAT.ParentTerf.Data.DataFiles[portid].mmap_data.GetPortraitDisplay();
+                else if (Manager.CoachPortDAT.ParentTerf.Data.DataFiles[portid].filetype == "COMP") CoachPortBox.BackColor = Color.Green;
+                else CoachPortBox.BackColor = Color.Red;
+            }
+
+        }
+        
+        private string DecodePriorityType(PlayerDraftedPositions pos, int type)
+        {
+            if (type == 2)
+            {
+                return "Balanced";
+            }
+
+            switch (pos)
+            {
+                case PlayerDraftedPositions.QB:
+                    return (type == 0 ? "Pocket" : "Scrambling");
+                case PlayerDraftedPositions.HB:
+                    return (type == 0 ? "Power" : "Speed");
+                case PlayerDraftedPositions.FB:
+                case PlayerDraftedPositions.TE:
+                    return (type == 0 ? "Blocking" : "Receiving");
+                case PlayerDraftedPositions.WR:
+                    return (type == 0 ? "Possession" : "Speed");
+                case PlayerDraftedPositions.T:
+                case PlayerDraftedPositions.G:
+                case PlayerDraftedPositions.C:
+                    return (type == 0 ? "Run Blocking" : "Pass Blocking");
+                case PlayerDraftedPositions.DE:
+                case PlayerDraftedPositions.DT:
+                    return (type == 0 ? "Pass Rushing" : "Run Stopping");
+                case PlayerDraftedPositions.OLB:
+                case PlayerDraftedPositions.MLB:
+                    return (type == 0 ? "Coverage" : "Run Stopping");
+                case PlayerDraftedPositions.CB:
+                case PlayerDraftedPositions.SS:
+                case PlayerDraftedPositions.FS:
+                    return (type == 0 ? "Coverage" : "Hard Hitting");
+                case PlayerDraftedPositions.K:
+                case PlayerDraftedPositions.P:
+                    return (type == 0 ? "Power" : "Accurate");
+            }
+
+            return "";
+        }
+
+        #region Coaches General Settings
+
+        private void coachesName_Leave(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.Name = coachesName.Text;
+            }
+        }
+
+        private void coachesPositionCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                bool changed = false;
+                changed = model.CoachModel.ChangeCoachPosition((int)coachesPositionCombo.SelectedIndex);
+
+                if (changed)
+                    LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
+            }
+        }
+        
+        private void CoachTeamCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                bool changed = false;
+                if (CoachTeamCombo.Text == "Free Agents")
+                    changed = model.CoachModel.ChangeCoachTeam(1009);
+                else if (model.FileType == MaddenFileType.Roster)
+                    changed = model.CoachModel.ChangeCoachTeam(CoachTeamCombo.SelectedIndex -1);
+                else if (model.FileType == MaddenFileType.Franchise)
+                    changed = model.CoachModel.ChangeCoachTeam(CoachTeamCombo.SelectedIndex);                
+                InitCoachList();                                             
+            }
+        }
+
+        #endregion
+
+       
         #region Coach Navigate Filter Functions
 
         private void leftButton_Click(object sender, EventArgs e)
@@ -496,65 +651,53 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void filterTeamCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (filterTeamCheckBox.Checked)
-            {
-                model.CoachModel.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
-                //Generate a move next so it will filter
-                model.CoachModel.GetNextCoachRecord();
-                LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
-            }
-            else
-            {
-                model.CoachModel.RemoveTeamFilter();
-            }
-        }
+       
 
         private void filterTeamComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (filterTeamCheckBox.Checked)
+            if (!isInitialising)
             {
-                model.CoachModel.SetTeamFilter(filterTeamComboBox.SelectedItem.ToString());
-                //Generate a move next so it will filter
-                model.CoachModel.GetNextCoachRecord();
-                LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
+                if (filterTeamComboBox.SelectedIndex == 0)
+                    model.CoachModel.FilterCoachTeam = -1;
+                else if (filterTeamComboBox.Text == "Free Agents")
+                    model.CoachModel.FilterCoachTeam = 1009;
+                else if (Manager.stream_model != null)
+                {
+                    if (filterTeamComboBox.SelectedIndex == 1)
+                        model.CoachModel.FilterCoachTeam = -2;
+                    else model.CoachModel.FilterCoachTeam = filterTeamComboBox.SelectedIndex - 2;
+                }
+                else
+                {
+                    TeamRecord team = (TeamRecord)filterTeamComboBox.SelectedItem;
+                    model.CoachModel.FilterCoachTeam = team.TeamId;                    
+                }
+                
+                isInitialising = true;
+                InitCoachList();
+                isInitialising = false;
             }
-        }
-
-        private void filterPositionCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (filterPositionCheckBox.Checked)
-            {
-                model.CoachModel.SetPositionFilter(filterPositionComboBox.SelectedIndex);
-
-                model.CoachModel.GetNextCoachRecord();
-                LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
-            }
-            else
-            {
-                model.CoachModel.RemovePositionFilter();
-            }
-        }
+        }      
 
         private void filterPositionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (filterPositionCheckBox.Checked)
+            if (!isInitialising)
             {
-                model.CoachModel.SetPositionFilter(filterPositionComboBox.SelectedIndex);
+                if (filterPositionComboBox.SelectedIndex == 0)
+                    model.CoachModel.FilterCoachPosition = -1;
+                else model.CoachModel.FilterCoachPosition = filterPositionComboBox.SelectedIndex - 1;
 
-                model.CoachModel.GetNextCoachRecord();
-                LoadCoachInfo(model.CoachModel.CurrentCoachRecord);
+                isInitialising = true;
+                InitCoachList();
+                isInitialising = false;
             }
         }
-
-
-
+        
         private void threeFourButton_CheckedChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.CoachModel.CurrentCoachRecord.DefenseType = false;
+                model.CoachModel.CurrentCoachRecord.DefenseType = 5;
             }
         }
 
@@ -562,7 +705,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.CoachModel.CurrentCoachRecord.DefenseType = true;
+                model.CoachModel.CurrentCoachRecord.DefenseType = 95;
             }
         }
 
@@ -608,6 +751,13 @@ namespace MaddenEditor.Forms
                 model.CoachModel.CurrentCoachRecord.DefensiveAggression = (int)coachDefAggression.Value;
             }
         }
+        private void coachOffensivePlaybook_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.OffensivePlaybook = (int)coachOffensivePlaybook.SelectedIndex;
+            }
+        }
 
         private void coachDefensivePlaybook_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -633,6 +783,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.CoachModel.CurrentCoachRecord.Coachpic = (int)coachpic.Value;
+                DisplayCoachPort();
             }
         }
 
@@ -719,15 +870,16 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.CoachModel.CurrentCoachRecord.PuntRating= (int)coachPS.Value;
+                model.CoachModel.CurrentCoachRecord.CoachPS = (int)coachPS.Value;
             }
 
         }
+        
         private void priorityTypeSlider_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+                int numPositions = Enum.GetNames(typeof(PlayerDraftedPositions)).Length;
                 int index;
                 for (index = 0; index < numPositions; index++)
                 {
@@ -741,7 +893,7 @@ namespace MaddenEditor.Forms
                 if (priorities.Count == numPositions)
                 {
                     priorities.Values[index].PriorityType = (int)priorityTypeSliders[index].Value;
-                    priorityDescriptionLabels[index].Text = DecodePriorityType((CoachSliderPlayerPositions)index, (int)priorityTypeSliders[index].Value);
+                    priorityDescriptionLabels[index].Text = DecodePriorityType((PlayerDraftedPositions)index, (int)priorityTypeSliders[index].Value);
                 }
             }
         }
@@ -750,7 +902,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                int numPositions = Enum.GetNames(typeof(CoachSliderPlayerPositions)).Length;
+                int numPositions = Enum.GetNames(typeof(PlayerDraftedPositions)).Length;
                 int index;
                 for (index = 0; index < numPositions; index++)
                 {
@@ -767,6 +919,7 @@ namespace MaddenEditor.Forms
                 }
             }
         }
+        
         private void WearsGlassesCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             model.CoachModel.CurrentCoachRecord.CoachGlasses = WearsGlassesCheckbox.Checked;
@@ -783,8 +936,127 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
                 model.CoachModel.CurrentCoachRecord.HeadHair = (int)CoachHeadID_UpDown.Value;
         }
-
         
+        private void CoachOff_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.Offense = (int)CoachOff.Value;
+        }
+
+        private void CoachSafetyUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.CoachS = (int)CoachSafetyUpDown.Value;
+        }
+
+        private void CoachDef_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.DefenseRating = (int)CoachDef.Value;
+        }
+
+        private void Approval_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.ApprovalRating = (int)Approval.Value;
+        }
+       
+        private void ImportCoachPic_Button_Click(object sender, EventArgs e)
+        {
+            isInitialising = true;
+            string custom = Manager.CoachPortDAT.grfx.GetLoadFile();
+            if (custom == "")
+                return;
+            Manager.CoachPortDAT.grfx = new CustomBitmap(custom, Color.White);
+            Manager.CoachPortDAT.ParentTerf.Data.DataFiles[model.CoachModel.CurrentCoachRecord.Coachpic + 1].mmap_data.ImportGraphic(Manager.CoachPortDAT.grfx.fixed_dds);
+            Manager.CoachPortDAT.changed = true;
+            isInitialising = false;
+
+            DisplayCoachPort();     
+        }
+
+        private void ExportCoachPic_Button_Click(object sender, EventArgs e)
+        {
+            string savefilename = "";
+            SaveFileDialog portsavedialog = new SaveFileDialog();
+            portsavedialog.Title = "Save Player Portrait";
+            portsavedialog.Filter = "BMP Image | *.BMP";
+            portsavedialog.CheckPathExists = true;
+
+            if (portsavedialog.ShowDialog() == DialogResult.OK)
+                savefilename = portsavedialog.FileName;
+            if (savefilename == "")
+                return;
+
+            Image image = Manager.CoachPortDAT.ParentTerf.Data.DataFiles[model.CoachModel.CurrentCoachRecord.Coachpic + 1].mmap_data.GetPortraitDisplay();
+            image.Save(savefilename, ImageFormat.Bmp);            
+        }
+
+        private void coachSalary_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.Salary = (int)(coachSalary.Value * 100);
+            }
+        }
+
+        private void FormerPlayer_Checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.WasPlayer = FormerPlayer_Checkbox.Checked;
+            }
+        }        
+
+        private void BodySize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.BodySize = (int)BodySize.Value;
+            }
+        }
+
+        private void Delete_Coach_Button_Click(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.CoachModel.CurrentCoachRecord.SetDeleteFlag(true);
+                isInitialising = true;
+                InitCoachList();
+                isInitialising = false;
+            }
+        }
+
+        private void coachSeasonWins_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.SeasonWins = (int)coachSeasonWins.Value;
+        }
+
+        private void PlayoffsMade_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.PlayoffsMade = (int)PlayoffsMade.Value;
+        }
+
+        private void coachSeasonLosses_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.SeasonLosses = (int)coachSeasonLosses.Value;
+        }
+
+        private void coachSeasonTies_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.SeasonTies = (int)coachSeasonTies.Value;
+        }
+
+        private void coachAsset_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.Asset = coachAsset.Text;
+        }
+
 
     }
     	

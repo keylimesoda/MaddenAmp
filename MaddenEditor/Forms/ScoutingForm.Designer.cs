@@ -127,12 +127,12 @@ namespace MaddenEditor.Forms
             // 
             // RookiePositionFilter
             // 
-            this.RookiePositionFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RookiePositionFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RookiePositionFilter.FormattingEnabled = true;
             this.RookiePositionFilter.Location = new System.Drawing.Point(941, 38);
             this.RookiePositionFilter.Name = "RookiePositionFilter";
-            this.RookiePositionFilter.Size = new System.Drawing.Size(63, 21);
+            this.RookiePositionFilter.Size = new System.Drawing.Size(55, 21);
             this.RookiePositionFilter.TabIndex = 16;
             this.RookiePositionFilter.SelectedIndexChanged += new System.EventHandler(this.RookiePositionFilter_SelectedIndexChanged);
             // 
@@ -146,7 +146,7 @@ namespace MaddenEditor.Forms
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(13, 43);
+            this.label1.Location = new System.Drawing.Point(9, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(93, 13);
             this.label1.TabIndex = 19;
@@ -156,7 +156,7 @@ namespace MaddenEditor.Forms
             // 
             this.TotalLabel.AutoSize = true;
             this.TotalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TotalLabel.Location = new System.Drawing.Point(106, 43);
+            this.TotalLabel.Location = new System.Drawing.Point(102, 43);
             this.TotalLabel.Name = "TotalLabel";
             this.TotalLabel.Size = new System.Drawing.Size(42, 13);
             this.TotalLabel.TabIndex = 20;
@@ -168,15 +168,15 @@ namespace MaddenEditor.Forms
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(165, 43);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 13);
+            this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 21;
-            this.label3.Text = "Breakdown by Position:";
+            this.label3.Text = "Hours by Position:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(283, 43);
+            this.label4.Location = new System.Drawing.Point(258, 43);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(22, 13);
             this.label4.TabIndex = 22;
@@ -186,7 +186,7 @@ namespace MaddenEditor.Forms
             // 
             this.QBhoursLabel.AutoSize = true;
             this.QBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.QBhoursLabel.Location = new System.Drawing.Point(304, 43);
+            this.QBhoursLabel.Location = new System.Drawing.Point(279, 43);
             this.QBhoursLabel.Name = "QBhoursLabel";
             this.QBhoursLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.QBhoursLabel.Size = new System.Drawing.Size(16, 13);
@@ -202,30 +202,30 @@ namespace MaddenEditor.Forms
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(234)))));
             dataGridViewCellStyle1.FormatProvider = new System.Globalization.CultureInfo("en-AU");
             this.RookieGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.RookieGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RookieGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RookieGrid.BackgroundColor = System.Drawing.Color.White;
             this.RookieGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.RookieGrid.GridColor = System.Drawing.Color.White;
-            this.RookieGrid.Location = new System.Drawing.Point(10, 67);
+            this.RookieGrid.Location = new System.Drawing.Point(5, 65);
             this.RookieGrid.Name = "RookieGrid";
             this.RookieGrid.RowTemplate.Height = 16;
             this.RookieGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.RookieGrid.Size = new System.Drawing.Size(991, 369);
+            this.RookieGrid.Size = new System.Drawing.Size(1000, 369);
             this.RookieGrid.TabIndex = 18;
             this.RookieGrid.TabStop = false;
             this.RookieGrid.Text = "dataGridView1";
-            this.RookieGrid.Sorted += new System.EventHandler(this.RookieGrid_Sorted);
             this.RookieGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.RookieGrid_CellEndEdit);
             this.RookieGrid.CurrentCellChanged += new System.EventHandler(this.RookieGrid_Click);
+            this.RookieGrid.Sorted += new System.EventHandler(this.RookieGrid_Sorted);
             this.RookieGrid.DoubleClick += new System.EventHandler(this.RookieGrid_DoubleClick);
             // 
             // RBhoursLabel
             // 
             this.RBhoursLabel.AutoSize = true;
             this.RBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RBhoursLabel.Location = new System.Drawing.Point(343, 43);
+            this.RBhoursLabel.Location = new System.Drawing.Point(318, 43);
             this.RBhoursLabel.Name = "RBhoursLabel";
             this.RBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.RBhoursLabel.TabIndex = 25;
@@ -235,7 +235,7 @@ namespace MaddenEditor.Forms
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(323, 43);
+            this.label8.Location = new System.Drawing.Point(298, 43);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(22, 13);
             this.label8.TabIndex = 24;
@@ -245,7 +245,7 @@ namespace MaddenEditor.Forms
             // 
             this.WRhoursLabel.AutoSize = true;
             this.WRhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WRhoursLabel.Location = new System.Drawing.Point(391, 43);
+            this.WRhoursLabel.Location = new System.Drawing.Point(366, 43);
             this.WRhoursLabel.Name = "WRhoursLabel";
             this.WRhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.WRhoursLabel.TabIndex = 29;
@@ -255,7 +255,7 @@ namespace MaddenEditor.Forms
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(366, 43);
+            this.label12.Location = new System.Drawing.Point(341, 43);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(26, 13);
             this.label12.TabIndex = 28;
@@ -265,7 +265,7 @@ namespace MaddenEditor.Forms
             // 
             this.OLhoursLabel.AutoSize = true;
             this.OLhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OLhoursLabel.Location = new System.Drawing.Point(472, 43);
+            this.OLhoursLabel.Location = new System.Drawing.Point(447, 43);
             this.OLhoursLabel.Name = "OLhoursLabel";
             this.OLhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.OLhoursLabel.TabIndex = 33;
@@ -275,7 +275,7 @@ namespace MaddenEditor.Forms
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(453, 43);
+            this.label14.Location = new System.Drawing.Point(428, 43);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(21, 13);
             this.label14.TabIndex = 32;
@@ -285,7 +285,7 @@ namespace MaddenEditor.Forms
             // 
             this.TEhoursLabel.AutoSize = true;
             this.TEhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TEhoursLabel.Location = new System.Drawing.Point(434, 43);
+            this.TEhoursLabel.Location = new System.Drawing.Point(409, 43);
             this.TEhoursLabel.Name = "TEhoursLabel";
             this.TEhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.TEhoursLabel.TabIndex = 31;
@@ -295,7 +295,7 @@ namespace MaddenEditor.Forms
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(415, 43);
+            this.label16.Location = new System.Drawing.Point(390, 43);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(21, 13);
             this.label16.TabIndex = 30;
@@ -305,7 +305,7 @@ namespace MaddenEditor.Forms
             // 
             this.PhoursLabel.AutoSize = true;
             this.PhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PhoursLabel.Location = new System.Drawing.Point(704, 43);
+            this.PhoursLabel.Location = new System.Drawing.Point(679, 43);
             this.PhoursLabel.Name = "PhoursLabel";
             this.PhoursLabel.Size = new System.Drawing.Size(13, 13);
             this.PhoursLabel.TabIndex = 45;
@@ -315,7 +315,7 @@ namespace MaddenEditor.Forms
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(693, 43);
+            this.label20.Location = new System.Drawing.Point(668, 43);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(14, 13);
             this.label20.TabIndex = 44;
@@ -325,7 +325,7 @@ namespace MaddenEditor.Forms
             // 
             this.KhoursLabel.AutoSize = true;
             this.KhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KhoursLabel.Location = new System.Drawing.Point(672, 43);
+            this.KhoursLabel.Location = new System.Drawing.Point(647, 43);
             this.KhoursLabel.Name = "KhoursLabel";
             this.KhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.KhoursLabel.TabIndex = 43;
@@ -335,7 +335,7 @@ namespace MaddenEditor.Forms
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(661, 43);
+            this.label22.Location = new System.Drawing.Point(636, 43);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(14, 13);
             this.label22.TabIndex = 42;
@@ -345,7 +345,7 @@ namespace MaddenEditor.Forms
             // 
             this.ShoursLabel.AutoSize = true;
             this.ShoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShoursLabel.Location = new System.Drawing.Point(638, 43);
+            this.ShoursLabel.Location = new System.Drawing.Point(613, 43);
             this.ShoursLabel.Name = "ShoursLabel";
             this.ShoursLabel.Size = new System.Drawing.Size(16, 13);
             this.ShoursLabel.TabIndex = 41;
@@ -355,7 +355,7 @@ namespace MaddenEditor.Forms
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(626, 43);
+            this.label24.Location = new System.Drawing.Point(601, 43);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(14, 13);
             this.label24.TabIndex = 40;
@@ -365,7 +365,7 @@ namespace MaddenEditor.Forms
             // 
             this.CBhoursLabel.AutoSize = true;
             this.CBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CBhoursLabel.Location = new System.Drawing.Point(601, 43);
+            this.CBhoursLabel.Location = new System.Drawing.Point(576, 43);
             this.CBhoursLabel.Name = "CBhoursLabel";
             this.CBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.CBhoursLabel.TabIndex = 39;
@@ -375,7 +375,7 @@ namespace MaddenEditor.Forms
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(582, 43);
+            this.label26.Location = new System.Drawing.Point(557, 43);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(21, 13);
             this.label26.TabIndex = 38;
@@ -385,7 +385,7 @@ namespace MaddenEditor.Forms
             // 
             this.LBhoursLabel.AutoSize = true;
             this.LBhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBhoursLabel.Location = new System.Drawing.Point(558, 43);
+            this.LBhoursLabel.Location = new System.Drawing.Point(533, 43);
             this.LBhoursLabel.Name = "LBhoursLabel";
             this.LBhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.LBhoursLabel.TabIndex = 37;
@@ -395,7 +395,7 @@ namespace MaddenEditor.Forms
             // 
             this.label28.AutoSize = true;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(541, 43);
+            this.label28.Location = new System.Drawing.Point(516, 43);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(20, 13);
             this.label28.TabIndex = 36;
@@ -405,7 +405,7 @@ namespace MaddenEditor.Forms
             // 
             this.DLhoursLabel.AutoSize = true;
             this.DLhoursLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DLhoursLabel.Location = new System.Drawing.Point(515, 43);
+            this.DLhoursLabel.Location = new System.Drawing.Point(490, 43);
             this.DLhoursLabel.Name = "DLhoursLabel";
             this.DLhoursLabel.Size = new System.Drawing.Size(16, 13);
             this.DLhoursLabel.TabIndex = 35;
@@ -415,7 +415,7 @@ namespace MaddenEditor.Forms
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(497, 43);
+            this.label10.Location = new System.Drawing.Point(472, 43);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(21, 13);
             this.label10.TabIndex = 34;
@@ -465,7 +465,7 @@ namespace MaddenEditor.Forms
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1016, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
             this.menuStrip1.TabIndex = 57;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -474,13 +474,13 @@ namespace MaddenEditor.Forms
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scoutingHelpToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // scoutingHelpToolStripMenuItem
             // 
             this.scoutingHelpToolStripMenuItem.Name = "scoutingHelpToolStripMenuItem";
-            this.scoutingHelpToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.scoutingHelpToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.scoutingHelpToolStripMenuItem.Text = "Scouting Help";
             this.scoutingHelpToolStripMenuItem.Click += new System.EventHandler(this.scoutingHelpToolStripMenuItem_Click);
             // 
@@ -710,7 +710,7 @@ namespace MaddenEditor.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 702);
+            this.ClientSize = new System.Drawing.Size(1008, 702);
             this.Controls.Add(this.picks);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox2);
@@ -750,7 +750,7 @@ namespace MaddenEditor.Forms
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1022, 736);
             this.Name = "ScoutingForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rookie Scouting";
             this.Load += new System.EventHandler(this.ScoutingForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RookieGrid)).EndInit();

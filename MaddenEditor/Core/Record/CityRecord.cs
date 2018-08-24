@@ -30,25 +30,25 @@ namespace MaddenEditor.Core.Record
 	{
         public const string CITY_POPULATION = "CPOP";
         public const string REGION = "CREG";
-        public const string TIMEZONE = "CTIZ";
-        public const string DEMAND = "CTMD";
+        public const string TIMEZONE = "CTIZ";              // not 2004
+        public const string TEAM_DEMAND = "CTMD";
         public const string TEMP_JAN = "CYAJ";
         public const string TEMP_SEP = "CYAS";
-        public const string YEARLY_FAIR_PERC = "CYFP";
+        public const string FAIR_WEATHER_PERC = "CYFP";
         public const string YEARLY_FAIR_WEATHER = "CYFW";
 		public const string CITY_ID = "CYID";
 		public const string CITY_NAME = "CYNM";
-        public const string NEWSPAPER = "CYNP";
+        public const string NEWSPAPER = "CYNP";             // not 2004
         public const string ON_MAP = "CYOM";
         public const string YEARLY_RAIN_PERC = "CYRP";
         public const string YEARLY_SNOW_PERC = "CYSP";
         public const string STATE_NAME = "CYST";
         public const string TELEVISION = "CYTV";
         public const string YEARLY_WIND_PERC = "CYWP";
-        public const string CYWW = "CYWW";
-        public const string OROT = "OROT";
-        public const string OWRC = "OWRC";
-        public const string OWRY = "OWRY";
+        public const string CYWW = "CYWW";                  // worst wind/weather ?
+        public const string OROT = "OROT";                  // relocation ?
+        public const string OWRC = "OWRC";                  // relocation ?
+        public const string OWRY = "OWRY";                  // relocation ?
 
 
 
@@ -75,8 +75,8 @@ namespace MaddenEditor.Core.Record
         }
         public int Demand
         {
-            get { return GetIntField(DEMAND); }
-            set { SetField(DEMAND, value); }
+            get { return GetIntField(TEAM_DEMAND); }
+            set { SetField(TEAM_DEMAND, value); }
         }
         public int TempJan
         {
@@ -90,10 +90,10 @@ namespace MaddenEditor.Core.Record
         }
         public int YearlyFairPerc
         {
-            get { return GetIntField(YEARLY_FAIR_PERC); }
-            set { SetField(YEARLY_FAIR_PERC, value); }
+            get { return GetIntField(FAIR_WEATHER_PERC); }
+            set { SetField(FAIR_WEATHER_PERC, value); }
         }
-        public int YearlyFairWeather
+        public int FairWeather
         {
             get { return GetIntField(YEARLY_FAIR_WEATHER); }
             set { SetField(YEARLY_FAIR_WEATHER, value); }

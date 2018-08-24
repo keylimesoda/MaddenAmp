@@ -42,6 +42,7 @@ namespace MaddenEditor.Forms
             this.PlayersTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.fixHumanPancakes = new System.Windows.Forms.CheckBox();
             this.fixSimEngine = new System.Windows.Forms.CheckBox();
             this.reorderDepthCharts = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -123,7 +124,8 @@ namespace MaddenEditor.Forms
             this.simOffAggSlider = new System.Windows.Forms.TrackBar();
             this.simOffRPUpDown = new System.Windows.Forms.NumericUpDown();
             this.simOffRPSlider = new System.Windows.Forms.TrackBar();
-            this.fixHumanPancakes = new System.Windows.Forms.CheckBox();
+            this.WeeklyOptions = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.PlayersTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -180,6 +182,7 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.simOffAggSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPSlider)).BeginInit();
+            this.WeeklyOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -205,70 +208,71 @@ namespace MaddenEditor.Forms
             this.dumpStatsToolStripMenuItem,
             this.fixAllStatsToolStripMenuItem});
             this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
-            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.actionsToolStripMenuItem.Text = "Actions";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(229, 22);
             this.toolStripMenuItem2.Text = "Save Settings";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(229, 22);
             this.toolStripMenuItem1.Text = "Load Last Saved Settings";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // loadRecommendedSettingsToolStripMenuItem
             // 
             this.loadRecommendedSettingsToolStripMenuItem.Name = "loadRecommendedSettingsToolStripMenuItem";
-            this.loadRecommendedSettingsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.loadRecommendedSettingsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.loadRecommendedSettingsToolStripMenuItem.Text = "Load Recommended Settings";
             this.loadRecommendedSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadRecommendedSettingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(220, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(226, 6);
             // 
             // revertRatingsToolStripMenuItem
             // 
             this.revertRatingsToolStripMenuItem.Name = "revertRatingsToolStripMenuItem";
-            this.revertRatingsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.revertRatingsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.revertRatingsToolStripMenuItem.Text = "Revert Ratings";
             this.revertRatingsToolStripMenuItem.Click += new System.EventHandler(this.revertRatingsToolStripMenuItem_Click);
             // 
             // makeAdjustmentsToolStripMenuItem
             // 
             this.makeAdjustmentsToolStripMenuItem.Name = "makeAdjustmentsToolStripMenuItem";
-            this.makeAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.makeAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.makeAdjustmentsToolStripMenuItem.Text = "Make Adjustments";
             this.makeAdjustmentsToolStripMenuItem.Click += new System.EventHandler(this.makeAdjustmentsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(226, 6);
             // 
             // dumpStatsToolStripMenuItem
             // 
             this.dumpStatsToolStripMenuItem.Name = "dumpStatsToolStripMenuItem";
-            this.dumpStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.dumpStatsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.dumpStatsToolStripMenuItem.Text = "Stat Output";
             this.dumpStatsToolStripMenuItem.Click += new System.EventHandler(this.dumpStatsToolStripMenuItem_Click);
             // 
             // fixAllStatsToolStripMenuItem
             // 
             this.fixAllStatsToolStripMenuItem.Name = "fixAllStatsToolStripMenuItem";
-            this.fixAllStatsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.fixAllStatsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.fixAllStatsToolStripMenuItem.Text = "Fix All Stats";
             this.fixAllStatsToolStripMenuItem.Click += new System.EventHandler(this.fixAllStatsToolStripMenuItem_Click);
             // 
             // PlayersTab
             // 
+            this.PlayersTab.Controls.Add(this.WeeklyOptions);
             this.PlayersTab.Controls.Add(this.tabPage1);
             this.PlayersTab.Controls.Add(this.tabPage2);
             this.PlayersTab.Location = new System.Drawing.Point(6, 27);
@@ -301,6 +305,18 @@ namespace MaddenEditor.Forms
             this.groupBox3.TabIndex = 25;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Other Maintenance";
+            // 
+            // fixHumanPancakes
+            // 
+            this.fixHumanPancakes.AutoSize = true;
+            this.fixHumanPancakes.Checked = true;
+            this.fixHumanPancakes.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.fixHumanPancakes.Location = new System.Drawing.Point(40, 85);
+            this.fixHumanPancakes.Name = "fixHumanPancakes";
+            this.fixHumanPancakes.Size = new System.Drawing.Size(154, 17);
+            this.fixHumanPancakes.TabIndex = 2;
+            this.fixHumanPancakes.Text = "Fix Human Pancake Totals";
+            this.fixHumanPancakes.UseVisualStyleBackColor = true;
             // 
             // fixSimEngine
             // 
@@ -1381,17 +1397,26 @@ namespace MaddenEditor.Forms
             this.simOffRPSlider.Value = 53;
             this.simOffRPSlider.ValueChanged += new System.EventHandler(this.SliderValueChanged);
             // 
-            // fixHumanPancakes
+            // WeeklyOptions
             // 
-            this.fixHumanPancakes.AutoSize = true;
-            this.fixHumanPancakes.Checked = true;
-            this.fixHumanPancakes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.fixHumanPancakes.Location = new System.Drawing.Point(40, 85);
-            this.fixHumanPancakes.Name = "fixHumanPancakes";
-            this.fixHumanPancakes.Size = new System.Drawing.Size(154, 17);
-            this.fixHumanPancakes.TabIndex = 2;
-            this.fixHumanPancakes.Text = "Fix Human Pancake Totals";
-            this.fixHumanPancakes.UseVisualStyleBackColor = true;
+            this.WeeklyOptions.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.WeeklyOptions.Controls.Add(this.button1);
+            this.WeeklyOptions.Location = new System.Drawing.Point(4, 22);
+            this.WeeklyOptions.Name = "WeeklyOptions";
+            this.WeeklyOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.WeeklyOptions.Size = new System.Drawing.Size(688, 446);
+            this.WeeklyOptions.TabIndex = 2;
+            this.WeeklyOptions.Text = "Options";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(15, 17);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(127, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Clear Season Stats";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // WeeklyMaintenanceForm
             // 
@@ -1467,6 +1492,7 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.simOffAggSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.simOffRPSlider)).EndInit();
+            this.WeeklyOptions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1570,5 +1596,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem dumpStatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixAllStatsToolStripMenuItem;
         private System.Windows.Forms.CheckBox fixHumanPancakes;
+        private System.Windows.Forms.TabPage WeeklyOptions;
+        private System.Windows.Forms.Button button1;
     }
 }

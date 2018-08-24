@@ -4484,7 +4484,7 @@ namespace MaddenEditor.Forms
             decimal HClb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal HCdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal HCk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal HCp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal HCp = model.CoachModel.CurrentCoachRecord.PunterRating;
             //head coach modifier to conditioning
             decimal HeadCoachConditioningMotivation = Math.Round((((HCMot - 70) / 100)),2);
 
@@ -4504,7 +4504,7 @@ namespace MaddenEditor.Forms
             decimal OClb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal OCdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal OCk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal OCp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal OCp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
             model.CoachModel.SetPositionFilter(2);
             model.CoachModel.SetTeamFilter(CPUteam.ToString());
@@ -4521,7 +4521,7 @@ namespace MaddenEditor.Forms
             decimal DClb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal DCdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal DCk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal DCp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal DCp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
             model.CoachModel.SetPositionFilter(3);
             model.CoachModel.SetTeamFilter(CPUteam.ToString());
@@ -4538,7 +4538,7 @@ namespace MaddenEditor.Forms
             decimal STlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal STdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal STk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal STp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal STp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
             List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
        
@@ -6476,7 +6476,7 @@ namespace MaddenEditor.Forms
             decimal HClb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal HCdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal HCk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal HCp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal HCp = model.CoachModel.CurrentCoachRecord.PunterRating;
             //head coach modifier to conditioning
             decimal HeadCoachConditioningMotivation = Math.Round((((HCMot - 70) / 100)), 2);
 
@@ -6496,7 +6496,7 @@ namespace MaddenEditor.Forms
             decimal OClb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal OCdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal OCk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal OCp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal OCp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
             model.CoachModel.SetPositionFilter(2);
             model.CoachModel.SetTeamFilter(CurTeam.ToString());
@@ -6513,7 +6513,7 @@ namespace MaddenEditor.Forms
             decimal DClb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal DCdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal DCk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal DCp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal DCp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
             model.CoachModel.SetPositionFilter(3);
             model.CoachModel.SetTeamFilter(CurTeam.ToString());
@@ -6530,7 +6530,7 @@ namespace MaddenEditor.Forms
             decimal STlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
             decimal STdb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
             decimal STk = model.CoachModel.CurrentCoachRecord.KickerRating;
-            decimal STp = model.CoachModel.CurrentCoachRecord.PuntRating;
+            decimal STp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
             List<PlayerRecord> teamPlayers = depthEditingModel.GetAllPlayersOnTeamByOvr(teamId, positionId);
 

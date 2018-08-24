@@ -28,17 +28,25 @@ namespace MaddenEditor.Core.Record
 {
 	public class OwnerRecord : TableRecordModel
 	{
-		public const string TEAM_ID = "TGID";
-		public const string USER_CONTROLLED = "CFUC";
-		public const string RELOCATION_YEAR = "OFYR";
-		public const string DRAFT_PLAYERS = "CFDA";
-		public const string SIGN_FREE_AGENTS = "CFFA";
-		public const string SIGN_DRAFT_PICKS = "CFDP";
-		public const string RESIGN_PLAYERS = "CFRP";
-		public const string FILL_ROSTERS = "CFFR";
-		public const string REORDER_DEPTH_CHARTS = "CFRR";
-		public const string COMPUTER_CONTROL_7 = "CFEX";
-
+		//OWNR        
+        public const string CPU_DRAFT_PLAYERS = "CFDA";
+        public const string CPU_SIGN_DRAFT_PICKS = "CFDP";
+        public const string CPU_CONTROLLED = "CFEX";
+        public const string CPU_SIGN_FREE_AGENTS = "CFFA";
+        public const string CPU_FILL_ROSTERS = "CFFR";
+        public const string CPU_RESIGN_PLAYERS = "CFRP";
+        public const string CPU_REORDER_DEPTH_CHARTS = "CFRR";
+        public const string USER_CONTROLLED = "CFUC";
+        public const string OFCO = "OFCO";                  //2006-2008
+        public const string OFRB = "OFRB";                  
+        public const string OFRN = "OFRN";                  
+        public const string OFRT = "OFRT";                  
+        public const string OFSI = "OFSI";
+        public const string RELOCATION_YEAR = "OFYR";
+        public const string OOSC = "OOSC";                  
+        public const string OWNER_TEAM_ID = "OWID";         
+        public const string TEAM_ID = "TGID";
+		
 		public OwnerRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
@@ -98,11 +106,11 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(DRAFT_PLAYERS) == 1);
+				return (GetIntField(CPU_DRAFT_PLAYERS) == 1);
 			}
 			set
 			{
-				SetField(DRAFT_PLAYERS, Convert.ToInt32(value));
+				SetField(CPU_DRAFT_PLAYERS, Convert.ToInt32(value));
 			}
 		}
 
@@ -110,11 +118,11 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(SIGN_FREE_AGENTS) == 1);
+				return (GetIntField(CPU_SIGN_FREE_AGENTS) == 1);
 			}
 			set
 			{
-				SetField(SIGN_FREE_AGENTS, Convert.ToInt32(value));
+				SetField(CPU_SIGN_FREE_AGENTS, Convert.ToInt32(value));
 			}
 		}
 
@@ -122,11 +130,11 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(SIGN_DRAFT_PICKS) == 1);
+				return (GetIntField(CPU_SIGN_DRAFT_PICKS) == 1);
 			}
 			set
 			{
-				SetField(SIGN_DRAFT_PICKS, Convert.ToInt32(value));
+				SetField(CPU_SIGN_DRAFT_PICKS, Convert.ToInt32(value));
 			}
 		}
 
@@ -134,11 +142,11 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(RESIGN_PLAYERS) == 1);
+				return (GetIntField(CPU_RESIGN_PLAYERS) == 1);
 			}
 			set
 			{
-				SetField(RESIGN_PLAYERS, Convert.ToInt32(value));
+				SetField(CPU_RESIGN_PLAYERS, Convert.ToInt32(value));
 			}
 		}
 
@@ -146,11 +154,11 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(FILL_ROSTERS) == 1);
+				return (GetIntField(CPU_FILL_ROSTERS) == 1);
 			}
 			set
 			{
-				SetField(FILL_ROSTERS, Convert.ToInt32(value));
+				SetField(CPU_FILL_ROSTERS, Convert.ToInt32(value));
 			}
 		}
 
@@ -158,24 +166,69 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return (GetIntField(REORDER_DEPTH_CHARTS) == 1);
+				return (GetIntField(CPU_REORDER_DEPTH_CHARTS) == 1);
 			}
 			set
 			{
-				SetField(REORDER_DEPTH_CHARTS, Convert.ToInt32(value));
+				SetField(CPU_REORDER_DEPTH_CHARTS, Convert.ToInt32(value));
 			}
 		}
 
-		public bool ComputerControl7
+		public bool CPUControlled
 		{
 			get
 			{
-				return (GetIntField(COMPUTER_CONTROL_7) == 1);
+				return (GetIntField(CPU_CONTROLLED) == 1);
 			}
 			set
 			{
-				SetField(COMPUTER_CONTROL_7, Convert.ToInt32(value));
+				SetField(CPU_CONTROLLED, Convert.ToInt32(value));
 			}
 		}
-	}
+
+        //  not sure what these are for
+        public bool Ofsi
+        {
+            get { return (GetIntField(OFSI) == 1); }
+            set { SetField(OFSI, Convert.ToInt32(value)); }
+        }
+        public bool Cfco
+        {
+            get { return (GetIntField(OFCO) == 1); }
+            set { SetField(OFCO, Convert.ToInt32(value)); }
+        }
+        public bool Ofrb
+        {
+            get { return (GetIntField(OFRB) == 1); }
+            set { SetField(OFRB, Convert.ToInt32(value)); }
+        }
+        public bool Ofrn
+        {
+            get { return (GetIntField(OFRN) == 1); }
+            set { SetField(OFRN, Convert.ToInt32(value)); }
+        }
+        public bool Ofrt
+        {
+            get { return (GetIntField(OFRT) == 1); }
+            set { SetField(OFRT, Convert.ToInt32(value)); }
+        }
+        
+        public bool Oosc
+        {
+            get { return (GetIntField(OOSC) == 1); }
+            set { SetField(OOSC, Convert.ToInt32(value)); }
+        }
+        
+        public int OwnerTeamID
+        {
+            get
+            {
+                return GetIntField(OWNER_TEAM_ID);
+            }
+            set
+            {
+                SetField(OWNER_TEAM_ID, value);
+            }
+        }
+    }
 }

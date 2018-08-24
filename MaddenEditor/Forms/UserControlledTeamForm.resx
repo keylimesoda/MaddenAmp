@@ -117,4 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>Note : If you are loading a franchise that previously assigned user controlled teams,
+The Play Games column will be set to yes for a given team if any of that teams scheduled games are set for user play.
+
+
+</value>
+  </data>
 </root>
