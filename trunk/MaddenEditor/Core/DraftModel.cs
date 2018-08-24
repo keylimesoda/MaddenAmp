@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.IO;
 
@@ -32,7 +33,509 @@ using MaddenEditor.Core.Record.Stats;
 
 namespace MaddenEditor.Core
 {
-	public class DraftModel
+    public class TradeOffer
+    {
+        public int status = 0;
+        public int HigherTeam;
+        public int LowerTeam;
+        public int pickNumber;
+
+        public double MinAccept;
+        public double MaxGive;
+
+        public bool lastWasStrike = false;
+
+        public int higherStrikes = 0;
+        public int lowerStrikes = 0;
+
+        public bool biddingWar = false;
+        public bool allowFutureHighPicks = false;
+        public bool allowFuturePicksFromLower = true;
+        public bool allowFuturePicksFromHigher = true;
+        public bool allowMultipleHighPicks = false;
+        public int MaxPicksFromLower = 2;
+
+        private DraftModel dm;
+
+        public List<int> PicksFromLower = new List<int>();
+        public List<int> PicksFromHigher = new List<int>();
+
+        public List<double> offersFromHigher = new List<double>();
+        public List<double> offersFromLower = new List<double>();
+
+        public List<int> higherAvailable = new List<int>();
+        public List<int> lowerAvailable = new List<int>();
+
+        List<int> tempPicksFromLower;
+        List<int> tempPicksFromHigher;
+
+        double target;
+
+        public TradeOffer(int higherId, int lowerId, DraftModel model)
+        {
+            HigherTeam = higherId;
+            LowerTeam = lowerId;
+            dm = model;
+        }
+
+        private int numHighPicks()
+        {
+            int toRet = 0;
+            foreach (int pick in tempPicksFromLower)
+            {
+                if (pick < 1000)
+                {
+                    if (dm.pickValues[pick] > 200)
+                    {
+                        toRet++;
+                    }
+                }
+                else
+                {
+                    if (dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON) > 200)
+                    {
+                        toRet++;
+                    }
+                }
+            }
+            return toRet;
+        }
+
+        public int AddClosestPick(bool fromLower)
+        {
+            if (fromLower)
+            {
+                // Add the pick that gets us closest to the mark.
+
+                int bestPick = -1;
+                double bestDifference = target;
+                foreach (int pick in lowerAvailable)
+                {
+                    if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromLower.Contains(pick))
+                    {
+                        if (!allowMultipleHighPicks && dm.pickValues[pick] > 200 && numHighPicks() >= 2)
+                        {
+                            continue;
+                        }
+
+                        bestPick = pick;
+                        bestDifference = Math.Abs(target - dm.pickValues[pick]);
+                    }
+                }
+                lowerAvailable.Sort();
+
+                // If the closest pick wasn't our most valuable remaining pick, add this one
+                // and return.  Otherwise, allow possibility of adding a future pick.
+                int highestAvailablePick = -1;
+                foreach (int pick in lowerAvailable)
+                {
+                    if (!tempPicksFromLower.Contains(pick))
+                    {
+                        if (!allowMultipleHighPicks && dm.pickValues[pick] > 200 && numHighPicks() >= 2)
+                        {
+                            continue;
+                        }
+
+                        highestAvailablePick = pick;
+                        break;
+                    }
+                }
+
+
+                if (!allowFuturePicksFromLower || (bestPick != -1 && bestPick != highestAvailablePick))
+                {
+                    if (bestPick != -1)
+                    {
+                        tempPicksFromLower.Add(bestPick);
+                    }
+                    return bestPick;
+                }
+
+                // If there was no such pick, add the most valuable pick.
+                int round = (int)Math.Floor((double)pickNumber / 32.0) + 1;
+
+                int startRound = -1;
+                if (allowFutureHighPicks)
+                {
+                    startRound = round;
+                }
+                else
+                {
+                    startRound = round + 2;
+                }
+
+                int con = dm.model.TeamModel.GetTeamRecord(LowerTeam).CON;
+                for (int i = startRound; i < 8; i++)
+                {
+                    if (Math.Abs(target - dm.futureValues(i, con)) < bestDifference && !tempPicksFromLower.Contains(1000 + i)
+                        && !dm.futureTradedPicks[LowerTeam].ContainsKey(i))
+                    {
+                        bestPick = i + 1000;
+                        bestDifference = Math.Abs(target - dm.futureValues(i, con));
+                    }
+                }
+
+                if (bestPick != -1)
+                {
+                    tempPicksFromLower.Add(bestPick);
+                }
+
+                return bestPick;
+            }
+            else
+            {
+                // Add the pick that gets us closest to the mark.
+
+                int bestPick = -1;
+                double bestDifference = target;
+                foreach (int pick in higherAvailable)
+                {
+                    if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromHigher.Contains(pick))
+                    {
+                        bestPick = pick;
+                        bestDifference = Math.Abs(target - dm.pickValues[pick]);
+                    }
+                }
+                higherAvailable.Sort();
+
+                // If the closest pick wasn't our most valuable remaining pick, add this one
+                // and return.  Otherwise, allow possibility of adding a future pick.
+                int highestAvailablePick = -1;
+                foreach (int pick in higherAvailable)
+                {
+                    if (!tempPicksFromHigher.Contains(pick))
+                    {
+                        highestAvailablePick = pick;
+                        break;
+                    }
+                }
+
+                if (!allowFuturePicksFromHigher || (bestPick != -1 && bestPick != highestAvailablePick))
+                {
+                    if (bestPick != -1)
+                    {
+                        tempPicksFromHigher.Add(bestPick);
+                    }
+                    return bestPick;
+                }
+
+                // If there was no such pick, add the most valuable pick.
+                int startRound = (int)Math.Floor((double)pickNumber / 32.0) + 3;
+
+                int con = dm.model.TeamModel.GetTeamRecord(HigherTeam).CON;
+                for (int i = startRound; i < 8; i++)
+                {
+                    if (Math.Abs(target - dm.futureValues(i, con)) < bestDifference && !tempPicksFromHigher.Contains(1000 + i)
+                        && !dm.futureTradedPicks[HigherTeam].ContainsKey(i))
+                    {
+                        bestPick = i + 1000;
+                        bestDifference = Math.Abs(target - dm.futureValues(i, con));
+                    }
+                }
+
+                if (bestPick != -1)
+                {
+                    tempPicksFromLower.Add(bestPick);
+                }
+
+                return bestPick;
+            }
+        }
+
+        public double SetMinTake()
+        {
+            if (biddingWar)
+            {
+                foreach (TradeOffer to in dm.tradeOffers.Values)
+                {
+                    if (to.status == (int)TradeOfferStatus.PendingAccept)
+                    {
+                        MinAccept = to.MinAccept;
+                        return MinAccept;
+                    }
+                }
+
+                //Trace.Writeline("\n\nSEVERE ERROR!\n\n");
+                return -1;
+            }
+
+            // Find minimum value to trade down
+            double mintake;
+            double favoriteEffectiveValue = dm.favorites[HigherTeam].EffectiveValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust);
+            double favoriteValue = dm.favorites[HigherTeam].AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust);
+
+            if (favoriteEffectiveValue * 1.5 < dm.pickValues[pickNumber])
+            {
+                mintake = favoriteEffectiveValue;
+            }
+            else
+            {
+                mintake = favoriteEffectiveValue * Math.Tanh(favoriteValue / dm.pickValues[pickNumber]) / Math.Tanh(1.0);
+
+                double wantfrac = 1;
+
+                PicksFromLower.Sort();
+                int nextpick = PicksFromLower[0];
+
+                foreach (KeyValuePair<int, RookieRecord> rook in dm.rookies)
+                {
+                    if (rook.Value.AverageNeed(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust) <= dm.positionData[rook.Value.Player.PositionId].Threshold ||
+                        // replace with statement on league projected position
+                        (nextpick < 1000 && rook.Value.AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust) <= 0.75 * dm.pickValues[nextpick])) { continue; }
+
+                    if (rook.Value.PlayerID == dm.favorites[HigherTeam].PlayerID || rook.Value.DraftPickTeam < 32)
+                    {
+                        continue;
+                    }
+
+                    double tempEV = rook.Value.EffectiveValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust);
+                    double tempwantfrac = Math.Tanh((favoriteEffectiveValue - tempEV) / tempEV);
+
+                    if (tempwantfrac > 0.95) { tempwantfrac = 1; }
+                    wantfrac -= wantfrac * (1 - tempwantfrac) / 2.0;
+                }
+
+                double probabilityTaken = dm.probs[LowerTeam][dm.favorites[HigherTeam].PlayerID];
+                double probabilityRemaining = 1 - probabilityTaken;
+
+                foreach (TableRecordModel rec in dm.model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+                {
+                    DraftPickRecord record = (DraftPickRecord)rec;
+
+                    if (record.PickNumber <= pickNumber) { continue; }
+                    if (record.PickNumber == nextpick) { break; }
+
+                    probabilityTaken += dm.probs[record.CurrentTeamId][dm.favorites[HigherTeam].PlayerID] * probabilityRemaining;
+                    probabilityRemaining *= (1.0 - dm.probs[record.CurrentTeamId][dm.favorites[HigherTeam].PlayerID]);
+
+                    if (probabilityRemaining == 0) { break; }
+                }
+
+                if (probabilityTaken == 1 && wantfrac == 1)
+                {
+                    mintake = 100000;
+                }
+                else
+                {
+                    mintake *= 1.0 / Math.Sqrt(Math.Pow(1.0 - probabilityTaken, 2.0) + Math.Pow(1.0 - wantfrac, 2.0));
+                }
+
+                if (Double.IsNaN(mintake))
+                {
+                    mintake = 10000;
+                }
+            }
+
+            if (Double.IsNaN(mintake))
+            {
+                mintake = 10000;
+            }
+
+            if (mintake < dm.pickValues[pickNumber + 1] + 1)
+            {
+                MinAccept = dm.pickValues[pickNumber + 1] + 1;
+            }
+            else
+            {
+                MinAccept = mintake;
+            }
+
+            return mintake;
+        }
+        
+        public double makeCounterOffer(double value, bool fromHigher)
+        {
+            target = value;
+            tempPicksFromLower = new List<int>();
+            tempPicksFromHigher = new List<int>();
+
+            // Start the offer with the most valuable pick from the lower team.
+            while (Math.Abs(target) > 0.03 * value &&
+                (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= MaxPicksFromLower) &&
+                !((target > 0 && tempPicksFromLower.Count >= MaxPicksFromLower) || (target < 0 && tempPicksFromHigher.Count >= 2)))
+            {
+                int addedPick = AddClosestPick(target > 0);
+                double thisValue = 0;
+
+                if (addedPick == -1)
+                {
+                    thisValue = 0;
+                    break;
+                }
+                else if (addedPick < 1000)
+                {
+                    thisValue = dm.pickValues[addedPick];
+                }
+                else
+                {
+                    if (target > 0)
+                    {
+                        thisValue = dm.futureValues(addedPick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON);
+                    }
+                    else
+                    {
+                        thisValue = dm.futureValues(addedPick - 1000, dm.model.TeamModel.GetTeamRecord(HigherTeam).CON);
+                    }
+                }
+
+                if (target > 0)
+                {
+                    target -= thisValue;
+                }
+                else
+                {
+                    target += thisValue;
+                }
+            }
+
+            PicksFromHigher = tempPicksFromHigher;
+            PicksFromLower = tempPicksFromLower;
+
+            if (PicksFromLower.Count == 0)
+            {
+                offersFromLower.Clear();
+                MinAccept = 10000;
+                return 10000;
+            }
+
+            if (PicksFromLower.Count == 1 && PicksFromLower[0] < 1000)
+            {
+                // Only offering one pick from this draft.  Remove it, make another
+                // counter offer, put it back at the top of the stack, and 
+                // return whatever the alternate counter offer is.
+
+                lowerAvailable.Sort();
+                int pickToPush = lowerAvailable[0];
+                lowerAvailable.RemoveAt(0);
+
+                double toReturn = makeCounterOffer(value, fromHigher);
+
+                lowerAvailable.Insert(0, pickToPush);
+                return toReturn;
+            }
+
+
+
+            double tempValue = 0;
+
+            foreach (int pick in PicksFromLower)
+            {
+                if (pick < 1000)
+                {
+                    tempValue += dm.pickValues[pick];
+                }
+                else
+                {
+                    tempValue += dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON);
+                }
+            }
+
+            foreach (int pick in PicksFromHigher)
+            {
+                if (pick < 1000)
+                {
+                    tempValue -= dm.pickValues[pick];
+                }
+                else
+                {
+                    tempValue -= dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(HigherTeam).CON);
+                }
+            }
+
+            if (fromHigher)
+            {
+                offersFromHigher.Add(tempValue);
+                return 0;
+            }
+            else
+            {
+                offersFromLower.Add(tempValue);
+                return SetMinTake();
+            }
+        }
+    }
+
+    public enum MaddenPositionGroups
+    {
+        OL = 0,
+        OT,
+        OG,
+        DL,
+        DE,
+        LB,
+        OLB,
+        DB,
+        S
+    }
+
+    public enum TradeOfferStatus
+    {
+        HigherResponsePending = 0,
+        LowerResponsePending,
+        Rejected,
+        Accepted,
+        PendingAccept
+    }
+
+    public class Position
+    {
+        private int value34;
+        private int value43;
+        private int valueCover2;
+        private int starters43;
+        private int starters34;
+
+        public int RetirementAge;
+        public double SuccessorNeed;
+        public double BackupNeed;
+        public double Threshold;
+        public double DurabilityNeed;
+
+        public Position(int v43, int v34, int c2, double suc, int ra, double back, double thresh, int s43, int s34, double dn)
+        {
+            value43 = v43;
+            value34 = v34;
+            valueCover2 = c2;
+            RetirementAge = ra;
+            SuccessorNeed = suc;
+            BackupNeed = back;
+            Threshold = thresh;
+            starters43 = s43;
+            starters34 = s34;
+            DurabilityNeed = dn;
+        }
+
+        public int Starters(int system)
+        {
+            if (system == (int)TeamRecord.Defense.Front34)
+            {
+                return starters34;
+            }
+            else
+            {
+                return starters43;
+            }
+        }
+
+        public int Value(int system)
+        {
+            if (system == (int)TeamRecord.Defense.Front43)
+            {
+                return value43;
+            }
+            else if (system == (int)TeamRecord.Defense.Front34)
+            {
+                return value34;
+            }
+            else if (system == (int)TeamRecord.Defense.Cover2)
+            {
+                return valueCover2;
+            }
+            return -1;
+        }
+    }
+	    
+    public class DraftModel
 	{
 		private int currentPickIndex = 0;
 		/** The current Team Filter */
@@ -56,6 +559,7 @@ namespace MaddenEditor.Core
 		// true if the team just traded up; false otherwise.
 		private bool PreventTrade = false;
 		private bool humanRejected = false;
+        private bool pickssaved = false;
 
 		public Dictionary<int, TradeOffer> tradeOffers;
 		public Dictionary<int, double> BestOffers;
@@ -95,6 +599,133 @@ namespace MaddenEditor.Core
         public static bool enhance = false;
         public List<List<List<CoachRecord>>> teamscout = new List<List<List<CoachRecord>>>();
         
+        // New additions
+        public Dictionary<int, int> OriginalRatings = new Dictionary<int, int>();       
+        
+        public int ResumePick = 0;
+        public int ResumeRound = 0;
+        public int ResumeIndex = 0;
+
+        public DraftModel(EditorModel model)
+        {
+            this.model = model;
+            math = new LocalMath(model.FileVersion);
+        }
+
+        
+        
+        public void InitializeDraft(int htid, DraftConfigForm draftConfigForm, string customclass)
+        {
+            HumanTeamId = htid;
+            /*
+                        InitializePositionData();
+                        InitializePickValues();
+                        dcr = new DepthChartRepairer(model, positionData);
+            */
+            if (customclass != null)
+            {
+                ImportRookies(customclass);
+            }            
+
+            string analysis = AnalyzeDraftClass(true);
+
+            bool repairRooks = false;
+
+            if (recommendation <= 0)
+            {
+                int action = draftConfigForm.promptFix(analysis, recommendation);
+
+                if (action == -1)
+                {
+                    return;
+                }
+
+                else if (action == 1)
+                {
+                    repairRooks = true;
+                }
+            }
+
+            
+            // Record each rookie's starting OVR, and recalc overall based on default values
+            foreach (PlayerRecord play in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (play.YearsPro == 0)
+                    OriginalRatings.Add(play.PlayerId, play.Overall);
+                play.CalculateOverallRating(play.PositionId);
+            }
+
+            //  Clear out draft class draft position and ratings info
+            model.PlayerModel.ClearDraftClass(ResumeRound, ResumeIndex, ResumePick);
+
+            dcr = new DepthChartRepairer(model, positionData);
+
+            //draftConfigForm.ReportProgress(25);
+            ExtractRookies();
+            //draftConfigForm.ReportProgress(35);
+
+            if (repairRooks)
+            {
+                RepairRookies();
+            }
+
+            //draftConfigForm.ReportProgress(45);
+            //            DumpRookies();
+
+            depthChart = dcr.ReorderDepthCharts(true);
+
+            depthChartValues = new List<List<List<double>>>();
+
+            //We'll say 50% of the loading is done in this part
+            for (int i = 0; i < 32; i++)
+            {
+                futureTradedPicks.Add(i, new Dictionary<int, int>());
+
+                depthChartValues.Add(new List<List<double>>());
+                for (int j = 0; j < 21; j++)
+                {
+                    depthChartValues[i].Add(new List<double>());
+                }
+                CalculateDepthChartValues(i);
+            }
+
+            // model.PlayerModel.ComputeEffectiveOVRs(this);
+            CalculateActualProjections();
+            DumpRookies();
+
+            // This next call shouldn't be needed once the draft scouting
+            // apparatus is finished.
+            // AssignRookieScoutedAttributes();
+
+            /*
+            SetInitialRookieAttributes();
+            CalculateOveralls((int)RookieRecord.RatingType.Initial);
+
+            SetRookieValues((int)RookieRecord.RatingType.Initial);
+            GenerateInternalDepthChart();
+            // SetInitialNeeds();
+            DetermineProjections((int)RookieRecord.RatingType.Initial);
+
+            DoCPURookieScouting(true);
+            SetCombineRookieAttributes();
+            CalculateOveralls((int)RookieRecord.RatingType.Combine);
+            SetRookieValues((int)RookieRecord.RatingType.Combine);
+            DetermineProjections((int)RookieRecord.RatingType.Combine);
+
+            DoCPURookieScouting(false);
+            SetFinalRookieAttributes();
+            CalculateOveralls((int)RookieRecord.RatingType.Final);
+            SetRookieValues((int)RookieRecord.RatingType.Final);
+            DetermineProjections((int)RookieRecord.RatingType.Final);
+
+            SetCombineStats(HumanTeamId);
+            SetInitialNeeds();
+
+            DumpProjections();
+             * */
+        }
+
+        
         // Setup each team's coaching staff.
         public void InitCoachScouting()
         {
@@ -118,8 +749,7 @@ namespace MaddenEditor.Core
                 {
                     // Add to our list of coaches
                     teamscout[coach.TeamId][coach.Position].Add(coach);                    
-                }
-                    
+                }                    
             }
         }
 
@@ -207,7 +837,7 @@ namespace MaddenEditor.Core
                     // based on random "parts"
                     if (change >= 1 && change <= 33)
                     {
-                        changeOVR.Tendancy = 1;
+                        changeOVR.Tendency = 1;
                         // scrambler...
                         // to change SPD,AGI,BTK,ACC
                         // speed is around 12% of his total pts. random 9-15% for rookie topped
@@ -321,13 +951,13 @@ namespace MaddenEditor.Core
             return changeOVR;
 
         }
-
-
         
-
-		public void SavePicks(string saveFile)
+		public bool SavePicks(string saveFile)
 		{
-			File.Delete(saveFile);
+            if (pickssaved)
+                return false;
+
+            File.Delete(saveFile);
 			FileStream fs = new FileStream(saveFile, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter(fs);
 
@@ -341,6 +971,8 @@ namespace MaddenEditor.Core
 
 			sw.Close();
 			fs.Close();
+            pickssaved = true;
+            return true;
 		}
 
 		private void RepairRookies()
@@ -354,13 +986,13 @@ namespace MaddenEditor.Core
 				RookieRecord rook = null;
 				foreach (RookieRecord r in rookies.Values)
 				{
-					if (RookEOR(r) > bestEOR && !found.Contains(r.PlayerId))
+					if (RookEOR(r) > bestEOR && !found.Contains(r.PlayerID))
 					{
 						rook = r;
 						bestEOR = RookEOR(r);
 					}
 				}
-				found.Add(rook.PlayerId);
+				found.Add(rook.PlayerID);
 
 				//Trace.Writeline(i + " " + rook.Player.ToString() + " " + RookEOR(rook));
 
@@ -603,42 +1235,56 @@ namespace MaddenEditor.Core
 		}
 
 		public void DumpRookies()
-		{
-			//Trace.Writeline("\n");
-
+		{			
 			List<int> found = new List<int>();
 			string points = "";
 
-			for (int i = 0; i < 250; i++)
-			{
-				double bestRating = 0;
-				int bestId = -1;
+            foreach (KeyValuePair<int, RookieRecord> r in rookies)
+            {
+                found.Add(r.Key);
+            }
+            for (int i = 0; i < found.Count; i++)
+            {
+                for (int comp = i + 1; comp < found.Count; comp++)
+                {
+                    if (rookies[found[comp]].ActualValue > rookies[found[i]].ActualValue)
+                    {
+                        int hold = found[i];
+                        found[i] = found[comp];
+                        found[comp] = hold;
+                    }
+                }
+            }
+            
+            
+            
+            
+            for (int i = 0; i < 257; i++)
+            {
+                //double bestRating = 0;
+                //int bestId = -1;
 
-				foreach (KeyValuePair<int, RookieRecord> r in rookies)
-				{
-					if (r.Value.ActualValue > bestRating && !found.Contains(r.Key))
-					{
-						bestId = r.Key;
-						bestRating = r.Value.ActualValue;
-					}
-				}
+                //foreach (KeyValuePair<int, RookieRecord> r in rookies)
+                //{
+                //   if (r.Value.ActualValue > bestRating && !found.Contains(r.Key))
+                //    {
+                //        bestId = r.Key;
+                //        bestRating = r.Value.ActualValue;
+                //    }                
 
-				RookieRecord rook = rookies[bestId];
-				if (bestId == -1) { break; }
+                RookieRecord rook = rookies[found[i]];
+                points += "{" + RookEOR(rook) + ", " + Math.Log(1.2 * pickValues[i] / positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43)) + "}, ";
 
-				found.Add(bestId);
-
-				points += "{" + RookEOR(rook) + ", " + Math.Log(1.2 * pickValues[i] / positionData[rook.Player.PositionId].Value((int)TeamRecord.Defense.Front43)) + "}, ";
-
-				//Trace.Writeline(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
-			}
+                //Trace.Writeline(i + " " + rookies[bestId].Player.ToString() + " " + rookies[bestId].Player.Overall + " " + rookies[bestId].Player.Injury + " " + rookies[bestId].ActualValue + " " + pickValues[i]);
+            }
+			
 
 			//Trace.Writeline("");
 			//Trace.Writeline("");
 			//Trace.Writeline(points);
 			//Trace.Writeline("");
 			//Trace.Writeline("");
-		}
+        }
 
 		public List<RookieRecord> GetDraftBoard(TeamRecord team, int pickNumber)
 		{
@@ -652,7 +1298,7 @@ namespace MaddenEditor.Core
 				foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 				{
 					if (rook.Value.PerceivedEffectiveValue(team, pickNumber, dcr.awarenessAdjust) > bestRating &&
-						!draftBoard.Contains(rook.Value) && !(rook.Value.DraftedTeam < 32))
+						!draftBoard.Contains(rook.Value) && !(rook.Value.DraftPickTeam < 32))
 					{
 
 						bestId = rook.Key;
@@ -695,26 +1341,28 @@ namespace MaddenEditor.Core
 
 			List<int> SortedAverageValues = new List<int>();
 
-			for (int i = 0; i < rookies.Count; i++)
-			{
-				double bestRating = 0;
-				int bestId = -1;
+            foreach (KeyValuePair<int, RookieRecord> rook in rookies)
+            {
+                SortedAverageValues.Add(rook.Key);
+            }
 
-				foreach (KeyValuePair<int, RookieRecord> rook in rookies)
-				{
-					if (rook.Value.ActualValue > bestRating && !SortedAverageValues.Contains(rook.Key))
-					{
-						bestId = rook.Key;
-						bestRating = rook.Value.ActualValue;
-					}
-				}
-
-				SortedAverageValues.Add(bestId);
-			}
-
+            for (int i = 0; i < SortedAverageValues.Count; i++)
+            {
+                for (int comp = i+1; comp < SortedAverageValues.Count; comp++)
+                {
+                    if (rookies[SortedAverageValues[comp]].ActualValue > rookies[SortedAverageValues[i]].ActualValue)
+                    {
+                        int hold = SortedAverageValues[i];
+                        SortedAverageValues[i] = SortedAverageValues[comp];
+                        SortedAverageValues[comp] = hold;
+                    }
+                }
+            }
+            
 			for (int i = 0; i < SortedAverageValues.Count; i++)
 			{
-				rookies[SortedAverageValues[i]].EstimatedPickNumber[(int)RookieRecord.RatingType.Actual] = i;
+                if (SortedAverageValues[i] != -1)
+                    rookies[SortedAverageValues[i]].EstimatedPickNumber[(int)RookieRecord.RatingType.Actual] = i;
 
 				double rank = i;
 				string rankstring;
@@ -772,7 +1420,8 @@ namespace MaddenEditor.Core
 					rankstring = "Undrafted";
 				}
 
-				rookies[SortedAverageValues[i]].EstimatedRound[(int)RookieRecord.RatingType.Actual] = rankstring;
+				if (SortedAverageValues[i] != -1)
+                    rookies[SortedAverageValues[i]].EstimatedRound[(int)RookieRecord.RatingType.Actual] = rankstring;
 			}
 		}
 
@@ -817,7 +1466,7 @@ namespace MaddenEditor.Core
 			*/
 
 
-			toDraft.DraftedTeam = dpRecord.CurrentTeamId;
+			toDraft.DraftPickTeam = dpRecord.CurrentTeamId;
 			toDraft.DraftPickNumber = pickNumber;
 			toDraft.Player.DraftRound = pickNumber / 32 + 1;
 			toDraft.Player.DraftRoundIndex = pickNumber % 32 + 1;
@@ -862,34 +1511,20 @@ namespace MaddenEditor.Core
 		}
 
         public void ClearRookieGameRecords()
-        {
-            List<int> rookieIDs = new List<int>();
-            foreach (PlayerRecord player in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+        {            
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
             {
-                if (player.YearsPro == 0)
-                    rookieIDs.Add(player.PlayerId);
-            }
+                if (rec.Deleted)
+                    continue;
 
-            List<TableRecordModel> games = new List<TableRecordModel>(model.TableModels[EditorModel.SEASON_GAMES_PLAYED_TABLE].GetRecords().ToArray());
-            for (int i = 0; i < games.Count; i++)
-            {
-                if (rookieIDs.Contains(((SeasonGamesPlayedRecord)games[i]).PlayerId))
-                    games[i].SetDeleteFlag(true);
-            }
-
-            foreach (CareerGamesPlayedRecord stat in model.TableModels[EditorModel.CAREER_GAMES_PLAYED_TABLE].GetRecords())
-            {
-                if (rookieIDs.Contains(stat.PlayerId))
-                {
-                    stat.GamesPlayed = 0;
-                    stat.GamesStarted = 0;
-                }
-            }
+                PlayerRecord player = (PlayerRecord)rec;
+                if (player.YearsPro == 0 && player.FirstName != "New")
+                    model.PlayerModel.RemoveAllStats(player.PlayerId, true, true);
+            }            
         }
 
 		public void DumpDraftResults()
 		{
-
 			for (int i = 0; i < model.TableModels[EditorModel.DRAFT_PICK_TABLE].RecordCount; i++)
 			{
 				DraftPickRecord dpRecord = GetDraftPickByNumber(i);
@@ -912,14 +1547,13 @@ namespace MaddenEditor.Core
 					//Trace.Writeline("Oops!");
 				}
 
-				Trace.Write(i + " " + rookieRecord.PlayerId + " ");
+				Trace.Write(i + " " + rookieRecord.PlayerID + " ");
 				Trace.Write(model.TeamModel.GetTeamNameFromTeamId(dpRecord.CurrentTeamId) + " ");
-				Trace.Write(Enum.GetNames(typeof(MaddenPositions))[model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).PositionId].ToString() + " ");
-				Trace.Write(model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).Overall + " " + model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerId).Injury + " ");
+				Trace.Write(Enum.GetNames(typeof(MaddenPositions))[model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerID).PositionId].ToString() + " ");
+				Trace.Write(model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerID).Overall + " " + model.PlayerModel.GetPlayerByPlayerId(rookieRecord.PlayerID).Injury + " ");
 				if (pickValues.Count > 100)
 				{
-					//                    //Trace.Writeline(Math.Round(rookieRecord.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.NoProg]) + " " + pickValues[i]);
-
+			        //Trace.Writeline(Math.Round(rookieRecord.values[dpRecord.CurrentTeamId][(int)RookieRecord.ValueType.NoProg]) + " " + pickValues[i]);
 				}
 				else
 				{
@@ -1029,11 +1663,11 @@ namespace MaddenEditor.Core
 				{
 					//                    if (rook.Value.DraftedTeam < 32) { continue; }
 
-					if (rook.Value.PlayerId == favorite.PlayerId)
+					if (rook.Value.PlayerID == favorite.PlayerID)
 					{
 						tempProbs[rook.Key] = 1;
 					}
-					else if (rook.Value.AverageNeed(team, pickNumber, dcr.awarenessAdjust) < positionData[rook.Value.Player.PositionId].Threshold || rook.Value.DraftedTeam < 32)
+					else if (rook.Value.AverageNeed(team, pickNumber, dcr.awarenessAdjust) < positionData[rook.Value.Player.PositionId].Threshold || rook.Value.DraftPickTeam < 32)
 					{
 						tempProbs[rook.Key] = 0;
 					}
@@ -1205,8 +1839,9 @@ namespace MaddenEditor.Core
 			}
 
 			if (LowerTeamId != HumanTeamId && futurePicks < 6)
-			{
-				to.allowFuturePicksFromLower = false;
+            {
+                //s68 - removing this to allow teams to make more mistakes in trading away future picks
+				//to.allowFuturePicksFromLower = false;
 			}
 
 
@@ -1231,7 +1866,8 @@ namespace MaddenEditor.Core
 
 			if (futurePicks < 6 && currentSelector != HumanTeamId)
 			{
-				to.allowFuturePicksFromHigher = false;
+				//s68 - removing this to allow teams to make more mistakes in trading away future picks
+                //to.allowFuturePicksFromHigher = false;
 			}
 
 			int defense = model.TeamModel.GetTeamRecord(LowerTeamId).DefensiveSystem;
@@ -1450,7 +2086,6 @@ namespace MaddenEditor.Core
 					}
 
 					// We'll take the offer.  Let's see if we can drive up the bidding first though.
-
 					//Trace.Writeline("Accepting offer...");
 
 					bool anotherOffer = false;
@@ -1938,7 +2573,7 @@ namespace MaddenEditor.Core
 
 					foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 					{
-						if (rook.Value.PlayerId == favorites[i].PlayerId || rook.Value.DraftedTeam < 32) { continue; }
+						if (rook.Value.PlayerID == favorites[i].PlayerID || rook.Value.DraftPickTeam < 32) { continue; }
 						if (rook.Value.AverageNeed(model.TeamModel.GetTeamRecord(i), pickNumber, dcr.awarenessAdjust) <= positionData[rook.Value.Player.PositionId].Threshold ||
 							// replace with statement on league projected position
 							rook.Value.AverageValue(model.TeamModel.GetTeamRecord(i), dcr.awarenessAdjust) <= 0.75 * pickValues[nextpick]) { continue; }
@@ -1967,15 +2602,15 @@ namespace MaddenEditor.Core
 
 						double pickfactor = Math.Max(0, (1.0 - 1.014 * Math.Tanh(((double)record.PickNumber - (double)pickNumber - 6.0) / 2.0)));
 
-						probabilityTaken += probs[record.CurrentTeamId][favorites[i].PlayerId] * probabilityRemaining *
+						probabilityTaken += probs[record.CurrentTeamId][favorites[i].PlayerID] * probabilityRemaining *
 							(0.5) * pickfactor;
-						probabilityRemaining *= (1.0 - probs[record.CurrentTeamId][favorites[i].PlayerId]);
+						probabilityRemaining *= (1.0 - probs[record.CurrentTeamId][favorites[i].PlayerID]);
 
 						if (favoriteEffectiveValue < 0)
 						{
 							//Trace.Writeline("FEV");
 						}
-						else if (probs[record.CurrentTeamId][favorites[i].PlayerId] > 1)
+						else if (probs[record.CurrentTeamId][favorites[i].PlayerID] > 1)
 						{
 							//Trace.Writeline(probs[record.CurrentTeamId][favorites[i].PlayerId]);
 						}
@@ -2057,8 +2692,8 @@ namespace MaddenEditor.Core
 					else if (!record.ContainsStringField(model.DraftClassFields[version - 1][i]))
 					{
 						// This should never happen -- it's more debugging code for us.
-						sr.Close();
-						return "Field " + model.DraftClassFields[version][i] + " does not appear in player record.";
+						//sr.Close();
+						//return "Field " + model.DraftClassFields[version][i] + " does not appear in player record.";
 					}
 				}
 			}
@@ -2110,116 +2745,11 @@ namespace MaddenEditor.Core
 			}
 
 			sr.Close();
+
+            
 		}
 
-		public void InitializeDraft(int htid, DraftConfigForm draftConfigForm, string customclass)
-		{
-			HumanTeamId = htid;
-/*
-			InitializePositionData();
-			InitializePickValues();
-			dcr = new DepthChartRepairer(model, positionData);
-*/
-			if (customclass != null)
-			{
-				ImportRookies(customclass);
-			}
-
-            // Insert custom rookie generation here.
-            if (enhance && customclass==null)
-            {
-                customrookies();
-            }
-                 
-            string analysis = AnalyzeDraftClass(true);
-           
-            bool repairRooks = false;
-
-            if (recommendation <= 0)
-            {
-                int action = draftConfigForm.promptFix(analysis, recommendation);
-
-                if (action == -1)
-                {
-                    return;
-                }
-
-                else if (action == 1)
-                {
-                    repairRooks = true;
-                }
-            }
-                
-            
-            
-            dcr = new DepthChartRepairer(model, positionData);
-
-            //draftConfigForm.ReportProgress(25);
-			ExtractRookies();
-			//draftConfigForm.ReportProgress(35);
-
-            
-            if (repairRooks)
-            {
-                RepairRookies();
-            }
-            
-            //draftConfigForm.ReportProgress(45);
-			//            DumpRookies();
-
-			depthChart = dcr.ReorderDepthCharts(true);
-
-			depthChartValues = new List<List<List<double>>>();
-
-			//We'll say 50% of the loading is done in this part
-			for (int i = 0; i < 32; i++)
-			{
-				futureTradedPicks.Add(i, new Dictionary<int, int>());
-
-				depthChartValues.Add(new List<List<double>>());
-				for (int j = 0; j < 21; j++)
-				{
-					depthChartValues[i].Add(new List<double>());
-				}
-				CalculateDepthChartValues(i);
-			}
-
-			// model.PlayerModel.ComputeEffectiveOVRs(this);
-			CalculateActualProjections();
-			DumpRookies();
-
-			// This next call shouldn't be needed once the draft scouting
-			// apparatus is finished.
-			// AssignRookieScoutedAttributes();
-
-			/*
-            SetInitialRookieAttributes();
-            CalculateOveralls((int)RookieRecord.RatingType.Initial);
-
-            SetRookieValues((int)RookieRecord.RatingType.Initial);
-            GenerateInternalDepthChart();
-            // SetInitialNeeds();
-            DetermineProjections((int)RookieRecord.RatingType.Initial);
-
-            DoCPURookieScouting(true);
-            SetCombineRookieAttributes();
-            CalculateOveralls((int)RookieRecord.RatingType.Combine);
-            SetRookieValues((int)RookieRecord.RatingType.Combine);
-			DetermineProjections((int)RookieRecord.RatingType.Combine);
-
-			DoCPURookieScouting(false);
-			SetFinalRookieAttributes();
-			CalculateOveralls((int)RookieRecord.RatingType.Final);
-			SetRookieValues((int)RookieRecord.RatingType.Final);
-			DetermineProjections((int)RookieRecord.RatingType.Final);
-
-			SetCombineStats(HumanTeamId);
-			SetInitialNeeds();
-
-			DumpProjections();
-			 * */
-		}
-
+		
 		private void DumpProjections()
 		{
 			foreach (KeyValuePair<int, RookieRecord> rook in rookies)
@@ -2290,7 +2820,7 @@ namespace MaddenEditor.Core
 					}
 				}
 
-				//                rook.Value.CalculateOverall((int)RookieRecord.RatingType.Initial);
+				// rook.Value.CalculateOverall((int)RookieRecord.RatingType.Initial);
 			}
 		}
 
@@ -2311,8 +2841,8 @@ namespace MaddenEditor.Core
 				Dictionary<int, double> baseCombine = new Dictionary<int, double>();
 
 				for (int i = 3; i < 10; i++)
-				{
-					baseCombine[i] = rook.Value.ActualRatings[i] + measureableErrors[i] * (rand.NextDouble() - 0.5);
+				{					
+                    baseCombine[i] = rook.Value.ActualRatings[i] + measureableErrors[i] * (rand.NextDouble() - 0.5);
 				}
 
 				for (int i = 0; i < 32; i++)
@@ -2849,7 +3379,7 @@ namespace MaddenEditor.Core
 				foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 				{
 
-					if (rook.Value.DraftedTeam < 32) { continue; }
+					if (rook.Value.DraftPickTeam < 32) { continue; }
 					if (rook.Value.EffectiveValue(team.Value, pickNumber, dcr.awarenessAdjust) > HighestValue &&
 						rook.Value.AverageNeed(team.Value, pickNumber, dcr.awarenessAdjust) > positionData[rook.Value.Player.PositionId].Threshold &&
 						(rook.Value.PreCombineScoutedHours[team.Value.TeamId] + rook.Value.PostCombineScoutedHours[team.Value.TeamId]) >= (5 - pickNumber / 32) &&
@@ -2869,12 +3399,13 @@ namespace MaddenEditor.Core
 					HighestValue = 0;
 					foreach (KeyValuePair<int, RookieRecord> rook in rookies)
 					{
-						// Take the best dude available -- except at certain positions
-						if (rook.Value.DraftedTeam < 32 ||
+						// Take the best player available -- except at certain positions
+						if (rook.Value.DraftPickTeam < 32 ||
 							rook.Value.Player.PositionId == (int)MaddenPositions.QB ||
 							rook.Value.Player.PositionId == (int)MaddenPositions.FB ||
 							rook.Value.Player.PositionId == (int)MaddenPositions.P ||
-							rook.Value.Player.PositionId == (int)MaddenPositions.K) { continue; }
+							rook.Value.Player.PositionId == (int)MaddenPositions.K) 
+                        { continue; }
 
 						if (rook.Value.AverageValue(team.Value, dcr.awarenessAdjust) > HighestValue)
 						{
@@ -3224,7 +3755,8 @@ namespace MaddenEditor.Core
 			{
 				foreach (KeyValuePair<int, double> pair in dcr.awarenessAdjust[rook.Value.Player.PositionId])
 				{
-					if (pair.Key > 20) { continue; }
+					if (pair.Key > 20) 
+                    { continue; }
 
 					double totalAtPosition = 0;
 
@@ -3338,16 +3870,15 @@ namespace MaddenEditor.Core
 			{
 				RookieRecord record = (RookieRecord)rec;
 
-				record.DraftedTeam = TeamEditingModel.NO_TEAM_ID;
-				record.DraftPickNumber = 255;
+				//record.DraftPickTeam = TeamEditingModel.NO_TEAM_ID;
+				//record.DraftPickNumber = 511;
 				record.dm = this;
-				record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerId));
+                record.model = this.model;
+				record.SetPlayerRecord(model.PlayerModel.GetPlayerByPlayerId(record.PlayerID));
 
 				record.InitializeDictionaries(dcr.awarenessAdjust);
                 record.Player.Overall = rand.Next(01, 100);
-				rookies.Add(record.PlayerId, record);
-                
-                
+				rookies.Add(record.PlayerID, record);
 			}
 		}
 
@@ -3572,8 +4103,6 @@ namespace MaddenEditor.Core
 			return toReturn;
 		}
 
-		
-
 		public DraftPickRecord GetDraftPickRecord(int recno)
 		{
 			return (DraftPickRecord)model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecord(recno);
@@ -3713,7 +4242,7 @@ namespace MaddenEditor.Core
 
 		public DraftPickRecord CreateNewDraftPickRecord()
 		{
-			return (DraftPickRecord)model.TableModels[EditorModel.DRAFT_PICK_TABLE].CreateNewRecord(false);
+			return (DraftPickRecord)model.TableModels[EditorModel.DRAFT_PICK_TABLE].CreateNewRecord(true);
 		}
 
 		private void InitializePositionData()
@@ -3723,18 +4252,18 @@ namespace MaddenEditor.Core
 			positionData.Add((int)MaddenPositions.FB, new Position(10, 10, 10, 0.3, 32, 0.2, 0.75, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.WR, new Position(65, 65, 65, 0.7, 35, 0.9, 0, 2, 2, 0.6));
 			positionData.Add((int)MaddenPositions.TE, new Position(30, 30, 30, 0.6, 32, 0.6, 0.4, 1, 1, 0.7));
-			positionData.Add((int)MaddenPositions.LT, new Position(65, 65, 65, 0.7, 36, 0.5, 0, 1, 1, 0.8));
+			positionData.Add((int)MaddenPositions.LT, new Position(70, 70, 70, 0.7, 36, 0.5, 0, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.LG, new Position(35, 35, 35, 0.4, 36, 0.5, 0.1, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.C, new Position(30, 30, 30, 0.4, 36, 0.5, 0.1, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.RG, new Position(35, 35, 35, 0.4, 36, 0.5, 0.1, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.RT, new Position(55, 55, 55, 0.6, 36, 0.5, 0, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.LE, new Position(50, 45, 55, 0.5, 35, 0.8, 0, 1, 1, 0.8));
 			positionData.Add((int)MaddenPositions.RE, new Position(85, 55, 85, 0.5, 35, 0.8, 0, 1, 1, 0.8));
-			positionData.Add((int)MaddenPositions.DT, new Position(65, 65, 65, 0.4, 35, 0.8, 0, 2, 1, 0.8));
+			positionData.Add((int)MaddenPositions.DT, new Position(65, 75, 65, 0.4, 35, 0.8, 0, 2, 1, 0.8));
 			positionData.Add((int)MaddenPositions.LOLB, new Position(45, 65, 55, 0.5, 34, 0.4, 0.1, 1, 1, 0.7));
 			positionData.Add((int)MaddenPositions.MLB, new Position(50, 55, 60, 0.5, 34, 0.4, 0.1, 1, 2, 0.7));
-			positionData.Add((int)MaddenPositions.ROLB, new Position(50, 60, 60, 0.5, 34, 0.4, 0.1, 1, 1, 0.7));
-			positionData.Add((int)MaddenPositions.CB, new Position(80, 75, 60, 0.7, 32, 0.9, 0, 2, 2, 0.6));
+			positionData.Add((int)MaddenPositions.ROLB, new Position(50, 65, 60, 0.5, 34, 0.4, 0.1, 1, 1, 0.7));
+			positionData.Add((int)MaddenPositions.CB, new Position(80, 75, 70, 0.7, 32, 0.9, 0, 2, 2, 0.6));
 			positionData.Add((int)MaddenPositions.FS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
 			positionData.Add((int)MaddenPositions.SS, new Position(40, 40, 50, 0.4, 32, 0.6, 0.05, 1, 1, 0.6));
 			positionData.Add((int)MaddenPositions.K, new Position(5, 5, 5, 0.1, 38, 0.1, 0.85, 1, 1, 0.2));
@@ -3768,268 +4297,9 @@ namespace MaddenEditor.Core
 
 			return startingValues[round - 1] + (1 - con) * slope[round - 1];
 		}
-
-        
+                
 		private void InitializePickValues()
 		{
-
-            //pickValues.Add(3600);
-            //pickValues.Add(3120);
-            //pickValues.Add(2640);
-            //pickValues.Add(2280);
-            //pickValues.Add(2100);
-            //pickValues.Add(1920);
-            //pickValues.Add(1800);
-            //pickValues.Add(1680);
-            //pickValues.Add(1560);
-            //pickValues.Add(1500);
-            //pickValues.Add(1440);
-            //pickValues.Add(1380);
-            //pickValues.Add(1320);
-            //pickValues.Add(1260);
-            //pickValues.Add(1200);
-            //pickValues.Add(1140);
-            //pickValues.Add(1080);
-            //pickValues.Add(1044);
-            //pickValues.Add(1008);
-            //pickValues.Add(978);
-            //pickValues.Add(948);
-            //pickValues.Add(918);
-            //pickValues.Add(888);
-            //pickValues.Add(864);
-            //pickValues.Add(840);
-            //pickValues.Add(816);
-            //pickValues.Add(792);
-            //pickValues.Add(774);
-            //pickValues.Add(756);
-            //pickValues.Add(738);
-            //pickValues.Add(720);
-            //pickValues.Add(702);
-            //pickValues.Add(684);
-            //pickValues.Add(666);
-            //pickValues.Add(648);
-            //pickValues.Add(630);
-            //pickValues.Add(612);
-            //pickValues.Add(595);
-            //pickValues.Add(576);
-            //pickValues.Add(558);
-            //pickValues.Add(546);
-            //pickValues.Add(534);
-            //pickValues.Add(522);
-            //pickValues.Add(510);
-            //pickValues.Add(498);
-            //pickValues.Add(486);
-            //pickValues.Add(474);
-            //pickValues.Add(462);
-            //pickValues.Add(450);
-            //pickValues.Add(438);
-            //pickValues.Add(426);
-            //pickValues.Add(414);
-            //pickValues.Add(402);
-            //pickValues.Add(390);
-            //pickValues.Add(378);
-            //pickValues.Add(366);
-            //pickValues.Add(354);
-            //pickValues.Add(342);
-            //pickValues.Add(330);
-            //pickValues.Add(318);
-            //pickValues.Add(312);
-            //pickValues.Add(306);
-            //pickValues.Add(300);
-            //pickValues.Add(294);
-            //pickValues.Add(288);
-            //pickValues.Add(282);
-            //pickValues.Add(276);
-            //pickValues.Add(270);
-            //pickValues.Add(264);
-            //pickValues.Add(258);
-            //pickValues.Add(252);
-            //pickValues.Add(246);
-            //pickValues.Add(240);
-            //pickValues.Add(235.2);
-            //pickValues.Add(230.4);
-            //pickValues.Add(225.6);
-            //pickValues.Add(220.8);
-            //pickValues.Add(213.6);
-            //pickValues.Add(208.8);
-            //pickValues.Add(204);
-            //pickValues.Add(199.2);
-            //pickValues.Add(194.4);
-            //pickValues.Add(189.6);
-            //pickValues.Add(184.8);
-            //pickValues.Add(180);
-            //pickValues.Add(175.2);
-            //pickValues.Add(170);
-            //pickValues.Add(165.6);
-            //pickValues.Add(160.8);
-            //pickValues.Add(156);
-            //pickValues.Add(151.2);
-            //pickValues.Add(146.4);
-            //pickValues.Add(141.6);
-            //pickValues.Add(136.8);
-            //pickValues.Add(132);
-            //pickValues.Add(127.2);
-            //pickValues.Add(122.4);
-            //pickValues.Add(117.6);
-            //pickValues.Add(112.8);
-            //pickValues.Add(110.4);
-            //pickValues.Add(108);
-            //pickValues.Add(105.6);
-            //pickValues.Add(103.2);
-            //pickValues.Add(100.8);
-            //pickValues.Add(98.4);
-            //pickValues.Add(96);
-            //pickValues.Add(93.6);
-            //pickValues.Add(91.2);
-            //pickValues.Add(88.8);
-            //pickValues.Add(86.4);
-            //pickValues.Add(84);
-            //pickValues.Add(81.6);
-            //pickValues.Add(79.2);
-            //pickValues.Add(76.8);
-            //pickValues.Add(74.4);
-            //pickValues.Add(72);
-            //pickValues.Add(69.6);
-            //pickValues.Add(67.2);
-            //pickValues.Add(64.8);
-            //pickValues.Add(62.4);
-            //pickValues.Add(60);
-            //pickValues.Add(57.6);
-            //pickValues.Add(55.2);
-            //pickValues.Add(52.8);
-            //pickValues.Add(51.6);
-            //pickValues.Add(50.4);
-            //pickValues.Add(49.2);
-            //pickValues.Add(48);
-            //pickValues.Add(48);
-            //pickValues.Add(47.4);
-            //pickValues.Add(46.8);
-            //pickValues.Add(46.2);
-            //pickValues.Add(45.6);
-            //pickValues.Add(45);
-            //pickValues.Add(44.4);
-            //pickValues.Add(43.8);
-            //pickValues.Add(43.2);
-            //pickValues.Add(42.6);
-            //pickValues.Add(42);
-            //pickValues.Add(41.4);
-            //pickValues.Add(40.92);
-            //pickValues.Add(40.44);
-            //pickValues.Add(39.96);
-            //pickValues.Add(39.36);
-            //pickValues.Add(38.88);
-            //pickValues.Add(38.4);
-            //pickValues.Add(37.92);
-            //pickValues.Add(37.44);
-            //pickValues.Add(36.96);
-            //pickValues.Add(36.48);
-            //pickValues.Add(36);
-            //pickValues.Add(35.52);
-            //pickValues.Add(35.04);
-            //pickValues.Add(34.56);
-            //pickValues.Add(34.08);
-            //pickValues.Add(33.6);
-            //pickValues.Add(33.12);
-            //pickValues.Add(32.64);
-            //pickValues.Add(32.16);
-            //pickValues.Add(31.68);
-            //pickValues.Add(31.2);
-            //pickValues.Add(30.72);
-            //pickValues.Add(30.24);
-            //pickValues.Add(29.76);
-            //pickValues.Add(29.28);
-            //pickValues.Add(28.8);
-            //pickValues.Add(28.32);
-            //pickValues.Add(27.84);
-            //pickValues.Add(27.36);
-            //pickValues.Add(26.88);
-            //pickValues.Add(26.4);
-            //pickValues.Add(25.92);
-            //pickValues.Add(25.44);
-            //pickValues.Add(24.96);
-            //pickValues.Add(24.48);
-            //pickValues.Add(24);
-            //pickValues.Add(23.52);
-            //pickValues.Add(23.04);
-            //pickValues.Add(22.56);
-            //pickValues.Add(22.08);
-            //pickValues.Add(21.6);
-            //pickValues.Add(21.12);
-            //pickValues.Add(20.64);
-            //pickValues.Add(20.16);
-            //pickValues.Add(19.68);
-            //pickValues.Add(19.2);
-            //pickValues.Add(18.9);
-            //pickValues.Add(18.6);
-            //pickValues.Add(18.3);
-            //pickValues.Add(18);
-            //pickValues.Add(17.4);
-            //pickValues.Add(17);
-            //pickValues.Add(16.8);
-            //pickValues.Add(16.44);
-            //pickValues.Add(16.08);
-            //pickValues.Add(17.72);
-            //pickValues.Add(15.48);
-            //pickValues.Add(15.12);
-            //pickValues.Add(14.76);
-            //pickValues.Add(14.4);
-            //pickValues.Add(14.04);
-            //pickValues.Add(13.68);
-            //pickValues.Add(13.32);
-            //pickValues.Add(12.96);
-            //pickValues.Add(12.6);
-            //pickValues.Add(12.24);
-            //pickValues.Add(11.88);
-            //pickValues.Add(11.52);
-            //pickValues.Add(11.16);
-            //pickValues.Add(10.8);
-            //pickValues.Add(10.44);
-            //pickValues.Add(10.08);
-            //pickValues.Add(9.72);
-            //pickValues.Add(9.36);
-            //pickValues.Add(9);
-            //pickValues.Add(8.64);
-            //pickValues.Add(8.28);
-            //pickValues.Add(7.92);
-            //pickValues.Add(7.56);
-            //pickValues.Add(7.2);
-            //pickValues.Add(6.84);
-            //pickValues.Add(6.48);
-            //pickValues.Add(6.12);
-            //pickValues.Add(5.76);
-            //pickValues.Add(5.4);
-            //pickValues.Add(5.04);
-            //pickValues.Add(4.8);
-            //pickValues.Add(4.56);
-            //pickValues.Add(4.32);
-            //pickValues.Add(4.08);
-            //pickValues.Add(3.84);
-            //pickValues.Add(3.6);
-            //pickValues.Add(3.36);
-            //pickValues.Add(3.12);
-            //pickValues.Add(3);
-            //pickValues.Add(2.88);
-            //pickValues.Add(2.76);
-            //pickValues.Add(2.64);
-            //pickValues.Add(2.52);
-            //pickValues.Add(2.4);
-            //pickValues.Add(2.28);
-            //pickValues.Add(2.16);
-            //pickValues.Add(2.04);
-            //pickValues.Add(1.92);
-            //pickValues.Add(1.8);
-            //pickValues.Add(1.68);
-            //pickValues.Add(1.56);
-            //pickValues.Add(1.44);
-            //pickValues.Add(1.32);
-            //pickValues.Add(1.2);
-            //pickValues.Add(1.08);
-            //pickValues.Add(.96);
-            //pickValues.Add(.84);
-            //pickValues.Add(.72);
-            //pickValues.Add(.6); 
-
-
             pickValues.Add(3000);
             pickValues.Add(2600);
             pickValues.Add(2200);
@@ -4286,806 +4556,13 @@ namespace MaddenEditor.Core
             pickValues.Add(0.6);
             pickValues.Add(0.5);
             pickValues.Add(0);
-
-            //pickValues.Add(2250);
-            //pickValues.Add(1950);
-            //pickValues.Add(1650);
-            //pickValues.Add(1425);
-            //pickValues.Add(1312.5);
-            //pickValues.Add(1200);
-            //pickValues.Add(1125);
-            //pickValues.Add(1050);
-            //pickValues.Add(975);
-            //pickValues.Add(937.5);
-            //pickValues.Add(900);
-            //pickValues.Add(862.5);
-            //pickValues.Add(825);
-            //pickValues.Add(787.5);
-            //pickValues.Add(750);
-            //pickValues.Add(712.5);
-            //pickValues.Add(675);
-            //pickValues.Add(652.5);
-            //pickValues.Add(630);
-            //pickValues.Add(611.25);
-            //pickValues.Add(592.5);
-            //pickValues.Add(573.75);
-            //pickValues.Add(555);
-            //pickValues.Add(540);
-            //pickValues.Add(525);
-            //pickValues.Add(510);
-            //pickValues.Add(495);
-            //pickValues.Add(483.75);
-            //pickValues.Add(472.5);
-            //pickValues.Add(461.25);
-            //pickValues.Add(450);
-            //pickValues.Add(438.75);
-            //pickValues.Add(427.5);
-            //pickValues.Add(416.25);
-            //pickValues.Add(405);
-            //pickValues.Add(393.75);
-            //pickValues.Add(382.5);
-            //pickValues.Add(371.25);
-            //pickValues.Add(360);
-            //pickValues.Add(348.75);
-            //pickValues.Add(341.25);
-            //pickValues.Add(333.75);
-            //pickValues.Add(326.25);
-            //pickValues.Add(318.75);
-            //pickValues.Add(311.25);
-            //pickValues.Add(303.75);
-            //pickValues.Add(296.25);
-            //pickValues.Add(288.75);
-            //pickValues.Add(281.25);
-            //pickValues.Add(273.75);
-            //pickValues.Add(266.25);
-            //pickValues.Add(258.75);
-            //pickValues.Add(251.25);
-            //pickValues.Add(243.75);
-            //pickValues.Add(236.25);
-            //pickValues.Add(228.75);
-            //pickValues.Add(221.25);
-            //pickValues.Add(213);
-            //pickValues.Add(206.25);
-            //pickValues.Add(198.75);
-            //pickValues.Add(195);
-            //pickValues.Add(191.25);
-            //pickValues.Add(187.5);
-            //pickValues.Add(183.75);
-            //pickValues.Add(180);
-            //pickValues.Add(176.25);
-            //pickValues.Add(172.5);
-            //pickValues.Add(168.75);
-            //pickValues.Add(165);
-            //pickValues.Add(161.25);
-            //pickValues.Add(157.5);
-            //pickValues.Add(153.75);
-            //pickValues.Add(150);
-            //pickValues.Add(146.25);
-            //pickValues.Add(144);
-            //pickValues.Add(141);
-            //pickValues.Add(138);
-            //pickValues.Add(133.5);
-            //pickValues.Add(130.5);
-            //pickValues.Add(127.5);
-            //pickValues.Add(124.5);
-            //pickValues.Add(121.5);
-            //pickValues.Add(118.5);
-            //pickValues.Add(115.5);
-            //pickValues.Add(112.5);
-            //pickValues.Add(109.5);
-            //pickValues.Add(106.5);
-            //pickValues.Add(103.5);
-            //pickValues.Add(100.5);
-            //pickValues.Add(97.5);
-            //pickValues.Add(94.5);
-            //pickValues.Add(91.5);
-            //pickValues.Add(88.5);
-            //pickValues.Add(85.5);
-            //pickValues.Add(82.5);
-            //pickValues.Add(79.5);
-            //pickValues.Add(76.5);
-            //pickValues.Add(73.5);
-            //pickValues.Add(70.5);
-            //pickValues.Add(69);
-            //pickValues.Add(67.5);
-            //pickValues.Add(66);
-            //pickValues.Add(64.5);
-            //pickValues.Add(63);
-            //pickValues.Add(61.5);
-            //pickValues.Add(60);
-            //pickValues.Add(58.5);
-            //pickValues.Add(57);
-            //pickValues.Add(55.5);
-            //pickValues.Add(54);
-            //pickValues.Add(52.5);
-            //pickValues.Add(51);
-            //pickValues.Add(49.5);
-            //pickValues.Add(48);
-            //pickValues.Add(46.5);
-            //pickValues.Add(45);
-            //pickValues.Add(43.5);
-            //pickValues.Add(42);
-            //pickValues.Add(40.5);
-            //pickValues.Add(39);
-            //pickValues.Add(37.5);
-            //pickValues.Add(36);
-            //pickValues.Add(34.5);
-            //pickValues.Add(33);
-            //pickValues.Add(32.25);
-            //pickValues.Add(31.5);
-            //pickValues.Add(30.75);
-            //pickValues.Add(30);
-            //pickValues.Add(29.5);
-            //pickValues.Add(29.5);
-            //pickValues.Add(29.25);
-            //pickValues.Add(28.8);
-            //pickValues.Add(25.5);
-            //pickValues.Add(28.13);
-            //pickValues.Add(27.75);
-            //pickValues.Add(27.4);
-            //pickValues.Add(27);
-            //pickValues.Add(26.6);
-            //pickValues.Add(26.25);
-            //pickValues.Add(25.87);
-            //pickValues.Add(25.57);
-            //pickValues.Add(25.27);
-            //pickValues.Add(24.9);
-            //pickValues.Add(24.6);
-            //pickValues.Add(24.3);
-            //pickValues.Add(24);
-            //pickValues.Add(23.7);
-            //pickValues.Add(23.4);
-            //pickValues.Add(23.1);
-            //pickValues.Add(22.8);
-            //pickValues.Add(22.5);
-            //pickValues.Add(22.2);
-            //pickValues.Add(21.9);
-            //pickValues.Add(21.6);
-            //pickValues.Add(21.3);
-            //pickValues.Add(21);
-            //pickValues.Add(20.7);
-            //pickValues.Add(20.4);
-            //pickValues.Add(20.1);
-            //pickValues.Add(19.8);
-            //pickValues.Add(19.5);
-            //pickValues.Add(19.2);
-            //pickValues.Add(18.9);
-            //pickValues.Add(18.6);
-            //pickValues.Add(18.3);
-            //pickValues.Add(18);
-            //pickValues.Add(17.7);
-            //pickValues.Add(17.47);
-            //pickValues.Add(17.1);
-            //pickValues.Add(16.8);
-            //pickValues.Add(16.5);
-
-            //pickValues.Add(16.2);
-            //pickValues.Add(15.9);
-            //pickValues.Add(15.6);
-            //pickValues.Add(15.3);
-            //pickValues.Add(15);
-            //pickValues.Add(14.7);
-            //pickValues.Add(14.4);
-            //pickValues.Add(14.1);
-            //pickValues.Add(13.8);
-            //pickValues.Add(13.5);
-            //pickValues.Add(13.2);
-            //pickValues.Add(12.9);
-            //pickValues.Add(12.6);
-            //pickValues.Add(12.3);
-            //pickValues.Add(12);
-            //pickValues.Add(11.81);
-            //pickValues.Add(11.62);
-            //pickValues.Add(11.43);
-            //pickValues.Add(11.25);
-            //pickValues.Add(11.06);
-            //pickValues.Add(10.8);
-            //pickValues.Add(10.5);
-            //pickValues.Add(10.27);
-            //pickValues.Add(10.05);
-            //pickValues.Add(9.825);
-            //pickValues.Add(9.675);
-            //pickValues.Add(9.45);
-            //pickValues.Add(9.225);
-            //pickValues.Add(9);
-            //pickValues.Add(8.775);
-            //pickValues.Add(8.55);
-            //pickValues.Add(8.33);
-            //pickValues.Add(8.1);
-            //pickValues.Add(7.875);
-            //pickValues.Add(7.65);
-            //pickValues.Add(7.425);
-            //pickValues.Add(7.2);
-            //pickValues.Add(6.98);
-            //pickValues.Add(6.75);
-            //pickValues.Add(6.53);
-            //pickValues.Add(6.3);
-            //pickValues.Add(6.07);
-            //pickValues.Add(5.85);
-            //pickValues.Add(5.62);
-            //pickValues.Add(5.4);
-            //pickValues.Add(5.17);
-            //pickValues.Add(4.95);
-            //pickValues.Add(4.73);
-            //pickValues.Add(4.5);
-            //pickValues.Add(4.27);
-            //pickValues.Add(4.05);
-            //pickValues.Add(3.825);
-            //pickValues.Add(3.6);
-            //pickValues.Add(3.375);
-            //pickValues.Add(3.15);
-            //pickValues.Add(3);
-            //pickValues.Add(2.85);
-            //pickValues.Add(2.7);
-            //pickValues.Add(2.55);
-            //pickValues.Add(2.4);
-            //pickValues.Add(2.25);
-            //pickValues.Add(2.1);
-            //pickValues.Add(1.95);
-            //pickValues.Add(1.87);
-            //pickValues.Add(1.8);
-            //pickValues.Add(1.73);
-            //pickValues.Add(1.65);
-            //pickValues.Add(1.57);
-            //pickValues.Add(1.5);
-            //pickValues.Add(1.42);
-            //pickValues.Add(1.35);
-            //pickValues.Add(1.28);
-            //pickValues.Add(1.2);
-            //pickValues.Add(1.13);
-            //pickValues.Add(1.05);
-            //pickValues.Add(0.98);
-            //pickValues.Add(.9);
-            //pickValues.Add(.825);
-            //pickValues.Add(.75);
-            //pickValues.Add(.675);
-            //pickValues.Add(.6);
-            //pickValues.Add(.525);
-            //pickValues.Add(.45);
-            //pickValues.Add(.375);
-            //pickValues.Add(0);
-           
-    
-
-
+            pickValues.Add(0);
 		}
 
 
-        public DraftModel(EditorModel model)
-        {
-            this.model = model;
-            math = new LocalMath(model.FileVersion);
-        }
 
-		/*
-        private void AssignRookieScoutedAttributes()
-        {
-            foreach (KeyValuePair<int, RookieRecord> rook in rookies)
-            {
-                for (int i = 0; i < 32; i++)
-                {
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.OVR] =
-                        rook.Value.Player.Overall;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.INJ] =
-                        rook.Value.Player.Injury;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.SPD] =
-                        rook.Value.Player.Speed;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.ACC] =
-                        rook.Value.Player.Acceleration;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.AGI] =
-                        rook.Value.Player.Agility;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.JMP] =
-                        rook.Value.Player.Jumping;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.AWR] =
-                        rook.Value.Player.Awareness;
-                    rook.Value.ratings[i][(int)RookieRecord.RatingType.Final][(int)MaddenAttribute.STR] =
-                        rook.Value.Player.Strength;
-                }
-            }
-        }
-         * */
+        
 	}
 
-	public class TradeOffer
-	{
-		public int status = 0;
-		public int HigherTeam;
-		public int LowerTeam;
-		public int pickNumber;
-
-		public double MinAccept;
-		public double MaxGive;
-
-		public bool lastWasStrike = false;
-
-		public int higherStrikes = 0;
-		public int lowerStrikes = 0;
-
-		public bool biddingWar = false;
-		public bool allowFutureHighPicks = false;
-		public bool allowFuturePicksFromLower = true;
-		public bool allowFuturePicksFromHigher = true;
-		public bool allowMultipleHighPicks = false;
-		public int MaxPicksFromLower = 2;
-
-		private DraftModel dm;
-
-		public List<int> PicksFromLower = new List<int>();
-		public List<int> PicksFromHigher = new List<int>();
-
-		public List<double> offersFromHigher = new List<double>();
-		public List<double> offersFromLower = new List<double>();
-
-		public List<int> higherAvailable = new List<int>();
-		public List<int> lowerAvailable = new List<int>();
-
-		List<int> tempPicksFromLower;
-		List<int> tempPicksFromHigher;
-
-		double target;
-
-		public TradeOffer(int higherId, int lowerId, DraftModel model)
-		{
-			HigherTeam = higherId;
-			LowerTeam = lowerId;
-			dm = model;
-		}
-
-		private int numHighPicks()
-		{
-			int toRet = 0;
-			foreach (int pick in tempPicksFromLower)
-			{
-				if (pick < 1000)
-				{
-					if (dm.pickValues[pick] > 200)
-					{
-						toRet++;
-					}
-				}
-				else
-				{
-					if (dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON) > 200)
-					{
-						toRet++;
-					}
-				}
-			}
-			return toRet;
-		}
-
-		public int AddClosestPick(bool fromLower)
-		{
-			if (fromLower)
-			{
-				// Add the pick that gets us closest to the mark.
-
-				int bestPick = -1;
-				double bestDifference = target;
-				foreach (int pick in lowerAvailable)
-				{
-					if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromLower.Contains(pick))
-					{
-						if (!allowMultipleHighPicks && dm.pickValues[pick] > 200 && numHighPicks() >= 2)
-						{
-							continue;
-						}
-
-						bestPick = pick;
-						bestDifference = Math.Abs(target - dm.pickValues[pick]);
-					}
-				}
-				lowerAvailable.Sort();
-
-				// If the closest pick wasn't our most valuable remaining pick, add this one
-				// and return.  Otherwise, allow possibility of adding a future pick.
-				int highestAvailablePick = -1;
-				foreach (int pick in lowerAvailable)
-				{
-					if (!tempPicksFromLower.Contains(pick))
-					{
-						if (!allowMultipleHighPicks && dm.pickValues[pick] > 200 && numHighPicks() >= 2)
-						{
-							continue;
-						}
-
-						highestAvailablePick = pick;
-						break;
-					}
-				}
-
-
-				if (!allowFuturePicksFromLower || (bestPick != -1 && bestPick != highestAvailablePick))
-				{
-					if (bestPick != -1)
-					{
-						tempPicksFromLower.Add(bestPick);
-					}
-					return bestPick;
-				}
-
-				// If there was no such pick, add the most valuable pick.
-				int round = (int)Math.Floor((double)pickNumber / 32.0) + 1;
-
-				int startRound = -1;
-				if (allowFutureHighPicks)
-				{
-					startRound = round;
-				}
-				else
-				{
-					startRound = round + 2;
-				}
-
-				int con = dm.model.TeamModel.GetTeamRecord(LowerTeam).CON;
-				for (int i = startRound; i < 8; i++)
-				{
-					if (Math.Abs(target - dm.futureValues(i, con)) < bestDifference && !tempPicksFromLower.Contains(1000 + i)
-						&& !dm.futureTradedPicks[LowerTeam].ContainsKey(i))
-					{
-						bestPick = i + 1000;
-						bestDifference = Math.Abs(target - dm.futureValues(i, con));
-					}
-				}
-
-				if (bestPick != -1)
-				{
-					tempPicksFromLower.Add(bestPick);
-				}
-
-				return bestPick;
-			}
-			else
-			{
-				// Add the pick that gets us closest to the mark.
-
-				int bestPick = -1;
-				double bestDifference = target;
-				foreach (int pick in higherAvailable)
-				{
-					if (Math.Abs(target - dm.pickValues[pick]) < bestDifference && !tempPicksFromHigher.Contains(pick))
-					{
-						bestPick = pick;
-						bestDifference = Math.Abs(target - dm.pickValues[pick]);
-					}
-				}
-				higherAvailable.Sort();
-
-				// If the closest pick wasn't our most valuable remaining pick, add this one
-				// and return.  Otherwise, allow possibility of adding a future pick.
-				int highestAvailablePick = -1;
-				foreach (int pick in higherAvailable)
-				{
-					if (!tempPicksFromHigher.Contains(pick))
-					{
-						highestAvailablePick = pick;
-						break;
-					}
-				}
-
-				if (!allowFuturePicksFromHigher || (bestPick != -1 && bestPick != highestAvailablePick))
-				{
-					if (bestPick != -1)
-					{
-						tempPicksFromHigher.Add(bestPick);
-					}
-					return bestPick;
-				}
-
-				// If there was no such pick, add the most valuable pick.
-				int startRound = (int)Math.Floor((double)pickNumber / 32.0) + 3;
-
-				int con = dm.model.TeamModel.GetTeamRecord(HigherTeam).CON;
-				for (int i = startRound; i < 8; i++)
-				{
-					if (Math.Abs(target - dm.futureValues(i, con)) < bestDifference && !tempPicksFromHigher.Contains(1000 + i)
-						&& !dm.futureTradedPicks[HigherTeam].ContainsKey(i))
-					{
-						bestPick = i + 1000;
-						bestDifference = Math.Abs(target - dm.futureValues(i, con));
-					}
-				}
-
-				if (bestPick != -1)
-				{
-					tempPicksFromLower.Add(bestPick);
-				}
-
-				return bestPick;
-			}
-		}
-
-		public double SetMinTake()
-		{
-			if (biddingWar)
-			{
-				foreach (TradeOffer to in dm.tradeOffers.Values)
-				{
-					if (to.status == (int)TradeOfferStatus.PendingAccept)
-					{
-						MinAccept = to.MinAccept;
-						return MinAccept;
-					}
-				}
-
-				//Trace.Writeline("\n\nSEVERE ERROR!\n\n");
-				return -1;
-			}
-
-			// Find minimum value to trade down
-			double mintake;
-			double favoriteEffectiveValue = dm.favorites[HigherTeam].EffectiveValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust);
-			double favoriteValue = dm.favorites[HigherTeam].AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust);
-
-			if (favoriteEffectiveValue * 1.5 < dm.pickValues[pickNumber])
-			{
-				mintake = favoriteEffectiveValue;
-			}
-			else
-			{
-				mintake = favoriteEffectiveValue * Math.Tanh(favoriteValue / dm.pickValues[pickNumber]) / Math.Tanh(1.0);
-
-				double wantfrac = 1;
-
-				PicksFromLower.Sort();
-				int nextpick = PicksFromLower[0];
-
-				foreach (KeyValuePair<int, RookieRecord> rook in dm.rookies)
-				{
-					if (rook.Value.AverageNeed(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust) <= dm.positionData[rook.Value.Player.PositionId].Threshold ||
-						// replace with statement on league projected position
-						(nextpick < 1000 && rook.Value.AverageValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), dm.dcr.awarenessAdjust) <= 0.75 * dm.pickValues[nextpick])) { continue; }
-
-					if (rook.Value.PlayerId == dm.favorites[HigherTeam].PlayerId || rook.Value.DraftedTeam < 32)
-					{
-						continue;
-					}
-
-					double tempEV = rook.Value.EffectiveValue(dm.model.TeamModel.GetTeamRecord(HigherTeam), pickNumber, dm.dcr.awarenessAdjust);
-					double tempwantfrac = Math.Tanh((favoriteEffectiveValue - tempEV) / tempEV);
-
-					if (tempwantfrac > 0.95) { tempwantfrac = 1; }
-					wantfrac -= wantfrac * (1 - tempwantfrac) / 2.0;
-				}
-
-				double probabilityTaken = dm.probs[LowerTeam][dm.favorites[HigherTeam].PlayerId];
-				double probabilityRemaining = 1 - probabilityTaken;
-
-				foreach (TableRecordModel rec in dm.model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
-				{
-					DraftPickRecord record = (DraftPickRecord)rec;
-
-					if (record.PickNumber <= pickNumber) { continue; }
-					if (record.PickNumber == nextpick) { break; }
-
-					probabilityTaken += dm.probs[record.CurrentTeamId][dm.favorites[HigherTeam].PlayerId] * probabilityRemaining;
-					probabilityRemaining *= (1.0 - dm.probs[record.CurrentTeamId][dm.favorites[HigherTeam].PlayerId]);
-
-					if (probabilityRemaining == 0) { break; }
-				}
-
-				if (probabilityTaken == 1 && wantfrac == 1)
-				{
-					mintake = 100000;
-				}
-				else
-				{
-					mintake *= 1.0 / Math.Sqrt(Math.Pow(1.0 - probabilityTaken, 2.0) + Math.Pow(1.0 - wantfrac, 2.0));
-				}
-
-				if (Double.IsNaN(mintake))
-				{
-					mintake = 10000;
-				}
-			}
-
-			if (Double.IsNaN(mintake))
-			{
-				mintake = 10000;
-			}
-
-			if (mintake < dm.pickValues[pickNumber + 1] + 1)
-			{
-				MinAccept = dm.pickValues[pickNumber + 1] + 1;
-			}
-			else
-			{
-				MinAccept = mintake;
-			}
-
-			return mintake;
-		}
-
-
-		public double makeCounterOffer(double value, bool fromHigher)
-		{
-			target = value;
-			tempPicksFromLower = new List<int>();
-			tempPicksFromHigher = new List<int>();
-
-			// Start the offer with the most valuable pick from the lower team.
-			while (Math.Abs(target) > 0.03 * value && 
-                (tempPicksFromHigher.Count <= 2 || tempPicksFromLower.Count <= MaxPicksFromLower) &&
-				!((target > 0 && tempPicksFromLower.Count >= MaxPicksFromLower) || (target < 0 && tempPicksFromHigher.Count >= 2)))
-			{
-				int addedPick = AddClosestPick(target > 0);
-				double thisValue = 0;
-
-				if (addedPick == -1)
-				{
-					thisValue = 0;
-					break;
-				}
-				else if (addedPick < 1000)
-				{
-					thisValue = dm.pickValues[addedPick];
-				}
-				else
-				{
-					if (target > 0)
-					{
-						thisValue = dm.futureValues(addedPick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON);
-					}
-					else
-					{
-						thisValue = dm.futureValues(addedPick - 1000, dm.model.TeamModel.GetTeamRecord(HigherTeam).CON);
-					}
-				}
-
-				if (target > 0)
-				{
-					target -= thisValue;
-				}
-				else
-				{
-					target += thisValue;
-				}
-			}
-
-			PicksFromHigher = tempPicksFromHigher;
-			PicksFromLower = tempPicksFromLower;
-
-			if (PicksFromLower.Count == 0)
-			{
-				offersFromLower.Clear();
-				MinAccept = 10000;
-				return 10000;
-			}
-
-			if (PicksFromLower.Count == 1 && PicksFromLower[0] < 1000)
-			{
-				// Only offering one pick from this draft.  Remove it, make another
-				// counter offer, put it back at the top of the stack, and 
-				// return whatever the alternate counter offer is.
-
-				lowerAvailable.Sort();
-				int pickToPush = lowerAvailable[0];
-				lowerAvailable.RemoveAt(0);
-
-				double toReturn = makeCounterOffer(value, fromHigher);
-
-				lowerAvailable.Insert(0, pickToPush);
-				return toReturn;
-			}
-
-
-
-			double tempValue = 0;
-
-			foreach (int pick in PicksFromLower)
-			{
-				if (pick < 1000)
-				{
-					tempValue += dm.pickValues[pick];
-				}
-				else
-				{
-					tempValue += dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(LowerTeam).CON);
-				}
-			}
-
-			foreach (int pick in PicksFromHigher)
-			{
-				if (pick < 1000)
-				{
-					tempValue -= dm.pickValues[pick];
-				}
-				else
-				{
-					tempValue -= dm.futureValues(pick - 1000, dm.model.TeamModel.GetTeamRecord(HigherTeam).CON);
-				}
-			}
-
-			if (fromHigher)
-			{
-				offersFromHigher.Add(tempValue);
-				return 0;
-			}
-			else
-			{
-				offersFromLower.Add(tempValue);
-				return SetMinTake();
-			}
-		}
-	}
-
-    public enum MaddenPositionGroups
-    {
-        OL=0,
-        OT,
-        OG,
-        DL,
-        DE,
-        LB,
-        OLB,
-        DB,
-        S
-    }
-
-	public enum TradeOfferStatus
-	{
-		HigherResponsePending = 0,
-		LowerResponsePending,
-		Rejected,
-		Accepted,
-		PendingAccept
-	}
-
-	public class Position
-	{
-		private int value34;
-		private int value43;
-		private int valueCover2;
-		private int starters43;
-		private int starters34;
-
-		public int RetirementAge;
-		public double SuccessorNeed;
-		public double BackupNeed;
-		public double Threshold;
-		public double DurabilityNeed;
-
-		public Position(int v43, int v34, int c2, double suc, int ra, double back, double thresh, int s43, int s34, double dn)
-		{
-			value43 = v43;
-			value34 = v34;
-			valueCover2 = c2;
-			RetirementAge = ra;
-			SuccessorNeed = suc;
-			BackupNeed = back;
-			Threshold = thresh;
-			starters43 = s43;
-			starters34 = s34;
-			DurabilityNeed = dn;
-		}
-
-		public int Starters(int system)
-		{
-			if (system == (int)TeamRecord.Defense.Front34)
-			{
-				return starters34;
-			}
-			else
-			{
-				return starters43;
-			}
-		}
-
-		public int Value(int system)
-		{
-			if (system == (int)TeamRecord.Defense.Front43)
-			{
-				return value43;
-			}
-			else if (system == (int)TeamRecord.Defense.Front34)
-			{
-				return value34;
-			}
-			else if (system == (int)TeamRecord.Defense.Cover2)
-			{
-				return valueCover2;
-			}
-			return -1;
-		}
-	}
+	
 }

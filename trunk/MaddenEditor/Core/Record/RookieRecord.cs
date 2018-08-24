@@ -26,11 +26,79 @@ using System.Text;
 
 namespace MaddenEditor.Core.Record
 {
-    public class RookieRecord : TableRecordModel
+    public enum MaddenAttribute
     {
-        public const string DRAFTED_TEAM = "DRTM";
-        public const string PLAYER_ID = "PGID";
-        public const string DRAFT_PICK_NUMBER = "DPNM";
+        OVR = 0,
+        AGE,
+        YRP,
+        INJ,
+        SPD,
+        AGI,
+        ACC,
+        STR,
+        AWR,
+        JMP,
+        CTH,
+        CAR,
+        BTK,
+        TAK,
+        THA,
+        THP,
+        STA,
+        PBK,
+        RBK,
+        KPR,
+        KAC,
+        KRT,
+        TGH,
+        EGO,
+        VAL
+    }
+
+    public enum CombineStat
+    {
+        RoundGrade = 0,
+        Forty,
+        Shuttle,
+        Cone,
+        BenchPress,
+        Doctor,
+        Vertical,
+        Wonderlic,
+        Height
+    }
+    
+    
+    public class RookieRecord : DraftedPlayers
+    {
+        public enum NeedType
+        {
+            Starter = 0,
+            Backup,
+            Successor
+        }
+
+        public enum ValueType
+        {
+            NoProg = 0,
+            Perceived,
+            WithProg
+        }
+
+        public enum RatingType
+        {
+            Final = 0,
+            Combine,
+            Initial,
+            Actual
+        }  
+            
+        private EditorModel _model;
+        public EditorModel model
+        {
+            get { return _model; }
+            set { _model = value; }
+        }
 
         private PlayerRecord player;
         public DraftModel dm;
@@ -48,7 +116,6 @@ namespace MaddenEditor.Core.Record
         public double ActualValue;
 
         private double power = 10;
-
         public int changeovr;
 
         // Has structure ratings[TeamId][RatingType][Attribute]
@@ -121,7 +188,31 @@ namespace MaddenEditor.Core.Record
             // so their effective overall is just 78.  This should at least prevent
             // the totally boneheaded picks.
 
-            int stopgapEffectiveOVR = 78;
+            // s68 - should check FA though to see if there are any such players even available
+            // that would change teams' needs
+            // Changing stopgap to 0 and using available free agents for this for now
+
+            List<int> fa = new List<int>();
+            foreach (PlayerRecord pr in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (pr.Deleted)
+                    continue;
+                if (pr.PositionId == thePosition && pr.TeamId == 1009)
+                {
+                    fa.Add(pr.Overall);
+                }
+            }
+            int total = 0;
+            int stopgapEffectiveOVR = 0;
+            fa.Sort();
+            int stop = 10;
+            if (fa.Count < 10)
+                stop = fa.Count;
+            for (int c = 0; c < stop; c++)
+                total += fa[c];            
+            if (total > 0)
+                stopgapEffectiveOVR = total / stop;
+
             double sgValue = LocalMath.ValueScale * positionData[thePosition].Value(team.DefensiveSystem) * math.valcurve(stopgapEffectiveOVR);
 
             if (depthChartValues.Count < numStarters)
@@ -905,43 +996,7 @@ namespace MaddenEditor.Core.Record
 
             return Math.Pow(valueSubtotal, 1 / power);
         }
-        
-        public int PlayerId
-        {
-            get
-            {
-                return GetIntField(PLAYER_ID);
-            }
-            set
-            {
-                SetField(PLAYER_ID, value);
-            }
-        }
-
-        public int DraftedTeam
-        {
-            get
-            {
-                return GetIntField(DRAFTED_TEAM);
-            }
-            set
-            {
-                SetField(DRAFTED_TEAM, value);
-            }
-        }
-
-        public int DraftPickNumber
-        {
-            get
-            {
-                return GetIntField(DRAFT_PICK_NUMBER);
-            }
-            set
-            {
-                SetField(DRAFT_PICK_NUMBER, value);
-            }
-        }
-
+          
         public PlayerRecord Player
         {
             get
@@ -960,68 +1015,8 @@ namespace MaddenEditor.Core.Record
             return Player.ToString();
         }
 
-        public enum NeedType
-        {
-            Starter = 0,
-            Backup,
-            Successor
-        }
-
-        public enum ValueType
-        {
-            NoProg = 0,
-            Perceived,
-            WithProg
-        }
-
-        public enum RatingType
-        {
-            Final = 0,
-            Combine,
-            Initial,
-            Actual
-        }
+       
     }
 
-    public enum MaddenAttribute
-    {
-        OVR = 0,
-        AGE,
-        YRP,
-        INJ,
-        SPD,
-        AGI,
-        ACC,
-        STR,
-        AWR,
-        JMP,
-        CTH,
-        CAR,
-        BTK,
-        TAK,
-        THA,
-        THP,
-        STA,
-        PBK,
-        RBK,
-        KPR,
-        KAC,
-        KRT,
-        TGH,
-        EGO,
-        VAL
-    }
-
-    public enum CombineStat
-    {
-        RoundGrade = 0,
-        Forty,
-        Shuttle,
-        Cone,
-        BenchPress,
-        Doctor,
-        Vertical,
-        Wonderlic,
-        Height
-    }
+    
 }

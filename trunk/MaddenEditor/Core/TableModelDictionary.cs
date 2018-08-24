@@ -39,16 +39,18 @@ namespace MaddenEditor.Core
 		private Thread tableLoadThread;
 		private int tableIndex;
 		private String tableName;
+        private bool BigEndian = false;
 
-		public TableModelDictionary(EditorModel model, Dictionary<string, int> tableOrder) : base()
+        public TableModelDictionary(EditorModel model, Dictionary<string, int> tableOrder) : base()
 		{
-			this.tableOrder = tableOrder;
-			this.model = model;
+			this.BigEndian = model.BigEndian;
+            this.tableOrder = tableOrder;
+			this.model = model;            
 		}
 
 		new public TableModel this[String key]
-		{
-			get 
+		{  
+            get 
 			{
 				if (base.ContainsKey(key))
 				{
@@ -58,7 +60,10 @@ namespace MaddenEditor.Core
 				tableName = key;
 
 				//This model isnt loaded, lets load it
-				tableIndex = tableOrder[key];
+                bool stop = false;
+                if (tableOrder.ContainsKey(key))
+				    tableIndex = tableOrder[key];
+                else stop = true;
 
 				tableLoadThread = new Thread(new ThreadStart(TableLoadFunction));
 

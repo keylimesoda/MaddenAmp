@@ -28,6 +28,8 @@ namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class DraftStateRecord : TableRecordModel
     {
+        //DRIN
+        
         public const string IN_DRAFT = "DRST";
 
         public DraftStateRecord(int record, TableModel tableModel, EditorModel EditorModel)

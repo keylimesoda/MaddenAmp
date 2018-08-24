@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Text;
 
 using MaddenEditor.Db;
+using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
 using MaddenEditor.Core.Record.Stats;
 using MaddenEditor.Core.Record.FranchiseState;
@@ -43,15 +44,32 @@ namespace MaddenEditor.Core
 		List<TdbFieldProperties> fieldList = null;
 		protected int dbIndex = -1;
 		protected string primaryKeyField = null;
+        public bool BigEndian = false;
+        public string tablename="";
+        public string fieldname = "";
 
 		public TableModel(string name, EditorModel EditorModel, int dbIndex)
 		{
-			this.dbIndex = dbIndex;
+            this.BigEndian = EditorModel.BigEndian;
+            this.dbIndex = dbIndex;
 			parentModel = EditorModel;
+            //if (BigEndian)
+            //{
+            //    string rev = ConvertBE(name);
+            //    name = rev;
+            //}
 			this.name = name;
 			recordList = new List<TableRecordModel>();
 			deletedRecordList = new List<TableRecordModel>();
+            
 		}
+        
+        public string ConvertBE(string name)
+        {
+            char[] charArray = name.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
 
 		public void SetPrimaryKeyField(string key)
 		{
@@ -59,16 +77,32 @@ namespace MaddenEditor.Core
 		}
 
 		public void SetFieldList(List<TdbFieldProperties> list)
-		{
-			fieldList = list;
+		{   
+            fieldList = list;
 		}
+
+        public List<TdbFieldProperties> FixBEfields()
+        {
+            List<TdbFieldProperties> be_list = this.fieldList;
+            for (int c = 0; c < this.fieldList.Count; c++)
+            {
+                TdbFieldProperties tdb = be_list[c];
+                tdb.Name = ConvertBE(tdb.Name);
+                be_list[c] = tdb;
+            }
+
+            return be_list;
+        }
+
+        public List<TdbFieldProperties> GetFieldList()
+        {
+            return fieldList;
+        }
 
 		public string Name
 		{
-			get
-			{
-				return name;
-			}
+			get	{ return name; }			
+            set { name = value; }
 		}
 
 		public List<string> GetStringFieldList(string fieldName)
@@ -132,7 +166,15 @@ namespace MaddenEditor.Core
 		public TableRecordModel CreateNewRecord(bool allowExpand)
 		{
 			TableRecordModel result = null;
-			int newRecNo = TDB.TDBTableRecordAdd(dbIndex, name, allowExpand);
+            if (BigEndian)
+            {
+                tablename = ConvertBE(name);                
+            }
+            else
+            {
+                tablename = name;                
+            }
+			int newRecNo = TDB.TDBTableRecordAdd(dbIndex, tablename, allowExpand);
 			if (newRecNo == 0xFFFF)
 			{
 				//We are at max capacity
@@ -150,7 +192,6 @@ namespace MaddenEditor.Core
 				switch (fieldProps.FieldType)
 				{
 					case TdbFieldType.tdbString:
-
 						string val = "Unassigned";
 						result.RegisterField(fieldProps.Name, val);
 						break;
@@ -162,6 +203,10 @@ namespace MaddenEditor.Core
 						Int32 signedval = 0;
 						result.RegisterField(fieldProps.Name, signedval);
 						break;
+                    case TdbFieldType.tdbFloat:
+                        float floatval = 0;
+                        result.RegisterField(fieldProps.Name, floatval);
+                        break;
 					default:
 						Trace.WriteLine("NOT SUPPORTED YET!!!");
 						break;
@@ -174,59 +219,69 @@ namespace MaddenEditor.Core
 		public TableRecordModel ConstructRecordModel(int recno)
 		{
 			TableRecordModel newRecord = null;
+            string tablename = name;
 
-			switch (name)
-			{
-				case EditorModel.CITY_TABLE:
-					newRecord = new CityRecord(recno, this, parentModel);
-					break;
-				case EditorModel.COACH_TABLE:
-					newRecord = new CoachRecord(recno, this, parentModel);
-					break;
-				case EditorModel.SALARY_CAP_TABLE:
-					newRecord = new SalaryCapRecord(recno, this, parentModel);
-					break;
-				case EditorModel.COACH_SLIDER_TABLE:
-					newRecord = new CoachPrioritySliderRecord(recno, this, parentModel);
-					break;
-				case EditorModel.TEAM_CAPTAIN_TABLE:
-					newRecord = new TeamCaptainRecord(recno, this, parentModel);
-					break;
-				case EditorModel.OWNER_TABLE:
-					newRecord = new OwnerRecord(recno, this, parentModel);
-					break;
-				case EditorModel.DEPTH_CHART_TABLE:
-					newRecord = new DepthChartRecord(recno, this, parentModel);
-					break;
-				case EditorModel.INJURY_TABLE:
-					newRecord = new InjuryRecord(recno, this, parentModel);
-					break;
-				case EditorModel.PLAYER_TABLE:
-					newRecord = new PlayerRecord(recno, this, parentModel);
-					break;
-				case EditorModel.TEAM_TABLE:
-					newRecord = new TeamRecord(recno, this, parentModel);
-					break;
-				case EditorModel.SCHEDULE_TABLE:
-					newRecord = new ScheduleRecord(recno, this, parentModel);
-					break;
-                
+            // Need to reverse the name if BE
+            if (BigEndian)
+            {
+                string rev = ConvertBE(name);
+                tablename = rev;
+            }
+
+            switch (tablename)
+            {                
+                case EditorModel.CITY_TABLE:
+                    newRecord = new CityRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.COACH_TABLE:
+                    {
+                        // coch table in streameddata is different than ros/fra
+                        if (parentModel.FileType == MaddenFileType.Streameddata)
+                            newRecord = new CoachCollection(recno, this, parentModel);
+                        else newRecord = new CoachRecord(recno, this, parentModel);
+                        break;
+                    }
+                case EditorModel.SALARY_CAP_TABLE:
+                    newRecord = new SalaryCapRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.COACH_SLIDER_TABLE:
+                    newRecord = new CoachPrioritySliderRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.TEAM_CAPTAIN_TABLE:
+                    newRecord = new TeamCaptainRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.OWNER_TABLE:
+                    newRecord = new OwnerRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.DEPTH_CHART_TABLE:
+                    newRecord = new DepthChartRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.INJURY_TABLE:
+                    newRecord = new InjuryRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.PLAYER_TABLE:
+                    newRecord = new PlayerRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.TEAM_TABLE:
+                    newRecord = new TeamRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.SCHEDULE_TABLE:
+                    newRecord = new ScheduleRecord(recno, this, parentModel);
+                    break;
                 case EditorModel.STADIUM_TABLE:
                     newRecord = new StadiumRecord(recno, this, parentModel);
                     break;
+                case EditorModel.UNIFORM_TABLE:
+                    newRecord = new UniformRecord(recno, this, parentModel);
+                    break;
 
-				case EditorModel.UNIFORM_TABLE:
-					newRecord = new UniformRecord(recno, this, parentModel);
-					break;
-
-				// MADDEN DRAFT EDIT
-				case EditorModel.DRAFT_PICK_TABLE:
-					newRecord = new DraftPickRecord(recno, this, parentModel);
-					break;
-
-				case EditorModel.DRAFTED_PLAYERS_TABLE:
-					newRecord = new RookieRecord(recno, this, parentModel);
-					break;
+                // MADDEN DRAFT EDIT
+                case EditorModel.DRAFT_PICK_TABLE:
+                    newRecord = new DraftPickRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.DRAFTED_PLAYERS_TABLE:
+                    newRecord = new RookieRecord(recno, this, parentModel);
+                    break;
                 case EditorModel.BOXSCORE_DEFENSE_TABLE:
                     newRecord = new BoxScoreDefenseRecord(recno, this, parentModel);
                     break;
@@ -245,8 +300,8 @@ namespace MaddenEditor.Core
                 case EditorModel.SEASON_STATS_OFFENSE_TABLE:
                     newRecord = new SeasonStatsOffenseRecord(recno, this, parentModel);
                     break;
-                case EditorModel.TEAM_STATS_TABLE:
-                    newRecord = new SeasonStatsTeamRecord(recno, this, parentModel);
+                case EditorModel.TEAM_SEASON_STATS:
+                    newRecord = new TeamSeasonStatsRecord(recno, this, parentModel);
                     break;
                 case EditorModel.FRANCHISE_TIME_TABLE:
                     newRecord = new FranchiseTimeRecord(recno, this, parentModel);
@@ -287,6 +342,12 @@ namespace MaddenEditor.Core
                 case EditorModel.RFA_STATE_TABLE:
                     newRecord = new RFAStateRecord(recno, this, parentModel);
                     break;
+                case EditorModel.RFA_PLAYERS:
+                    newRecord = new RestrictedFreeAgentPlayers(recno, this, parentModel);
+                    break;
+                case EditorModel.RFA_SALARY_TENDERS:
+                    newRecord = new RestrictedFreeAgentSigningTenders(recno, this, parentModel);
+                    break;
                 case EditorModel.RESIGN_PLAYERS_STATE_TABLE:
                     newRecord = new ResignPlayersStateRecord(recno, this, parentModel);
                     break;
@@ -299,20 +360,163 @@ namespace MaddenEditor.Core
                 case EditorModel.FRANCHISE_STAGE_TABLE:
                     newRecord = new FranchiseStageRecord(recno, this, parentModel);
                     break;
-                // MADDEN DRAFT EDIT
-				case EditorModel.GAME_OPTIONS_TABLE:
-					newRecord = new GameOptionRecord(recno, this, parentModel);
-					break;
+                case EditorModel.GAME_OPTIONS_TABLE:
+                    newRecord = new GameOptionRecord(recno, this, parentModel);
+                    break;
                 case EditorModel.PLAYER_AWARDS_TABLE:
-                    newRecord = new Awards(recno, this, parentModel);                    
+                    newRecord = new YearlyAwards(recno, this, parentModel);
                     break;
                 case EditorModel.FREE_AGENT_PLAYERS:
                     newRecord = new FreeAgentPlayers(recno, this, parentModel);
                     break;
-                case EditorModel.PROGRESSION_TABLE:
-                    newRecord = new ProgressionRecord(recno, this, parentModel);
-                    break;                    
-			}
+                case EditorModel.COACHES_EXPECTED_SALARY:
+                    newRecord = new CoachExpectedSalary(recno, this, parentModel);
+                    break;
+                case EditorModel.COACHING_HISTORY_TABLE:
+                    newRecord = new CoachHistory(recno, this, parentModel);
+                    break;
+                case EditorModel.PROGRESSION_SCHEDULE:
+                    newRecord = new ProgressionSchedule(recno, this, parentModel);
+                    break;
+                case EditorModel.USER_OPTIONS_TABLE:
+                    newRecord = new UserOptionRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.TEAM_RIVAL_HISTORY:
+                    newRecord = new TeamRivalHistory(recno, this, parentModel);
+                    break;
+                case EditorModel.PRO_BOWL_PLAYERS:
+                    newRecord = new ProBowlPlayer(recno, this, parentModel);
+                    break;
+
+
+
+                #region Streamed Data
+                case EditorModel.COLLEGES_TABLE:
+                    newRecord = new CollegesRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.PLAYER_FIRST_NAMES:
+                    newRecord = new FirstNames(recno, this, parentModel);
+                    break;
+                case EditorModel.PLAYER_LAST_NAMES:
+                    newRecord = new LastNames(recno, this, parentModel);
+                    break;
+                case EditorModel.ROLES_DEFINE:
+                    newRecord = new PRDF(recno, this, parentModel);
+                    break;
+                case EditorModel.ROLES_INFO:
+                    newRecord = new RoleInfo(recno, this, parentModel);
+                    break;
+                case EditorModel.ROLES_PLAYER_EFFECTS:
+                    newRecord = new RolePlayerEffects(recno, this, parentModel);
+                    break;
+                case EditorModel.ROLES_TEAM_EFFECTS:
+                    newRecord = new RoleTeamEffects(recno, this, parentModel);
+                    break;
+                case EditorModel.STATS_REQUIRED:
+                    newRecord = new SuperStarStatsRequired(recno, this, parentModel);
+                    break;
+                case EditorModel.PROGRESSION:
+                    newRecord = new PlayerProgression(recno, this, parentModel);
+                    break;
+                case EditorModel.REGRESSION:
+                    newRecord = new PlayerRegression(recno, this, parentModel);
+                    break;
+                case EditorModel.PTCB:
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTCE: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTDE: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTDT: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTFB: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTFS: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTGA: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTHB: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTKI: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTKP: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTMB: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTOB: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTPU: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTQB: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTSS: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTTA: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTTE: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+                case EditorModel.PTWR: 
+                    newRecord = new ProgressionTracking(recno, this, parentModel);
+                    break;
+
+                #endregion
+
+                case EditorModel.POSITION_SUBS:
+                    newRecord = new PlayerSubs(recno, this, parentModel);
+                    break;
+                case EditorModel.DEPTH_CHART_SUBS:
+                    newRecord = new DepthChartSubs(recno, this, parentModel);
+                    break;
+                case EditorModel.SALARY_CAP_INCREASE:
+                    newRecord = new SalaryCapIncrease(recno, this, parentModel);
+                    break;
+                case EditorModel.PLAYER_MINIMUM_SALARY_TABLE:
+                    newRecord = new SalaryYearsPro(recno, this, parentModel);
+                    break;
+                case EditorModel.PLAYER_SALARY_DEMAND_TABLE:
+                    newRecord = new PlayerSalaryDemands(recno, this, parentModel);
+                    break;
+                case EditorModel.INACTIVE_TABLE:
+                    newRecord = new InactiveRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.LEAGUE_REVENUE_TABLE:
+                    newRecord = new LeagueRevenue(recno, this, parentModel);
+                    break;
+                case EditorModel.OWNER_REVENUE_TABLE:
+                    newRecord = new OwnerRevenue(recno, this, parentModel);
+                    break;
+                case EditorModel.WEEKLY_INCOME_TABLE:
+                    newRecord = new Income(recno, this, parentModel);
+                    break;
+                case EditorModel.TEAM_WIN_LOSS_RECORD:
+                    newRecord = new TeamWinLossRecord(recno, this, parentModel);
+                    break;
+
+                // DB Templates
+                case EditorModel.PLAYER_OVERALL_CALC:
+                    newRecord = new OverallRecord(recno, this, parentModel);
+                    break;
+                case EditorModel.PLAYBOOK_TABLE:
+                    newRecord = new FRAPlayBooks(recno, this, parentModel);
+                    break;
+            }
 
 			//Add the new record to our list of records
 			recordList.Add(newRecord);            
@@ -344,40 +548,96 @@ namespace MaddenEditor.Core
 				foreach (TableRecordModel record in listToUse)
 				{
 					if (record.Dirty)
-					{
-						//First check to see if this record is going to be deleted
-						if (record.Deleted)
-						{
-							Trace.Write("About to mark for deletion record " + record.RecNo);
-							//Mark record for deletion in DB
+                    {
+                        //First check to see if this record is going to be deleted
+                        if (record.Deleted)
+                        {
+                            Trace.Write("About to mark for deletion record " + record.RecNo);
+                            //Mark record for deletion in DB
 
-							TDB.TDBTableRecordChangeDeleted(dbIndex, name, record.RecNo, false);
-							//TDB.TDBTableRecordRemove(dbIndex, name, record.RecNo);
-							continue;
-						}
+                            // Need to reverse these again to find the correct table in the db since they are BE
+                            if (BigEndian)
+                                tablename = ConvertBE(name);
+                            else tablename = name;
 
-						string[] keyArray = null;
-						int[] valueArray = null;
-						string[] stringValueArray = null;
+                            TDB.TDBTableRecordChangeDeleted(dbIndex, tablename, record.RecNo, false);
+                            //TDB.TDBTableRecordRemove(dbIndex, name, record.RecNo);
+                            continue;
+                        }
 
-						record.GetChangedIntFields(ref keyArray, ref valueArray);
+                        string[] keyArray = null;
+                        int[] valueArray = null;
+                        float[] floatArray = null;
+                        string[] stringValueArray = null;
 
-						for (int i = 0; i < keyArray.Length; i++)
-						{
-							TDB.TDBFieldSetValueAsInteger(dbIndex, name, keyArray[i], record.RecNo, valueArray[i]);
-						}
+                        #region Int Fields
+                        
+                        record.GetChangedIntFields(ref keyArray, ref valueArray);
 
-						keyArray = null;
+                        for (int i = 0; i < keyArray.Length; i++)
+                        {                            
+                            if (BigEndian)
+                            {
+                                tablename = ConvertBE(name);
+                                fieldname = ConvertBE(keyArray[i]);
+                            }
+                            else
+                            {
+                                tablename = name;
+                                fieldname = keyArray[i];
+                            }
+                            
+                            TDB.TDBFieldSetValueAsInteger(dbIndex, tablename, fieldname, record.RecNo, valueArray[i]);
+                        }
 
-						record.GetChangedStringFields(ref keyArray, ref stringValueArray);
+                        #endregion
 
-						for (int i = 0; i < keyArray.Length; i++)
-						{
-							TDB.TDBFieldSetValueAsString(dbIndex, name, keyArray[i], record.RecNo, stringValueArray[i]);
-						}
 
-						record.DiscardBackups();
-					}
+                        #region String Fields
+
+                        keyArray = null;
+                        record.GetChangedStringFields(ref keyArray, ref stringValueArray);
+
+                        for (int i = 0; i < keyArray.Length; i++)
+                        {
+                            if (BigEndian)
+                            {
+                                tablename = ConvertBE(name);
+                                fieldname = ConvertBE(keyArray[i]);
+                            }
+                            else
+                            {
+                                tablename = name;
+                                fieldname = keyArray[i];
+                            }
+                            TDB.TDBFieldSetValueAsString(dbIndex, tablename, fieldname, record.RecNo, stringValueArray[i]);
+                        }
+
+                        #endregion
+
+                        #region Float Fields
+
+                        keyArray = null;
+                        record.GetChangedFloatFields(ref keyArray, ref floatArray);
+                        for (int i = 0; i < keyArray.Length; i++)
+                        {
+                            if (BigEndian)
+                            {
+                                tablename = ConvertBE(name);
+                                fieldname = ConvertBE(keyArray[i]);
+                            }
+                            else
+                            {
+                                tablename = name;
+                                fieldname = keyArray[i];
+                            }
+                            TDB.TDBFieldSetValueAsFloat(dbIndex, tablename, fieldname, record.RecNo, floatArray[i]);
+                        }
+
+                        #endregion
+
+                        record.DiscardBackups();
+                    }
 				}
 			}
 

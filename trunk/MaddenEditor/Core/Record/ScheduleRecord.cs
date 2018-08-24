@@ -28,36 +28,37 @@ namespace MaddenEditor.Core.Record
 {
 	public class ScheduleRecord : TableRecordModel
 	{
+        // schd
+        public const string AWAY_SCORE = "GASC";
+        public const string AWAY_TEAM_ID = "GATG";
+        public const string GAME_DAY_TYPE = "GDAT";
+        public const string HUMAN_USER = "GFHU";
+        public const string OVERTIME = "GFOT";
+        public const string TIED_GAME = "GFTG";
+        public const string HOME_SCORE = "GHSC";
 		public const string HOME_TEAM_ID = "GHTG";
-		public const string AWAY_TEAM_ID = "GATG";
+        public const string GAME_STATE = "GSTA";
+        public const string GAME_TIME_OF_DAY = "GTOD";
+        public const string WEEK_NUMBER = "SEWN";
+        public const string WEEKTYPE = "SEWT";
 		public const string GAME_NUMBER = "SGNM";
-		public const string WEEK_NUMBER = "SEWN";
+		
 		// Gamestates
         // 0 - unscheduled playoff game
 		// 1 - not played
 		// 2 - away win
 		// 3 - home win
 		// 4 - tied
-		public const string GAME_STATE = "GSTA";
+        // 6 - Teams undetermined and any teams undetermined should be teamid = 1023
+		
 		// Game day types
 		// 0 - Thursday
 		// 1 - Friday
 		// 2 - Saturday
 		// 3 - Sunday
 		// 4 - Monday
-		public const string GAME_DAY_TYPE = "GDAT";
 
-		// Game Time of day
-		public const string GAME_TIME_OF_DAY = "GTOD";
-
-		public const string AWAY_SCORE = "GASC";
-		public const string HOME_SCORE = "GHSC";
-		public const string OVERTIME = "GFOT";
-		public const string TIED_GAME = "GFTG";
-
-		public const string WEEKTYPE = "SEWT";
-
-		public const string HUMAN_USER = "GFHU";
+		
 
 		// The List of Game Day Types
 		public readonly static List<GenericRecord> gameDayTypeList;
@@ -105,6 +106,18 @@ namespace MaddenEditor.Core.Record
 
 		}
 
+        public int HomeTeamID
+        {
+            get { return GetIntField(HOME_TEAM_ID); }
+            set { SetField(HOME_TEAM_ID, value); }
+        }
+        public int AwayTeamID
+        {
+            get { return GetIntField(AWAY_TEAM_ID); }
+            set { SetField(AWAY_TEAM_ID, value); }
+        }
+        
+        
         // MADDEN DRAFT EDIT
         public int Winner()
         {
@@ -140,7 +153,10 @@ namespace MaddenEditor.Core.Record
             return -1;
         }
         // MADDEN DRAFT EDIT
-		public IList<GenericRecord> GameStates
+		
+        
+        
+        public IList<GenericRecord> GameStates
 		{
 			get
 			{
@@ -348,6 +364,12 @@ namespace MaddenEditor.Core.Record
 				SetField(WEEK_NUMBER, value);
 			}
 		}
+
+        public int WeekType
+        {
+            get { return GetIntField(WEEKTYPE); }
+            set { SetField(WEEKTYPE, value); }
+        }
 
 		/// <summary>
 		/// Given a week number this returns a week name for that week

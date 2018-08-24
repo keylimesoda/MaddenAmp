@@ -29,12 +29,14 @@ namespace MaddenEditor.Core.Record.Stats
     {
         //QB Stats
         public const string PASS_ATT = "caat";
+        public const string COMEBACKS = "cacb";             //  2007-2008 
         public const string PASS_COMP = "cacm";
+        public const string FIRST_DOWNS = "cafd";           //  2007-2008 
         public const string PASS_INT = "cain";
         public const string PASS_LONG = "calN";
         public const string PASS_SACKED = "casa";
         public const string PASS_YDS = "caya";
-        public const string PASS_TDS = "catd";
+        public const string PASS_TDS = "catd";        
 
         // WR Stats
         public const string RECEIVING_RECS = "ccca";
@@ -76,6 +78,12 @@ namespace MaddenEditor.Core.Record.Stats
             }
         }
 
+        public int Comebacks
+        {
+            get { return GetIntField(COMEBACKS); }
+            set { SetField(COMEBACKS, value); }
+        }
+        
         public int Pass_comp
         {
             get
@@ -86,8 +94,14 @@ namespace MaddenEditor.Core.Record.Stats
             {
                 SetField(PASS_COMP, value);
             }
-        }       
-                
+        }
+
+        public int FirstDowns
+        {
+            get { return GetIntField(FIRST_DOWNS); }
+            set { SetField(FIRST_DOWNS, value); }
+        }
+        
         public int Pass_int
         {
             get

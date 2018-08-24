@@ -36,15 +36,18 @@ namespace MaddenEditor.Forms
 {
 	
     
-    public partial class UserControlledTeamForm : Form, IEditorForm
+    public partial class UserControlledTeamForm : UserControl, IEditorForm
 	{
 		private EditorModel model = null;
         public DataGridView teamview = new DataGridView();
         public List<string> userteams = new List<string>();
+        private bool changed = false;
+        private bool isInitializing = false;
+        private bool playall = true;
+        public List<List<bool>> PlayGamesList = new List<List<bool>>();
 
-		public UserControlledTeamForm(EditorModel model)
-		{
-			this.model = model;
+		public UserControlledTeamForm()
+		{			
 			InitializeComponent();
 		}
 
@@ -53,14 +56,38 @@ namespace MaddenEditor.Forms
 
 		public MaddenEditor.Core.EditorModel Model
 		{
-			set {  }
+            set { model = value; }
 		}
 
 		public void InitialiseUI()
 		{
+            isInitializing = true;
+
             InitTeamView();
-            checkBox1.Checked = true;
-            checkBox2.Checked = true;
+            if (model.FranchiseStage.CurrentStage < 7)
+            {
+                PlayALLGames_Checkbox.Checked = false;
+                PlayAwayGames_Checkbox.Checked = false;
+                PlayHomeGames_Checkbox.Checked = false;
+                PlayDIVGames_Checkbox.Checked = false;
+                PlayALLGames_Checkbox.Visible = false;
+                PlayAwayGames_Checkbox.Visible = false;
+                PlayHomeGames_Checkbox.Visible = false;
+                PlayDIVGames_Checkbox.Visible = false;
+            }
+            else
+            {
+                PlayALLGames_Checkbox.Visible = true;
+                PlayAwayGames_Checkbox.Visible = true;
+                PlayHomeGames_Checkbox.Visible = true;
+                PlayDIVGames_Checkbox.Visible = true;
+                PlayALLGames_Checkbox.Checked = playall;
+                PlayAwayGames_Checkbox.Checked = false;
+                PlayHomeGames_Checkbox.Checked = false;
+                PlayDIVGames_Checkbox.Checked = false;
+            }
+
+            isInitializing = false;
 		}
 
 		public void CleanUI()
@@ -72,275 +99,354 @@ namespace MaddenEditor.Forms
 
         public void InitTeamView()
         {
-            if (teamview.Rows.Count == 0)
-            {
-                teamview = new DataGridView();
-                teamview.Bounds = new Rectangle(new Point(10, 100), new Size(848, 760));
-            }
-            else
-            {
-                teamview.Rows.Clear();
-                userteams.Clear();
-            }
-            
+            if (teamview != null)
+                teamview.Dispose();
+
+            teamview = new DataGridView();
+            teamview.Bounds = new Rectangle(new Point(1, 1), new Size(658, 760));
             teamview.MultiSelect = false;
+            teamview.RowHeadersVisible = false;            
+            teamview.AutoGenerateColumns = false;
+            teamview.ScrollBars = ScrollBars.Vertical;
+            teamview.Dock = DockStyle.Fill;
+            teamview.AllowUserToAddRows = false;
+            teamview.ColumnCount = 10;
 
-            teamview.ColumnCount = 8;
             teamview.Columns[0].Name = "Team";
-            teamview.Columns[1].Name = "Coach Control";
-            teamview.Columns[2].Name = "Draft Player";
-            teamview.Columns[3].Name = "Sign Picks";
-            teamview.Columns[4].Name = "Sign Free Agents";
-            teamview.Columns[5].Name = "Fill Rosters";
-            teamview.Columns[6].Name = "Re-Sign Players";
-            teamview.Columns[7].Name = "Reorder Depth Charts";
+            teamview.Columns[0].Width = 100;
+            teamview.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[1].Name = "Owner";
+            teamview.Columns[1].Width = 50;
+            teamview.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[2].Name = "Coach";
+            teamview.Columns[2].Width = 50;
+            teamview.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[3].Name = "Draft";
+            teamview.Columns[3].Width = 50;
+            teamview.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[4].Name = "Sign Picks";
+            teamview.Columns[4].Width = 70;
+            teamview.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[5].Name = "Sign FA";
+            teamview.Columns[5].Width = 60;
+            teamview.Columns[5].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[6].Name = "Fill Rosters";
+            teamview.Columns[6].Width = 70;
+            teamview.Columns[6].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[7].Name = "Re-Sign";
+            teamview.Columns[7].Width = 60;
+            teamview.Columns[7].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[8].Name = "Reorder";
+            teamview.Columns[8].Width = 60;
+            teamview.Columns[8].SortMode = DataGridViewColumnSortMode.NotSortable;
+            teamview.Columns[9].Name = "Play";
+            teamview.Columns[9].Width = 50;
+            teamview.Columns[9].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
+            InitTeamPlayGames();
+            
+            foreach (TableRecordModel rec in model.TableModels[EditorModel.OWNER_TABLE].GetRecords())
             {
+                OwnerRecord owner = (OwnerRecord)rec;
                 //  coach controlled options are in the coach table, overrides anything set in the owner table
-
-                string teamname = team.TeamName;
-                string coachcontrol = "CPU";    
+                if (owner.TeamId > 31)
+                    continue;
+                string teamname = owner.TeamName;
+                string ownedby = "CPU";
+                if (owner.UserControlled)
+                    ownedby = "USER";
+                string coachcontrol = "CPU";
                 string draftplayer = "CPU";
                 string signpicks = "CPU";
                 string signfreeagents = "CPU";
                 string fillrosters = "CPU";
                 string resignplayers = "CPU";
                 string reorderdepth = "CPU";
-                
-                foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
-				{
-					CoachRecord crec = (CoachRecord)record;
-					if (team.TeamId == crec.TeamId && crec.Position == 0) // Position 0 is Head coach
-					{
-                        if (crec.HumanControlled == true)
-                            coachcontrol = "USER";
-                        if (crec.DraftPlayer == false)
-                            draftplayer = "USER";
-                        if (crec.SignDraftPicks == false)
-                            signpicks = "USER";
-                        if (crec.SignFreeAgents == false)
-                            signfreeagents = "USER";
-                        if (crec.FillRosters == false)
-                            fillrosters = "USER";
-                        if (crec.ResignPlayers == false)
-                            resignplayers = "USER";
-                        if (crec.ManageDepth == false)
-                            reorderdepth = "USER";
-
-                        //  If this coach is all user controlled, add it to our list of user teams                        
-                        if (crec.HumanControlled && !crec.DraftPlayer && !crec.SignDraftPicks && !crec.SignFreeAgents && !crec.FillRosters && !crec.ResignPlayers && !crec.ManageDepth)
-                            userteams.Add(team.TeamName);
-					}
-				}                
-
-                string[] entry = { teamname, coachcontrol, draftplayer, signpicks, signfreeagents, fillrosters, resignplayers, reorderdepth};
-                teamview.Rows.Add(entry);
-            }
-
-            teamview.CellClick += teamview_CellClick;
-            this.Controls.Add(teamview);            
-        }
-
-        private void teamview_CellClick(object sender, DataGridViewCellEventArgs e)
-        {  
-            if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != "USER" && (string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != "CPU")
-                return;
-            else if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "CPU";
-            else
-                teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "USER";
-
-            foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
-            {
-                if (e.RowIndex == team.TeamId)
-                {
-                    if (e.ColumnIndex == 1)  // coach control
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                        {
-                            team.UserControlled = true;
-                        }
-                        else team.UserControlled = false;
-                    }
-                    else if (e.ColumnIndex == 2)  // draft player
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            team.DraftPlayers = false;
-                        else team.DraftPlayers = true;
-                    }
-                    else if (e.ColumnIndex == 3)  // sign picks
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            team.SignDraftPicks = false;
-                        else team.SignDraftPicks = true;
-                    }
-                    else if (e.ColumnIndex == 4)  // sign free agents
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            team.SignFreeAgents = false;
-                        else team.SignFreeAgents = true;
-                    }
-                    else if (e.ColumnIndex == 5)  // fill rosters
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            team.FillRosters = false;
-                        else team.FillRosters = true;
-                    }
-                    else if (e.ColumnIndex == 6)  // re-sign players
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            team.ResignPlayers = false;
-                        else team.ResignPlayers = true;
-                    }
-                    else                         // reorder depth charts
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            team.ReorderDepthCharts = false;
-                        else team.ReorderDepthCharts = true;
-                    }
-                }
-            }
-
-            foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
-            {
-                CoachRecord crec = (CoachRecord)record;
-                if (e.RowIndex == crec.TeamId && crec.Position == 0) // Position 0 is Head coach
-                {
-                    if (e.ColumnIndex == 1)  // coach control
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.HumanControlled = true;
-                        else crec.HumanControlled = false;
-                    }
-                    else if (e.ColumnIndex == 2)  // draft player
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.DraftPlayer = false;
-                        else crec.DraftPlayer = true;
-                    }
-                    else if (e.ColumnIndex == 3)  // sign picks
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.SignDraftPicks = false;
-                        else crec.SignDraftPicks = true;
-                    }
-                    else if (e.ColumnIndex == 4)  // sign free agents
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.SignFreeAgents = false;
-                        else crec.SignFreeAgents = true;
-                    }
-                    else if (e.ColumnIndex == 5)  // fill rosters
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.FillRosters = false;
-                        else crec.FillRosters = true;
-                    }
-                    else if (e.ColumnIndex == 6)  // re-sign players
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.ResignPlayers = false;
-                        else crec.ResignPlayers = true;
-                    }
-                    else                         // reorder depth charts
-                    {
-                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
-                            crec.ManageDepth = false;
-                        else crec.ManageDepth = true;
-                    }
-                }
-            }        
-
-
-        }
-
-        private void RecommendedButton_Click(object sender, EventArgs e)
-        {
-            foreach (OwnerRecord team in model.TeamModel.GetTeamRecordsInOwnerTable())
-            {
-                //  Need to check the list of original user controlled teams and leave all options for the as user controlled.
-
-                team.UserControlled = true;
-                team.DraftPlayers = false;
-                team.SignDraftPicks = true;
-                if (userteams.Contains(team.TeamName))
-                    team.SignDraftPicks = false;
-                team.SignFreeAgents = true;
-                if (userteams.Contains(team.TeamName))
-                    team.SignFreeAgents = false;
-                team.FillRosters = true;
-                if (userteams.Contains(team.TeamName))
-                    team.FillRosters = false;
-                team.ResignPlayers = true;
-                if (userteams.Contains(team.TeamName))
-                    team.ResignPlayers = false;
-                team.ReorderDepthCharts = true;
-                if (userteams.Contains(team.TeamName))
-                    team.ReorderDepthCharts = false;
+                string playgames = "NO";
 
                 foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
                 {
                     CoachRecord crec = (CoachRecord)record;
-                    if (team.TeamId == crec.TeamId && crec.Position == 0) // Position 0 is Head coach
+                    if (owner.TeamId == crec.TeamId && crec.Position == 0) // Position 0 is Head coach
                     {
-                        crec.HumanControlled = true;
-                        crec.DraftPlayer = false;
-                        crec.SignDraftPicks = true;
-                        if (userteams.Contains(team.TeamName))
-                            crec.SignDraftPicks = false;
-                        crec.SignFreeAgents = true;
-                        if (userteams.Contains(team.TeamName))
-                            crec.SignFreeAgents = false;
-                        crec.FillRosters = true;
-                        if (userteams.Contains(team.TeamName))
-                            crec.FillRosters = false;
-                        crec.ResignPlayers = true;
-                        if (userteams.Contains(team.TeamName))
-                            crec.ResignPlayers = false;
-                        crec.ManageDepth = true;
-                        if (userteams.Contains(team.TeamName))
-                            crec.ManageDepth = false;
+                        if (crec.UserControlled == true)
+                        {
+                            coachcontrol = "USER";
+                            playgames = "YES";
+                        }
+                        if (crec.CPUDraftPlayer == false)
+                            draftplayer = "USER";
+                        if (crec.CPUSignDraftPicks == false)
+                            signpicks = "USER";
+                        if (crec.CPUSignFreeAgents == false)
+                            signfreeagents = "USER";
+                        if (crec.CPUFillRosters == false)
+                            fillrosters = "USER";
+                        if (crec.CPUResignPlayers == false)
+                            resignplayers = "USER";
+                        if (crec.CPUManageDepth == false)
+                            reorderdepth = "USER";
+
+                        if (PlayGamesList[owner.TeamId].Contains(true))
+                            playgames = "YES";
+                        if (!PlayGamesList[owner.TeamId].Contains(true))
+                            playgames = "NO";
                     }
                 }
+
+                string[] entry = { teamname, ownedby, coachcontrol, draftplayer, signpicks, signfreeagents, fillrosters, resignplayers, reorderdepth, playgames };
+                teamview.Rows.Add(entry);
             }
 
-            foreach (string name in userteams)
+            teamview.CellClick += teamview_CellClick;            
+            panel2.Controls.Add(teamview);
+        }
+
+        public void InitTeamPlayGames()
+        {
+            PlayGamesList.Clear();
+            for (int t = 0; t < 32; t++)
+                PlayGamesList.Add(new List<bool>());
+            
+            foreach (TableRecordModel sch in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
             {
-                foreach (TableRecordModel rec in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+                ScheduleRecord sr = (ScheduleRecord)sch;
+                if (sr.WeekType != 25 && sr.WeekType != 0)  // regular and pre season
+                    continue;
+                else if (sr.HumanControlled)
                 {
-                    try
+                    PlayGamesList[sr.HomeTeam.TeamId].Add(true);
+                    PlayGamesList[sr.AwayTeam.TeamId].Add(true);
+                }
+            } 
+        }
+
+
+        public void ApplyChanges()
+        {
+            // set owner table for user/cpu controlled teams
+            for (int o = 0; o < teamview.RowCount; o++)
+            {
+                TableRecordModel t = model.TableModels[EditorModel.OWNER_TABLE].GetRecord(o);
+                OwnerRecord owner = (OwnerRecord)t;
+                if ((string)teamview.Rows[o].Cells[1].Value == "USER")
+                    owner.UserControlled = true;
+                else owner.UserControlled = false;
+
+                foreach (TableRecordModel trm in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
+                {
+                    CoachRecord crec = (CoachRecord)trm;
+                    if (owner.TeamId == crec.TeamId && crec.Position == 0)      // Position 0 is Head coach
                     {
-                        //  We only want to set a game to human controlled if it is on our original list of user controlled teams.
-                        if (((ScheduleRecord)rec).AwayTeam.Name == name || ((ScheduleRecord)rec).HomeTeam.Name == name)
+                        if ((string)teamview.Rows[o].Cells[2].Value == "USER")
                         {
-                            //  Play the game if it is a home game
-                            if (((ScheduleRecord)rec).HomeTeam.Name == name)
-                                ((ScheduleRecord)rec).HumanControlled = true;
-                            //  Play the game if we selected to play division games and both teams are from same division
-                            else if (((ScheduleRecord)rec).HomeTeam.DivisionId == ((ScheduleRecord)rec).AwayTeam.DivisionId && checkBox2.Checked == true)
-                                ((ScheduleRecord)rec).HumanControlled = true;
-                            //  Play the game if we have not selected to sim away games
-                            else if (((ScheduleRecord)rec).AwayTeam.Name == name && checkBox1.Checked == false)
-                                ((ScheduleRecord)rec).HumanControlled = true;
-                            //  Otherwise sim the game
-                            else ((ScheduleRecord)rec).HumanControlled = false;
+                            crec.UserControlled = true;
+                            crec.CPUControlled = false;                         // not sure what this does, but it needs to be set as user controlled
+                        }
+                        else
+                        {
+                            crec.UserControlled = false;
+                            crec.CPUControlled = true;                          // again this needs to be set
                         }
 
-                        //  home/away team is a match for our desired team(s), so sim this game
-                        else ((ScheduleRecord)rec).HumanControlled = false;
+                        if ((string)teamview.Rows[o].Cells[3].Value == "CPU")
+                        {
+                            crec.CPUDraftPlayer = true;
+                            owner.DraftPlayers = true;
+                        }
+                        else
+                        {
+                            crec.CPUDraftPlayer = false;
+                            owner.DraftPlayers = false;
+                        }
+
+                        if ((string)teamview.Rows[o].Cells[4].Value == "CPU")
+                        {
+                            crec.CPUSignDraftPicks = true;
+                            owner.SignDraftPicks = true;
+                        }
+                        else
+                        {
+                            crec.CPUSignDraftPicks = false;
+                            owner.SignDraftPicks = false;
+                        }
+
+                        if ((string)teamview.Rows[o].Cells[5].Value == "CPU")
+                        {
+                            crec.CPUSignFreeAgents = true;
+                            owner.SignFreeAgents = true;
+                        }
+                        else
+                        {
+                            crec.CPUSignFreeAgents = false;
+                            owner.SignFreeAgents = false;
+                        }
+
+                        if ((string)teamview.Rows[o].Cells[6].Value == "CPU")
+                        {
+                            crec.CPUFillRosters = true;
+                            owner.FillRosters = true;
+                        }
+                        else
+                        {
+                            crec.CPUFillRosters = false;
+                            owner.FillRosters = false;
+                        }
+
+                        if ((string)teamview.Rows[o].Cells[7].Value == "CPU")
+                        {
+                            crec.CPUResignPlayers = true;
+                            owner.ResignPlayers = true;
+                        }
+                        else
+                        {
+                            crec.CPUResignPlayers = false;
+                            owner.ResignPlayers = false;
+                        }
+
+                        if ((string)teamview.Rows[o].Cells[8].Value == "CPU")
+                        {
+                            crec.CPUManageDepth = true;
+                            owner.ReorderDepthCharts = true;
+                        }
+                        else
+                        {
+                            crec.CPUManageDepth = false;
+                            owner.ReorderDepthCharts = false;
+                        }
+
+                        if ((string)teamview.Rows[o].Cells[9].Value == "YES" && (string)teamview.Rows[o].Cells[1].Value == "USER")
+                        {
+                            if (model.FranchiseStage.CurrentStage < 7)  // No schedule exists while in training camp
+                                return;
+
+                            // Fix Scheduled Games
+                            foreach (TableRecordModel sch in model.TableModels[EditorModel.SCHEDULE_TABLE].GetRecords())
+                            {                                
+                                ScheduleRecord sr = (ScheduleRecord)sch;
+                                if (sr.WeekType != 25 && sr.WeekType != 0)  // regular and pre season
+                                    continue;
+                                if (owner.TeamId == sr.AwayTeam.TeamId || owner.TeamId == sr.HomeTeam.TeamId)
+                                {
+                                    TeamRecord team = model.TeamModel.GetTeamRecord(owner.TeamId);
+
+                                    if (PlayALLGames_Checkbox.Checked)
+                                        sr.HumanControlled = true;
+                                    else if (PlayAwayGames_Checkbox.Checked && sr.AwayTeam.TeamId == owner.TeamId)
+                                        sr.HumanControlled = true;
+                                    else if (PlayHomeGames_Checkbox.Checked && sr.HomeTeam.TeamId == owner.TeamId)
+                                        sr.HumanControlled = true;
+                                    else if (PlayDIVGames_Checkbox.Checked)
+                                    {
+                                        if (team.TeamId != sr.HomeTeam.TeamId && team.DivisionId == sr.HomeTeam.TeamId)
+                                            sr.HumanControlled = true;
+                                        else if (team.TeamId != sr.AwayTeam.TeamId && team.DivisionId == sr.AwayTeam.DivisionId)
+                                            sr.HumanControlled = true;
+                                        else sr.HumanControlled = false;
+                                    }
+                                    else sr.HumanControlled = false;
+                                }
+                                else sr.HumanControlled = false;
+
+                            }
+                        }
+
+                        break;
                     }
-                    catch (NullReferenceException err)
+                } 
+            }
+        }
+
+        private void teamview_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // if row = -1 then we want to change all teams to the opposite value
+            // if column = 0 or then change all options for that team to opposite value
+
+            if (e.ColumnIndex == 0 && e.RowIndex == -1)
+                return;
+            else
+            {
+                changed = true;
+                ApplyChanges_Button.BackColor = Color.PaleGreen;
+            }
+            
+            if (e.ColumnIndex == 0)
+            {
+                for (int c = 1; c < teamview.Columns.Count; c++)
+                {
+                    if (c==9)
                     {
-                        err = err;
-                        //A null reference exception happens when its trying to find teams that don't
-                        //exist on the schedule, its ok
-                        Trace.WriteLine("Team id not found when setting user controlled teams. This is ok");
+                        if ((string)teamview.Rows[e.RowIndex].Cells[c].Value == "NO" && (string)teamview.Rows[e.RowIndex].Cells[1].Value != "CPU")
+                            teamview.Rows[e.RowIndex].Cells[c].Value = "YES";
+                        else teamview.Rows[e.RowIndex].Cells[c].Value = "NO";
                     }
+                    else if ((string)teamview.Rows[e.RowIndex].Cells[c].Value == "USER")
+                        teamview.Rows[e.RowIndex].Cells[c].Value = "CPU";
+                    else teamview.Rows[e.RowIndex].Cells[c].Value = "USER";
+                }                
+            }
+            else if (e.RowIndex == -1)
+            {
+                for (int t = 0; t < teamview.RowCount; t++)
+                {
+                    if (e.ColumnIndex == 9)
+                    {
+                        if ((string)teamview.Rows[t].Cells[1].Value == "USER")
+                        {
+                            if ((string)teamview.Rows[t].Cells[e.ColumnIndex].Value == "NO")
+                                teamview.Rows[t].Cells[e.ColumnIndex].Value = "YES";
+                            else teamview.Rows[t].Cells[e.ColumnIndex].Value = "NO";
+                        }
+                        else teamview.Rows[t].Cells[e.ColumnIndex].Value = "NO";
+                    }
+                    else if ((string)teamview.Rows[t].Cells[e.ColumnIndex].Value == "USER")
+                        teamview.Rows[t].Cells[e.ColumnIndex].Value = "CPU";
+                    else teamview.Rows[t].Cells[e.ColumnIndex].Value = "USER";
+                }                
+            }
+            else
+            {
+                if (e.ColumnIndex == 9)
+                {
+                    if ((string)teamview.Rows[e.RowIndex].Cells[1].Value == "USER")
+                    {
+                        if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "NO")
+                            teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "YES";
+                        else teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "NO";
+                    }
+                    else teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "NO";
                 }
+
+                else if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != "USER" && (string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != "CPU")
+                    return;
+                else if ((string)teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "USER")
+                    teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "CPU";
+                else
+                    teamview.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "USER";
             }
 
-            InitTeamView();
+        }
+        
+        private void PlayALLGames_Checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                playall = PlayALLGames_Checkbox.Checked;
+
+                if (playall)
+                {
+                    PlayALLGames_Checkbox.Checked = true;
+                    PlayAwayGames_Checkbox.Checked = true;
+                    PlayHomeGames_Checkbox.Checked = true;
+                    PlayDIVGames_Checkbox.Checked = true;
+                }
+            }
+        }
+
+        private void ApplyChanges_Button_Click(object sender, EventArgs e)
+        {            
+            ApplyChanges();  
+            ApplyChanges_Button.BackColor = Color.Gainsboro;
         }
     }
         

@@ -39,9 +39,9 @@ namespace MaddenEditor.Core.Record
 
 	public class CoachRecord : TableRecordModel
 	{
-        // COCH
-        
+        // COCH        
         public const string AGE = "CAGE";
+        public const string ASSET = "CASN";                             //2019
         public const string BIGGEST_LOSS_MARGIN = "CBLM";
         public const string BODY_SIZE = "CBSZ";
         public const string BIGGEST_WIN_MARGIN = "CBWM";
@@ -52,7 +52,7 @@ namespace MaddenEditor.Core.Record
         public const string CAREER_LONGEST_LOSING_STREAK = "CCLS";
         public const string PLAYOFF_LOSSES = "CCPL";
         public const string PLAYOFFS_MADE = "CCPM";
-        public const string CCPR = "CCPR";
+        public const string CAREER_POINTS_FOR = "CCPR";
         public const string PLAYFF_WINS = "CCPW";
         public const string CCTC = "CCTC";
         public const string CAREER_TIES = "CCTI";
@@ -63,12 +63,12 @@ namespace MaddenEditor.Core.Record
         public const string DEF_AGGR = "CDTA";
         public const string DEF_STRAT = "CDTR";
         public const string DEFENSE_TYPE = "CDTY";
-        public const string CDWS = "CDWS";
+        public const string DIVISION_WIN_STREAK = "CDWS";
         public const string ETHICS = "CETH";
-        public const string CFCO = "CFCO";
+        public const string WAS_FIRED = "CFCO";                              // v2006+
         public const string DRAFT_PLAYER = "CFDA";
         public const string SIGN_DRAFT_PICKS = "CFDP";
-        public const string CFEX = "CFEX";
+        public const string CPU_CONTROLLED = "CFEX";
         public const string SIGN_FREE_AGENTS = "CFFA";
         public const string FILL_ROSTERS = "CFFR";
         public const string CFHL = "CFHL";
@@ -82,10 +82,10 @@ namespace MaddenEditor.Core.Record
         public const string CHSD = "CHSD";
         public const string CHTY = "CHTY";
         public const string KNOWLEDGE = "CKNW";
-        public const string LAST_TEAM = "CLCT";
+        public const string LAST_COACHED_TEAM = "CLCT";
         public const string NAME = "CLNA";
-        public const string CLTF = "CLTF";
-        public const string CLTR = "CLTR";
+        public const string LAST_TEAM_FRANCHISE = "CLTF";
+        public const string LAST_TEAM_RELOCATED = "CLTR";
         public const string MOTIVATION = "CMOT";
         public const string COAP = "COAP";
         public const string COCI = "COCI";
@@ -103,10 +103,10 @@ namespace MaddenEditor.Core.Record
         public const string OFF_AGGR = "COTA";
         public const string OFF_STRAT = "COTR";
         public const string COTY = "COTY";
-        public const string CPAG = "CPAG";
+        public const string CAREER_POINTS_AGAINST = "CPAG";
         public const string OFFENSE_PLAYBOOK_ID = "CPID";
         public const string FACE_ID = "CPSF";
-        public const string CPWS = "CPWS";
+        public const string PLAYOFF_WIN_STREAK = "CPWS";
         public const string APPROVAL_RATING = "CRAT";
         public const string RB_CARRY_DIST = "CRBT";
         public const string DB_RATING = "CRDB";
@@ -120,7 +120,7 @@ namespace MaddenEditor.Core.Record
         public const string S_RATING = "CRSA";
         public const string WR_RATING = "CRWR";
         public const string CRWS = "CRWS";
-        public const string CONTRACT_YEARS_LEFT = "CRYL";               //  Don't think this is correct
+        public const string CRYL = "CRYL";                          // something to do with former players years left
         public const string SALARY = "CSAL";
         public const string SUPERBOWL_LOSES = "CSBL";
         public const string CSBS = "CSBS";
@@ -129,22 +129,23 @@ namespace MaddenEditor.Core.Record
         public const string CSLM = "CSLM";
         public const string SEASON_LOSSES = "CSLO";
         public const string CSLS = "CSLS";
-        public const string CSPA = "CSPA";
+        public const string SEASON_POINTS_AGAINST = "CSPA";
         public const string CSPC = "CSPC";
-        public const string CSPF = "CSPF";
+        public const string SEASON_POINTS_FOR = "CSPF";
         public const string SEASON_TIES = "CSTI";
         public const string SEASON_WINS = "CSWI";
         public const string SEASON_BIGGEST_WIN_MARGIN = "CSWM";
         public const string SEASON_WINNING_STREAK = "CSWS";
         public const string COACHPIC = "CSXP";
         public const string COACH_GLASSES = "CTgw";
-        public const string CTHG = "CThg";
-        public const string CWPL = "CWPL";
-        public const string CWST = "CWST";
-        public const string CWWS = "CWWS";
+        public const string CTHG = "CThg";                          // only a few coaches have values other than 0, former players all have 4
+        public const string WAS_PLAYER = "CWPL";
+        public const string CONFERENCE_WIN_STREAK = "CWST";         // probably not right
+        public const string LAST_WINNING_SEASON = "CWWS";           // probably not right
         public const string TEAM_ID = "TGID";
 
-		
+        public bool wasinstreamed = false;
+
 		public CoachRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
 		{
@@ -246,8 +247,8 @@ namespace MaddenEditor.Core.Record
         }
         public int Ccpr
         {
-            get { return GetIntField(CCPR); }
-            set { SetField(CCPR, value); }
+            get { return GetIntField(CAREER_POINTS_FOR); }
+            set { SetField(CAREER_POINTS_FOR, value); }
         }
         public int Cctc
         {
@@ -256,55 +257,55 @@ namespace MaddenEditor.Core.Record
         }
         public int Cdws
         {
-            get { return GetIntField(CDWS); }
-            set { SetField(CDWS, value); }
+            get { return GetIntField(DIVISION_WIN_STREAK); }
+            set { SetField(DIVISION_WIN_STREAK, value); }
         }
         public int DefenseRating
         {
             get { return GetIntField(DEFENSE); }
             set { SetField(DEFENSE, value); }
         }
-        public int cfco
+        public bool CoachWasFired
         {
-            get { return GetIntField(CFCO); }
-            set { SetField(CFCO, value); }             
+            get { return GetIntField(WAS_FIRED)==1; }
+            set { SetField(WAS_FIRED, Convert.ToInt32(value)); }             
         }
-        public bool DraftPlayer
+        public bool CPUDraftPlayer
         {
             get { return GetIntField(DRAFT_PLAYER) ==1; }
             set { SetField(DRAFT_PLAYER, Convert.ToInt32(value)); }
         }
-        public bool SignDraftPicks
+        public bool CPUSignDraftPicks
         {
             get { return GetIntField(SIGN_DRAFT_PICKS) == 1; }
             set { SetField(SIGN_DRAFT_PICKS, Convert.ToInt32(value)); }
         }
-        public int Cfex
+        public bool CPUControlled
         {
-            get { return GetIntField(CFEX); }
-            set { SetField(CFEX, value); }
+            get { return GetIntField(CPU_CONTROLLED) == 1; }
+            set { SetField(CPU_CONTROLLED, Convert.ToInt32(value)); }
         }
-        public bool SignFreeAgents
+        public bool CPUSignFreeAgents
         {
             get { return GetIntField(SIGN_FREE_AGENTS) == 1; }
             set { SetField(SIGN_FREE_AGENTS, Convert.ToInt32(value)); }
         }
-        public bool FillRosters
+        public bool CPUFillRosters
         {
             get { return GetIntField(FILL_ROSTERS) == 1; }
             set { SetField(FILL_ROSTERS, Convert.ToInt32(value)); }
         }
-        public int cfhl
+        public bool cfhl
         {
-            get { return GetIntField(CFHL); }
-            set { SetField(CFHL, value); }
+            get { return GetIntField(CFHL)==1; }
+            set { SetField(CFHL, Convert.ToInt32(value)); }
         }
-        public bool ResignPlayers
+        public bool CPUResignPlayers
         {
             get { return GetIntField(RESIGN_PLAYERS) == 1; }
             set { SetField(RESIGN_PLAYERS, Convert.ToInt32(value)); }
         }
-        public bool ManageDepth
+        public bool CPUManageDepth
         {
             get { return GetIntField(MANAGE_DEPTH) == 1; }
             set { SetField(MANAGE_DEPTH, Convert.ToInt32(value)); }
@@ -341,18 +342,18 @@ namespace MaddenEditor.Core.Record
         }
         public int LastTeam
         {
-            get { return GetIntField(LAST_TEAM); }
-            set { SetField(LAST_TEAM, value); }
+            get { return GetIntField(LAST_COACHED_TEAM); }
+            set { SetField(LAST_COACHED_TEAM, value); }
         }
-        public int Cltf
+        public int LastTeamFranchise
         {
-            get { return GetIntField(CLTF); }
-            set { SetField(CLTF, value); }
+            get { return GetIntField(LAST_TEAM_FRANCHISE); }
+            set { SetField(LAST_TEAM_FRANCHISE, value); }
         }
-        public int Cltr
+        public int LastTeamRelocated
         {
-            get { return GetIntField(CLTR); }
-            set { SetField(CLTR, value); }
+            get { return GetIntField(LAST_TEAM_RELOCATED); }
+            set { SetField(LAST_TEAM_RELOCATED, value); }
         }
         public int Coap
         {
@@ -369,77 +370,77 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(COCT); }
             set { SetField(COCT, value); }
         }
-        public int Coda
+        public bool Coda
         {
-            get { return GetIntField(CODA); }
-            set { SetField(CODA, value); }
+            get { return GetIntField(CODA)==1; }
+            set { SetField(CODA, Convert.ToInt32(value)); }
         }
-        public int Codp
+        public bool Codp
         {
-            get { return GetIntField(CODP); }
-            set { SetField(CODP, value); }
+            get { return GetIntField(CODP)==1; }
+            set { SetField(CODP, Convert.ToInt32(value)); }
         }
-        public int Coex
+        public bool Coex
         {
-            get { return GetIntField(COEX); }
-            set { SetField(COEX, value); }
+            get { return GetIntField(COEX)==1; }
+            set { SetField(COEX, Convert.ToInt32(value)); }
         }
-        public int Cofa
+        public bool Cofa
         {
-            get { return GetIntField(COFA); }
-            set { SetField(COFA, value); }
+            get { return GetIntField(COFA)==1; }
+            set { SetField(COFA, Convert.ToInt32(value)); }
         }
         public int Offense
         {
             get { return GetIntField(OFFENSE); }
             set { SetField(OFFENSE, value); }
         }
-        public int Cofr
+        public bool Cofr
         {
-            get { return GetIntField(COFR); }
-            set { SetField(COFR, value); }
+            get { return GetIntField(COFR)==1; }
+            set { SetField(COFR, Convert.ToInt32(value)); }
         }
         public int Copl
         {
             get { return GetIntField(COPL); }
             set { SetField(COPL, value); }
         }
-        public int Corp
+        public bool Corp
         {
-            get { return GetIntField(CORP); }
-            set { SetField(CORP, value); }
+            get { return GetIntField(CORP)==1; }
+            set { SetField(CORP, Convert.ToInt32(value)); }
         }
-        public int Corr
+        public bool Corr
         {
-            get { return GetIntField(CORR); }
-            set { SetField(CORR, value); }
+            get { return GetIntField(CORR)==1; }
+            set { SetField(CORR, Convert.ToInt32(value)); }
         }
-        public int Coty
+        public int CoachOfTheYear
         {
             get { return GetIntField(COTY); }
             set { SetField(COTY, value); }
         }
         public int Cpag
         {
-            get { return GetIntField(CPAG); }
-            set { SetField(CPAG, value); }
+            get { return GetIntField(CAREER_POINTS_AGAINST); }
+            set { SetField(CAREER_POINTS_AGAINST, value); }
         }
         public int FaceId
         {
             get { return GetIntField(FACE_ID); }
             set { SetField(FACE_ID, value); }
         }
-        public int Cpws
+        public int PlayoffWinStreak
         {
-            get { return GetIntField(CPWS); }
-            set { SetField(CPWS, value); }
+            get { return GetIntField(PLAYOFF_WIN_STREAK); }
+            set { SetField(PLAYOFF_WIN_STREAK, value); }
         }
         public int ApprovalRating
         {
             get { return GetIntField(APPROVAL_RATING); }
             set { SetField(APPROVAL_RATING, value); }
         }
-        public int Crsa
+        public int CoachS
         {
             get { return GetIntField(S_RATING); }
             set { SetField(S_RATING, value); }
@@ -449,12 +450,12 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(CRWS); }
             set { SetField(CRWS, value); }
         }
-        public int ContractYearsLeft
+        public int Cryl
         {
-            get { return GetIntField(CONTRACT_YEARS_LEFT); }
-            set { SetField(CONTRACT_YEARS_LEFT, value); }
+            get { return GetIntField(CRYL); }
+            set { SetField(CRYL, value); }
         }
-        public int Csbs
+        public int SuperBowlStreak
         {
             get { return GetIntField(CSBS); }
             set { SetField(CSBS, value); }
@@ -476,18 +477,18 @@ namespace MaddenEditor.Core.Record
         }
         public int Cspa
         {
-            get { return GetIntField(CSPA); }
-            set { SetField(CSPA, value); }
+            get { return GetIntField(SEASON_POINTS_AGAINST); }
+            set { SetField(SEASON_POINTS_AGAINST, value); }
         }
-        public int Cspc
+        public bool Cspc
         {
-            get { return GetIntField(CSPC); }
-            set { SetField(CSPC, value); }
+            get { return GetIntField(CSPC)==1; }
+            set { SetField(CSPC, Convert.ToInt32(value)); }
         }
         public int Cspf
         {
-            get { return GetIntField(CSPF); }
-            set { SetField(CSPF, value); }
+            get { return GetIntField(SEASON_POINTS_FOR); }
+            set { SetField(SEASON_POINTS_FOR, value); }
         }
         public int SeasonTies
         {
@@ -519,23 +520,21 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(CTHG); }
             set { SetField(CTHG, value); }
         }
-        public int Cwpl
+        public bool WasPlayer
         {
-            get { return GetIntField(CWPL); }
-            set { SetField(CWPL, value); }
+            get { return GetIntField(WAS_PLAYER)==1; }
+            set { SetField(WAS_PLAYER, Convert.ToInt32(value)); }
         }
         public int Cwst
         {
-            get { return GetIntField(CWST); }
-            set { SetField(CWST, value); }
+            get { return GetIntField(CONFERENCE_WIN_STREAK); }
+            set { SetField(CONFERENCE_WIN_STREAK, value); }
         }
         public int Cwws
         {
-            get { return GetIntField(CWWS); }
-            set { SetField(CWWS, value); }
+            get { return GetIntField(LAST_WINNING_SEASON); }
+            set { SetField(LAST_WINNING_SEASON, value); }
         }
-
-        
         public string Name
 		{
 			get
@@ -546,8 +545,7 @@ namespace MaddenEditor.Core.Record
 			{
 				SetField(NAME, value);
 			}
-		}
-		
+		}		
 		public int TeamId
 		{
 			get
@@ -603,8 +601,7 @@ namespace MaddenEditor.Core.Record
 			{
 				SetField(SALARY, value);
 			}
-		}
-       
+		}       
         public int CoachQB
         {
             get
@@ -693,7 +690,12 @@ namespace MaddenEditor.Core.Record
                 SetField(KICK_RATING, value);
             }
         }
-        
+        public int CoachPS
+        {
+            get { return GetIntField(PUNT_RATING); }
+            set { SetField(PUNT_RATING, value); }
+        }
+             
         public int SuperBowlWins
 		{
 			get
@@ -762,23 +764,10 @@ namespace MaddenEditor.Core.Record
 				SetField(CAREER_TIES, value);
 			}
 		}
-		public bool DefenseType
+		public int DefenseType
 		{
-			get
-			{
-				return (GetIntField(DEFENSE_TYPE) >= 50 ? true : false);
-			}
-			set
-			{
-				if (value)
-				{
-					SetField(DEFENSE_TYPE, 95);
-				}
-				else
-				{
-					SetField(DEFENSE_TYPE, 5);
-				}
-			}
+            get { return GetIntField(DEFENSE_TYPE); }
+            set { SetField(DEFENSE_TYPE, value); }
 		}
 		public int DefensivePlaybook
 		{
@@ -901,7 +890,7 @@ namespace MaddenEditor.Core.Record
 				SetField(KICK_RATING, value);
 			}
 		}
-		public int PuntRating
+		public int PunterRating
 		{
 			get
 			{
@@ -979,7 +968,7 @@ namespace MaddenEditor.Core.Record
 				SetField(DEF_AGGR, value);
 			}
 		}
-		public bool HumanControlled
+		public bool UserControlled
 		{
 			get
 			{
@@ -991,12 +980,19 @@ namespace MaddenEditor.Core.Record
 			}
         }
 
+        public int OffensivePlaybook
+        {
+            get { return GetIntField(OFFENSE_PLAYBOOK_ID); }
+            set { SetField(OFFENSE_PLAYBOOK_ID, value); }
+        }
 
-
-
-
-
+        public string Asset
+        {
+            get { return GetStringField(ASSET); }
+            set { SetField(ASSET, value); }
+        }
 
         #endregion
+    
     }
 }

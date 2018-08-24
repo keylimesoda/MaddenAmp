@@ -22,12 +22,14 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace MaddenEditor.Db
 {
-	public enum TdbFieldType { tdbString = 0, tdbBinary = 1, tdbSInt = 2, tdbUInt = 3, tdbFloat = 4, tdbInt = 0x2CE };
+	public enum TdbFieldType { tdbString = 0, tdbBinary = 1, tdbSInt = 2, tdbUInt = 3, tdbFloat = 4, tdbVarChar = 0xD, tdbLongVarChar = 0xE, tdbInt = 0x2CE };
 
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
     public struct TdbFieldProperties
     {
         public String Name;

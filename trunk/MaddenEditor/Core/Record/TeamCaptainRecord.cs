@@ -30,7 +30,9 @@ namespace MaddenEditor.Core.Record
 {
 	public class TeamCaptainRecord : TableRecordModel
 	{
-		public const string CAPTAIN_1 = "CPT1";
+		//  TCPT
+
+        public const string CAPTAIN_1 = "CPT1";
 		public const string CAPTAIN_2 = "CPT2";
 		public const string CAPTAIN_3 = "CPT3";
 		public const string TEAM_ID = "TGID";

@@ -31,35 +31,35 @@ namespace MaddenEditor.Core.Record.Stats
     {
         //  PSKI
 
-
         // Kicker stats
         public const string PLAYER_ID = "PGID";
         public const string SEASON = "SEYR";
-        public const string FGA = "skfa";
-        public const string FGM = "skfm";
-        public const string FG_BLOCKED = "skfb";
-        public const string FGL = "skfL";
-        public const string XPA = "skea";
-        public const string XPM = "skem";
-        public const string XP_BLOCKED = "skeb";
         public const string FGA_129 = "skaa";
         public const string FGA_3039 = "skac";
         public const string FGA_4049 = "skad";
         public const string FGA_50 = "skae";
+        public const string XPA = "skea";
+        public const string XP_BLOCKED = "skeb";
+        public const string XPM = "skem";
+        public const string FGA = "skfa";
+        public const string FG_BLOCKED = "skfb";
+        public const string FGL = "skfL";
+        public const string FGM = "skfm";
         public const string FGM_129 = "skma";
         public const string FGM_3039 = "skmc";
         public const string FGM_4049 = "skmd";
         public const string FGM_50 = "skme";
         public const string KICK_OFFS = "sknk";
         public const string TOUCHBACKS = "sktb";
+
         // Punter stats
         public const string PUNT_ATT = "spat";
-        public const string PUNT_YDS = "spya";
         public const string PUNT_BLOCKED = "spbl";
         public const string PUNT_LONG = "spIN";
         public const string PUNT_NY = "spny";
         public const string PUNT_IN20 = "sppt";
         public const string PUNT_TB = "sptb";
+        public const string PUNT_YDS = "spya";
 
         public SeasonPuntKickRecord(int record, TableModel tablemodel, EditorModel EditorModel)
             : base(record, tablemodel, EditorModel)

@@ -31,7 +31,9 @@ namespace MaddenEditor.Core.Record
 	{
 		public const string UNIFORM_ID = "UFID";
 		public const string TEAM_ID = "TGID";
-		public const string TEAM_UNIFORM_CLASS = "TUCO";
+		public const string TEAM_UNIFORM_COMBO = "TUCO";
+        public const string UNIFORM_NAME = "UANM";
+        public const string UNIFORM_DESCRIPTION = "UDSC";
 		
 		private String homeAway;
 		private String jerseyColor;
@@ -68,15 +70,15 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public int TeamUniformClass
+		public int TeamUniformCombo
 		{
 			get
 			{
-				return GetIntField(TEAM_UNIFORM_CLASS);
+				return GetIntField(TEAM_UNIFORM_COMBO);
 			}
 			set
 			{
-				SetField(TEAM_UNIFORM_CLASS, value);
+				SetField(TEAM_UNIFORM_COMBO, value);
 			}
 		}
 
@@ -128,7 +130,18 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public DataGridViewRow GetDataGridViewRow()
+        public string UniformDescription
+        {
+            get { return GetStringField(UNIFORM_DESCRIPTION); }
+            set { SetField(UNIFORM_DESCRIPTION,value); }
+        }
+        public string UniformName
+        {
+            get { return GetStringField(UNIFORM_NAME); }
+            set { SetField(UNIFORM_NAME, value); }
+        }
+        
+        public DataGridViewRow GetDataGridViewRow()
 		{
 			DataGridViewRow viewRow = new DataGridViewRow();
 

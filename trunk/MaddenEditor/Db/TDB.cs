@@ -36,7 +36,7 @@ namespace MaddenEditor.Db
     {
         private const string TDBACCESS_DLL = "tdbaccess.dll";
 
-        [DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet=CharSet.Unicode)]
         public static extern int TDBOpen(string FileName);
 
         [DllImport(TDBACCESS_DLL)]
@@ -51,34 +51,34 @@ namespace MaddenEditor.Db
         [DllImport(TDBACCESS_DLL)]
         public static extern int TDBDatabaseGetTableCount(int DBIndex);
 
-        [DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet=CharSet.Unicode)]
         public static extern bool TDBFieldGetProperties(int DBIndex, string TableName, int FieldIndex, ref TdbFieldProperties FieldProperties);
 
         [DllImport(TDBACCESS_DLL)]
         public static extern bool TDBTableGetProperties(int DBIndex, int TableIndex, ref TdbTableProperties TableProperties);
 
-        [DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBFieldGetValueAsBinary(int DBIndex, string TableName, string FieldName, int RecNo, ref string OutBuffer);
 
-        [DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern float TDBFieldGetValueAsFloat(int DBIndex, string TableName, string FieldName, int RecNo);
-		
-        [DllImport(TDBACCESS_DLL)]
+
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern int TDBFieldGetValueAsInteger(int DBIndex, string TableName, string FieldName, int RecNo);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBFieldGetValueAsString(int DBIndex, string TableName, string FieldName, int RecNo, ref string OutBuffer);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBFieldSetValueAsFloat(int DBIndex, string TableName, string FieldName, int RecNo, float NewValue);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBFieldSetValueAsInteger(int DBIndex, string TableName, string FieldName, int RecNo, int NewValue);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBFieldSetValueAsString(int DBIndex, string TableName, string FieldName, int RecNo, string NewValue);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern int TDBQueryFindUnsignedInt(int DBIndex, string TableName, string FieldName, int Value);
 
 		[DllImport(TDBACCESS_DLL)]
@@ -87,16 +87,16 @@ namespace MaddenEditor.Db
 		[DllImport(TDBACCESS_DLL)]
 		public static extern int TDBQueryGetResultSize();
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern int TDBTableRecordAdd(int DBIndex, string TableName, bool AllowExpand);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBTableRecordChangeDeleted(int DBIndex, string TableName, int RecNo, bool Deleted);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBTableRecordDeleted(int DBIndex, string TableName, int RecNo);
 
-		[DllImport(TDBACCESS_DLL)]
+        [DllImport(TDBACCESS_DLL, CharSet = CharSet.Unicode)]
 		public static extern bool TDBTableRecordRemove(int DBIndex, string TableName, int RecNo);
 
 

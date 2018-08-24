@@ -20,7 +20,8 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>http://localhost/MaddenEditor/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -72,17 +73,121 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\AmpConfig.cs" />
+    <Compile Include="Core\DatEditor\COMP.cs" />
+    <Compile Include="Core\DatEditor\CustomBitmap.cs" />
+    <Compile Include="Core\DatEditor\DAT.cs" />
+    <Compile Include="Core\DatEditor\DATA.cs" />
+    <Compile Include="Core\DatEditor\DDS.cs" />
+    <Compile Include="Core\DatEditor\DIR1.cs" />
+    <Compile Include="Core\DatEditor\Filetype.cs" />
+    <Compile Include="Core\DatEditor\MMAP.cs" />
+    <Compile Include="Core\DatEditor\TERF.cs" />
+    <Compile Include="Core\Manager\Coach.cs" />
+    <Compile Include="Core\Manager\DraftClass.cs" />
+    <Compile Include="Core\Manager\DraftConfig.cs" />
+    <Compile Include="Core\Manager\Player.cs" />
+    <Compile Include="Core\Manager\Finances.cs" />
+    <Compile Include="Core\Manager\Team.cs" />
+    <Compile Include="Core\Overall.cs" />
+    <Compile Include="Core\OwnerRevenue.cs" />
+    <Compile Include="Core\Record\CoachExpectedSalary.cs" />
+    <Compile Include="Core\Record\CoachHistory.cs" />
+    <Compile Include="Core\Record\DB_Templates\FRAPlayBooks.cs" />
+    <Compile Include="Core\Record\DB_Templates\OverallRecord.cs" />
+    <Compile Include="Core\Record\DraftedPlayers.cs" />
+    <Compile Include="Core\Record\RestrictedFreeAgentPlayers.cs" />
+    <Compile Include="Core\Record\InactiveRecord.cs" />
+    <Compile Include="Core\Record\Income.cs" />
+    <Compile Include="Core\Record\LeagueRevenue.cs" />
+    <Compile Include="Core\Record\RestrictedFreeAgentSigningTenders.cs" />
+    <Compile Include="Core\Record\SalaryYearsPro.cs" />
+    <Compile Include="Core\Record\PlayerSalaryDemands.cs" />
+    <Compile Include="Core\Record\SalaryCapIncrease.cs" />
+    <Compile Include="Core\Record\Stats\ProBowlPlayer.cs" />
+    <Compile Include="Core\Record\Stats\TeamRivalHistory.cs" />
+    <Compile Include="Core\Record\Stats\TeamWinLossRecord.cs" />
+    <Compile Include="Core\Record\StreamedDB\CoachCollection.cs" />
+    <Compile Include="Core\Record\StreamedDB\CollegesRecord.cs" />
+    <Compile Include="Core\Record\StreamedDB\DepthChartSubs.cs" />
+    <Compile Include="Core\Record\StreamedDB\FirstNames.cs" />
+    <Compile Include="Core\Record\StreamedDB\LastNames.cs" />
+    <Compile Include="Core\Record\StreamedDB\PlayerProgression.cs" />
+    <Compile Include="Core\Record\StreamedDB\PlayerRegression.cs" />
+    <Compile Include="Core\Record\StreamedDB\PlayerSubs.cs" />
+    <Compile Include="Core\Record\StreamedDB\PRDF.cs" />
+    <Compile Include="Core\Record\StreamedDB\ProgressionTracking.cs" />
+    <Compile Include="Core\Record\StreamedDB\RoleInfo.cs" />
+    <Compile Include="Core\Record\StreamedDB\RolePlayerEffects.cs" />
+    <Compile Include="Core\Record\StreamedDB\RoleTeamEffects.cs" />
+    <Compile Include="Core\Record\StreamedDB\StatsRequired.cs" />
+    <Compile Include="Core\Record\UserOptionRecord.cs" />
+    <Compile Include="Core\Record\WeeklyAward.cs" />
+    <Compile Include="Db\FB.cs" />
+    <Compile Include="Forms\OptionsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\City.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\City.Designer.cs">
+      <DependentUpon>City.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FAQ.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FAQ.Designer.cs">
+      <DependentUpon>FAQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GameOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\GameOptions.Designer.cs">
+      <DependentUpon>GameOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManagerDraftConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManagerDraftConfig.Designer.cs">
+      <DependentUpon>ManagerDraftConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManagerMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManagerMain.Designer.cs">
+      <DependentUpon>ManagerMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManagerOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManagerOptions.Designer.cs">
+      <DependentUpon>ManagerOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OwnerFinances.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OwnerFinances.Designer.cs">
+      <DependentUpon>OwnerFinances.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Splash.Designer.cs">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <None Include="app.config" />
-    <None Include="ConSole\ConSoleDraft.cs" />
     <Compile Include="Core\CoachEditingModel.cs" />
     <Compile Include="Core\DepthChartEditingModel.cs" />
     <Compile Include="Core\DepthChartRepairer.cs" />
     <Compile Include="Core\EditorModel.cs" />
     <Compile Include="Core\LocalMath.cs" />
-    <Compile Include="Core\MGMT.cs" />
+    <Compile Include="Core\Manager\MGMT.cs" />
     <Compile Include="Core\PlayerEditingModel.cs" />
-    <Compile Include="Core\Record\Awards.cs" />
+    <Compile Include="Core\Record\YearlyAwards.cs" />
     <Compile Include="Core\Record\CoachPrioritySliderRecord.cs" />
     <Compile Include="Core\DraftModel.cs" />
     <Compile Include="Core\Record\DraftPickRecord.cs" />
@@ -97,7 +202,7 @@
     <Compile Include="Core\Record\GameOptionRecord.cs" />
     <Compile Include="Core\Record\GenericRecord.cs" />
     <Compile Include="Core\Record\OwnerRecord.cs" />
-    <Compile Include="Core\Record\ProgressionRecord.cs" />
+    <Compile Include="Core\Record\ProgressionSchedule.cs" />
     <Compile Include="Core\Record\RookieRecord.cs" />
     <Compile Include="Core\Record\SalaryCapRecord.cs" />
     <Compile Include="Core\Record\ScheduleRecord.cs" />
@@ -118,7 +223,7 @@
     <Compile Include="Core\Record\Stats\SeasonStatsDefenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffenseRecord.cs" />
     <Compile Include="Core\Record\Stats\SeasonStatsOffensiveLineRecord.cs" />
-    <Compile Include="Core\Record\Stats\SeasonStatsTeamRecord.cs" />
+    <Compile Include="Core\Record\Stats\TeamSeasonStatsRecord.cs" />
     <Compile Include="Core\Record\Stats\TeamGameRecords.cs" />
     <Compile Include="Core\Record\Stats\TeamSeasonRecords.cs" />
     <Compile Include="Core\Record\TeamCaptainRecord.cs" />
@@ -147,11 +252,11 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AmpConfig.cs">
+    <Compile Include="Forms\DatConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AmpConfig.Designer.cs">
-      <DependentUpon>AmpConfig.cs</DependentUpon>
+    <Compile Include="Forms\DatConfigForm.Designer.cs">
+      <DependentUpon>DatConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ColorChooser.cs">
       <SubType>Form</SubType>
@@ -206,12 +311,6 @@
     </Compile>
     <Compile Include="Forms\ExportForm.Designer.cs">
       <DependentUpon>ExportForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MaddenManagerControl.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MaddenManagerControl.Designer.cs">
-      <DependentUpon>MaddenManagerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\StadiumEditForm.cs">
       <SubType>UserControl</SubType>
@@ -353,7 +452,7 @@
       <DependentUpon>TrainingCampTuneGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UserControlledTeamForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\UserControlledTeamForm.Designer.cs">
       <DependentUpon>UserControlledTeamForm.cs</DependentUpon>
@@ -369,8 +468,14 @@
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AmpConfig.resx">
-      <DependentUpon>AmpConfig.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\City.resx">
+      <DependentUpon>City.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DatConfigForm.resx">
+      <DependentUpon>DatConfigForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
@@ -397,17 +502,32 @@
     <EmbeddedResource Include="Forms\ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FAQ.resx">
+      <DependentUpon>FAQ.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameInjuryForm.resx">
       <DependentUpon>GameInjuryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GameOptions.resx">
+      <DependentUpon>GameOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GlobalAttributeForm.resx">
       <DependentUpon>GlobalAttributeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MaddenManagerControl.resx">
-      <DependentUpon>MaddenManagerControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManagerDraftConfig.resx">
+      <DependentUpon>ManagerDraftConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManagerMain.resx">
+      <DependentUpon>ManagerMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManagerOptions.resx">
+      <DependentUpon>ManagerOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OwnerFinances.resx">
+      <DependentUpon>OwnerFinances.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PlayerEditControl.resx">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
@@ -431,6 +551,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CoachEditControl.resx">
       <DependentUpon>CoachEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Splash.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\StadiumEditForm.resx">
       <DependentUpon>StadiumEditForm.cs</DependentUpon>
@@ -511,7 +634,22 @@
     <Content Include="How to Add a Table.txt" />
     <None Include="Resources\background.png" />
     <EmbeddedResource Include="Resources\SteveBio.txt" />
+    <EmbeddedResource Include="Resources\Portfaq.txt" />
+    <EmbeddedResource Include="Resources\PackFaq.txt" />
+    <EmbeddedResource Include="Resources\DefaultDat.txt" />
     <Content Include="Resources\TrainingCampFAQ.txt" />
+    <EmbeddedResource Include="Resources\v4beta4.txt" />
+    <EmbeddedResource Include="Resources\v4beta5.txt" />
+    <EmbeddedResource Include="Resources\v41.txt" />
+    <EmbeddedResource Include="Resources\v413.txt" />
+    <EmbeddedResource Include="Resources\v414.txt" />
+    <EmbeddedResource Include="Resources\v415.txt" />
+    <EmbeddedResource Include="Resources\v416.txt" />
+    <EmbeddedResource Include="Resources\v417.txt" />
+    <EmbeddedResource Include="Resources\v418.txt" />
+    <EmbeddedResource Include="Resources\v419.txt" />
+    <EmbeddedResource Include="Resources\v421.txt" />
+    <EmbeddedResource Include="Resources\v422.txt" />
     <Content Include="tune.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -559,8 +697,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)Libs\tdbaccess.dll $(ProjectDir)$(OutDir)
-mkdir $(ProjectDir)$(OutDir)Conditioning\TrainingCamp
-copy $(ProjectDir)tune.txt $(ProjectDir)$(OutDir)Conditioning\TrainingCamp\tune.txt</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

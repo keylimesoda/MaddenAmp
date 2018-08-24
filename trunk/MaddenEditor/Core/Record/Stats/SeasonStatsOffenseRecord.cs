@@ -33,9 +33,9 @@ namespace MaddenEditor.Core.Record.Stats
 
         public const string PLAYER_ID = "PGID";
         public const string SEA_PASS_ATT = "saat";
-        public const string SEA_PASS_COMEBACKS = "sacb";                        //  2008
+        public const string SEA_PASS_COMEBACKS = "sacb";                        //  2007-2008
         public const string SEA_COMP = "sacm";
-        public const string SEA_PASS_FIRST_DOWNS = "safd";                      //  2008
+        public const string SEA_PASS_FIRST_DOWNS = "safd";                      //  2007-2008
         public const string SEA_PASS_INT = "sain";
         public const string SEA_PASS_LONG = "saln";
         public const string SEA_SACKED = "sasa";

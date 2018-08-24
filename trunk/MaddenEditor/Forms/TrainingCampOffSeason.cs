@@ -2388,7 +2388,7 @@ namespace MaddenEditor.Forms
             hclb.Text = model.CoachModel.CurrentCoachRecord.LinebackerRating.ToString();
             hcdb.Text = model.CoachModel.CurrentCoachRecord.DefensiveBackRating.ToString();
             hck.Text = model.CoachModel.CurrentCoachRecord.KickerRating.ToString();
-            hcp.Text = model.CoachModel.CurrentCoachRecord.PuntRating.ToString();
+            hcp.Text = model.CoachModel.CurrentCoachRecord.PunterRating.ToString();
             AddCoachingHours(knwUpDown);
             knwUpDown.Enabled = true;
             AddCoachingHours(motUpDown);
@@ -2440,7 +2440,7 @@ namespace MaddenEditor.Forms
              Oldlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
              olddb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
              Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
-             Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
+             Oldp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
              int OffBalance = ((oldqb + Oldrb + oldwr + Oldol) / 4);
              int OffBalanceSum = (oldqb + Oldrb + oldwr + Oldol);
@@ -2782,7 +2782,7 @@ namespace MaddenEditor.Forms
              Oldlb = model.CoachModel.CurrentCoachRecord.LinebackerRating;
              olddb = model.CoachModel.CurrentCoachRecord.DefensiveBackRating;
              Oldk = model.CoachModel.CurrentCoachRecord.KickerRating;
-             Oldp = model.CoachModel.CurrentCoachRecord.PuntRating;
+             Oldp = model.CoachModel.CurrentCoachRecord.PunterRating;
 
              if (SeasonsExp <= 1)
              {
@@ -2910,11 +2910,11 @@ namespace MaddenEditor.Forms
             {
                 model.CoachModel.CurrentCoachRecord.KickerRating = model.CoachModel.CurrentCoachRecord.KickerRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
-            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PuntRating)) / 10), 3); //Knw
+            AttributeDeviation = Math.Round(((100 - (99 - (decimal)model.CoachModel.CurrentCoachRecord.PunterRating)) / 10), 3); //Knw
             RankExp = ((decimal)pUpDown.Value * ((decimal)CoachProgMod * (decimal).75));
             if (RankExp > AttributeDeviation)
             {
-                model.CoachModel.CurrentCoachRecord.PuntRating = model.CoachModel.CurrentCoachRecord.PuntRating + ((int)(RankExp) - (int)(AttributeDeviation));
+                model.CoachModel.CurrentCoachRecord.PunterRating = model.CoachModel.CurrentCoachRecord.PunterRating + ((int)(RankExp) - (int)(AttributeDeviation));
             }
             if (model.CoachModel.CurrentCoachRecord.Knowledge > oldKnw)
             {
@@ -2988,11 +2988,11 @@ namespace MaddenEditor.Forms
                 hck.ForeColor = Color.Blue;
                 Changes = Changes + "k increased +" + (model.CoachModel.CurrentCoachRecord.LinebackerRating - Oldk) + " from " + Oldk + ", ";
             }
-            if (model.CoachModel.CurrentCoachRecord.PuntRating > Oldp)
+            if (model.CoachModel.CurrentCoachRecord.PunterRating > Oldp)
             {
-                hcp.Text = model.CoachModel.CurrentCoachRecord.PuntRating.ToString();
+                hcp.Text = model.CoachModel.CurrentCoachRecord.PunterRating.ToString();
                 hcp.ForeColor = Color.Blue;
-                Changes = Changes + "p increased +" + (model.CoachModel.CurrentCoachRecord.PuntRating - Oldp) + " from " + Oldp + ", ";
+                Changes = Changes + "p increased +" + (model.CoachModel.CurrentCoachRecord.PunterRating - Oldp) + " from " + Oldp + ", ";
             }
 
 

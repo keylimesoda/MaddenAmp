@@ -29,30 +29,37 @@ namespace MaddenEditor.Core
 {
 	/// <summary>
 	/// A Table Model supports adding fields to the model
+    /// 
 	/// </summary>
 	public class TableRecordModel
 	{
-		protected bool dirty = false;
+        public bool BigEndian = false;
+        protected bool dirty = false;
 		protected bool deleted = false;
 		protected int recordNumber = -1;
 		private Dictionary<string, int> intFields = null;
 		private Dictionary<string, string> stringFields = null;
+        private Dictionary<string, float> floatFields = null;
 
 		private Dictionary<string, int> backupIntFields = null;
 		private Dictionary<string, string> backupStringFields = null;
+        private Dictionary<string, float> backupFloatFields = null;
 
 		protected EditorModel editorModel = null;
         protected TableModel tableModel = null;
 
 		public TableRecordModel(int recordNumber, TableModel tableModel, EditorModel editorModel)
 		{
+            this.BigEndian = editorModel.BigEndian;
             this.tableModel = tableModel;
             this.editorModel = editorModel;
 			this.recordNumber = recordNumber;
 			intFields = new Dictionary<string, int>();
 			stringFields = new Dictionary<string, string>();
+            floatFields = new Dictionary<string, float>();
 			backupIntFields = new Dictionary<string, int>();
 			backupStringFields = new Dictionary<string, string>();
+            backupFloatFields = new Dictionary<string, float>();
 		}
 
         public List<string> StringFields()
@@ -69,6 +76,16 @@ namespace MaddenEditor.Core
         {
             List<string> toReturn = new List<string>();
             foreach (string s in intFields.Keys)
+            {
+                toReturn.Add(s);
+            }
+            return toReturn;
+        }
+
+        public List<string> FloatFields()
+        {
+            List<string> toReturn = new List<string>();
+            foreach (string s in floatFields.Keys)
             {
                 toReturn.Add(s);
             }
@@ -103,7 +120,14 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public void RegisterField(string fieldName, string val)
+        public string ConvertBE(string name)
+        {
+            char[] charArray = name.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+        
+        public void RegisterField(string fieldName, string val)
 		{
 			Debug.Assert(!stringFields.ContainsKey(fieldName), "Only use RegisterField to register the field and init value\r\nuse SetField to set values");
 			
@@ -118,10 +142,21 @@ namespace MaddenEditor.Core
 			
 		}
 
+        public void RegisterField(string fieldName, float val)
+        {
+            Debug.Assert(!floatFields.ContainsKey(fieldName), "Only use RegisterField to register the field and init value\r\nuse SetField to set values");
+            floatFields.Add(fieldName, val);
+        }
+
 		public string GetStringField(string fieldName)
 		{
 			try
-			{
+            {
+                if (BigEndian)
+                {
+                    string rev = ConvertBE(fieldName);
+                    return stringFields[rev];
+                }
 				return stringFields[fieldName];
 			}
 			catch(KeyNotFoundException err)
@@ -136,7 +171,13 @@ namespace MaddenEditor.Core
 		{
 			try
 			{
-				return intFields[fieldName];
+				// reverse these for big endian
+                if (BigEndian)
+                {
+                    string rev = ConvertBE(fieldName);
+                    return intFields[rev];
+                }
+                else return intFields[fieldName];
 			}
 			catch (KeyNotFoundException err)
 			{
@@ -145,6 +186,25 @@ namespace MaddenEditor.Core
 				return 0;
 			}
 		}
+
+        public float GetFloatField(string fieldName)
+        {
+            try
+            {
+                if (BigEndian)
+                {
+                    string rev = ConvertBE(fieldName);
+                    return floatFields[rev];
+                }
+                return floatFields[fieldName];
+            }
+            catch (KeyNotFoundException err)
+            {
+                err = err;
+                //Trace.WriteLine("Error Getting FloatField " + fieldName + " :" + err.ToString());
+                return 0;
+            }
+        }
 
 		public bool ContainsStringField(string fieldName)
 		{
@@ -162,6 +222,13 @@ namespace MaddenEditor.Core
 			return false;
 		}
 
+        public bool ContainsFloatField(string fieldName)
+        {
+            if (floatFields.ContainsKey(fieldName))
+                return true;
+            return false;
+        }
+
 		protected bool ContainsField(string fieldName)
 		{
 			if (intFields.ContainsKey(fieldName))
@@ -176,6 +243,12 @@ namespace MaddenEditor.Core
 		protected void SetField(string fieldName, string val)
 		{
 			//Exit early if the new value is the same
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldName);
+                fieldName = rev;
+            }
+
 			if (stringFields[fieldName].Equals(val))
 			{
 				return;
@@ -197,7 +270,13 @@ namespace MaddenEditor.Core
 
 		protected void SetField(string fieldName, string val, bool backup)
 		{
-			if (backup)
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldName);
+                fieldName = rev;
+            }
+            
+            if (backup)
 			{
 				SetField(fieldName, val);
 			}
@@ -209,7 +288,13 @@ namespace MaddenEditor.Core
 
 		protected void SetField(string fieldName, int val)
 		{
-			//Exit early if the new value is the same
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldName);
+                fieldName = rev;
+            }
+            
+            //Exit early if the new value is the same
 			if (intFields[fieldName] == val)
 			{
 				return;
@@ -232,7 +317,13 @@ namespace MaddenEditor.Core
 
 		protected void SetField(string fieldName, int val, bool backup)
 		{
-			if (backup)
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldName);
+                fieldName = rev;
+            }
+            
+            if (backup)
 			{
 				SetField(fieldName, val);
 			}
@@ -242,7 +333,52 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public void GetChangedIntFields(ref string[] keyArray, ref int[] valueArray)
+        protected void SetField(string fieldName, float val)
+        {
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldName);
+                fieldName = rev;
+            }
+            
+            //Exit early if the new value is the same
+            if (floatFields[fieldName] == val)
+            {
+                return;
+            }
+
+            //Mark this record as dirty as well as the Full Roster Model
+            editorModel.Dirty = true;
+            this.dirty = true;
+            
+            if (!backupFloatFields.ContainsKey(fieldName))
+            {
+                //Backup original value
+                backupFloatFields.Add(fieldName, floatFields[fieldName]);
+            }
+
+            floatFields[fieldName] = val;
+        }
+        
+        protected void SetField(string fieldName, float val, bool backup)
+        {
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldName);
+                fieldName = rev;
+            }
+            if (backup)
+            {
+                SetField(fieldName, val);
+            }
+            else
+            {
+                floatFields[fieldName] = val;
+            }
+        }
+        
+        
+        public void GetChangedIntFields(ref string[] keyArray, ref int[] valueArray)
 		{
 			keyArray = new string[backupIntFields.Count];
 			valueArray = new int[backupIntFields.Count];
@@ -254,7 +390,6 @@ namespace MaddenEditor.Core
 				valueArray[i] = intFields[key];
 				i++;
 			}
-
 		}
 
 		public void GetChangedStringFields(ref string[] keyArray, ref string[] valueArray)
@@ -271,10 +406,26 @@ namespace MaddenEditor.Core
 			}
 		}
 
-		public void DiscardBackups()
+        public void GetChangedFloatFields(ref string[] keyArray, ref float[] valueArray)
+        {
+            keyArray = new string[backupFloatFields.Count];
+            valueArray = new float[backupFloatFields.Count];
+
+            int i = 0;
+            foreach (string key in backupFloatFields.Keys)
+            {
+                keyArray[i] = key;
+                valueArray[i] = floatFields[key];
+                i++;
+            }
+
+        }
+        
+        public void DiscardBackups()
 		{
 			backupStringFields.Clear();
 			backupIntFields.Clear();
+            backupFloatFields.Clear();
 
 			Dirty = false;
 		}

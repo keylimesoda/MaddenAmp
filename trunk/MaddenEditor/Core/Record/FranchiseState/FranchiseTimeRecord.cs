@@ -28,7 +28,7 @@ namespace MaddenEditor.Core.Record.FranchiseState
 {
     public class FranchiseTimeRecord : TableRecordModel
     {
-        // SEAI
+        // table name = "SEAI"
 
         public const string SBRW = "SBRW";
         public const string SEFP = "SEFP";
@@ -48,11 +48,11 @@ namespace MaddenEditor.Core.Record.FranchiseState
         public const string SNPB = "SNPB";
         public const string SNPW = "SNPW";
         public const string SNWP = "SNWP";
-        public const string SSYE = "SSYE";
+        public const string SCHEDULE_YEAR = "SSYE";
 
         
         // Week Type 0 preseason, 25 regular season, 50 wildcard, 75 divisional, 100 conference
-        // 125 SB, 150 Pro Bowl, 200 Initial ?
+        // 125 SB, 150 Pro Bowl, 175 offseason 200 Initial ?
 
 		public FranchiseTimeRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -169,10 +169,10 @@ namespace MaddenEditor.Core.Record.FranchiseState
             get { return GetIntField(SNWP); }
             set { SetField(SNWP, value); }
         }
-        public int Ssye
+        public int ScheduleYear
         {
-            get { return GetIntField(SSYE); }
-            set { SetField(SSYE, value); }
+            get { return GetIntField(SCHEDULE_YEAR); }
+            set { SetField(SCHEDULE_YEAR, value); }
         }
 
         #endregion

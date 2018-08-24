@@ -22,10 +22,12 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace MaddenEditor.Db
 {
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
     struct TdbTableProperties
     {
         public String Name;
@@ -39,6 +41,8 @@ namespace MaddenEditor.Db
         public bool Flag2;
         public bool Flag3;
         public bool NonAllocated;
+        public bool HasVarChar;
+        public bool HasCompressedVarChar;
     }
 
 }

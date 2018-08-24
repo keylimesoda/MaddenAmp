@@ -89,7 +89,7 @@ namespace MaddenEditor.Core
 
 				if (uniformRec.TeamId == team.TeamId)
 				{
-					result.Add(uniformRec.TeamUniformClass, uniformRec);
+					result.Add(uniformRec.TeamUniformCombo, uniformRec);
 				}
 			}
 

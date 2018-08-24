@@ -28,9 +28,14 @@ namespace MaddenEditor.Core.Record
 {
     public class DraftPickRecord : TableRecordModel
     {
-        public const string PICK_NUMBER = "DPNM"; 
+        //drpk
+
+        public const string TRADED_DOWN = "DPDN";
         public const string CURRENT_PICK_OWNER = "DPID";
+        public const string PICK_NUMBER = "DPNM";        
         public const string ORIGINAL_PICK_OWNER = "DPOD";
+        public const string PICK_TU = "DPTU";
+        public const string TRADED_UP = "DPUD";
 
         public DraftPickRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -38,15 +43,15 @@ namespace MaddenEditor.Core.Record
 
 		}
 
-        public int PickNumber
+        public bool TradedDown
         {
             get
             {
-                return GetIntField(PICK_NUMBER);
+                return (GetIntField(TRADED_DOWN) == 1);
             }
             set
             {
-                SetField(PICK_NUMBER, value);
+                SetField(TRADED_DOWN, Convert.ToInt32(value));
             }
         }
 
@@ -61,7 +66,19 @@ namespace MaddenEditor.Core.Record
                 SetField(CURRENT_PICK_OWNER, value);
             }
         }
-
+                
+        public int PickNumber
+        {
+            get
+            {
+                return GetIntField(PICK_NUMBER);
+            }
+            set
+            {
+                SetField(PICK_NUMBER, value);
+            }
+        }
+                
         public int OriginalTeamId
         {
             get
@@ -73,5 +90,24 @@ namespace MaddenEditor.Core.Record
                 SetField(ORIGINAL_PICK_OWNER, value);
             }
         }
+
+        public int PickTU
+        {
+            get { return GetIntField(PICK_TU); }
+            set { SetField(PICK_TU, value); }
+        }
+
+        public bool TradedUP
+        {
+            get
+            {
+                return (GetIntField(TRADED_UP) == 1);
+            }
+            set
+            {
+                SetField(TRADED_UP, Convert.ToInt32(value));
+            }
+        }
+
     }
 }

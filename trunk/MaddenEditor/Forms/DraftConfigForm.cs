@@ -29,6 +29,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using MaddenEditor.Core;
+using MaddenEditor.Core.Record;
 
 namespace MaddenEditor.Forms
 {
@@ -40,8 +41,10 @@ namespace MaddenEditor.Forms
 		int secs;
 		int humanId;
         string customclass = null;
-
         bool continueLoading = true;
+        bool isInitializing = false;
+        int ResumeRound = 0;
+        int ResumePick = 0;
 
         public DraftConfigForm(EditorModel em)
         {
@@ -86,18 +89,19 @@ namespace MaddenEditor.Forms
 
 			draftModel = new DraftModel(model);
 
-			if (customclass != null)
-			{
-				string response = draftModel.MDCVerify(customclass);
+            if (customclass != null)
+            {
+                string response = draftModel.MDCVerify(customclass);
 
-				if (response != null) {
-					MessageBox.Show("Error reading custom draft class file.  " + response, "Error");
-					this.Cursor = Cursors.Arrow;
-					startButton.Enabled = true;
-					customclass = null;
-					return;
-				}
-			}
+                if (response != null)
+                {
+                    MessageBox.Show("Error reading custom draft class file.  " + response, "Error");
+                    this.Cursor = Cursors.Arrow;
+                    startButton.Enabled = true;
+                    customclass = null;
+                    return;
+                }
+            }
 
 			progressBar.Visible = true;
 			//backgrounWorker.RunWorkerAsync();
@@ -161,37 +165,42 @@ namespace MaddenEditor.Forms
 
 //		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         private void bg1()
-		{
+        {
             // This method will run on a thread other than the UI thread.
             // Be sure not to manipulate any Windows Forms controls created
             // on the UI thread from this method.
-			if (autoSave.Checked)
-			{
-				string fileName = model.GetFileName();
-				string backupFile = fileName.Substring(0, fileName.LastIndexOf('.')) + "-mfebak";
-				string newFile;
+            if (autoSave.Checked)
+            {
+                string fileName = model.GetFileName();
+                string backupFile = fileName.Substring(0, fileName.LastIndexOf('.')) + "-mfebak";
+                string newFile;
 
-				if (overwrite.Checked)
-				{
-					File.Delete(backupFile + "0.fra");
-				}
+                if (overwrite.Checked)
+                {
+                    File.Delete(backupFile + "0.fra");
+                }
 
-				int index = 0;
-				while (true)
-				{
-					newFile = backupFile + index + ".fra";
-					if (!File.Exists(newFile))
-					{
-						break;
-					}
-					index++;
-				}
+                int index = 0;
+                while (true)
+                {
+                    newFile = backupFile + index + ".fra";
+                    if (!File.Exists(newFile))
+                    {
+                        break;
+                    }
+                    index++;
+                }
 
-				File.Copy(fileName, newFile);
-			}
+                File.Copy(fileName, newFile);
+            }
 
-			//ReportProgress(15);
+            //ReportProgress(15);
             draftModel.InitCoachScouting();
+
+            draftModel.ResumePick = (int)ResumeSelection_Updown.Value;
+            draftModel.ResumeRound = (int)ResumeRound_Updown.Value;
+            draftModel.ResumeIndex = (int)ResumePick_Updown.Value;
+
             draftModel.InitializeDraft(humanId, this, customclass);
 
             if (continueLoading)
@@ -212,10 +221,42 @@ namespace MaddenEditor.Forms
 
             this.Cursor = Cursors.Default;
             this.Close();
-		}
+        }
 
+        private void ResumeRound_Updown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                isInitializing = true;
+                ResumeSelection_Updown.Value = (int)(ResumeRound_Updown.Value - 1) * 32 + (int)ResumePick_Updown.Value;
+                isInitializing = false;
+            }
+        }
 
-/*
+        private void ResumePick_Updown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                isInitializing = true;
+                ResumeSelection_Updown.Value = (int)(ResumeRound_Updown.Value-1) * 32 + (int)ResumePick_Updown.Value;
+                isInitializing = false;
+            }
+        }
+
+        private void ResumeSelection_Updown_ValueChanged(object sender, EventArgs e)
+        {
+            if(!isInitializing)
+            {
+                isInitializing = true;
+                ResumeRound_Updown.Value = (int)Math.Ceiling(ResumeSelection_Updown.Value / 32);
+                int round = (int)Math.Ceiling(ResumeSelection_Updown.Value / 32) - 1;
+                ResumePick_Updown.Value = ResumeSelection_Updown.Value - (round * 32);
+                
+                isInitializing = false;
+            }
+        }
+        
+        /*
 		private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			progressBar.Value = e.ProgressPercentage;
@@ -239,13 +280,6 @@ namespace MaddenEditor.Forms
 		}
 
  */
-        // Optional Draft Rules...
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            DraftModel.enhance = false;
-            if (checkBox1.Checked)
-            DraftModel.enhance = true;
         
-        }
     }
 }
