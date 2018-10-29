@@ -34,8 +34,7 @@ namespace MaddenEditor.Core
 	public class CoachEditingModel
 	{
 		/** The current Coach index */
-        // private int currentCoachIndex
-        //  using the Index doesnt work right, if we delete a record the record #'s are re-ordered 
+        private int currentCoachIndex = 0;
         
         // Current coachid
 		private int currentCoachID = 0;
@@ -182,18 +181,15 @@ namespace MaddenEditor.Core
                     }
                 }
             }
-
-            currentCoachID = coachlist[0];
         }
         
-       
-		        
         public CoachRecord CurrentCoachRecord
-		{
+        {
+            // TO DO : FIX
             // need to separate the coaches from the streamed coaches
             //fix the set part
-			get
-			{
+            get
+            {
                 if (currentstreamedID != -1 && manager.stream_model != null)
                 {
                     CoachCollection coll = (CoachCollection)manager.stream_model.TableModels[EditorModel.COACH_COLLECTIONS_TABLE].GetRecord(currentstreamedID);
@@ -205,14 +201,27 @@ namespace MaddenEditor.Core
                     CoachRecord test = this.GetCoachById(currentCoachID);
                     return test;
                 }
-			}
-			set
-			{
-				CoachRecord curr = value;
-                currentCoachID = curr.CoachId;				
-			}
-		}
+            }
+            set
+            {
+                CoachRecord curr = value;
 
+                List<TableRecordModel> coaches = model.TableModels[EditorModel.COACH_TABLE].GetRecords();
+                int index = 0;
+                for (index = 0; index < coaches.Count; index++)
+                {
+                    CoachRecord coach = (CoachRecord)coaches[index];
+                    if (coach.CoachId == curr.CoachId)
+                    {
+                        currentCoachIndex = index;
+                        return;
+                    }
+                }
+
+                currentCoachIndex = 0;
+            }
+        }
+        
 		public CoachRecord GetNextCoachRecord()
 		{
 			CoachRecord record = null;
@@ -823,5 +832,13 @@ namespace MaddenEditor.Core
             
             return newcoach;
         }
-	}
+
+        public void DeleteCoachRecord(CoachRecord record)
+        {
+            // TO DO : FINISH THIS
+            record.SetDeleteFlag(true);
+
+        }
+    
+    }
 }

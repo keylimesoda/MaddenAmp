@@ -415,7 +415,7 @@ namespace MaddenEditor.Core
             {
                 InjuryRecord ir = (InjuryRecord)record;
 
-                if (ir.InjuryLength >= 24 || ir.InjuryReserve)
+                if (ir.InjuryLength >= 24 || ir.IR)
                 {
                     injuredPlayers.Add(ir.PlayerId);
                 }

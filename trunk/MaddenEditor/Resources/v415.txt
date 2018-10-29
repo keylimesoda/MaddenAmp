@@ -1,0 +1,29 @@
+Madden AMP 4.1 Beta 5 Changelog
+
+NOTE : Any franchise that was made to include custom teams or was made with a custom league is not going to work correctly with Madden AMP.
+
+There is a known bug that the ROS/FRA file will ask you to save even though there may have been no changes.  If you are certain you made no changes, you don't need to save the file.
+Haven't had time to track these bug(s) down.
+
+
+PLAYER - When loading a given player, AMP goes through and calculates current team salary based upon all the contracted players for that team.  Sometimes this value will be different than what it would show in game if you have edited a player with an external editor.  
+This would cause AMP to ask for a save when exiting.  This may also depend upon if a previous player's salary/bonus is still being charged to his former team.  
+Not sure that this needs to be fixed.
+
+
+PLAYER 
+- Stats 
+- fixed some minimum/maximum errors in the experimental progression fields that were added.
+
+
+- TEAM	
+- Added custom art field for editing. *
+
+- Added checkbox for if a team has been relocated.  If a team has been relocated,unchecking this will allow inserting uniform id entries back into the TUNI table (experimental and untested) *
+
+*note when adding uniforms back into the TUNI table, the 'TUCO' field will likely not be correct for home/away default values. Those will need to be corrected with the db editor.  
+Those unfamiliar with these fields should not be using these functions.
+
+
+- Fixed uniforms crashing for custom/relocated teams.
+

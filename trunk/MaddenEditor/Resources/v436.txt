@@ -1,0 +1,30 @@
+Madden AMP 4.36
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+*** Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file when finished editing in game in order to view changes.
+
+
+
+v4.36 Changelog
+---------------
+
+Bugs/Fixes
+----------
+Fixed Archetype Overall not updating properly in player editor.
+Fixed error involving Facemask select for 04-08 in player editor.
+Fixed bug with Player List not populating properly with selected filters.
+
+
+
+Import/Export CSV
+-----------------
+Added some filters for exporting.
+
+The 04-08 exporting options are eventually going to be phased out and will be merged into the normal exporting options.  Not all of them have been merged yet.  If you need those options now, use an earlier version.
+
+
+

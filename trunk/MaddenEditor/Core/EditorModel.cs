@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -48,7 +49,11 @@ namespace MaddenEditor.Core
         Streameddata,
         Template,
         DBTeam,
-        UserConfig
+        UserConfig,
+        DataRam,
+        StaticData,
+        GameMode,
+        Unknown,
 	}
 
     public enum FranchiseState
@@ -92,6 +97,44 @@ namespace MaddenEditor.Core
         K = 15,
         P = 16
     }
+
+    public enum MaddenPositions2019
+    {
+        // 33 positions
+        QB = 0,
+        HB = 1,
+        FB = 2,
+        WR = 3,
+        TE = 4,
+        LT = 5,
+        LG = 6,
+        C = 7,
+        RG = 8,
+        RT = 9,
+        LE = 10,
+        RE = 11,
+        DT = 12,
+        LOLB = 13,
+        MLB = 14,
+        ROLB = 15,
+        CB = 16,
+        FS = 17,
+        SS = 18,
+        K = 19,
+        P = 20,
+        KR = 21,
+        PR = 22,
+        KOS = 23,
+        LS = 24,
+        TDB = 25,
+        PHB = 26,
+        SWR = 27,
+        RLE = 28,
+        RRE = 29,
+        RDT = 30,
+        SLB = 31,
+        SCB = 32,
+    }
     
     public enum MaddenPositions
 	{
@@ -116,8 +159,13 @@ namespace MaddenEditor.Core
 		FS,
 		SS,
 		K,
-		P,
-	}
+        P, 
+        KR = 21,
+        PR = 22,
+        KOS = 23,
+        LS = 24,
+        TDB = 25,
+}
 
     public enum PlayerRoles
     {
@@ -343,14 +391,28 @@ namespace MaddenEditor.Core
 
             #endregion
         }        
-    }    
+    }
+
+    public class tabledefs
+    {        
+        public Dictionary<string, string> FieldDefs;                // Field and descriptions
+        public Dictionary<string, Dictionary<int,string>> Equivs;   // Fields that have equivalents in different versions
+
+        public tabledefs()
+        {
+            FieldDefs = new Dictionary<string, string>();
+            Equivs = new Dictionary<string, Dictionary<int, string>>();
+        }
+    }
+
     
     /// <summary>
 	/// This class is the main application model class. It is responsible for
 	/// creating all editing models that are manipulated by the GUI.
 	/// </summary>
 	public class EditorModel
-	{
+    {
+        #region Members
         public bool BigEndian = false;
         public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
@@ -384,20 +446,17 @@ namespace MaddenEditor.Core
         public const int MADDEN_2006_STREAMED_COUNT = 168;
         public const int MADDEN_2007_STREAMED_COUNT = 203;
         public const int MADDEN_2008_STREAMED_COUNT = 215;
+        public const int MADDEN_2019_STREAMED_COUNT = 85;
 
         public const int MADDEN_2019_USER_CONFIG_COUNT = 16;
+        public const int MADDEN_2019_DATA_RAM = 23;
+        public const int MADDEN_2019_STATIC_DATA = 16;
+        public const int MADDEN_2019_GAMEMODE = 85;
 
         // New 2019 type
         public const int MADDEN_2019_DBTEAM_COUNT = 8;
         
-        #region Franchise / Roster  Table names
-        #region 20019
-        public const string PLTR_TABLE = "PLTR";
-        public const string COACH_TABLE_BE = "HCOC";
-
-        #endregion
-        //2019
-        public const string TEAM_TABLE_2019 = "MAET";
+        #region Franchise / Roster  Table names       
         
         public const string PLAYER_AWARDS_TABLE = "AYPL";
         public const string BOXSCORE_DEFENSE_TABLE = "BDEF";
@@ -461,6 +520,7 @@ namespace MaddenEditor.Core
         public const string TEAM_SEASON_STATS = "TSSE";
         public const string TEAM_RIVAL_HISTORY = "TSRI";
         public const string UNIFORM_TABLE = "TUNI";
+        public const string USER_INFO_TABLE = "UINF";
         public const string USER_OPTIONS_TABLE = "UOPT";
 
         
@@ -531,18 +591,27 @@ namespace MaddenEditor.Core
 		private SalaryCapRecord salaryCapRecord = null;
 		private GameOptionRecord gameOptionsRecord = null;
         private UserOptionRecord useroptions = null;
+        private DraftClass draftclassmodel = null;
+        private UserInfoRecord userinfo = null;
 
         // Latest adds       
         public static int totalplayers = 0;        
         public Dictionary<int, college_entry> Colleges = new Dictionary<int, college_entry>();
         public int CurrentYearIndex = 0;
         public int CurrentYear = 0;
-        public Dictionary<int,string> PlayerRole = new Dictionary<int,string>();
+        public Dictionary<int,string> PlayerRole = new Dictionary<int,string>();        
+        public Dictionary<int, double> LeagueCap = new Dictionary<int, double>();
 
+        public Dictionary<MaddenFileVersion, Dictionary<string, tabledefs>> TableDefs = new Dictionary<MaddenFileVersion, Dictionary<string, tabledefs>>();
+
+        #endregion
+        
+        
         #region Constructors
-		
-        public EditorModel(string filename, MainForm form)
-		{            
+
+        public EditorModel(string filename, MainForm form, bool be, bool ismad19)
+		{
+            this.BigEndian = be;
             totalplayers = 0;
             view = form;
 			this.fileName = filename;            
@@ -587,11 +656,17 @@ namespace MaddenEditor.Core
 
 			//This collection will hold the created TableModel objects for each database table opened
 			tableModels = new TableModelDictionary(this, tableOrder);
-			
-			//Process the file
+
+            // Load in the csv for tables/fields
+            InitDefinitions();
+            // Init Salary Cap
+            InitCap();
+            
+            //Process the file
 			if (!ProcessFile())
 			{
-				throw new ApplicationException("Error processing file: " + filename);
+				//throw new ApplicationException("Error processing file: " + filename);
+                
 			}
 			
 			//Once we've processed the file create our editing models
@@ -599,6 +674,7 @@ namespace MaddenEditor.Core
             {
                 teamEditingModel = new TeamEditingModel(this);
                 playerEditingModel = new PlayerEditingModel(this);
+                draftclassmodel = new DraftClass(this);
 
                 if (fileVersion == MaddenFileVersion.Ver2019)
                 {
@@ -610,7 +686,9 @@ namespace MaddenEditor.Core
                     {
                         gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
                         useroptions = (UserOptionRecord)TableModels[USER_OPTIONS_TABLE].GetRecord(0);
+                        userinfo = (UserInfoRecord)TableModels[USER_INFO_TABLE].GetRecord(0);
                     }
+
                 }
 
                 else
@@ -746,7 +824,7 @@ namespace MaddenEditor.Core
             if (man.stream_model == null)
             {
                 #region 04-08
-                if (fileVersion <= MaddenFileVersion.Ver2019)
+                if (fileVersion < MaddenFileVersion.Ver2019)
                 {
                     Colleges.Add(0, new college_entry(CurrentYearIndex, 0, "Abilene Chr.", -1));
                     Colleges.Add(1, new college_entry(CurrentYearIndex, 1, "Air Force", -1));
@@ -1055,8 +1133,8 @@ namespace MaddenEditor.Core
 
 
                     Colleges.Add(20, new college_entry(CurrentYearIndex, 20, "Boise State", -1));
-                    Colleges.Add(21, new college_entry(CurrentYearIndex, 21, "Boston Coll.", -1));
-                    Colleges.Add(22, new college_entry(CurrentYearIndex, 22, "Bowl. Green", -1));
+                    Colleges.Add(21, new college_entry(CurrentYearIndex, 21, "Boston College", -1));
+                    Colleges.Add(22, new college_entry(CurrentYearIndex, 22, "Bowling Green St.", -1));
                     Colleges.Add(23, new college_entry(CurrentYearIndex, 23, "Brown", -1));
                     Colleges.Add(24, new college_entry(CurrentYearIndex, 24, "Bucknell", -1));
                     Colleges.Add(25, new college_entry(CurrentYearIndex, 25, "Buffalo", -1));
@@ -1066,10 +1144,10 @@ namespace MaddenEditor.Core
                     Colleges.Add(29, new college_entry(CurrentYearIndex, 29, "California", -1));
                     
                     Colleges.Add(30, new college_entry(CurrentYearIndex, 30, "Cal-Nrthridge", -1));
-                    Colleges.Add(31, new college_entry(CurrentYearIndex, 31, "Cal-Sacrmnto", -1));
+                    Colleges.Add(31, new college_entry(CurrentYearIndex, 31, "Cal-Sacramento", -1));
                     Colleges.Add(32, new college_entry(CurrentYearIndex, 32, "Canisius", -1));
                     Colleges.Add(33, new college_entry(CurrentYearIndex, 33, "Cent Conn St.", -1));
-                    Colleges.Add(34, new college_entry(CurrentYearIndex, 34, "Central MI", -1));
+                    Colleges.Add(34, new college_entry(CurrentYearIndex, 34, "Eastern Michigan", -1));
                     Colleges.Add(35, new college_entry(CurrentYearIndex, 35, "Central St Ohio", -1));
                     Colleges.Add(36, new college_entry(CurrentYearIndex, 36, "Charleston S.", -1));
                     Colleges.Add(37, new college_entry(CurrentYearIndex, 37, "Cincinnati", -1));
@@ -1092,16 +1170,14 @@ namespace MaddenEditor.Core
                     Colleges.Add(52, new college_entry(CurrentYearIndex, 52, "Drake", -1));
                     Colleges.Add(53, new college_entry(CurrentYearIndex, 53, "Duke", -1));
                     Colleges.Add(54, new college_entry(CurrentYearIndex, 54, "Duquesne", -1));
-                    Colleges.Add(55, new college_entry(CurrentYearIndex, 55, "Miss. State", -1));
-                    //Colleges.Add(55, new college_entry(CurrentYearIndex, 55, "E. Carolina", -1));
+                    Colleges.Add(55, new college_entry(CurrentYearIndex, 55, "Mississippi State", -1));                    
                     Colleges.Add(56, new college_entry(CurrentYearIndex, 56, "E. Illinois", -1));
                     Colleges.Add(57, new college_entry(CurrentYearIndex, 57, "E. Kentucky", -1));
-                    Colleges.Add(58, new college_entry(CurrentYearIndex, 58, "E. Tenn. St.", -1));
-                    //Colleges.Add(59, new college_entry(CurrentYearIndex, 58, "East. Mich.", -1));
+                    Colleges.Add(58, new college_entry(CurrentYearIndex, 58, "E. Tenn. St.", -1));                    
                     Colleges.Add(59, new college_entry(CurrentYearIndex, 59, "East Carolina", -1));                    
                     
                     Colleges.Add(60, new college_entry(CurrentYearIndex, 60, "Eastern Wash.", -1));
-                    Colleges.Add(61, new college_entry(CurrentYearIndex, 61, "Elon Univ.", -1));
+                    Colleges.Add(61, new college_entry(CurrentYearIndex, 61, "Elon University", -1));
                     Colleges.Add(62, new college_entry(CurrentYearIndex, 62, "Fairfield", -1));
                     Colleges.Add(63, new college_entry(CurrentYearIndex, 63, "Florida", -1));
                     Colleges.Add(64, new college_entry(CurrentYearIndex, 64, "Florida A&M", -1));
@@ -1168,7 +1244,7 @@ namespace MaddenEditor.Core
 
                     Colleges.Add(120, new college_entry(CurrentYearIndex, 120, "Mid Tenn St.", -1));
                     Colleges.Add(121, new college_entry(CurrentYearIndex, 121, "Minnesota", -1));
-                    Colleges.Add(122, new college_entry(CurrentYearIndex, 122, "N. Carolina", -1));
+                    Colleges.Add(122, new college_entry(CurrentYearIndex, 122, "North Carolina", -1));
                     Colleges.Add(123, new college_entry(CurrentYearIndex, 123, "Missouri", -1));
                     Colleges.Add(124, new college_entry(CurrentYearIndex, 124, "Monmouth", -1));
                     Colleges.Add(125, new college_entry(CurrentYearIndex, 125, "Montana", -1));
@@ -1182,8 +1258,8 @@ namespace MaddenEditor.Core
                     Colleges.Add(132, new college_entry(CurrentYearIndex, 132, "Murray State", -1));
                     Colleges.Add(133, new college_entry(CurrentYearIndex, 133, "N. Alabama", -1));
                     Colleges.Add(134, new college_entry(CurrentYearIndex, 134, "N. Arizona", -1));
-                    Colleges.Add(135, new college_entry(CurrentYearIndex, 135, "N. Car A&T", -1));
-                    Colleges.Add(136, new college_entry(CurrentYearIndex, 136, "S. Carolina", -1));
+                    Colleges.Add(135, new college_entry(CurrentYearIndex, 135, "N.C. A&T", -1));
+                    Colleges.Add(136, new college_entry(CurrentYearIndex, 136, "South Carolina", -1));
                     Colleges.Add(137, new college_entry(CurrentYearIndex, 137, "N. Colorado", -1));
                     Colleges.Add(138, new college_entry(CurrentYearIndex, 138, "N. Illinois", -1));
                     Colleges.Add(139, new college_entry(CurrentYearIndex, 139, "N.C. State", -1));
@@ -1199,16 +1275,16 @@ namespace MaddenEditor.Core
                     Colleges.Add(148, new college_entry(CurrentYearIndex, 148, "Norfolk State", -1));
                     Colleges.Add(149, new college_entry(CurrentYearIndex, 149, "North Texas", -1));
 
-                    Colleges.Add(149, new college_entry(CurrentYearIndex, 149, "Northeastern", -1));
-                    Colleges.Add(150, new college_entry(CurrentYearIndex, 150, "Northern Iowa", -1));
-                    Colleges.Add(151, new college_entry(CurrentYearIndex, 151, "Northwestern", -1));
-                    Colleges.Add(152, new college_entry(CurrentYearIndex, 152, "Notre Dame", -1));
-                    Colleges.Add(153, new college_entry(CurrentYearIndex, 153, "NW Oklahoma St.", -1));
-                    Colleges.Add(154, new college_entry(CurrentYearIndex, 154, "N'western St.", -1));
-                    Colleges.Add(155, new college_entry(CurrentYearIndex, 155, "Ohio", -1));
-                    Colleges.Add(156, new college_entry(CurrentYearIndex, 156, "Ohio State", -1));
-                    Colleges.Add(157, new college_entry(CurrentYearIndex, 157, "Oklahoma", -1));
-                    Colleges.Add(158, new college_entry(CurrentYearIndex, 158, "Oklahoma St.", -1));
+                    Colleges.Add(150, new college_entry(CurrentYearIndex, 150, "Northeastern", -1));
+                    Colleges.Add(151, new college_entry(CurrentYearIndex, 151, "Northern Iowa", -1));
+                    Colleges.Add(152, new college_entry(CurrentYearIndex, 152, "Northwestern", -1));
+                    Colleges.Add(153, new college_entry(CurrentYearIndex, 153, "Notre Dame", -1));
+                    Colleges.Add(154, new college_entry(CurrentYearIndex, 154, "NW Oklahoma St.", -1));
+                    Colleges.Add(155, new college_entry(CurrentYearIndex, 155, "N'western St.", -1));
+                    Colleges.Add(156, new college_entry(CurrentYearIndex, 156, "Ohio", -1));
+                    Colleges.Add(157, new college_entry(CurrentYearIndex, 157, "Ohio State", -1));
+                    Colleges.Add(158, new college_entry(CurrentYearIndex, 158, "Oklahoma", -1));
+                    Colleges.Add(159, new college_entry(CurrentYearIndex, 159, "Oklahoma St.", -1));
 
                     Colleges.Add(160, new college_entry(CurrentYearIndex, 160, "Ole Miss", -1));
                     Colleges.Add(161, new college_entry(CurrentYearIndex, 161, "Oregon", -1));
@@ -1233,8 +1309,8 @@ namespace MaddenEditor.Core
                     Colleges.Add(179, new college_entry(CurrentYearIndex, 179, "S. Illinois", -1));
 
                     Colleges.Add(180, new college_entry(CurrentYearIndex, 180, "S.C. State", -1));
-                    Colleges.Add(181, new college_entry(CurrentYearIndex, 181, "S.D. State", -1));
-                    Colleges.Add(182, new college_entry(CurrentYearIndex, 182, "S.F. Austin", -1));
+                    Colleges.Add(181, new college_entry(CurrentYearIndex, 181, "San Diego State", -1));
+                    Colleges.Add(182, new college_entry(CurrentYearIndex, 182, "Wagner College", -1));
                     Colleges.Add(183, new college_entry(CurrentYearIndex, 183, "Sacred Heart", -1));
                     Colleges.Add(184, new college_entry(CurrentYearIndex, 184, "Sam Houston", -1));
                     Colleges.Add(185, new college_entry(CurrentYearIndex, 185, "Samford", -1));
@@ -1257,10 +1333,9 @@ namespace MaddenEditor.Core
                     Colleges.Add(200, new college_entry(CurrentYearIndex, 200, "St. Peters", -1));
                     Colleges.Add(201, new college_entry(CurrentYearIndex, 201, "Stanford", -1));
                     Colleges.Add(202, new college_entry(CurrentYearIndex, 202, "Stony Brook", -1));
-                    Colleges.Add(203, new college_entry(CurrentYearIndex, 203, "SUNY Albany", -1));
+                    Colleges.Add(203, new college_entry(CurrentYearIndex, 203, "Merrimack", -1));
                     Colleges.Add(204, new college_entry(CurrentYearIndex, 204, "SW Miss St", -1));
-                    Colleges.Add(205, new college_entry(CurrentYearIndex, 205, "S. Arkansas", -1));
-                    //Colleges.Add(204, new college_entry(CurrentYearIndex, 205, "SW Texas St.", -1));
+                    Colleges.Add(205, new college_entry(CurrentYearIndex, 205, "Southern Arkansas", -1));                    
                     Colleges.Add(206, new college_entry(CurrentYearIndex, 206, "Syracuse", -1));
                     Colleges.Add(207, new college_entry(CurrentYearIndex, 207, "T A&M K'ville", -1));
                     Colleges.Add(208, new college_entry(CurrentYearIndex, 208, "TCU", -1));
@@ -1285,7 +1360,7 @@ namespace MaddenEditor.Core
                     Colleges.Add(225, new college_entry(CurrentYearIndex, 225, "UAB", -1));
                     Colleges.Add(226, new college_entry(CurrentYearIndex, 226, "UCF", -1));
                     Colleges.Add(227, new college_entry(CurrentYearIndex, 227, "UCLA", -1));
-                    Colleges.Add(228, new college_entry(CurrentYearIndex, 228, "UConn", -1));
+                    Colleges.Add(228, new college_entry(CurrentYearIndex, 228, "Connecticut", -1));
                     Colleges.Add(229, new college_entry(CurrentYearIndex, 229, "UL Lafayette", -1));
 
                     Colleges.Add(230, new college_entry(CurrentYearIndex, 230, "UL Monroe", -1));
@@ -1307,8 +1382,8 @@ namespace MaddenEditor.Core
                     Colleges.Add(245, new college_entry(CurrentYearIndex, 245, "W. Illinois", -1));
                     Colleges.Add(246, new college_entry(CurrentYearIndex, 246, "W. Kentucky", -1));
                     Colleges.Add(247, new college_entry(CurrentYearIndex, 247, "W. Michigan", -1));
-                    Colleges.Add(247, new college_entry(CurrentYearIndex, 248, "W. Texas A&M", -1));
-                    Colleges.Add(248, new college_entry(CurrentYearIndex, 249, "Wagner", -1));
+                    Colleges.Add(248, new college_entry(CurrentYearIndex, 248, "W. Texas A&M", -1));
+                    Colleges.Add(249, new college_entry(CurrentYearIndex, 249, "Union College", -1));
 
                     Colleges.Add(250, new college_entry(CurrentYearIndex, 250, "Wake Forest", -1));
                     Colleges.Add(251, new college_entry(CurrentYearIndex, 251, "Walla Walla", -1));
@@ -1317,14 +1392,14 @@ namespace MaddenEditor.Core
                     Colleges.Add(254, new college_entry(CurrentYearIndex, 254, "Weber State", -1));
                     Colleges.Add(255, new college_entry(CurrentYearIndex, 255, "West Virginia", -1));
                     Colleges.Add(256, new college_entry(CurrentYearIndex, 256, "Westminster", -1));
-                    Colleges.Add(257, new college_entry(CurrentYearIndex, 257, "Will. & Mary", -1));
+                    Colleges.Add(257, new college_entry(CurrentYearIndex, 257, "William & Mary", -1));
                     Colleges.Add(258, new college_entry(CurrentYearIndex, 258, "Winston Salem", -1));
                     Colleges.Add(259, new college_entry(CurrentYearIndex, 259, "Wisconsin", -1));
 
                     Colleges.Add(260, new college_entry(CurrentYearIndex, 260, "Wofford", -1));
                     Colleges.Add(261, new college_entry(CurrentYearIndex, 261, "Wyoming", -1));
                     Colleges.Add(262, new college_entry(CurrentYearIndex, 262, "Yale", -1));
-                    Colleges.Add(263, new college_entry(CurrentYearIndex, 263, "Youngstwn St.", -1));
+                    Colleges.Add(263, new college_entry(CurrentYearIndex, 263, "Youngstown St.", -1));
                     Colleges.Add(264, new college_entry(CurrentYearIndex, 264, "Sonoma St.", -1));
                     Colleges.Add(265, new college_entry(CurrentYearIndex, 265, "No College", -1));
                     Colleges.Add(266, new college_entry(CurrentYearIndex, 266, "New Hampshire", -1));
@@ -1335,122 +1410,202 @@ namespace MaddenEditor.Core
                     Colleges.Add(270, new college_entry(CurrentYearIndex, 270, "North Dakota", -1));
                     Colleges.Add(271, new college_entry(CurrentYearIndex, 271, "Wayne State", -1));
                     Colleges.Add(272, new college_entry(CurrentYearIndex, 272, "UW Stevens Pt.", -1));
-                    Colleges.Add(273, new college_entry(CurrentYearIndex, 273, "Indiana(Penn.)", -1));
+                    Colleges.Add(273, new college_entry(CurrentYearIndex, 273, "IUP", -1));
                     Colleges.Add(274, new college_entry(CurrentYearIndex, 274, "Saginaw Valley", -1));
-                    Colleges.Add(275, new college_entry(CurrentYearIndex, 275, "Central St.(OK)", -1));
+                    Colleges.Add(275, new college_entry(CurrentYearIndex, 275, "Franklin College", -1));
                     Colleges.Add(276, new college_entry(CurrentYearIndex, 276, "Emporia State", -1));
+                    Colleges.Add(277, new college_entry(CurrentYearIndex, 277, "Wingate", -1));
+                    Colleges.Add(278, new college_entry(CurrentYearIndex, 278, "Wheaton", -1));
+                    Colleges.Add(279, new college_entry(CurrentYearIndex, 279, "W. New Mexico", -1));
+
+
 
                     Colleges.Add(280, new college_entry(CurrentYearIndex, 280, "Albany", -1));
                     Colleges.Add(281, new college_entry(CurrentYearIndex, 281, "Presbyterian", -1));
                     Colleges.Add(282, new college_entry(CurrentYearIndex, 282, "Bloomsburg", -1));
                     Colleges.Add(283, new college_entry(CurrentYearIndex, 283, "Central Michigan", -1));
-                    Colleges.Add(286, new college_entry(CurrentYearIndex, 286, "Cal-Davis", -1));
+                    Colleges.Add(284, new college_entry(CurrentYearIndex, 284, "Whitworth", -1));
+                    Colleges.Add(285, new college_entry(CurrentYearIndex, 285, "Buffalo State", -1));
+                    Colleges.Add(286, new college_entry(CurrentYearIndex, 286, "California-Davis", -1));
                     Colleges.Add(287, new college_entry(CurrentYearIndex, 287, "Carson-Newman", -1));
                     Colleges.Add(288, new college_entry(CurrentYearIndex, 288, "Central Arkansas", -1));
+                    Colleges.Add(289, new college_entry(CurrentYearIndex, 289, "Chattanooga", -1));
 
                     Colleges.Add(290, new college_entry(CurrentYearIndex, 290, "Coastal Carolina", -1));
+                    Colleges.Add(291, new college_entry(CurrentYearIndex, 291, "Tusculum College", -1));
+                    Colleges.Add(292, new college_entry(CurrentYearIndex, 292, "East Stroudsburg", -1));
+                    Colleges.Add(293, new college_entry(CurrentYearIndex, 293, "Cal-Bakersfield", -1));
                     Colleges.Add(294, new college_entry(CurrentYearIndex, 294, "Central Wash.", -1));
+                    Colleges.Add(295, new college_entry(CurrentYearIndex, 295, "Bentley College", -1));
                     Colleges.Add(296, new college_entry(CurrentYearIndex, 296, "Ferris St.", -1));
                     Colleges.Add(297, new college_entry(CurrentYearIndex, 297, "FIU", -1));
+                    Colleges.Add(298, new college_entry(CurrentYearIndex, 298, "Delta State", -1));
                     Colleges.Add(299, new college_entry(CurrentYearIndex, 299, "Fort Valley St.", -1));
 
+                    Colleges.Add(300, new college_entry(CurrentYearIndex, 300, "Gardner-Webb", -1));
+                    Colleges.Add(301, new college_entry(CurrentYearIndex, 301, "Harding", -1));
+                    Colleges.Add(302, new college_entry(CurrentYearIndex, 302, "Lafayette", -1));
+                    Colleges.Add(303, new college_entry(CurrentYearIndex, 303, "Lane", -1));
                     Colleges.Add(304, new college_entry(CurrentYearIndex, 304, "Carroll Coll.", -1));
                     Colleges.Add(305, new college_entry(CurrentYearIndex, 305, "St.Cloud St.", -1));
                     Colleges.Add(306, new college_entry(CurrentYearIndex, 306, "Mesa State", -1));
                     Colleges.Add(307, new college_entry(CurrentYearIndex, 307, "California (PA)", -1));
                     Colleges.Add(308, new college_entry(CurrentYearIndex, 308, "FAU", -1));
-                    Colleges.Add(309, new college_entry(CurrentYearIndex, 309, "Missouri S. St.", -1));
+                    Colleges.Add(309, new college_entry(CurrentYearIndex, 309, "Missouri So. State", -1));
 
-                    Colleges.Add(310, new college_entry(CurrentYearIndex, 310, "Missouri St.", -1));
-                    Colleges.Add(311, new college_entry(CurrentYearIndex, 311, "Missouri W. St.", -1)); 
+                    Colleges.Add(310, new college_entry(CurrentYearIndex, 310, "Missouri State", -1));
+                    Colleges.Add(311, new college_entry(CurrentYearIndex, 311, "Missouri W. State", -1)); 
                     Colleges.Add(312, new college_entry(CurrentYearIndex, 312, "Mount Union", -1));
+                    Colleges.Add(313, new college_entry(CurrentYearIndex, 313, "Nebraska-Kearney", -1));
                     Colleges.Add(314, new college_entry(CurrentYearIndex, 314, "None", -1));
-                    Colleges.Add(315, new college_entry(CurrentYearIndex, 315, "N. Dakota St.", -1));
-                    Colleges.Add(317, new college_entry(CurrentYearIndex, 317, "NW Missouri St.", -1));
+                    Colleges.Add(315, new college_entry(CurrentYearIndex, 315, "North Dakota St.", -1));
+                    Colleges.Add(316, new college_entry(CurrentYearIndex, 316, "Northern State", -1));
+                    Colleges.Add(317, new college_entry(CurrentYearIndex, 317, "NW Missouri State", -1));
+                    Colleges.Add(318, new college_entry(CurrentYearIndex, 318, "Northwood (MI)", -1));
+                    Colleges.Add(319, new college_entry(CurrentYearIndex, 319, "Ohio Northern", -1));
 
+                    Colleges.Add(320, new college_entry(CurrentYearIndex, 320, "Ottawa", -1));
+                    Colleges.Add(321, new college_entry(CurrentYearIndex, 321, "Pikeville College", -1));
+                    Colleges.Add(322, new college_entry(CurrentYearIndex, 322, "Ramapo", -1));
                     Colleges.Add(323, new college_entry(CurrentYearIndex, 323, "Regina", -1));
                     Colleges.Add(324, new college_entry(CurrentYearIndex, 324, "Lindenwood", -1));
-                    Colleges.Add(325, new college_entry(CurrentYearIndex, 325, "Sacramento St.", -1));
+                    Colleges.Add(325, new college_entry(CurrentYearIndex, 325, "Sacramento State", -1));
+                    Colleges.Add(326, new college_entry(CurrentYearIndex, 326, "Calgary", -1));
                     Colleges.Add(327, new college_entry(CurrentYearIndex, 327, "San Diego", -1));
                     Colleges.Add(328, new college_entry(CurrentYearIndex, 328, "South Dakota", -1));
+                    Colleges.Add(329, new college_entry(CurrentYearIndex, 329, "Coe College", -1));
 
                     Colleges.Add(330, new college_entry(CurrentYearIndex, 330, "SE Louisiana", -1));
                     Colleges.Add(331, new college_entry(CurrentYearIndex, 331, "Stillman", -1));
-                    Colleges.Add(332, new college_entry(CurrentYearIndex, 332, "Texas St.", -1));
-                    Colleges.Add(334, new college_entry(CurrentYearIndex, 334, "Tarleton St.", -1));
-                    Colleges.Add(338, new college_entry(CurrentYearIndex, 338, "Washburn St.", -1));
+                    Colleges.Add(332, new college_entry(CurrentYearIndex, 332, "Texas State", -1));
+                    Colleges.Add(333, new college_entry(CurrentYearIndex, 333, "St. Augustine", -1));
+                    Colleges.Add(334, new college_entry(CurrentYearIndex, 334, "Tarleton State", -1));
+                    Colleges.Add(335, new college_entry(CurrentYearIndex, 335, "Truman State", -1));
+                    Colleges.Add(336, new college_entry(CurrentYearIndex, 336, "Bridgewater St.", -1));
+                    Colleges.Add(337, new college_entry(CurrentYearIndex, 337, "Virginia Union", -1));
+                    Colleges.Add(338, new college_entry(CurrentYearIndex, 338, "Washburn", -1));
+                    Colleges.Add(339, new college_entry(CurrentYearIndex, 339, "Western Wash.", -1));
 
+                    Colleges.Add(340, new college_entry(CurrentYearIndex, 340, "St. Paul's", -1));
                     Colleges.Add(341, new college_entry(CurrentYearIndex, 341, "William Penn", -1));
                     Colleges.Add(342, new college_entry(CurrentYearIndex, 342, "West Georgia", -1));
+                    Colleges.Add(343, new college_entry(CurrentYearIndex, 343, "Wisc-Whitewater", -1));
                     Colleges.Add(344, new college_entry(CurrentYearIndex, 344, "Eastern Oregon", -1));
+                    Colleges.Add(345, new college_entry(CurrentYearIndex, 345, "Knoxville College", -1));
+                    Colleges.Add(346, new college_entry(CurrentYearIndex, 346, "Western Ontario", -1));
+                    Colleges.Add(347, new college_entry(CurrentYearIndex, 347, "S. Connecticut St.", -1));
                     Colleges.Add(348, new college_entry(CurrentYearIndex, 348, "Manitoba", -1));
+                    Colleges.Add(349, new college_entry(CurrentYearIndex, 349, "Clarion", -1));
 
                     Colleges.Add(350, new college_entry(CurrentYearIndex, 350, "Western Oregon", -1));
                     Colleges.Add(351, new college_entry(CurrentYearIndex, 351, "Tiffin", -1));
+                    Colleges.Add(352, new college_entry(CurrentYearIndex, 352, "Trinity", -1));
                     Colleges.Add(353, new college_entry(CurrentYearIndex, 353, "Stephen F. Austin", -1));
                     Colleges.Add(354, new college_entry(CurrentYearIndex, 354, "Hillsdale", -1));
                     Colleges.Add(355, new college_entry(CurrentYearIndex, 355, "UTSA", -1));
                     Colleges.Add(356, new college_entry(CurrentYearIndex, 356, "Belhaven", -1));
-                    Colleges.Add(359, new college_entry(CurrentYearIndex, 359, "Newberry Coll.", -1));
+                    Colleges.Add(357, new college_entry(CurrentYearIndex, 357, "Salisbury", -1));
+                    Colleges.Add(358, new college_entry(CurrentYearIndex, 358, "Albion College", -1));
+                    Colleges.Add(359, new college_entry(CurrentYearIndex, 359, "Newberry College", -1));
 
                     Colleges.Add(360, new college_entry(CurrentYearIndex, 360, "Ashland", -1));
-                    Colleges.Add(362, new college_entry(CurrentYearIndex, 362, "Georgia St", -1));
-                    Colleges.Add(364, new college_entry(CurrentYearIndex, 364, "Bowie St.", -1)); 
+                    Colleges.Add(361, new college_entry(CurrentYearIndex, 361, "Central Oklahoma", -1));
+                    Colleges.Add(362, new college_entry(CurrentYearIndex, 362, "Georgia State", -1));
+                    Colleges.Add(363, new college_entry(CurrentYearIndex, 363, "Chadron State", -1));
+                    Colleges.Add(364, new college_entry(CurrentYearIndex, 364, "Bowie State", -1));
+                    Colleges.Add(365, new college_entry(CurrentYearIndex, 365, "Michigan Tech", -1));
                     Colleges.Add(366, new college_entry(CurrentYearIndex, 366, "Slippery Rock", -1));
+                    Colleges.Add(367, new college_entry(CurrentYearIndex, 367, "Bethel", -1));
                     Colleges.Add(368, new college_entry(CurrentYearIndex, 368, "Concordia", -1));
+                    Colleges.Add(369, new college_entry(CurrentYearIndex, 369, "Queen's Univ.", -1));
 
                     Colleges.Add(370, new college_entry(CurrentYearIndex, 370, "Ouachita Baptist", -1));
-                    Colleges.Add(372, new college_entry(CurrentYearIndex, 372, "Beloit Coll.", -1));
-                    Colleges.Add(373, new college_entry(CurrentYearIndex, 373, "Fort Hays St.", -1));
-                    Colleges.Add(377, new college_entry(CurrentYearIndex, 377, "Humboldt St.", -1));
+                    Colleges.Add(371, new college_entry(CurrentYearIndex, 371, "Baker", -1));
+                    Colleges.Add(372, new college_entry(CurrentYearIndex, 372, "Beloit College", -1));
+                    Colleges.Add(373, new college_entry(CurrentYearIndex, 373, "Fort Hays State", -1));
+                    Colleges.Add(374, new college_entry(CurrentYearIndex, 374, "Walsh", -1));
+                    Colleges.Add(375, new college_entry(CurrentYearIndex, 375, "Huntingdon", -1));
+                    Colleges.Add(376, new college_entry(CurrentYearIndex, 376, "Scottsbluff JC", -1));
+                    Colleges.Add(377, new college_entry(CurrentYearIndex, 377, "Humboldt State", -1));
                     Colleges.Add(378, new college_entry(CurrentYearIndex, 378, "CSU-Pueblo", -1));
-                    Colleges.Add(379, new college_entry(CurrentYearIndex, 379, "S. Alabama", -1));
+                    Colleges.Add(379, new college_entry(CurrentYearIndex, 379, "South Alabama", -1));
 
                     Colleges.Add(380, new college_entry(CurrentYearIndex, 380, "Old Dominion", -1));
                     Colleges.Add(381, new college_entry(CurrentYearIndex, 381, "Mary Hardin-Baylor", -1));
-                    Colleges.Add(382, new college_entry(CurrentYearIndex, 382, "W. Alabama", -1));
-                    Colleges.Add(383, new college_entry(CurrentYearIndex, 383, "Catawba Coll.", -1));
+                    Colleges.Add(382, new college_entry(CurrentYearIndex, 382, "West Alabama", -1));
+                    Colleges.Add(383, new college_entry(CurrentYearIndex, 383, "Catawba College", -1));
                     Colleges.Add(384, new college_entry(CurrentYearIndex, 384, "East Central Univ.", -1));
                     Colleges.Add(385, new college_entry(CurrentYearIndex, 385, "Central Missouri", -1));
                     Colleges.Add(386, new college_entry(CurrentYearIndex, 386, "North Greenville", -1));
+                    Colleges.Add(387, new college_entry(CurrentYearIndex, 387, "Palomar College", -1));
+                    Colleges.Add(388, new college_entry(CurrentYearIndex, 388, "Heidelberg", -1));
+                    Colleges.Add(389, new college_entry(CurrentYearIndex, 389, "Montreal Univ", -1));
 
-                    Colleges.Add(390, new college_entry(CurrentYearIndex, 390, "Minn. St.", -1));
+                    Colleges.Add(390, new college_entry(CurrentYearIndex, 390, "Minnesota St.", -1));
                     Colleges.Add(391, new college_entry(CurrentYearIndex, 391, "Assumption", -1));
+                    Colleges.Add(392, new college_entry(CurrentYearIndex, 392, "Centre College", -1));
                     Colleges.Add(393, new college_entry(CurrentYearIndex, 393, "UW-Milwaukee", -1));
-                    Colleges.Add(395, new college_entry(CurrentYearIndex, 395, "Shepherd Univ", -1));
+                    Colleges.Add(394, new college_entry(CurrentYearIndex, 394, "Bemidji State", -1));
+                    Colleges.Add(395, new college_entry(CurrentYearIndex, 395, "Shepherd Univ.", -1));
+                    Colleges.Add(396, new college_entry(CurrentYearIndex, 396, "Northeastern St", -1));
                     Colleges.Add(397, new college_entry(CurrentYearIndex, 397, "UC Irvine", -1));
                     Colleges.Add(398, new college_entry(CurrentYearIndex, 398, "McGill Univ", -1));
                     Colleges.Add(399, new college_entry(CurrentYearIndex, 399, "Hobart", -1));
 
+                    Colleges.Add(400, new college_entry(CurrentYearIndex, 400, "Texas A&M-Commerce", -1));
                     Colleges.Add(401, new college_entry(CurrentYearIndex, 401, "Mars Hill", -1));
-                    Colleges.Add(401, new college_entry(CurrentYearIndex, 402, "Louisiana Coll", -1));
+                    Colleges.Add(402, new college_entry(CurrentYearIndex, 402, "Louisiana College", -1));
                     Colleges.Add(403, new college_entry(CurrentYearIndex, 403, "Lamar Univ.", -1));
-                    Colleges.Add(407, new college_entry(CurrentYearIndex, 407, "Jacksonville U", -1));
-                    Colleges.Add(408, new college_entry(CurrentYearIndex, 408, "Wesley Coll", -1));
+                    Colleges.Add(404, new college_entry(CurrentYearIndex, 404, "SW Oklahoma State", -1));
+                    Colleges.Add(405, new college_entry(CurrentYearIndex, 405, "Florida Tech", -1));
+                    Colleges.Add(406, new college_entry(CurrentYearIndex, 406, "Fayetteville State", -1));
+                    Colleges.Add(407, new college_entry(CurrentYearIndex, 407, "Jacksonville Univ.", -1));
+                    Colleges.Add(408, new college_entry(CurrentYearIndex, 408, "Wesley College", -1));
+                    Colleges.Add(409, new college_entry(CurrentYearIndex, 409, "Wisconsin-Eau Claire", -1));
 
-                    Colleges.Add(410, new college_entry(CurrentYearIndex, 410, "Campbell Univ", -1));
-                    Colleges.Add(411, new college_entry(CurrentYearIndex, 411, "N. Michigan", -1));
+                    Colleges.Add(410, new college_entry(CurrentYearIndex, 410, "Campbell Univ.", -1));
+                    Colleges.Add(411, new college_entry(CurrentYearIndex, 411, "Northern Michigan", -1));
+                    Colleges.Add(412, new college_entry(CurrentYearIndex, 412, "Wisconsin-Oshkosh", -1));
+                    Colleges.Add(413, new college_entry(CurrentYearIndex, 413, "Pretoria", -1));
+                    Colleges.Add(414, new college_entry(CurrentYearIndex, 414, "Cumberlands", -1));
+                    Colleges.Add(415, new college_entry(CurrentYearIndex, 415, "Rensselaer Poly", -1));
+                    Colleges.Add(416, new college_entry(CurrentYearIndex, 416, "West Chester", -1));
+                    Colleges.Add(417, new college_entry(CurrentYearIndex, 417, "Morningside College", -1));
+                    Colleges.Add(418, new college_entry(CurrentYearIndex, 418, "Findlay", -1));
                     Colleges.Add(419, new college_entry(CurrentYearIndex, 419, "Incarnate Word", -1));
 
-                    Colleges.Add(420, new college_entry(CurrentYearIndex, 420, "Northwestern St", -1));
+                    Colleges.Add(420, new college_entry(CurrentYearIndex, 420, "Northwestern State", -1));
+                    Colleges.Add(421, new college_entry(CurrentYearIndex, 421, "Maryville College", -1));
+                    Colleges.Add(422, new college_entry(CurrentYearIndex, 422, "Cal Lutheran", -1));
                     Colleges.Add(423, new college_entry(CurrentYearIndex, 423, "Charlotte", -1));
                     Colleges.Add(424, new college_entry(CurrentYearIndex, 424, "Marian", -1));
-                    Colleges.Add(426, new college_entry(CurrentYearIndex, 426, "S. Oregon", -1));
+                    //Colleges.Add(425, new college_entry(CurrentYearIndex, 425, "Northwestern St", -1));
+                    Colleges.Add(426, new college_entry(CurrentYearIndex, 426, "Southern Oregon", -1));
                     Colleges.Add(427, new college_entry(CurrentYearIndex, 427, "Faulkner", -1));
-                    Colleges.Add(429, new college_entry(CurrentYearIndex, 429, "Greenville Coll", -1));
+                    Colleges.Add(428, new college_entry(CurrentYearIndex, 428, "Globe Tech NY", -1));
+                    Colleges.Add(429, new college_entry(CurrentYearIndex, 429, "Greenville College", -1));
 
+                    Colleges.Add(430, new college_entry(CurrentYearIndex, 430, "Lake Erie College", -1));
                     Colleges.Add(431, new college_entry(CurrentYearIndex, 431, "Laval", -1));
-                    Colleges.Add(434, new college_entry(CurrentYearIndex, 434, "Stetson", -1));
+                    Colleges.Add(432, new college_entry(CurrentYearIndex, 432, "Mississippi College", -1)); 
+                    Colleges.Add(433, new college_entry(CurrentYearIndex, 433, "Seattle", -1));
+                    Colleges.Add(434, new college_entry(CurrentYearIndex, 434, "Stetson", -1));                    
+                    Colleges.Add(435, new college_entry(CurrentYearIndex, 435, "Texas-Permian Basin", -1));
+                    Colleges.Add(436, new college_entry(CurrentYearIndex, 436, "Virginia Commonwealth", -1));
+                    Colleges.Add(437, new college_entry(CurrentYearIndex, 437, "Virginia-Lynchburg", -1));
                     Colleges.Add(438, new college_entry(CurrentYearIndex, 438, "Kentucky Wesleyan", -1));
                     Colleges.Add(439, new college_entry(CurrentYearIndex, 439, "Azusa Pacific", -1));
 
-                    Colleges.Add(440, new college_entry(CurrentYearIndex, 440, "W. St. Colorado", -1));
+                    Colleges.Add(440, new college_entry(CurrentYearIndex, 440, "Western State Colorado", -1));
                     Colleges.Add(441, new college_entry(CurrentYearIndex, 441, "Dubuque", -1));
-                    Colleges.Add(442, new college_entry(CurrentYearIndex, 442, "Virginia St.", -1));
-                    Colleges.Add(443, new college_entry(CurrentYearIndex, 443, "Notre Dame Coll.", -1));
+                    Colleges.Add(442, new college_entry(CurrentYearIndex, 442, "Virginia State", -1));
+                    Colleges.Add(443, new college_entry(CurrentYearIndex, 443, "Notre Dame College", -1));
+                    Colleges.Add(444, new college_entry(CurrentYearIndex, 444, "Fairmont State", -1));
                     Colleges.Add(445, new college_entry(CurrentYearIndex, 445, "UBC", -1));
+                    Colleges.Add(446, new college_entry(CurrentYearIndex, 446, "Frostburg State", -1));
                     Colleges.Add(447, new college_entry(CurrentYearIndex, 447, "Sioux Falls", -1));
-                    Colleges.Add(449, new college_entry(CurrentYearIndex, 449, "S. Nazarene", -1));
+                    Colleges.Add(448, new college_entry(CurrentYearIndex, 448, "East Texas Baptist", -1));
+                    Colleges.Add(449, new college_entry(CurrentYearIndex, 449, "Southern Nazarene", -1));
                 }
                 
                 
@@ -1478,6 +1633,26 @@ namespace MaddenEditor.Core
                 deleteme[c].SetDeleteFlag(true);
         }
 
+        public void InitCap()
+        {            
+            LeagueCap.Add(2003, 75);
+            LeagueCap.Add(2004, 80.58);
+            LeagueCap.Add(2005, 85.5);
+            LeagueCap.Add(2006, 102);
+            LeagueCap.Add(2007, 109);
+            LeagueCap.Add(2008, 116);
+            LeagueCap.Add(2009, 123);
+            LeagueCap.Add(2010, 123);       // uncapped year
+            LeagueCap.Add(2011, 120);
+            LeagueCap.Add(2012, 120.6);
+            LeagueCap.Add(2013, 123);
+            LeagueCap.Add(2014, 133);
+            LeagueCap.Add(2015, 143.28);
+            LeagueCap.Add(2016, 155.27);
+            LeagueCap.Add(2017, 167.00);
+            LeagueCap.Add(2018, 177.20); 
+        }
+            
         public bool IsDraftStage()
         {
             bool draft = false;
@@ -1506,6 +1681,121 @@ namespace MaddenEditor.Core
             return rev;
         }
 
+        public void InitDefinitions()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filename = filedir + @"\res\DEFINE.csv";
+            TableDefs.Clear();
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(filename);
+
+                    // loop here until end of file
+                    while (!sr.EndOfStream)
+                    {
+                        string csvtableline = sr.ReadLine();
+                        string[] csvtableinfo = csvtableline.Split(',');
+
+                        string tablename = csvtableinfo[0];
+                        MaddenFileVersion ver = MaddenFileVersion.Ver2008;
+                        int version = Convert.ToInt32(csvtableinfo[1]);
+                        switch (version)
+                        {
+                            case 2004:
+                                ver = MaddenFileVersion.Ver2004;
+                                break;
+                            case 2005:
+                                ver = MaddenFileVersion.Ver2005;
+                                break;
+                            case 2006:
+                                ver = MaddenFileVersion.Ver2006;
+                                break;
+                            case 2007:
+                                ver = MaddenFileVersion.Ver2007;
+                                break;
+                            case 2019:
+                                ver = MaddenFileVersion.Ver2019;
+                                break;
+                            default:
+                                ver = MaddenFileVersion.Ver2008;
+                                break;
+                        }
+
+                        bool hasdesc = false;
+                        if (csvtableinfo[2].ToUpper().Contains("Y"))
+                            hasdesc = true;
+                        int conversions = 0;
+                        if (csvtableinfo[3].ToUpper().Contains("Y"))
+                        {
+                            conversions = Convert.ToInt32(csvtableinfo[4]);
+                        }
+
+                        string csvfieldline = sr.ReadLine();
+                        string[] csvfields = csvfieldline.Split(',');
+
+                        string[] csvdesc = null;
+                        if (hasdesc)
+                        {
+                            string csvdescline = sr.ReadLine();
+                            csvdesc = csvdescline.Split(',');
+                        }
+
+                        Dictionary<string, string> csvdefs = new Dictionary<string, string>();
+                        for (int c = 0; c < csvfields.Length; c++)
+                        {
+                            string fieldname = csvfields[c];
+                            if (fieldname == "")
+                                continue;
+
+                            string fielddesc = "";
+                            if (csvdesc != null)
+                            {
+                                if (csvdesc.Length > c)
+                                    fielddesc = csvdesc[c];
+                            }
+                            csvdefs.Add(fieldname, fielddesc);
+                        }
+
+                        tabledefs table = new tabledefs();
+                        table.FieldDefs = csvdefs;
+
+                        Dictionary<int, string> con = new Dictionary<int, string>();
+                        for (int z = 0; z < conversions; z++)
+                        {
+                            string conversion = sr.ReadLine();
+                            string[] csvconv = conversion.Split(',');
+
+                            con.Add(Convert.ToInt32(csvconv[1]), csvconv[2]);
+
+                            // Add fieldname and the conversion from other versions, 0 equals all legacy 04-08
+                            table.Equivs.Add(csvconv[0], con);
+                        }
+
+                        Dictionary<string, tabledefs> currenttable = new Dictionary<string, tabledefs>();
+                        if (TableDefs.ContainsKey(ver))
+                            currenttable = TableDefs[ver];                        
+                        currenttable.Add(tablename, table);
+
+                        if (!TableDefs.ContainsKey(ver))
+                            TableDefs.Add(ver, currenttable);
+                        else TableDefs[ver] = currenttable;
+                    }
+
+                    sr.Close();
+                }
+
+
+                catch (IOException err)
+                {
+                    err = err;
+                }
+
+               
+            }
+        }
 
         #region Madden Draft Edit
 
@@ -1613,10 +1903,8 @@ namespace MaddenEditor.Core
 		/// </summary>
 		public MaddenFileVersion FileVersion
 		{
-			get
-			{
-				return fileVersion;
-			}
+			get	{ return fileVersion; }
+            set { fileVersion = value; }
 		}
 		/// <summary>
 		/// The PlayerEditingModel object to manipulate Player objects
@@ -1707,10 +1995,18 @@ namespace MaddenEditor.Core
         {
             get { return useroptions; }
         }
+        public UserInfoRecord UserInfo
+        {
+            get { return userinfo; }
+        }
 
         public Dictionary<string, int> TableOrder
         {
             get { return tableOrder; }
+        }
+        public DraftClass DraftClassModel
+        {
+            get { return draftclassmodel; }
         }
 
         #endregion
@@ -1753,7 +2049,7 @@ namespace MaddenEditor.Core
                     //Set the file type of this loaded file
                     if (fileType != MaddenFileType.Template)
                     {
-                        if (tableCount == 72 || tableCount == 116 || tableCount == 168 || tableCount == 203 || tableCount == 215)
+                        if (tableCount == 23|| tableCount == 72 || tableCount == 85 || tableCount == 116 || tableCount == 168 || tableCount == 203 || tableCount == 215 )
                         {
                             fileType = MaddenFileType.Streameddata;
 
@@ -1767,6 +2063,30 @@ namespace MaddenEditor.Core
                                 fileVersion = MaddenFileVersion.Ver2007;
                             else if (tableCount == MADDEN_2008_STREAMED_COUNT)
                                 fileVersion = MaddenFileVersion.Ver2008;
+                            else if (tableCount == MADDEN_2019_STREAMED_COUNT)
+                            {
+                                for (int j = 0; j < tableCount; j++)
+                                {
+                                    TdbTableProperties tableProps = new TdbTableProperties();
+                                    tableProps.Name = new string((char)0, 5);
+                                    TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
+
+                                    if (tableProps.Name == "YTIC")
+                                    {
+                                        fileType = MaddenFileType.GameMode;
+                                        break;
+                                    }
+                                }
+                                
+                                fileVersion = MaddenFileVersion.Ver2019;
+                                BigEndian = true;
+                            }
+                            else if (tableCount == MADDEN_2019_DATA_RAM)
+                            {
+                                fileVersion = MaddenFileVersion.Ver2019;
+                                fileType = MaddenFileType.DataRam;
+                                BigEndian = true;
+                            }
                         }
                         else if (tableCount == 10 || tableCount == 11 || tableCount == 5 || tableCount == 8)
                         {
@@ -1780,7 +2100,25 @@ namespace MaddenEditor.Core
                         else if (tableCount == MADDEN_2019_USER_CONFIG_COUNT)
                         {
                             fileVersion = MaddenFileVersion.Ver2019;
-                            fileType = MaddenFileType.UserConfig;
+                            for (int j = 0; j < tableCount; j++)
+                            {
+                                TdbTableProperties tableProps = new TdbTableProperties();
+                                tableProps.Name = new string((char)0, 5);
+                                TDB.TDBTableGetProperties(dbIndex, j, ref tableProps);
+
+                                if (tableProps.Name == "BALP")
+                                {
+                                    fileType = MaddenFileType.StaticData;
+                                    BigEndian = true;
+                                    break;
+                                }
+                                else if (tableProps.Name == "GOPT")
+                                {
+                                    fileType = MaddenFileType.UserConfig;
+                                    break;
+                                }
+                                
+                            }
                         }
                         else
                         {
@@ -1923,45 +2261,56 @@ namespace MaddenEditor.Core
                     tableOrder.Add(COACH_COLLECTIONS_TABLE, -1);
                     tableOrder.Add(COLLEGES_TABLE, -1);
                     tableOrder.Add(DEPTH_CHART_SUBS, -1);
-                    tableOrder.Add(POSITION_SUBS, -1);
+
+                    if (fileVersion != MaddenFileVersion.Ver2019)
+                        tableOrder.Add(POSITION_SUBS, -1);
+
                     tableOrder.Add(PLAYER_LAST_NAMES, -1);
                     tableOrder.Add(PLAYER_FIRST_NAMES, -1);
 
-                    if (fileVersion >= MaddenFileVersion.Ver2005)
+                    if (fileVersion < MaddenFileVersion.Ver2019)
                     {
-                        tableOrder.Add(PROGRESSION, -1);
-                        tableOrder.Add(REGRESSION, -1);
-                        tableOrder.Add(PTCB, -1);
-                        tableOrder.Add(PTCE, -1);
-                        tableOrder.Add(PTDE, -1);
-                        tableOrder.Add(PTDT, -1);
-                        tableOrder.Add(PTFB, -1);
-                        tableOrder.Add(PTFS, -1);
-                        tableOrder.Add(PTGA, -1);
-                        tableOrder.Add(PTHB, -1);
-                        tableOrder.Add(PTKI, -1);
-                        tableOrder.Add(PTKP, -1);
-                        tableOrder.Add(PTMB, -1);
-                        tableOrder.Add(PTOB, -1);
-                        tableOrder.Add(PTPU, -1);
-                        tableOrder.Add(PTQB, -1);
-                        tableOrder.Add(PTSS, -1);
-                        tableOrder.Add(PTTA, -1);
-                        tableOrder.Add(PTTE, -1);
-                        tableOrder.Add(PTWR, -1);
-                    }
+                        if (fileVersion >= MaddenFileVersion.Ver2005)
+                        {
+                            tableOrder.Add(PROGRESSION, -1);
+                            tableOrder.Add(REGRESSION, -1);
+                            tableOrder.Add(PTCB, -1);
+                            tableOrder.Add(PTCE, -1);
+                            tableOrder.Add(PTDE, -1);
+                            tableOrder.Add(PTDT, -1);
+                            tableOrder.Add(PTFB, -1);
+                            tableOrder.Add(PTFS, -1);
+                            tableOrder.Add(PTGA, -1);
+                            tableOrder.Add(PTHB, -1);
+                            tableOrder.Add(PTKI, -1);
+                            tableOrder.Add(PTKP, -1);
+                            tableOrder.Add(PTMB, -1);
+                            tableOrder.Add(PTOB, -1);
+                            tableOrder.Add(PTPU, -1);
+                            tableOrder.Add(PTQB, -1);
+                            tableOrder.Add(PTSS, -1);
+                            tableOrder.Add(PTTA, -1);
+                            tableOrder.Add(PTTE, -1);
+                            tableOrder.Add(PTWR, -1);
+                        }
 
-                    if (fileVersion >= MaddenFileVersion.Ver2006)
-                    {
-                        tableOrder.Add(ROLES_DEFINE, -1);
-                    }
+                        if (fileVersion >= MaddenFileVersion.Ver2006)
+                        {
+                            tableOrder.Add(ROLES_DEFINE, -1);
+                        }
 
-                    if (fileVersion >= MaddenFileVersion.Ver2007)
+                        if (fileVersion >= MaddenFileVersion.Ver2007)
+                        {
+                            tableOrder.Add(ROLES_INFO, -1);
+                            tableOrder.Add(ROLES_PLAYER_EFFECTS, -1);
+                            tableOrder.Add(ROLES_TEAM_EFFECTS, -1);
+                            tableOrder.Add(STATS_REQUIRED, -1);
+                        }
+                    }
+                    else
                     {
-                        tableOrder.Add(ROLES_INFO, -1);
-                        tableOrder.Add(ROLES_PLAYER_EFFECTS, -1);
-                        tableOrder.Add(ROLES_TEAM_EFFECTS, -1);
-                        tableOrder.Add(STATS_REQUIRED, -1);
+                        //2019
+                        tableOrder.Add(PLAYER_OVERALL_CALC, -1);
                     }
                 }
                 #endregion
@@ -1972,6 +2321,14 @@ namespace MaddenEditor.Core
                 {
                     tableOrder.Add(PLAYER_OVERALL_CALC, -1);
                     tableOrder.Add(PLAYBOOK_TABLE, -1);
+                }
+
+                #endregion
+
+                #region DataRam
+                else if (fileType == MaddenFileType.DataRam)
+                {
+
                 }
 
                 #endregion
@@ -1992,6 +2349,7 @@ namespace MaddenEditor.Core
                 {
                     tableOrder.Add(GAME_OPTIONS_TABLE, -1);
                     tableOrder.Add(USER_OPTIONS_TABLE, -1);
+                    tableOrder.Add(USER_INFO_TABLE, -1);
                 }
 
                 #endregion
@@ -2067,6 +2425,21 @@ namespace MaddenEditor.Core
                     CurrentYearIndex += FranchiseTime.Year;
                     CurrentYear = 2003 + (int)FileVersion + FranchiseTime.Year;
                 }
+                else
+                {
+                    if (fileVersion == MaddenFileVersion.Ver2004)
+                        CurrentYear = 2003;
+                    else if (fileVersion == MaddenFileVersion.Ver2005)
+                        CurrentYear = 2004;
+                    else if (fileVersion == MaddenFileVersion.Ver2006)
+                        CurrentYear = 2005;
+                    else if (fileVersion == MaddenFileVersion.Ver2007)
+                        CurrentYear = 2006;
+                    else if (fileVersion == MaddenFileVersion.Ver2008)
+                        CurrentYear = 2007;
+                    else if (fileVersion == MaddenFileVersion.Ver2019)
+                        CurrentYear = 2018;
+                }
             }
 
             catch (DllNotFoundException e)
@@ -2074,18 +2447,23 @@ namespace MaddenEditor.Core
                 ExceptionDialog.Show(e);
             }
 
+            bool unknown = true;
             foreach (KeyValuePair<string, int> pair in tableOrder)
             {
                 if (pair.Value == -1)
                 {
                     // Something is wrong, we expected to find this table but did not
                     Trace.WriteLine("Something is wrong so we are exiting");
-                    result = false;
+                    //result = false;
                     break;
                 }
+
+                unknown = false;                
                 //result &= ProcessTable(pair.Value);
             }
 
+            if (unknown && fileType != MaddenFileType.DataRam)
+                fileType = MaddenFileType.Unknown;
 
 
             Trace.WriteLine("File type is : " + fileType.ToString() + " and version is : " + fileVersion.ToString());
@@ -2209,7 +2587,14 @@ namespace MaddenEditor.Core
                 table.SetFieldList(fields);
             }
 
-            tableModels.Add(table.Name, table);
+            // Getting errors here when we run into a file that is similar to the 04-08 files
+            // It expects to find a given table and it isn't there
+            if (tableModels.ContainsKey(table.Name))
+            {   
+                // try this for now
+                fileType = MaddenFileType.Unknown;
+            }
+            else tableModels.Add(table.Name, table);
 			Trace.WriteLine("Finished processing Table: " + table.Name);
             if (view != null)
 			    view.updateTableProgress(100, table.Name);

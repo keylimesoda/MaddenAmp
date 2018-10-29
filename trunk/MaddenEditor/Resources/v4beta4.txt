@@ -1,0 +1,19 @@
+MaddenAmp changes for v4.0 BETA 4
+
+
+Added "Beta" in window title if it is a beta and beta revision #
+
+Tweaked "Create New Player" to make sure it is giving a unique player id#
+
+Added Game Options/Slider settings
+
+Added Slider REPO for storing slider sets, havent made instructions for this yet.
+
+Fixed coach skin color for version specific default values
+
+Fixed resetting rookie stats.  Now erases ALL stats for every rookie, not just games played.
+
+Fixed a bug in the cpu controlled teams selection
+
+Added Streameddata.db processing.
+Within this, also added editing the list of default colleges

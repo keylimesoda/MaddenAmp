@@ -119,7 +119,9 @@ namespace MaddenEditor.Core
 
 		public TableRecordModel GetRecord(int index)
 		{
-			return recordList[index];
+            if (index <0)
+                return null;
+            else return recordList[index];            
 		}
 
 		public List<TableRecordModel> GetRecords()
@@ -387,8 +389,9 @@ namespace MaddenEditor.Core
                 case EditorModel.PRO_BOWL_PLAYERS:
                     newRecord = new ProBowlPlayer(recno, this, parentModel);
                     break;
-
-
+                case EditorModel.USER_INFO_TABLE:
+                    newRecord = new UserInfoRecord(recno, this, parentModel);
+                    break;
 
                 #region Streamed Data
                 case EditorModel.COLLEGES_TABLE:
@@ -515,6 +518,10 @@ namespace MaddenEditor.Core
                     break;
                 case EditorModel.PLAYBOOK_TABLE:
                     newRecord = new FRAPlayBooks(recno, this, parentModel);
+                    break; 
+                
+                default:
+                    newRecord = new TableRecordModel(recno, this, parentModel);
                     break;
             }
 
@@ -554,14 +561,16 @@ namespace MaddenEditor.Core
                         {
                             Trace.Write("About to mark for deletion record " + record.RecNo);
                             //Mark record for deletion in DB
-
                             // Need to reverse these again to find the correct table in the db since they are BE
                             if (BigEndian)
                                 tablename = ConvertBE(name);
                             else tablename = name;
 
-                            TDB.TDBTableRecordChangeDeleted(dbIndex, tablename, record.RecNo, false);
-                            //TDB.TDBTableRecordRemove(dbIndex, name, record.RecNo);
+                            // s68 - not sure why 'record remove was commented out and changed to 'change deleted' , that doesnt remove the record
+                            // will leave it here in case there was some kind of problem with using record remove.
+                            //TDB.TDBTableRecordChangeDeleted(dbIndex, tablename, record.RecNo, false);
+
+                            TDB.TDBTableRecordRemove(dbIndex, tablename, record.RecNo);
                             continue;
                         }
 

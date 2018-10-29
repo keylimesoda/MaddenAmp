@@ -30,20 +30,23 @@ namespace MaddenEditor.Core.Record
 {    
     public class GameOptionRecord : TableRecordModel
 	{
+        // GOPT table
         public const string OFFSIDES = "EPOS";
         public const string PENALTIES = "EPPN";
         public const string INGAME_INJURY_FREQUENCY = "INGI";        
         public const string CPU_QB_ACC = "OAAC";
-
         public const string CPU_DEF_AWR = "OAAW";
+        public const string ACCEL_CLOCK_ONOFF = "OACE";             //2019
+        public const string CPU_REACTION_TIME = "OACO";             //2019
         public const string CPU_BRK_BLOCK = "OADB";
-        public const string CPU_DEF_KNOCKDOWNS = "OADK";
+        public const string CPU_DEF_KNOCKDOWNS = "OADK";            // Pass coverage 2019
         public const string CPU_FG_ACCURACY = "OAFA";
         public const string CPU_FG_LENGTH = "OAFL";
+        public const string CPU_FUMBLES = "OAFU";                   //2019
         public const string CPU_INTS = "OAIN";
         public const string CPU_KO_LENGTH = "OAKL";
         public const string CPU_PASS_BLOCK = "OAOP";
-        public const string CPU_PASS_BLOCK_2019 = "OAOp";            //2019
+        public const string CPU_PASS_BLOCK_2019 = "OAOp";           //2019
         public const string CPU_PUNT_ACC = "OAPA";
         public const string CPU_PUNT_LENGTH = "OAPL";
         public const string CPU_RB_ABILITY = "OARA";
@@ -51,9 +54,11 @@ namespace MaddenEditor.Core.Record
         public const string CPU_CATCHING = "OARC";
         public const string CPU_TACKLE = "OATA";
         public const string CAMERA_VIEW = "OCVW";
+        public const string DEF_HOLDING = "ODEH";                   //2019
+        public const string EVEN_TEAMS = "OEVT";                    //2019
         public const string ACCELERATED_CLOCK = "OFAC";
         public const string AUTO_REPLAY = "OFAI";
-        public const string FAIR_PLAY = "OFAP";                 //  2006-2008
+        public const string FAIR_PLAY = "OFAP";                     //  2006-2008
 
         public const string FIELD_LINES = "OFDL";
         public const string FATIGUE = "OFFA";
@@ -71,12 +76,15 @@ namespace MaddenEditor.Core.Record
         public const string EXHIBITION_LOG_DIR = "OGLD";
         public const string EXHIBITION_LOG_UNIQUE = "OGLF";
         public const string EXHIBITION_LOG_FORMAT = "OGLG";
-
+        public const string GAME_SPEED = "OGSP";                    //2019
+        public const string GAME_STYLE = "OGST";                    //2019              
         public const string HUM_QB_ACC = "OHAC";
         public const string HUM_DEF_AWR = "OHAW";
+        public const string HUM_REACTION_TIME = "OHCO";             // 2019
         public const string HUM_BRK_BLOCK = "OHDB";
         public const string HUM_DEF_KNOCKDOWNS = "OHDK";
         public const string HUM_FG_ACCURACY = "OHFA";
+        public const string HUM_FUMBLES = "OHFU";                   //2019
         public const string HUM_FG_LENGTH = "OHFL";
         public const string HUM_INTS = "OHIN";
         public const string HUM_KO_LENGTH = "OHKL";
@@ -94,18 +102,21 @@ namespace MaddenEditor.Core.Record
         public const string PEN_DEF_PASS_INT = "OPDP";
         public const string PEN_FACEMASK = "OPFM";
         public const string PEN_FALSE_START = "OPFS";
+
         public const string PEN_HOLDING = "OPHO";
         public const string PEN_GROUNDING = "OPIG";
         public const string PLAY_MODE = "OPLM";
         public const string PEN_OFF_PASS_INT = "OPOP";
-        public const string OPOS = "OPOS";
+        public const string PEN_OFFSIDE = "OPOS";
         public const string OPPF = "OPPF";
         public const string PEN_PK_INT = "OPPI";
         public const string PEN_ROUGH_KICKER = "OPRK";
         public const string PEN_ROUGH_PASSER = "OPRP";
         public const string RANDOM_WEATHER = "OPRW";
+        public const string SPEED_PARITY = "OPSP";                  //2019
         public const string PLAYER_DISPLAYS = "OPTI";
         public const string QUARTER_LENGTH = "OQLN";
+        public const string PEN_RUNINTO_KICKER = "ORIK";            //2019
         public const string ORLO = "ORLO";                          // 2007-2008
         public const string CAP_PENALTY = "OSCP";
         public const string SKILL_LEVEL = "OSLE";
@@ -307,10 +318,10 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(CAMERA_VIEW); }
             set { SetField(CAMERA_VIEW, value); }
         }
-        public bool AcceleratedClock
+        public int AcceleratedClock
         {
-            get { return (GetIntField(ACCELERATED_CLOCK) == 1); }
-            set { SetField(ACCELERATED_CLOCK, (value ? 1 : 0)); }
+            get { return GetIntField(ACCELERATED_CLOCK); }
+            set { SetField(ACCELERATED_CLOCK, value); }
         }
         public bool AutoReplay
         {
@@ -327,15 +338,15 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(FIELD_LINES); }
             set { SetField(FIELD_LINES, value); }
         }
-        public bool Fatigue
+        public int Fatigue
         {
-            get { return (GetIntField(FATIGUE) == 1); }
-            set { SetField(FATIGUE, (value ? 1 : 0)); }
+            get { return GetIntField(FATIGUE); }
+            set { SetField(FATIGUE, value); }
         }
-        public bool Injuries
+        public int Injuries
         {
-            get { return (GetIntField(INJURIES) == 1); }
-            set { SetField(INJURIES, (value ? 1 : 0)); }
+            get { return GetIntField(INJURIES); }
+            set { SetField(INJURIES, value); }
         }
         public bool PlayClock
         {
@@ -548,6 +559,66 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(CPU_PASS_BLOCK_2019); }
             set { SetField(CPU_PASS_BLOCK_2019, value); }
         }
-		
+        public int GameStyle
+        {
+            get { return GetIntField(GAME_STYLE); }
+            set { SetField(GAME_STYLE, value); }
+        }
+        public int CPU_Fumbles
+        {
+            get { return GetIntField(CPU_FUMBLES); }
+            set { SetField(CPU_FUMBLES, value); }
+        }
+        public int CPU_Reaction
+        {
+            get { return GetIntField(CPU_REACTION_TIME); }
+            set { SetField(CPU_REACTION_TIME, value); }
+        }
+        public int HUM_Fumbles
+        {
+            get { return GetIntField(HUM_FUMBLES); }
+            set { SetField(HUM_FUMBLES, value); }
+        }
+        public int HUM_Reaction
+        {
+            get { return GetIntField(HUM_REACTION_TIME); }
+            set { SetField(HUM_REACTION_TIME, value); }
+        }
+        public int Pen_Offside
+        {
+            get { return GetIntField(PEN_OFFSIDE); }
+            set { SetField(PEN_OFFSIDE, value); }
+        }
+        public int Pen_DEFHolding
+        {
+            get { return GetIntField(DEF_HOLDING); }
+            set { SetField(DEF_HOLDING, value); }
+        }
+        public bool Pen_RunIntoKicker
+        {
+            get { return (GetIntField(PEN_RUNINTO_KICKER) == 1); }
+            set { SetField(PEN_RUNINTO_KICKER, (value ? 1 : 0)); }
+        }
+        public bool EvenTeams
+        {
+            get { return (GetIntField(EVEN_TEAMS) == 1); }
+            set { SetField(EVEN_TEAMS, (value ? 1 : 0)); }
+        }
+        public int GameSpeed
+        {
+            get { return GetIntField(GAME_SPEED); }
+            set { SetField(GAME_SPEED, value); }
+        }
+        public bool AccelClockOnOff
+        {
+            get { return (GetIntField(ACCEL_CLOCK_ONOFF) == 1); }
+            set { SetField(ACCEL_CLOCK_ONOFF, (value ? 1 : 0)); }
+        }
+        public int SpeedParity
+        {
+            get { return GetIntField(SPEED_PARITY); }
+            set { SetField(SPEED_PARITY, value); }
+        }
+
 	}
 }

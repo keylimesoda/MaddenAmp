@@ -80,6 +80,10 @@ namespace MaddenEditor.Forms
         {
             isInitialising = true;
 
+            LegacyRatings_Panel.Visible = false;
+            coachCurrentSeason_GroupBox.Visible = false;
+            coachPostSeason_Groupbox.Visible = false;
+            
             //  TO DO:  Coach skin color values change from 04/05 to 06-08
             //  04/05 vary from 0 to 7 and  06-08 vary from 0 to 2
             foreach (GenericRecord rec in model.CoachModel.CoachSkinColor)
@@ -173,11 +177,16 @@ namespace MaddenEditor.Forms
             if (model.FileVersion == MaddenFileVersion.Ver2019)
             {
                 coachAsset.Enabled = true;
+                Approval_Label.Visible = false;
+                Approval.Visible = false;
             }
             else
             {
                 coachAsset.Enabled = false;
                 coachAsset.Text = "";
+                LegacyRatings_Panel.Visible = true;
+                coachCurrentSeason_GroupBox.Visible = true;
+                coachPostSeason_Groupbox.Visible = true;
             }
 
             isInitialising = false;
@@ -196,6 +205,8 @@ namespace MaddenEditor.Forms
         
         public void LoadCoachInfo(CoachRecord record)
         {
+            model.CoachModel.CurrentCoachRecord = record;
+            
             if (record == null)
             {
                 MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -241,6 +252,8 @@ namespace MaddenEditor.Forms
                         break;
                     }
                 }
+
+                GetCoachHeight();
 
                 WearsGlassesCheckbox.Checked = record.CoachGlasses;
                 FormerPlayer_Checkbox.Checked = record.WasPlayer;
@@ -432,8 +445,35 @@ namespace MaddenEditor.Forms
                 //}
             }
         }
+
+        private void GetCoachHeight()
+        {
+            CoachHeight_Feet.SelectedIndex = (int)model.CoachModel.CurrentCoachRecord.height / 12;
+            CoachHeight_Inches.SelectedIndex = model.CoachModel.CurrentCoachRecord.height - (int)(CoachHeight_Feet.SelectedIndex * 12);
+        }
         
-        
+        private void CoachHeight_Feet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                SetCoachHeight();
+        }
+        private void PlayerHeight_Inches_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                SetCoachHeight();
+        }
+
+        private void SetCoachHeight()
+        {
+            int height = (int)CoachHeight_Feet.SelectedIndex * 12 + (int)CoachHeight_Inches.SelectedIndex;
+            if (height > 127)
+                height = 127;
+            else if (height == 0)
+                height = 1;
+            model.CoachModel.CurrentCoachRecord.height = height;
+
+            GetCoachHeight();
+        }
         
         public void DisplayCoachPort()
         {            
@@ -1055,6 +1095,11 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
                 model.CoachModel.CurrentCoachRecord.Asset = coachAsset.Text;
+        }
+
+        private void DeleteCoach_Button_Click(object sender, EventArgs e)
+        {
+
         }
 
 

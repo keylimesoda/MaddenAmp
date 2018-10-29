@@ -73,7 +73,10 @@ namespace MaddenEditor.Core
 
 			foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
 			{
-				if (((PlayerRecord)record).TeamId == teamId)
+                if (record.Deleted)
+                    continue;
+
+                if (((PlayerRecord)record).TeamId == teamId)
 				{
 					playerList.Add((PlayerRecord)record);
 				}

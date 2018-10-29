@@ -1,0 +1,36 @@
+Madden AMP 4.1 Beta 6 Changelog
+
+NOTE : Any franchise that was made to include custom teams or was made with a custom league is not going to work correctly with Madden AMP.
+
+
+Player - Contract
+
+- Changed the code to hopefully differentiate between Roster and Franchise files.
+The yearly salary and bonus values are not present in rosters, so editing contracts only
+affects length, years remaining, total salary (including bonus) and total bonus for rosters.
+
+- Added a box "Calc Team Salary" this is the total team salary for the current year*
+
+* Note this is calculated by using the "Yearly %" value.  This is the maximum percentage that a given contract can increase per year.
+For rosters, this value defaults to 30% and is not changeable.
+For franchise this is editable but defaults and is limited to 25% max for rookies and 30% for veterans and will affect the yearly values accordingly based on the other terms.
+
+
+
+Draft
+
+- Fixed bug where the drafted players and display were not being reset at the start of the draft.
+
+- Added version specific code so that the draft feature will only be available when the franchise file has been saved after the in game draft has been completed and is at the start of signing draft picks.
+
+- Draft Options
+
+- Added "Start Draft at" a given selection.
+This provides a limited resume function as well.
+(There are times when I want to control the first round or two by hand in game. Then I want the cpu to run the rest of the draft, but without having madden's in-game CPU making questionable picks)
+Unfortunately, this still requires going through the scouting process for Amp's draft, there is no way to save the scouting information for a given draft.
+
+
+
+
+

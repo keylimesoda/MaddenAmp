@@ -1,0 +1,114 @@
+Madden AMP 4.1 Beta 2 Changelog
+
+
+Fixed bug with Player Height
+Fixed bug with Player Career Phase not saving
+
+Fixed bug with Franchise/Roster Team ID with coaches display.
+This is probably going to be a recurring bug with rosters since I never edit a roster file and the team id #'s differ from franchise to roster.
+
+Fixed bug with Player Add/Remove Injury buttons. These were disassociated with their functions for some reason when I changed the layouts.
+
+
+
+
+Previous changes.
+
+Changed various UI screens so that they are more uniform in appearance with the previous overall   design.
+
+
+- Options.
+
+Added limited support for editing the Streameddata.db file, which contains many options not available in the franchise and roster files.
+
+Player/Coach Portraits - Changed the code to hopefully add support for the DAT files that have been previously 'customized' with various third party editors and/or templates.
+
+Added limited support of several tables in db templates.
+
+User controlled teams - Various bug fixes and improved code handling for selecting games to be played in the schedule for user controlled teams.
+
+Added 'Player Roles' editing for v2007 v2008.  This includes editing certain role effects on individual players and effects on their teams.
+ 
+Added limited support of DB Templates files, mainly "misc template" which for v2008 is dbtemplate file #11 (zero based arrays)
+
+
+
+- City.  
+
+Added city editor tab, however some of the fields are not editable yet and will require some experimentation to determine exactly they will affect the game.
+
+
+- Coaches.  
+
+Added face id, body size, and if the coach was a former player.  
+Former players may cause graphical bugs in-game.  It is suggested to uncheck this.
+
+Added some error checking.  When changing a coach's position to or from head coach, it will check to see whether the coach's team is user controlled.  If so, it will change the coach's setting to match the user controlled options.  Non Head coaches will have these options reset to cpu controlled.  
+When changing a coach's team, it will check whether the desired team already has a coach at that given position.  It will also check the settings described above for head coaches.
+
+Free Agents are the coaches that currently do not have a team and are contained in the roster/franchise COCH table.
+
+Added streameddata processing, if streameddata is loaded, the team filter will include "unemployed" which will give the list of coaches that are are contained in the streameddata tables.  Those coaches can be assigned to teams, providing the team has a vacancy at the desired position.
+
+Note that some fields in the coaches table are not included in the streameddata, notably any coaching sliders, and various wins/losses stats, so those will need to be edited as desired.
+
+
+- Players.
+
+Added Players list with filters.
+
+Stats - Various bug fixes.  Adding new career/season stats to players is now possible.
+Adding new stats is only available for the years the player has been a pro.  You will need to change the players years pro if you want to add stats for unavailable years.
+
+Overall* - Added option of using the PORC table from the db templates for calculating.
+Added Rerate All players button, which works according to Porc table values.
+
+*Note this still isn't always 100% accurate as to what is seen in the game.  The game is rounding fractions of the player's ratings or the sums of certain ratings in some unknown manner.
+
+
+Tattoos - Bug fixed.  Amp Was using a combobox for left/right tattoos with descriptions, but no code was ever present to change the player records.  Changed this to be version specific using 
+id#'s instead.  Be careful not to set this value higher than what your version is able to use.
+
+
+- Team.
+
+Fixed display bug where Team Rivals were not resetting properly when moving from AFC/NFC/Free Agents back to an normal team.
+
+Added editing/moving draft picks.  This is still limited to the game's default 10 picks.
+Do not assign more than 10 picks for any team.  You can only edit a team's picks that currently own the pick or that the pick originally belonged to.
+
+Ex.  Moving bears 2nd round pick to dolphins.  Dolphins now own the pick.
+You can only edit that pick from bears or dolphins screen.  
+You cannot edit any other bears picks from another team until it is moved from the bears.
+If you move that pick from dolphins to bengals, you can only edit the pick from bears and bengals now as dolphins do not own the pick any longer.
+
+Also it will only display the top 10 picks of any team, regardless if you made multiple trades.
+If dolphins traded multiple picks and have 10 picks in the first 4 rounds, it will not display all 10 of the dolphins original picks on the dolphins screen.
+Not sure how else to explain that.
+
+
+Uniforms IDs - Fixed some exisiting bugs in the code.  Changing the default home/away uniforms causes problems in certain areas of the game.  Those id's will not be editable, only the alternate uniform id's.  The code will also not allow you to duplicate id #s or from ids of other teams.
+
+
+
+- User Controlled Teams
+
+Changed the display and added a new column called play games, if this is selected YES it will adjust the schedule of team's games to whatever the filter settings are set as *IF* you have set the team as user controlled.  Otherwise the games are set for cpu play.
+
+Tweaked code that selected what games were to be played in the schedule.
+This is only available when the schedule has been set, it will not run during training camp.
+Note this also works separately for pre season and regular season.
+If you want to adjust the regular season schedule, this will need to be run again after preseason is completed.  This is not a Madden Amp limitation, the regular season schedule is not set until preseason is over.
+
+Also, if you are loading a franchise file that you previously adjusted the user controlled teams and adjusted the schedule, the play games column will show yes if any of a given team's games were set for user control.
+
+Ex.  Setting only the Dolphins for user controlled, and setting all division games to be played.  When reloading that franchise, the dolphins will show play games as yes, as well as the bills, jets, and patriots.  This is because any teams in the division that play the dolphins will have those games set as user played.
+
+That doesn't mean the bills,jets,patriots are going to have all their division games set as played it is just a limitation when you reload the user controlled teams.  If someone were to select multiple teams and want to play certain games it becomes difficult to determine which of those teams were originally selected to play games when it is reloaded.
+The schedule will remain as it was originally set, however, and you can verify this in-game.
+
+
+- Finances
+Under franchise options, started adding owner income/expenses editing.
+
+

@@ -1,0 +1,21 @@
+Madden AMP 4.1 Beta 9 Changelog
+
+
+Madden AMP code is compatible with Windows 7. (.NET 4.5.1)
+
+At times, there also may be versions that are specifically compiled with (.NET 3.5) and when released they will be labeled for Windows XP.
+
+Compatibility for more recent versions of Windows is not implied nor guaranteed.
+
+
+Any franchise that was made to include custom teams or was made with a custom league is not going to work correctly with Madden AMP.
+
+Updates/Support for the Training Camp feature as well as the Weekly Maintenance feature is being discontinued.  These features may or may not continue to work for any given franchise file.
+
+
+-  Changes  -
+
+Fixed bug where draft feature was not available at certain franchise stages for v2008.
+This is may nor may not still affect other versions.
+
+

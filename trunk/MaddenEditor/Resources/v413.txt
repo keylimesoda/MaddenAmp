@@ -1,0 +1,41 @@
+Madden AMP 4.1 Beta 3 Changelog
+
+NOTE : Any franchise that was made to include custom teams or was made with a custom league is not going to work correctly with Madden AMP.
+
+There is a known bug that the ROS/FRA file will ask you to save even though there may have been no changes.  If you are certain you made no changes, you don't need to save the file.
+Haven't had time to track this bug down.
+
+
+various bugs fixes.  Including, but not limited to, the following :
+
+
+City - 
+
+Added saving changes to various city values.  Not sure I got them all though.
+
+
+TEAM - 
+
+Displays changed to use the team names rather than city names.
+
+Draft Picks - Included support for 16 draft positions, even though the game supports only 10.
+
+
+PLAYER - 
+
+STATS, fixed some bugs related to experimental progression fields that were included in this tab.  Should stop some crashes when loading certain players.
+
+
+DRAFT - 
+
+Added code to clear out any previous values when starting the draft with loading, or having previously loaded, a custom draft class.
+There was a bug due to various draft classes including a player's actual real life draft round and pick number for a given year.
+
+AMP was treating this as the player had already been drafted and advancing through the picks, effectively ending the draft.
+Not really sure why AMP was checking for draft position as there is no "resume" option for AMP's draft feature.
+
+Fixed (?) a bug where currently picking team and current pick number were not updating properly when skipping ahead in picks.
+
+Drafts for franchises using custom DB Template mods for player OVR calculation will now have these players re-rated based on default overall calculations before the draft feature begins in Madden Amp.  This is done to properly take advantage of madden amp's drafting logic.
+
+Draft classes should now have their OVRs restored to their original values AFTER the draft feature is finished.  There was a bug present that many players in the draft class had their OVR significantly changed after using the draft feature.  This also applies to the afore mentioned custom OVR mods.

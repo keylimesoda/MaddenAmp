@@ -67,6 +67,23 @@ namespace MaddenEditor.Forms
         {
             isInitialising = true;
 
+            StadiumLabel.Visible = false;
+            teamStadiumSelect.Visible = false;
+            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            {
+                TeamStadiumID.Enabled = false;
+                StadiumLabel.Visible = true;
+                teamStadiumSelect.Visible = true;
+                foreach (GenericRecord rec in model.TeamModel.StadiumList)                
+                    teamStadiumSelect.Items.Add(rec);
+                
+                EndPlay.Visible = true;
+                teamEndPlay.Visible = true;
+                foreach (GenericRecord rec in model.TeamModel.EndPlayList)
+                    teamEndPlay.Items.Add(rec);
+            }
+            
+
             //Fill in the combo boxes
             foreach (GenericRecord rec in model.TeamModel.LeagueList)
             {
@@ -126,62 +143,65 @@ namespace MaddenEditor.Forms
                 gbShoeColor.Visible = true;
             }
 
-
-            foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+            #region Franchise Options
+            if (model.FileType == MaddenFileType.Franchise)
             {
-                // Only add specific teams to the combo box, not AFC and NFC
-                if (record.GetIntField("TGID") >= 0 && record.GetIntField("TGID") <= 31)
+                foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
                 {
-                    Owned1.Items.Add(record);
-                    Owned2.Items.Add(record);
-                    Owned3.Items.Add(record);
-                    Owned4.Items.Add(record);
-                    Owned5.Items.Add(record);
-                    Owned6.Items.Add(record);
-                    Owned7.Items.Add(record);
-                    Owned8.Items.Add(record);
-                    Owned9.Items.Add(record);
-                    Owned10.Items.Add(record);
-                    Owned11.Items.Add(record);
-                    Owned12.Items.Add(record);
-                    Owned13.Items.Add(record);
-                    Owned14.Items.Add(record);
-                    Owned15.Items.Add(record);
-                    Owned16.Items.Add(record);
+                    // Only add specific teams to the combo box, not AFC and NFC
+                    if (record.GetIntField("TGID") >= 0 && record.GetIntField("TGID") <= 31)
+                    {
+                        Owned1.Items.Add(record);
+                        Owned2.Items.Add(record);
+                        Owned3.Items.Add(record);
+                        Owned4.Items.Add(record);
+                        Owned5.Items.Add(record);
+                        Owned6.Items.Add(record);
+                        Owned7.Items.Add(record);
+                        Owned8.Items.Add(record);
+                        Owned9.Items.Add(record);
+                        Owned10.Items.Add(record);
+                        Owned11.Items.Add(record);
+                        Owned12.Items.Add(record);
+                        Owned13.Items.Add(record);
+                        Owned14.Items.Add(record);
+                        Owned15.Items.Add(record);
+                        Owned16.Items.Add(record);
+                    }
                 }
 
-            }
+                for (int round = 1; round < 9; round++)
+                {
+                    string name = "Round " + round.ToString();
+                    if (round == 8)
+                        name = "NA";
+                    Round1.Items.Add(name);
+                    Round2.Items.Add(name);
+                    Round3.Items.Add(name);
+                    Round4.Items.Add(name);
+                    Round5.Items.Add(name);
+                    Round6.Items.Add(name);
+                    Round7.Items.Add(name);
+                    Round8.Items.Add(name);
+                    Round9.Items.Add(name);
+                    Round10.Items.Add(name);
+                    Round11.Items.Add(name);
+                    Round12.Items.Add(name);
+                    Round13.Items.Add(name);
+                    Round14.Items.Add(name);
+                    Round15.Items.Add(name);
+                    Round16.Items.Add(name);
+                }
 
-            for (int round = 1; round < 9; round++)
-            {
-                string name = "Round " + round.ToString();
-                if (round == 8)
-                    name = "NA";
-                Round1.Items.Add(name);
-                Round2.Items.Add(name);
-                Round3.Items.Add(name);
-                Round4.Items.Add(name);
-                Round5.Items.Add(name);
-                Round6.Items.Add(name);
-                Round7.Items.Add(name);
-                Round8.Items.Add(name);
-                Round9.Items.Add(name);
-                Round10.Items.Add(name);
-                Round11.Items.Add(name);
-                Round12.Items.Add(name);
-                Round13.Items.Add(name);
-                Round14.Items.Add(name);
-                Round15.Items.Add(name);
-                Round16.Items.Add(name);
+                for (int c = 1; c < 17; c++)
+                {
+                    string name = "ToFrom" + c.ToString();
+                    ComboBox com = this.Controls.Find(name, true).First() as ComboBox;
+                    com.Items.Add("To");
+                    com.Items.Add("From");
+                }
             }
-
-            for (int c = 1; c < 17; c++)
-            {
-                string name = "ToFrom" + c.ToString();
-                ComboBox com = this.Controls.Find(name, true).First() as ComboBox;
-                com.Items.Add("To");
-                com.Items.Add("From");
-            }
+            #endregion
 
             //Load a team
             if (model.FileType != MaddenFileType.DBTeam)
@@ -212,19 +232,42 @@ namespace MaddenEditor.Forms
 
         private void LoadTeamInfo(TeamRecord record)
         {
+
             if (record == null)
             {
                 MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+            if (record.TeamId == 127)
+                return;
 
             bool holder = isInitialising;
             isInitialising = true;
 
             Add_Uniforms_Button.Enabled = false;
-            
+
             try
             {
+                int pc = 0;
+                int ir = 0;
+                foreach (InjuryRecord rec in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
+                {
+                    if (rec.Deleted)
+                        continue;
+                    if (rec.TeamId == record.TeamId)
+                        ir--;
+                }
+                foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+                {
+                    if (rec.Deleted)
+                        continue;
+                    if (rec.TeamId == record.TeamId)
+                        pc++;
+                }
+
+                
+                teamPlayerCount.Value = pc + ir;
+
                 nameTextBox.Text = record.Name;
                 longNameTextBox.Text = record.LongName;
                 shortTeamName.Text = record.TeamShortName;
@@ -259,7 +302,7 @@ namespace MaddenEditor.Forms
                 //Team colours
                 pnlPrimary.BackColor = record.PrimaryColor;
                 pnlSecondary.BackColor = record.SecondaryColor;
-
+                
                 TeamStadiumID.Value = record.StadiumID;
 
                 foreach (Object obj in divisionCombo.Items)
@@ -286,33 +329,14 @@ namespace MaddenEditor.Forms
                         break;
                     }
                 }
-                foreach (object obj in cityCombo.Items)
-                {
-                    if (((GenericRecord)obj).Id == record.CityId)
-                    {
-                        cityCombo.SelectedItem = obj;
-                        break;
-                    }
-                }
-                bool found = false;
-                foreach (object obj in teamOffensivePlaybookCombo.Items)
-                {
-                    if (((GenericRecord)obj).Id == record.OffensivePlaybook)
-                    {
-                        teamOffensivePlaybookCombo.SelectedItem = obj;
-                        found = true;
-                        break;
-                    }
-                }
-                teamOffensivePlaybookCombo.Enabled = found;
-                foreach (object obj in teamDefensivePlaybookCombo.Items)
-                {
-                    if (((GenericRecord)obj).Id == record.DefensivePlaybook)
-                    {
-                        teamDefensivePlaybookCombo.SelectedItem = obj;
-                        break;
-                    }
-                }
+
+                cityCombo.SelectedIndex = -1;
+                cityCombo.Text = model.TeamModel.GetCity(record.CityId);
+
+                teamOffensivePlaybookCombo.SelectedIndex = -1;
+                teamOffensivePlaybookCombo.Text = model.TeamModel.GetOFFPlaybook(record.OffensivePlaybook);
+                teamDefensivePlaybookCombo.SelectedIndex = -1;
+                teamDefensivePlaybookCombo.Text = model.TeamModel.GetDEFPlaybook(record.DefensivePlaybook);
 
                 if (model.FileVersion < MaddenFileVersion.Ver2019 || model.FileType == MaddenFileType.DBTeam)
                 {
@@ -338,23 +362,23 @@ namespace MaddenEditor.Forms
                         cbTeamRival2.Enabled = true;
                         cbTeamRival3.Enabled = true;
                     }
-                    
+
                     teamReputation.Enabled = true;
                     teamReputation.Value = record.Reputation;
                     nickNameTextBox.Enabled = true;
                     nickNameTextBox.Text = record.NickName;
                     if (model.TeamModel.CurrentTeamRecord.TeamRival1 != TeamEditingModel.NO_TEAM_ID)
-                    {                        
+                    {
                         cbTeamRival1.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival1);
                     }
 
                     if (model.TeamModel.CurrentTeamRecord.TeamRival2 != TeamEditingModel.NO_TEAM_ID)
-                    {                        
+                    {
                         cbTeamRival2.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival2);
                     }
 
                     if (model.TeamModel.CurrentTeamRecord.TeamRival3 != TeamEditingModel.NO_TEAM_ID)
-                    {                        
+                    {
                         cbTeamRival3.SelectedItem = model.TeamModel.GetTeamRecord(model.TeamModel.CurrentTeamRecord.TeamRival3);
                     }
                 }
@@ -371,17 +395,28 @@ namespace MaddenEditor.Forms
 
                 CustomArt_Textbox.Text = record.CustomArt;
                 Team_Relocated_Checkbox.Checked = record.TeamRelocated;
+                teamType.Value = record.TeamType;
+
 
                 #region 2019
                 if (model.FileVersion >= MaddenFileVersion.Ver2019)
                 {
                     teamDBName.Enabled = true;
                     teamDBName.Text = record.TeamDB;
+
+                    teamStadiumSelect.SelectedIndex = -1;
+                    string desc = model.TeamModel.GetStadium(record.StadiumID);
+                    teamStadiumSelect.Text = desc;
+                    teamEndPlay.SelectedIndex = -1;
+                    string desc2 = model.TeamModel.GetEndPlay(record.EndPlay);
+                    teamEndPlay.Text = desc2;
                 }
                 else
                 {
                     teamDBName.Text = "NA";
                     teamDBName.Enabled = false;
+                    teamStadiumSelect.Enabled = false;
+                    teamStadiumSelect.Text = "";
                 }
 
                 #endregion
@@ -406,6 +441,7 @@ namespace MaddenEditor.Forms
 
             lastLoadedRecord = record;
         }
+        
 
         private void SetDraftPicks()
         {
@@ -613,7 +649,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.TeamModel.CurrentTeamRecord.CityId = (((GenericRecord)cityCombo.SelectedItem).Id);
+                model.TeamModel.CurrentTeamRecord.CityId = model.TeamModel.GetCity(cityCombo.Text);
             }
         }
 
@@ -709,7 +745,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.TeamModel.CurrentTeamRecord.OffensivePlaybook = (((GenericRecord)teamOffensivePlaybookCombo.SelectedItem).Id);
+                model.TeamModel.CurrentTeamRecord.OffensivePlaybook = model.TeamModel.GetOFFPlaybook(teamOffensivePlaybookCombo.Text);
             }
         }
 
@@ -717,7 +753,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.TeamModel.CurrentTeamRecord.DefensivePlaybook = (((GenericRecord)teamDefensivePlaybookCombo.SelectedItem).Id);
+                model.TeamModel.CurrentTeamRecord.DefensivePlaybook = model.TeamModel.GetDEFPlaybook(teamDefensivePlaybookCombo.Text);
             }
         }
 
@@ -1258,6 +1294,7 @@ namespace MaddenEditor.Forms
 
             if (!isInitialising)
             {
+                
                 DataGridViewRow row = TeamGridView.Rows[e.RowIndex];
                 int r = (int)row.Cells[0].Value;
                 if (r == currentteamrow)
@@ -1265,13 +1302,16 @@ namespace MaddenEditor.Forms
                 else
                 {
                     isInitialising = true;
+
                     TeamGridView.Rows[currentteamrow].Selected = false;
                     model.TeamModel.CurrentTeamRecord = (TeamRecord)model.TableModels[EditorModel.TEAM_TABLE].GetRecord(r);
                     LoadTeamInfo(model.TeamModel.CurrentTeamRecord);
                     TeamGridView.Rows[e.RowIndex].Selected = true;
                     currentteamrow = e.RowIndex;
+
                     isInitialising = false;
                 }
+               
             }
         }
 
@@ -1463,8 +1503,32 @@ namespace MaddenEditor.Forms
                 model.TeamModel.CurrentTeamRecord.TeamDB = teamDBName.Text;
         }
 
-        
+        private void teamStadiumSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    model.TeamModel.CurrentTeamRecord.StadiumID = model.TeamModel.GetStadium(teamStadiumSelect.Text);
+                else model.TeamModel.CurrentTeamRecord.StadiumID = teamStadiumSelect.SelectedIndex;
+            }
+        }
 
+        private void teamEndPlay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.TeamModel.CurrentTeamRecord.EndPlay = model.TeamModel.GetEndPlay(teamEndPlay.Text);
+        }
+
+        private void teamPlayerCount_ValueChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void teamType_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.TeamModel.CurrentTeamRecord.TeamType = (int)teamType.Value;
+        }
         
     }
 }

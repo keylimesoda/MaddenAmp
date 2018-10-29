@@ -28,11 +28,15 @@ namespace MaddenEditor.Core.Record
 {
 	public class InjuryRecord : TableRecordModel
 	{
+        public const string INJURY_IR = "INIR";        
 		public const string INJURY_LENGTH = "INJL";
+        public const string INJURY_RETURN = "INJR";         //2019
+        public const string INJURY_SEVERITY = "INJS";       //2019
 		public const string INJURY_TYPE = "INJT";
+        public const string INTW = "INTW";                  //2019
 		public const string PLAYER_ID = "PGID";
 		public const string TEAM_ID = "TGID";
-		public const string INJURY_RSV = "INIR";
+		
 
 		public InjuryRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -88,19 +92,32 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public bool InjuryReserve
+		public bool IR
 		{
-			get
-			{
-				return (GetIntField(INJURY_RSV) == 1);
-			}
-			set
-			{
-				SetField(INJURY_RSV, Convert.ToInt32(value));
-			}
+            get { return (GetIntField(INJURY_IR) == 1); }
+			set { SetField(INJURY_IR, Convert.ToInt32(value)); }
 		}
 
-		public String LengthDescription
+        public int InjuryReturn
+        {
+            get { return GetIntField(INJURY_RETURN); }
+            set { SetField(INJURY_RETURN, value); }
+        }
+        
+        public int InjurySeverity
+        {
+            get { return GetIntField(INJURY_SEVERITY); }
+            set { SetField(INJURY_SEVERITY, value); }
+        }
+        
+        public int Intw
+        {
+            get { return GetIntField(INTW); }
+            set { SetField(INTW, value); }
+        }
+        
+        
+        public String LengthDescription
 		{
 			get
 			{

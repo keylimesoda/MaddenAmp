@@ -100,7 +100,7 @@ namespace MaddenEditor.Core
 		{
 			try
 			{
-				StreamReader streamReader = new StreamReader(Application.StartupPath + "\\" + DATA_FILE);
+				StreamReader streamReader = new StreamReader(Application.StartupPath + @"\res\" + DATA_FILE);
 
 				CsvReader reader = new CsvReader(streamReader, true);
 

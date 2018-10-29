@@ -1,0 +1,52 @@
+Madden AMP 4.34
+
+
+v4.34 Changelog
+---------------
+
+File IO
+-------
+As requested, Saving changes to a Madden 19 roster will now save a usable Madden 19 roster file instead of having to completely exit the program.
+
+
+Player Editor
+-------------
+
+Fixed bug with displaying v2019 archetype overalls.  
+The Break Tackle rating was not not being processed in the Big Endian databases (teamdb files).
+
+Added Team Captains for v2019.
+
+
+Global Editing
+--------------
+Fixed a bug that was not changing traits that were only on/off options.
+
+Now defaults to, and allows for, the selection of no changes to attributes.  
+Previously was forcing to select an attribute for change in order to apply.
+
+
+
+Depth Chart Editor
+------------------
+Removed for v2019.
+
+
+
+Import/Export CSV
+-----------------
+Added option to include descriptions for fieldnames when exporting a given table.
+Not all tables have descriptions added yet.  Work in progress.
+
+Added Limited support for Madden 2019 Draft Classes.
+Allows for loading a draft class and exporting to CSV.  This is work in progress, not everything
+extracted is guaranteed to be accurate.
+
+NOTE : Not all fields are included, there are several that are unknown at this point.  
+More will be added as they are figured out.
+Importing will be added as time allows and as missing fields are determined.
+
+
+
+
+

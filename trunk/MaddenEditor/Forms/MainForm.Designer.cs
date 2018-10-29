@@ -39,6 +39,7 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playerEditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coachPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +49,6 @@ namespace MaddenEditor.Forms
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.searchforPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchforCoachesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.depthChartEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalPlayerAttrEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,6 +191,13 @@ namespace MaddenEditor.Forms
             this.Tools.Size = new System.Drawing.Size(48, 20);
             this.Tools.Text = "Tools";
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.exportToolStripMenuItem.Text = "Import/Export CSV";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -251,13 +258,6 @@ namespace MaddenEditor.Forms
             this.searchforCoachesToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.searchforCoachesToolStripMenuItem.Text = "Search for Coaches ...";
             this.searchforCoachesToolStripMenuItem.Click += new System.EventHandler(this.searchforCoachesToolStripMenuItem_Click);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.exportToolStripMenuItem.Text = "Import/Export CSV";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -583,6 +583,7 @@ namespace MaddenEditor.Forms
             // rosterFileLoaderThread
             // 
             this.rosterFileLoaderThread.WorkerReportsProgress = true;
+            this.rosterFileLoaderThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.rosterFileLoaderThread_DoWork);
             this.rosterFileLoaderThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rosterFileLoaderThread_ProgressChanged);
             this.rosterFileLoaderThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rosterFileLoaderThread_RunWorkerCompleted);
             // 

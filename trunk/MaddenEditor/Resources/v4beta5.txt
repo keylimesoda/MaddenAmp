@@ -1,0 +1,65 @@
+Madden Amp v4.0 Beta 5
+
+ 
+Fixed player roles/weapons to be version specific.  v2007,v2008 have different values.
+
+Playbooks - choices are now version specific and should be correct for default 04-08, this will not be correct if you have customized the DB Templates playbooks.
+
+Draft - tweaked the way players were being sorted from best to worst, some players were not being included due to the way previous coding was done, and were somewhat randomly assigned values to accomodate.  I think this has now been fixed so all players are sorted correctly.
+
+Also added a check for franchise stage so that the draft feature in amp will only allow access starting at the actual draft stage up to and including signing draft picks.  You will not be able to use the draft features before or after these stages.  This also applies to the importing of custom draft classes.
+
+Team - Fixed bug with the home/away uniform id's giving errors loading values higher than 100.  changed to 511 which is maximum according to the database.  Do not set this higher than what is available in the uniform dats.
+
+Added Draft pick moving as well. Each team will display up to 10 picks.  If you want to move a team's pick to another team you should do so from the originating team.
+IE - You cannot ADD picks to a team without doing so from the originating team, unless the pick had previously been traded from the originating team.
+
+
+A lot of UI changes, consolidating a lot of info on the player editor.
+Moved all stats into one tab
+Moved player equipment to the appearance tab
+
+
+
+Player Editing - Contract tab
+
+Reference info will load in according to whatever player position the current player is, top salaries for players currently under contract as well as what free agents are currently available.
+Positional requirements will also pop up with info on the current player's team to show any shortages (red) or surplus (green)
+
+Player contracts:
+Added hold out checkbox to editing, as well as if player is inactive or not
+
+
+Contract Terms:
+
+This got complicated, but you set the terms up and hit the set button to apply the contract.
+Added yearly % which is the amount the salary increases per year.
+Per NFL rules, this is limited to a max of 25% per year for rookies and 30% for veterans.
+
+Added "Use Min" checkbox.  The NFL minimum salary allowed will auto load in for the current player. If this box is checked the players contract will require a minimum of this amount per year of the contract.
+
+Madden requires the amount of salary and bonus to be a multiple of 10k
+so these values are now based on a minimum of .01 (million) increments
+in the editor.  Anything entered manually that is lower than .01 will cause the value to be round up to the next .01 multiple
+Ex.  total of .201 entered manually will end up being rounded to .21
+
+
+example for using nfl minimums
+The minimum is say .205 so any 1 year deal would be rounded to a minimum of .21
+A 2 year deal would work out to .41 total
+The first year of the deal ends up being .20 (which is less than minimum because of the above described madden restrictions, but is still ok as the contract per year meets the minimum)
+Anything smaller than .01 Mil is carried over to the final year so in this case it would be .21 in the final year.
+
+If you use the minimum salary check box, it will not allow you to use a higher yearly % increase than what the minimum increase would be to allow the player to hit minimum salary each year.
+So in the above case, it will not allow you to go above 0% per year as the contract is already at the lowest allowed.
+
+
+bugs - 
+
+2004-2006 still showing morale in editor - removed.
+Player ego changed to correspond with 2004-2006 player celebration rating
+nfl icon removed for v2004
+
+NFL Salary cap - Added known caps up until 2015.  Added checkbox to use actual nfl salary caps for years 2003-2015 only.
+
+

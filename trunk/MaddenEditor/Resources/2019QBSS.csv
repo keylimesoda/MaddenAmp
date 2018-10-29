@@ -1,0 +1,48 @@
+QBSS,2019,No,46
+ABNK,EDIS,ENUV,QPLS
+Generic,Generic,0,0
+PasserStyle_TEdwards,Classic 1,1,0
+PasserStyle_Pennington,Classic 2,2,0
+PasserStyle_Favre,Classic 3,3,1
+PasserStyle_Brady,Classic 4,4,2
+PasserStyle_DAnderson,Classic 5,5,0
+PasserStyle_Garcia,Classic 6,6,1
+PasserStyle_Roethlisberger,Classic 7,7,2
+PasserStyle_PManning,Classic 8,8,0
+PasserStyle_Garrard,Classic 9,9,2
+PasserStyle_Orton,Classic 10,10,0
+PasserStyle_Young,Pocket 1,11,2
+PasserStyle_Cutler,Pocket 2,12,2
+PasserStyle_Rivers,Pocket 3,13,2
+PasserStyle_Flacco,Pocket 4,14,0
+PasserStyle_JRussell,Pocket 5,15,0
+PasserStyle_Romo,Pocket 6,16,1
+PasserStyle_McNabb,Pocket 7,17,2
+PasserStyle_EManning,Pocket 8,18,0
+PasserStyle_Campbell,Pocket 9,19,0
+PasserStyle_Grossman,Pocket 10,20,2
+PasserStyle_Kitna,Slinger 1,21,2
+PasserStyle_Rodgers,Slinger 2,22,0
+PasserStyle_Cassel,Slinger 3,23,1
+PasserStyle_Stafford,Slinger 4,24,2
+PasserStyle_Ryan,Slinger 5,25,0
+PasserStyle_Delhomme,Slinger 6,26,2
+PasserStyle_Brees,Slinger 7,27,0
+PasserStyle_ASmith,Slinger 8,28,0
+PasserStyle_Warner,Slinger 9,29,2
+PasserStyle_Bulger,Three Quarters 1,30,0
+PasserStyle_Hasselbeck,Three Quarters 2,31,0
+PasserStyle_Palmer,Traditional 1,32,2
+PasserStyle_Sanchez,Traditional 2,33,0
+PasserStyle_Bradford,Traditional 3,34,0
+PasserStyle_Clausen,Traditional 4,35,0
+PasserStyle_Tebow,Traditional 5,36,0
+PasserStyle_Vick,Traditional 6,37,2
+PasserStyle_Freeman,Traditional 7,38,2
+PasserStyle_Aikman,Traditional 8,39,0
+PasserStyle_Blanda,Traditional 9,40,0
+PasserStyle_Elway,Traditional 10,41,0
+PasserStyle_Graham,Traditional 11,42,0
+PasserStyle_Montana,Traditional 12,43,0
+PasserStyle_Moon,Traditional 13,44,0
+PasserStyle_SYoung,Traditional 14,45,1

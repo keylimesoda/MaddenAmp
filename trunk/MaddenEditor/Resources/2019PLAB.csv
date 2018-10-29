@@ -1,0 +1,103 @@
+PLAB,2019,No,101
+BGID,BOFF,BNAM,PBAN
+0,0,CHI - M. Nagy,Madden_Def_Bears
+0,1,CHI - M. Nagy,Madden_Bears
+1,0,CIN - M. Lewis,Madden_Def_Bengals
+1,1,CIN - M. Lewis,Madden_Bengals
+2,0,BUF - S. McDermott,Madden_Def_Bills
+2,1,BUF - S. McDermott,Madden_Bills
+3,0,DEN - V. Joseph,Madden_Def_Broncos
+3,1,DEN - V. Joseph,Madden_Broncos
+4,0,CLE - H. Jackson,Madden_Def_Browns
+4,1,CLE - H. Jackson,Madden_Browns
+5,0,TB - D. Koetter,Madden_Def_Buccaneers
+5,1,TB - D. Koetter,Madden_Buccaneers
+6,0,ARI - S. Wilks,Madden_Def_Cardinals
+6,1,ARI - S. Wilks,Madden_Cardinals
+7,0,LAC - A. Lynn,Madden_Def_Chargers
+7,1,LAC - A. Lynn,Madden_Chargers
+8,0,KC - A. Reid,Madden_Def_Chiefs
+8,1,KC - A. Reid,Madden_Chiefs
+9,0,IND - F. Reich,Madden_Def_Colts
+9,1,IND - F. Reich,Madden_Colts
+10,0,DAL - J. Garrett,Madden_Def_Cowboys
+10,1,DAL - J. Garrett,Madden_Cowboys
+11,0,MIA - A. Gase,Madden_Def_Dolphins
+11,1,MIA - A. Gase,Madden_Dolphins
+12,0,PHI - D. Pederson,Madden_Def_Eagles
+12,1,PHI - D. Pederson,Madden_Eagles
+13,0,ATL - D. Quinn,Madden_Def_Falcons
+13,1,ATL - D. Quinn,Madden_Falcons
+14,0,SF - K. Shanahan,Madden_Def_49ers
+14,1,SF - K. Shanahan,Madden_49ers
+15,0,NYG - P. Shurmur,Madden_Def_Giants
+15,1,NYG - P. Shurmur,Madden_Giants
+16,0,JAX - D. Marrone,Madden_Def_Jaguars
+16,1,JAX - D. Marrone,Madden_Jaguars
+17,0,NYJ - T. Bowles,Madden_Def_Jets
+17,1,NYJ - T. Bowles,Madden_Jets
+18,0,DET - M. Patricia,Madden_Def_Lions
+18,1,DET - M. Patricia,Madden_Lions
+19,0,GB - M. McCarthy,Madden_Def_Packers
+19,1,GB - M. McCarthy,Madden_Packers
+20,0,CAR - R. Rivera,Madden_Def_Panthers
+20,1,CAR - R. Rivera,Madden_Panthers
+21,0,NE - NE Coach,Madden_Def_Patriots
+21,1,NE - NE Coach,Madden_Patriots
+22,0,OAK - J. Gruden,Madden_Def_Raiders
+22,1,OAK - J. Gruden,Madden_Raiders
+23,0,LAR - S. McVay,Madden_Def_Rams
+23,1,LAR - S. McVay,Madden_Rams
+24,0,BAL - J. Harbaugh,Madden_Def_Ravens
+24,1,BAL - J. Harbaugh,Madden_Ravens
+25,0,WAS - Jay Gruden,Madden_Def_Redskins
+25,1,WAS - Jay Gruden,Madden_Redskins
+26,0,NO - S. Payton,Madden_Def_Saints
+26,1,NO - S. Payton,Madden_Saints
+27,0,SEA - P. Carroll,Madden_Def_Seahawks
+27,1,SEA - P. Carroll,Madden_Seahawks
+28,0,PIT - M. Tomlin,Madden_Def_Steelers
+28,1,PIT - M. Tomlin,Madden_Steelers
+29,0,TEN - TEN Coach,Madden_Def_Titans
+29,1,TEN - TEN Coach,Madden_Titans
+30,0,MIN - M. Zimmer,Madden_Def_Vikings
+30,1,MIN - M. Zimmer,Madden_Vikings
+31,0,HOU - B. O'Brien,Madden_Def_Texans
+31,1,HOU - B. O'Brien,Madden_Texans
+32,0,3-Apr,Madden_4-3
+32,1,Balanced,Madden_Balanced
+33,0,4-Mar,Madden_3-4
+33,1,Spread,Madden_Balanced Pass
+34,0,46,Madden_46
+34,1,Run Balanced,Madden_Balanced Run
+35,0,Cover 2,Madden_Cover 2
+35,1,Run Heavy,Madden_Power Run
+36,0,Multiple D,Madden_Multiple D
+36,1,West Coast,Madden_West Coast
+37,1,Run 'N' Gun,Madden_Run n Gun
+38,1,Madden Elites,Madden_Elites
+39,1,Madden Legends,Madden_Legends
+40,1,Lshot Pres P Off,Longshot_Preaseason Practice Offense
+48,1,Pistol,Madden_Pistol
+49,1,Run and Shoot,Madden_Run and Shoot
+50,0,7on7 Defense,Longshot_7on7_Defense
+50,1,7on7 Offense,Longshot_7on7_Offense
+51,0,Longshot Defense,Longshot_4-3_Defense
+51,1,Highschool Offense,Longshot_HighSchool_Offense
+52,0,Lshot Training Def,Longshot_Training Camp Defense
+52,1,Lshot Training Off,Longshot_Training Camp Offense
+53,0,7on7 Defense_CPU,Longshot_7on7_Defense_CPU
+53,1,LShot 7on7 Off 0680,Longshot_7on7_Offense_Facility0680
+54,0,LShot 4-3 Def Legends,Longshot_4-3_Defense_Legends
+54,1,LShot 7on7 Off 0730,Longshot_7on7_Offense_marino0730
+55,0,Lshot Texans Def,Longshot_Texans Defense
+55,1,Lshot Texans S Off,Longshot_Texans Season Offense
+56,0,Lshot BF Defense,Longshot_Bullfrogs_Defense
+56,1,Lshot BF Game 1 Off,Longshot_Bullfrogs Game 1 Offense
+57,1,Lshot BF Game 2 Off,Longshot_Bullfrogs Game 2 Offense
+58,1,Lshot BF Game 3 Off,Longshot_Bullfrogs Game 3 Offense
+59,1,Lshot BF State Champ,Longshot_Bullfrogs State Championship
+60,0,Lshot Cowboys Def,Longshot_Cowboys Defense
+60,1,Lshot Cowboys Off,Longshot_Cowboys_Offense
+61,1,Lshot Dolphins Off,Longshot_Dolphins_Offense
+62,1,Lshot Pats S Off,Longshot_Patriots Season Offense

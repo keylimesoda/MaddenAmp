@@ -41,11 +41,12 @@ namespace MaddenEditor.Core
 			{
                 string title =  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor;
                 if (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build > 0)
-                    title += " Beta " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
-                title += " for Win";
-                if (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision == 0)
-                    title += "7";
-                else title += "XP";
+                {
+                    title += System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
+                    if (System.Reflection.Assembly.GetCallingAssembly().GetName().Version.Revision > 0)
+                        title += " Revision " + System.Reflection.Assembly.GetCallingAssembly().GetName().Version.Revision;
+                }
+                
                 return title;
 			}
 		}
