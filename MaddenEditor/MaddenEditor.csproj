@@ -83,6 +83,7 @@
     <Compile Include="Core\DatEditor\Filetype.cs" />
     <Compile Include="Core\DatEditor\MMAP.cs" />
     <Compile Include="Core\DatEditor\TERF.cs" />
+    <Compile Include="Core\DraftClass.cs" />
     <Compile Include="Core\Manager\Coach.cs" />
     <Compile Include="Core\Manager\DraftClass.cs" />
     <Compile Include="Core\Manager\DraftConfig.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Core\Manager\Team.cs" />
     <Compile Include="Core\Overall.cs" />
     <Compile Include="Core\OwnerRevenue.cs" />
+    <Compile Include="Core\ProfileModel.cs" />
     <Compile Include="Core\Record\CoachExpectedSalary.cs" />
     <Compile Include="Core\Record\CoachHistory.cs" />
     <Compile Include="Core\Record\DB_Templates\FRAPlayBooks.cs" />
@@ -121,8 +123,10 @@
     <Compile Include="Core\Record\StreamedDB\RolePlayerEffects.cs" />
     <Compile Include="Core\Record\StreamedDB\RoleTeamEffects.cs" />
     <Compile Include="Core\Record\StreamedDB\StatsRequired.cs" />
+    <Compile Include="Core\Record\UserInfoRecord.cs" />
     <Compile Include="Core\Record\UserOptionRecord.cs" />
     <Compile Include="Core\Record\WeeklyAward.cs" />
+    <Compile Include="Core\UserSettingsModel.cs" />
     <Compile Include="Db\FB.cs" />
     <Compile Include="Forms\OptionsForm.cs">
       <SubType>UserControl</SubType>
@@ -177,6 +181,12 @@
     </Compile>
     <Compile Include="Forms\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GameOptions2019.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\GameOptions2019.Designer.cs">
+      <DependentUpon>GameOptions2019.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
     <None Include="app.config" />
@@ -468,6 +478,9 @@
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GameOptions2019.resx">
+      <DependentUpon>GameOptions2019.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -607,9 +620,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="football.ico" />
-    <None Include="Uniform Mappings.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -632,6 +642,9 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Resources\v436.txt" />
+    <EmbeddedResource Include="Resources\v435.txt" />
+    <EmbeddedResource Include="Resources\v434.txt" />
     <None Include="Resources\background.png" />
     <EmbeddedResource Include="Resources\SteveBio.txt" />
     <EmbeddedResource Include="Resources\Portfaq.txt" />
@@ -650,9 +663,10 @@
     <EmbeddedResource Include="Resources\v419.txt" />
     <EmbeddedResource Include="Resources\v421.txt" />
     <EmbeddedResource Include="Resources\v422.txt" />
-    <Content Include="tune.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Resources\v430.txt" />
+    <EmbeddedResource Include="Resources\v431.txt" />
+    <EmbeddedResource Include="Resources\v432.txt" />
+    <EmbeddedResource Include="Resources\v433.txt" />
     <EmbeddedResource Include="Forms\ExceptionDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
@@ -697,7 +711,12 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)Libs\tdbaccess.dll" "$(ProjectDir)$(OutDir)"
+mkdir "Conditioning\TrainingCamp"
+copy "$(ProjectDir)tune.txt" "$(ProjectDir)$(OutDir)Conditioning\TrainingCamp\tune.txt"
+mkdir "res"
+xcopy "$(ProjectDir)Resources\*.csv*" "$(ProjectDir)$(OutDir)\res\" /Y
+
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

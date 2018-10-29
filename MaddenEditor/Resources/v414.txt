@@ -1,0 +1,10 @@
+Madden AMP 4.1 Beta 5 Changelog
+
+NOTE : Any franchise that was made to include custom teams or was made with a custom league is not going to work correctly with Madden AMP.
+
+There is a known bug that the ROS/FRA file will ask you to save even though there may have been no changes.  If you are certain you made no changes, you don't need to save the file.
+Haven't had time to track this bug down.
+
+
+
+TEAM - Added custom art field for editing.

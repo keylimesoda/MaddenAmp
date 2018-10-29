@@ -38,6 +38,7 @@ namespace MaddenEditor.Forms
 		private bool isInitialising = false;
 		private EditorModel model = null;
 		private DepthChartEditingModel depthEditingModel = null;
+        public Overall playeroverall = new Overall();
 
 		public DepthChartEditorControl()
 		{
@@ -53,36 +54,46 @@ namespace MaddenEditor.Forms
 			set { this.model = value;  }
 		}
 
-		public void InitialiseUI()
-		{
-			depthEditingModel = new DepthChartEditingModel(model);
-			isInitialising = true;
-			foreach (TeamRecord team in model.TeamModel.GetTeams())
-			{
-				teamCombo.Items.Add(team);
-			}
-			foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
-			{
-				positionCombo.Items.Add(pos);
-			}
-			//Attempt adding specialised positions
-			positionCombo.Items.Add("KR");
-			positionCombo.Items.Add("PR");
-			positionCombo.Items.Add("KOS");
-			positionCombo.Items.Add("LS");
-			positionCombo.Items.Add("3DRB");
-			positionCombo.Text = positionCombo.Items[0].ToString();
-			teamCombo.SelectedIndex = 0;
+        public void InitialiseUI()
+        {
+            depthEditingModel = new DepthChartEditingModel(model);
+            isInitialising = true;
+            foreach (TeamRecord team in model.TeamModel.GetTeams())
+            {
+                teamCombo.Items.Add(team);
+            }
 
-			isInitialising = false;
+            if (model.FileVersion < MaddenFileVersion.Ver2019)
+            {
+                for (int p = 0; p < 21; p++)
+                {
+                    string pos = Enum.GetName(typeof(MaddenPositions), p);
+                    positionCombo.Items.Add(pos);
+                }
+            }
+            else
+            {
+                for (int p = 0; p < 33; p++)
+                {
+                    string pos = Enum.GetName(typeof(MaddenPositions2019), p);
+                    positionCombo.Items.Add(pos);
+                }
 
-			LoadDepthChart();
+                playeroverall.InitRatings19();
+            }
+            
+            positionCombo.Text = positionCombo.Items[0].ToString();
+            teamCombo.SelectedIndex = 0;
 
-			if (availablePlayerDatagrid.Rows.Count > 0)
-				availablePlayerDatagrid.Rows[0].Selected = true;
-			if (depthChartDataGrid.Rows.Count > 0)
-				this.depthChartDataGrid.Rows[0].Selected = true;
-		}
+            isInitialising = false;
+
+            LoadDepthChart();
+
+            if (availablePlayerDatagrid.Rows.Count > 0)
+                availablePlayerDatagrid.Rows[0].Selected = true;
+            if (depthChartDataGrid.Rows.Count > 0)
+                this.depthChartDataGrid.Rows[0].Selected = true;
+        }
 
 		public void CleanUI()
 		{
@@ -108,7 +119,10 @@ namespace MaddenEditor.Forms
 
 			foreach (DepthPlayerValueObject valObject in depthList.Values)
 			{
-				DataGridViewRow row = valObject.playerObject.GetDataRow(positionId);
+                double overall = valObject.playerObject.Overall;
+                if (valObject.playerObject.PositionId != positionCombo.SelectedIndex)
+                    overall = playeroverall.GetOverall19(valObject.playerObject, positionCombo.SelectedIndex, -1);
+                DataGridViewRow row = valObject.playerObject.GetDataRow(positionId, (int)overall);                
 				//Now add our DepthChartRecord row on
 				DataGridViewTextBoxCell depthCell = new DataGridViewTextBoxCell();
 				depthCell.Value = valObject.depthObject;
@@ -123,8 +137,17 @@ namespace MaddenEditor.Forms
 			availablePlayerDatagrid.Rows.Clear();
 			foreach (PlayerRecord record in teamPlayers)
 			{
-				availablePlayerDatagrid.Rows.Add(record.GetDataRow(positionId));
+				// sting68 ok, for madden 19 we need to get overall separate from the normal function
+                // for type we are going to have to use the players type, which isnt going to be accurate for
+                // determining an overall for a player out of his normal position
+                double overall = playeroverall.GetOverall19(record, positionId, -1);
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    availablePlayerDatagrid.Rows.Add(record.GetDataRow(positionId, (int)overall));
+                else availablePlayerDatagrid.Rows.Add(record.GetDataRow(positionId,-1));
 			}
+
+            //Sort by OVR
+            availablePlayerDatagrid.Sort(availablePlayerDatagrid.Columns["TeamOverall"], ListSortDirection.Descending);            
 
 			teamDepthChartLabel.Text = teamCombo.Text + " Depth Chart (" + positionCombo.Text + ")";
 
@@ -167,6 +190,13 @@ namespace MaddenEditor.Forms
 				case 23: // KOS
 				case 24: // LS
 				case 25: // 3DRB
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                case 33:
 					//Must have 3 positions
 					requiredCount = 3;
 					break;
@@ -185,6 +215,12 @@ namespace MaddenEditor.Forms
 					//must have 5 positions
 					requiredCount = 5;
 					break;
+                case 26:
+                    requiredCount = 2;
+                    break;
+
+
+
 				default:
 					break;
 					

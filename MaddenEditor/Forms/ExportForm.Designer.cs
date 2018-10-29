@@ -28,8 +28,7 @@ namespace MaddenEditor.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.ExportFilter_Panel = new System.Windows.Forms.GroupBox();
             this.MainSkillsOnly_Checkbox = new System.Windows.Forms.CheckBox();
             this.ExportButton = new System.Windows.Forms.Button();
             this.filterPositionCombo = new System.Windows.Forms.ComboBox();
@@ -51,63 +50,68 @@ namespace MaddenEditor.Forms
             this.RemoveExportTables_Button = new System.Windows.Forms.Button();
             this.AddExportTables_Button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Replace_Checkbox = new System.Windows.Forms.CheckBox();
+            this.ExtractByTableName = new System.Windows.Forms.CheckBox();
+            this.Descriptions_Checkbox = new System.Windows.Forms.CheckBox();
+            this.Import_Panel = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ImportErrors_Listview = new System.Windows.Forms.ListView();
+            this.DeleteCurrentRecs_Checkbox = new System.Windows.Forms.CheckBox();
+            this.ADDRecords_Button = new System.Windows.Forms.Button();
+            this.NotImportableCount_Textbox = new System.Windows.Forms.TextBox();
+            this.ImportFieldsCount_Textbox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.WrongFields_ListView = new System.Windows.Forms.ListView();
+            this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.ImportTableName_Textbox = new System.Windows.Forms.TextBox();
             this.UpdateRecs_Checkbox = new System.Windows.Forms.CheckBox();
             this.ImportCSV_Button = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.listView3 = new System.Windows.Forms.ListView();
-            this.listView4 = new System.Windows.Forms.ListView();
-            this.groupBox1.SuspendLayout();
+            this.ImportAvailFields_ListView = new System.Windows.Forms.ListView();
+            this.ImportSelected_ListView = new System.Windows.Forms.ListView();
+            this.DraftClass_Panel = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.DraftClassDescriptions_Checkbox = new System.Windows.Forms.CheckBox();
+            this.CreateDraftClass_Button = new System.Windows.Forms.Button();
+            this.ExportDraftClass_Button = new System.Windows.Forms.Button();
+            this.LoadDraftClass_Button = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.ExportFilter_Panel.SuspendLayout();
             this.Export_Panel.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.Import_Panel.SuspendLayout();
+            this.DraftClass_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // ExportFilter_Panel
             // 
-            this.groupBox1.Controls.Add(this.cancelButton);
-            this.groupBox1.Controls.Add(this.MainSkillsOnly_Checkbox);
-            this.groupBox1.Controls.Add(this.ExportButton);
-            this.groupBox1.Controls.Add(this.filterPositionCombo);
-            this.groupBox1.Controls.Add(this.filterTeamCombo);
-            this.groupBox1.Controls.Add(this.filterTeamCheckbox);
-            this.groupBox1.Controls.Add(this.filterPositionCheckbox);
-            this.groupBox1.Controls.Add(this.filterDraftClassCheckbox);
-            this.groupBox1.Location = new System.Drawing.Point(758, 27);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(227, 146);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Madden 04-08 Filter";
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.Location = new System.Drawing.Point(141, 117);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 2;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.ExportFilter_Panel.Controls.Add(this.MainSkillsOnly_Checkbox);
+            this.ExportFilter_Panel.Controls.Add(this.ExportButton);
+            this.ExportFilter_Panel.Controls.Add(this.filterDraftClassCheckbox);
+            this.ExportFilter_Panel.Location = new System.Drawing.Point(379, 5);
+            this.ExportFilter_Panel.Name = "ExportFilter_Panel";
+            this.ExportFilter_Panel.Size = new System.Drawing.Size(287, 117);
+            this.ExportFilter_Panel.TabIndex = 0;
+            this.ExportFilter_Panel.TabStop = false;
+            this.ExportFilter_Panel.Text = "Madden 04-08 Player Exports";
             // 
             // MainSkillsOnly_Checkbox
             // 
             this.MainSkillsOnly_Checkbox.AutoSize = true;
-            this.MainSkillsOnly_Checkbox.Location = new System.Drawing.Point(14, 75);
+            this.MainSkillsOnly_Checkbox.Location = new System.Drawing.Point(13, 29);
             this.MainSkillsOnly_Checkbox.Name = "MainSkillsOnly_Checkbox";
-            this.MainSkillsOnly_Checkbox.Size = new System.Drawing.Size(133, 17);
+            this.MainSkillsOnly_Checkbox.Size = new System.Drawing.Size(205, 17);
             this.MainSkillsOnly_Checkbox.TabIndex = 7;
-            this.MainSkillsOnly_Checkbox.Text = "Position Skill Sets Only";
+            this.MainSkillsOnly_Checkbox.Text = "Madden 04-08 Position Skill Sets Only";
             this.MainSkillsOnly_Checkbox.UseVisualStyleBackColor = true;
             // 
             // ExportButton
             // 
-            this.ExportButton.Location = new System.Drawing.Point(60, 117);
+            this.ExportButton.Location = new System.Drawing.Point(13, 81);
             this.ExportButton.Name = "ExportButton";
-            this.ExportButton.Size = new System.Drawing.Size(75, 23);
+            this.ExportButton.Size = new System.Drawing.Size(60, 23);
             this.ExportButton.TabIndex = 1;
             this.ExportButton.Text = "Export";
             this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
@@ -116,7 +120,7 @@ namespace MaddenEditor.Forms
             // 
             this.filterPositionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.filterPositionCombo.FormattingEnabled = true;
-            this.filterPositionCombo.Location = new System.Drawing.Point(80, 49);
+            this.filterPositionCombo.Location = new System.Drawing.Point(77, 141);
             this.filterPositionCombo.Name = "filterPositionCombo";
             this.filterPositionCombo.Size = new System.Drawing.Size(129, 21);
             this.filterPositionCombo.TabIndex = 6;
@@ -126,7 +130,7 @@ namespace MaddenEditor.Forms
             // 
             this.filterTeamCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.filterTeamCombo.FormattingEnabled = true;
-            this.filterTeamCombo.Location = new System.Drawing.Point(80, 20);
+            this.filterTeamCombo.Location = new System.Drawing.Point(77, 115);
             this.filterTeamCombo.Name = "filterTeamCombo";
             this.filterTeamCombo.Size = new System.Drawing.Size(129, 21);
             this.filterTeamCombo.TabIndex = 5;
@@ -135,7 +139,7 @@ namespace MaddenEditor.Forms
             // filterTeamCheckbox
             // 
             this.filterTeamCheckbox.AutoSize = true;
-            this.filterTeamCheckbox.Location = new System.Drawing.Point(14, 22);
+            this.filterTeamCheckbox.Location = new System.Drawing.Point(11, 117);
             this.filterTeamCheckbox.Name = "filterTeamCheckbox";
             this.filterTeamCheckbox.Size = new System.Drawing.Size(53, 17);
             this.filterTeamCheckbox.TabIndex = 4;
@@ -144,7 +148,7 @@ namespace MaddenEditor.Forms
             // filterPositionCheckbox
             // 
             this.filterPositionCheckbox.AutoSize = true;
-            this.filterPositionCheckbox.Location = new System.Drawing.Point(14, 51);
+            this.filterPositionCheckbox.Location = new System.Drawing.Point(11, 143);
             this.filterPositionCheckbox.Name = "filterPositionCheckbox";
             this.filterPositionCheckbox.Size = new System.Drawing.Size(63, 17);
             this.filterPositionCheckbox.TabIndex = 3;
@@ -153,15 +157,15 @@ namespace MaddenEditor.Forms
             // filterDraftClassCheckbox
             // 
             this.filterDraftClassCheckbox.AutoSize = true;
-            this.filterDraftClassCheckbox.Location = new System.Drawing.Point(14, 98);
+            this.filterDraftClassCheckbox.Location = new System.Drawing.Point(13, 52);
             this.filterDraftClassCheckbox.Name = "filterDraftClassCheckbox";
-            this.filterDraftClassCheckbox.Size = new System.Drawing.Size(77, 17);
+            this.filterDraftClassCheckbox.Size = new System.Drawing.Size(149, 17);
             this.filterDraftClassCheckbox.TabIndex = 2;
-            this.filterDraftClassCheckbox.Text = "Draft Class";
+            this.filterDraftClassCheckbox.Text = "Madden 04-08 Draft Class";
             // 
             // Export_Button
             // 
-            this.Export_Button.Location = new System.Drawing.Point(758, 238);
+            this.Export_Button.Location = new System.Drawing.Point(58, 354);
             this.Export_Button.Name = "Export_Button";
             this.Export_Button.Size = new System.Drawing.Size(118, 23);
             this.Export_Button.TabIndex = 1;
@@ -198,8 +202,6 @@ namespace MaddenEditor.Forms
             this.Export_Panel.Controls.Add(this.AvailFields_ListView);
             this.Export_Panel.Controls.Add(this.label4);
             this.Export_Panel.Controls.Add(this.label3);
-            this.Export_Panel.Controls.Add(this.groupBox1);
-            this.Export_Panel.Controls.Add(this.Export_Button);
             this.Export_Panel.Controls.Add(this.label2);
             this.Export_Panel.Controls.Add(this.AddFields_Button);
             this.Export_Panel.Controls.Add(this.RemoveExportTables_Button);
@@ -207,9 +209,9 @@ namespace MaddenEditor.Forms
             this.Export_Panel.Controls.Add(this.label1);
             this.Export_Panel.Controls.Add(this.AvailTables_ListView);
             this.Export_Panel.Controls.Add(this.ExportTables_ListView);
-            this.Export_Panel.Location = new System.Drawing.Point(5, 5);
+            this.Export_Panel.Location = new System.Drawing.Point(5, 128);
             this.Export_Panel.Name = "Export_Panel";
-            this.Export_Panel.Size = new System.Drawing.Size(995, 270);
+            this.Export_Panel.Size = new System.Drawing.Size(745, 277);
             this.Export_Panel.TabIndex = 7;
             // 
             // RemoveFields_Button
@@ -304,119 +306,302 @@ namespace MaddenEditor.Forms
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(50, 10);
+            this.label1.Location = new System.Drawing.Point(27, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Tables";
+            this.label1.Text = "Available Tables";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(55, 4);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(101, 15);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "Export Options";
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.Replace_Checkbox);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.textBox2);
-            this.panel1.Controls.Add(this.UpdateRecs_Checkbox);
-            this.panel1.Controls.Add(this.ImportCSV_Button);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.listView3);
-            this.panel1.Controls.Add(this.listView4);
-            this.panel1.Location = new System.Drawing.Point(5, 343);
+            this.panel1.Controls.Add(this.ExtractByTableName);
+            this.panel1.Controls.Add(this.Descriptions_Checkbox);
+            this.panel1.Controls.Add(this.label11);
+            this.panel1.Controls.Add(this.Export_Button);
+            this.panel1.Controls.Add(this.filterPositionCombo);
+            this.panel1.Controls.Add(this.filterPositionCheckbox);
+            this.panel1.Controls.Add(this.filterTeamCombo);
+            this.panel1.Controls.Add(this.filterTeamCheckbox);
+            this.panel1.Location = new System.Drawing.Point(773, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(770, 386);
-            this.panel1.TabIndex = 8;
+            this.panel1.Size = new System.Drawing.Size(227, 393);
+            this.panel1.TabIndex = 14;
             // 
-            // Replace_Checkbox
+            // ExtractByTableName
             // 
-            this.Replace_Checkbox.AutoSize = true;
-            this.Replace_Checkbox.Location = new System.Drawing.Point(570, 204);
-            this.Replace_Checkbox.Name = "Replace_Checkbox";
-            this.Replace_Checkbox.Size = new System.Drawing.Size(88, 17);
-            this.Replace_Checkbox.TabIndex = 2;
-            this.Replace_Checkbox.Text = "Replace ALL";
-            this.Replace_Checkbox.UseVisualStyleBackColor = true;
+            this.ExtractByTableName.AutoSize = true;
+            this.ExtractByTableName.Location = new System.Drawing.Point(11, 319);
+            this.ExtractByTableName.Name = "ExtractByTableName";
+            this.ExtractByTableName.Size = new System.Drawing.Size(162, 17);
+            this.ExtractByTableName.TabIndex = 16;
+            this.ExtractByTableName.Text = "Extract to DIR by table name";
+            this.ExtractByTableName.UseVisualStyleBackColor = true;
+            // 
+            // Descriptions_Checkbox
+            // 
+            this.Descriptions_Checkbox.AutoSize = true;
+            this.Descriptions_Checkbox.Location = new System.Drawing.Point(11, 79);
+            this.Descriptions_Checkbox.Name = "Descriptions_Checkbox";
+            this.Descriptions_Checkbox.Size = new System.Drawing.Size(147, 17);
+            this.Descriptions_Checkbox.TabIndex = 14;
+            this.Descriptions_Checkbox.Text = "Include Field Descriptions";
+            this.Descriptions_Checkbox.UseVisualStyleBackColor = true;
+            // 
+            // Import_Panel
+            // 
+            this.Import_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Import_Panel.Controls.Add(this.label9);
+            this.Import_Panel.Controls.Add(this.ImportErrors_Listview);
+            this.Import_Panel.Controls.Add(this.DeleteCurrentRecs_Checkbox);
+            this.Import_Panel.Controls.Add(this.ADDRecords_Button);
+            this.Import_Panel.Controls.Add(this.NotImportableCount_Textbox);
+            this.Import_Panel.Controls.Add(this.ImportFieldsCount_Textbox);
+            this.Import_Panel.Controls.Add(this.label8);
+            this.Import_Panel.Controls.Add(this.WrongFields_ListView);
+            this.Import_Panel.Controls.Add(this.label7);
+            this.Import_Panel.Controls.Add(this.label5);
+            this.Import_Panel.Controls.Add(this.ImportTableName_Textbox);
+            this.Import_Panel.Controls.Add(this.UpdateRecs_Checkbox);
+            this.Import_Panel.Controls.Add(this.ImportCSV_Button);
+            this.Import_Panel.Controls.Add(this.label6);
+            this.Import_Panel.Controls.Add(this.ImportAvailFields_ListView);
+            this.Import_Panel.Controls.Add(this.ImportSelected_ListView);
+            this.Import_Panel.Location = new System.Drawing.Point(5, 411);
+            this.Import_Panel.Name = "Import_Panel";
+            this.Import_Panel.Size = new System.Drawing.Size(995, 309);
+            this.Import_Panel.TabIndex = 8;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(737, 51);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(91, 15);
+            this.label9.TabIndex = 27;
+            this.label9.Text = "Import Errors";
+            // 
+            // ImportErrors_Listview
+            // 
+            this.ImportErrors_Listview.Location = new System.Drawing.Point(591, 73);
+            this.ImportErrors_Listview.Name = "ImportErrors_Listview";
+            this.ImportErrors_Listview.Size = new System.Drawing.Size(394, 220);
+            this.ImportErrors_Listview.TabIndex = 26;
+            this.ImportErrors_Listview.UseCompatibleStateImageBehavior = false;
+            this.ImportErrors_Listview.View = System.Windows.Forms.View.Details;
+            // 
+            // DeleteCurrentRecs_Checkbox
+            // 
+            this.DeleteCurrentRecs_Checkbox.AutoSize = true;
+            this.DeleteCurrentRecs_Checkbox.Location = new System.Drawing.Point(806, 7);
+            this.DeleteCurrentRecs_Checkbox.Name = "DeleteCurrentRecs_Checkbox";
+            this.DeleteCurrentRecs_Checkbox.Size = new System.Drawing.Size(144, 17);
+            this.DeleteCurrentRecs_Checkbox.TabIndex = 25;
+            this.DeleteCurrentRecs_Checkbox.Text = "Delete ALL Current Recs";
+            this.DeleteCurrentRecs_Checkbox.UseVisualStyleBackColor = true;
+            this.DeleteCurrentRecs_Checkbox.CheckedChanged += new System.EventHandler(this.DeleteCurrentRecs_Checkbox_CheckedChanged);
+            // 
+            // ADDRecords_Button
+            // 
+            this.ADDRecords_Button.Location = new System.Drawing.Point(398, 4);
+            this.ADDRecords_Button.Name = "ADDRecords_Button";
+            this.ADDRecords_Button.Size = new System.Drawing.Size(150, 23);
+            this.ADDRecords_Button.TabIndex = 24;
+            this.ADDRecords_Button.Text = "Process Records";
+            this.ADDRecords_Button.UseVisualStyleBackColor = true;
+            this.ADDRecords_Button.Click += new System.EventHandler(this.ProcessRecords_Button_Click);
+            // 
+            // NotImportableCount_Textbox
+            // 
+            this.NotImportableCount_Textbox.Location = new System.Drawing.Point(422, 50);
+            this.NotImportableCount_Textbox.Name = "NotImportableCount_Textbox";
+            this.NotImportableCount_Textbox.Size = new System.Drawing.Size(100, 20);
+            this.NotImportableCount_Textbox.TabIndex = 23;
+            // 
+            // ImportFieldsCount_Textbox
+            // 
+            this.ImportFieldsCount_Textbox.Location = new System.Drawing.Point(38, 50);
+            this.ImportFieldsCount_Textbox.Name = "ImportFieldsCount_Textbox";
+            this.ImportFieldsCount_Textbox.Size = new System.Drawing.Size(100, 20);
+            this.ImportFieldsCount_Textbox.TabIndex = 22;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(417, 30);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(110, 16);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "Not Importable";
+            // 
+            // WrongFields_ListView
+            // 
+            this.WrongFields_ListView.Location = new System.Drawing.Point(398, 73);
+            this.WrongFields_ListView.Name = "WrongFields_ListView";
+            this.WrongFields_ListView.Size = new System.Drawing.Size(150, 220);
+            this.WrongFields_ListView.TabIndex = 20;
+            this.WrongFields_ListView.UseCompatibleStateImageBehavior = false;
+            this.WrongFields_ListView.View = System.Windows.Forms.View.Details;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(180, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(73, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Loaded Table";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(318, 78);
+            this.label5.Location = new System.Drawing.Point(245, 52);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(117, 16);
             this.label5.TabIndex = 17;
             this.label5.Text = "Selected Fields";
             // 
-            // textBox2
+            // ImportTableName_Textbox
             // 
-            this.textBox2.Location = new System.Drawing.Point(212, 76);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 18;
+            this.ImportTableName_Textbox.Location = new System.Drawing.Point(256, 5);
+            this.ImportTableName_Textbox.Name = "ImportTableName_Textbox";
+            this.ImportTableName_Textbox.Size = new System.Drawing.Size(100, 20);
+            this.ImportTableName_Textbox.TabIndex = 18;
             // 
             // UpdateRecs_Checkbox
             // 
             this.UpdateRecs_Checkbox.AutoSize = true;
-            this.UpdateRecs_Checkbox.Location = new System.Drawing.Point(570, 181);
+            this.UpdateRecs_Checkbox.Location = new System.Drawing.Point(591, 8);
             this.UpdateRecs_Checkbox.Name = "UpdateRecs_Checkbox";
-            this.UpdateRecs_Checkbox.Size = new System.Drawing.Size(89, 17);
+            this.UpdateRecs_Checkbox.Size = new System.Drawing.Size(195, 17);
             this.UpdateRecs_Checkbox.TabIndex = 1;
-            this.UpdateRecs_Checkbox.Text = "Update Recs";
+            this.UpdateRecs_Checkbox.Text = "Update Player Recs When Possible";
             this.UpdateRecs_Checkbox.UseVisualStyleBackColor = true;
+            this.UpdateRecs_Checkbox.CheckedChanged += new System.EventHandler(this.UpdateRecs_Checkbox_CheckedChanged);
             // 
             // ImportCSV_Button
             // 
-            this.ImportCSV_Button.Location = new System.Drawing.Point(570, 248);
+            this.ImportCSV_Button.Location = new System.Drawing.Point(30, 4);
             this.ImportCSV_Button.Name = "ImportCSV_Button";
             this.ImportCSV_Button.Size = new System.Drawing.Size(89, 23);
             this.ImportCSV_Button.TabIndex = 0;
-            this.ImportCSV_Button.Text = "Import CSV";
+            this.ImportCSV_Button.Text = "Load CSV";
             this.ImportCSV_Button.UseVisualStyleBackColor = true;
+            this.ImportCSV_Button.Click += new System.EventHandler(this.ImportCSV_Button_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(82, 78);
+            this.label6.Location = new System.Drawing.Point(27, 30);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(121, 16);
+            this.label6.Size = new System.Drawing.Size(129, 16);
             this.label6.TabIndex = 16;
-            this.label6.Text = "Available Fields";
+            this.label6.Text = "Importable Fields";
             // 
-            // button1
+            // ImportAvailFields_ListView
             // 
-            this.button1.Location = new System.Drawing.Point(227, 209);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(55, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "DEL";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ImportAvailFields_ListView.Location = new System.Drawing.Point(17, 73);
+            this.ImportAvailFields_ListView.Name = "ImportAvailFields_ListView";
+            this.ImportAvailFields_ListView.Size = new System.Drawing.Size(150, 220);
+            this.ImportAvailFields_ListView.TabIndex = 12;
+            this.ImportAvailFields_ListView.UseCompatibleStateImageBehavior = false;
+            this.ImportAvailFields_ListView.View = System.Windows.Forms.View.Details;
             // 
-            // button2
+            // ImportSelected_ListView
             // 
-            this.button2.Location = new System.Drawing.Point(227, 164);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(55, 23);
-            this.button2.TabIndex = 14;
-            this.button2.Text = "ADD";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ImportSelected_ListView.Location = new System.Drawing.Point(229, 73);
+            this.ImportSelected_ListView.Name = "ImportSelected_ListView";
+            this.ImportSelected_ListView.Size = new System.Drawing.Size(150, 220);
+            this.ImportSelected_ListView.TabIndex = 13;
+            this.ImportSelected_ListView.UseCompatibleStateImageBehavior = false;
+            this.ImportSelected_ListView.View = System.Windows.Forms.View.Details;
             // 
-            // listView3
+            // DraftClass_Panel
             // 
-            this.listView3.Location = new System.Drawing.Point(73, 99);
-            this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(150, 232);
-            this.listView3.TabIndex = 12;
-            this.listView3.UseCompatibleStateImageBehavior = false;
+            this.DraftClass_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DraftClass_Panel.Controls.Add(this.label12);
+            this.DraftClass_Panel.Controls.Add(this.DraftClassDescriptions_Checkbox);
+            this.DraftClass_Panel.Controls.Add(this.CreateDraftClass_Button);
+            this.DraftClass_Panel.Controls.Add(this.ExportDraftClass_Button);
+            this.DraftClass_Panel.Controls.Add(this.LoadDraftClass_Button);
+            this.DraftClass_Panel.Controls.Add(this.label10);
+            this.DraftClass_Panel.Location = new System.Drawing.Point(5, 5);
+            this.DraftClass_Panel.Name = "DraftClass_Panel";
+            this.DraftClass_Panel.Size = new System.Drawing.Size(368, 117);
+            this.DraftClass_Panel.TabIndex = 9;
             // 
-            // listView4
+            // label12
             // 
-            this.listView4.Location = new System.Drawing.Point(288, 97);
-            this.listView4.Name = "listView4";
-            this.listView4.Size = new System.Drawing.Size(150, 232);
-            this.listView4.TabIndex = 13;
-            this.listView4.UseCompatibleStateImageBehavior = false;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(188, 55);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(129, 13);
+            this.label12.TabIndex = 16;
+            this.label12.Text = "^^ THIS TAKES TIME ^^";
+            // 
+            // DraftClassDescriptions_Checkbox
+            // 
+            this.DraftClassDescriptions_Checkbox.AutoSize = true;
+            this.DraftClassDescriptions_Checkbox.Location = new System.Drawing.Point(9, 86);
+            this.DraftClassDescriptions_Checkbox.Name = "DraftClassDescriptions_Checkbox";
+            this.DraftClassDescriptions_Checkbox.Size = new System.Drawing.Size(147, 17);
+            this.DraftClassDescriptions_Checkbox.TabIndex = 15;
+            this.DraftClassDescriptions_Checkbox.Text = "Include Field Descriptions";
+            this.DraftClassDescriptions_Checkbox.UseVisualStyleBackColor = true;
+            // 
+            // CreateDraftClass_Button
+            // 
+            this.CreateDraftClass_Button.Location = new System.Drawing.Point(173, 28);
+            this.CreateDraftClass_Button.Name = "CreateDraftClass_Button";
+            this.CreateDraftClass_Button.Size = new System.Drawing.Size(158, 23);
+            this.CreateDraftClass_Button.TabIndex = 3;
+            this.CreateDraftClass_Button.Text = "Create Draft Class from CSV";
+            this.CreateDraftClass_Button.UseVisualStyleBackColor = true;
+            this.CreateDraftClass_Button.Click += new System.EventHandler(this.CreateDraftClass_Button_Click);
+            // 
+            // ExportDraftClass_Button
+            // 
+            this.ExportDraftClass_Button.Location = new System.Drawing.Point(9, 57);
+            this.ExportDraftClass_Button.Name = "ExportDraftClass_Button";
+            this.ExportDraftClass_Button.Size = new System.Drawing.Size(158, 23);
+            this.ExportDraftClass_Button.TabIndex = 2;
+            this.ExportDraftClass_Button.Text = "Export to CSV";
+            this.ExportDraftClass_Button.UseVisualStyleBackColor = true;
+            this.ExportDraftClass_Button.Click += new System.EventHandler(this.ExportDraftClass_Button_Click);
+            // 
+            // LoadDraftClass_Button
+            // 
+            this.LoadDraftClass_Button.Location = new System.Drawing.Point(9, 28);
+            this.LoadDraftClass_Button.Name = "LoadDraftClass_Button";
+            this.LoadDraftClass_Button.Size = new System.Drawing.Size(158, 23);
+            this.LoadDraftClass_Button.TabIndex = 1;
+            this.LoadDraftClass_Button.Text = "Load Draft Class";
+            this.LoadDraftClass_Button.UseVisualStyleBackColor = true;
+            this.LoadDraftClass_Button.Click += new System.EventHandler(this.LoadDraftClass_Button_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(10, 6);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(175, 15);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Madden v2019 Draft Class";
             // 
             // ExportForm
             // 
@@ -424,27 +609,33 @@ namespace MaddenEditor.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 732);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.DraftClass_Panel);
+            this.Controls.Add(this.Import_Panel);
             this.Controls.Add(this.Export_Panel);
+            this.Controls.Add(this.ExportFilter_Panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ExportForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Export Players";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Text = "Import/Export CSV";
+            this.ExportFilter_Panel.ResumeLayout(false);
+            this.ExportFilter_Panel.PerformLayout();
             this.Export_Panel.ResumeLayout(false);
             this.Export_Panel.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.Import_Panel.ResumeLayout(false);
+            this.Import_Panel.PerformLayout();
+            this.DraftClass_Panel.ResumeLayout(false);
+            this.DraftClass_Panel.PerformLayout();
             this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Button ExportButton;
-		private System.Windows.Forms.Button cancelButton;
+		private System.Windows.Forms.GroupBox ExportFilter_Panel;
+        private System.Windows.Forms.Button ExportButton;
 		private System.Windows.Forms.ComboBox filterPositionCombo;
 		private System.Windows.Forms.ComboBox filterTeamCombo;
 		private System.Windows.Forms.CheckBox filterTeamCheckbox;
@@ -459,22 +650,39 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button RemoveExportTables_Button;
         private System.Windows.Forms.Button AddExportTables_Button;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel Import_Panel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox Replace_Checkbox;
         private System.Windows.Forms.Button AddFields_Button;
         private System.Windows.Forms.CheckBox UpdateRecs_Checkbox;
         private System.Windows.Forms.Button ImportCSV_Button;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox ImportTableName_Textbox;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListView listView3;
-        private System.Windows.Forms.ListView listView4;
+        private System.Windows.Forms.ListView ImportAvailFields_ListView;
+        private System.Windows.Forms.ListView ImportSelected_ListView;
         private System.Windows.Forms.ListView ExportFields_ListView;
         private System.Windows.Forms.ListView AvailFields_ListView;
         private System.Windows.Forms.Button RemoveFields_Button;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ListView WrongFields_ListView;
+        private System.Windows.Forms.TextBox ImportFieldsCount_Textbox;
+        private System.Windows.Forms.TextBox NotImportableCount_Textbox;
+        private System.Windows.Forms.Button ADDRecords_Button;
+        private System.Windows.Forms.CheckBox DeleteCurrentRecs_Checkbox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ListView ImportErrors_Listview;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox Descriptions_Checkbox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Panel DraftClass_Panel;
+        private System.Windows.Forms.Button CreateDraftClass_Button;
+        private System.Windows.Forms.Button ExportDraftClass_Button;
+        private System.Windows.Forms.Button LoadDraftClass_Button;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox DraftClassDescriptions_Checkbox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox ExtractByTableName;
 	}
 }

@@ -376,8 +376,50 @@ namespace MaddenEditor.Core
                 floatFields[fieldName] = val;
             }
         }
-        
-        
+
+        public void SetFieldCSV(string fieldname, string csvstring)
+        {
+            if (BigEndian)
+            {
+                string rev = ConvertBE(fieldname);
+                fieldname = rev;
+            }
+
+            if (stringFields.ContainsKey(fieldname))
+            {
+                if (!backupStringFields.ContainsKey(fieldname))
+                {
+                    //Backup original value
+                    backupStringFields.Add(fieldname, stringFields[fieldname]);
+                }
+                stringFields[fieldname] = csvstring;
+                editorModel.Dirty = true;
+                this.dirty = true;
+            }
+            else if (intFields.ContainsKey(fieldname))
+            {
+                if (!backupIntFields.ContainsKey(fieldname))
+                {
+                    //Backup original value
+                    backupIntFields.Add(fieldname, intFields[fieldname]);
+                }
+                intFields[fieldname] = Convert.ToInt32(csvstring);                
+                editorModel.Dirty = true;
+                this.dirty = true;
+            }
+            else if (floatFields.ContainsKey(fieldname))
+            {
+                if (!backupFloatFields.ContainsKey(fieldname))
+                {
+                    //Backup original value
+                    backupFloatFields.Add(fieldname, floatFields[fieldname]);
+                }
+                floatFields[fieldname] = float.Parse(csvstring);
+                editorModel.Dirty = true;
+                this.dirty = true;
+            }
+        }
+
         public void GetChangedIntFields(ref string[] keyArray, ref int[] valueArray)
 		{
 			keyArray = new string[backupIntFields.Count];

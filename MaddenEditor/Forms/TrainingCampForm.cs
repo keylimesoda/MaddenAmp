@@ -129,24 +129,19 @@ namespace MaddenEditor.Forms
                                           
                     foreach (TeamRecord team in model.TeamModel.GetTeams())
                     {
-                        selectHumanTeam.Items.Add(team);
+                        if (team.TeamId < 1009)
+                            selectHumanTeam.Items.Add(team);
                     }
-                    selectHumanTeam.Items.RemoveAt(34);//Remove NFC,AFC,FREEAGENT
-                    selectHumanTeam.Items.RemoveAt(33);
-                    selectHumanTeam.Items.RemoveAt(32);
-                    foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))
+
+                    for (int p = 0; p < 21; p++)
                     {
+                        string pos = Enum.GetName(typeof(MaddenPositions), p);
                         filterPositionComboBox.Items.Add(pos);
-                    }
-               //     filterPositionComboBox.Items.Add("OL");
-               //     filterPositionComboBox.Items.Add("DL");
-              //      filterPositionComboBox.Items.Add("LB");
-               //     filterPositionComboBox.Items.Add("DB");
+                    }                    
               
                     foreach (string pos in Enum.GetNames(typeof(MaddenPositionGroups)))
                     {
-                        filterPositionComboBox.Items.Add(pos);
-                      
+                        filterPositionComboBox.Items.Add(pos);                      
                     }
 
                     //Populate Activity combobox
@@ -4744,7 +4739,7 @@ namespace MaddenEditor.Forms
                             injRec.PlayerId = valObject.PlayerId;
                             injRec.TeamId = valObject.TeamId;
                             injRec.InjuryLength = int.Parse(INJURYdescription[2]); ;
-                            injRec.InjuryReserve = false;
+                            injRec.IR = false;
                             injRec.InjuryType = int.Parse(INJURYdescription[0]);
                             InjuryType = ";" + INJURYdescription[1];
 
@@ -7258,7 +7253,7 @@ namespace MaddenEditor.Forms
                             injRec.PlayerId = valObject.PlayerId;
                             injRec.TeamId = valObject.TeamId;
                             injRec.InjuryLength = int.Parse(INJURYdescription[2]); ;
-                            injRec.InjuryReserve = false;
+                            injRec.IR = false;
                             injRec.InjuryType = int.Parse(INJURYdescription[0]);
                             InjuryType = ";" + INJURYdescription[1];
 

@@ -1,0 +1,14 @@
+Madden AMP 4.1 Beta 7 Changelog
+
+NOTE : Any franchise that was made to include custom teams or was made with a custom league is not going to work correctly with Madden AMP.
+
+
+Player - Contract
+
+- Fixed bug that caused exception errors when switching between rookie/veteran players due to the minimum yearly % increase from 25% to 30%
+
+- Added code to help prevent errors when loading a player that has existing invalid contract terms that were imported from external editors. *
+
+* If contract years left is greater than the contract length, it will automatically be changed to equal the contract length.  If contract length has been previously saved as 0, the contract salary and bonus fields will be reset to 0.
+Since this actually changes the roster/franchise, it will trigger asking to save before exiting.
+

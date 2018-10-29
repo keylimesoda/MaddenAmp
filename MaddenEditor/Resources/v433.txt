@@ -1,0 +1,41 @@
+Madden AMP 4.33
+
+
+There were a lot of changes in 4.32 please review those if you have not already done so.
+
+
+
+v4.33 Changelog
+---------------
+
+Added forcing the display of splash screen and current changelog.
+
+Various UI layout updates and version specific tweaks.
+
+Fixed bug with the Cover Ball trait for 2019.
+Fixed the order of the Cover Ball trait descriptions.
+
+Fixed bug with exporting csv.  
+Roster had "Washington, D.C." for player hometown and the comma was causing data corruption.  Anything with a comma will now be changed to a space instead.
+
+Do not attempt to import csv values in which a text string contains a comma.
+ex. "Washington, D.C." Use a space instead.  ex. "Washington D.C."
+
+
+
+Import/Export
+-------------
+Added an error list for details when having problems with importing.  Have not tested.
+
+
+Player Editor
+-------------
+Added Archetype Overall calculation for 2019*
+
+The OVR's are not going to be exact, but they are usually within 1-2 points.  
+This is because the exact method for the rounding of a player's individual ratings is unknown.
+
+* All of the possible archetype overall scores are only visible in game when managing players in franchise mode.
+
+
+

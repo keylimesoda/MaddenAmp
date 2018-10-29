@@ -1,0 +1,42 @@
+Madden AMP 4.3  Changelog
+
+
+Madden AMP code is compatible with Windows 7. (.NET 4.5.1)
+
+Updated Code to work with Madden 19 roster files, and some others.
+
+
+Note: This will not load any save files.  
+The formatting for save files is unknown at this point.
+There is no time table for when this may be possible.
+
+
+
+
+Player :
+
+Added some new ratings/traits for Madden 19.
+Updated Injury descriptions for Madden 19.
+Updated Equipment for Madden 19.
+Added various new fields based on Madden 19.
+
+Global Attr Editor:
+Added some of the Madden 19 traits for global editing.
+These are limited to the on/off traits.
+
+
+Team:
+Added displaying of number of active players (will not include players on IR)
+Stadium select for Madden 19.
+Team Endzone celebration for Madden 19.
+
+
+Holding off for now on doing uniform id changes.
+The official Madden 19 roster is listing both home/away jersey id's as the bears home jersery id
+for ALL teams.  This is likely getting reset elsewhere.
+
+
+Changed Export to Import/Export:
+Added functions to select tables/fields for exporting in csv format.
+
+

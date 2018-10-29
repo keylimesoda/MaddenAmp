@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -43,11 +44,21 @@ namespace MaddenEditor.Forms
         public List<string> tables_export = new List<string>();
         public Dictionary<string, List<string>> fields_avail = new Dictionary<string, List<string>>();
         public Dictionary<string, List<string>> fields_export = new Dictionary<string, List<string>>();
-        
+        public MaddenFileVersion csvVersion;
+        public Dictionary<int, string> import_fields_avail = new Dictionary<int, string>();
+        public List<string> import_fields = new List<string>();
+        public string currenttablename = "";
+        public int linenumber = 0;
+        public List<string> errors = new List<string>();
+
+        List<List<string>> CSVRecords = new List<List<string>>();
+        public FB FB_Draft = new FB();
+       
         public ExportForm(EditorModel model)
         {
             this.model = model;
-            InitializeComponent();
+            FB_Draft = new FB();
+            InitializeComponent();            
         }
 
         #region IEditorForm Members
@@ -339,12 +350,20 @@ namespace MaddenEditor.Forms
             "Central St.(OK)   ",
             "Emporia State     "
             };
-        # endregion
+        #endregion
 
         public void InitialiseUI()
         {
             isInitializing = true;
             InitTables();
+
+            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            {
+                ExportFilter_Panel.Visible = true;
+                filterDraftClassCheckbox.Enabled = false;
+                MainSkillsOnly_Checkbox.Enabled = false;
+            }
+            else ExportFilter_Panel.Visible = true;
 
             ColumnHeader header = new ColumnHeader();
             header.Text = "Tables";
@@ -372,18 +391,22 @@ namespace MaddenEditor.Forms
             ExportFields_ListView.Columns.Add(header);
             ExportFields_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
-            foreach (TeamRecord team in model.TeamModel.GetTeams())
+            if (model.FileType != MaddenFileType.Streameddata && model.FileType != MaddenFileType.DataRam && model.FileType != MaddenFileType.StaticData)
             {
-                filterTeamCombo.Items.Add(team);
-            }
+                foreach (TeamRecord team in model.TeamModel.GetTeams())
+                {
+                    filterTeamCombo.Items.Add(team);
+                }
 
-            foreach (string position in Enum.GetNames(typeof(MaddenPositions)))
-            {
-                filterPositionCombo.Items.Add(position);
-            }
+                for (int p = 0; p < 21; p++)
+                {
+                    string pos = Enum.GetName(typeof(MaddenPositions), p);
+                    filterPositionCombo.Items.Add(pos);
+                }                
 
-            filterPositionCombo.Text = filterPositionCombo.Items[0].ToString();
-            filterTeamCombo.Text = filterTeamCombo.Items[0].ToString();
+                filterPositionCombo.Text = filterPositionCombo.Items[0].ToString();
+                filterTeamCombo.Text = filterTeamCombo.Items[0].ToString();
+            }
             isInitializing = false;
         }
 
@@ -396,6 +419,11 @@ namespace MaddenEditor.Forms
 
         #endregion
 
+        public void SetSerial(FB roster)
+        {
+            this.FB_Draft.Serial = roster.Serial.ToArray();
+        }
+        
         public string ConvertBE(string name)
         {
             char[] charArray = name.ToCharArray();
@@ -404,6 +432,7 @@ namespace MaddenEditor.Forms
             return rev;
         }
 
+        #region Inits
         public void InitTables()
         {
             AvailTables_ListView.Items.Clear();
@@ -433,6 +462,7 @@ namespace MaddenEditor.Forms
                 fields_avail.Add(name, new List<string>(fields));
                 fields_export.Add(name, new List<string>(fields));
             }
+            tables_avail.Sort();
         }
         
         public void InitAvailableTablesList()
@@ -468,97 +498,199 @@ namespace MaddenEditor.Forms
             foreach (string s in fields_export[name])
                 ExportFields_ListView.Items.Add(s);
         }
+        #endregion
 
+
+        private string GetDirectory()
+        {
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+            folderDialog.Description = "Choose DIR for Table Extraction";
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+                return folderDialog.SelectedPath;
+            return "";
+        }
 
         private void ExportPlay_Button_Click(object sender, EventArgs e)
         {
+
             if (tables_export.Count == 0)
                 return;
+            string dir = "";
+            if (ExtractByTableName.Checked)
+                dir = GetDirectory();
 
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
-            folderDialog.Description = "Choose DIR for Table Extraction";
 
-            if (folderDialog.ShowDialog() == DialogResult.OK)
+            foreach (string t in tables_export)
             {
-                string folder = folderDialog.SelectedPath;
-
-                foreach (string t in tables_export)
+                try
                 {
-                    try
+                    string tablename = t;
+                    if (model.BigEndian)
+                        tablename = ConvertBE(t);
+
+                    string filename = "";
+                    if (ExtractByTableName.Checked)
+                        filename = Path.Combine(dir, t + ".csv");
+                    else
                     {
-                        string tablename = t;
-                        if (model.BigEndian)
-                            tablename = ConvertBE(t);
+                        SaveFileDialog fileDialog = new SaveFileDialog();
+                        fileDialog.Filter = t +" as csv file (*.csv)|*.csv|All files (*.*)|*.*";
+                        fileDialog.RestoreDirectory = true;
 
-                        StreamWriter writer = new StreamWriter(Path.Combine(folder, (t + ".csv")));
-                        StringBuilder hbuilder = new StringBuilder();
+                        if (fileDialog.ShowDialog() == DialogResult.OK)
+                            filename = fileDialog.FileName;
+                    }
 
-                        if (!model.TableModels.ContainsKey(t))
+                    if (filename == "")
+                        continue;
+
+                    StreamWriter writer = new StreamWriter(filename);
+                    StringBuilder hbuilder = new StringBuilder();
+
+                    hbuilder.Append(t);
+                    hbuilder.Append(",");
+                    string version = "2008";
+                    if (model.FileVersion == MaddenFileVersion.Ver2004)
+                        version = "2004";
+                    else if (model.FileVersion == MaddenFileVersion.Ver2005)
+                        version = "2005";
+                    else if (model.FileVersion == MaddenFileVersion.Ver2006)
+                        version = "2006";
+                    else if (model.FileVersion == MaddenFileVersion.Ver2007)
+                        version = "2007";
+                    else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                        version = "2008";
+                    else if (model.FileVersion == MaddenFileVersion.Ver2019)
+                        version = "2019";
+                    hbuilder.Append(version);
+                    hbuilder.Append(",");
+                    hbuilder.Append("No");
+                    hbuilder.Append(",");
+                    writer.WriteLine(hbuilder.ToString());
+                    //writer.Flush();
+                    hbuilder.Clear();
+
+                    if (!model.TableModels.ContainsKey(t))
+                    {
+                        model.ProcessTable(model.TableNames[tablename]);
+                    }
+
+                    TableModel table = model.TableModels[t];
+
+                    List<TdbFieldProperties> props = table.GetFieldList();
+                    foreach (string field in fields_export[t])
+                    {
+                        foreach (TdbFieldProperties tdb in props)
                         {
-                            model.ProcessTable(model.TableNames[tablename]);
+                            if (field == tdb.Name)
+                            {
+                                // These are already fixed for big endian
+                                string fieldname = tdb.Name;
+                                hbuilder.Append(fieldname);
+                                hbuilder.Append(",");
+                            }
+                        }
+                    }
+                    writer.WriteLine(hbuilder.ToString());
+
+                    if (Descriptions_Checkbox.Checked)
+                    {
+                        if (model.TableDefs.ContainsKey(model.FileVersion))
+                        {
+                            Dictionary<string, tabledefs> currenttable = model.TableDefs[model.FileVersion];
+                            if (currenttable.ContainsKey(table.Name))
+                            {
+                                tabledefs defs = currenttable[table.Name];
+                                StringBuilder descbuilder = new StringBuilder();
+
+                                for (int c = 0; c < fields_export[t].Count; c++)
+                                {
+                                    descbuilder.Append(defs.FieldDefs[fields_export[t][c]]);
+                                    descbuilder.Append(",");
+                                }
+
+                                writer.WriteLine(descbuilder.ToString());
+                            }
+                        }
+                    }
+
+                    // Setting Filters
+                    int teamID = -1;
+                    int positionID = -1;
+
+
+                    if (filterTeamCheckbox.Checked)
+                    {
+                        //Get the team id for the team selected in the combobox
+                        teamID = ((TeamRecord)(filterTeamCombo.SelectedItem)).TeamId;
+                    }
+
+                    if (filterPositionCheckbox.Checked)
+                    {
+                        //Get the position id for the position selected in the combobox
+                        positionID = filterPositionCombo.SelectedIndex;
+                    }
+
+
+                    foreach (TableRecordModel rec in table.GetRecords())
+                    {
+                        if (rec == null)
+                            continue;
+                        else if (rec.Deleted)
+                            continue;
+                        else if (table.Name == "PLAY")
+                        {
+                            if (teamID != -1)
+                            {
+                                if (teamID != rec.GetIntField("TGID"))
+                                    continue;
+                            }
+                            else if (positionID != -1)
+                            {
+                                if (positionID != rec.GetIntField("PPOS"))
+                                    continue;
+                            }
+
                         }
 
-                        TableModel table = model.TableModels[t];
+                        StringBuilder builder = new StringBuilder();
 
-                        List<TdbFieldProperties> props = table.GetFieldList();
                         foreach (string field in fields_export[t])
                         {
                             foreach (TdbFieldProperties tdb in props)
                             {
                                 if (field == tdb.Name)
                                 {
-                                    // These are already fixed for big endian
-                                    string fieldname = tdb.Name;
-                                    hbuilder.Append(fieldname);
-                                    hbuilder.Append(",");
-                                }
-                            }
-                        }
-
-                        writer.WriteLine(hbuilder.ToString());
-                        writer.Flush();
-
-                        foreach (TableRecordModel rec in table.GetRecords())
-                        {
-                            if (rec.Deleted)
-                                continue;
-                            StringBuilder builder = new StringBuilder();
-
-                            foreach (string field in fields_export[t])
-                            {
-                                foreach (TdbFieldProperties tdb in props)
-                                {
-                                    if (field == tdb.Name)
+                                    if (tdb.FieldType == TdbFieldType.tdbString)
                                     {
-                                        if (tdb.FieldType == TdbFieldType.tdbString)
-                                            builder.Append(rec.GetStringField(tdb.Name));
-                                        else if (tdb.FieldType == TdbFieldType.tdbFloat)
-                                            builder.Append(rec.GetFloatField(tdb.Name));
-                                        else
-                                        {
-                                            int test = rec.GetIntField(tdb.Name);
-                                            builder.Append(test);
-                                        }
-                                        builder.Append(",");
+                                        string res = rec.GetStringField(tdb.Name);
+                                        res = res.Replace(",", " ");
+                                        builder.Append(res);
                                     }
+                                    else if (tdb.FieldType == TdbFieldType.tdbFloat)
+                                        builder.Append(rec.GetFloatField(tdb.Name));
+                                    else
+                                    {
+                                        int test = rec.GetIntField(tdb.Name);
+                                        builder.Append(test);
+                                    }
+                                    builder.Append(",");
                                 }
                             }
-
-                            writer.WriteLine(builder.ToString());
-                            writer.Flush();
                         }
 
-                        writer.Close();
-                    }
+                        writer.WriteLine(builder.ToString());
 
-                    catch (IOException err)
-                    {
-                        err = err;
-                        MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    writer.Flush();
+                    writer.Close();
                 }
 
-
+                catch (IOException err)
+                {
+                    err = err;
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
        
@@ -851,43 +983,7 @@ namespace MaddenEditor.Forms
             DialogResult = DialogResult.OK;
             this.Close();
         }
-        
-        private void Import_Button_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            Stream myStream = null;
-            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
-            fileDialog.RestoreDirectory = true;
-
-            
-
-            if (fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    if ((myStream = fileDialog.OpenFile()) != null)
-                    {
-                        StreamReader sr = new StreamReader(myStream);
-                        string header = sr.ReadLine();                  
-
-
-                        
-                    }
-                }
-                catch (IOException err)
-                {
-                    err = err;
-                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                this.Cursor = Cursors.Default;
-                DialogResult = DialogResult.OK;
-                this.Close();
-            }
-
-
-        }
-
+                
         private void AddExportTables_Button_Click(object sender, EventArgs e)
         {
             if (!isInitializing)
@@ -996,8 +1092,410 @@ namespace MaddenEditor.Forms
 
             isInitializing = false;
         }
+         
+        private void ImportCSV_Button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            Stream myStream = null;
+            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            fileDialog.RestoreDirectory = true;
 
-        
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = fileDialog.OpenFile()) != null)
+                    {
+                        StreamReader sr = new StreamReader(myStream);
+
+                        #region Table/Version info
+                        string csvtableinfo = sr.ReadLine();
+                        string[] csvtable = csvtableinfo.Split(',');
+                        string tablename = csvtable[0];
+                        currenttablename = csvtable[0];
+
+                        int ver = Convert.ToInt32(csvtable[1]);
+                        bool hasdesc = false;
+                        if (csvtable[2].ToUpper().Contains("Y"))
+                            hasdesc = true;
+                        if (ver == 2004)
+                            csvVersion = MaddenFileVersion.Ver2004;
+                        else if (ver == 2005)
+                            csvVersion = MaddenFileVersion.Ver2005;
+                        else if (ver == 2006)
+                            csvVersion = MaddenFileVersion.Ver2006;
+                        else if (ver == 2007)
+                            csvVersion = MaddenFileVersion.Ver2007;
+                        else if (ver == 2019)
+                            csvVersion = MaddenFileVersion.Ver2019;
+                        else csvVersion = MaddenFileVersion.Ver2008;
+                        #endregion
+
+                        #region Fields
+                        import_fields_avail.Clear();
+                        string fieldline = sr.ReadLine();
+                        string[] csvfield = fieldline.Split(',');
+                        for (int c = 0; c < csvfield.Length; c++)
+                        {
+                            if (csvfield[c] != "")
+                                import_fields_avail.Add(c, csvfield[c]);
+                        }
+                        #endregion
+
+                        #region Descriptions
+                        // We dont need the descripitons for importing, it's just a reference for the roster maker
+                        // so just read the line and dont do anything with it.
+                        linenumber = 2;
+                        if (hasdesc)
+                        {
+                            sr.ReadLine();
+                            linenumber = 3;
+                        }
+                        #endregion
+
+                        #region Records
+                        CSVRecords.Clear();
+
+                        while (!sr.EndOfStream)
+                        {
+                            List<string> rec_line = new List<string>();
+                            string csvrecline = sr.ReadLine();
+                            string[] csvrec = csvrecline.Split(',');
+                            foreach (string s in csvrec)
+                                rec_line.Add(s);
+                            CSVRecords.Add(rec_line);
+                        }
+
+                        sr.Close();
+                        //Done
+                        #endregion
+
+                        ImportTableName_Textbox.Text = tablename;
+                        ColumnHeader header = new ColumnHeader();
+                        header.Text = "Tables";
+                        header.Name = "Tables";
+                        WrongFields_ListView.Items.Clear();                        
+                        WrongFields_ListView.Columns.Add(header);
+                        WrongFields_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                        WrongFields_ListView.Sorting = SortOrder.Ascending;
+
+                        ColumnHeader header2 = new ColumnHeader();
+                        header2.Text = "Tables";
+                        header2.Name = "Tables";
+                        ImportAvailFields_ListView.Items.Clear();                        
+                        ImportAvailFields_ListView.Columns.Add(header2);
+                        ImportAvailFields_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                        ImportAvailFields_ListView.Sorting = SortOrder.Ascending;
+
+                        ColumnHeader header3 = new ColumnHeader();
+                        header3.Text = "Tables";
+                        header3.Name = "Tables";
+                        ImportSelected_ListView.Items.Clear();
+                        ImportSelected_ListView.Columns.Add(header3);
+                        ImportSelected_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                        ImportSelected_ListView.Sorting = SortOrder.Ascending;
+
+
+                        List<string> possible = new List<string>();
+                        List<TdbFieldProperties> fplist = model.TableModels[tablename].GetFieldList();
+                        foreach (TdbFieldProperties fp in fplist)
+                            possible.Add(fp.Name);
+
+                        for (int c = import_fields_avail.Count - 1; c >= 0; c--)
+                        {
+                            string fieldname = import_fields_avail[c];
+                            if (!possible.Contains(fieldname))
+                            {
+                                WrongFields_ListView.Items.Add(fieldname);
+                                import_fields_avail.Remove(c);
+                            }
+                            else ImportAvailFields_ListView.Items.Add(import_fields_avail[c]);
+                        }                       
+
+                        import_fields.Clear();
+                        foreach (KeyValuePair<int, string> kvp in import_fields_avail)
+                            import_fields.Add(kvp.Value);
+                        //import_fields.Sort();
+
+                        foreach (string fld in import_fields)
+                            ImportSelected_ListView.Items.Add(fld);                        
+
+                        ImportFieldsCount_Textbox.Text = import_fields_avail.Count.ToString();
+                        NotImportableCount_Textbox.Text = WrongFields_ListView.Items.Count.ToString(); 
+                    }
+                }
+
+
+                catch (IOException err)
+                {
+                    err = err;
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+        }
+
+        private void ProcessRecords_Button_Click(object sender, EventArgs e)
+        {
+            if (DeleteCurrentRecs_Checkbox.Checked)
+            {
+                int count = model.TableModels[currenttablename].RecordCount;
+                for (int c = count-1; c >= 0; c-- )
+                {
+                    TableRecordModel rec = model.TableModels[currenttablename].GetRecord(c);
+                    if (rec.Deleted)
+                        continue;
+                    else rec.SetDeleteFlag(true);
+                }
+            }
+
+            
+            foreach (List<string> record in CSVRecords)
+            {
+                TableRecordModel tablerecord = null;
+                linenumber++;
+
+                if (currenttablename == "PLAY" && UpdateRecs_Checkbox.Checked)
+                {
+                    // Updating existing record if possible
+                    int pgidkey = -1;
+                    foreach (KeyValuePair<int, string> kvp in import_fields_avail)
+                    {
+                        if (kvp.Value == "PGID")
+                        {
+                            pgidkey = Convert.ToInt32(record[kvp.Key]);
+                            break;
+                        }
+                    }
+                    if (pgidkey != -1)
+                    {
+                        foreach (TableRecordModel trm in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+                        {
+                            if (trm.Deleted)
+                                continue;
+                            PlayerRecord player = (PlayerRecord)trm;
+                            if (player.PlayerId == pgidkey)
+                            {
+                                tablerecord = trm;
+                                break;
+                            }
+                        }
+                    }
+                }
+                // Not updating, so create a new record
+                if (tablerecord == null)
+                    tablerecord = model.TableModels[currenttablename].CreateNewRecord(true);
+
+
+                List<TdbFieldProperties> fplist = model.TableModels[currenttablename].GetFieldList();
+
+                foreach (KeyValuePair<int, string> import in import_fields_avail)
+                {
+                    foreach (TdbFieldProperties fp in fplist)
+                    {
+                        if (fp.Name == import.Value)
+                        {
+                            try
+                            {
+                                tablerecord.SetFieldCSV(fp.Name, record[import.Key]);
+                            }
+                            catch
+                            {
+                                errors.Add("Line number " + linenumber.ToString() + " Field " + fp.Name + " " + import.Value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            ColumnHeader head = new ColumnHeader();
+            head.Text = "Errors";
+            head.Name = "Errors";
+            ImportErrors_Listview.Columns.Add(head);
+            ImportErrors_Listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            ImportErrors_Listview.Items.Clear();
+            if (errors.Count > 0)
+            {
+                foreach (string error in errors)
+                    ImportErrors_Listview.Items.Add(new ListViewItem(error));
+            }
+            else ImportErrors_Listview.Items.Add(new ListViewItem(linenumber.ToString() + " Lines processed.  No errors"));
+        }
+
+        private void DeleteCurrentRecs_Checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                if (DeleteCurrentRecs_Checkbox.Checked)
+                {
+                    UpdateRecs_Checkbox.Checked = false;
+                    UpdateRecs_Checkbox.Enabled = false;
+                }
+                else
+                {
+                    UpdateRecs_Checkbox.Enabled = true;                   
+                }
+            }
+        }
+
+        private void UpdateRecs_Checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                if (UpdateRecs_Checkbox.Checked)
+                {
+                    DeleteCurrentRecs_Checkbox.Checked = false;
+                    DeleteCurrentRecs_Checkbox.Enabled = false;
+                }
+                else
+                {
+                    DeleteCurrentRecs_Checkbox.Enabled = true;
+                }
+            }
+        }
+
+        private void LoadDraftClass_Button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            string direct = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            direct += "\\Madden NFL 19\\settings";
+            if (Directory.Exists(direct))
+                dialog.InitialDirectory = direct;
+            else dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.Filter = "Madden Draft Class (*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.Multiselect = false;
+            dialog.ShowDialog();
+
+            string filename = dialog.FileName;
+            if (filename == "")
+                return;
+
+            try
+            {
+                if (!model.DraftClassModel.ReadDraftClass(filename))
+                {
+                    MessageBox.Show("Not a valid Madden 2019 Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch
+            {
+
+            }
+            
+        }
+
+        private void ExportDraftClass_Button_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            Stream myStream = null;
+
+            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            fileDialog.RestoreDirectory = true;
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.Cursor = Cursors.WaitCursor;
+                try
+                {
+                    if ((myStream = fileDialog.OpenFile()) != null)
+                    {
+                        StreamWriter wText = new StreamWriter(myStream);
+
+                        model.DraftClassModel.ExportCSVHeaders(wText, DraftClassDescriptions_Checkbox.Checked);
+
+                        foreach (DraftPlayer player in model.DraftClassModel.draftclassplayers)
+                        {
+                            StringBuilder build = player.ExportDraftClassPlayerCSV(model.DraftClassModel.RatingDefs, model, DraftClassDescriptions_Checkbox.Checked);
+                            wText.WriteLine(build.ToString());
+                        }
+
+                        wText.Close();
+                    }
+                }
+                catch (IOException err)
+                {
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                this.Cursor = Cursors.Default;
+            }
+        }
+
+        private void CreateDraftClass_Button_Click(object sender, EventArgs e)
+        {                       
+            OpenFileDialog dialog = new OpenFileDialog();
+            Stream myStream = null;            
+            dialog.Filter = "Draft Class CSV file (*.csv)|*.csv|All files (*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.Multiselect = false;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {  
+                StreamReader sr = null;
+                this.Cursor = Cursors.WaitCursor;
+
+                try
+                {
+                    if ((myStream = dialog.OpenFile()) != null)
+                    {
+                        sr = new StreamReader(myStream);
+                        string csvtableinfo = sr.ReadLine();
+                        string[] csvtable = csvtableinfo.Split(',');
+                        if (csvtable[0] != "DRAFT")
+                        {
+                            MessageBox.Show("Not a valid Madden 2019 Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            sr.Close();
+                            return;
+                        }
+                        string csvfieldline = sr.ReadLine();
+                        string[] csvfields = csvfieldline.Split(',');
+
+                        if (csvtable[2].ToUpper().Contains("Y"))
+                        {
+                            sr.ReadLine();
+                        }
+
+                        List<string> records = new List<string>();
+                        while (!sr.EndOfStream)
+                        {
+                            string csvrecordline = sr.ReadLine();
+                            records.Add(csvrecordline);
+                        }
+
+                        model.DraftClassModel.ImportCSVDraftClass(records, csvfields);
+                    }
+                }
+                catch
+                {
+
+                }
+
+                if (sr != null)
+                    sr.Close();
+
+                this.Cursor = Cursors.Default;
+            }
+
+
+            SaveFileDialog savedialog = new SaveFileDialog();
+            string direct = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            direct += "\\Madden NFL 19\\settings";
+            if (Directory.Exists(direct))
+                dialog.InitialDirectory = direct;
+            else savedialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            savedialog.Filter = "Madden Draft Class (*.*)|*.*";
+            savedialog.ShowDialog();
+
+            string filename = savedialog.FileName;
+            if (filename == "")
+                return;
+
+            model.DraftClassModel.SaveDraftClass(filename, FB_Draft);
+            
+            
+        }
+
 
     }
 }

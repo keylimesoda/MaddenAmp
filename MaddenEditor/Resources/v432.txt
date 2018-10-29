@@ -1,0 +1,171 @@
+Madden AMP 4.32
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.
+
+
+*** Reminder to Back up ALL files BEFORE editing ! ***
+
+
+Releases will be made on the Football Idiots forum:
+(yes, you need to sign up for an account in order to download files)
+
+http://www.footballidiot.com/forum/viewtopic.php?f=115&t=21075#p120375
+
+
+Madden 2019 : Only the roster files are supported, Save files are not supported.
+Not everything is available for editing, additional functionality will be added as time allows. 
+There is no timetable as to when additional functions will be available.
+
+
+For Madden 2019 default installs, the roster file is likely located at:
+C:\Users\your name\Documents\Madden NFL 19\settings\ROSTER-Official
+
+
+
+Notes :
+
+It is very important for users new to PC Madden and available editors to get in the practice of making backup files before editing anything.  ALWAYS DO THIS !!!  
+
+Not everything in Amp has been thoroughly tested, nor guaranteed to work.
+There may be times when something very experimental is added to Amp, and it may lead to undesirable results.
+
+Amp does not automatically correct errors that are introduced by users that are not familiar with how the databases work, that do not pay attention to the possible values in the game itself, or simply want to test to see if a given value will work in game.
+
+Users are responsible for knowing general rules for the rosters.
+SOME of which include, but are not limited to, minimum/maximum number of players allowed per team, min/max requirements for each position on a given team, depth chart requirements, ratings min/max...etc
+
+Amp sometimes may allow the selection of all available combinations for various things.
+Example...Equipment.  Just because a given combination is available in the editor, does not guarantee it will be functional in the game itself.
+If a user only wants proven combinations, it is best that they use the player editor in the game itself.
+
+
+File IO - Madden 2019 -
+
+Saving will only affect the temporary roster.db file.  
+Exiting attaches the necessary chunks info back onto the roster file.
+Date/Time is now being updated in chunks file info when saving.  Not sure how/if it is being used.
+
+Creating/Deleting a given record should be functioning correctly now.
+
+
+
+Team Editor -
+
+Added Team Type - This is a testing field for experienced roster makers.
+It may or may not help for teams that do not appear in the in-game filters for roster management.  
+If you do not understand why you would want or need to edit this, leave at default values.
+
+
+
+Player Editor -
+
+Updated Injury editor to include a couple of extra fields from 2019 for evaluation.
+
+Added XP Rate for 2019
+
+Removed "Retired" in the team designation for rosters.  Use delete instead.
+(The teamid for retired doesn't work right with rosters)
+
+Improved player list sorting/selecting.  Should advance to next available player correctly now after having deleted a player.
+
+NOTE : If you do delete/change teams for a player, be sure to reset the depth chart for the old and new team with the in game roster management.
+Amp does not currently have OVR calculation function for 2019 for use with depth chart ordering.
+Player will only be removed from previous team's depth chart.
+
+
+Global Attributes Editing -
+
+Added more traits from 19
+
+
+
+Import/Export CSV - 
+
+Added support for importing CSV values.
+
+Formatting for csv :
+Line 1, cell 1 should contain the Table name of the data that follows.
+Line 1, cell 2 should contain version year
+Line 1, cell 3 Yes/No based on whether you have included descriptions of the fields for your own reference.
+
+Line 2  The cells contain all the given Fieldnames for the data.  Capitalization MATTERS !!!
+
+Line 3  Only if you have "Yes" for descriptions, this is where you will include your descriptions of the fields.
+This is only for your reference, the reader does not do anything with this info.
+If you do not have descriptions, data begins on Line 3, do not include a blank line.
+
+Remaining lines are data related to the given fieldnames for each record to be imported.
+
+
+
+After loading your Madden file, clicking "Load CSV" will load in a given csv formatted file.
+
+"Importable Fields" will include # of fields that CAN be imported into current madden file.
+Names of these fields will also be displayed.
+
+
+"Selected Fields" will display the fields that WILL be imported into the madden file.
+Customizing the fields is not currently available.  Function for this may be included in the future.
+
+
+"Not Importable" will include # of fields that CANNOT be imported into the current madden file.
+Names of fields that CANNOT be imported will also be displayed.
+
+
+"Update Player Recs When Possible" - This is ONLY for player records.  
+Checking this will update a given player in the madden file based on the player id  (PGID) 
+in the given csv values.
+If a given player id does not exist a NEW record based on the given csv values will be created in the madden file.
+
+"Delete ALL Current Recs" - When this is checked, ALL the current records for a given table will be marked for deletion.  This should only be used if you are importing ALL desired records for a given table.
+Again, ONLY the records you are importing will exist in the madden file table.
+
+
+Process Records button -
+If no options are checked, a NEW record will be added to the madden file based on the given csv values.  
+No checking for duplicates is being done.  
+ALL given records will be ADDED, Nothing will be replaced, Nothing will be deleted.
+
+
+
+FAQ
+
+Troubleshooting -
+
+1 - You should have made backups of your files before editing.
+2 - Do not edit while the game is running, and defintely not when you have your working roster 
+    loaded in the game.
+3 - Amp only works for roster files in Madden 2019.
+4 - Importing CSV values is for experienced roster makers.
+
+
+"My changes are not saving"
+---------------------------
+It may be a bug in the editor or a function that has not yet been completed.
+
+Madden 19 :
+Are you making sure that you are loading the proper roster file?  
+Proper roster files DO NOT have extensions.
+You would have had to change the filter to all files to initially load a Madden 2019 roster.
+If you used an earlier version of Amp to load a Madden 19 roster, temporary roster files may still exist in your save directories.  Those temp files will have the same name as the roster file, but with the extenions .db and .fb and they can/should be removed.
+Editing the temporary .db file WILL NOT save changes to the Madden 2019 roster file.
+
+
+"My changes did not import with CSV"  or "I'm getting an error trying to import CSV"
+------------------------------------------------------------------------------------
+
+*** Importing CSV values is for experienced roster makers ***
+
+Make sure you understand what the options are when importing CSV values, they are described in the above text.
+If you do not know what the fields are, you should not be importing csv.
+If you do not understand why/when you should choose certain options, you should not be importing csv.
+
+It is your responsibility to understand what you are entering values for and the range of valid values in Madden.
+
+Did you import an edited CSV value?  
+If you tried to enter a value outside what is allowed in the database, or you tried to enter an incompatible value type (text/number mismatch) you may encounter an error, the value will not save, or will end up being 0 or blank text.
+If you edited a table/field name, check for typos and capitalization.  It needs to MATCH EXACTLY with the database.
+
+
+
+

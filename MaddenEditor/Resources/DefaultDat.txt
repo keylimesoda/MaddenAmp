@@ -1,0 +1,20 @@
+﻿Default Player/Coach Portrait DATs
+
+Below in the Portrait Default DAT section, if the Load Player/Coach Portraits options are checked you will be 
+asked to provide the location for the Player/Coach Portrait DATS associated with the loaded Roster/Franchise.
+
+The normal locations for these are :
+Madden 2008\data0\UIS_LIB_PLAYER_PORT.dat
+Madden 2008\data1\UIS_LIB_COACH_PORT.dat
+
+As long as these remain checked, and the files remain valid, the given DATs will be loaded into the editor
+automatically in the future.
+
+If "ask for save name" checkboxes are checked, you will be prompted for a filename to save the 
+Player/Coach portrait dat.
+
+Otherwise, when saving a Player/Coach portrait dat the original will be renamed 
+"UIS_LIB_PLAYER_PORT.dat.BAK" or "UIS_LIB_COACH_PORT.dat.BAK" and the changed version will saved as 
+"UIS_LIB_PLAYER_PORT.dat" or "UIS_LIB_COACH_PORT.dat"
+If you encounter problems with a dat, just delete the .dat file and remove the .BAK from the other
+to restore the original dat.

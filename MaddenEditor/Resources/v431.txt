@@ -1,0 +1,85 @@
+Madden AMP 4.31  
+
+Releases will be made on the Football Idiots forum:
+http://www.footballidiot.com/forum/viewtopic.php?f=115&t=21075#p120375
+
+
+*** Reminder to Back up ALL files BEFORE editing ! ***
+
+
+Madden 2019 : Only the roster files are supported.
+Save files are not supported.  There is no timetable as to when this may be possible.
+
+
+For Madden 2019 default installs, the roster file is likely located at:
+C:\Users\your name\Documents\Madden NFL 19\settings\ROSTER-Official
+
+
+Notes :
+It is very important for users new to PC Madden and available editors to get in the practice of making backup files before editing anything.  ALWAYS DO THIS !!!
+ 
+There may be times when something very experimental is added to Amp, and it may lead to undesirable results.
+
+Amp is not going to automatically correct errors that are introduced by users that are not familiar with how the databases work, that do not pay attention to the possible values in the game itself, or simply want to test to see if a given value will work in game.
+
+Users are responsible for knowing general rules for the rosters.
+SOME of which include, but are not limited to, minimum/maximum number of players allowed per team, min/max requirements for each position on a given team, depth chart requirements, ratings min/max...etc
+
+Amp sometimes may allow the selection of all available combinations for various things.
+Example...Equipment.  Just because a given combination is available in the editor, does not guarantee it will be functional in the game itself.
+If a user only wants proven combinations, it is best that they use the player editor in the game itself.
+
+
+v4.31 Changelog
+
+
+File IO -
+Added .db and .rdb extensions to the file filter when choosing a file to open.
+For Madden 2019 rosters, you will need to change the "Madden files" filter to "all files" to include 19's roster files as those have no extensions.
+
+Changed loading to check for valid files.
+Should now tell you if you are trying to load an unsupported file for Madden 19.
+Should also tell you if you are trying to load an invalid Madden database file.
+
+When saving a Madden 19 roster, the frostbyte chunks and roster db files will now be removed.
+They were not removed in previous releases.
+
+This is being done so as not to confuse people, especially users new to the PC version and this editor.
+These are temporarily created when splitting the 2019 rosters for editing.
+
+If, for some reason, you wish to examine these files, you can load the 2019 roster and then exit without saving.
+ 
+
+There are no guarantees, but some of the other db files in Madden 19 may load as well, but there are still some issues with files that have the same table counts as 04-08 files.
+Files that are not officially supported will be limited to Import/Export options only.
+
+
+Database -
+Fixed the function for removing a record.  This was not being done correctly before.
+
+
+
+Player Editor -
+Changed enabling and/or visibility of Role, Weapon, Original position, tendency and some other fields that are not applicable or seem like they aren't be used in 2019.
+
+Added CSV button, this extracts the selected player to csv values.  Eventually the file will be able to be used for importing a given player to a roster.  
+Note : Importing is currently not available.  It is being worked on as time allows, but no timetable.
+
+Injury - 
+Fixed bug that wasn't allowing changes to length, IR
+
+Archetype - Added this, but even if this is changed, the game may end up adjusting this to fit the player's overall scoring type.
+
+Contracts/Salary - Did some initial work on this.  
+There may be some options that are now not available for 04-08 when they used to be.
+
+
+
+
+
+
+
+
+
+
+

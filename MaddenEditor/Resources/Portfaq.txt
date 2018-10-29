@@ -1,0 +1,40 @@
+﻿Madden Amp custom player/coach portraits
+
+Madden Amp's portrait display makes use of alpha blending used within the game's default DAT portraits.
+Currently the portraits will be blended assuming a background of white (RGB 255,255,255)
+Default portraits in Madden are 96 width x 96 height, and usually have 256 indexed colors.
+
+Importing custom portraits for Madden 2004-2008 :
+
+Valid formats for importing custom portraits with Madden Amp are BMP, DDS, JPG and PNG.
+Transparency is ONLY supported correctly with INDEXED graphics.
+256 color indexed, as well as 24bit and 32bit color images are allowed.
+Custom sized portraits are supported, although if importing sizes greater than 96x96 you may run into problems 
+with the image not being displayed as intended in certain Madden versions.
+
+* Currently, it is believed even if your image is 256 indexed colors, if you save as JPG or PNG it defaults to 
+32bit color (at least that is the case from testing with the now free version of Adobe cs2)
+So it is suggested to always save as BMP, saving as any other format with the same image will not make the dat any 
+smaller/larger.
+
+Indexed Images :
+
+256 color indexed images are the preferred format when importing portraits.
+The following colors will become transparent once imported with Madden Amp.  Do NOT use these colors within 
+the actual image you want displayed.        
+Magenta - RGB Values (255,0,255)
+White - RGB (255,255,255)
+      
+
+Also, when creating an indexed image, it should be created with a background of ONE consistent color, the 
+background will then be converted to transparent in-game.
+
+24bit/32bit Images :
+
+24bit images will be converted to 32bit via bicubic interpolation mode, so you may not get exactly the same image 
+once imported.  Importing a true 32bit source is suggested if you demand exact results.
+
+* There currently is no known way to import native transparency from these images, so you must specifically create
+the background of your images to blend into any screens where players portraits are displayed.
+If unhappy with the results that 24bit/32bit produce ingame, it is suggested that you convert images to indexed 
+256 colors to take advantage of background transparency.

@@ -1,0 +1,39 @@
+﻿Portrait Pack instructions
+
+Options assume a valid DAT has already been loaded
+
+Exporting :
+You will be asked to choose a directory where the player/coach portraits will be saved to.
+Portraits will be saved with player/coach name as well as their portrait id# 
+there are options below that will also include the player/coach id# if requested.
+
+Note:  
+Players will be exported with the id's based on their 'POID' in the player table.  
+These numbers should be unique to any given player if rosters are done correctly.  
+Coaches are based on 'CCID' in coach table.
+
+Importing:
+You will be asked to choose the directory where the custom player/coach portraits are located.  Files will 
+be imported according to their filename structure. There are several options here.  All Portrait id# and 
+POID # or CCID # should be 5 digits in length.  
+If a filename is included, it must be end in an underscore "_"   
+Portrait id#, POID # or CCID #, and extensions should all be separated by a period "."
+
+examples:
+
+(Portrait ID#).BMP
+
+(Filename)_(Portrait ID#).BMP
+
+(Filename)_(Portrait ID#).(POID # or CCID #).BMP                                            
+
+ex. "00010.BMP" Will import the file into that dat at the portrait id# slot (in this case, 10)
+
+ex "JerryRice_00010.BMP"  Will import the file into the dat at the given Portrait id# slot (in this case, 10)
+
+ex  "JerryRice_00010_08000.BMP"  will import the file into the dat at give Portrait id# slot.
+It will then search the currently loaded roster/franchise for the given POID # (in this case, 8000) and change 
+the player's portrait id#  to what was given (in this case, 10)
+
+If the community keeps using the same unique POID #s throughout each roster update, importing with this method 
+will always insure players have the correct portraits when imported to any given roster/franchise.

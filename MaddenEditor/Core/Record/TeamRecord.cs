@@ -81,6 +81,7 @@ namespace MaddenEditor.Core.Record
         public const string SEASON_DIV_POINTS_SCORED = "TDPF";
         public const string TEAM_ORDER = "TDRI";
         public const string DIV_WIN_PERC = "TDWP";
+        public const string ENDPLAY = "TEAV";                   //2019
         public const string TEZ1 = "TEZ1";
         public const string TEZ2 = "TEZ2";
         public const string TFCA = "TFCA";
@@ -542,14 +543,8 @@ namespace MaddenEditor.Core.Record
 
 		public int TeamType
 		{
-			get
-			{
-				return GetIntField(TEAM_TYPE);
-			}
-			set
-			{
-				SetField(TEAM_TYPE, value);
-			}
+			get { return GetIntField(TEAM_TYPE); }
+			set	{ SetField(TEAM_TYPE, value); }
 		}
 
 		public int DivisionOrder
@@ -650,8 +645,13 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(SEASON_CONF_STANDING); }
             set { SetField(SEASON_CONF_STANDING, value); }
         }
-        
-        
+
+        public int EndPlay
+        {
+            get { return GetIntField(ENDPLAY); }
+            set { SetField(ENDPLAY, value); }
+        }
+
         #endregion
 
         #region Madden Amp Draft edits

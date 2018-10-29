@@ -1,0 +1,80 @@
+Madden AMP 4.35
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+*** Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file when finished editing in game in order to view changes.
+
+
+
+v4.35 Changelog
+---------------
+
+Bugs/Fixes
+----------
+Corrected a few College names
+
+Fixed bug with Global Editing, the sense pressure trait was not displaying available options.
+
+
+
+
+Depth Chart 
+-----------
+This is work in progress and you really should still be using the game's depth chart editing feature.
+
+- Added the rest of the Madden 19 positions.  
+  List of available players considers all of the players on the roster and their overall at a given position.
+  Overalls may not always be accurate since they are based on the game's overall calc table and make use an         unknown method to round scores.
+  
+  Adding an out of position player to a depth at a particular position may result in undesired results.
+  It is up to the user to understand which positions are interchangeable.
+
+
+
+Import/Export CSV
+-----------------
+Added LIMITED draft class support for editing.
+
+All editing is done via csv.
+
+These files are a completely new format and do not follow the database formatting.
+Therefore, nothing is guaranteed to be accurate, and many of the fields are still unknown.
+There will be ratings/traits/equipment that are not currently defined.
+They will be described as unknown if the class is exported with descriptions checked.
+
+There is very little error checking with this function.  
+Edits must be exact and must include ALL of the required info.
+Any editing assumes an understanding of what the allowable values are for what fields you are editing.
+
+
+
+Instructions:
+Load Madden 19 roster file as usual.
+Select Import/Export CSV from Tools menu.
+Load Draft class and select a valid draft class file from Madden 19.
+
+- Export to CSV will create a csv file starting with the various fields from the draft class, along with the ratings for the entire draft class.
+- Checking Include Field Descriptions will include the available descriptions for the draft class fields.  These are not all defined yet.  The remaining descriptions will be added as they are found and as time allows.
+
+
+- Create Draft Class from CSV.  You do not need to have a draft class already loaded.  This will take some time to complete based on processing speed.  Eventually some type of visual progress will be added.
+
+  This will create a new valid draft class if the draft class csv file contains the corrrect information.
+  For the fields that have descriptions (via export) can contain either the valid info from the field or valid       info based on the description.  
+  ie.. a given player's college id could contain either "Ohio State" or "157" 
+   
+  Fieldnames must be EXACTLY how you see them as they are exported.  
+  Descriptions can be changed and are not used by the reader.
+
+  Values included in the draft class csv file must be correct based on the field minimum/maximum and/or the          field's description.  
+  ie.. using "OSU", "OhioState", "The Ohio state University" etc will cause errors.  You need to use "Ohio State"    exactly.
+
+  There will be fields that are not editable in the game's draft class editor.  Some of these fields become     visible and editable once incorporated into a franchise.  There may be fields that are not visible or editable     in any game editing feature.  
+  Again, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  
+  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online         community.
+
+
+

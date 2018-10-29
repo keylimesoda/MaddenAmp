@@ -48,7 +48,7 @@ namespace MaddenEditor.Forms
 	public partial class MainForm : Form
 	{
 		private const string TITLE_STRING = "Madden Amp";
-        private bool Mad19 = false;
+        private bool Mad19 = false;        
 		private EditorModel model = null;
         private EditorModel stream = null;
 		private string filePathToLoad;
@@ -82,7 +82,11 @@ namespace MaddenEditor.Forms
             get { return _manager; }
             set { _manager = value; }
         }
+        
+        // setting up classes to deal with frostbyte header and determine if db and bigendian
         public FB fb;
+        public BEDB db;
+        public bool bigendian = false;
         
 
         public MainForm()
@@ -104,7 +108,10 @@ namespace MaddenEditor.Forms
             manager = new MGMT();
 
             if (!manager.config.Read())
+            {
                 manager.config = new AmpConfig();
+                manager.config.changed = true;
+            }
             if (!manager.config.SkipSplash)
             {
                 Revisions form = new Revisions();
@@ -114,14 +121,16 @@ namespace MaddenEditor.Forms
             }
 		}
 
+        // REDO this, set everything off and turn on as needed
         private void InitialiseUI()
         {   
             this.Text = TITLE_STRING + " - v" + MaddenEditor.Core.Version.VersionString + "  - " + System.IO.Path.GetFileName(filePathToLoad);
 
             exportToolStripMenuItem.Enabled = true;
+            franchiseToolStripMenuItem.Visible = false;
             Tools.Visible = true;
-            processingTableLabel.Text = "";
             statusStrip.Visible = false;
+            processingTableLabel.Text = "";            
             toolStripProgressBar.Value = 0;
 
             #region 04-08 Franchise
@@ -159,28 +168,45 @@ namespace MaddenEditor.Forms
                 else editScheduleToolStripMenuItem.Enabled = true;
             }
             #endregion
+
+            else if (model.FileType == MaddenFileType.Unknown)
+            {
+                optionsToolStripMenuItem.Visible = false;
+                playerEditingToolStripMenuItem.Visible = false;
+                coachPlayerToolStripMenuItem.Visible = false;
+                teamEditorToolStripMenuItem.Visible = false;
+                StadiumToolStripMenuItem.Visible = false;
+                cityToolStripMenuItem.Visible = false;
+                searchforCoachesToolStripMenuItem.Visible = false;
+                searchforPlayerToolStripMenuItem.Visible = false;
+                depthChartEditorToolStripMenuItem.Visible = false;
+                globalPlayerAttrEditorToolStripMenuItem.Visible = false;
+            }
             else
             {
                 //optionsToolStripMenuItem.Enabled = false;
                 if (model.FileVersion == MaddenFileVersion.Ver2019)
                 {
+                    
                     optionsToolStripMenuItem.Visible = false;
                     StadiumToolStripMenuItem.Visible = false;
                     cityToolStripMenuItem.Visible = false;
+                    //depthChartEditorToolStripMenuItem.Visible = true;
+                    coachPlayerToolStripMenuItem.Visible = false;
+                    searchforCoachesToolStripMenuItem.Visible = false;
+                    optionsToolStripMenuItem.Visible = false;
 
-                    if (model.FileType == MaddenFileType.Roster)
-                    {
-                        coachPlayerToolStripMenuItem.Visible = false;                        
-                        searchforCoachesToolStripMenuItem.Visible = false;
-                        optionsToolStripMenuItem.Visible = false;
-                    }
-                    else if (model.FileType == MaddenFileType.DBTeam)
+                    if (model.FileType == MaddenFileType.DBTeam)
                     {
                         coachPlayerToolStripMenuItem.Visible = true;
                         teamEditorToolStripMenuItem.Visible = true;
                     }
                     else if (model.FileType == MaddenFileType.UserConfig)
                     {
+                        playerEditingToolStripMenuItem.Visible = false;
+                        searchforPlayerToolStripMenuItem.Visible = false;
+                        globalPlayerAttrEditorToolStripMenuItem.Visible = false;
+                        teamEditorToolStripMenuItem.Visible = false;
                         optionsToolStripMenuItem.Visible = true;
                     }
                 }
@@ -263,10 +289,7 @@ namespace MaddenEditor.Forms
             teamEditControl.Dock = DockStyle.None;
             teamEditControl.Model = model;
 
-            model.TeamModel.InitConfig(manager);
-
-            if (model.FileVersion != MaddenFileVersion.Ver2019)
-                model.TeamModel.InitPlaybooks();
+            model.TeamModel.InitConfig(manager);            
 
             teamEditControl.InitialiseUI();
         }
@@ -288,7 +311,7 @@ namespace MaddenEditor.Forms
         {
             try
             {
-                model = new EditorModel(filePathToLoad, this);                                
+                model = new EditorModel(filePathToLoad, this, bigendian, Mad19);                                
             }
             catch (ApplicationException err)
             {
@@ -368,8 +391,13 @@ namespace MaddenEditor.Forms
 		private void exportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ExportForm form = new ExportForm(model);
-			form.InitialiseUI();
+            if (Mad19 && model.FileType == MaddenFileType.Roster)
+            {
+                form.FB_Draft = new FB(fb, Frostbyte_type.Draft);
+            }
 
+			form.InitialiseUI();
+            
 			form.ShowDialog(this);
 
 			form.CleanUI();
@@ -381,11 +409,11 @@ namespace MaddenEditor.Forms
             if (manager.config.changed)
                 manager.config.Write();
             Close();
-            //if (CheckSave())
-            //{
-            //		CloseModel();
-            //		Application.Exit();
-            //	}
+            if (CheckSave())
+            {
+                CloseModel();
+                Application.Exit();
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -396,12 +424,20 @@ namespace MaddenEditor.Forms
             if (CheckSave())
             {
                 CloseModel();
+                // Save the Madden 19 for frostbyte format
+                if (Mad19)
+                {
+                    fb.Save();
+                    fb.RemoveDB();
+                }
+
                 Application.Exit();
             }
             else
             {
                 e.Cancel = true;
             }
+
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -417,7 +453,7 @@ namespace MaddenEditor.Forms
             
             if (CheckSave())
             {
-                CloseModel();
+                CloseModel();                
                 CleanUI();
             }
         }
@@ -641,7 +677,7 @@ namespace MaddenEditor.Forms
 
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            dialog.Filter = "Madden files (*.ros;*.fra)|*.ros;*.fra|All Files (*.*)|*.*";
+            dialog.Filter = "Madden files (*.ros;*.fra;*.db;*.rdb)|*.ros;*.fra;*.db;*.rdb|All Files (*.*)|*.*";
             dialog.FilterIndex = 1;
             dialog.Multiselect = false;
             dialog.ShowDialog();
@@ -655,12 +691,39 @@ namespace MaddenEditor.Forms
 
                 string filename = dialog.FileNames[0];
                 fb = new FB();
-                if (fb.Extract(filename))
-                {
-                    Mad19 = true;
-                    filename = fb.roster;
-                }
+                db = new BEDB();
 
+                fb.Extract(filename);
+                if (fb.FB_Type != Frostbyte_type.NA)
+                {                    
+                    if (fb.FB_Type == Frostbyte_type.Franchise)
+                    {
+                        MessageBox.Show("Madden 19 Save Files Not Supported !", "Wrong Type", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                    else if (fb.FB_Type == Frostbyte_type.Draft)
+                    {
+                        MessageBox.Show("Please Load a valid Madden 19 Roster First !", "Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                    else if (fb.FB_Type == Frostbyte_type.Roster)
+                    {
+                        Mad19 = true;
+                        filename = fb.database;
+                    }
+                    manager.config.Madden19Serial = fb.Serial;
+                    manager.config.Madden19UserSettingsFilename = manager.UserSettings.ReadUserSettings(manager.config.Madden19UserSettingsFilename);
+                }
+                else
+                {
+                    bigendian = db.Read(filename);
+                    if (!db.isdb)
+                    {                        
+                        MessageBox.Show("Not a valid Madden Database !", "Unsupported", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+                
                 filePathToLoad = filename;
                 // Insert code here to process the files.
                 try
@@ -676,13 +739,7 @@ namespace MaddenEditor.Forms
                     MessageBox.Show(err.ToString(), "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-        }
-            
-                
-            
-        
-
-        
+        }          
         
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -702,8 +759,7 @@ namespace MaddenEditor.Forms
             }
 
             if (Mad19)
-                fb.Compact();
-
+                fb.Save();
         }
 
 
@@ -1205,11 +1261,7 @@ namespace MaddenEditor.Forms
                                     
                                     break;
                                 }
-                            }
-
-                            bool stop = false;
-                            if (p == 65)
-                                stop = true;
+                            }                          
 
                             foreach (TableRecordModel rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
                             {
@@ -1250,10 +1302,7 @@ namespace MaddenEditor.Forms
                     MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        
-        
+        }       
                
         
     }

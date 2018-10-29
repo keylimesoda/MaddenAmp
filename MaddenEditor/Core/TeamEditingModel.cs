@@ -22,6 +22,7 @@
  *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -52,17 +53,21 @@ namespace MaddenEditor.Core
 		private int currentConferenceFilterId = -1;
 		private int currentDivisionFilterId = -1;
 		private int currentLeagueFilterId = -1;
-		/** Lists of hardcoded values */
-		private IList<GenericRecord> divisionList = null;
+
+        #region Generic Lists
+        private IList<GenericRecord> divisionList = null;
 		private IList<GenericRecord> conferenceList = null;
 		private IList<GenericRecord> leagueList = null;
 		private IList<GenericRecord> offensivePlayBookList = null;
 		private IList<GenericRecord> defensivePlayBookList = null;
 		private IList<GenericRecord> teamTypeList = null;
-		/** Add the city list here for the time being */
+        private IList<GenericRecord> stadiumlist = null;		
 		private IList<GenericRecord> cityList = null;
-		/** Editing model for team uniforms */
-		private TeamUniformModel teamUniformModel = null;
+        private IList<GenericRecord> endplaylist = null;
+
+        #endregion
+
+        private TeamUniformModel teamUniformModel = null;
 
         //  New Adds
         private MGMT _manager = null;
@@ -124,6 +129,16 @@ namespace MaddenEditor.Core
             }
         }
 
+        public IList<GenericRecord> StadiumList
+        {
+            get { return stadiumlist; }
+        }
+
+        public IList<GenericRecord> EndPlayList
+        {
+            get { return endplaylist; }
+        }
+        
         public TeamUniformModel TeamUniformModel
         {
             get
@@ -132,6 +147,102 @@ namespace MaddenEditor.Core
             }
         }
 
+        public ICollection<TeamRecord> GetTeams()
+        {
+            if (teamRecords == null)
+            {
+                CreateTeamRecords();
+            }
+
+            return teamRecords.Values;
+        }
+        
+        public string GetStadium(int id)
+        {
+            foreach (GenericRecord rec in stadiumlist)
+            {
+                if (rec.Id == id)
+                    return rec.ToString();                
+            }
+            return "";
+        }
+        public int GetStadium(string name)
+        {
+            foreach (GenericRecord rec in stadiumlist)
+                if (name == rec.ToString())
+                    return rec.Id;
+            return -1;
+        }
+       
+        public string GetEndPlay(int id)
+        {
+            foreach (GenericRecord rec in endplaylist)
+            {
+                if (rec.Id == id)
+                    return rec.ToString();
+            }
+            return "";
+        }
+        public int GetEndPlay(string name)
+        {
+            foreach (GenericRecord rec in endplaylist)
+                if (name == rec.ToString())
+                    return rec.Id;
+            return -1;
+        }
+
+        public string GetOFFPlaybook(int id)
+        {
+            foreach (GenericRecord rec in offensivePlayBookList)
+            {
+                if (rec.Id == id)
+                    return rec.ToString();
+            }
+            return "";
+        }
+        public int GetOFFPlaybook(string name)
+        {
+            foreach (GenericRecord rec in offensivePlayBookList)
+                if (name == rec.ToString())
+                    return rec.Id;
+            return -1;
+        }
+
+        public string GetDEFPlaybook(int id)
+        {
+            foreach (GenericRecord rec in defensivePlayBookList)
+            {
+                if (rec.Id == id)
+                    return rec.ToString();
+            }
+            return "";
+        }
+        public int GetDEFPlaybook(string name)
+        {
+            foreach (GenericRecord rec in defensivePlayBookList)
+                if (name == rec.ToString())
+                    return rec.Id;
+            return -1;
+        }
+
+        public string GetCity(int id)
+        {
+            foreach (GenericRecord rec in cityList)
+            {
+                if (rec.Id == id)
+                    return rec.ToString();
+            }
+            return "";
+        }
+        public int GetCity(string name)
+        {
+            foreach (GenericRecord rec in cityList)
+                if (name == rec.ToString())
+                    return rec.Id;
+            return -1;
+        }
+       
+        
         public MGMT manager
         {
             get { return _manager; }
@@ -182,226 +293,451 @@ namespace MaddenEditor.Core
 
             cityList = new List<GenericRecord>();
 
-            if (model.FileVersion != MaddenFileVersion.Ver2019)
+            
+            if (model.FileVersion < MaddenFileVersion.Ver2019)
             {
                 foreach (TableRecordModel rec in model.TableModels[EditorModel.CITY_TABLE].GetRecords())
                     cityList.Add(new GenericRecord(((CityRecord)rec).CityName, ((CityRecord)rec).CityId));
+
+                #region 04-08 Playbooks
+                offensivePlayBookList = new List<GenericRecord>();
+
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    AddOFFPB("CHI-D.Jauron");
+                else AddOFFPB("CHI-L.Smith");                
+
+                AddOFFPB("CIN-M.Lewis");
+
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    AddOFFPB("BUF-G.Williams");
+                else if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                    AddOFFPB("BUF-D.Jauron");
+                else AddOFFPB("BUF-M.Mularkey");
+
+                AddOFFPB("DEN-M.Shanahan");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                    AddOFFPB("CLE-B.Davis");
+                else AddOFFPB("CLE-R.Crennel");
+
+                AddOFFPB("TB-J.Gruden");
+
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    AddOFFPB("ARI-D.McGinnis");
+                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    AddOFFPB("ARI-");
+                else AddOFFPB("ARI-D.Green");
+
+                if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    AddOFFPB("SD-N.Turner");
+                else AddOFFPB("SD-M.Schottenheimer");
+
+                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                    AddOFFPB("KC-H.Edwards");
+                else AddOFFPB("KC-D.Vermeil");
+
+                AddOFFPB("IND-T.Dungy");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                    AddOFFPB("DAL-M.Carthon");
+                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    AddOFFPB("DAL-W.Phillips");
+                else AddOFFPB("DAL-B.Parcells");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                    AddOFFPB("MIA-D.Wannstedt");
+                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    AddOFFPB("MIA-C.Cameron");
+                else AddOFFPB("MIA-N.Saban");
+
+                AddOFFPB("PHI-A.Reid");                
+
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    AddOFFPB("ATL-D.Reeves");
+                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    AddOFFPB("ATL-B.Petrino");
+                else AddOFFPB("ATL-J.Mora Jr");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                    AddOFFPB("SF-D.Erickson");
+                else AddOFFPB("SF-M.Nolan");
+
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    AddOFFPB("NYG-J.Fossil");
+                else AddOFFPB("NYG-T.Coughlin");
+
+                AddOFFPB("JAX-J.Del Rio");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                    AddOFFPB("NYJ-H.Edwards");
+                else AddOFFPB("NYJ-E.Mangini");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                    AddOFFPB("DET-S.Mariucci");
+                else AddOFFPB("DET-R.Marinelli");
+
+                AddOFFPB("GB-M.Sherman");
+                AddOFFPB("CAR-J.Fox");
+                AddOFFPB("NE-B.Belichick");                
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2004)
+                    AddOFFPB("OAK-B.Callahan");
+                else if (model.FileVersion == MaddenFileVersion.Ver2005 || model.FileVersion == MaddenFileVersion.Ver2006)
+                    AddOFFPB("OAK-N.Turner");
+                else if (model.FileVersion == MaddenFileVersion.Ver2007)
+                    AddOFFPB("OAK-A.Shell");
+                else AddOFFPB("OAK-L.Kiffin");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                    AddOFFPB("STL-M.Martz");
+                else AddOFFPB("STL-S.Linehan");
+
+                AddOFFPB("BAL-B.Billick");
+
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    AddOFFPB("WAS-S.Spurrier");
+                else AddOFFPB("WAS-J.Gibbs");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                    AddOFFPB("NO-J.Hasslet");
+                else AddOFFPB("NO-S.Payton");
+
+                AddOFFPB("SEA-M.Holmgren");                               
+
+                if (model.FileVersion == MaddenFileVersion.Ver2007)
+                    AddOFFPB("PIT-B.Cowher");
+                else AddOFFPB("PIT-M.Tomlin");
+
+                AddOFFPB("TEN-J.Fisher");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                    AddOFFPB("MIN-M.Tice");
+                else AddOFFPB("MIN-B.Childress");
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                    AddOFFPB("HOU-D.Capers");
+                else AddOFFPB("HOU-G.Kubiak");
+
+                AddOFFPB("Balanced");
+                AddOFFPB("Pass Balanced");
+                AddOFFPB("Run Balanced");
+                AddOFFPB("Run Heavy");
+                AddOFFPB("West Coast");
+                AddOFFPB("Run'n'Gun");
+
+                if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    AddOFFPB("Trick Plays");
+
+                defensivePlayBookList = new List<GenericRecord>();
+
+                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                {                    
+                    AddDEFPB("4-3");
+                    AddDEFPB("3-4");
+                    AddDEFPB("4-6");
+                    AddDEFPB("Cover 2");
+                    AddDEFPB("Balanced D");
+                    AddDEFPB("QB Contain");                    
+                }
+                else
+                {
+                    // 2007-2008 coaches playbooks only
+                    AddDEFPB("CHI-L.Smith");
+                    AddDEFPB("CIN-M.Lewis");
+                    AddDEFPB("BUF-D.Jauron");
+                    AddDEFPB("DEN-M.Shanahan");
+                    AddDEFPB("CLE-R.Crennel");
+                    AddDEFPB("TB-J.Gruden");
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                        AddDEFPB("ARI-");
+                    else AddDEFPB("ARI-D.Green");
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                        AddDEFPB("SD-N.Turner");
+                    else AddDEFPB("SD-M.Schottenheimer");
+
+                    AddDEFPB("KC-H.Edwards");
+                    AddDEFPB("IND-T.Dungy");
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                        AddDEFPB("DAL-W.Phillips");
+                    else AddDEFPB("DAL-B.Parcells");
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                        AddDEFPB("MIA-C.Cameron");
+                    else AddDEFPB("MIA-N.Saban");
+
+                    AddDEFPB("PHI-A.Reid");
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                        AddDEFPB("ATL-B.Petrino");
+                    else AddDEFPB("ATL-J.Mora Jr");
+
+                    AddDEFPB("SF-M.Nolan");
+                    AddDEFPB("NYG-T.Coughlin");
+                    AddDEFPB("JAX-J.Del Rio");
+                    AddDEFPB("NYJ-E.Mangini");
+                    AddDEFPB("DET-R.Marinelli");
+                    AddDEFPB("GB-M.Sherman");
+                    AddDEFPB("CAR-J.Fox");
+                    AddDEFPB("NE-B.Belichick");                    
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2007)
+                        AddDEFPB("OAK-A.Shell");
+                    else AddDEFPB("OAK-L.Kiffin");
+
+                    AddDEFPB("STL-S.Linehan");
+                    AddDEFPB("BAL-B.Billick");
+                    AddDEFPB("WAS-J.Gibbs");
+                    AddDEFPB("NO-S.Payton");
+                    AddDEFPB("SEA-M.Holmgren");                    
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2007)
+                        AddDEFPB("PIT-B.Cowher");
+                    else AddDEFPB("PIT-M.Tomlin");
+
+                    AddDEFPB("TEN-J.Fisher");
+                    AddDEFPB("MIN-B.Childress");
+                    AddDEFPB("HOU-G.Kubiak");
+
+                    AddDEFPB("4-3");
+                    AddDEFPB("3-4");
+                    AddDEFPB("4-6");
+                    AddDEFPB("Cover 2");
+                    AddDEFPB("Balanced D");
+                    AddDEFPB("QB Contain");
+
+                #endregion
+                }
             }
-
-
-            offensivePlayBookList = new List<GenericRecord>();
-	
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("CHI-D.Jauron", 0));
-            else offensivePlayBookList.Add(new GenericRecord("CHI-L.Smith", 0));
-
-            offensivePlayBookList.Add(new GenericRecord("CIN-M.Lewis", 1));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("BUF-G.Williams", 2));
-            else if (model.FileVersion >= MaddenFileVersion.Ver2007)
-                offensivePlayBookList.Add(new GenericRecord("BUF-D.Jauron", 2));
-            else offensivePlayBookList.Add(new GenericRecord("BUF-M.Mularkey", 2));
-
-            offensivePlayBookList.Add(new GenericRecord("DEN-M.Shanahan", 3));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
-                offensivePlayBookList.Add(new GenericRecord("CLE-B.Davis", 4));
-            else offensivePlayBookList.Add(new GenericRecord("CLE-R.Crennel", 4));
-
-            offensivePlayBookList.Add(new GenericRecord("TB-J.Gruden", 5));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("ARI-D.McGinnis", 6));
-            else if (model.FileVersion == MaddenFileVersion.Ver2008)
-                offensivePlayBookList.Add(new GenericRecord("ARI-", 6));
-            else offensivePlayBookList.Add(new GenericRecord("ARI-D.Green", 6));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2008)
-                offensivePlayBookList.Add(new GenericRecord("SD-N.Turner", 7));
-            else offensivePlayBookList.Add(new GenericRecord("SD-M.Schottenheimer", 7));
-
-            if (model.FileVersion >= MaddenFileVersion.Ver2007)
-                offensivePlayBookList.Add(new GenericRecord("KC-H.Edwards", 8));
-            else offensivePlayBookList.Add(new GenericRecord("KC-D.Vermeil", 8));
-
-            offensivePlayBookList.Add(new GenericRecord("IND-T.Dungy", 9));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
-                offensivePlayBookList.Add(new GenericRecord("DAL-M.Carthon", 10));
-            else if (model.FileVersion == MaddenFileVersion.Ver2008)
-                offensivePlayBookList.Add(new GenericRecord("DAL-W.Phillips", 10));
-            else offensivePlayBookList.Add(new GenericRecord("DAL-B.Parcells", 10));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
-                offensivePlayBookList.Add(new GenericRecord("MIA-D.Wannstedt", 11));
-            else if (model.FileVersion == MaddenFileVersion.Ver2008)
-                offensivePlayBookList.Add(new GenericRecord("MIA-C.Cameron", 11));
-            else offensivePlayBookList.Add(new GenericRecord("MIA-N.Saban", 11));
-
-            offensivePlayBookList.Add(new GenericRecord("PHI-A.Reid", 12));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("ATL-D.Reeves", 13));
-            else if (model.FileVersion == MaddenFileVersion.Ver2008)
-                offensivePlayBookList.Add(new GenericRecord("ATL-B.Petrino", 13));
-            else offensivePlayBookList.Add(new GenericRecord("ATL-J.Mora Jr", 13));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
-                offensivePlayBookList.Add(new GenericRecord("SF-D.Erickson", 14));
-            else offensivePlayBookList.Add(new GenericRecord("SF-M.Nolan", 14));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("NYG-J.Fossil", 15));
-            else offensivePlayBookList.Add(new GenericRecord("NYG-T.Coughlin", 15));
-
-            offensivePlayBookList.Add(new GenericRecord("JAX-J.Del Rio", 16));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("NYJ-H.Edwards", 17));
-            else offensivePlayBookList.Add(new GenericRecord("NYJ-E.Mangini", 17));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("DET-S.Mariucci", 18));
-            else offensivePlayBookList.Add(new GenericRecord("DET-R.Marinelli", 18));
-
-            offensivePlayBookList.Add(new GenericRecord("GB-M.Sherman", 19));
-            offensivePlayBookList.Add(new GenericRecord("CAR-J.Fox", 20));
-            offensivePlayBookList.Add(new GenericRecord("NE-B.Belichick", 21));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("OAK-B.Callahan", 22));
-            else if (model.FileVersion == MaddenFileVersion.Ver2005 || model.FileVersion == MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("OAK-N.Turner", 22));
-            else if (model.FileVersion == MaddenFileVersion.Ver2007)
-                offensivePlayBookList.Add(new GenericRecord("OAK-A.Shell", 22));
-            else offensivePlayBookList.Add(new GenericRecord("OAK-L.Kiffin", 22));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("STL-M.Martz", 23));
-            else offensivePlayBookList.Add(new GenericRecord("STL-S.Linehan", 23));
-
-            offensivePlayBookList.Add(new GenericRecord("BAL-B.Billick", 24));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
-                offensivePlayBookList.Add(new GenericRecord("WAS-S.Spurrier", 25));
-            else offensivePlayBookList.Add(new GenericRecord("WAS-J.Gibbs", 25));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("NO-J.Hasslet", 26));
-            else offensivePlayBookList.Add(new GenericRecord("NO-S.Payton", 26));
-
-            offensivePlayBookList.Add(new GenericRecord("SEA-M.Holmgren", 27));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2007)
-                offensivePlayBookList.Add(new GenericRecord("PIT-B.Cowher", 28));
-            else offensivePlayBookList.Add(new GenericRecord("PIT-M.Tomlin", 28));
-
-            offensivePlayBookList.Add(new GenericRecord("TEN-J.Fisher", 29));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("MIN-M.Tice", 30));
-            else offensivePlayBookList.Add(new GenericRecord("MIN-B.Childress", 30));
-
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-                offensivePlayBookList.Add(new GenericRecord("HOU-D.Capers", 31));
-            else offensivePlayBookList.Add(new GenericRecord("HOU-G.Kubiak", 31));
-
-            offensivePlayBookList.Add(new GenericRecord("Balanced", 32));
-            offensivePlayBookList.Add(new GenericRecord("Pass Balanced", 33));
-            offensivePlayBookList.Add(new GenericRecord("Run Balanced", 34));
-            offensivePlayBookList.Add(new GenericRecord("Run Heavy", 35));
-            offensivePlayBookList.Add(new GenericRecord("West Coast", 36));
-            offensivePlayBookList.Add(new GenericRecord("Run'n'Gun", 37));
-
-            if (model.FileVersion == MaddenFileVersion.Ver2008)
-                offensivePlayBookList.Add(new GenericRecord("Trick Plays", 38));
-
-            defensivePlayBookList = new List<GenericRecord>();
+            else 
+            {
+                ImportStadiums();
+                ImportEndPlay();
+                ImportPlayBook();
+                ImportCities();
+            }
             
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
-            {
-                defensivePlayBookList.Add(new GenericRecord("4-3", 0));
-                defensivePlayBookList.Add(new GenericRecord("3-4", 1));
-                defensivePlayBookList.Add(new GenericRecord("4-6", 2));
-                defensivePlayBookList.Add(new GenericRecord("Cover 2", 3));
-                defensivePlayBookList.Add(new GenericRecord("Balanced D", 4));
-                defensivePlayBookList.Add(new GenericRecord("QB Contain", 5));
-            }
-            else
-            {
-                // 2007-2008 coaches playbooks only
-                defensivePlayBookList.Add(new GenericRecord("CHI-L.Smith", 0));
-                defensivePlayBookList.Add(new GenericRecord("CIN-M.Lewis", 1));
-                defensivePlayBookList.Add(new GenericRecord("BUF-D.Jauron", 2));
-                defensivePlayBookList.Add(new GenericRecord("DEN-M.Shanahan", 3));
-                defensivePlayBookList.Add(new GenericRecord("CLE-R.Crennel", 4));
-                defensivePlayBookList.Add(new GenericRecord("TB-J.Gruden", 5));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
-                    defensivePlayBookList.Add(new GenericRecord("ARI-", 6));
-                else defensivePlayBookList.Add(new GenericRecord("ARI-D.Green", 6));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
-                    defensivePlayBookList.Add(new GenericRecord("SD-N.Turner", 7));
-                else defensivePlayBookList.Add(new GenericRecord("SD-M.Schottenheimer", 7));
-
-                defensivePlayBookList.Add(new GenericRecord("KC-H.Edwards", 8));
-                defensivePlayBookList.Add(new GenericRecord("IND-T.Dungy", 9));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
-                    defensivePlayBookList.Add(new GenericRecord("DAL-W.Phillips", 10));
-                else defensivePlayBookList.Add(new GenericRecord("DAL-B.Parcells", 10));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
-                    defensivePlayBookList.Add(new GenericRecord("MIA-C.Cameron", 11));
-                else defensivePlayBookList.Add(new GenericRecord("MIA-N.Saban", 11));
-
-                defensivePlayBookList.Add(new GenericRecord("PHI-A.Reid", 12));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
-                    defensivePlayBookList.Add(new GenericRecord("ATL-B.Petrino", 13));
-                else defensivePlayBookList.Add(new GenericRecord("ATL-J.Mora Jr", 13));
-
-                defensivePlayBookList.Add(new GenericRecord("SF-M.Nolan", 14));
-                defensivePlayBookList.Add(new GenericRecord("NYG-T.Coughlin", 15));
-                defensivePlayBookList.Add(new GenericRecord("JAX-J.Del Rio", 16));
-                defensivePlayBookList.Add(new GenericRecord("NYJ-E.Mangini", 17));
-                defensivePlayBookList.Add(new GenericRecord("DET-R.Marinelli", 18));
-                defensivePlayBookList.Add(new GenericRecord("GB-M.Sherman", 19));
-                defensivePlayBookList.Add(new GenericRecord("CAR-J.Fox", 20));
-                defensivePlayBookList.Add(new GenericRecord("NE-B.Belichick", 21));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2007)
-                    defensivePlayBookList.Add(new GenericRecord("OAK-A.Shell", 22));
-                else defensivePlayBookList.Add(new GenericRecord("OAK-L.Kiffin", 22));
-
-                defensivePlayBookList.Add(new GenericRecord("STL-S.Linehan", 23));
-                defensivePlayBookList.Add(new GenericRecord("BAL-B.Billick", 24));
-                defensivePlayBookList.Add(new GenericRecord("WAS-J.Gibbs", 25));
-                defensivePlayBookList.Add(new GenericRecord("NO-S.Payton", 26));
-                defensivePlayBookList.Add(new GenericRecord("SEA-M.Holmgren", 27));
-
-                if (model.FileVersion == MaddenFileVersion.Ver2007)
-                    defensivePlayBookList.Add(new GenericRecord("PIT-B.Cowher", 28));
-                else defensivePlayBookList.Add(new GenericRecord("PIT-M.Tomlin", 28));
-
-                defensivePlayBookList.Add(new GenericRecord("TEN-J.Fisher", 29));
-                defensivePlayBookList.Add(new GenericRecord("MIN-B.Childress", 30));
-                defensivePlayBookList.Add(new GenericRecord("HOU-G.Kubiak", 31));
-
-                defensivePlayBookList.Add(new GenericRecord("4-3", 32));
-                defensivePlayBookList.Add(new GenericRecord("3-4", 33));
-                defensivePlayBookList.Add(new GenericRecord("4-6", 34));
-                defensivePlayBookList.Add(new GenericRecord("Cover 2", 35));
-                defensivePlayBookList.Add(new GenericRecord("Balanced D", 36));
-                defensivePlayBookList.Add(new GenericRecord("QB Contain", 37));
-            }
         }
 
         public void InitConfig(MGMT man)
         {
             manager = man;
+            if (model.FileVersion != MaddenFileVersion.Ver2019)
+                model.TeamModel.InitPlaybooks();
+        }
+
+        public void ImportCities()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filename = filedir + @"\res\2019CITY.csv";
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(filename);
+                    string header = sr.ReadLine();
+                    string[] version = header.Split(',');
+                    if (version[0] == "CITY" && version[1] == "2019")
+                    {
+                        if (version[2] == "Yes")
+                        {
+                            //read Field desciptions
+                        }
+
+                        cityList = new List<GenericRecord>();
+                        int total = Convert.ToInt32(version[3]);
+                        string row = sr.ReadLine();
+                        string[] fields = row.Split(',');
+                        for (int c = 0; c < total; c++)
+                        {
+                            string e = sr.ReadLine();
+                            string[] entry = e.Split(',');
+                            int id = -1;
+                            string city = "";
+                            string state = "";
+
+                            if (fields[0] == "CYID")
+                                id = Convert.ToInt32(entry[0]);
+                            if (fields[1] == "CYNM")
+                                city = entry[1];
+                            if (fields[2] == "CYST")
+                                state = entry[2];
+                            
+                           cityList.Add(new GenericRecord(city, id));
+                        }
+                    }
+
+                    sr.Close();
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                }
+            }
+        }
+        
+        public void ImportStadiums()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filename = filedir + @"\res\2019STAD.csv";
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(filename);
+                    string header = sr.ReadLine();
+                    string[] version = header.Split(',');
+                    if (version[0] == "STAD" && version[1] == "2019")
+                    {
+                        if (version[2] == "Yes")
+                        {
+                            //read Field desciptions
+                        }
+
+                        stadiumlist = new List<GenericRecord>();
+                        int total = Convert.ToInt32(version[3]);
+                        string row = sr.ReadLine();
+                        string[] fields = row.Split(',');
+                        for (int c = 0; c < total; c++)
+                        {
+                            string e = sr.ReadLine();
+                            string[] entry = e.Split(',');
+                            int id = -1;
+                            string desc = "";
+                            string type = "";
+
+                            if (fields[0] == "SGID")
+                                id = Convert.ToInt32(entry[0]);
+                            if (fields[1] == "SNAM")
+                                desc = entry[1];
+                            if (fields[2] == "SDNA")
+                                type = entry[2];
+
+                            string name = String.Copy(type);
+                            if (desc != "")
+                                name += " - " + desc;
+                            stadiumlist.Add(new GenericRecord(name, id));
+                        }
+                    }
+
+                    sr.Close();
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                }
+            }
+        }
+
+        public void ImportEndPlay()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filename = filedir + @"\res\2019EPTA.csv";
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(filename);
+                    string header = sr.ReadLine();
+                    string[] version = header.Split(',');
+                    if (version[0] == "EPTA" && version[1] == "2019")
+                    {
+                        if (version[2] == "Yes")
+                        {
+                            //read Field desciptions
+                        }
+
+                        endplaylist = new List<GenericRecord>();
+                        int total = Convert.ToInt32(version[3]);
+                        string row = sr.ReadLine();
+                        string[] fields = row.Split(',');
+                        for (int c = 0; c < total; c++)
+                        {
+                            string e = sr.ReadLine();
+                            string[] entry = e.Split(',');
+                            int id = -1;
+                            string desc = "";
+                            
+                            if (fields[0] == "TEAS")
+                                desc = entry[0];
+                            if (fields[1] == "TEAV")
+                                id = Convert.ToInt32(entry[1]);
+
+                            string name = desc.Replace("EndPlay_", "");
+                            endplaylist.Add(new GenericRecord(name, id));
+                        }
+                    }
+
+                    sr.Close();
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                }
+            }
+        }
+
+        public void ImportPlayBook()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filename = filedir + @"\res\2019PLAB.csv";
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(filename);
+                    string header = sr.ReadLine();
+                    string[] version = header.Split(',');
+                    if (version[0] == "PLAB" && version[1] == "2019")
+                    {
+                        if (version[2] == "Yes")
+                        {
+                            //read Field desciptions
+                        }
+
+                        offensivePlayBookList = new List<GenericRecord>();
+                        defensivePlayBookList = new List<GenericRecord>();
+
+                        int total = Convert.ToInt32(version[3]);
+                        string row = sr.ReadLine();
+                        string[] fields = row.Split(',');
+                        for (int c = 0; c < total; c++)
+                        {
+                            string e = sr.ReadLine();
+                            string[] entry = e.Split(',');
+                            int id = -1;
+                            int book = -1;
+                            string desc = "";
+
+                            if (fields[0] == "BGID")
+                                id = Convert.ToInt32(entry[0]);
+                            if (fields[1] == "BOFF")
+                                book = Convert.ToInt32(entry[1]);                            
+                            
+                            desc = entry[2];
+                            string[] test = desc.Split('-');
+                            string name = test[test.Count() - 1];
+
+                            if (book == 1)
+                                offensivePlayBookList.Add(new GenericRecord(name, id));
+                            else if (book == 0)
+                                defensivePlayBookList.Add(new GenericRecord(name, id));
+                        }
+                    }
+
+                    sr.Close();
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                }
+            }
         }
 
         public void InitPlaybooks()
@@ -433,11 +769,25 @@ namespace MaddenEditor.Core
                 off.Sort((x, y) => x.BookID.CompareTo(y.BookID));
                 def.Sort((x, y) => x.BookID.CompareTo(y.BookID));
 
+                offensivePlayBookList.Clear();
+                defensivePlayBookList.Clear();
+
                 foreach (FRAPlayBooks o in off)
                     offensivePlayBookList.Add(new GenericRecord(o.BookName, o.BookID));
                 foreach (FRAPlayBooks d in def)
                     defensivePlayBookList.Add(new GenericRecord(d.BookName, d.BookID));
             }
+        }
+
+        public void AddOFFPB(string name)
+        {
+            int total = offensivePlayBookList.Count;
+            offensivePlayBookList.Add(new GenericRecord(name, total)); 
+        }
+        public void AddDEFPB(string name)
+        {
+            int total = defensivePlayBookList.Count;
+            defensivePlayBookList.Add(new GenericRecord(name, total));
         }
 
         #region Draft edits
@@ -542,6 +892,7 @@ namespace MaddenEditor.Core
 
         #endregion
 
+       
         public void GetTeamList()
         {
             if (_teamlist == null)
@@ -646,8 +997,9 @@ namespace MaddenEditor.Core
 
 			return teamRecords;
 		}
-        
-		public void SetConferenceFilter(int id)
+
+        #region Filters
+        public void SetConferenceFilter(int id)
 		{
 			currentConferenceFilterId = id;
 		}
@@ -676,8 +1028,9 @@ namespace MaddenEditor.Core
 		{
 			currentLeagueFilterId = -1;
 		}
-        		
-		public TeamRecord CurrentTeamRecord
+        #endregion
+
+        public TeamRecord CurrentTeamRecord
 		{
 			get
 			{
@@ -838,17 +1191,7 @@ namespace MaddenEditor.Core
 				TeamRecord tr = (TeamRecord)record;                
 				teamRecords.Add(tr.TeamId, tr);
 			}
-		}
-
-		public ICollection<TeamRecord> GetTeams()
-		{
-			if (teamRecords == null)
-			{
-				CreateTeamRecords();
-			}
-
-			return teamRecords.Values;
-		}
+		}        	
 
 		public TeamRecord GetTeamRecord(int teamId)
 		{
