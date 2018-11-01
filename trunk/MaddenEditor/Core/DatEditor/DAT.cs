@@ -1,6 +1,6 @@
 ﻿/*
     Madden Resource Editor
-    Copyright (C) 2014  Steve Gindlesperger
+    Copyright (C) 2014  Stingray68
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
