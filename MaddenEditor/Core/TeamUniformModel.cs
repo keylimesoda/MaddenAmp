@@ -27,7 +27,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using MaddenEditor.Core.Record;
-using LumenWorks.Framework.IO.Csv;
+//using LumenWorks.Framework.IO.Csv;
 
 namespace MaddenEditor.Core
 {
@@ -63,7 +63,7 @@ namespace MaddenEditor.Core
 					Trace.WriteLine("Failed to add UniformID:" + record.UniformId);
 				}
 			}
-
+            /*
 			if (!loadedData)
 			{
 				loadedData = LoadDataFromCSV();
@@ -72,6 +72,7 @@ namespace MaddenEditor.Core
 					System.Windows.Forms.MessageBox.Show("Loading of " + DATA_FILE + " failed. \r\nDefault Uniform Editing is disabled", "Error!", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 				}
 			}
+             * */
 		}
 
 		public SortedList<int, UniformRecord> GetUniforms(TeamRecord team)
@@ -96,6 +97,7 @@ namespace MaddenEditor.Core
 			return result;
 		}
 
+        /*
 		private bool LoadDataFromCSV()
 		{
 			try
@@ -139,5 +141,6 @@ namespace MaddenEditor.Core
 
 			return true;
 		}
+        */
 	}
 }

@@ -702,12 +702,6 @@
     <EmbeddedResource Include="Resources\ColinBio.txt" />
     <EmbeddedResource Include="Resources\DavidBio.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LumenWorks.Framework.IO\LumenWorks.Framework.IO.csproj">
-      <Project>{A89F9499-E49D-4941-81B4-A5B8286F1C59}</Project>
-      <Name>LumenWorks.Framework.IO</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
