@@ -418,6 +418,8 @@ namespace MaddenEditor.Core
 		public const int FREE_AGENT_TEAM_ID = 1009;
         public const int RETIRED_TEAM_ID = 1014;
         public const int ROOKIES = 1015;
+        public const int AFC_PB = 1010;
+        public const int NFC_PB = 1011;
         public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";        
         public const string RETIRED = "Retired";
 
@@ -726,12 +728,17 @@ namespace MaddenEditor.Core
             {
                  foreach (RoleInfo role in streamed.TableModels[EditorModel.ROLES_INFO].GetRecords())
                      PlayerRole.Add(role.PlayerRole, role.RoleName);
+
                  if (FileVersion == MaddenFileVersion.Ver2007)
+                 {
                      if (!PlayerRole.ContainsKey(31))
                          PlayerRole.Add(31, "None");
-                     else
-                         if (!PlayerRole.ContainsKey(45))
-                             PlayerRole.Add(45, "None");
+                 }
+                 else
+                 {
+                     if (!PlayerRole.ContainsKey(45))
+                         PlayerRole.Add(45, "None");
+                 }
                  return;
             }
             
@@ -815,7 +822,6 @@ namespace MaddenEditor.Core
                 PlayerRole.Add(42, "Playmaker");
                 PlayerRole.Add(43, "NW");
             }
-
         }
         
         public void InitColleges(MGMT man)

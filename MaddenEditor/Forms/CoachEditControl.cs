@@ -176,17 +176,23 @@ namespace MaddenEditor.Forms
 
             if (model.FileVersion == MaddenFileVersion.Ver2019)
             {
+                coachName.MaxLength = 17;
                 coachAsset.Enabled = true;
                 Approval_Label.Visible = false;
                 Approval.Visible = false;
+                coachFirstName.Enabled = true;
+                coachLastName.Enabled = true;
             }
             else
             {
+                coachName.MaxLength = 16;
                 coachAsset.Enabled = false;
                 coachAsset.Text = "";
                 LegacyRatings_Panel.Visible = true;
                 coachCurrentSeason_GroupBox.Visible = true;
                 coachPostSeason_Groupbox.Visible = true;
+                coachFirstName.Enabled = false;
+                coachLastName.Enabled = false;
             }
 
             isInitialising = false;
@@ -218,7 +224,7 @@ namespace MaddenEditor.Forms
             try
             {
                 //Load Coach General info
-                coachesName.Text = record.Name;
+                coachName.Text = record.Name;
 
                 // TO FIX not working right for 2007
                 // Shows Unemployed coaches and lists Positions as Head Coaches etc...
@@ -539,7 +545,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.CoachModel.CurrentCoachRecord.Name = coachesName.Text;
+                model.CoachModel.CurrentCoachRecord.Name = coachName.Text;
             }
         }
 
@@ -1100,6 +1106,18 @@ namespace MaddenEditor.Forms
         private void DeleteCoach_Button_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void coachFirstName_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.FirstName = coachFirstName.Text;
+        }
+
+        private void coachLastName_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.CoachModel.CurrentCoachRecord.LastName = coachLastName.Text;
         }
 
 

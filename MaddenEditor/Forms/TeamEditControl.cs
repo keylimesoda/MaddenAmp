@@ -81,6 +81,9 @@ namespace MaddenEditor.Forms
                 teamEndPlay.Visible = true;
                 foreach (GenericRecord rec in model.TeamModel.EndPlayList)
                     teamEndPlay.Items.Add(rec);
+
+                CustomArt_Textbox.Enabled = false;
+                Team_Relocated_Checkbox.Enabled = false;
             }
             
 
