@@ -72,6 +72,7 @@ namespace MaddenEditor.Core.Record
         public const string SIGN_FREE_AGENTS = "CFFA";
         public const string FILL_ROSTERS = "CFFR";
         public const string CFHL = "CFHL";
+        public const string COACH_FIRST_NAME = "CFNM";                      // 2019
         public const string RESIGN_PLAYERS = "CFRP";
         public const string MANAGE_DEPTH = "CFRR";
         public const string CFSH = "CFSH";
@@ -83,7 +84,8 @@ namespace MaddenEditor.Core.Record
         public const string CHTY = "CHTY";
         public const string KNOWLEDGE = "CKNW";
         public const string LAST_COACHED_TEAM = "CLCT";
-        public const string NAME = "CLNA";
+        public const string COACH_LONG_NAME = "CLNA";
+        public const string COACH_LAST_NAME = "CLNM";                       // 2019
         public const string LAST_TEAM_FRANCHISE = "CLTF";
         public const string LAST_TEAM_RELOCATED = "CLTR";
         public const string MOTIVATION = "CMOT";
@@ -539,11 +541,11 @@ namespace MaddenEditor.Core.Record
 		{
 			get
 			{
-				return GetStringField(NAME);
+				return GetStringField(COACH_LONG_NAME);
 			}
 			set
 			{
-				SetField(NAME, value);
+				SetField(COACH_LONG_NAME, value);
 			}
 		}		
 		public int TeamId
@@ -992,6 +994,16 @@ namespace MaddenEditor.Core.Record
             set { SetField(ASSET, value); }
         }
 
+        public string FirstName
+        {
+            get { return GetStringField(COACH_FIRST_NAME); }
+            set { SetField(COACH_FIRST_NAME, value); }
+        }
+        public string LastName
+        {
+            get { return GetStringField(COACH_LAST_NAME); }
+            set { SetField(COACH_LAST_NAME, value); }
+        }
         #endregion
     
     }

@@ -1043,8 +1043,7 @@ namespace MaddenEditor.Forms
             this.firstNameTextBox.Size = new System.Drawing.Size(124, 20);
             this.firstNameTextBox.TabIndex = 0;
             this.firstNameTextBox.WordWrap = false;
-            this.firstNameTextBox.TextChanged += new System.EventHandler(this.firstNameTextBox_TextChanged);
-            this.firstNameTextBox.Leave += new System.EventHandler(this.firstNameTextBox_Leave);
+            this.firstNameTextBox.Leave += new System.EventHandler(this.firstNameTextBox_TextChanged);
             // 
             // deletePlayerButton
             // 
@@ -1127,8 +1126,7 @@ namespace MaddenEditor.Forms
             this.lastNameTextBox.Size = new System.Drawing.Size(124, 20);
             this.lastNameTextBox.TabIndex = 1;
             this.lastNameTextBox.WordWrap = false;
-            this.lastNameTextBox.TextChanged += new System.EventHandler(this.lastNameTextBox_TextChanged);
-            this.lastNameTextBox.Leave += new System.EventHandler(this.lastNameTextBox_Leave);
+            this.lastNameTextBox.Leave += new System.EventHandler(this.lastNameTextBox_TextChanged);
             // 
             // PlayerID_Updown
             // 
@@ -8688,6 +8686,7 @@ namespace MaddenEditor.Forms
             // playerAsset
             // 
             this.playerAsset.Location = new System.Drawing.Point(228, 156);
+            this.playerAsset.MaxLength = 40;
             this.playerAsset.Name = "playerAsset";
             this.playerAsset.Size = new System.Drawing.Size(124, 20);
             this.playerAsset.TabIndex = 138;
@@ -8813,6 +8812,7 @@ namespace MaddenEditor.Forms
             // playerHometown
             // 
             this.playerHometown.Location = new System.Drawing.Point(228, 225);
+            this.playerHometown.MaxLength = 25;
             this.playerHometown.Name = "playerHometown";
             this.playerHometown.Size = new System.Drawing.Size(124, 20);
             this.playerHometown.TabIndex = 133;

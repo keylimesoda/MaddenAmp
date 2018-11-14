@@ -397,7 +397,7 @@ namespace MaddenEditor.Core
 
 			foreach (TableRecordModel record in model.TableModels[EditorModel.COACH_TABLE].GetRecords())
 			{
-				String firstname = record.GetStringField(CoachRecord.NAME);
+				String firstname = record.GetStringField(CoachRecord.COACH_LONG_NAME);
 
 				String firstnameLower = firstname.ToLower();
 

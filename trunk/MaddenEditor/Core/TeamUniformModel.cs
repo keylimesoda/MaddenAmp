@@ -63,6 +63,7 @@ namespace MaddenEditor.Core
 					Trace.WriteLine("Failed to add UniformID:" + record.UniformId);
 				}
 			}
+
             /*
 			if (!loadedData)
 			{
@@ -72,7 +73,7 @@ namespace MaddenEditor.Core
 					System.Windows.Forms.MessageBox.Show("Loading of " + DATA_FILE + " failed. \r\nDefault Uniform Editing is disabled", "Error!", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 				}
 			}
-             * */
+            */
 		}
 
 		public SortedList<int, UniformRecord> GetUniforms(TeamRecord team)

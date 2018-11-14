@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Madden Amp")]
-[assembly: AssemblyDescription("Thank you for using this editor.\r\n\r\n\r\nThis program is licenced under the GPL.\r\nSource is available via subversion at\r\n\r\nhttps://maddenamp.svn.sourceforge.net/svnroot/maddenamp/trunk\r\n\r\nThanks go to \r\nSpin16 for his excellent work bug fixing and the Draft Engine\r\nbakersville123 for his Offseason conditioning \r\ncparker for his issue reporting\r\nSuchy63 for TDBAccess.dll making it all possible\r\nfritzdis for Salary Calculations\r\nReMiNiScE for his OVR ratings\r\nCinciBearFan for his K & P ratings\r\nOmega4ce for his Injury descriptions\r\nBig Current Thank you to zentrarium")]
+[assembly: AssemblyDescription("Thank you for using this editor.\r\n\r\n\r\nThis program is licenced under the GPL.\r\nSource is available via subversion at\r\n\r\nhttps://svn.code.sf.net/p/maddenamp/code/trunk\r\nsvn://svn.code.sf.net/p/maddenamp/code\r\n\r\nThanks go to \r\nSpin16 for his excellent work bug fixing and the Draft Engine\r\nbakersville123 for his Offseason conditioning \r\ncparker for his issue reporting\r\nSuchy63 for TDBAccess.dll making it all possible\r\nfritzdis for Salary Calculations\r\nReMiNiScE for his OVR ratings\r\nCinciBearFan for his K & P ratings\r\nOmega4ce for his Injury descriptions\r\nBig Current Thank you to zentrarium")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tributech")]
 [assembly: AssemblyProduct("Madden Amp")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("4.3.6")]
-[assembly: AssemblyFileVersion("4.3.6")]
+[assembly: AssemblyVersion("4.3.7")]
+[assembly: AssemblyFileVersion("4.3.7")]

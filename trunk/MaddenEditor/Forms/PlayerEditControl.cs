@@ -94,16 +94,22 @@ namespace MaddenEditor.Forms
             playerOVRArchetypeCombo.Enabled = false;
             playerOVRArchetype.Text = "NA";
             playerOVRArchetype.Enabled = false;
+            playerHometown.Enabled = false;
+            playerStateCombo.Enabled = false;
 
             if (model.FileVersion == MaddenFileVersion.Ver2019)
             {
                 calculateOverallButton.Enabled = false;
+                playerHometown.Enabled = true;
+                playerStateCombo.Enabled = true;
                 SevereLabel.Visible = true;
                 ReturnLabel.Visible = true;
                 playerInjuryReturn.Visible = true;
                 playerInjurySevere.Visible = true;
                 Traits_Panel.Visible = true;
                 Ratings19_Panel.Visible = true;
+                firstNameTextBox.MaxLength = 13;
+                lastNameTextBox.MaxLength = 17;
 
                 playeroverall.InitRatings19();
             }
@@ -647,11 +653,9 @@ namespace MaddenEditor.Forms
                 else Team_Combo.SelectedItem = (object)team;
 
                 positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
-                OriginalPosition_Combo.SelectedIndex = record.OriginalPositionId;                
+                OriginalPosition_Combo.SelectedIndex = record.OriginalPositionId;
 
-                if (record.CollegeId > CollegeCombo.Items.Count -1)
-                    CollegeCombo.SelectedIndex = -1;
-                else CollegeCombo.SelectedItem = model.Colleges[record.CollegeId].name;                               
+                CollegeCombo.Text = model.Colleges[model.PlayerModel.CurrentPlayerRecord.CollegeId].name;
                 
                 playerThrowingStyle.SelectedIndex = Convert.ToInt32(record.SideArmed);
                 CareerPhase_Combo.SelectedIndex = record.CareerPhase;
@@ -1328,6 +1332,19 @@ namespace MaddenEditor.Forms
             PlayerPortBox.BackColor = Color.Black;           
         }
 
+        public bool CheckPlayerUniqueness(int pgid, int poid)
+        {
+            isInitialising = true;
+            bool exists = model.PlayerModel.CheckIDExists(pgid,poid);
+            if (exists)
+            {
+                MessageBox.Show("IDs need to be unique", "IDs already exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+            }
+            isInitialising = false;
+            return exists;
+        }
+
         
         #region Navigation Functions
        
@@ -1363,15 +1380,35 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void PlayerGridViewChange()
+        private void PlayerGridViewChange(bool update, int pgid)
         {
             if (PlayerGridView.CurrentRow.Index < 0)
                 return;
-
             DataGridViewRow row = PlayerGridView.CurrentRow;
+
+            if (update)
+            {
+                if (model.PlayerModel.playernames.ContainsKey(model.PlayerModel.CurrentPlayerRecord.PlayerId))
+                {
+                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName
+                        + " " + model.PlayerModel.CurrentPlayerRecord.LastName;
+                }
+                else 
+                {                    
+                    model.PlayerModel.playernames.Add(model.PlayerModel.CurrentPlayerRecord.PlayerId, model.PlayerModel.CurrentPlayerRecord.FirstName
+                        + " " + model.PlayerModel.CurrentPlayerRecord.LastName);
+                }
+
+                row.Cells[1].Value = model.PlayerModel.playernames[pgid];
+            }
+           
+            if (pgid != -1)
+                row.Cells[0].Value = pgid;
             int r = (int)row.Cells[0].Value;
             LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(r));            
         }
+
+
 
         private void PlayerGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -1380,7 +1417,7 @@ namespace MaddenEditor.Forms
 
             isInitialising = true;
 
-            PlayerGridViewChange();
+            PlayerGridViewChange(false, -1);
 
             isInitialising = false;            
         }    
@@ -1399,23 +1436,7 @@ namespace MaddenEditor.Forms
 
         #endregion
 
-        #region Player General Functions
-
-        private void firstNameTextBox_Leave(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.FirstName = firstNameTextBox.Text;
-            }
-        }
-
-        private void lastNameTextBox_Leave(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.LastName = lastNameTextBox.Text;
-            }
-        }
+        #region Player General Functions        
 
         private void playerAge_ValueChanged(object sender, EventArgs e)
         {
@@ -1522,16 +1543,7 @@ namespace MaddenEditor.Forms
                 {
                     if (playcol.Value.name == CollegeCombo.Text)
                     {
-                        if (model.FileVersion == MaddenFileVersion.Ver2019)
-                        {
-                            if (playcol.Value.name == "No College")
-                                model.PlayerModel.CurrentPlayerRecord.CollegeId = 0;
-                            else model.PlayerModel.CurrentPlayerRecord.CollegeId = playcol.Value.orig_id + 1;
-                        }
-                        else
-                        {
-                            model.PlayerModel.CurrentPlayerRecord.CollegeId = playcol.Value.orig_id;
-                        }
+                        model.PlayerModel.CurrentPlayerRecord.CollegeId = playcol.Key;
                     }
                 }
             }
@@ -1593,18 +1605,18 @@ namespace MaddenEditor.Forms
                 PlayerGridView.Rows.RemoveAt(current);
                 if (PlayerGridView.Rows.Count > 0)
                 {
-                    int idnum = (int)PlayerGridView.Rows[0].Cells[0].Value;
-                    LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(idnum));
+                    PlayerGridViewChange(false, -1);
+                    //int idnum = (int)PlayerGridView.Rows[0].Cells[0].Value;
+
+                    //LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(idnum));
                 }
                 else
                 {
                     // No players left to load, reset filters back to ALL
-                    LoadPlayerInfo(null);
-                                   
+                    LoadPlayerInfo(null);                                   
                 }
 
-                isInitialising = false;
-                
+                isInitialising = false;                
             }
         }
 
@@ -1615,18 +1627,25 @@ namespace MaddenEditor.Forms
             PlayerRecord newRecord = model.PlayerModel.CreateNewPlayerRecord();
             // Add the player to free agents
             newRecord.TeamId = EditorModel.FREE_AGENT_TEAM_ID;
+            EditorModel.totalplayers++;
             // Need to set unique PLAYER ID
-            newRecord.PlayerId = EditorModel.totalplayers + 1;
+            newRecord.PlayerId = EditorModel.totalplayers;
             // This sets unique POID
-            newRecord.NFLID = EditorModel.totalplayers + 1;
-
+            newRecord.NFLID = EditorModel.totalplayers;
+            newRecord.FirstName = "NA";
+            newRecord.LastName = "NA";
             //Most variables start off at zero but some can't like height and weight so set them
             newRecord.Height = 72; // 6'0"
             newRecord.Weight = 40; // 200#
             model.PlayerModel.CurrentPlayerRecord = newRecord;
 
             isInitialising = true;
-            LoadPlayerInfo(newRecord);
+            string newname = newRecord.FirstName + " " + newRecord.LastName;
+            model.PlayerModel.playernames.Add(newRecord.PlayerId, newname);
+            object[] entry = {newRecord.PlayerId, newname};
+            PlayerGridView.Rows.Add(entry);
+            PlayerGridView.CurrentCell = PlayerGridView.Rows[PlayerGridView.Rows.Count - 1].Cells[0];            
+            PlayerGridViewChange(true,-1);
             isInitialising = false;
         }
 
@@ -2151,7 +2170,13 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.NFLID = (int)NFL_Updown.Value;
+                if (NFL_Updown.Value != model.PlayerModel.CurrentPlayerRecord.NFLID)
+                {
+                    if (!CheckPlayerUniqueness(-1, (int)NFL_Updown.Value))
+                    {
+                        model.PlayerModel.CurrentPlayerRecord.NFLID = (int)NFL_Updown.Value;
+                    }
+                }                
             }
         }
         private void playerAddInjuryButton_Click(object sender, EventArgs e)
@@ -2729,7 +2754,7 @@ namespace MaddenEditor.Forms
                 }
                 
                 
-                if (!Madden19 && record.TeamId != 1009 && record.TeamId != 1023 && record.TeamId != 1010 && record.TeamId != 1011)
+                if (!Madden19 && record.TeamId < 1009 && record.TeamId > 1015 && record.TeamId != 1023)
                 {
                     TeamRecord teamRecord = model.TeamModel.GetTeamRecord(record.TeamId);                    
                     TeamSalary.Text = "" + ((double)teamRecord.Salary / 100.0);
@@ -5610,19 +5635,61 @@ namespace MaddenEditor.Forms
         private void firstNameTextBox_TextChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.FirstName = firstNameTextBox.Text;
+            {
+                if (firstNameTextBox.Text != model.PlayerModel.CurrentPlayerRecord.FirstName)
+                {
+                   isInitialising = true;
+                    model.PlayerModel.CurrentPlayerRecord.FirstName = firstNameTextBox.Text;
+                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName +
+                        " " + model.PlayerModel.CurrentPlayerRecord.LastName;
+                    PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
+                    isInitialising = false;
+                }
+            }
         }
 
         private void PlayerID_Updown_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlayerId = (int)PlayerID_Updown.Value;
+            {                
+                if (PlayerID_Updown.Value != model.PlayerModel.CurrentPlayerRecord.PlayerId)
+                {
+                    isInitialising = true;
+                    // changing to a new player id
+                    if (!CheckPlayerUniqueness((int)PlayerID_Updown.Value, -1))
+                    {
+                        int oldpgid = model.PlayerModel.CurrentPlayerRecord.PlayerId;
+                        string name = "";
+                        if (model.PlayerModel.playernames.ContainsKey(oldpgid))
+                        {
+                            // This should always happen, but name will be "unknown" if id doesnt exist
+                            name = model.PlayerModel.playernames[oldpgid];
+                            model.PlayerModel.playernames.Remove(oldpgid);
+                        }
+                        else name = "unknown";
+                        model.PlayerModel.playernames.Add((int)PlayerID_Updown.Value, name);
+                        model.PlayerModel.CurrentPlayerRecord.PlayerId = (int)PlayerID_Updown.Value;
+                        PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
+                    }
+                    isInitialising = false;
+                }
+            }
         }
 
         private void lastNameTextBox_TextChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.LastName = lastNameTextBox.Text;
+            {
+                if (lastNameTextBox.Text != model.PlayerModel.CurrentPlayerRecord.LastName)
+                {
+                    isInitialising = true;
+                    model.PlayerModel.CurrentPlayerRecord.LastName = lastNameTextBox.Text;
+                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName +
+                        " " + model.PlayerModel.CurrentPlayerRecord.LastName;
+                    PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
+                    isInitialising = false;
+                }
+            }
         }
 
         private void playerCaptain_CheckedChanged(object sender, EventArgs e)
@@ -5636,8 +5703,6 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
                 model.PlayerModel.CurrentPlayerRecord.UnderShirt = playerUndershirt.SelectedIndex;
         }
-
         
-
     }
 }

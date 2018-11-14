@@ -1111,6 +1111,7 @@ namespace MaddenEditor.Forms
             // teamDBName
             // 
             this.teamDBName.Location = new System.Drawing.Point(83, 378);
+            this.teamDBName.MaxLength = 20;
             this.teamDBName.Name = "teamDBName";
             this.teamDBName.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.teamDBName.Size = new System.Drawing.Size(115, 20);

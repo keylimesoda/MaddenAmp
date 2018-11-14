@@ -1782,7 +1782,7 @@ namespace MaddenEditor.Core
             record.SetDeleteFlag(true);
 
             //Remove this player from any depth charts
-            if (record.TeamId != 1009 && record.TeamId != 1023)
+            if (record.TeamId != 1009 && record.TeamId != 1023 && record.TeamId != 1014 && record.TeamId != 1015)
                 RemovePlayerFromDepthChart(record.PlayerId);
         }
         
@@ -2033,6 +2033,27 @@ namespace MaddenEditor.Core
                 if (player.YearsPro == 0)
                     player.Overall = player.CalculateOverallRating(player.PositionId, false);
             }
+        }
+
+        public bool CheckIDExists(int pgid, int poid)
+        {
+            foreach (PlayerRecord player in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (player.Deleted)
+                    continue;
+                if (pgid != -1)
+                {
+                    if (pgid == player.PlayerId)
+                        return true;
+                }
+                if (poid != -1)
+                {
+                    if (poid == player.NFLID)
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
