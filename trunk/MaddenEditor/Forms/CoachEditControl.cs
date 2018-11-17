@@ -182,6 +182,11 @@ namespace MaddenEditor.Forms
                 Approval.Visible = false;
                 coachFirstName.Enabled = true;
                 coachLastName.Enabled = true;
+                CoachFaceID_UpDown.Value = 0;
+                CoachFaceID_UpDown.Enabled = false;
+                CoachHeadID_UpDown.Value = 0;
+                CoachHeadID_UpDown.Enabled = false;
+                coachPreviousTeam.Enabled = false;
             }
             else
             {
@@ -193,6 +198,8 @@ namespace MaddenEditor.Forms
                 coachPostSeason_Groupbox.Visible = true;
                 coachFirstName.Enabled = false;
                 coachLastName.Enabled = false;
+                coachAsset.Text = "";
+                coachAsset.Enabled = false;
             }
 
             isInitialising = false;
@@ -325,8 +332,8 @@ namespace MaddenEditor.Forms
                 coachDefAggression.Value = record.DefensiveAggression;
                 coachOffAggression.Value = record.OffensiveAggression;
 
-                coachDefensivePlaybook.SelectedIndex = (int)record.DefensivePlaybook;
-                coachOffensivePlaybook.SelectedIndex = (int)record.OffensivePlaybook;
+                coachDefensivePlaybook.Text = model.TeamModel.GetDEFPlaybook((int)record.DefensivePlaybook);
+                coachOffensivePlaybook.Text = model.TeamModel.GetOFFPlaybook((int)record.OffensivePlaybook);
 
                 // Set slider values to 0
                 for (int i = 0; i < Enum.GetNames(typeof(PlayerDraftedPositions)).Length; i++)
@@ -380,9 +387,10 @@ namespace MaddenEditor.Forms
                 if (model.FileVersion == MaddenFileVersion.Ver2019)
                 {
                     coachAsset.Text = record.Asset;
+                    coachFirstName.Text = record.FirstName;
+                    coachLastName.Text = record.LastName;
                 }
             }
-
 
             catch (Exception e)
             {
@@ -801,7 +809,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.CoachModel.CurrentCoachRecord.OffensivePlaybook = (int)coachOffensivePlaybook.SelectedIndex;
+                model.CoachModel.CurrentCoachRecord.OffensivePlaybook = model.TeamModel.GetOFFPlaybook(coachOffensivePlaybook.Text);
             }
         }
 
@@ -809,7 +817,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.CoachModel.CurrentCoachRecord.DefensivePlaybook = (int)coachDefensivePlaybook.SelectedIndex;
+                model.CoachModel.CurrentCoachRecord.DefensivePlaybook = model.TeamModel.GetDEFPlaybook(coachDefensivePlaybook.Text);
             }
         }
 
@@ -1118,6 +1126,11 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
                 model.CoachModel.CurrentCoachRecord.LastName = coachLastName.Text;
+        }
+
+        private void coachPreviousTeam_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
 

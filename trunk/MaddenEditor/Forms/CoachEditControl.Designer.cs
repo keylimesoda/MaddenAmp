@@ -72,6 +72,10 @@ namespace MaddenEditor.Forms
             this.label251 = new System.Windows.Forms.Label();
             this.label78 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label76 = new System.Windows.Forms.Label();
+            this.label60 = new System.Windows.Forms.Label();
+            this.coachLastName = new System.Windows.Forms.TextBox();
+            this.coachFirstName = new System.Windows.Forms.TextBox();
             this.AddCoach_Button = new System.Windows.Forms.Button();
             this.DeleteCoach_Button = new System.Windows.Forms.Button();
             this.label75 = new System.Windows.Forms.Label();
@@ -186,10 +190,6 @@ namespace MaddenEditor.Forms
             this.CoachDef = new System.Windows.Forms.NumericUpDown();
             this.label59 = new System.Windows.Forms.Label();
             this.tabcontrol = new System.Windows.Forms.TabControl();
-            this.label60 = new System.Windows.Forms.Label();
-            this.coachFirstName = new System.Windows.Forms.TextBox();
-            this.label76 = new System.Windows.Forms.Label();
-            this.coachLastName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Approval)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BodySize)).BeginInit();
@@ -748,6 +748,46 @@ namespace MaddenEditor.Forms
             this.panel1.Size = new System.Drawing.Size(350, 678);
             this.panel1.TabIndex = 1;
             // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Location = new System.Drawing.Point(168, 191);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(58, 13);
+            this.label76.TabIndex = 54;
+            this.label76.Text = "Last Name";
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(169, 168);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(57, 13);
+            this.label60.TabIndex = 139;
+            this.label60.Text = "First Name";
+            // 
+            // coachLastName
+            // 
+            this.coachLastName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachLastName.Location = new System.Drawing.Point(229, 188);
+            this.coachLastName.MaxLength = 17;
+            this.coachLastName.Name = "coachLastName";
+            this.coachLastName.Size = new System.Drawing.Size(111, 20);
+            this.coachLastName.TabIndex = 55;
+            this.coachLastName.TextChanged += new System.EventHandler(this.coachLastName_TextChanged);
+            // 
+            // coachFirstName
+            // 
+            this.coachFirstName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.coachFirstName.Location = new System.Drawing.Point(229, 165);
+            this.coachFirstName.MaxLength = 16;
+            this.coachFirstName.Name = "coachFirstName";
+            this.coachFirstName.Size = new System.Drawing.Size(111, 20);
+            this.coachFirstName.TabIndex = 140;
+            this.coachFirstName.TextChanged += new System.EventHandler(this.coachFirstName_TextChanged);
+            // 
             // AddCoach_Button
             // 
             this.AddCoach_Button.Enabled = false;
@@ -788,6 +828,7 @@ namespace MaddenEditor.Forms
             this.coachPreviousTeam.Name = "coachPreviousTeam";
             this.coachPreviousTeam.Size = new System.Drawing.Size(111, 21);
             this.coachPreviousTeam.TabIndex = 136;
+            this.coachPreviousTeam.SelectedIndexChanged += new System.EventHandler(this.coachPreviousTeam_SelectedIndexChanged);
             // 
             // CoachHeight_Inches
             // 
@@ -2073,46 +2114,6 @@ namespace MaddenEditor.Forms
             this.tabcontrol.SelectedIndex = 0;
             this.tabcontrol.Size = new System.Drawing.Size(645, 678);
             this.tabcontrol.TabIndex = 0;
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(169, 168);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(57, 13);
-            this.label60.TabIndex = 139;
-            this.label60.Text = "First Name";
-            // 
-            // coachFirstName
-            // 
-            this.coachFirstName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.coachFirstName.Location = new System.Drawing.Point(229, 165);
-            this.coachFirstName.MaxLength = 16;
-            this.coachFirstName.Name = "coachFirstName";
-            this.coachFirstName.Size = new System.Drawing.Size(111, 20);
-            this.coachFirstName.TabIndex = 140;
-            this.coachFirstName.TextChanged += new System.EventHandler(this.coachFirstName_TextChanged);
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(168, 191);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(58, 13);
-            this.label76.TabIndex = 54;
-            this.label76.Text = "Last Name";
-            // 
-            // coachLastName
-            // 
-            this.coachLastName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.coachLastName.Location = new System.Drawing.Point(229, 188);
-            this.coachLastName.MaxLength = 17;
-            this.coachLastName.Name = "coachLastName";
-            this.coachLastName.Size = new System.Drawing.Size(111, 20);
-            this.coachLastName.TabIndex = 55;
-            this.coachLastName.TextChanged += new System.EventHandler(this.coachLastName_TextChanged);
             // 
             // CoachEditControl
             // 

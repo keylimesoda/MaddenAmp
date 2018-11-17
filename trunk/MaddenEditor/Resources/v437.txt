@@ -1,0 +1,44 @@
+Madden AMP 4.37
+
+
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+*** Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file with Amp when finished editing in game in order to view those changes.
+
+
+
+
+Madden Amp is written in C# using Visual Studio 2013.
+Source Code is available through Sourceforge:
+https://svn.code.sf.net/p/maddenamp/code/trunk
+
+Subversion client (such as Tortoise SVN, https://tortoisesvn.net/)
+Checkout (Current Version) - svn://svn.code.sf.net/p/maddenamp/code/trunk 
+Checkout (Entire Project) - svn://svn.code.sf.net/p/maddenamp/code
+
+Submitting any changes to the source code requires a sourceforge account.
+Contact Stingray68 through sourceforge, or on the Football Idiot forums, to request write access.
+http://www.footballidiot.com/forum/
+
+
+v4.37 Changelog
+---------------
+
+Bugs/Fixes
+----------
+
+Player Editor 
+- Fixed bug for players having no Role/Weapon in 07,08
+- Fixed bug with selecting colleges not setting correctly
+- Adjusted player's first/last name length for 2019
+
+
+Team Editor - Disabled custom art and team relocated for 2019
+
+Coach Editor - Added First/Last name editing for 2019
+
+
