@@ -134,27 +134,29 @@ namespace MaddenEditor.Forms
             this.coachCareerTies = new System.Windows.Forms.NumericUpDown();
             this.coachCareerWins = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.DefTendency = new System.Windows.Forms.ComboBox();
+            this.OffTendency = new System.Windows.Forms.ComboBox();
             this.label44 = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.coachRunDef = new System.Windows.Forms.NumericUpDown();
-            this.label45 = new System.Windows.Forms.Label();
             this.coachPassDef = new System.Windows.Forms.NumericUpDown();
             this.label43 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.rb2 = new System.Windows.Forms.NumericUpDown();
             this.label49 = new System.Windows.Forms.Label();
-            this.coachRunOff = new System.Windows.Forms.NumericUpDown();
-            this.coachPassOff = new System.Windows.Forms.NumericUpDown();
-            this.threeFourButton = new System.Windows.Forms.RadioButton();
-            this.rb1 = new System.Windows.Forms.NumericUpDown();
-            this.fourThreeButton = new System.Windows.Forms.RadioButton();
-            this.label40 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
             this.coachOffAggression = new System.Windows.Forms.NumericUpDown();
+            this.label47 = new System.Windows.Forms.Label();
+            this.threeFourButton = new System.Windows.Forms.RadioButton();
+            this.label41 = new System.Windows.Forms.Label();
+            this.fourThreeButton = new System.Windows.Forms.RadioButton();
+            this.label46 = new System.Windows.Forms.Label();
+            this.coachRunOff = new System.Windows.Forms.NumericUpDown();
+            this.label40 = new System.Windows.Forms.Label();
+            this.coachPassOff = new System.Windows.Forms.NumericUpDown();
+            this.rb2 = new System.Windows.Forms.NumericUpDown();
+            this.rb1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.LegacyRatings_Panel = new System.Windows.Forms.Panel();
             this.coachPS = new System.Windows.Forms.NumericUpDown();
@@ -224,11 +226,11 @@ namespace MaddenEditor.Forms
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.coachRunDef)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachPassDef)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rb2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.coachOffAggression)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachRunOff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachPassOff)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rb2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rb1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.coachOffAggression)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.LegacyRatings_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.coachPS)).BeginInit();
@@ -571,7 +573,7 @@ namespace MaddenEditor.Forms
             this.coachAge.Name = "coachAge";
             this.coachAge.Size = new System.Drawing.Size(67, 20);
             this.coachAge.TabIndex = 5;
-            this.coachAge.ValueChanged += new System.EventHandler(this.coachAge_ValueChanged);
+            this.coachAge.Leave += new System.EventHandler(this.coachAge_ValueChanged);
             // 
             // label11
             // 
@@ -665,7 +667,7 @@ namespace MaddenEditor.Forms
             // 
             // coachDefAggression
             // 
-            this.coachDefAggression.Location = new System.Drawing.Point(81, 82);
+            this.coachDefAggression.Location = new System.Drawing.Point(246, 113);
             this.coachDefAggression.Name = "coachDefAggression";
             this.coachDefAggression.Size = new System.Drawing.Size(55, 20);
             this.coachDefAggression.TabIndex = 6;
@@ -1439,28 +1441,30 @@ namespace MaddenEditor.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.DefTendency);
+            this.groupBox3.Controls.Add(this.OffTendency);
             this.groupBox3.Controls.Add(this.label44);
             this.groupBox3.Controls.Add(this.label56);
             this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.coachRunDef);
-            this.groupBox3.Controls.Add(this.label45);
             this.groupBox3.Controls.Add(this.coachPassDef);
             this.groupBox3.Controls.Add(this.label43);
-            this.groupBox3.Controls.Add(this.label47);
+            this.groupBox3.Controls.Add(this.label45);
             this.groupBox3.Controls.Add(this.label42);
-            this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Controls.Add(this.rb2);
             this.groupBox3.Controls.Add(this.label49);
-            this.groupBox3.Controls.Add(this.coachRunOff);
-            this.groupBox3.Controls.Add(this.coachDefAggression);
-            this.groupBox3.Controls.Add(this.coachPassOff);
-            this.groupBox3.Controls.Add(this.threeFourButton);
-            this.groupBox3.Controls.Add(this.rb1);
-            this.groupBox3.Controls.Add(this.fourThreeButton);
-            this.groupBox3.Controls.Add(this.label40);
-            this.groupBox3.Controls.Add(this.label46);
-            this.groupBox3.Controls.Add(this.label41);
+            this.groupBox3.Controls.Add(this.label24);
             this.groupBox3.Controls.Add(this.coachOffAggression);
+            this.groupBox3.Controls.Add(this.coachDefAggression);
+            this.groupBox3.Controls.Add(this.label47);
+            this.groupBox3.Controls.Add(this.threeFourButton);
+            this.groupBox3.Controls.Add(this.label41);
+            this.groupBox3.Controls.Add(this.fourThreeButton);
+            this.groupBox3.Controls.Add(this.label46);
+            this.groupBox3.Controls.Add(this.coachRunOff);
+            this.groupBox3.Controls.Add(this.label40);
+            this.groupBox3.Controls.Add(this.coachPassOff);
+            this.groupBox3.Controls.Add(this.rb2);
+            this.groupBox3.Controls.Add(this.rb1);
             this.groupBox3.Location = new System.Drawing.Point(313, 22);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(310, 233);
@@ -1468,10 +1472,40 @@ namespace MaddenEditor.Forms
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tendencies";
             // 
+            // DefTendency
+            // 
+            this.DefTendency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DefTendency.Enabled = false;
+            this.DefTendency.FormattingEnabled = true;
+            this.DefTendency.Items.AddRange(new object[] {
+            "Force Pass",
+            "Shutdown Run",
+            "Contain Pass",
+            "Disrupt Pass"});
+            this.DefTendency.Location = new System.Drawing.Point(180, 40);
+            this.DefTendency.Name = "DefTendency";
+            this.DefTendency.Size = new System.Drawing.Size(121, 21);
+            this.DefTendency.TabIndex = 26;
+            // 
+            // OffTendency
+            // 
+            this.OffTendency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.OffTendency.Enabled = false;
+            this.OffTendency.FormattingEnabled = true;
+            this.OffTendency.Items.AddRange(new object[] {
+            "Ball Control",
+            "Establish Run",
+            "West Coast",
+            "Vertical"});
+            this.OffTendency.Location = new System.Drawing.Point(22, 41);
+            this.OffTendency.Name = "OffTendency";
+            this.OffTendency.Size = new System.Drawing.Size(121, 21);
+            this.OffTendency.TabIndex = 25;
+            // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(234, 142);
+            this.label44.Location = new System.Drawing.Point(88, 174);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(28, 13);
             this.label44.TabIndex = 24;
@@ -1480,7 +1514,7 @@ namespace MaddenEditor.Forms
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(27, 125);
+            this.label56.Location = new System.Drawing.Point(192, 157);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(97, 13);
             this.label56.TabIndex = 7;
@@ -1489,7 +1523,7 @@ namespace MaddenEditor.Forms
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(26, 20);
+            this.label25.Location = new System.Drawing.Point(195, 24);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(98, 13);
             this.label25.TabIndex = 2;
@@ -1497,7 +1531,7 @@ namespace MaddenEditor.Forms
             // 
             // coachRunDef
             // 
-            this.coachRunDef.Location = new System.Drawing.Point(17, 56);
+            this.coachRunDef.Location = new System.Drawing.Point(182, 88);
             this.coachRunDef.Maximum = new decimal(new int[] {
             99,
             0,
@@ -1508,18 +1542,9 @@ namespace MaddenEditor.Forms
             this.coachRunDef.Size = new System.Drawing.Size(55, 20);
             this.coachRunDef.TabIndex = 4;
             // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(176, 142);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(28, 13);
-            this.label45.TabIndex = 22;
-            this.label45.Text = "RB1";
-            // 
             // coachPassDef
             // 
-            this.coachPassDef.Location = new System.Drawing.Point(81, 56);
+            this.coachPassDef.Location = new System.Drawing.Point(246, 88);
             this.coachPassDef.Maximum = new decimal(new int[] {
             79,
             0,
@@ -1543,65 +1568,107 @@ namespace MaddenEditor.Forms
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(29, 39);
+            this.label43.Location = new System.Drawing.Point(194, 71);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(27, 13);
             this.label43.TabIndex = 3;
             this.label43.Text = "Run";
             // 
-            // label47
+            // label45
             // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(164, 85);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(59, 13);
-            this.label47.TabIndex = 17;
-            this.label47.Text = "Aggression";
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(30, 174);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(28, 13);
+            this.label45.TabIndex = 22;
+            this.label45.Text = "RB1";
             // 
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(94, 39);
+            this.label42.Location = new System.Drawing.Point(260, 71);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(30, 13);
             this.label42.TabIndex = 13;
             this.label42.Text = "Pass";
             // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(178, 20);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(95, 13);
-            this.label24.TabIndex = 14;
-            this.label24.Text = "Offense Tendency";
-            // 
-            // rb2
-            // 
-            this.rb2.Location = new System.Drawing.Point(229, 161);
-            this.rb2.Name = "rb2";
-            this.rb2.Size = new System.Drawing.Size(55, 20);
-            this.rb2.TabIndex = 0;
-            this.rb2.Value = new decimal(new int[] {
-            21,
-            0,
-            0,
-            0});
-            this.rb2.ValueChanged += new System.EventHandler(this.rb2_ValueChanged);
-            // 
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(16, 85);
+            this.label49.Location = new System.Drawing.Point(181, 117);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(59, 13);
             this.label49.TabIndex = 5;
             this.label49.Text = "Aggression";
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(36, 24);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(95, 13);
+            this.label24.TabIndex = 14;
+            this.label24.Text = "Offense Tendency";
+            // 
+            // coachOffAggression
+            // 
+            this.coachOffAggression.Location = new System.Drawing.Point(83, 113);
+            this.coachOffAggression.Name = "coachOffAggression";
+            this.coachOffAggression.Size = new System.Drawing.Size(54, 20);
+            this.coachOffAggression.TabIndex = 18;
+            this.coachOffAggression.ValueChanged += new System.EventHandler(this.coachOffAggression_ValueChanged);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(18, 117);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(59, 13);
+            this.label47.TabIndex = 17;
+            this.label47.Text = "Aggression";
+            // 
+            // threeFourButton
+            // 
+            this.threeFourButton.AutoSize = true;
+            this.threeFourButton.Location = new System.Drawing.Point(188, 172);
+            this.threeFourButton.Name = "threeFourButton";
+            this.threeFourButton.Size = new System.Drawing.Size(40, 17);
+            this.threeFourButton.TabIndex = 8;
+            this.threeFourButton.Text = "3-4";
+            this.threeFourButton.CheckedChanged += new System.EventHandler(this.threeFourButton_CheckedChanged);
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(95, 71);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(30, 13);
+            this.label41.TabIndex = 19;
+            this.label41.Text = "Pass";
+            // 
+            // fourThreeButton
+            // 
+            this.fourThreeButton.AutoSize = true;
+            this.fourThreeButton.Location = new System.Drawing.Point(261, 171);
+            this.fourThreeButton.Name = "fourThreeButton";
+            this.fourThreeButton.Size = new System.Drawing.Size(40, 17);
+            this.fourThreeButton.TabIndex = 11;
+            this.fourThreeButton.Text = "4-3";
+            this.fourThreeButton.CheckedChanged += new System.EventHandler(this.fourThreeButton_CheckedChanged);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(11, 157);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(130, 13);
+            this.label46.TabIndex = 21;
+            this.label46.Text = "Running Back Distribution";
+            // 
             // coachRunOff
             // 
             this.coachRunOff.Enabled = false;
-            this.coachRunOff.Location = new System.Drawing.Point(166, 56);
+            this.coachRunOff.Location = new System.Drawing.Point(20, 88);
             this.coachRunOff.Maximum = new decimal(new int[] {
             99,
             0,
@@ -1612,9 +1679,18 @@ namespace MaddenEditor.Forms
             this.coachRunOff.Size = new System.Drawing.Size(55, 20);
             this.coachRunOff.TabIndex = 16;
             // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(29, 71);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(27, 13);
+            this.label40.TabIndex = 15;
+            this.label40.Text = "Run";
+            // 
             // coachPassOff
             // 
-            this.coachPassOff.Location = new System.Drawing.Point(228, 56);
+            this.coachPassOff.Location = new System.Drawing.Point(82, 88);
             this.coachPassOff.Maximum = new decimal(new int[] {
             79,
             0,
@@ -1635,19 +1711,22 @@ namespace MaddenEditor.Forms
             0});
             this.coachPassOff.ValueChanged += new System.EventHandler(this.coachPassOff_ValueChanged);
             // 
-            // threeFourButton
+            // rb2
             // 
-            this.threeFourButton.AutoSize = true;
-            this.threeFourButton.Location = new System.Drawing.Point(23, 140);
-            this.threeFourButton.Name = "threeFourButton";
-            this.threeFourButton.Size = new System.Drawing.Size(40, 17);
-            this.threeFourButton.TabIndex = 8;
-            this.threeFourButton.Text = "3-4";
-            this.threeFourButton.CheckedChanged += new System.EventHandler(this.threeFourButton_CheckedChanged);
+            this.rb2.Location = new System.Drawing.Point(83, 193);
+            this.rb2.Name = "rb2";
+            this.rb2.Size = new System.Drawing.Size(55, 20);
+            this.rb2.TabIndex = 0;
+            this.rb2.Value = new decimal(new int[] {
+            21,
+            0,
+            0,
+            0});
+            this.rb2.ValueChanged += new System.EventHandler(this.rb2_ValueChanged);
             // 
             // rb1
             // 
-            this.rb1.Location = new System.Drawing.Point(166, 161);
+            this.rb1.Location = new System.Drawing.Point(20, 193);
             this.rb1.Maximum = new decimal(new int[] {
             99,
             0,
@@ -1657,51 +1736,6 @@ namespace MaddenEditor.Forms
             this.rb1.ReadOnly = true;
             this.rb1.Size = new System.Drawing.Size(55, 20);
             this.rb1.TabIndex = 23;
-            // 
-            // fourThreeButton
-            // 
-            this.fourThreeButton.AutoSize = true;
-            this.fourThreeButton.Location = new System.Drawing.Point(95, 140);
-            this.fourThreeButton.Name = "fourThreeButton";
-            this.fourThreeButton.Size = new System.Drawing.Size(40, 17);
-            this.fourThreeButton.TabIndex = 11;
-            this.fourThreeButton.Text = "4-3";
-            this.fourThreeButton.CheckedChanged += new System.EventHandler(this.fourThreeButton_CheckedChanged);
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(175, 39);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(27, 13);
-            this.label40.TabIndex = 15;
-            this.label40.Text = "Run";
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(157, 125);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(130, 13);
-            this.label46.TabIndex = 21;
-            this.label46.Text = "Running Back Distribution";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(241, 39);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(30, 13);
-            this.label41.TabIndex = 19;
-            this.label41.Text = "Pass";
-            // 
-            // coachOffAggression
-            // 
-            this.coachOffAggression.Location = new System.Drawing.Point(229, 82);
-            this.coachOffAggression.Name = "coachOffAggression";
-            this.coachOffAggression.Size = new System.Drawing.Size(54, 20);
-            this.coachOffAggression.TabIndex = 18;
-            this.coachOffAggression.ValueChanged += new System.EventHandler(this.coachOffAggression_ValueChanged);
             // 
             // groupBox4
             // 
@@ -2164,11 +2198,11 @@ namespace MaddenEditor.Forms
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.coachRunDef)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachPassDef)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rb2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.coachOffAggression)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachRunOff)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.coachPassOff)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rb2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rb1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.coachOffAggression)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.LegacyRatings_Panel.ResumeLayout(false);
@@ -2357,6 +2391,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.TextBox coachLastName;
         private System.Windows.Forms.TextBox coachFirstName;
+        private System.Windows.Forms.ComboBox DefTendency;
+        private System.Windows.Forms.ComboBox OffTendency;
 
 
 	}

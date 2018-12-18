@@ -422,12 +422,11 @@ namespace MaddenEditor.Forms
             this.Salaries_Panel = new System.Windows.Forms.Panel();
             this.PlayerContractDetails_Panel = new System.Windows.Forms.Panel();
             this.label221 = new System.Windows.Forms.Label();
-            this.playerCapHit = new System.Windows.Forms.TextBox();
+            this.PlayerCapHit = new System.Windows.Forms.TextBox();
             this.label98 = new System.Windows.Forms.Label();
             this.Current_Salary = new System.Windows.Forms.Label();
             this.PlayerSalary4 = new System.Windows.Forms.NumericUpDown();
             this.label99 = new System.Windows.Forms.Label();
-            this.InactiveCheckbox = new System.Windows.Forms.CheckBox();
             this.label100 = new System.Windows.Forms.Label();
             this.PlayerBonus1 = new System.Windows.Forms.NumericUpDown();
             this.PlayerSalary5 = new System.Windows.Forms.NumericUpDown();
@@ -445,23 +444,24 @@ namespace MaddenEditor.Forms
             this.label97 = new System.Windows.Forms.Label();
             this.PlayerSalary2 = new System.Windows.Forms.NumericUpDown();
             this.label104 = new System.Windows.Forms.Label();
-            this.PlayerHoldOut = new System.Windows.Forms.CheckBox();
             this.PlayerSalary3 = new System.Windows.Forms.NumericUpDown();
             this.PlayerBonus0 = new System.Windows.Forms.NumericUpDown();
             this.PlayerBonus3 = new System.Windows.Forms.NumericUpDown();
-            this.PlayerContractTerms_Panel = new System.Windows.Forms.Panel();
+            this.PlayerContract_Panel = new System.Windows.Forms.Panel();
+            this.CurrentYear = new System.Windows.Forms.NumericUpDown();
+            this.label290 = new System.Windows.Forms.Label();
             this.label225 = new System.Windows.Forms.Label();
             this.YearlyMinimum = new System.Windows.Forms.NumericUpDown();
-            this.UseLeagueMinimum = new System.Windows.Forms.CheckBox();
             this.label70 = new System.Windows.Forms.Label();
             this.playerTotalSalary = new System.Windows.Forms.NumericUpDown();
-            this.SubmitContract_Button = new System.Windows.Forms.Button();
-            this.playerSigningBonus = new System.Windows.Forms.NumericUpDown();
+            this.UseLeagueMinimum = new System.Windows.Forms.CheckBox();
+            this.playerTotalBonus = new System.Windows.Forms.NumericUpDown();
             this.label68 = new System.Windows.Forms.Label();
-            this.label69 = new System.Windows.Forms.Label();
-            this.playerContractLength = new System.Windows.Forms.NumericUpDown();
             this.ContractIncrease = new System.Windows.Forms.NumericUpDown();
             this.label189 = new System.Windows.Forms.Label();
+            this.label69 = new System.Windows.Forms.Label();
+            this.SubmitContract_Button = new System.Windows.Forms.Button();
+            this.playerContractLength = new System.Windows.Forms.NumericUpDown();
             this.label74 = new System.Windows.Forms.Label();
             this.playerContractYearsLeft = new System.Windows.Forms.NumericUpDown();
             this.MiscSalary_Panel = new System.Windows.Forms.Panel();
@@ -489,7 +489,7 @@ namespace MaddenEditor.Forms
             this.label190 = new System.Windows.Forms.Label();
             this.TeamSalary = new System.Windows.Forms.TextBox();
             this.label187 = new System.Windows.Forms.Label();
-            this.capRoomLabel = new System.Windows.Forms.Label();
+            this.TeamCapRoomLabel = new System.Windows.Forms.Label();
             this.Top10 = new System.Windows.Forms.NumericUpDown();
             this.TeamCapRoom = new System.Windows.Forms.TextBox();
             this.SalaryCap = new System.Windows.Forms.NumericUpDown();
@@ -687,6 +687,8 @@ namespace MaddenEditor.Forms
             this.label131 = new System.Windows.Forms.Label();
             this.receiving_yds = new System.Windows.Forms.NumericUpDown();
             this.label130 = new System.Windows.Forms.Label();
+            this.PlayerHoldOut = new System.Windows.Forms.CheckBox();
+            this.PlayerInactive = new System.Windows.Forms.CheckBox();
             this.CareerPhase_Combo = new System.Windows.Forms.ComboBox();
             this.label229 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -840,12 +842,13 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.PlayerSalary3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerBonus0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerBonus3)).BeginInit();
-            this.PlayerContractTerms_Panel.SuspendLayout();
+            this.PlayerContract_Panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YearlyMinimum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerTotalBonus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ContractIncrease)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).BeginInit();
             this.MiscSalary_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LeagueContAVG)).BeginInit();
@@ -2951,9 +2954,9 @@ namespace MaddenEditor.Forms
             // 
             this.playerPenalty.FormattingEnabled = true;
             this.playerPenalty.Items.AddRange(new object[] {
-            "Disciplined",
             "Undisciplined",
-            "Balanced"});
+            "Normal",
+            "Disciplined"});
             this.playerPenalty.Location = new System.Drawing.Point(81, 496);
             this.playerPenalty.Name = "playerPenalty";
             this.playerPenalty.Size = new System.Drawing.Size(128, 21);
@@ -5286,7 +5289,7 @@ namespace MaddenEditor.Forms
             this.Salaries_Panel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Salaries_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Salaries_Panel.Controls.Add(this.PlayerContractDetails_Panel);
-            this.Salaries_Panel.Controls.Add(this.PlayerContractTerms_Panel);
+            this.Salaries_Panel.Controls.Add(this.PlayerContract_Panel);
             this.Salaries_Panel.Controls.Add(this.MiscSalary_Panel);
             this.Salaries_Panel.Location = new System.Drawing.Point(5, 5);
             this.Salaries_Panel.Name = "Salaries_Panel";
@@ -5298,12 +5301,11 @@ namespace MaddenEditor.Forms
             this.PlayerContractDetails_Panel.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.PlayerContractDetails_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PlayerContractDetails_Panel.Controls.Add(this.label221);
-            this.PlayerContractDetails_Panel.Controls.Add(this.playerCapHit);
+            this.PlayerContractDetails_Panel.Controls.Add(this.PlayerCapHit);
             this.PlayerContractDetails_Panel.Controls.Add(this.label98);
             this.PlayerContractDetails_Panel.Controls.Add(this.Current_Salary);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerSalary4);
             this.PlayerContractDetails_Panel.Controls.Add(this.label99);
-            this.PlayerContractDetails_Panel.Controls.Add(this.InactiveCheckbox);
             this.PlayerContractDetails_Panel.Controls.Add(this.label100);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerBonus1);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerSalary5);
@@ -5321,7 +5323,6 @@ namespace MaddenEditor.Forms
             this.PlayerContractDetails_Panel.Controls.Add(this.label97);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerSalary2);
             this.PlayerContractDetails_Panel.Controls.Add(this.label104);
-            this.PlayerContractDetails_Panel.Controls.Add(this.PlayerHoldOut);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerSalary3);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerBonus0);
             this.PlayerContractDetails_Panel.Controls.Add(this.PlayerBonus3);
@@ -5334,19 +5335,19 @@ namespace MaddenEditor.Forms
             // 
             this.label221.AutoSize = true;
             this.label221.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.830189F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label221.Location = new System.Drawing.Point(54, 10);
+            this.label221.Location = new System.Drawing.Point(30, 6);
             this.label221.Name = "label221";
-            this.label221.Size = new System.Drawing.Size(104, 15);
+            this.label221.Size = new System.Drawing.Size(204, 15);
             this.label221.TabIndex = 122;
-            this.label221.Text = "Player Contract";
+            this.label221.Text = "Player Current Contract Details";
             // 
-            // playerCapHit
+            // PlayerCapHit
             // 
-            this.playerCapHit.Location = new System.Drawing.Point(182, 45);
-            this.playerCapHit.Name = "playerCapHit";
-            this.playerCapHit.ReadOnly = true;
-            this.playerCapHit.Size = new System.Drawing.Size(74, 20);
-            this.playerCapHit.TabIndex = 123;
+            this.PlayerCapHit.Location = new System.Drawing.Point(182, 45);
+            this.PlayerCapHit.Name = "PlayerCapHit";
+            this.PlayerCapHit.ReadOnly = true;
+            this.PlayerCapHit.Size = new System.Drawing.Size(74, 20);
+            this.PlayerCapHit.TabIndex = 123;
             // 
             // label98
             // 
@@ -5378,7 +5379,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary4.Name = "PlayerSalary4";
             this.PlayerSalary4.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary4.TabIndex = 108;
-            this.PlayerSalary4.ValueChanged += new System.EventHandler(this.PlayerSalary4_ValueChanged);
+            this.PlayerSalary4.Leave += new System.EventHandler(this.PlayerSalary4_ValueChanged);
             // 
             // label99
             // 
@@ -5388,17 +5389,6 @@ namespace MaddenEditor.Forms
             this.label99.Size = new System.Drawing.Size(38, 13);
             this.label99.TabIndex = 16;
             this.label99.Text = "Year 1";
-            // 
-            // InactiveCheckbox
-            // 
-            this.InactiveCheckbox.AutoSize = true;
-            this.InactiveCheckbox.Location = new System.Drawing.Point(182, 179);
-            this.InactiveCheckbox.Name = "InactiveCheckbox";
-            this.InactiveCheckbox.Size = new System.Drawing.Size(64, 17);
-            this.InactiveCheckbox.TabIndex = 120;
-            this.InactiveCheckbox.Text = "Inactive";
-            this.InactiveCheckbox.UseVisualStyleBackColor = true;
-            this.InactiveCheckbox.CheckedChanged += new System.EventHandler(this.InactiveCheckbox_CheckedChanged);
             // 
             // label100
             // 
@@ -5421,7 +5411,7 @@ namespace MaddenEditor.Forms
             this.PlayerBonus1.Name = "PlayerBonus1";
             this.PlayerBonus1.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus1.TabIndex = 96;
-            this.PlayerBonus1.ValueChanged += new System.EventHandler(this.PlayerBonus1_ValueChanged);
+            this.PlayerBonus1.Leave += new System.EventHandler(this.PlayerBonus1_ValueChanged);
             // 
             // PlayerSalary5
             // 
@@ -5435,7 +5425,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary5.Name = "PlayerSalary5";
             this.PlayerSalary5.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary5.TabIndex = 109;
-            this.PlayerSalary5.ValueChanged += new System.EventHandler(this.PlayerSalary5_ValueChanged);
+            this.PlayerSalary5.Leave += new System.EventHandler(this.PlayerSalary5_ValueChanged);
             // 
             // PlayerBonus5
             // 
@@ -5449,7 +5439,7 @@ namespace MaddenEditor.Forms
             this.PlayerBonus5.Name = "PlayerBonus5";
             this.PlayerBonus5.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus5.TabIndex = 100;
-            this.PlayerBonus5.ValueChanged += new System.EventHandler(this.PlayerBonus5_ValueChanged);
+            this.PlayerBonus5.Leave += new System.EventHandler(this.PlayerBonus5_ValueChanged);
             // 
             // label101
             // 
@@ -5472,7 +5462,7 @@ namespace MaddenEditor.Forms
             this.PlayerBonus6.Name = "PlayerBonus6";
             this.PlayerBonus6.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus6.TabIndex = 102;
-            this.PlayerBonus6.ValueChanged += new System.EventHandler(this.PlayerBonus6_ValueChanged);
+            this.PlayerBonus6.Leave += new System.EventHandler(this.PlayerBonus6_ValueChanged);
             // 
             // PlayerBonus2
             // 
@@ -5486,7 +5476,7 @@ namespace MaddenEditor.Forms
             this.PlayerBonus2.Name = "PlayerBonus2";
             this.PlayerBonus2.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus2.TabIndex = 97;
-            this.PlayerBonus2.ValueChanged += new System.EventHandler(this.PlayerBonus2_ValueChanged);
+            this.PlayerBonus2.Leave += new System.EventHandler(this.PlayerBonus2_ValueChanged);
             // 
             // PlayerSalary0
             // 
@@ -5500,7 +5490,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary0.Name = "PlayerSalary0";
             this.PlayerSalary0.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary0.TabIndex = 103;
-            this.PlayerSalary0.ValueChanged += new System.EventHandler(this.PlayerSalary0_ValueChanged);
+            this.PlayerSalary0.Leave += new System.EventHandler(this.PlayerSalary0_ValueChanged);
             // 
             // label102
             // 
@@ -5523,7 +5513,7 @@ namespace MaddenEditor.Forms
             this.PlayerBonus4.Name = "PlayerBonus4";
             this.PlayerBonus4.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus4.TabIndex = 99;
-            this.PlayerBonus4.ValueChanged += new System.EventHandler(this.PlayerBonus4_ValueChanged);
+            this.PlayerBonus4.Leave += new System.EventHandler(this.PlayerBonus4_ValueChanged);
             // 
             // PlayerSalary6
             // 
@@ -5537,7 +5527,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary6.Name = "PlayerSalary6";
             this.PlayerSalary6.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary6.TabIndex = 101;
-            this.PlayerSalary6.ValueChanged += new System.EventHandler(this.PlayerSalary6_ValueChanged);
+            this.PlayerSalary6.Leave += new System.EventHandler(this.PlayerSalary6_ValueChanged);
             // 
             // label65
             // 
@@ -5569,7 +5559,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary1.Name = "PlayerSalary1";
             this.PlayerSalary1.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary1.TabIndex = 105;
-            this.PlayerSalary1.ValueChanged += new System.EventHandler(this.PlayerSalary1_ValueChanged);
+            this.PlayerSalary1.Leave += new System.EventHandler(this.PlayerSalary1_ValueChanged);
             // 
             // label97
             // 
@@ -5592,7 +5582,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary2.Name = "PlayerSalary2";
             this.PlayerSalary2.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary2.TabIndex = 106;
-            this.PlayerSalary2.ValueChanged += new System.EventHandler(this.PlayerSalary2_ValueChanged);
+            this.PlayerSalary2.Leave += new System.EventHandler(this.PlayerSalary2_ValueChanged);
             // 
             // label104
             // 
@@ -5602,17 +5592,6 @@ namespace MaddenEditor.Forms
             this.label104.Size = new System.Drawing.Size(38, 13);
             this.label104.TabIndex = 21;
             this.label104.Text = "Year 6";
-            // 
-            // PlayerHoldOut
-            // 
-            this.PlayerHoldOut.AutoSize = true;
-            this.PlayerHoldOut.Location = new System.Drawing.Point(182, 154);
-            this.PlayerHoldOut.Name = "PlayerHoldOut";
-            this.PlayerHoldOut.Size = new System.Drawing.Size(68, 17);
-            this.PlayerHoldOut.TabIndex = 117;
-            this.PlayerHoldOut.Text = "Hold Out";
-            this.PlayerHoldOut.UseVisualStyleBackColor = true;
-            this.PlayerHoldOut.CheckedChanged += new System.EventHandler(this.PlayerHoldOut_CheckedChanged);
             // 
             // PlayerSalary3
             // 
@@ -5626,7 +5605,7 @@ namespace MaddenEditor.Forms
             this.PlayerSalary3.Name = "PlayerSalary3";
             this.PlayerSalary3.Size = new System.Drawing.Size(55, 20);
             this.PlayerSalary3.TabIndex = 107;
-            this.PlayerSalary3.ValueChanged += new System.EventHandler(this.PlayerSalary3_ValueChanged);
+            this.PlayerSalary3.Leave += new System.EventHandler(this.PlayerSalary3_ValueChanged);
             // 
             // PlayerBonus0
             // 
@@ -5640,7 +5619,7 @@ namespace MaddenEditor.Forms
             this.PlayerBonus0.Name = "PlayerBonus0";
             this.PlayerBonus0.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus0.TabIndex = 104;
-            this.PlayerBonus0.ValueChanged += new System.EventHandler(this.PlayerBonus0_ValueChanged);
+            this.PlayerBonus0.Leave += new System.EventHandler(this.PlayerBonus0_ValueChanged);
             // 
             // PlayerBonus3
             // 
@@ -5654,46 +5633,79 @@ namespace MaddenEditor.Forms
             this.PlayerBonus3.Name = "PlayerBonus3";
             this.PlayerBonus3.Size = new System.Drawing.Size(55, 20);
             this.PlayerBonus3.TabIndex = 98;
-            this.PlayerBonus3.ValueChanged += new System.EventHandler(this.PlayerBonus3_ValueChanged);
+            this.PlayerBonus3.Leave += new System.EventHandler(this.PlayerBonus3_ValueChanged);
             // 
-            // PlayerContractTerms_Panel
+            // PlayerContract_Panel
             // 
-            this.PlayerContractTerms_Panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.PlayerContractTerms_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PlayerContractTerms_Panel.Controls.Add(this.label225);
-            this.PlayerContractTerms_Panel.Controls.Add(this.YearlyMinimum);
-            this.PlayerContractTerms_Panel.Controls.Add(this.UseLeagueMinimum);
-            this.PlayerContractTerms_Panel.Controls.Add(this.label70);
-            this.PlayerContractTerms_Panel.Controls.Add(this.playerTotalSalary);
-            this.PlayerContractTerms_Panel.Controls.Add(this.SubmitContract_Button);
-            this.PlayerContractTerms_Panel.Controls.Add(this.playerSigningBonus);
-            this.PlayerContractTerms_Panel.Controls.Add(this.label68);
-            this.PlayerContractTerms_Panel.Controls.Add(this.label69);
-            this.PlayerContractTerms_Panel.Controls.Add(this.playerContractLength);
-            this.PlayerContractTerms_Panel.Controls.Add(this.ContractIncrease);
-            this.PlayerContractTerms_Panel.Controls.Add(this.label189);
-            this.PlayerContractTerms_Panel.Controls.Add(this.label74);
-            this.PlayerContractTerms_Panel.Controls.Add(this.playerContractYearsLeft);
-            this.PlayerContractTerms_Panel.Location = new System.Drawing.Point(3, 5);
-            this.PlayerContractTerms_Panel.Name = "PlayerContractTerms_Panel";
-            this.PlayerContractTerms_Panel.Size = new System.Drawing.Size(159, 231);
-            this.PlayerContractTerms_Panel.TabIndex = 121;
+            this.PlayerContract_Panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.PlayerContract_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PlayerContract_Panel.Controls.Add(this.CurrentYear);
+            this.PlayerContract_Panel.Controls.Add(this.label290);
+            this.PlayerContract_Panel.Controls.Add(this.label225);
+            this.PlayerContract_Panel.Controls.Add(this.YearlyMinimum);
+            this.PlayerContract_Panel.Controls.Add(this.label70);
+            this.PlayerContract_Panel.Controls.Add(this.playerTotalSalary);
+            this.PlayerContract_Panel.Controls.Add(this.UseLeagueMinimum);
+            this.PlayerContract_Panel.Controls.Add(this.playerTotalBonus);
+            this.PlayerContract_Panel.Controls.Add(this.label68);
+            this.PlayerContract_Panel.Controls.Add(this.ContractIncrease);
+            this.PlayerContract_Panel.Controls.Add(this.label189);
+            this.PlayerContract_Panel.Controls.Add(this.label69);
+            this.PlayerContract_Panel.Controls.Add(this.SubmitContract_Button);
+            this.PlayerContract_Panel.Controls.Add(this.playerContractLength);
+            this.PlayerContract_Panel.Controls.Add(this.label74);
+            this.PlayerContract_Panel.Controls.Add(this.playerContractYearsLeft);
+            this.PlayerContract_Panel.Location = new System.Drawing.Point(3, 5);
+            this.PlayerContract_Panel.Name = "PlayerContract_Panel";
+            this.PlayerContract_Panel.Size = new System.Drawing.Size(159, 231);
+            this.PlayerContract_Panel.TabIndex = 121;
+            // 
+            // CurrentYear
+            // 
+            this.CurrentYear.Location = new System.Drawing.Point(81, 171);
+            this.CurrentYear.Maximum = new decimal(new int[] {
+            2200,
+            0,
+            0,
+            0});
+            this.CurrentYear.Minimum = new decimal(new int[] {
+            1920,
+            0,
+            0,
+            0});
+            this.CurrentYear.Name = "CurrentYear";
+            this.CurrentYear.Size = new System.Drawing.Size(60, 20);
+            this.CurrentYear.TabIndex = 129;
+            this.CurrentYear.Value = new decimal(new int[] {
+            1920,
+            0,
+            0,
+            0});
+            // 
+            // label290
+            // 
+            this.label290.AutoSize = true;
+            this.label290.Location = new System.Drawing.Point(13, 174);
+            this.label290.Name = "label290";
+            this.label290.Size = new System.Drawing.Size(66, 13);
+            this.label290.TabIndex = 128;
+            this.label290.Text = "Current Year";
             // 
             // label225
             // 
             this.label225.AutoSize = true;
             this.label225.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.830189F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label225.Location = new System.Drawing.Point(50, 2);
+            this.label225.Location = new System.Drawing.Point(29, 4);
             this.label225.Name = "label225";
-            this.label225.Size = new System.Drawing.Size(47, 15);
+            this.label225.Size = new System.Drawing.Size(104, 15);
             this.label225.TabIndex = 127;
-            this.label225.Text = "Terms";
+            this.label225.Text = "Player Contract";
             // 
             // YearlyMinimum
             // 
             this.YearlyMinimum.DecimalPlaces = 3;
             this.YearlyMinimum.Enabled = false;
-            this.YearlyMinimum.Location = new System.Drawing.Point(86, 137);
+            this.YearlyMinimum.Location = new System.Drawing.Point(81, 148);
             this.YearlyMinimum.Maximum = new decimal(new int[] {
             9,
             0,
@@ -5708,20 +5720,10 @@ namespace MaddenEditor.Forms
             0,
             196608});
             // 
-            // UseLeagueMinimum
-            // 
-            this.UseLeagueMinimum.AutoSize = true;
-            this.UseLeagueMinimum.Location = new System.Drawing.Point(17, 139);
-            this.UseLeagueMinimum.Name = "UseLeagueMinimum";
-            this.UseLeagueMinimum.Size = new System.Drawing.Size(65, 17);
-            this.UseLeagueMinimum.TabIndex = 123;
-            this.UseLeagueMinimum.Text = "Use Min";
-            this.UseLeagueMinimum.UseVisualStyleBackColor = true;
-            // 
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(45, 57);
+            this.label70.Location = new System.Drawing.Point(42, 48);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(37, 13);
             this.label70.TabIndex = 125;
@@ -5735,7 +5737,7 @@ namespace MaddenEditor.Forms
             0,
             0,
             131072});
-            this.playerTotalSalary.Location = new System.Drawing.Point(86, 32);
+            this.playerTotalSalary.Location = new System.Drawing.Point(81, 23);
             this.playerTotalSalary.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -5746,69 +5748,47 @@ namespace MaddenEditor.Forms
             this.playerTotalSalary.TabIndex = 2;
             this.playerTotalSalary.ValueChanged += new System.EventHandler(this.playerTotalSalary_ValueChanged);
             // 
-            // SubmitContract_Button
+            // UseLeagueMinimum
             // 
-            this.SubmitContract_Button.Location = new System.Drawing.Point(35, 162);
-            this.SubmitContract_Button.Name = "SubmitContract_Button";
-            this.SubmitContract_Button.Size = new System.Drawing.Size(114, 23);
-            this.SubmitContract_Button.TabIndex = 126;
-            this.SubmitContract_Button.Text = "Apply";
-            this.SubmitContract_Button.UseVisualStyleBackColor = true;
-            this.SubmitContract_Button.Click += new System.EventHandler(this.SubmitContract_Click);
+            this.UseLeagueMinimum.AutoSize = true;
+            this.UseLeagueMinimum.Location = new System.Drawing.Point(14, 150);
+            this.UseLeagueMinimum.Name = "UseLeagueMinimum";
+            this.UseLeagueMinimum.Size = new System.Drawing.Size(65, 17);
+            this.UseLeagueMinimum.TabIndex = 123;
+            this.UseLeagueMinimum.Text = "Use Min";
+            this.UseLeagueMinimum.UseVisualStyleBackColor = true;
             // 
-            // playerSigningBonus
+            // playerTotalBonus
             // 
-            this.playerSigningBonus.DecimalPlaces = 2;
-            this.playerSigningBonus.Increment = new decimal(new int[] {
+            this.playerTotalBonus.DecimalPlaces = 2;
+            this.playerTotalBonus.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.playerSigningBonus.Location = new System.Drawing.Point(86, 53);
-            this.playerSigningBonus.Maximum = new decimal(new int[] {
+            this.playerTotalBonus.Location = new System.Drawing.Point(81, 44);
+            this.playerTotalBonus.Maximum = new decimal(new int[] {
             8192,
             0,
             0,
             131072});
-            this.playerSigningBonus.Name = "playerSigningBonus";
-            this.playerSigningBonus.Size = new System.Drawing.Size(60, 20);
-            this.playerSigningBonus.TabIndex = 0;
-            this.playerSigningBonus.ValueChanged += new System.EventHandler(this.playerSigningBonus_ValueChanged);
+            this.playerTotalBonus.Name = "playerTotalBonus";
+            this.playerTotalBonus.Size = new System.Drawing.Size(60, 20);
+            this.playerTotalBonus.TabIndex = 0;
+            this.playerTotalBonus.ValueChanged += new System.EventHandler(this.playerSigningBonus_ValueChanged);
             // 
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(42, 78);
+            this.label68.Location = new System.Drawing.Point(39, 69);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(40, 13);
             this.label68.TabIndex = 78;
             this.label68.Text = "Length";
             // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(39, 99);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(43, 13);
-            this.label69.TabIndex = 79;
-            this.label69.Text = "Yrs Left";
-            // 
-            // playerContractLength
-            // 
-            this.playerContractLength.Location = new System.Drawing.Point(86, 74);
-            this.playerContractLength.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.playerContractLength.Name = "playerContractLength";
-            this.playerContractLength.Size = new System.Drawing.Size(60, 20);
-            this.playerContractLength.TabIndex = 1;
-            this.playerContractLength.ValueChanged += new System.EventHandler(this.playerContractLength_ValueChanged);
-            // 
             // ContractIncrease
             // 
-            this.ContractIncrease.Location = new System.Drawing.Point(86, 116);
+            this.ContractIncrease.Location = new System.Drawing.Point(81, 127);
             this.ContractIncrease.Maximum = new decimal(new int[] {
             30,
             0,
@@ -5821,16 +5801,48 @@ namespace MaddenEditor.Forms
             // label189
             // 
             this.label189.AutoSize = true;
-            this.label189.Location = new System.Drawing.Point(35, 120);
+            this.label189.Location = new System.Drawing.Point(32, 130);
             this.label189.Name = "label189";
             this.label189.Size = new System.Drawing.Size(47, 13);
             this.label189.TabIndex = 118;
             this.label189.Text = "Yearly %";
             // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(36, 90);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(43, 13);
+            this.label69.TabIndex = 79;
+            this.label69.Text = "Yrs Left";
+            // 
+            // SubmitContract_Button
+            // 
+            this.SubmitContract_Button.Location = new System.Drawing.Point(32, 202);
+            this.SubmitContract_Button.Name = "SubmitContract_Button";
+            this.SubmitContract_Button.Size = new System.Drawing.Size(114, 23);
+            this.SubmitContract_Button.TabIndex = 126;
+            this.SubmitContract_Button.Text = "Create";
+            this.SubmitContract_Button.UseVisualStyleBackColor = true;
+            this.SubmitContract_Button.Click += new System.EventHandler(this.SubmitContract_Click);
+            // 
+            // playerContractLength
+            // 
+            this.playerContractLength.Location = new System.Drawing.Point(81, 65);
+            this.playerContractLength.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.playerContractLength.Name = "playerContractLength";
+            this.playerContractLength.Size = new System.Drawing.Size(60, 20);
+            this.playerContractLength.TabIndex = 1;
+            this.playerContractLength.ValueChanged += new System.EventHandler(this.playerContractLength_ValueChanged);
+            // 
             // label74
             // 
             this.label74.AutoSize = true;
-            this.label74.Location = new System.Drawing.Point(51, 36);
+            this.label74.Location = new System.Drawing.Point(48, 27);
             this.label74.Name = "label74";
             this.label74.Size = new System.Drawing.Size(31, 13);
             this.label74.TabIndex = 81;
@@ -5838,7 +5850,7 @@ namespace MaddenEditor.Forms
             // 
             // playerContractYearsLeft
             // 
-            this.playerContractYearsLeft.Location = new System.Drawing.Point(86, 95);
+            this.playerContractYearsLeft.Location = new System.Drawing.Point(81, 86);
             this.playerContractYearsLeft.Maximum = new decimal(new int[] {
             7,
             0,
@@ -5877,7 +5889,7 @@ namespace MaddenEditor.Forms
             this.MiscSalary_Panel.Controls.Add(this.label190);
             this.MiscSalary_Panel.Controls.Add(this.TeamSalary);
             this.MiscSalary_Panel.Controls.Add(this.label187);
-            this.MiscSalary_Panel.Controls.Add(this.capRoomLabel);
+            this.MiscSalary_Panel.Controls.Add(this.TeamCapRoomLabel);
             this.MiscSalary_Panel.Controls.Add(this.Top10);
             this.MiscSalary_Panel.Controls.Add(this.TeamCapRoom);
             this.MiscSalary_Panel.Controls.Add(this.SalaryCap);
@@ -5898,10 +5910,11 @@ namespace MaddenEditor.Forms
             // 
             // CalcTeamSalary
             // 
+            this.CalcTeamSalary.BackColor = System.Drawing.SystemColors.Control;
             this.CalcTeamSalary.Enabled = false;
             this.CalcTeamSalary.Location = new System.Drawing.Point(112, 92);
             this.CalcTeamSalary.Name = "CalcTeamSalary";
-            this.CalcTeamSalary.Size = new System.Drawing.Size(55, 20);
+            this.CalcTeamSalary.Size = new System.Drawing.Size(60, 20);
             this.CalcTeamSalary.TabIndex = 172;
             // 
             // CalcTeamSalary_Checkbox
@@ -5931,7 +5944,7 @@ namespace MaddenEditor.Forms
             this.LeagueContAVG.Enabled = false;
             this.LeagueContAVG.Location = new System.Drawing.Point(112, 323);
             this.LeagueContAVG.Name = "LeagueContAVG";
-            this.LeagueContAVG.Size = new System.Drawing.Size(55, 20);
+            this.LeagueContAVG.Size = new System.Drawing.Size(60, 20);
             this.LeagueContAVG.TabIndex = 11;
             // 
             // SalaryRankCombo
@@ -5939,7 +5952,7 @@ namespace MaddenEditor.Forms
             this.SalaryRankCombo.FormattingEnabled = true;
             this.SalaryRankCombo.Location = new System.Drawing.Point(112, 183);
             this.SalaryRankCombo.Name = "SalaryRankCombo";
-            this.SalaryRankCombo.Size = new System.Drawing.Size(55, 21);
+            this.SalaryRankCombo.Size = new System.Drawing.Size(60, 21);
             this.SalaryRankCombo.TabIndex = 169;
             // 
             // Top5
@@ -5948,7 +5961,7 @@ namespace MaddenEditor.Forms
             this.Top5.Enabled = false;
             this.Top5.Location = new System.Drawing.Point(112, 210);
             this.Top5.Name = "Top5";
-            this.Top5.Size = new System.Drawing.Size(55, 20);
+            this.Top5.Size = new System.Drawing.Size(60, 20);
             this.Top5.TabIndex = 0;
             // 
             // label191
@@ -6001,7 +6014,7 @@ namespace MaddenEditor.Forms
             this.Penalty1.DecimalPlaces = 2;
             this.Penalty1.Location = new System.Drawing.Point(112, 159);
             this.Penalty1.Name = "Penalty1";
-            this.Penalty1.Size = new System.Drawing.Size(55, 20);
+            this.Penalty1.Size = new System.Drawing.Size(60, 20);
             this.Penalty1.TabIndex = 116;
             this.Penalty1.ValueChanged += new System.EventHandler(this.Penalty1_ValueChanged);
             // 
@@ -6011,7 +6024,7 @@ namespace MaddenEditor.Forms
             this.Top10AVG.Enabled = false;
             this.Top10AVG.Location = new System.Drawing.Point(112, 300);
             this.Top10AVG.Name = "Top10AVG";
-            this.Top10AVG.Size = new System.Drawing.Size(55, 20);
+            this.Top10AVG.Size = new System.Drawing.Size(60, 20);
             this.Top10AVG.TabIndex = 5;
             // 
             // Penalty0
@@ -6019,7 +6032,7 @@ namespace MaddenEditor.Forms
             this.Penalty0.DecimalPlaces = 2;
             this.Penalty0.Location = new System.Drawing.Point(112, 137);
             this.Penalty0.Name = "Penalty0";
-            this.Penalty0.Size = new System.Drawing.Size(55, 20);
+            this.Penalty0.Size = new System.Drawing.Size(60, 20);
             this.Penalty0.TabIndex = 115;
             this.Penalty0.ValueChanged += new System.EventHandler(this.Penalty0_ValueChanged);
             // 
@@ -6029,7 +6042,7 @@ namespace MaddenEditor.Forms
             this.LeagueAVG.Enabled = false;
             this.LeagueAVG.Location = new System.Drawing.Point(112, 255);
             this.LeagueAVG.Name = "LeagueAVG";
-            this.LeagueAVG.Size = new System.Drawing.Size(55, 20);
+            this.LeagueAVG.Size = new System.Drawing.Size(60, 20);
             this.LeagueAVG.TabIndex = 9;
             // 
             // NextYearPenalty_Label
@@ -6047,7 +6060,7 @@ namespace MaddenEditor.Forms
             this.Top5AVG.Enabled = false;
             this.Top5AVG.Location = new System.Drawing.Point(112, 278);
             this.Top5AVG.Name = "Top5AVG";
-            this.Top5AVG.Size = new System.Drawing.Size(55, 20);
+            this.Top5AVG.Size = new System.Drawing.Size(60, 20);
             this.Top5AVG.TabIndex = 4;
             // 
             // label185
@@ -6092,7 +6105,7 @@ namespace MaddenEditor.Forms
             this.TeamSalary.Location = new System.Drawing.Point(112, 69);
             this.TeamSalary.Name = "TeamSalary";
             this.TeamSalary.ReadOnly = true;
-            this.TeamSalary.Size = new System.Drawing.Size(55, 20);
+            this.TeamSalary.Size = new System.Drawing.Size(60, 20);
             this.TeamSalary.TabIndex = 83;
             // 
             // label187
@@ -6104,14 +6117,14 @@ namespace MaddenEditor.Forms
             this.label187.TabIndex = 2;
             this.label187.Text = "Top10";
             // 
-            // capRoomLabel
+            // TeamCapRoomLabel
             // 
-            this.capRoomLabel.AutoSize = true;
-            this.capRoomLabel.Location = new System.Drawing.Point(53, 118);
-            this.capRoomLabel.Name = "capRoomLabel";
-            this.capRoomLabel.Size = new System.Drawing.Size(57, 13);
-            this.capRoomLabel.TabIndex = 85;
-            this.capRoomLabel.Text = "Cap Room";
+            this.TeamCapRoomLabel.AutoSize = true;
+            this.TeamCapRoomLabel.Location = new System.Drawing.Point(23, 118);
+            this.TeamCapRoomLabel.Name = "TeamCapRoomLabel";
+            this.TeamCapRoomLabel.Size = new System.Drawing.Size(87, 13);
+            this.TeamCapRoomLabel.TabIndex = 85;
+            this.TeamCapRoomLabel.Text = "Team Cap Room";
             // 
             // Top10
             // 
@@ -6119,7 +6132,7 @@ namespace MaddenEditor.Forms
             this.Top10.Enabled = false;
             this.Top10.Location = new System.Drawing.Point(112, 232);
             this.Top10.Name = "Top10";
-            this.Top10.Size = new System.Drawing.Size(55, 20);
+            this.Top10.Size = new System.Drawing.Size(60, 20);
             this.Top10.TabIndex = 1;
             // 
             // TeamCapRoom
@@ -6128,12 +6141,12 @@ namespace MaddenEditor.Forms
             this.TeamCapRoom.Location = new System.Drawing.Point(112, 115);
             this.TeamCapRoom.Name = "TeamCapRoom";
             this.TeamCapRoom.ReadOnly = true;
-            this.TeamCapRoom.Size = new System.Drawing.Size(55, 20);
+            this.TeamCapRoom.Size = new System.Drawing.Size(60, 20);
             this.TeamCapRoom.TabIndex = 86;
             // 
             // SalaryCap
             // 
-            this.SalaryCap.DecimalPlaces = 2;
+            this.SalaryCap.DecimalPlaces = 3;
             this.SalaryCap.Location = new System.Drawing.Point(112, 47);
             this.SalaryCap.Maximum = new decimal(new int[] {
             429400,
@@ -6141,14 +6154,14 @@ namespace MaddenEditor.Forms
             0,
             131072});
             this.SalaryCap.Name = "SalaryCap";
-            this.SalaryCap.Size = new System.Drawing.Size(55, 20);
+            this.SalaryCap.Size = new System.Drawing.Size(60, 20);
             this.SalaryCap.TabIndex = 112;
             this.SalaryCap.Value = new decimal(new int[] {
             7500,
             0,
             0,
             131072});
-            this.SalaryCap.ValueChanged += new System.EventHandler(this.SalaryCap_ValueChanged);
+            this.SalaryCap.Leave += new System.EventHandler(this.SalaryCap_ValueChanged);
             // 
             // label96
             // 
@@ -8523,6 +8536,28 @@ namespace MaddenEditor.Forms
             this.label130.TabIndex = 65;
             this.label130.Text = "TD";
             // 
+            // PlayerHoldOut
+            // 
+            this.PlayerHoldOut.AutoSize = true;
+            this.PlayerHoldOut.Location = new System.Drawing.Point(259, 629);
+            this.PlayerHoldOut.Name = "PlayerHoldOut";
+            this.PlayerHoldOut.Size = new System.Drawing.Size(68, 17);
+            this.PlayerHoldOut.TabIndex = 117;
+            this.PlayerHoldOut.Text = "Hold Out";
+            this.PlayerHoldOut.UseVisualStyleBackColor = true;
+            this.PlayerHoldOut.CheckedChanged += new System.EventHandler(this.PlayerHoldOut_CheckedChanged);
+            // 
+            // PlayerInactive
+            // 
+            this.PlayerInactive.AutoSize = true;
+            this.PlayerInactive.Location = new System.Drawing.Point(259, 650);
+            this.PlayerInactive.Name = "PlayerInactive";
+            this.PlayerInactive.Size = new System.Drawing.Size(64, 17);
+            this.PlayerInactive.TabIndex = 120;
+            this.PlayerInactive.Text = "Inactive";
+            this.PlayerInactive.UseVisualStyleBackColor = true;
+            this.PlayerInactive.CheckedChanged += new System.EventHandler(this.InactiveCheckbox_CheckedChanged);
+            // 
             // CareerPhase_Combo
             // 
             this.CareerPhase_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -8594,6 +8629,7 @@ namespace MaddenEditor.Forms
             this.panel4.Controls.Add(this.label289);
             this.panel4.Controls.Add(this.playerBirthday);
             this.panel4.Controls.Add(this.label239);
+            this.panel4.Controls.Add(this.PlayerInactive);
             this.panel4.Controls.Add(this.label281);
             this.panel4.Controls.Add(this.playerComment);
             this.panel4.Controls.Add(this.playerStateCombo);
@@ -8610,6 +8646,7 @@ namespace MaddenEditor.Forms
             this.panel4.Controls.Add(this.PlayerGridView);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Controls.Add(this.createPlayerButton);
+            this.panel4.Controls.Add(this.PlayerHoldOut);
             this.panel4.Controls.Add(this.filterTeamComboBox);
             this.panel4.Controls.Add(this.label78);
             this.panel4.Controls.Add(this.deletePlayerButton);
@@ -8996,13 +9033,14 @@ namespace MaddenEditor.Forms
             ((System.ComponentModel.ISupportInitialize)(this.PlayerSalary3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerBonus0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerBonus3)).EndInit();
-            this.PlayerContractTerms_Panel.ResumeLayout(false);
-            this.PlayerContractTerms_Panel.PerformLayout();
+            this.PlayerContract_Panel.ResumeLayout(false);
+            this.PlayerContract_Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentYear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YearlyMinimum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerTotalSalary)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playerSigningBonus)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerTotalBonus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ContractIncrease)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerContractLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerContractYearsLeft)).EndInit();
             this.MiscSalary_Panel.ResumeLayout(false);
             this.MiscSalary_Panel.PerformLayout();
@@ -9325,12 +9363,12 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label label185;
         private System.Windows.Forms.Label label95;
         private System.Windows.Forms.TextBox TeamSalary;
-        private System.Windows.Forms.Label capRoomLabel;
+        private System.Windows.Forms.Label TeamCapRoomLabel;
         private System.Windows.Forms.TextBox TeamCapRoom;
         private System.Windows.Forms.CheckBox IncludeOverall;
         private System.Windows.Forms.Label label188;
         private System.Windows.Forms.Panel Salaries_Panel;
-        private System.Windows.Forms.CheckBox InactiveCheckbox;
+        private System.Windows.Forms.CheckBox PlayerInactive;
         private System.Windows.Forms.Label label65;
         private System.Windows.Forms.NumericUpDown PlayerBonus0;
         private System.Windows.Forms.Label label98;
@@ -9351,17 +9389,17 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.NumericUpDown PlayerSalary3;
         private System.Windows.Forms.NumericUpDown PlayerSalary2;
         private System.Windows.Forms.NumericUpDown PlayerSalary6;
-        private System.Windows.Forms.TextBox playerCapHit;
+        private System.Windows.Forms.TextBox PlayerCapHit;
         private System.Windows.Forms.NumericUpDown PlayerBonus4;
         private System.Windows.Forms.NumericUpDown PlayerSalary1;
         private System.Windows.Forms.NumericUpDown PlayerBonus5;
         private System.Windows.Forms.NumericUpDown PlayerBonus6;
         private System.Windows.Forms.NumericUpDown PlayerSalary0;
         private System.Windows.Forms.DataGridView PositionSalary;
-        private System.Windows.Forms.Panel PlayerContractTerms_Panel;
+        private System.Windows.Forms.Panel PlayerContract_Panel;
         private System.Windows.Forms.Label label70;
         private System.Windows.Forms.NumericUpDown playerTotalSalary;
-        private System.Windows.Forms.NumericUpDown playerSigningBonus;
+        private System.Windows.Forms.NumericUpDown playerTotalBonus;
         private System.Windows.Forms.Label label68;
         private System.Windows.Forms.Label label69;
         private System.Windows.Forms.NumericUpDown playerContractLength;
@@ -9809,5 +9847,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.CheckBox playerCaptain;
         private System.Windows.Forms.ComboBox playerUndershirt;
         private System.Windows.Forms.Label label278;
+        private System.Windows.Forms.NumericUpDown CurrentYear;
+        private System.Windows.Forms.Label label290;
 	}
 }

@@ -53,9 +53,11 @@ namespace MaddenEditor.Forms
         public Overall playeroverall = new Overall();
         public List<string> CurrentPlayers = new List<string>();
         public int currentplayerrow = 0;        
-        int year = 0;
-        int selectedyear = -1;
-        int baseyear = 2007;
+        public int year = 0;
+        public int selectedyear = -1;
+        public int baseyear = 2007;
+        public int[] salary;
+        public int[] bonus;
         Dictionary<int, int> teamsalaries = new Dictionary<int, int>();
         
         private MGMT _manager;
@@ -167,9 +169,6 @@ namespace MaddenEditor.Forms
 
             InitCollegeList();
 
-            if (model.FileType == MaddenFileType.Franchise)
-                model.SalaryCapModel.InitCap();
-
             filterPositionComboBox.Items.Add("ALL");
 
             for (int p = 0; p < 21; p++)
@@ -188,20 +187,7 @@ namespace MaddenEditor.Forms
 
             filterTeamComboBox.SelectedIndex = 0;
             filterPositionComboBox.SelectedIndex = 0;
-
             
-
-            if (model.FileType != MaddenFileType.Franchise)
-            {
-                TeamCapRoom.Visible = false;
-                capRoomLabel.Visible = false;
-            }
-            else
-            {
-                TeamCapRoom.Visible = true;
-                capRoomLabel.Visible = true;
-            }
-
             #region Equipment
 
             #region Helmet
@@ -437,8 +423,7 @@ namespace MaddenEditor.Forms
             }
 
             #endregion
-
-
+            
             #region Roles/Weapons Stats - Comebacks/First Downs
 
             RoleLabel.Visible = false;
@@ -506,23 +491,58 @@ namespace MaddenEditor.Forms
                 PlayerPortraitExport_Button.Visible = false;
             }
 
-            SalaryRankCombo.Items.Add("NFL");
-            SalaryRankCombo.Items.Add("Conf");
-            SalaryRankCombo.Items.Add("Div");
-            SalaryRankCombo.SelectedIndex = 0;
-                        
+            #region Salary related
+            ContractIncrease.Enabled = false;
+            UseLeagueMinimum.Enabled = false;
+            YearlyMinimum.Enabled = false;
+            CurrentYear.Enabled = false;
+            
+            CurrentYear.Value = model.CurrentYear;
+            
+            PlayerContractDetails_Panel.Enabled = false;
+            PlayerCapHit.Enabled = false;
+            PlayerHoldOut.Enabled = false;           
+            
+            MiscSalary_Panel.Enabled = false;
+            TeamCapRoom.Enabled = false;
+            TeamCapRoom.Text = "NA";
             UseActualNFLSalaryCap_Checkbox.Enabled = false;
             UseActualNFLSalaryCap_Checkbox.Checked = false;
             CalcTeamSalary_Checkbox.Enabled = false;
             CalcTeamSalary_Checkbox.Checked = false;
-            
+
+            SalaryRankCombo.Items.Add("NFL");
+            SalaryRankCombo.Items.Add("Conf");
+            SalaryRankCombo.Items.Add("Div");
+            SalaryRankCombo.SelectedIndex = -1;
+
+            Penalty0.Value = 0;
+            Penalty0.Enabled = false;
+            Penalty1.Value = 0;
+            Penalty1.Enabled = false;
+
             if (model.FileType == MaddenFileType.Franchise)
             {
+                model.SalaryCapModel.InitCap();
+                PlayerContractDetails_Panel.Enabled = true;
                 MiscSalary_Panel.Enabled = true;
                 UseActualNFLSalaryCap_Checkbox.Enabled = true;
+                UseActualNFLSalaryCap_Checkbox.Checked = false;
                 CalcTeamSalary_Checkbox.Enabled = true;
-                CalcTeamSalary_Checkbox.Checked = true;
-            }            
+                CalcTeamSalary_Checkbox.Checked = false;
+                SalaryCap.Enabled = true;
+                Penalty0.Enabled = true;
+                Penalty1.Enabled = true;
+            }
+            else
+            {
+                SalaryCap.Enabled = false;
+                TeamCapRoom.Visible = false;
+                TeamCapRoomLabel.Visible = false;
+                CurrentYear.Enabled = true;
+            }
+            
+            #endregion
 
             InitPlayerList();
 
@@ -737,7 +757,7 @@ namespace MaddenEditor.Forms
                     playerMorale.Visible = false;
                 }
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2007 && model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.FileVersion == MaddenFileVersion.Ver2007 || model.FileVersion == MaddenFileVersion.Ver2008)
                 {
                     lblValue.Visible = true;
                     playerValue.Visible = true;
@@ -751,8 +771,7 @@ namespace MaddenEditor.Forms
                 {
                     SetNumericUpDown(playerEgo, record.Pcel, "Player Ego");
                     lblValue.Visible = false;
-                    playerValue.Visible = false;
-                   
+                    playerValue.Visible = false;                   
                 }
 
                 if (model.FileVersion == MaddenFileVersion.Ver2008)
@@ -775,18 +794,7 @@ namespace MaddenEditor.Forms
                     record.ContractYearsLeft = record.ContractLength;
                 
                 playerContractLength.Value = record.ContractLength;
-                playerContractYearsLeft.Value = record.ContractYearsLeft;                              
-                
-                if (record.Bonus0 !=0)
-                //(model.PlayerModel.CurrentPlayerRecord.Bonus0 != 0)
-                {
-                    playerSigningBonus.Value = (decimal)(record.SigningBonus / 100.0);
-                }
-                else
-                {
-                    playerSigningBonus.Value = 0;
-                }
-                playerTotalSalary.Value = (decimal)(record.TotalSalary / 100.0);
+                playerContractYearsLeft.Value = record.ContractYearsLeft;
 
                 try
                 {
@@ -806,7 +814,6 @@ namespace MaddenEditor.Forms
                     error = error;
                     playerDraftRoundIndex.Value = 33;
                 }
-
                 
                 //Set player Appearance
                 if (model.FileVersion == MaddenFileVersion.Ver2019)
@@ -1080,20 +1087,24 @@ namespace MaddenEditor.Forms
                     PPGA_Updown.Value = record.PlayedGames;
                     PPSP_Updown.Value = record.Ppsp;
 
+                    PlayerInactive.Visible = false;
                     if (model.FileVersion > MaddenFileVersion.Ver2004)
                     {
+                        PlayerInactive.Visible = true;
+                        PlayerInactive.Checked = false;
+                        
                         foreach (InactiveRecord ia in model.TableModels[EditorModel.INACTIVE_TABLE].GetRecords())
                         {
                             InactiveRecord iar = (InactiveRecord)ia;
+                            if (iar.Deleted)
+                                continue;
                             if (iar.PlayerID == record.PlayerId)
-                                InactiveCheckbox.Checked = true;
-                            else InactiveCheckbox.Checked = false;
-                        }
-
-                        InactiveCheckbox.Visible = true;
+                            {
+                                PlayerInactive.Checked = true;
+                                break;
+                            }                            
+                        }                        
                     }
-
-                    else InactiveCheckbox.Visible = false;
                 }
 
                 if (model.FileVersion == MaddenFileVersion.Ver2019)
@@ -1263,8 +1274,7 @@ namespace MaddenEditor.Forms
                     playerCaptain.Enabled = false;
                     playerUndershirt.Enabled = false;
                     playerUndershirt.SelectedIndex = -1;
-                }
-                
+                }               
 
                 LoadPlayerSalaries(record);                
                 DisplayPlayerPort();
@@ -2540,61 +2550,13 @@ namespace MaddenEditor.Forms
         
         #region Player Contract/Salary Functions
 
-        private void LoadPlayerSalaries(PlayerRecord record)
+        public void ClearPlayerSalaryDetails()
         {
-            //bool orig = isInitialising;
-            //isInitialising = true;
-            int tempteamsalary = 0;
-            bool Madden19 = false;
-            if (model.FileVersion == MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster)
-                Madden19 = true;
-            if (model.FileType == MaddenFileType.DBTeam)
-                Madden19 = true;
+            playerTotalSalary.Value = 0;
+            playerTotalBonus.Value = 0;
+            playerContractLength.Value = 0;
+            playerContractYearsLeft.Value = 0;
 
-            #region Inits
-            #region Misc Salary Panel
-            UseActualNFLSalaryCap_Checkbox.Checked = false;
-            CalcTeamSalary_Checkbox.Checked = false;
-            SalaryCap.Value = 0;
-            TeamSalary.Text = "";
-            CalcTeamSalary.Text = "";            
-            TeamCapRoom.Text = "";
-            Penalty0.Value = 0;
-            Penalty1.Value = 0;
-            TeamSalaryRank.Text = "";
-            SalaryRankCombo.SelectedIndex = -1;
-            Top5.Value = 0;
-            Top10.Value = 0;
-            LeagueAVG.Value = 0;
-            Top5AVG.Value = 0;
-            Top10AVG.Value = 0;
-            LeagueContAVG.Value = 0;
-            UseActualNFLSalaryCap_Checkbox.Enabled = false;
-            CalcTeamSalary_Checkbox.Enabled = false;
-            SalaryCap.Enabled = false;
-            TeamSalary.Enabled = false;
-            CalcTeamSalary.Enabled = false;
-            TeamCapRoom.Enabled = false;
-            Penalty0.Enabled = false;
-            Penalty1.Enabled = false;
-            TeamSalaryRank.Enabled = false;
-            SalaryRankCombo.Enabled = false;
-            Top5.Enabled = false;
-            Top10.Enabled = false;
-            LeagueAVG.Enabled = false;
-            Top5AVG.Enabled = false;
-            Top10AVG.Enabled = false;
-            LeagueContAVG.Enabled = false;
-
-            #endregion
-
-            #region Player Contract
-            playerCapHit.Text = "";
-            playerCapHit.Enabled = false;
-            PlayerHoldOut.Checked = false;
-            PlayerHoldOut.Enabled = false;
-            InactiveCheckbox.Checked = false;
-            InactiveCheckbox.Enabled = false;
             PlayerBonus0.Value = 0;
             PlayerBonus1.Value = 0;
             PlayerBonus2.Value = 0;
@@ -2609,6 +2571,27 @@ namespace MaddenEditor.Forms
             PlayerSalary4.Value = 0;
             PlayerSalary5.Value = 0;
             PlayerSalary6.Value = 0;
+        }
+
+        private void LoadPlayerSalaries(PlayerRecord record)
+        {
+            bool Madden19 = false;
+            if (model.FileVersion == MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster || model.FileType == MaddenFileType.DBTeam)
+                Madden19 = true;
+            double tempteamsalary = 0;
+
+            ClearPlayerSalaryDetails();
+
+            playerTotalSalary.Enabled = true;
+            playerTotalBonus.Enabled = true;
+            playerContractLength.Enabled = true;
+            playerContractYearsLeft.Enabled = true;
+            playerTotalSalary.Value = (decimal)record.TotalSalary / 100;
+            playerTotalBonus.Value = (decimal)record.BonusTotal / 100;
+            playerContractLength.Value = (int)record.ContractLength;
+            playerContractYearsLeft.Value = (int)record.ContractYearsLeft;
+            ContractIncrease.Enabled = false;
+
             PlayerBonus0.Enabled = false;
             PlayerBonus1.Enabled = false;
             PlayerBonus2.Enabled = false;
@@ -2623,51 +2606,60 @@ namespace MaddenEditor.Forms
             PlayerSalary4.Enabled = false;
             PlayerSalary5.Enabled = false;
             PlayerSalary6.Enabled = false;
-            #endregion
 
-            #region Player Contract Terms
-            playerTotalSalary.Value = 0;
-            playerTotalSalary.Enabled = true;
-            playerSigningBonus.Value = 0;
-            playerSigningBonus.Enabled = true;            
-            playerContractLength.Value = 0;
-            playerContractLength.Enabled = true;            
-            playerContractYearsLeft.Value = 0;
-            playerContractYearsLeft.Enabled = true;            
-            ContractIncrease.Value = 0;
-            ContractIncrease.Enabled = false;            
-            UseLeagueMinimum.Checked = false;
-            UseLeagueMinimum.Enabled = false;            
-            YearlyMinimum.Value = 0;
-            YearlyMinimum.Enabled = false;            
-            SubmitContract_Button.Enabled = false;
-            #endregion
+            SalaryCap.Value = 0;
+            TeamSalary.Text = "";
+            CalcTeamSalary.Text = "";
+            TeamCapRoom.Text = "";
+            TeamSalaryRank.Text = "";
+            SalaryRankCombo.SelectedIndex = -1;
+            Top5.Value = 0;
+            Top10.Value = 0;
+            LeagueAVG.Value = 0;
+            Top5AVG.Value = 0;
+            Top10AVG.Value = 0;
+            LeagueContAVG.Value = 0;
+            TeamSalary.Enabled = false;
+            CalcTeamSalary.Enabled = false;
+            TeamSalaryRank.Enabled = false;
+            SalaryRankCombo.Enabled = false;
+            Top5.Enabled = false;
+            Top10.Enabled = false;
+            LeagueAVG.Enabled = false;
+            Top5AVG.Enabled = false;
+            Top10AVG.Enabled = false;
+            LeagueContAVG.Enabled = false;
 
-            #endregion
-
-            #region Common fields
-            playerTotalSalary.Value = (decimal)record.TotalSalary / 100;
-            playerSigningBonus.Value = (decimal)record.BonusTotal / 100;
-            playerContractLength.Value = (int)record.ContractLength;
-            playerContractYearsLeft.Value = (int)record.ContractYearsLeft;
-            #endregion
-
-            #region Franchise or Madden 19 Roster/Team DB
             if (model.FileType == MaddenFileType.Franchise || Madden19)
-            {                
-                // Some of this isnt going to work past year 1 of Madden 19 as there is no
-                // way to check current year with the roster.
-
-                SubmitContract_Button.Enabled = true;
-                PlayerHoldOut.Enabled = true;
-                PlayerHoldOut.Checked = record.Holdout;
-                
+            {
                 ContractIncrease.Enabled = true;
                 if (record.YearsPro == 0)
                     ContractIncrease.Value = 25;
                 else ContractIncrease.Value = 30;
+                if (Madden19)
+                {
+                    // Madden 19 specific settings
+                    CurrentYear.Value = 2019;
+                }
+                else
+                {
+                    UseLeagueMinimum.Enabled = true;
+                    YearlyMinimum.Enabled = true;
+                    foreach (TeamRecord rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
+                    {
+                        if (rec.Deleted)
+                            continue;
+                        if (rec.TeamId == record.TeamId)
+                        {
+                            Penalty0.Value = rec.SalaryCapPenalty0 / 100;
+                            Penalty1.Value = rec.SalaryCapPenalty1 / 100;
+                            break;
+                        }
+                    }
 
-                #region Player Yearly Salary/Bonus
+                    SalaryCap.Value = Math.Round((decimal)model.SalaryCapModel.SalaryCap / 1000000, 4);
+                }
+
                 PlayerBonus0.Value = (decimal)record.Bonus0 / 100;
                 PlayerBonus1.Value = (decimal)record.Bonus1 / 100;
                 PlayerBonus2.Value = (decimal)record.Bonus2 / 100;
@@ -2696,101 +2688,74 @@ namespace MaddenEditor.Forms
                 PlayerSalary4.Enabled = true;
                 PlayerSalary5.Enabled = true;
                 PlayerSalary6.Enabled = true;
-                #endregion
+                PlayerCapHit.Text = "" + ((double)record.CurrentSalary / 100.0);
+                PlayerHoldOut.Enabled = true;
+                PlayerHoldOut.Checked = record.Holdout;
 
-                if (Madden19)
-                {
-                    UseActualNFLSalaryCap_Checkbox.Checked = true;
-                    CalcTeamSalary_Checkbox.Checked = false;
-                    SalaryCap.Enabled = false;
-                }
-                else
-                {
-                    UseLeagueMinimum.Enabled = true;
-                    YearlyMinimum.Enabled = true;
-
-                    // Franchise has salary cap penalty for 04-08
-                    Penalty0.Enabled = true;
-                    Penalty1.Enabled = true;
-                    foreach (TeamRecord rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-                    {
-                        if (rec.Deleted)
-                            continue;
-                        if (rec.TeamId == record.TeamId)
-                        {
-                            Penalty0.Value = rec.SalaryCapPenalty0 / 100;
-                            Penalty1.Value = rec.SalaryCapPenalty1 / 100;
-                        }
-                    }
-
-                    UseActualNFLSalaryCap_Checkbox.Enabled = true;
-                }
-
-                if (UseActualNFLSalaryCap_Checkbox.Checked)
-                {
-                    int curyear = model.CurrentYear;
-
-                    if (!Madden19)
-                    {
-                        if (model.FranchiseStage.CurrentStage > 12)
-                            curyear++;
-                    }
-
-                    if (model.LeagueCap.ContainsKey(curyear))
-                        SalaryCap.Value = (decimal)model.LeagueCap[curyear];
-                    else
-                    {
-                        // We don't have this year's actual Salary cap, so disable it and get value from franchise instead
-                        UseActualNFLSalaryCap_Checkbox.Checked = false;
-                        UseActualNFLSalaryCap_Checkbox.Enabled = false;
-                        if (!Madden19)
-                            SalaryCap.Value = SalaryCap.Value = Math.Round((decimal)model.SalaryCapModel.SalaryCap / 1000000, 4);
-                    }
-                }
-                else
-                {
-                    if (!Madden19)
-                        SalaryCap.Value = Math.Round((decimal)model.SalaryCapModel.SalaryCap / 1000000, 4);
-                }
-                
-                
-                if (!Madden19 && record.TeamId < 1009 && record.TeamId > 1015 && record.TeamId != 1023)
-                {
-                    TeamRecord teamRecord = model.TeamModel.GetTeamRecord(record.TeamId);                    
-                    TeamSalary.Text = "" + ((double)teamRecord.Salary / 100.0);
-                    tempteamsalary = GetTeamSalaryCap(record.TeamId);
-
-                    if (CalcTeamSalary_Checkbox.Checked)
-                    {
-                        CalcTeamSalary.Text = "" + (decimal)tempteamsalary / 100;
-                    }
-
-                    //if (CalcTeamSalary_Checkbox.Checked)
-                   // {
-                   //     TeamCapRoom.Text = "" + (SalaryCap.Value - (decimal)tempteamsalary / 100).ToString();
-                   // }
-                   // else
-                   // {
-                   //     TeamCapRoom.Text = "" + Math.Round((((double)model.SalaryCapModel.SalaryCap / 10000.0 - (double)(model.TeamModel.GetTeamRecord(record.TeamId).Salary)) / 100.0), 2);
-                   // }
-                    
-                    playerCapHit.Text = "" + ((double)record.CurrentSalary / 100.0);
-
-                    TeamNeeds(record);
-                    LoadPositionSalaries(record);
-                    LoadFreeAgents(record);
-                    if (record.TeamId < 32)
-                        GetTeamSalaries();
-                }
+                MiscSalary_Panel.Enabled = true;
             }
-            #endregion
+            else
+            {
+                salary = new int[7];
+                bonus = new int[7];
+                PlayerCapHit.Text = CalculateCapHit(record, 30, false).ToString();
+                PlayerBonus0.Value = (decimal)record.bonus[0] / 100;
+                PlayerBonus1.Value = (decimal)record.bonus[1] / 100;
+                PlayerBonus2.Value = (decimal)record.bonus[2] / 100;
+                PlayerBonus3.Value = (decimal)record.bonus[3] / 100;
+                PlayerBonus4.Value = (decimal)record.bonus[4] / 100;
+                PlayerBonus5.Value = (decimal)record.bonus[5] / 100;
+                PlayerBonus6.Value = (decimal)record.bonus[6] / 100;
+                PlayerSalary0.Value = (decimal)record.salary[0] / 100;
+                PlayerSalary1.Value = (decimal)record.salary[1] / 100;
+                PlayerSalary2.Value = (decimal)record.salary[2] / 100;
+                PlayerSalary3.Value = (decimal)record.salary[3] / 100;
+                PlayerSalary4.Value = (decimal)record.salary[4] / 100;
+                PlayerSalary5.Value = (decimal)record.salary[5] / 100;
+                PlayerSalary6.Value = (decimal)record.salary[6] / 100;
+            }
 
             
+            if (UseActualNFLSalaryCap_Checkbox.Checked)
+            {
+                int curyear = (int)CurrentYear.Value;
+                if (model.LeagueCap.ContainsKey(curyear))
+                    SalaryCap.Value = (decimal)model.LeagueCap[curyear];
+                else
+                {
+                    // We don't have this year's actual Salary cap, so disable it and get value from franchise instead
+                    UseActualNFLSalaryCap_Checkbox.Checked = false;
+                }
+            }
 
-            //if (orig)
-            //    isInitialising = true;
-            //else isInitialising = false;
-        }
+            if (!Madden19 && record.TeamId != 1009 && record.TeamId != 1010 && record.TeamId != 1014 && record.TeamId != 1015 && record.TeamId != 1023)
+            {
+                // We dont want to do team salary for NFC/AFC pro bowl teams, retired, draft class, or undefined
+                TeamRecord teamRecord = model.TeamModel.GetTeamRecord(record.TeamId);
+                TeamSalary.Text = "" + ((double)teamRecord.Salary / 100.0);
+                double penalty = (double)Penalty0.Value;
+                double cap = (double)SalaryCap.Value;
+
+                if (CalcTeamSalary_Checkbox.Checked)
+                {
+                    tempteamsalary = (double)GetTeamSalaryCap(record.TeamId) / 100;
+                    CalcTeamSalary.Text = "" + (decimal)tempteamsalary;
+                    model.TeamModel.GetTeamRecord(record.TeamId).Salary = (int)Math.Round(tempteamsalary*100, 2);
+                }               
+                else if (model.FileType == MaddenFileType.Franchise)
+                {                    
+                    tempteamsalary = (double)(model.TeamModel.GetTeamRecord(record.TeamId).Salary) / 100;                                        
+                }
+
+                if (SalaryCap.Value != 0)
+                    TeamCapRoom.Text = "" + Math.Round(cap - tempteamsalary - penalty, 2);
+
+                TeamNeeds(record);
+                LoadPositionSalaries(record);
+                LoadFreeAgents(record);
+                GetTeamSalaries();
+            }
+        } 
         
         private void playerContractLength_ValueChanged(object sender, EventArgs e)
         {
@@ -2828,7 +2793,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.BonusTotal = (int)playerSigningBonus.Value * 100;
+                model.PlayerModel.CurrentPlayerRecord.BonusTotal = (int)playerTotalBonus.Value * 100;
             }
         }
 
@@ -2874,6 +2839,8 @@ namespace MaddenEditor.Forms
             {
                 foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
                 {
+                    if (record.Deleted)
+                        continue;
                     PlayerRecord rec = (PlayerRecord)record;
 
                     if (rec.TeamId == TeamId)
@@ -2889,14 +2856,13 @@ namespace MaddenEditor.Forms
                                 {
                                     if (playerinjury.IR)
                                         valid = false;
-                                }
-                                // if player is not on injured reserve count his salary for total team salary
+                                }                                
                             }
                         }
 
                         if (valid && !PlayerIDs.Contains(rec.PlayerId))
                             PlayerIDs.Add(rec.PlayerId);
-
+                        // if player is not on injured reserve count his salary for total team salary
                         if (model.FileType == MaddenFileType.Franchise && valid)
                             tempcap += rec.CurrentSalary;
                         else if (model.FileType == MaddenFileType.Roster)
@@ -2910,31 +2876,20 @@ namespace MaddenEditor.Forms
             catch
             {
                 
-            }
-
-            // subtract any current cap penalties
-            tempcap -= model.TeamModel.GetTeamRecord(TeamId).SalaryCapPenalty0;
+            }           
 
             return tempcap;
         }
 
-        private decimal CalculateCapHit(PlayerRecord rec, decimal rate, bool causeDirty)
-        {
+        public decimal CalculateCapHit(PlayerRecord rec, decimal rate, bool causeDirty)
+        {            
             if (causeDirty)
             {
                 rec.ContractLength = (int)playerContractLength.Value;
                 rec.ContractYearsLeft = (int)playerContractYearsLeft.Value;
                 rec.TotalSalary = (int)(playerTotalSalary.Value * 100);
-                rec.BonusTotal = (int)(playerSigningBonus.Value * 100);
-            }
-
-            if (rec.ContractLength == 0)
-            {
-                rec.ContractYearsLeft = 0;
-                rec.TotalSalary = 0;
-                rec.BonusTotal = 0;
-                return 0;
-            }
+                rec.BonusTotal = (int)(playerTotalBonus.Value * 100);
+            }            
 
             int totalsal = rec.TotalSalary;
             int totalbonus = rec.BonusTotal;
@@ -3013,21 +2968,41 @@ namespace MaddenEditor.Forms
                 runtotalbon += estYearlyBonus[i];
             }
 
-            //  save contract to player table
-            rec.Salary0 = (int)estYearlySalary[0];
-            rec.Salary1 = (int)estYearlySalary[1];
-            rec.Salary2 = (int)estYearlySalary[2];
-            rec.Salary3 = (int)estYearlySalary[3];
-            rec.Salary4 = (int)estYearlySalary[4];
-            rec.Salary5 = (int)estYearlySalary[5];
-            rec.Salary6 = (int)estYearlySalary[6];
-            rec.Bonus0 = (int)estYearlyBonus[0];
-            rec.Bonus1 = (int)estYearlyBonus[1];
-            rec.Bonus2 = (int)estYearlyBonus[2];
-            rec.Bonus3 = (int)estYearlyBonus[3];
-            rec.Bonus4 = (int)estYearlyBonus[4];
-            rec.Bonus5 = (int)estYearlyBonus[5];
-            rec.Bonus6 = (int)estYearlyBonus[6];
+            if (rec.ContainsIntField("PSA0"))
+            {
+                //  save contract to player table
+                rec.Salary0 = (int)estYearlySalary[0];
+                rec.Salary1 = (int)estYearlySalary[1];
+                rec.Salary2 = (int)estYearlySalary[2];
+                rec.Salary3 = (int)estYearlySalary[3];
+                rec.Salary4 = (int)estYearlySalary[4];
+                rec.Salary5 = (int)estYearlySalary[5];
+                rec.Salary6 = (int)estYearlySalary[6];
+                rec.Bonus0 = (int)estYearlyBonus[0];
+                rec.Bonus1 = (int)estYearlyBonus[1];
+                rec.Bonus2 = (int)estYearlyBonus[2];
+                rec.Bonus3 = (int)estYearlyBonus[3];
+                rec.Bonus4 = (int)estYearlyBonus[4];
+                rec.Bonus5 = (int)estYearlyBonus[5];
+                rec.Bonus6 = (int)estYearlyBonus[6];
+            }
+            else
+            {               
+                rec.salary[0] = (int)estYearlySalary[0];
+                rec.salary[1] = (int)estYearlySalary[1];
+                rec.salary[2] = (int)estYearlySalary[2];
+                rec.salary[3] = (int)estYearlySalary[3];
+                rec.salary[4] = (int)estYearlySalary[4];
+                rec.salary[5] = (int)estYearlySalary[5];
+                rec.salary[6] = (int)estYearlySalary[6];
+                rec.bonus[0] = (int)estYearlyBonus[0];
+                rec.bonus[1] = (int)estYearlyBonus[1];
+                rec.bonus[2] = (int)estYearlyBonus[2];
+                rec.bonus[3] = (int)estYearlyBonus[3];
+                rec.bonus[4] = (int)estYearlyBonus[4];
+                rec.bonus[5] = (int)estYearlyBonus[5];
+                rec.bonus[6] = (int)estYearlyBonus[6];
+            }
 
             if (causeDirty)
                 rec.FixCurrentSalary();
@@ -3044,7 +3019,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary0 = (int)(PlayerSalary0.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3055,7 +3030,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary1 = (int)(PlayerSalary1.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3066,7 +3041,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary2 = (int)(PlayerSalary2.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3077,7 +3052,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary3 = (int)(PlayerSalary3.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3088,7 +3063,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary4 = (int)(PlayerSalary4.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3099,7 +3074,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary5 = (int)(PlayerSalary5.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3110,7 +3085,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Salary6 = (int)(PlayerSalary6.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+               // LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3121,7 +3096,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus0 = (int)(PlayerBonus0.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3132,7 +3107,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus1 = (int)(PlayerBonus1.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3143,7 +3118,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus2 = (int)(PlayerBonus2.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3154,7 +3129,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus3 = (int)(PlayerBonus3.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3165,7 +3140,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus4 = (int)(PlayerBonus4.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3176,7 +3151,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus5 = (int)(PlayerBonus5.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3187,7 +3162,7 @@ namespace MaddenEditor.Forms
             {
                 isInitialising = true;
                 model.PlayerModel.CurrentPlayerRecord.Bonus6 = (int)(PlayerBonus6.Value * 100);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
         }
@@ -3196,7 +3171,7 @@ namespace MaddenEditor.Forms
         private void SalaryCap_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-            {
+            {                
                 isInitialising = true;
                 model.SalaryCapModel.SalaryCap = (int)(SalaryCap.Value * 1000000);
                 LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
@@ -3241,7 +3216,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 List<InactiveRecord> remove = new List<InactiveRecord>();
-                if (!InactiveCheckbox.Checked)
+                if (!PlayerInactive.Checked)
                 {
                     foreach (InactiveRecord iar in model.TableModels[EditorModel.INACTIVE_TABLE].GetRecords())
                     {
@@ -5019,7 +4994,13 @@ namespace MaddenEditor.Forms
         private void UseActualNFLSalaryCap_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                model.SalaryCapModel.SalaryCap = (int)(SalaryCap.Value * 1000000);
+            {
+                if (UseActualNFLSalaryCap_Checkbox.Checked)
+                {
+                    SalaryCap.Value = (decimal)model.SalaryCapModel.LeagueCap[model.CurrentYear];                    
+                    model.SalaryCapModel.SalaryCap = (int)(SalaryCap.Value * 1000000);
+                }
+            }                
         }
 
          
@@ -5703,6 +5684,6 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
                 model.PlayerModel.CurrentPlayerRecord.UnderShirt = playerUndershirt.SelectedIndex;
         }
-        
+
     }
 }

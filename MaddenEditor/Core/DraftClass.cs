@@ -150,25 +150,24 @@ namespace MaddenEditor.Core
         public int BackPlate = 0;
 
         // body parts
-        public float Body01 = 0;
-        public float Body02 = 0;
-        public float Body03 = 0;
-        public float Body04 = 0;
-        public float ChestSize = 0;
-        public float Body06 = 0;
-        public float Body07 = 0;
-        public float Body08 = 0;
-        public float Body09 = 0;
-        public float Body10 = 0;
-        public float Body11 = 0;
-        public float Body12 = 0;
-        public float Body13 = 0;
-        public float Body14 = 0;
-        public float Body15 = 0;
-        public float ArmSize = 0;
-        public float Body17 = 0;
-        public float Body18 = 0;
-        
+        public Single Body01 = 0;
+        public Single Body02 = 0;
+        public Single Body03 = 0;
+        public Single Body04 = 0;
+        public Single ChestSize = 0;
+        public Single Body06 = 0;
+        public Single Body07 = 0;
+        public Single Body08 = 0;
+        public Single Body09 = 0;
+        public Single Body10 = 0;
+        public Single Body11 = 0;
+        public Single Body12 = 0;
+        public Single Body13 = 0;
+        public Single Body14 = 0;
+        public Single Body15 = 0;
+        public Single ArmSize = 0;
+        public Single Body17 = 0;
+        public Single Body18 = 0;       
         
 
         public int Unknown232 = 0;
@@ -836,7 +835,6 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)Unknown325);
             binwriter.Write((byte)Unknown326);
             binwriter.Write((byte)Unknown327);
-
         }
 
         public string GetCSVAttribute(string field, EditorModel emodel, bool desc)

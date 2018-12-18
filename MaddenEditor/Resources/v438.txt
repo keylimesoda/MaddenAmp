@@ -32,6 +32,6 @@ Bugs/Fixes
 ----------
 
 
-Coach Editor - Fixed displaying coach's first/last names.
+Coach Editor - Fixed displaying coach's first/last names for Madden 19.
 
 

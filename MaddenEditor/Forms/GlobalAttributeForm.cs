@@ -639,9 +639,9 @@ namespace MaddenEditor.Forms
                 }
                 else if (traitCombo.Text == "Penalty")
                 {
-                    TraitOptionsCombo.Items.Add("Disciplined");
                     TraitOptionsCombo.Items.Add("Undisciplined");
-                    TraitOptionsCombo.Items.Add("Balanced");
+                    TraitOptionsCombo.Items.Add("Normal");
+                    TraitOptionsCombo.Items.Add("Disciplined");
                 }
                 else if (traitCombo.Text == "SensePressure")
                 {
