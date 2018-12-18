@@ -29,8 +29,16 @@ namespace MaddenEditor.Core.Record.FranchiseState
     public class DraftStateRecord : TableRecordModel
     {
         //DRIN
-        
+
+        public const string DRAFT_PICK_NUM = "DPNM";
         public const string IN_DRAFT = "DRST";
+        public const string TEAM_ID = "TGID";
+        public const string TIDE = "TIDE";
+        public const string TILD = "TILD";
+        public const string TIPD = "TIPD";
+        public const string TITL = "TITL";
+
+        
 
         public DraftStateRecord(int record, TableModel tableModel, EditorModel EditorModel)
 			: base(record, tableModel, EditorModel)
@@ -48,6 +56,16 @@ namespace MaddenEditor.Core.Record.FranchiseState
             {
                 SetField(IN_DRAFT, (value == true ? 1 : 0));
             }
+        }
+        public int TeamID
+        {
+            get { return GetIntField(TEAM_ID); }
+            set { SetField(TEAM_ID, value); }
+        }
+        public int PickNumber
+        {
+            get { return GetIntField(DRAFT_PICK_NUM); }
+            set { SetField(DRAFT_PICK_NUM, value); }
         }
     }
 }

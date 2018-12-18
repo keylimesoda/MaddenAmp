@@ -412,12 +412,12 @@ namespace MaddenEditor.Core
 	/// </summary>
 	public class EditorModel
     {
-        #region Members
+        #region Vars
         public bool BigEndian = false;
         public const string SUPPORT_EMAIL = "bugs@tributech.com.au";
 		public const int FREE_AGENT_TEAM_ID = 1009;
         public const int RETIRED_TEAM_ID = 1014;
-        public const int ROOKIES = 1015;
+        public const int DRAFTCLASS = 1015;
         public const int AFC_PB = 1010;
         public const int NFC_PB = 1011;
         public const string UNKNOWN_TEAM_NAME = "UNKNOWN_TEAM";        
@@ -458,8 +458,7 @@ namespace MaddenEditor.Core
         // New 2019 type
         public const int MADDEN_2019_DBTEAM_COUNT = 8;
         
-        #region Franchise / Roster  Table names       
-        
+        #region Franchise / Roster Table names
         public const string PLAYER_AWARDS_TABLE = "AYPL";
         public const string BOXSCORE_DEFENSE_TABLE = "BDEF";
         public const string BOXSCORE_OFFENSE_TABLE = "BOFF";
@@ -2430,6 +2429,8 @@ namespace MaddenEditor.Core
                 {
                     CurrentYearIndex += FranchiseTime.Year;
                     CurrentYear = 2003 + (int)FileVersion + FranchiseTime.Year;
+                    if (FranchiseTime.WeekType >= 175)
+                        CurrentYear++;
                 }
                 else
                 {

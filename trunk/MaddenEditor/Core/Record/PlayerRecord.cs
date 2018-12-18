@@ -348,13 +348,15 @@ namespace MaddenEditor.Core.Record
         private int capHitDifference = 0;
         double[] estYearlySalary = new double[7];
         double[] estSigningBonusArray = new double[7];
-
         public bool Starter = false;
         public int backupValue = 0;
 		public override string ToString()
 		{
 			return FirstName + " " + LastName + " (" + Enum.GetNames(typeof(MaddenPositions))[PositionId].ToString() + ")";
 		}
+        public int[] salary = new int[7];
+        public int[] bonus = new int[7];
+
 
         #region Get/SET
 

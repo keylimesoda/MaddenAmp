@@ -307,15 +307,24 @@ namespace MaddenEditor.Forms
 
                 threeFourButton.Checked = false;
                 fourThreeButton.Checked = false;
-                if (record.DefenseType == 95)
-                    fourThreeButton.Checked = true;
-                else if (record.DefenseType == 5)
-                    threeFourButton.Checked = true;
+
+                if (model.FileVersion != MaddenFileVersion.Ver2019)
+                {
+                    if (record.DefenseType == 95)
+                        fourThreeButton.Checked = true;
+                    else if (record.DefenseType == 5)
+                        threeFourButton.Checked = true;
+                    else
+                    {
+                        // have seen this get corrupted, change it to 4-3
+                        record.DefenseType = 95;
+                        fourThreeButton.Checked = true;
+                    }
+                }
                 else
                 {
-                    // have seen this get corrupted, change it to 4-3
-                    record.DefenseType = 95;
-                    fourThreeButton.Checked = true;
+                    threeFourButton.Enabled = false;
+                    fourThreeButton.Enabled = false;
                 }
 
                 //Attributes
@@ -331,6 +340,8 @@ namespace MaddenEditor.Forms
                 rb1.Value = (int)(record.RBCarryDist);
                 coachDefAggression.Value = record.DefensiveAggression;
                 coachOffAggression.Value = record.OffensiveAggression;
+                
+                SetCoachTendency(record);
 
                 coachDefensivePlaybook.Text = model.TeamModel.GetDEFPlaybook((int)record.DefensivePlaybook);
                 coachOffensivePlaybook.Text = model.TeamModel.GetOFFPlaybook((int)record.OffensivePlaybook);
@@ -408,6 +419,30 @@ namespace MaddenEditor.Forms
             isInitialising = false;
         }
 
+        public void SetCoachTendency(CoachRecord record)
+        {
+            if (coachPassOff.Value <= 50 && coachOffAggression.Value <= 50)
+            {
+                OffTendency.SelectedIndex = 1;
+                DefTendency.SelectedIndex = 1;
+            }
+            else if (coachPassOff.Value <= 50 && coachOffAggression.Value > 50)
+            {
+                OffTendency.SelectedIndex = 0;
+                DefTendency.SelectedIndex = 0;
+            }
+            else if (coachPassOff.Value > 50 && coachOffAggression.Value <= 50)
+            {
+                OffTendency.SelectedIndex = 3;
+                DefTendency.SelectedIndex = 3;
+            }
+            else if (coachPassOff.Value > 50 && coachOffAggression.Value > 50)
+            {
+                OffTendency.SelectedIndex = 2;
+                DefTendency.SelectedIndex = 2;
+            }
+        }
+        
         public void InitCoachList()
         {
             model.CoachModel.InitCoachList();
@@ -769,6 +804,7 @@ namespace MaddenEditor.Forms
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveStrategy = (int)coachPassOff.Value;
                 coachRunOff.Value = (int)(100 - coachPassOff.Value);
+                SetCoachTendency(model.CoachModel.CurrentCoachRecord);
             }
         }
 
@@ -795,6 +831,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.CoachModel.CurrentCoachRecord.OffensiveAggression = (int)coachOffAggression.Value;
+                SetCoachTendency(model.CoachModel.CurrentCoachRecord);
             }
         }
 

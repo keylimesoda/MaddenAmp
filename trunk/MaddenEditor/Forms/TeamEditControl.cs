@@ -448,6 +448,20 @@ namespace MaddenEditor.Forms
 
         private void SetDraftPicks()
         {
+            foreach (DraftPickRecord dpr in model.TableModels[EditorModel.DRAFT_PICK_TABLE].GetRecords())
+            {
+                if (dpr.Deleted)
+                    continue;
+                if (dpr.PickNumber == model.DraftState.PickNumber)
+                {
+                    if (model.DraftState.TeamID != dpr.CurrentTeamId)
+                    {
+                        model.DraftState.TeamID = dpr.CurrentTeamId;
+                    }
+                    break;
+                }
+            }
+            
             bool holder = isInitialising;
             isInitialising = true;
             // Reset the comboboxes

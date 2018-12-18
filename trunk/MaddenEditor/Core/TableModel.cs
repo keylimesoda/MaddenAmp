@@ -541,7 +541,7 @@ namespace MaddenEditor.Core
 		public void Save()
 		{
 			List<TableRecordModel> listToUse = null;
-
+            
 			for (int j = 0; j < 2; j++)
 			{
 				if (j == 0)
@@ -554,95 +554,58 @@ namespace MaddenEditor.Core
 				}
 				foreach (TableRecordModel record in listToUse)
 				{
-					if (record.Dirty)
+                    if (record.Dirty)
                     {
                         //First check to see if this record is going to be deleted
                         if (record.Deleted)
                         {
                             Trace.Write("About to mark for deletion record " + record.RecNo);
-                            //Mark record for deletion in DB
-                            // Need to reverse these again to find the correct table in the db since they are BE
-                            if (BigEndian)
-                                tablename = ConvertBE(name);
-                            else tablename = name;
-
+                            // Mark record for deletion in DB
                             // s68 - not sure why 'record remove was commented out and changed to 'change deleted' , that doesnt remove the record
                             // will leave it here in case there was some kind of problem with using record remove.
-                            //TDB.TDBTableRecordChangeDeleted(dbIndex, tablename, record.RecNo, false);
+                            // TDB.TDBTableRecordChangeDeleted(dbIndex, tablename, record.RecNo, false);
 
                             TDB.TDBTableRecordRemove(dbIndex, tablename, record.RecNo);
                             continue;
                         }
 
+                        // Need to reverse tablename to find the correct table since we reversed them to begin with
+                        // when first reading them in to make them compatible with the editor.
+                        if (BigEndian)
+                            tablename = ConvertBE(name);
+                        else tablename = name;                        
+                        
                         string[] keyArray = null;
                         int[] valueArray = null;
                         float[] floatArray = null;
                         string[] stringValueArray = null;
 
-                        #region Int Fields
-                        
+                        #region Int Fields                        
                         record.GetChangedIntFields(ref keyArray, ref valueArray);
 
                         for (int i = 0; i < keyArray.Length; i++)
-                        {                            
-                            if (BigEndian)
-                            {
-                                tablename = ConvertBE(name);
-                                fieldname = ConvertBE(keyArray[i]);
-                            }
-                            else
-                            {
-                                tablename = name;
-                                fieldname = keyArray[i];
-                            }
-                            
-                            TDB.TDBFieldSetValueAsInteger(dbIndex, tablename, fieldname, record.RecNo, valueArray[i]);
+                        {
+                            TDB.TDBFieldSetValueAsInteger(dbIndex, tablename, keyArray[i], record.RecNo, valueArray[i]);
                         }
-
                         #endregion
 
-
                         #region String Fields
-
                         keyArray = null;
                         record.GetChangedStringFields(ref keyArray, ref stringValueArray);
 
                         for (int i = 0; i < keyArray.Length; i++)
                         {
-                            if (BigEndian)
-                            {
-                                tablename = ConvertBE(name);
-                                fieldname = ConvertBE(keyArray[i]);
-                            }
-                            else
-                            {
-                                tablename = name;
-                                fieldname = keyArray[i];
-                            }
-                            TDB.TDBFieldSetValueAsString(dbIndex, tablename, fieldname, record.RecNo, stringValueArray[i]);
+                            TDB.TDBFieldSetValueAsString(dbIndex, tablename, keyArray[i], record.RecNo, stringValueArray[i]);
                         }
-
                         #endregion
 
                         #region Float Fields
-
                         keyArray = null;
                         record.GetChangedFloatFields(ref keyArray, ref floatArray);
                         for (int i = 0; i < keyArray.Length; i++)
-                        {
-                            if (BigEndian)
-                            {
-                                tablename = ConvertBE(name);
-                                fieldname = ConvertBE(keyArray[i]);
-                            }
-                            else
-                            {
-                                tablename = name;
-                                fieldname = keyArray[i];
-                            }
-                            TDB.TDBFieldSetValueAsFloat(dbIndex, tablename, fieldname, record.RecNo, floatArray[i]);
+                        {                            
+                            TDB.TDBFieldSetValueAsFloat(dbIndex, tablename, keyArray[i], record.RecNo, floatArray[i]);
                         }
-
                         #endregion
 
                         record.DiscardBackups();

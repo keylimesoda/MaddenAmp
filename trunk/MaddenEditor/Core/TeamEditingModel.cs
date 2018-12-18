@@ -31,12 +31,12 @@ using MaddenEditor.Core.Record;
 namespace MaddenEditor.Core
 {
 	public class TeamEditingModel
-	{        
-        public const int RETIRED = 1014;
-        public const int NO_TEAM_ID = 1023;
+	{  
+        public const int FREE_AGENT = 1009;
 		public const int PROBOWL_TEAM_AFC = 1010; //??
 		public const int PROBOWL_TEAM_NFC = 1011; //??
-        public const int FREE_AGENT = 1009;
+        public const int RETIRED = 1014;
+        public const int NO_TEAM_ID = 1023;
         // 1019, 1018 RFA ?
 
 		/** Collection of team names hashed by teamid */
