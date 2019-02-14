@@ -60,6 +60,7 @@ namespace MaddenEditor.Forms
             tn.Name = "Revision";
             tn.Text = "Revisions";
             versions.Nodes.Add(tn);
+            versions.Nodes[0].Nodes.Add("v4.39");
             versions.Nodes[0].Nodes.Add("v4.38");
             versions.Nodes[0].Nodes.Add("v4.37");
             versions.Nodes[0].Nodes.Add("v4.36");
@@ -86,7 +87,7 @@ namespace MaddenEditor.Forms
             versions.NodeMouseClick += versions_NodeMouseClick;
             versions.Visible = true;
 
-            DisplayChangelog("MaddenEditor.Resources.v438.txt");
+            DisplayChangelog("MaddenEditor.Resources.v439.txt");
         }
 
         public void DisplayChangelog(string filename)
@@ -143,6 +144,8 @@ namespace MaddenEditor.Forms
                 file = "MaddenEditor.Resources.v437.txt";
             else if (e.Node.Text == "v4.38")
                 file = "MaddenEditor.Resources.v438.txt";
+            else if (e.Node.Text == "v4.39")
+                file = "MaddenEditor.Resources.v439.txt";
             else return;
 
             DisplayChangelog(file);
@@ -151,6 +154,11 @@ namespace MaddenEditor.Forms
         private void label2_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.footballidiot.com/forum/viewtopic.php?f=115&t=21075"); 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
 

@@ -116,7 +116,8 @@ namespace MaddenEditor.Forms
 
             label3.Visible = false;
             label4.Visible = false;
-            traitOnOff.Visible = false;
+            TraitON.Visible = false;
+            TraitOFF.Visible = false;
             traitCombo.Visible = false;
             TraitOptionsCombo.Visible = false;
 
@@ -140,10 +141,12 @@ namespace MaddenEditor.Forms
             {
                 label3.Visible = true;
                 label4.Visible = true;
-                traitOnOff.Visible = true;
+                TraitON.Visible = true;
+                TraitOFF.Visible = true;
                 traitCombo.Visible = true;
                 TraitOptionsCombo.Visible = true;
-                traitOnOff.Enabled = false;
+                TraitON.Enabled = false;
+                TraitOFF.Enabled = false;
                 TraitOptionsCombo.Enabled = false;
                 foreach (string t in Enum.GetNames(typeof(EditableTraits)))
                     traitCombo.Items.Add(t);
@@ -282,72 +285,72 @@ namespace MaddenEditor.Forms
             switch (trait)
             {
                 case EditableTraits.BigHitter:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.BigHitter = true;
                     else record.BigHitter = false;
                     break;
                 case EditableTraits.Clutch:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.Clutch = true;
                     else record.Clutch = false;
                     break;
                 case EditableTraits.PossCatch:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.PossessionCatch = true;
                     else record.PossessionCatch = false;
                     break;
                 case EditableTraits.SpinMove:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.DLSpinmove = true;
                     else record.DLSpinmove = false;
                     break;
                 case EditableTraits.DropsPasses:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.DropPasses = true;
                     else record.DropPasses = false;
                     break;
                 case EditableTraits.FeetInBounds:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.FeetInBounds = true;
                     else record.FeetInBounds = false;
                     break;
                 case EditableTraits.FightForYards:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.FightYards = true;
                     else record.FightYards = false;
                     break;                
                 case EditableTraits.HighMotor:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.HighMotor = true;
                     else record.HighMotor = false;
                     break;
                 case EditableTraits.AggrCatch:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.AggressiveCatch = true;
                     else record.AggressiveCatch = false;
                     break;
                 case EditableTraits.SwimMove:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.DLSwim = true;
                     else record.DLSwim = false;
                     break;
                 case EditableTraits.RunAfterCatch:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.RunAfterCatch = true;
                     else record.RunAfterCatch = false;
                     break;
                 case EditableTraits.ThrowsAway:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.ThrowAway = true;
                     else record.ThrowAway = false;
                     break;
                 case EditableTraits.ThrowSpiral:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.ThrowSpiral = true;
                     else record.ThrowSpiral = false;
                     break;
                 case EditableTraits.StripsBall:
-                    if (traitOnOff.Checked)
+                    if (TraitON.Checked)
                         record.StripsBall = true;
                     else record.StripsBall = false;
                     break;
@@ -596,7 +599,9 @@ namespace MaddenEditor.Forms
 
         public void InitTraitOptions()
         {
-            traitOnOff.Enabled = false;
+            TraitON.Enabled = false;
+            TraitOFF.Enabled = true;
+            TraitON.Checked = true;
             TraitOptionsCombo.Enabled = false;
             TraitOptionsCombo.Items.Clear();
 
@@ -604,12 +609,13 @@ namespace MaddenEditor.Forms
                 return;
             else if (traitCombo.SelectedIndex <= 13)
             {
-                traitOnOff.Enabled = true;
+                TraitON.Enabled = true;
+                TraitOFF.Enabled = true;
                 TraitOptionsCombo.Enabled = false;                
             }
             else if (traitCombo.SelectedIndex >= 14)
             {
-                traitOnOff.Enabled = false;
+                TraitON.Enabled = false;
                 TraitOptionsCombo.Enabled = true;
                 if (traitCombo.Text == "CoversBall")
                 {
@@ -661,11 +667,15 @@ namespace MaddenEditor.Forms
 
         }
 
-        private void traitOnOff_CheckedChanged(object sender, EventArgs e)
+        private void TraitON_CheckedChanged(object sender, EventArgs e)
         {
             if (!isInitializing)
             {
-                
+                isInitializing = true;
+                if (TraitON.Checked)
+                    TraitOFF.Checked = false;
+                else TraitOFF.Checked = true;
+                isInitializing = false;
             }
 
         }
@@ -673,6 +683,18 @@ namespace MaddenEditor.Forms
         private void TraitOptionsCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void TraitOFF_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+            {
+                isInitializing = true;
+                if (TraitOFF.Checked)
+                    TraitON.Checked = false;
+                else TraitON.Checked = true;
+                isInitializing = false;
+            }
         }
     }
 }

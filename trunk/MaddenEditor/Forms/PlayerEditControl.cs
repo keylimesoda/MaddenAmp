@@ -1615,10 +1615,7 @@ namespace MaddenEditor.Forms
                 PlayerGridView.Rows.RemoveAt(current);
                 if (PlayerGridView.Rows.Count > 0)
                 {
-                    PlayerGridViewChange(false, -1);
-                    //int idnum = (int)PlayerGridView.Rows[0].Cells[0].Value;
-
-                    //LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(idnum));
+                    PlayerGridViewChange(false, -1);                    
                 }
                 else
                 {
@@ -5683,6 +5680,12 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
                 model.PlayerModel.CurrentPlayerRecord.UnderShirt = playerUndershirt.SelectedIndex;
+        }
+                
+        private void playerEndPlay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.EndPlay = model.PlayerModel.GetEndPlay(playerEndPlay.Text);
         }
 
     }

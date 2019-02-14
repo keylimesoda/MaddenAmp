@@ -2513,7 +2513,9 @@ namespace MaddenEditor.Core
 			}
             
 			//Add the field list to the tablemodel
-			table.SetFieldList(fieldList); 
+			table.SetFieldList(fieldList);
+
+            table.capacity = tableProps.Capacity;
             
             float currentProgress = 0.0f;
 			float progressInterval = (1.0f / (float)tableProps.RecordCount) * 100.0f;

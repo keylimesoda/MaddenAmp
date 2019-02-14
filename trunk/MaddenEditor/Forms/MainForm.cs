@@ -117,7 +117,8 @@ namespace MaddenEditor.Forms
                 Revisions form = new Revisions();
                 form.manager = manager;
                 form.InitUI();
-                form.ShowDialog(this);
+                form.Show();
+                form.TopMost = true;
             }
 		}
 

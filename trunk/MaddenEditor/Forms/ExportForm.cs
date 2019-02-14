@@ -49,7 +49,8 @@ namespace MaddenEditor.Forms
         public List<string> import_fields = new List<string>();
         public string currenttablename = "";
         public int linenumber = 0;
-        public List<string> errors = new List<string>();
+        public List<string> errors = new List<string>();        
+        public int currentrec;
 
         List<List<string>> CSVRecords = new List<List<string>>();
         public FB FB_Draft = new FB();
@@ -1168,6 +1169,7 @@ namespace MaddenEditor.Forms
 
                         sr.Close();
                         //Done
+                        
                         #endregion
 
                         ImportTableName_Textbox.Text = tablename;
@@ -1222,7 +1224,10 @@ namespace MaddenEditor.Forms
 
                         ImportFieldsCount_Textbox.Text = import_fields_avail.Count.ToString();
                         NotImportableCount_Textbox.Text = WrongFields_ListView.Items.Count.ToString(); 
+
                     }
+
+                    
                 }
 
 
@@ -1233,10 +1238,13 @@ namespace MaddenEditor.Forms
                 }
 
             }
+            if (myStream != null)
+                myStream.Close();            
         }
 
         private void ProcessRecords_Button_Click(object sender, EventArgs e)
         {
+            /*
             if (DeleteCurrentRecs_Checkbox.Checked)
             {
                 int count = model.TableModels[currenttablename].RecordCount;
@@ -1247,13 +1255,18 @@ namespace MaddenEditor.Forms
                         continue;
                     else rec.SetDeleteFlag(true);
                 }
-            }
 
-            
+                model.TableModels[currenttablename].Compact();
+            }
+            */
+           
+
             foreach (List<string> record in CSVRecords)
             {
                 TableRecordModel tablerecord = null;
                 linenumber++;
+                currentrec++;
+                bool fail = false;
 
                 if (currenttablename == "PLAY" && UpdateRecs_Checkbox.Checked)
                 {
@@ -1282,13 +1295,21 @@ namespace MaddenEditor.Forms
                         }
                     }
                 }
-                // Not updating, so create a new record
-                if (tablerecord == null)
-                    tablerecord = model.TableModels[currenttablename].CreateNewRecord(true);
-
+                // Not updating, so start replacing                    
+                else
+                {
+                    if (currentrec >= model.TableModels[currenttablename].capacity - 1)
+                        fail = true;
+                    else if (currentrec > model.TableModels[currenttablename].RecordCount-1)
+                        tablerecord = model.TableModels[currenttablename].CreateNewRecord(true);
+                    else tablerecord = model.TableModels[currenttablename].GetRecord(currentrec);                    
+                }
 
                 List<TdbFieldProperties> fplist = model.TableModels[currenttablename].GetFieldList();
 
+                if (fail)
+                    errors.Add("Line number " + linenumber.ToString() + " Exceeded Capacity");
+                
                 foreach (KeyValuePair<int, string> import in import_fields_avail)
                 {
                     foreach (TdbFieldProperties fp in fplist)
@@ -1305,6 +1326,18 @@ namespace MaddenEditor.Forms
                             }
                         }
                     }
+                }                
+            }
+
+            // delete unwanted
+            if (DeleteCurrentRecs_Checkbox.Checked)
+            {
+                for (int c = currentrec; c < model.TableModels[currenttablename].RecordCount - 1; c++)
+                {
+                    TableRecordModel rec = model.TableModels[currenttablename].GetRecord(currentrec);
+                    if (rec.Deleted)
+                        continue;
+                    rec.SetDeleteFlag(true);
                 }
             }
 
@@ -1320,6 +1353,8 @@ namespace MaddenEditor.Forms
                     ImportErrors_Listview.Items.Add(new ListViewItem(error));
             }
             else ImportErrors_Listview.Items.Add(new ListViewItem(linenumber.ToString() + " Lines processed.  No errors"));
+
+           
         }
 
         private void DeleteCurrentRecs_Checkbox_CheckedChanged(object sender, EventArgs e)

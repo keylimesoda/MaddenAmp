@@ -140,7 +140,7 @@ namespace MaddenEditor.Core.Record
         public const string ELUSIVE = "PELU";                   // 2019
         public const string PEPS = "PEPS";                      // 2019
         public const string EYE_PAINT = "PEYE";
-        public const string ARMS_FAT = "PFAS";
+        public const string ARMS_FAT = "PFAS";        
         public const string LEGS_CALF_FAT = "PFCS";
         public const string FACE_ID = "PFEx";
         public const string FACE_SHAPE = "PFGE";                // 2004 field, 2005
@@ -315,7 +315,7 @@ namespace MaddenEditor.Core.Record
         public const string DL_SPINMOVE = "TRDS";               //2019
         public const string RIGHT_ELBOW_B = "TREL";
         public const string KEEP_FEET_IN_BOUNDS = "TRFB";       //2019
-        public const string TRFK = "TRFK";                      //2019
+        public const string PUMP_FAKE = "TRFK";                 //2019 not sure this is being used
         public const string FORCE_PASSES = "TRFP";              //2019
         public const string FIGHT_FOR_YARDS = "TRFY";           //2019
 		public const string RIGHT_HAND_B = "TRHA";
@@ -2250,7 +2250,11 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(UNDERSHIRT); }
             set { SetField(UNDERSHIRT,value);}
         }
-
+        public bool PumpFake
+        {
+            get { return (GetIntField(PUMP_FAKE) == 1); }
+            set { SetField(PUMP_FAKE, Convert.ToInt32(value)); }
+        }
 
 
         #endregion

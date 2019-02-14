@@ -47,6 +47,7 @@ namespace MaddenEditor.Core
         public bool BigEndian = false;
         public string tablename="";
         public string fieldname = "";
+        public int capacity = 0;
 
 		public TableModel(string name, EditorModel EditorModel, int dbIndex)
 		{
@@ -170,11 +171,11 @@ namespace MaddenEditor.Core
 			TableRecordModel result = null;
             if (BigEndian)
             {
-                tablename = ConvertBE(name);                
+                tablename = ConvertBE(Name);                
             }
             else
             {
-                tablename = name;                
+                tablename = Name;                
             }
 			int newRecNo = TDB.TDBTableRecordAdd(dbIndex, tablename, allowExpand);
 			if (newRecNo == 0xFFFF)
@@ -556,6 +557,12 @@ namespace MaddenEditor.Core
 				{
                     if (record.Dirty)
                     {
+                        // Need to reverse tablename to find the correct table since we reversed them to begin with
+                        // when first reading them in to make them compatible with the editor.
+                        if (BigEndian)
+                            tablename = ConvertBE(Name);
+                        else tablename = Name; 
+                        
                         //First check to see if this record is going to be deleted
                         if (record.Deleted)
                         {
@@ -564,17 +571,11 @@ namespace MaddenEditor.Core
                             // s68 - not sure why 'record remove was commented out and changed to 'change deleted' , that doesnt remove the record
                             // will leave it here in case there was some kind of problem with using record remove.
                             // TDB.TDBTableRecordChangeDeleted(dbIndex, tablename, record.RecNo, false);
-
+                           
                             TDB.TDBTableRecordRemove(dbIndex, tablename, record.RecNo);
                             continue;
                         }
 
-                        // Need to reverse tablename to find the correct table since we reversed them to begin with
-                        // when first reading them in to make them compatible with the editor.
-                        if (BigEndian)
-                            tablename = ConvertBE(name);
-                        else tablename = name;                        
-                        
                         string[] keyArray = null;
                         int[] valueArray = null;
                         float[] floatArray = null;
@@ -616,5 +617,11 @@ namespace MaddenEditor.Core
 			//TDB.TDBDatabaseCompact(dbIndex);
 			//TDB.TDBSave(dbIndex);
 		}
-	}
+
+        public void Compact()
+        {
+            TDB.TDBDatabaseCompact(dbIndex);
+        }
+    
+    }
 }
