@@ -3758,6 +3758,7 @@ namespace MaddenEditor.Forms
             this.playerEndPlay.Name = "playerEndPlay";
             this.playerEndPlay.Size = new System.Drawing.Size(174, 21);
             this.playerEndPlay.TabIndex = 184;
+            this.playerEndPlay.SelectedIndexChanged += new System.EventHandler(this.playerEndPlay_SelectedIndexChanged);
             // 
             // EndPlay
             // 
@@ -3776,6 +3777,7 @@ namespace MaddenEditor.Forms
             this.playerQBStyle.Name = "playerQBStyle";
             this.playerQBStyle.Size = new System.Drawing.Size(174, 21);
             this.playerQBStyle.TabIndex = 182;
+            this.playerQBStyle.SelectedIndexChanged += new System.EventHandler(this.playerQBStyle_SelectedIndexChanged);
             // 
             // QBStyle_Label
             // 

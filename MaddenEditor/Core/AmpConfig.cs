@@ -58,7 +58,7 @@ namespace MaddenEditor.Core
         private string _db_misc_filename;
         private List<SliderSet> _amp_sliders;
         private int version = 0;        
-        private int currentversion = 15;
+        private int currentversion = 16;
         #endregion
 
         #region Public members

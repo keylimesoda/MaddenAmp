@@ -56,11 +56,12 @@ namespace MaddenEditor.Forms
             this.incrementCheckBox = new System.Windows.Forms.RadioButton();
             this.decrementCheckBox = new System.Windows.Forms.RadioButton();
             this.setCheckBox = new System.Windows.Forms.RadioButton();
-            this.traitOnOff = new System.Windows.Forms.CheckBox();
+            this.TraitON = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.TraitOptionsCombo = new System.Windows.Forms.ComboBox();
             this.traitCombo = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.TraitOFF = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).BeginInit();
@@ -82,7 +83,8 @@ namespace MaddenEditor.Forms
             this.textBox1.Size = new System.Drawing.Size(600, 33);
             this.textBox1.TabIndex = 7;
             this.textBox1.Text = "Using the available options below, structure your query to edit the attributes yo" +
-    "u want changed on a group of selected players";
+    "u want changed on a group of selected players  Changes will not take effect unti" +
+    "l APPLY is selected";
             // 
             // label1
             // 
@@ -298,7 +300,7 @@ namespace MaddenEditor.Forms
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 4;
-            this.cancelButton.Text = "Cancel";
+            this.cancelButton.Text = "Exit";
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // GlobalTraitOption
@@ -384,21 +386,21 @@ namespace MaddenEditor.Forms
             this.setCheckBox.TabIndex = 0;
             this.setCheckBox.Text = "Set to";
             // 
-            // traitOnOff
+            // TraitON
             // 
-            this.traitOnOff.AutoSize = true;
-            this.traitOnOff.Location = new System.Drawing.Point(93, 133);
-            this.traitOnOff.Name = "traitOnOff";
-            this.traitOnOff.Size = new System.Drawing.Size(114, 17);
-            this.traitOnOff.TabIndex = 13;
-            this.traitOnOff.Text = "Trait ON, else OFF";
-            this.traitOnOff.UseVisualStyleBackColor = true;
-            this.traitOnOff.CheckedChanged += new System.EventHandler(this.traitOnOff_CheckedChanged);
+            this.TraitON.AutoSize = true;
+            this.TraitON.Location = new System.Drawing.Point(72, 133);
+            this.TraitON.Name = "TraitON";
+            this.TraitON.Size = new System.Drawing.Size(66, 17);
+            this.TraitON.TabIndex = 13;
+            this.TraitON.Text = "Trait ON";
+            this.TraitON.UseVisualStyleBackColor = true;
+            this.TraitON.CheckedChanged += new System.EventHandler(this.TraitON_CheckedChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(28, 159);
+            this.label4.Location = new System.Drawing.Point(28, 170);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 12;
@@ -408,7 +410,7 @@ namespace MaddenEditor.Forms
             // 
             this.TraitOptionsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TraitOptionsCombo.FormattingEnabled = true;
-            this.TraitOptionsCombo.Location = new System.Drawing.Point(93, 156);
+            this.TraitOptionsCombo.Location = new System.Drawing.Point(93, 167);
             this.TraitOptionsCombo.Name = "TraitOptionsCombo";
             this.TraitOptionsCombo.Size = new System.Drawing.Size(121, 21);
             this.TraitOptionsCombo.TabIndex = 11;
@@ -432,12 +434,24 @@ namespace MaddenEditor.Forms
             this.label3.TabIndex = 8;
             this.label3.Text = "Change Trait";
             // 
+            // TraitOFF
+            // 
+            this.TraitOFF.AutoSize = true;
+            this.TraitOFF.Location = new System.Drawing.Point(144, 133);
+            this.TraitOFF.Name = "TraitOFF";
+            this.TraitOFF.Size = new System.Drawing.Size(70, 17);
+            this.TraitOFF.TabIndex = 6;
+            this.TraitOFF.Text = "Trait OFF";
+            this.TraitOFF.UseVisualStyleBackColor = true;
+            this.TraitOFF.CheckedChanged += new System.EventHandler(this.TraitOFF_CheckedChanged);
+            // 
             // GlobalAttributeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
-            this.Controls.Add(this.traitOnOff);
+            this.Controls.Add(this.TraitOFF);
+            this.Controls.Add(this.TraitON);
             this.Controls.Add(this.GlobalTraitOption);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cancelButton);
@@ -500,6 +514,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ComboBox traitCombo;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox TraitOptionsCombo;
-        private System.Windows.Forms.CheckBox traitOnOff;
+        private System.Windows.Forms.CheckBox TraitON;
+        private System.Windows.Forms.CheckBox TraitOFF;
 	}
 }

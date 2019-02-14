@@ -35,6 +35,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.RevisionText = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +49,7 @@
             this.panel1.Controls.Add(this.versions);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(244, 538);
+            this.panel1.Size = new System.Drawing.Size(244, 498);
             this.panel1.TabIndex = 0;
             // 
             // label2
@@ -110,9 +111,19 @@
             this.RevisionText.Multiline = true;
             this.RevisionText.Name = "RevisionText";
             this.RevisionText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.RevisionText.Size = new System.Drawing.Size(482, 422);
+            this.RevisionText.Size = new System.Drawing.Size(482, 419);
             this.RevisionText.TabIndex = 0;
             this.RevisionText.Text = "\r\n";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(85, 527);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Close";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Revisions
             // 
@@ -120,6 +131,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Location = new System.Drawing.Point(500, 200);
@@ -143,5 +155,6 @@
         private System.Windows.Forms.TextBox RevisionText;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
     }
 }
