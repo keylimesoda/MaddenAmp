@@ -1,0 +1,70 @@
+Madden AMP 4.39
+
+
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+*** Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file with Amp when finished editing in game in order to view those changes.
+
+
+
+Madden Amp is written in C# using Visual Studio 2013.
+Source Code is available through Sourceforge:
+https://svn.code.sf.net/p/maddenamp/code/trunk
+
+Subversion client (such as Tortoise SVN, https://tortoisesvn.net/)
+Checkout (Current Version) - svn://svn.code.sf.net/p/maddenamp/code/trunk 
+Checkout (Entire Project) - svn://svn.code.sf.net/p/maddenamp/code
+
+Submitting any changes to the source code requires a sourceforge account.
+Contact Stingray68 through sourceforge, or on the Football Idiot forums, to request write access.
+http://www.footballidiot.com/forum/
+
+
+v4.39 Changelog
+---------------
+
+Bugs/Fixes
+----------
+
+Splash screen layout/position.
+
+Player Editor - EndPlay and QB Style - Fixed not saving changes
+
+ 
+Global Editor - Fixed Penalty trait mismatch.
+Global Editor - Changed UI, traits that are set for on/off now have separate checkboxes
+for on and off.  This will default to on.
+Global Editor - Changed previously existing "cancel" button to "Exit".  
+Cancel button was misleading, once Apply is clicked changes are applied, there is no cancel function
+The only way to revert any changes is to exit the utility and to not save the file.
+
+
+Bug(s) involving big endian databases was not saving edits, should be fixed now, but no
+guarantees.
+Player Delete should be fixed.
+
+
+Note:
+There still seems to be a lot of confusion with Madden 19 and basic file editing.
+
+You CANNOT import/export/edit coaches in a Madden 19 roster file.
+There are NO coaches in a Madden 19 roster file.
+
+You CANNOT import/export a draft class from a Madden 19 roster file.  
+There is NOT a draft class in a Madden 19 roster file.  
+A Madden 19 Draft Class is a separate file.  Please refer to game documentation.
+You can export rookies from a Madden 19 roster file, but that is not the same thing as a 
+Madden 19 draft class file.
+
+You CANNOT edit a Madden 19 Franchise file with this editor.
+
+
+
+
+
+
+
