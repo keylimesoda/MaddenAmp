@@ -43,8 +43,8 @@ using MaddenEditor.Core.Manager;
 namespace MaddenEditor.Forms
 {
     //  TO DO:  FIX previous bonuses owed, taken from cap room
-    
-    
+
+
     public partial class PlayerEditControl : UserControl, IEditorForm
     {
         private EditorModel model = null;
@@ -52,22 +52,19 @@ namespace MaddenEditor.Forms
         private bool isInitialising = false;
         public Overall playeroverall = new Overall();
         public List<string> CurrentPlayers = new List<string>();
-        public int currentplayerrow = 0;        
+        public int currentplayerrow = 0;
         public int year = 0;
         public int selectedyear = -1;
         public int baseyear = 2007;
-        public int[] salary;
-        public int[] bonus;
         Dictionary<int, int> teamsalaries = new Dictionary<int, int>();
-        
+        public bool Madden19 = false;
         private MGMT _manager;
+
         public MGMT manager
         {
             get { return _manager; }
             set { _manager = value; }
         }
-        
-
 
         public PlayerEditControl()
         {
@@ -85,56 +82,37 @@ namespace MaddenEditor.Forms
             isInitialising = true;
             SuspendLayout();
 
-            calculateOverallButton.Enabled = true;
-            SevereLabel.Visible = false;
-            ReturnLabel.Visible = false;
-            playerInjuryReturn.Visible = false;
-            playerInjurySevere.Visible = false;
-            Traits_Panel.Visible = false;
-            Ratings19_Panel.Visible = false;
-            playerOVRArchetypeCombo.Items.Clear();
-            playerOVRArchetypeCombo.Enabled = false;
-            playerOVRArchetype.Text = "NA";
-            playerOVRArchetype.Enabled = false;
-            playerHometown.Enabled = false;
-            playerStateCombo.Enabled = false;
+            #region Stats Tab
+            if (model.FileType != MaddenFileType.Franchise)
+                tabControl.TabPages.Remove(statsPage);
+            #endregion
 
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                calculateOverallButton.Enabled = false;
-                playerHometown.Enabled = true;
-                playerStateCombo.Enabled = true;
-                SevereLabel.Visible = true;
-                ReturnLabel.Visible = true;
-                playerInjuryReturn.Visible = true;
-                playerInjurySevere.Visible = true;
-                Traits_Panel.Visible = true;
-                Ratings19_Panel.Visible = true;
-                firstNameTextBox.MaxLength = 13;
-                lastNameTextBox.MaxLength = 17;
+            InitCollegeList();
 
-                playeroverall.InitRatings19();
-            }
-            
-
-            #region Tattoos
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
+            // TO DO : try to move this to when file is processed
+            #region Get Total Number of Players
+            EditorModel.totalplayers = 0;
+            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
             {
-                Tattoo_Left.Maximum = 31;
-                Tattoo_Right.Maximum = 31;
-            }
-            else if (model.FileVersion == MaddenFileVersion.Ver2005)
-            {
-                Tattoo_Left.Maximum = 15;
-                Tattoo_Right.Maximum = 15;
-            }
-            else
-            {
-                Tattoo_Left.Maximum = 63;
-                Tattoo_Right.Maximum = 63;
+                if (rec.PlayerId > EditorModel.totalplayers)
+                    EditorModel.totalplayers = rec.PlayerId;
             }
             #endregion
 
+            #region Player Info & Player Ratings Tab
+            PortraitID_Large.Visible = false;
+            playerAsset.Text = "";
+            playerAsset.Enabled = false;
+            playerHometown.Text = "";
+            playerHometown.Enabled = false;
+            playerStateCombo.SelectedIndex = -1;
+            playerStateCombo.Enabled = false;
+            playerBirthday.Text = "";
+            playerBirthday.Enabled = false;
+            playerDraftRound.Maximum = 15;
+            playerDraftRoundIndex.Maximum = 63;
+
+            #region Height
             string feet = " '";
             string inches = " \"";
             for (int c = 0; c < 12; c++)
@@ -144,11 +122,12 @@ namespace MaddenEditor.Forms
                     PlayerHeight_Feet.Items.Add("");
                     PlayerHeight_Inches.Items.Add("");
                 }
-                if (c !=0 && c < 11)
+                if (c != 0 && c < 11)
                     PlayerHeight_Feet.Items.Add(c.ToString() + feet);
                 if (c != 0)
                     PlayerHeight_Inches.Items.Add(c.ToString() + inches);
             }
+            #endregion
 
             filterTeamComboBox.Items.Add("ALL");
             foreach (TableRecordModel record in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
@@ -167,10 +146,7 @@ namespace MaddenEditor.Forms
                 filterTeamComboBox.Items.Add(EditorModel.RETIRED);
             }
 
-            InitCollegeList();
-
             filterPositionComboBox.Items.Add("ALL");
-
             for (int p = 0; p < 21; p++)
             {
                 string pos = Enum.GetName(typeof(MaddenPositions), p);
@@ -178,269 +154,53 @@ namespace MaddenEditor.Forms
                 filterPositionComboBox.Items.Add(pos);
                 OriginalPosition_Combo.Items.Add(pos);
             }
-            //foreach (string pos in Enum.GetNames(typeof(MaddenPositions)))       
-            //{               
-            //    positionComboBox.Items.Add(pos);
-            //    filterPositionComboBox.Items.Add(pos);
-            //    OriginalPosition_Combo.Items.Add(pos);
-            //}            
-
             filterTeamComboBox.SelectedIndex = 0;
             filterPositionComboBox.SelectedIndex = 0;
-            
-            #region Equipment
-
-            #region Helmet
-            foreach (GenericRecord rec in model.PlayerModel.HelmetStyleList)
-            {
-                playerHelmetStyleCombo.Items.Add(rec);
-            }
-            playerHelmetStyleCombo.Sorted = true;
-            #endregion
-
-            #region Shoes
-            #region 04-08
-            if (model.FileVersion < MaddenFileVersion.Ver2019)
-            {
-                //0 WT Shoes
-                //1 WT Shoes WT Tape
-                //2 WT Shoes BK Tape
-                //3 WT Shoes TC Tape
-                //4 TC Shoes
-                //5 TC Shoes WT Tape
-                //6 TC Shoes BK Tape
-                //7 TC Shoes TC Tape
-                //8 BK Shoes
-                //9 BK Shoes WT Tape
-                //10 BK Shoes Bk Tape
-                //11 BK Shoes TC Tape
-                playerLeftAnkleCombo.Items.Clear();
-                playerRightAnkleCombo.Items.Clear();
-                playerLeftAnkleCombo.Items.Add("WT Shoes");
-                playerRightAnkleCombo.Items.Add("WT Shoes");
-                playerLeftAnkleCombo.Items.Add("WT Shoes WT Tape");
-                playerRightAnkleCombo.Items.Add("WT Shoes WT Tape");
-                playerLeftAnkleCombo.Items.Add("WT Shoes BK Tape");
-                playerRightAnkleCombo.Items.Add("WT Shoes BK Tape");
-                playerLeftAnkleCombo.Items.Add("WT Shoes TC Tape");
-                playerRightAnkleCombo.Items.Add("WT Shoes TC Tape");
-
-                playerLeftAnkleCombo.Items.Add("TC shoes");
-                playerRightAnkleCombo.Items.Add("TC shoes");
-                playerLeftAnkleCombo.Items.Add("TC shoes WT Tape");
-                playerRightAnkleCombo.Items.Add("TC shoes WT Tape");
-                playerLeftAnkleCombo.Items.Add("TC shoes BK Tape");
-                playerRightAnkleCombo.Items.Add("TC shoes BK Tape");
-                playerLeftAnkleCombo.Items.Add("TC shoes TC Tape");
-                playerRightAnkleCombo.Items.Add("TC shoes TC Tape");
-
-                playerLeftAnkleCombo.Items.Add("BK shoes");
-                playerRightAnkleCombo.Items.Add("BK shoes");
-                playerLeftAnkleCombo.Items.Add("BK shoes WT Tape");
-                playerRightAnkleCombo.Items.Add("BK shoes WT Tape");
-                playerLeftAnkleCombo.Items.Add("BK shoes BK Tape");
-                playerRightAnkleCombo.Items.Add("BK shoes BK Tape");
-                playerLeftAnkleCombo.Items.Add("BK shoes TC Tape");
-                playerRightAnkleCombo.Items.Add("BK shoes TC Tape");
-
-                playerLeftAnkleCombo.Items.Add("Custom");
-                playerRightAnkleCombo.Items.Add("Custom");
-            }
-            #endregion
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                playerLeftShoeCombo.Items.Clear();
-                foreach (GenericRecord rec in model.PlayerModel.ShoeList)
-                {
-                    playerLeftShoeCombo.Items.Add(rec);
-                    playerRightShoeCombo.Items.Add(rec);
-                }
-                playerLeftShoeCombo.Sorted = true;
-                playerLeftShoeCombo.Enabled = true;
-                playerRightShoeCombo.Sorted = true;
-                playerRightShoeCombo.Enabled = true;
-            }
-            else
-            {
-                playerLeftShoeCombo.Enabled = false;
-                playerRightShoeCombo.Enabled = false;
-            }
-            #endregion
-
-            #region FaceMask
-            foreach (GenericRecord rec in model.PlayerModel.FacemakeList)
-            {
-                playerFaceMaskCombo.Items.Add(rec);
-            }
-            playerFaceMaskCombo.Sorted = true;
-            #endregion
-
-            #region Left/Right Hand
-            foreach (GenericRecord rec in model.PlayerModel.GloveList)
-            {
-                playerLeftHandCombo.Items.Add(rec);
-                playerRightHandCombo.Items.Add(rec);
-            }
-            playerLeftHandCombo.Sorted = true;
-            playerRightHandCombo.Sorted = true;
-
-            #endregion
-
-            #region Left/Right Wrist
-            foreach (GenericRecord rec in model.PlayerModel.WristBandList)
-            {
-                playerLeftWristCombo.Items.Add(rec);
-                playerRightWristCombo.Items.Add(rec);
-            }
-            playerLeftWristCombo.Sorted = true;
-            playerRightWristCombo.Sorted = true;
-
-            #endregion
-
-            #region Left/Right Sleeve
-            foreach (GenericRecord rec in model.PlayerModel.SleeveList)
-            {
-                playerLeftSleeve.Items.Add(rec);
-                playerRightSleeve.Items.Add(rec);
-            }
-            playerLeftSleeve.Sorted = true;
-            playerRightSleeve.Sorted = true;
-            #endregion
-
-            #region Left/Right Elbow
-            foreach (GenericRecord rec in model.PlayerModel.ElbowList)
-            {
-                playerLeftElbowCombo.Items.Add(rec);
-                playerRightElbowCombo.Items.Add(rec);
-            }
-            playerLeftElbowCombo.Sorted = true;
-            playerRightAnkleCombo.Sorted = true;
-            #endregion
-
-            #region Left/Right Ankle
-            foreach (GenericRecord rec in model.PlayerModel.AnkleList)
-            {
-                playerLeftAnkleCombo.Items.Add(rec);
-                playerRightAnkleCombo.Items.Add(rec);
-            }
-            playerLeftAnkleCombo.Sorted = true;
-            playerRightAnkleCombo.Sorted = true;
-            #endregion
-
-            #region EyePaint / Face Marks
-            
-                foreach (GenericRecord rec in model.PlayerModel.FaceMarkList)
-                {
-                    playerEyePaintCombo.Items.Add(rec);
-                }
-            
-            playerEyePaintCombo.Sorted = true;
-            #endregion
-
-            #region Visor
-            foreach (GenericRecord rec in model.PlayerModel.VisorList)
-            {
-                playerVisorCombo.Items.Add(rec);
-            }
-
-            #endregion
-                        
-            #region NeckRoll
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                playerNeckRollCombo.Items.Clear();
-                playerNeckRollCombo.Items.Add("None");
-                playerNeckRollCombo.Items.Add("Vintage");
-            }
-            #endregion
-
-            #region Knee
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                playerLeftKneeCombo.Items.Clear();
-                playerRightKneeCombo.Items.Clear();
-                playerLeftKneeCombo.Items.Add("Nike");
-                playerRightKneeCombo.Items.Add("Nike");
-                playerLeftKneeCombo.Items.Add("Regular");
-                playerRightKneeCombo.Items.Add("Regular");
-            }
-            #endregion
-
-            if (model.FileVersion >= MaddenFileVersion.Ver2019)
-            {
-                LegacyPanel.Visible = false;
-                NextGenPanel.Visible = true;
-            }
-            else
-            {
-                LegacyPanel.Visible = true;
-                NextGenPanel.Visible = false;
-            }
-            
-            #endregion
-
-            #region Injuries
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                if (model.PlayerModel.InjuryList != null)
-                {
-                    playerInjuryCombo.Items.Clear();
-                    foreach (GenericRecord rec in model.PlayerModel.InjuryList)
-                    {
-                        playerInjuryCombo.Items.Add(rec);
-                    }
-                }
-            }
-
-            #endregion
-
-            #region EndPlay
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                if (model.PlayerModel.EndPlayList != null)
-                {
-                    playerEndPlay.Items.Clear();
-                    foreach (GenericRecord rec in model.PlayerModel.EndPlayList)
-                    {
-                        playerEndPlay.Items.Add(rec);
-                    }
-                }
-            }
-
-            #endregion
-
-            #region QB Style
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                if (model.PlayerModel.QBStyleList != null)
-                {
-                    playerQBStyle.Items.Clear();
-                    foreach (GenericRecord rec in model.PlayerModel.QBStyleList)
-                    {
-                        playerQBStyle.Items.Add(rec);
-                    }
-                }
-            }
-
-            #endregion
-            
-            #region Roles/Weapons Stats - Comebacks/First Downs
-
+            PlayerTendency.Enabled = false;
             RoleLabel.Visible = false;
             WeaponLabel.Visible = false;
             PlayerRolecomboBox.Visible = false;
             PlayerWeaponcomboBox.Visible = false;
-            label108.Visible = false;
-            label109.Visible = false;
-            comebacks.Visible = false;
-            Firstdowns.Visible = false;
-            
-            if (model.FileVersion >= MaddenFileVersion.Ver2007 && model.FileVersion < MaddenFileVersion.Ver2019)
+
+            PlayerHoldOut.Enabled = false;
+            PlayerInactive.Visible = false;
+
+            SevereLabel.Visible = false;
+            ReturnLabel.Visible = false;
+            playerInjuryReturn.Visible = false;
+            playerInjurySevere.Visible = false;
+            playerCaptain.Visible = false;
+
+            playerOVRArchetypeCombo.Items.Clear();
+            playerOVRArchetypeCombo.Enabled = false;
+            playerOVRArchetype.Text = "NA";
+            playerOVRArchetype.Enabled = false;
+
+            Ratings19_Panel.Visible = false;
+            TraitsPanel.Visible = false;
+
+            if (model.FileVersion == MaddenFileVersion.Ver2004)
+            {
+                playerNFLIcon.Enabled = false;
+            }
+            if (model.FileVersion >= MaddenFileVersion.Ver2005 && model.FileType == MaddenFileType.Franchise)
+            {
+                PlayerInactive.Visible = true;
+                playerCaptain.Visible = true;
+            }
+
+            if (model.FileVersion >= MaddenFileVersion.Ver2005 && model.FileVersion < MaddenFileVersion.Ver2019)
+            {
+                playerNFLIcon.Enabled = true;
+            }
+
+            if (model.FileVersion == MaddenFileVersion.Ver2007 || model.FileVersion == MaddenFileVersion.Ver2008)
             {
                 RoleLabel.Visible = true;
                 PlayerRolecomboBox.Visible = true;
-                label108.Visible = true;
-                label109.Visible = true;
+                // stats
+                ComeBacks_Label.Visible = true;
+                FirstDowns_Label.Visible = true;
                 comebacks.Visible = true;
                 Firstdowns.Visible = true;
 
@@ -452,34 +212,73 @@ namespace MaddenEditor.Forms
                     PlayerRolecomboBox.Items.Add(model.PlayerRole[r]);
                     PlayerWeaponcomboBox.Items.Add(model.PlayerRole[r]);
                 }
-                
+
                 if (model.FileVersion == MaddenFileVersion.Ver2008)
-                {                     
+                {
                     WeaponLabel.Visible = true;
                     PlayerWeaponcomboBox.Visible = true;
                 }
             }
+
             if (model.FileVersion == MaddenFileVersion.Ver2019)
             {
+                calculateOverallButton.Enabled = false;
+                playerPortraitId.Maximum = 9999;
+                PortraitID_Large.Visible = true;
+                firstNameTextBox.MaxLength = 13;
+                lastNameTextBox.MaxLength = 17;
+                playerAsset.Enabled = true;
+                playerHometown.Enabled = true;
+                playerStateCombo.Enabled = true;
+                playerBirthday.Enabled = true;
+                playerDraftRound.Maximum = 63;
+                playerDraftRoundIndex.Maximum = 511;
+                OriginalPosition_Combo.SelectedIndex = -1;
+                OriginalPosition_Combo.Enabled = false;
+                PlayerHoldOut.Visible = false;
+                playerCaptain.Visible = true;
+                playerCaptain.Enabled = true;
+
+                #region XP Rate - Changed from Player Role
                 RoleLabel.Visible = true;
                 RoleLabel.Text = "XP Rate";
                 RoleLabel.Location = new Point(180, 561);
+                PlayerRolecomboBox.Items.Clear();
                 PlayerRolecomboBox.Items.Add("Normal");
                 PlayerRolecomboBox.Items.Add("Quick");
                 PlayerRolecomboBox.Items.Add("Star");
                 PlayerRolecomboBox.Items.Add("Superstar");
                 PlayerRolecomboBox.Visible = true;
-            }
-            
-            #endregion
+                #endregion
 
-            EditorModel.totalplayers = 0;
-            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
-            {
-                if (rec.PlayerId > EditorModel.totalplayers)
-                    EditorModel.totalplayers = rec.PlayerId;
+                #region Injuries
+                SevereLabel.Visible = true;
+                ReturnLabel.Visible = true;
+                playerInjuryReturn.Visible = true;
+                playerInjurySevere.Visible = true;
+                playerInjuryCombo.Items.Clear();
+                if (model.PlayerModel.InjuryList != null)
+                {
+                    foreach (GenericRecord rec in model.PlayerModel.InjuryList)
+                        playerInjuryCombo.Items.Add(rec);
+                }
+                #endregion
+
+                TendencyLabel.Visible = false;
+                PlayerTendency.Visible = false;
+                OriginalPosition_Label.Visible = false;
+                OriginalPosition_Combo.Visible = false;
+
+                playerOVRArchetypeCombo.Enabled = true;
+                playerOVRArchetype.Enabled = true;
+                playerMorale.Visible = false;
+                MoraleLabel.Visible = false;
+                Ratings19_Panel.Visible = true;
+                playeroverall.InitRatings19();
+                TraitsPanel.Visible = true;
             }
 
+            #region Portraits
             if (manager.PlayerPortDAT.isterf)
             {
                 ImportPlayerPort_Button.Visible = true;
@@ -490,66 +289,306 @@ namespace MaddenEditor.Forms
                 ImportPlayerPort_Button.Visible = false;
                 PlayerPortraitExport_Button.Visible = false;
             }
+            #endregion
+            #endregion
 
-            #region Salary related
-            ContractIncrease.Enabled = false;
-            UseLeagueMinimum.Enabled = false;
-            YearlyMinimum.Enabled = false;
-            CurrentYear.Enabled = false;
-            
-            CurrentYear.Value = model.CurrentYear;
-            
+            #region Appearance / Equipment
+
+            NextGenPanel.Visible = false;
+            LegacyPanel.Visible = false;
+            playerSockHeight.Enabled = false;
+
+            #region Equipment
+
+            #region Helmet
+            playerHelmetStyleCombo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.HelmetStyleList)
+            {
+                playerHelmetStyleCombo.Items.Add(rec);
+            }
+            playerHelmetStyleCombo.Sorted = true;
+            #endregion
+
+            #region FaceMask
+            playerFaceMaskCombo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.FacemaskList)
+            {
+                playerFaceMaskCombo.Items.Add(rec);
+            }
+            playerFaceMaskCombo.Sorted = true;
+            #endregion
+
+            #region Shoes
+            playerLeftShoeCombo.Items.Clear();
+            playerRightShoeCombo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.ShoeList)
+            {
+                playerLeftShoeCombo.Items.Add(rec);
+                playerRightShoeCombo.Items.Add(rec);
+            }
+            #endregion
+
+            #region Hands
+            playerLeftHandCombo.Items.Clear();
+            playerRightHandCombo.Items.Clear();
+            T_LeftHand_Combo.Items.Clear();
+            T_RightHand_Combo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.GloveList)
+            {
+                playerLeftHandCombo.Items.Add(rec);
+                playerRightHandCombo.Items.Add(rec);
+                T_LeftHand_Combo.Items.Add(rec);
+                T_RightHand_Combo.Items.Add(rec);
+            }
+            playerLeftHandCombo.Sorted = true;
+            playerRightHandCombo.Sorted = true;
+            #endregion
+
+            #region Wrist
+            playerLeftWristCombo.Items.Clear();
+            playerRightWristCombo.Items.Clear();
+            T_LeftWrist_Combo.Items.Clear();
+            T_RightWrist_Combo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.WristBandList)
+            {
+                playerLeftWristCombo.Items.Add(rec);
+                playerRightWristCombo.Items.Add(rec);
+                T_LeftWrist_Combo.Items.Add(rec);
+                T_RightWrist_Combo.Items.Add(rec);
+            }
+            playerLeftWristCombo.Sorted = true;
+            playerRightWristCombo.Sorted = true;
+            #endregion
+
+            #region Sleeves
+            playerLeftSleeve.Items.Clear();
+            playerRightSleeve.Items.Clear();
+            T_Sleeves_Combo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.SleeveList)
+            {
+                playerLeftSleeve.Items.Add(rec);
+                playerRightSleeve.Items.Add(rec);
+                T_Sleeves_Combo.Items.Add(rec);
+            }
+            playerLeftSleeve.Sorted = true;
+            playerRightSleeve.Sorted = true;
+            #endregion
+
+            #region Elbows
+            playerLeftElbowCombo.Items.Clear();
+            playerRightElbowCombo.Items.Clear();
+            T_LeftElbow_Combo.Items.Clear();
+            T_RightElbow_Combo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.ElbowList)
+            {
+                playerLeftElbowCombo.Items.Add(rec);
+                playerRightElbowCombo.Items.Add(rec);
+                T_LeftElbow_Combo.Items.Add(rec);
+                T_RightElbow_Combo.Items.Add(rec);
+            }
+            playerLeftElbowCombo.Sorted = true;
+            playerRightElbowCombo.Sorted = true;
+            #endregion
+
+            #region Ankles
+            playerLeftAnkleCombo.Items.Clear();
+            playerRightAnkleCombo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.AnkleList)
+            {
+                playerLeftAnkleCombo.Items.Add(rec);
+                playerRightAnkleCombo.Items.Add(rec);
+            }
+            #endregion
+
+            #region Visor
+            playerVisorCombo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.VisorList)
+            {
+                playerVisorCombo.Items.Add(rec);
+            }
+            #endregion
+
+            #region EyePaint / Face Marks
+            playerEyePaintCombo.Items.Clear();
+            foreach (GenericRecord rec in model.PlayerModel.FaceMarkList)
+            {
+                playerEyePaintCombo.Items.Add(rec);
+            }
+            playerEyePaintCombo.Sorted = true;
+            #endregion
+
+            #endregion
+
+            if (model.FileVersion >= MaddenFileVersion.Ver2004 && model.FileVersion <= MaddenFileVersion.Ver2008)
+            {
+                LegacyPanel.Visible = true;
+
+                #region Tattoos
+                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                {
+                    Tattoo_Left.Maximum = 31;
+                    Tattoo_Right.Maximum = 31;
+                }
+                else if (model.FileVersion == MaddenFileVersion.Ver2005)
+                {
+                    Tattoo_Left.Maximum = 15;
+                    Tattoo_Right.Maximum = 15;
+                }
+                else
+                {
+                    Tattoo_Left.Maximum = 63;
+                    Tattoo_Right.Maximum = 63;
+                }
+                #endregion
+
+                LeftSleeveLabel.Text = "Sleeves";
+                RightSleeveLabel.Visible = false;
+                playerRightSleeve.Visible = false;
+            }
+            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            {
+                NextGenPanel.Visible = true;
+
+                #region QB Style
+                playerQBStyle.Items.Clear();
+                if (model.PlayerModel.QBStyleList != null)
+                {
+                    foreach (GenericRecord rec in model.PlayerModel.QBStyleList)
+                        playerQBStyle.Items.Add(rec);
+                }
+                #endregion
+
+                #region EndPlay
+                playerEndPlay.Items.Clear();
+                if (model.PlayerModel.EndPlayList != null)
+                {
+                    foreach (GenericRecord rec in model.PlayerModel.EndPlayList)
+                        playerEndPlay.Items.Add(rec);
+                }
+                #endregion
+
+                #region Sideline Headgear
+                SidelineHeadGear_Combo.Items.Clear();
+                if (model.PlayerModel.SidelineHeadGear != null)
+                {
+                    foreach (GenericRecord rec in model.PlayerModel.SidelineHeadGear)
+                        SidelineHeadGear_Combo.Items.Add(rec);
+                }
+                #endregion
+
+                #region Knee
+                playerLeftKneeCombo.Items.Clear();
+                playerRightKneeCombo.Items.Clear();
+                playerLeftKneeCombo.Items.Add("Nike");
+                playerRightKneeCombo.Items.Add("Nike");
+                playerLeftKneeCombo.Items.Add("Regular");
+                playerRightKneeCombo.Items.Add("Regular");
+                #endregion
+
+                #region NeckRoll
+                playerNeckRollCombo.Items.Clear();
+                playerNeckRollCombo.Items.Add("None");
+                playerNeckRollCombo.Items.Add("Vintage");
+                #endregion
+
+                playerSockHeight.Enabled = true;
+            }
+
+            #endregion
+
+            #region Contract Tab
             PlayerContractDetails_Panel.Enabled = false;
-            PlayerCapHit.Enabled = false;
-            PlayerHoldOut.Enabled = false;           
-            
             MiscSalary_Panel.Enabled = false;
-            TeamCapRoom.Enabled = false;
-            TeamCapRoom.Text = "NA";
-            UseActualNFLSalaryCap_Checkbox.Enabled = false;
-            UseActualNFLSalaryCap_Checkbox.Checked = false;
-            CalcTeamSalary_Checkbox.Enabled = false;
-            CalcTeamSalary_Checkbox.Checked = false;
 
+            #region Player Contract Panel
+            UseLeagueMinimum_Checkbox.Enabled = false;
+            LeagueMinimum.Enabled = false;
+            CurrentYear.Enabled = false;
+            CurrentYear.Value = model.CurrentYear;
+            #endregion
+
+            #region Player Contract Details Panel
+            PlayerCapHit.Enabled = false;
+
+            PlayerBonus0.Enabled = false;
+            PlayerBonus1.Enabled = false;
+            PlayerBonus2.Enabled = false;
+            PlayerBonus3.Enabled = false;
+            PlayerBonus4.Enabled = false;
+            PlayerBonus5.Enabled = false;
+            PlayerBonus6.Enabled = false;
+            PlayerSalary0.Enabled = false;
+            PlayerSalary1.Enabled = false;
+            PlayerSalary2.Enabled = false;
+            PlayerSalary3.Enabled = false;
+            PlayerSalary4.Enabled = false;
+            PlayerSalary5.Enabled = false;
+            PlayerSalary6.Enabled = false;
+            ContractYearlyIncrease.Enabled = false;
+
+            #endregion
+
+            #region Misc Salary Panel            
+            if (model.LeagueCap.ContainsKey(model.CurrentYear))
+                UseActualNFLSalaryCap_Checkbox.Enabled = true;
+            else UseActualNFLSalaryCap_Checkbox.Enabled = false;
+
+            CalcTeamSalary_Checkbox.Enabled = true;
+            CalcTeamSalary_Checkbox.Checked = false;
+            SalaryCap.Enabled = false;
+            TeamSalary.Enabled = false;
+            CalcTeamSalary.Text = "NA";
+            TeamCapRoom.Text = "NA";
+            Penalty0_Label.Visible = false;
+            Penalty0.Visible = false;
+            Penalty1_Label.Visible = false;
+            Penalty1.Visible = false;
+            SalaryRankCombo.Enabled = true;
             SalaryRankCombo.Items.Add("NFL");
             SalaryRankCombo.Items.Add("Conf");
             SalaryRankCombo.Items.Add("Div");
             SalaryRankCombo.SelectedIndex = -1;
+            #endregion
 
-            Penalty0.Value = 0;
-            Penalty0.Enabled = false;
-            Penalty1.Value = 0;
-            Penalty1.Enabled = false;
-
-            if (model.FileType == MaddenFileType.Franchise)
+            if (model.FileType == MaddenFileType.Franchise || model.FileVersion == MaddenFileVersion.Ver2019)
             {
-                model.SalaryCapModel.InitCap();
                 PlayerContractDetails_Panel.Enabled = true;
-                MiscSalary_Panel.Enabled = true;
-                UseActualNFLSalaryCap_Checkbox.Enabled = true;
-                UseActualNFLSalaryCap_Checkbox.Checked = false;
-                CalcTeamSalary_Checkbox.Enabled = true;
-                CalcTeamSalary_Checkbox.Checked = false;
-                SalaryCap.Enabled = true;
-                Penalty0.Enabled = true;
-                Penalty1.Enabled = true;
+
+                PlayerBonus0.Enabled = true;
+                PlayerBonus1.Enabled = true;
+                PlayerBonus2.Enabled = true;
+                PlayerBonus3.Enabled = true;
+                PlayerBonus4.Enabled = true;
+                PlayerBonus5.Enabled = true;
+                PlayerBonus6.Enabled = true;
+                PlayerSalary0.Enabled = true;
+                PlayerSalary1.Enabled = true;
+                PlayerSalary2.Enabled = true;
+                PlayerSalary3.Enabled = true;
+                PlayerSalary4.Enabled = true;
+                PlayerSalary5.Enabled = true;
+                PlayerSalary6.Enabled = true;
+                ContractYearlyIncrease.Enabled = true;
+
+                
+                if (!Madden19)
+                {
+                    SalaryCap.Enabled = true;
+                    Penalty0_Label.Visible = true;
+                    Penalty0.Visible = true;
+                    Penalty1_Label.Visible = true;
+                    Penalty1.Visible = true;
+                }
             }
-            else
-            {
-                SalaryCap.Enabled = false;
-                TeamCapRoom.Visible = false;
-                TeamCapRoomLabel.Visible = false;
-                CurrentYear.Enabled = true;
-            }
-            
+
             #endregion
 
             InitPlayerList();
 
-            isInitialising = false;
             ResumeLayout();
+            isInitialising = false;
         }
-        
+
         public void CleanUI()
         {
             CollegeCombo.Items.Clear();
@@ -578,12 +617,19 @@ namespace MaddenEditor.Forms
                     baseyear = 2018;
                 else if (model.FileVersion == MaddenFileVersion.Ver2008)
                     baseyear = 2007;
+                else if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    baseyear = 2018;
+
+                if (model.FileVersion == MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster || model.FileType == MaddenFileType.DBTeam)
+                    Madden19 = true;
             }
         }
 
-        #endregion       
+        #endregion
 
-        #region Colleges
+
+        #region Misc Functions
+
         public void InitCollegeList()
         {
             CollegeCombo.Items.Clear();
@@ -593,9 +639,8 @@ namespace MaddenEditor.Forms
                 CollegeCombo.Items.Add(name);
             }
             CollegeCombo.Sorted = true;
-            CollegeCombo.Update();        
+            CollegeCombo.Update();
         }
-        #endregion
 
         public void InitPlayerList()
         {
@@ -603,7 +648,7 @@ namespace MaddenEditor.Forms
 
             CurrentPlayers.Clear();
             CurrentPlayers = model.PlayerModel.GetPlayerList();
-            
+
             PlayerGridView.Rows.Clear();
             PlayerGridView.Refresh();
             PlayerGridView.MultiSelect = false;
@@ -615,8 +660,8 @@ namespace MaddenEditor.Forms
             PlayerGridView.Columns[0].Width = 35;
             PlayerGridView.Columns[1].Name = "Player";
             PlayerGridView.Columns[1].Width = 100;
-            foreach (KeyValuePair<int,string> player in model.PlayerModel.playernames)
-            {                
+            foreach (KeyValuePair<int, string> player in model.PlayerModel.playernames)
+            {
                 object[] o = { (int)player.Key, (string)player.Value };
                 PlayerGridView.Rows.Add(o);
             }
@@ -626,65 +671,517 @@ namespace MaddenEditor.Forms
                 int idnum = (int)PlayerGridView.Rows[0].Cells[0].Value;
                 LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(idnum));
             }
-            else LoadPlayerInfo(null); 
-                //MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            else LoadPlayerInfo(null);
+            //MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
             isInitialising = false;
         }
+
+        private string DecodeTendancy(MaddenPositions pos, int type)
+        {
+            if (type == 2)
+            {
+                return "Balanced";
+            }
+
+            switch (pos)
+            {
+                case MaddenPositions.QB:
+                    return (type == 0 ? "Pocket" : "Scrambling");
+                case MaddenPositions.HB:
+                    return (type == 0 ? "Power" : "Speed");
+                case MaddenPositions.FB:
+                case MaddenPositions.TE:
+                    return (type == 0 ? "Blocking" : "Receiving");
+                case MaddenPositions.WR:
+                    return (type == 0 ? "Possession" : "Speed");
+                case MaddenPositions.LT:
+                case MaddenPositions.LG:
+                case MaddenPositions.C:
+                case MaddenPositions.RG:
+                case MaddenPositions.RT:
+                    return (type == 0 ? "Run Blocking" : "Pass Blocking");
+                case MaddenPositions.LE:
+                case MaddenPositions.RE:
+                case MaddenPositions.DT:
+                    {
+                        if (model.FileVersion >= MaddenFileVersion.Ver2019)
+                            return (type == 0 ? "Cover LB" : "Pass Rush");
+                        else return (type == 0 ? "Pass Rushing" : "Run Stopping");
+                    }
+                case MaddenPositions.LOLB:
+                case MaddenPositions.MLB:
+                case MaddenPositions.ROLB:
+                    return (type == 0 ? "Coverage" : "Run Stopping");
+                case MaddenPositions.CB:
+                case MaddenPositions.SS:
+                case MaddenPositions.FS:
+                    return (type == 0 ? "Coverage" : "Hard Hitting");
+                case MaddenPositions.K:
+                case MaddenPositions.P:
+                    return (type == 0 ? "Power" : "Accurate");
+            }
+
+            return "";
+        }
+
+        public void FixCareerStats(PlayerRecord player)
+        {
+            int baseyear = 2003;
+            if (model.FileVersion == MaddenFileVersion.Ver2005)
+                baseyear = 2004;
+            if (model.FileVersion == MaddenFileVersion.Ver2006)
+                baseyear = 2005;
+            if (model.FileVersion == MaddenFileVersion.Ver2007)
+                baseyear = 2006;
+            if (model.FileVersion == MaddenFileVersion.Ver2008)
+                baseyear = 2007;
+
+            //  offense
+            int totalpassatt = 0;
+            int totalpasscomp = 0;
+
+
+            for (int count = 0; count < player.YearsPro; count++)
+            {
+                if ((string)statsyear.Items[count] == "Career")
+                    continue;
+                else
+                {
+                    int year = (int)statsyear.Items[0] - baseyear;
+
+                    SeasonStatsOffenseRecord off = model.PlayerModel.GetOffStats(player.PlayerId, year);
+                    if (off == null)
+                        continue;
+                    totalpassatt += off.SeaPassAtt;
+                    totalpasscomp += off.SeaComp;
+                }
+            }
+        }
+
+        public void DisplayPlayerPort()
+        {
+            if (PlayerPortBox.Image != null)
+                PlayerPortBox.Image = null;
+            PlayerPortBox.BackColor = Color.White;
+            PlayerPortBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+            if (!manager.PlayerPortDAT.isterf)
+            {
+                return;
+            }
+
+            int portid = model.PlayerModel.CurrentPlayerRecord.PortraitId + 1;
+
+            if (manager.PlayerPortDAT.ParentTerf.files >= portid + 1)
+            {
+                if (manager.PlayerPortDAT.ParentTerf.Data.DataFiles[portid].filetype == "MMAP")
+                    PlayerPortBox.Image = manager.PlayerPortDAT.ParentTerf.Data.DataFiles[portid].mmap_data.GetPortraitDisplay();
+                else if (manager.PlayerPortDAT.ParentTerf.Data.DataFiles[portid].filetype == "COMP") PlayerPortBox.BackColor = Color.Green;
+                else PlayerPortBox.BackColor = Color.Red;
+                return;
+            }
+
+            PlayerPortBox.BackColor = Color.Black;
+        }
+
+        public bool CheckPlayerUniqueness(int pgid, int poid)
+        {
+            isInitialising = true;
+            bool exists = model.PlayerModel.CheckIDExists(pgid, poid);
+            if (exists)
+            {
+                MessageBox.Show("IDs need to be unique", "IDs already exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+            }
+            isInitialising = false;
+            return exists;
+        }
+
+        private void LoadFreeAgents(PlayerRecord record)
+        {
+            FreeAgents.DataBindings.Clear();
+            FreeAgents.RowHeadersVisible = false;
+            if (FreeAgents.Columns.Count == 0)
+            {
+                FreeAgents.Columns.Add("Name", "Name");
+                FreeAgents.Columns[0].Width = 80;
+                FreeAgents.Columns.Add("OVR", "Ovr");
+                FreeAgents.Columns[1].Width = 32;
+                FreeAgents.Columns.Add("Age", "Age");
+                FreeAgents.Columns[2].Width = 32;
+            }
+            List<PlayerRecord> fa = new List<PlayerRecord>();
+            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                PlayerRecord newplayer = (PlayerRecord)rec;
+                if (record.PositionId == newplayer.PositionId && newplayer.TeamId == 1009)
+                    fa.Add(newplayer);
+            }
+
+            fa.Sort(delegate(PlayerRecord x, PlayerRecord y)
+            { return ((decimal)y.Overall).CompareTo(x.Overall); });
+
+            for (int c = 0; c < fa.Count; c++)
+            {
+                FreeAgents.Rows.Add();
+                FreeAgents.Rows[c].Cells[0].Value = fa[c].FirstName[0] + "." + fa[c].LastName;
+                FreeAgents.Rows[c].Cells[1].Value = fa[c].Overall;
+                FreeAgents.Rows[c].Cells[2].Value = fa[c].Age;
+                FreeAgents.Rows[c].ReadOnly = true;
+            }
+        }
+
+        private void LoadPositionSalaries(PlayerRecord record)
+        {
+            PositionSalary.DataBindings.Clear();
+            PositionSalary.RowHeadersVisible = false;
+            if (PositionSalary.Columns.Count == 0 || PositionSalary.Columns.Count == 5 && IncludeOverall.Checked || PositionSalary.Columns.Count == 6 && !IncludeOverall.Checked)
+            {
+                PositionSalary.Columns.Clear();
+                PositionSalary.Columns.Add("Name", "Name");
+                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 80;
+                if (IncludeOverall.Checked)
+                {
+                    PositionSalary.Columns.Add("OVR", "OVR");
+                    PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
+                }
+                PositionSalary.Columns.Add("Cur", "Cur");
+                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
+                PositionSalary.Columns.Add("Total", "Total");
+                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
+                PositionSalary.Columns.Add("Len", "Len");
+                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
+                PositionSalary.Columns.Add("Avg", "AVG");
+                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
+            }
+
+            List<PlayerRecord> top = new List<PlayerRecord>();
+            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                PlayerRecord newplayer = (PlayerRecord)rec;
+                if (record.PositionId == newplayer.PositionId && record.TeamId != 1009 && record.TeamId != 1010 && record.TeamId != 1014
+                    && record.TeamId != 1015 && record.TeamId != 1023 && newplayer.ContractYearsLeft != 0)
+                {
+                    if (model.FileVersion < MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster)
+                    {
+                        if (newplayer.YearlySalary == null)
+                            newplayer.SetContract(false, false, 30);                        
+                    }
+
+                    top.Add(newplayer);
+                }
+            }
+            List<int> top10 = new List<int>();
+            int current = 0;
+            top.Sort(delegate(PlayerRecord x, PlayerRecord y)
+            { return ((decimal)y.GetCurrentSalary()).CompareTo(x.GetCurrentSalary()); });
+            for (int c = 0; c < top.Count; c++)
+            {
+                top10.Add((int)top[c].GetCurrentSalary());
+                current += (int)top[c].GetCurrentSalary();
+                if (c == 4)
+                    Top5.Value = (decimal)current / 500;
+                if (c == 9)
+                    Top10.Value = current / 1000;
+            }
+            
+            LeagueAVG.Value = current / (100 * top10.Count);
+
+            for (int c = 0; c < top.Count; c++)
+            {
+                PositionSalary.Rows.Add();
+                PositionSalary.Rows[c].Cells[0].Value = top[c].FirstName[0] + "." + top[c].LastName;
+                if (IncludeOverall.Checked)
+                    PositionSalary.Rows[c].Cells[1].Value = top[c].Overall;
+                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 4].Value = (decimal)top[c].GetCurrentSalary() / 100;
+                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 3].Value = (decimal)top[c].TotalSalary / 100;
+                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 2].Value = top[c].ContractLength;
+                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 1].Value = Math.Round((decimal)(top[c].TotalSalary / top[c].ContractLength) / 100, 2);
+                PositionSalary.Rows[c].ReadOnly = true;
+            }
+
+            // sort list highest avg salary per year
+            top.Sort(delegate(PlayerRecord x, PlayerRecord y)
+            { return ((decimal)y.TotalSalary / y.ContractLength).CompareTo((decimal)x.TotalSalary / x.ContractLength); });
+            List<decimal> topdec = new List<decimal>();
+            decimal currentdec = 0;
+            for (int c = 0; c < top.Count; c++)
+            {
+                topdec.Add((decimal)top[c].TotalSalary / top[c].ContractLength);
+                currentdec += topdec[c];
+                if (c == 4)
+                    Top5AVG.Value = currentdec / 500;
+                if (c == 9)
+                    Top10AVG.Value = currentdec / 1000;
+            }
+            LeagueContAVG.Value = currentdec / (top.Count * 100);
+
+            if (model.FileType == MaddenFileType.Franchise)
+            {
+                foreach (SalaryYearsPro pm in model.TableModels[EditorModel.PLAYER_MINIMUM_SALARY_TABLE].GetRecords())
+                {
+                    SalaryYearsPro min = (SalaryYearsPro)pm;
+                    if (min.YearsPro == record.YearsPro)
+                        LeagueMinimum.Value = (decimal)min.MinimumSalary / 1000000;
+                }
+            }
+        }
+
+        private void TeamNeeds(PlayerRecord record)
+        {
+            List<int> roster = new List<int>();
+            for (int c = 0; c < 21; c++)
+                roster.Add(0);
+            int neededplayers = 0;
+            int maxplayers = 55;
+            if (model.FileVersion == MaddenFileVersion.Ver2019)
+                maxplayers = 75;
+
+            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                PlayerRecord r = (PlayerRecord)rec;
+                if (r.TeamId == record.TeamId && r.ContractYearsLeft != 0)
+                    roster[r.PositionId]++;
+            }
+            // QB
+            ReqQB.Text = (Math.Abs(3 - roster[0])).ToString();
+            if (roster[0] < 3)
+            {
+                ReqQB.BackColor = Color.PaleVioletRed;
+                neededplayers += 3 - roster[0];
+            }
+            else if (roster[0] > 3)
+                ReqQB.BackColor = Color.LightGreen;
+            else ReqQB.BackColor = SystemColors.Window;
+            ReqHB.Text = (Math.Abs(3 - roster[1])).ToString();
+            if (roster[1] < 3)
+            {
+                ReqHB.BackColor = Color.PaleVioletRed;
+                neededplayers += 3 - roster[1];
+            }
+            else if (roster[1] > 3)
+                ReqHB.BackColor = Color.LightGreen;
+            else ReqHB.BackColor = SystemColors.Window;
+            ReqFB.Text = (Math.Abs(1 - roster[2])).ToString();
+            if (roster[2] < 1)
+            {
+                ReqFB.BackColor = Color.PaleVioletRed;
+                neededplayers++;
+            }
+            else if (roster[2] > 1)
+                ReqFB.BackColor = Color.LightGreen;
+            else ReqFB.BackColor = SystemColors.Window;
+            ReqWR.Text = (Math.Abs(5 - roster[3])).ToString();
+            if (roster[3] < 5)
+            {
+                ReqWR.BackColor = Color.PaleVioletRed;
+                neededplayers += 5 - roster[3];
+            }
+            else if (roster[3] > 5)
+                ReqWR.BackColor = Color.LightGreen;
+            else ReqWR.BackColor = SystemColors.Window;
+            ReqTE.Text = (Math.Abs(3 - roster[4])).ToString();
+            if (roster[4] < 3)
+            {
+                ReqTE.BackColor = Color.PaleVioletRed;
+                neededplayers += 3 - roster[4];
+            }
+            else if (roster[4] > 3)
+                ReqTE.BackColor = Color.LightGreen;
+            else ReqTE.BackColor = SystemColors.Window;
+            ReqP.Text = (Math.Abs(1 - roster[20])).ToString();
+            if (roster[20] < 1)
+            {
+                ReqP.BackColor = Color.PaleVioletRed;
+                neededplayers++;
+            }
+            else if (roster[20] > 1)
+                ReqP.BackColor = Color.LightGreen;
+            else ReqP.BackColor = SystemColors.Window;
+            ReqT.Text = (Math.Abs(4 - (roster[5] + roster[9]))).ToString();
+            if (roster[5] + roster[9] < 4)
+            {
+                ReqT.BackColor = Color.PaleVioletRed;
+                neededplayers += 4 - (roster[5] + roster[9]);
+            }
+            else if (roster[5] + roster[9] > 4)
+                ReqT.BackColor = Color.LightGreen;
+            else ReqT.BackColor = SystemColors.Window;
+            ReqG.Text = (Math.Abs(4 - (roster[6] + roster[8]))).ToString();
+            if (roster[6] + roster[8] < 4)
+            {
+                ReqG.BackColor = Color.PaleVioletRed;
+                neededplayers += 4 - (roster[6] + roster[8]);
+            }
+            else if (roster[6] + roster[8] > 4)
+                ReqG.BackColor = Color.LightGreen;
+            else ReqG.BackColor = SystemColors.Window;
+            ReqC.Text = (Math.Abs(2 - roster[7])).ToString();
+            if (roster[7] < 2)
+            {
+                ReqC.BackColor = Color.PaleVioletRed;
+                neededplayers += 2 - roster[7];
+            }
+            else if (roster[7] > 2)
+                ReqC.BackColor = Color.LightGreen;
+            else ReqC.BackColor = SystemColors.Window;
+            ReqDE.Text = (Math.Abs(4 - (roster[10] + roster[11]))).ToString();
+            if (roster[10] + roster[11] < 4)
+            {
+                ReqDE.BackColor = Color.PaleVioletRed;
+                neededplayers += 4 - (roster[10] + roster[11]);
+            }
+            else if (roster[10] + roster[11] > 4)
+                ReqDE.BackColor = Color.LightGreen;
+            else ReqDE.BackColor = SystemColors.Window;
+            ReqDT.Text = (Math.Abs(3 - roster[12])).ToString();
+            if (roster[12] < 3)
+            {
+                ReqDT.BackColor = Color.PaleVioletRed;
+                neededplayers += 3 - roster[12];
+            }
+            else if (roster[12] > 3)
+                ReqDT.BackColor = Color.LightGreen;
+            else ReqDT.BackColor = SystemColors.Window;
+            ReqK.Text = (Math.Abs(1 - roster[19])).ToString();
+            if (roster[19] < 1)
+            {
+                ReqK.BackColor = Color.PaleVioletRed;
+                neededplayers++;
+            }
+            else if (roster[19] > 1)
+                ReqK.BackColor = Color.LightGreen;
+            else ReqK.BackColor = SystemColors.Window;
+            ReqOLB.Text = (Math.Abs(4 - (roster[13] + roster[15]))).ToString();
+            if (roster[13] + roster[15] < 4)
+            {
+                ReqOLB.BackColor = Color.PaleVioletRed;
+                neededplayers += 4 - (roster[13] + roster[15]);
+            }
+            else if (roster[13] + roster[15] > 4)
+                ReqOLB.BackColor = Color.LightGreen;
+            else ReqOLB.BackColor = SystemColors.Window;
+            ReqMLB.Text = (Math.Abs(2 - roster[14])).ToString();
+            if (roster[14] < 2)
+            {
+                ReqMLB.BackColor = Color.PaleVioletRed;
+                neededplayers += 2 - roster[14];
+            }
+            else if (roster[14] > 2)
+                ReqMLB.BackColor = Color.LightGreen;
+            else ReqMLB.BackColor = SystemColors.Window;
+            ReqCB.Text = (Math.Abs(5 - roster[16])).ToString();
+            if (roster[16] < 5)
+            {
+                ReqCB.BackColor = Color.PaleVioletRed;
+                neededplayers += 5 - roster[16];
+            }
+            else if (roster[16] > 5)
+                ReqCB.BackColor = Color.LightGreen;
+            else ReqCB.BackColor = SystemColors.Window;
+            ReqFS.Text = (Math.Abs(2 - roster[17])).ToString();
+            if (roster[17] < 2)
+            {
+                ReqFS.BackColor = Color.PaleVioletRed;
+                neededplayers += 2 - roster[17];
+            }
+            else if (roster[17] > 2)
+                ReqFS.BackColor = Color.LightGreen;
+            else ReqFS.BackColor = SystemColors.Window;
+            ReqSS.Text = (Math.Abs(2 - roster[18])).ToString();
+            if (roster[18] < 2)
+            {
+                ReqSS.BackColor = Color.PaleVioletRed;
+                neededplayers += 2 - roster[18];
+            }
+            else if (roster[18] > 2)
+                ReqSS.BackColor = Color.LightGreen;
+            else ReqSS.BackColor = SystemColors.Window;
+
+            int totalplayers = 0;
+            foreach (int x in roster)
+                totalplayers += x;
+            if (totalplayers < 49)
+            {
+                NeededPlayers_Label.Text = "Need to Sign";
+                NeededPlayers.Value = Math.Abs(49 - totalplayers);
+                NeededPlayers.BackColor = Color.PaleVioletRed;
+            }
+            else if (totalplayers > maxplayers)
+            {
+                NeededPlayers_Label.Text = "Need to Cut";
+                NeededPlayers.Value = Math.Abs(totalplayers - maxplayers);
+                NeededPlayers.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                if (neededplayers > 0)
+                {
+                    NeededPlayers_Label.Text = "Check Positions";
+                    NeededPlayers.Value = neededplayers;
+                    NeededPlayers.BackColor = Color.PaleVioletRed;
+                }
+                else
+                {
+                    NeededPlayers_Label.Text = "Players needed";
+                    NeededPlayers.Value = 0;
+                    NeededPlayers.BackColor = SystemColors.Window;
+                }
+            }
+
+        }
         
+        #endregion
+
         public void LoadPlayerInfo(PlayerRecord record)
         {
-            model.PlayerModel.CurrentPlayerRecord = record;
-            
-            bool holder = isInitialising;
+            isInitialising = true;
 
             if (record == null)
             {
                 MessageBox.Show("No Records available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
                 filterTeamComboBox.SelectedIndex = 0;
                 filterPositionComboBox.SelectedIndex = 0;
                 model.PlayerModel.filterteam = -1;
                 model.PlayerModel.filterposition = -1;
                 InitPlayerList();
+                isInitialising = false;
+                deletePlayerButton.Enabled = false;
                 return;
             }
-            
+
             SuspendLayout();
-            isInitialising = true;
+            model.PlayerModel.CurrentPlayerRecord = record;
             deletePlayerButton.Enabled = true;
 
             try
             {
-                firstNameTextBox.Text = record.FirstName;
-                lastNameTextBox.Text = record.LastName;
-                NFL_Updown.Value = record.NFLID;
-                PlayerID_Updown.Value = record.PlayerId;
-                playerComment.Value = record.PlayerComment;
-
                 TeamRecord team = model.TeamModel.GetTeamRecord(record.TeamId);
 
-                if (model.FileType != MaddenFileType.Roster)
-                {
-                    if (record.TeamId == 1014)
-                        Team_Combo.Text = "Retired";
-                    else Team_Combo.SelectedItem = (object)team;
-                }
-                else Team_Combo.SelectedItem = (object)team;
+                #region Player Info
 
-                positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
-                OriginalPosition_Combo.SelectedIndex = record.OriginalPositionId;
-
-                CollegeCombo.Text = model.Colleges[model.PlayerModel.CurrentPlayerRecord.CollegeId].name;
-                
-                playerThrowingStyle.SelectedIndex = Convert.ToInt32(record.SideArmed);
+                firstNameTextBox.Text = record.FirstName;
+                lastNameTextBox.Text = record.LastName;
+                PlayerID_Updown.Value = record.PlayerId;
+                NFL_Updown.Value = record.NFLID;
+                playerPortraitId.Value = record.PortraitId;
+                playerComment.Value = record.PlayerComment;
+                playerAge.Value = record.Age;
+                playerYearsPro.Value = record.YearsPro;
+                playerDraftRound.Value = record.DraftRound;
+                playerDraftRoundIndex.Value = record.DraftRoundIndex;
                 CareerPhase_Combo.SelectedIndex = record.CareerPhase;
 
-                SetNumericUpDown(playerAge, record.Age, "Age");                
+                if (record.Height < 12)
+                    PlayerHeight_Feet.SelectedIndex = -1;
+                else PlayerHeight_Feet.SelectedIndex = record.Height / 12;
+                PlayerHeight_Inches.SelectedIndex = record.Height - (PlayerHeight_Feet.SelectedIndex * 12);
+
+                playerWeight.Value = record.Weight + 160;
 
                 if (record.JerseyNumber > 99)
                 {
-                    //Must be a draft class, disable jersey number editing
                     playerJerseyNumber.Enabled = false;
                 }
                 else
@@ -693,192 +1190,273 @@ namespace MaddenEditor.Forms
                     playerJerseyNumber.Value = record.JerseyNumber;
                 }
 
-                SetNumericUpDown(playerYearsPro, record.YearsPro, "Years Pro");
-                SetNumericUpDown(playerWeight, record.Weight + 160, "Weight");
+                playerHairColorCombo.SelectedIndex = record.HairColor;
+                CollegeCombo.Text = model.Colleges[model.PlayerModel.CurrentPlayerRecord.CollegeId].name;
+                if (model.FileType != MaddenFileType.Roster && record.TeamId == 1014)
+                    Team_Combo.Text = "Retired";
+                else Team_Combo.SelectedItem = (object)team;
 
-                if (record.Height < 12)
-                    PlayerHeight_Feet.SelectedIndex = -1;
-                else PlayerHeight_Feet.SelectedIndex = record.Height / 12;
-                PlayerHeight_Inches.SelectedIndex = record.Height - (PlayerHeight_Feet.SelectedIndex * 12);
+                positionComboBox.Text = positionComboBox.Items[record.PositionId].ToString();
+                playerThrowingStyle.SelectedIndex = Convert.ToInt32(record.ThrowStyle);
 
                 playerDominantHand.Checked = record.DominantHand;
-
-                SetNumericUpDown(Overall, record.Overall, "Overall");
-                SetNumericUpDown(playerSpeed, record.Speed, "Speed");
-                SetNumericUpDown(playerStrength, record.Strength, "Strength");
-                SetNumericUpDown(playerAwareness, record.Awareness, "Awareness");
-                SetNumericUpDown(playerAgility, record.Agility, "Agility");
-                SetNumericUpDown(playerAcceleration, record.Acceleration, "Acceleration");
-                SetNumericUpDown(playerCatching, record.Catching, "Catching");
-                SetNumericUpDown(playerCarrying, record.Carrying, "Carrying");
-                SetNumericUpDown(playerJumping, record.Jumping, "Jumping");
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                    SetNumericUpDown(playerBreakTackle, record.BreakTackle19, "Break Tackle");
-                else
-                    SetNumericUpDown(playerBreakTackle, record.BreakTackle, "Break Tackle");
-                SetNumericUpDown(playerTackle, record.Tackle, "Tackle");
-                SetNumericUpDown(playerThrowPower, record.ThrowPower, "Throw Power");
-                SetNumericUpDown(playerThrowAccuracy, record.ThrowAccuracy, "Throw Accuracy");
-                SetNumericUpDown(playerPassBlocking, record.PassBlocking, "Pass Blocking");
-                SetNumericUpDown(playerRunBlocking, record.RunBlocking, "Run Blocking");
-                SetNumericUpDown(playerKickPower, record.KickPower, "Kick Power");
-                SetNumericUpDown(playerKickAccuracy, record.KickAccuracy, "Kick Accuracy");
-                SetNumericUpDown(playerKickReturn, record.KickReturn, "Kick Return");
-                SetNumericUpDown(playerStamina, record.Stamina, "Stamina");
-                SetNumericUpDown(playerInjury, record.Injury, "Injury");
-                SetNumericUpDown(playerToughness, record.Toughness, "Toughness");
-                SetNumericUpDown(playerImportance, record.Importance, "Importance");               
-
-                playerMorale.Visible = false;
-                label34.Visible = false;
-                cbTendancy.Enabled = false;
-
-                if (model.FileVersion >= MaddenFileVersion.Ver2005 && model.FileVersion < MaddenFileVersion.Ver2019)
-                {
-                    //Load the player tendancy and reinitialise the combo
-                    cbTendancy.Enabled = true;
-                    cbTendancy.Items.Clear();
-                    for (int i = 0; i < 3; i++)
-                    {
-                        cbTendancy.Items.Add(DecodeTendancy((MaddenPositions)record.PositionId, i));
-                    }
-
-                    cbTendancy.SelectedIndex = record.Tendency;
-                    
-                    playerMorale.Visible = true;
-                    label34.Visible = true;
-                    SetNumericUpDown(playerMorale, record.Morale, "Morale");
-                    playerNFLIcon.Visible = true;
-                    playerNFLIcon.Checked = record.NFLIcon;
-                }
-                else
-                {
-                    playerNFLIcon.Visible = false;
-                    playerMorale.Visible = false;
-                }
-
-                if (model.FileVersion == MaddenFileVersion.Ver2007 || model.FileVersion == MaddenFileVersion.Ver2008)
-                {
-                    lblValue.Visible = true;
-                    playerValue.Visible = true;
-                    SetNumericUpDown(playerEgo, record.Ego, "Player Ego");
-                    SetNumericUpDown(playerValue, record.PlayerValue, "Player Value");
-                    RoleLabel.Visible = true;
-                    PlayerRolecomboBox.Visible = true;
-                    PlayerRolecomboBox.Text = model.PlayerRole[record.PlayerRole];
-                }
-                else
-                {
-                    SetNumericUpDown(playerEgo, record.Pcel, "Player Ego");
-                    lblValue.Visible = false;
-                    playerValue.Visible = false;                   
-                }
-
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
-                {
-                    WeaponLabel.Visible = true;
-                    PlayerWeaponcomboBox.Visible = true;
-                    PlayerWeaponcomboBox.Text = model.PlayerRole[record.PlayerWeapon];
-                }                
-
                 playerProBowl.Checked = record.ProBowl;
-                playerPortraitId.Value = record.PortraitId;                
-                
-                // This was done to fix errors people were introducing into rosters using
-                // NZA and dbeditor.
-                if (record.ContractLength == 0)
+                #endregion
+
+                #region Legacy Ratings
+                Overall.Value = record.Overall;
+                playerSpeed.Value = record.Speed;
+                playerStrength.Value = record.Strength;
+                playerAwareness.Value = record.Awareness;
+                playerAgility.Value = record.Agility;
+                playerAcceleration.Value = record.Acceleration;
+                playerCatching.Value = record.Catching;
+                playerCarrying.Value = record.Carrying;
+                playerJumping.Value = record.Jumping;
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    playerBreakTackle.Value = record.BreakTackle19;
+                else playerBreakTackle.Value = record.BreakTackle;
+                playerTackle.Value = record.Tackle;
+                playerImportance.Value = record.Importance;
+                playerThrowPower.Value = record.ThrowPower;
+                playerThrowAccuracy.Value = record.ThrowAccuracy;
+                playerPassBlocking.Value = record.PassBlocking;
+                playerRunBlocking.Value = record.RunBlocking;
+                playerKickPower.Value = record.KickPower;
+                playerKickAccuracy.Value = record.KickAccuracy;
+                playerKickReturn.Value = record.KickReturn;
+                playerStamina.Value = record.Stamina;
+                playerInjury.Value = record.Injury;
+                playerToughness.Value = record.Toughness;
+                #endregion
+
+                #region Injury
+                InjuryRecord injury = model.PlayerModel.GetPlayersInjuryRecord(record.PlayerId);
+                if (injury == null)
                 {
-                    record.ClearContract();
+                    playerInjuryCombo.Enabled = false;
+                    playerInjuryCombo.Text = "";
+                    playerInjuryLength.Enabled = false;
+                    playerInjuryLength.Value = 0;
+                    playerRemoveInjuryButton.Enabled = false;
+                    playerInjuryReserve.Enabled = false;
+                    playerAddInjuryButton.Enabled = true;
+                    injuryLengthDescriptionTextBox.Enabled = false;
+                    injuryLengthDescriptionTextBox.Text = "";
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    {
+                        playerInjurySevere.Value = 0;
+                        playerInjurySevere.Enabled = false;
+                        playerInjuryReturn.Value = 0;
+                        playerInjuryReturn.Enabled = false;
+                    }
                 }
+                else
+                {
+                    playerInjuryCombo.Enabled = true;
+                    playerInjuryLength.Enabled = true;
+                    playerRemoveInjuryButton.Enabled = true;
+                    playerInjuryReserve.Enabled = true;
+                    playerAddInjuryButton.Enabled = false;
+                    playerInjuryLength.Value = injury.InjuryLength;
+                    playerInjuryReserve.Checked = injury.IR;
+                    injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
+
+                    if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    {
+                        playerInjuryCombo.Text = playerInjuryCombo.Items[injury.InjuryType].ToString();
+                    }
+                    else
+                    {
+                        playerInjuryCombo.Text = model.PlayerModel.GetInjury(injury.InjuryType);
+                        playerInjurySevere.Value = injury.InjurySeverity;
+                        playerInjurySevere.Enabled = true;
+                        playerInjuryReturn.Value = injury.InjuryReturn; ;
+                        playerInjuryReturn.Enabled = true;
+                    }
+                }
+                #endregion
+
+                #region Appearance / Equipment
+                playerHelmetStyleCombo.Text = model.PlayerModel.GetHelmet(record.Helmet);
+                playerFaceMaskCombo.Text = model.PlayerModel.GetFaceMask(record.FaceMask);
+                playerLeftShoeCombo.Text = model.PlayerModel.GetShoe(record.LeftShoe);
+                playerRightShoeCombo.Text = model.PlayerModel.GetShoe(record.RightShoe);
+                playerLeftHandCombo.Text = model.PlayerModel.GetGloves(record.LeftHand);
+                playerRightHandCombo.Text = model.PlayerModel.GetGloves(record.RightHand);
+                playerLeftWristCombo.Text = model.PlayerModel.GetWrist(record.LeftWrist);
+                playerRightWristCombo.Text = model.PlayerModel.GetWrist(record.RightWrist);
+                playerLeftSleeve.Text = model.PlayerModel.GetSleeve(record.SleevesLeft);
+                playerRightSleeve.Text = model.PlayerModel.GetSleeve(record.SleevesRight);
+                playerLeftElbowCombo.Text = model.PlayerModel.GetElbow(record.LeftElbow);
+                playerRightElbowCombo.Text = model.PlayerModel.GetElbow(record.RightElbow);
+                playerLeftKneeCombo.Text = playerLeftKneeCombo.Items[Convert.ToInt32(record.LeftKnee)].ToString();
+                playerRightKneeCombo.Text = playerRightKneeCombo.Items[Convert.ToInt32(record.RightKnee)].ToString();
+                playerLeftAnkleCombo.Text = model.PlayerModel.GetAnkle(record.AnkleLeft);
+                playerRightAnkleCombo.Text = model.PlayerModel.GetAnkle(record.AnkleRight);
+                playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
+                playerVisorCombo.Text = playerVisorCombo.Items[record.Visor].ToString();
+                playerEyePaintCombo.Text = model.PlayerModel.GetFaceMark(record.EyePaint);
+                playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();
+                playerJerseySleeves.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.JerseySleeve;
+                #endregion
+
+                #region Contracts
+
+                // Fix errors introduced by NZA and dbeditor
+                if (record.ContractLength == 0)
+                    record.ClearContract();
                 else if (record.ContractYearsLeft > record.ContractLength)
                     record.ContractYearsLeft = record.ContractLength;
-                
+
                 playerContractLength.Value = record.ContractLength;
                 playerContractYearsLeft.Value = record.ContractYearsLeft;
 
-                try
+                #endregion
+
+                #region Version Specific Checks
+                if (model.FileType == MaddenFileType.Franchise)
                 {
-                    playerDraftRound.Value = (decimal)record.DraftRound;
+                    #region Player Inactive
+                    if (model.FileVersion > MaddenFileVersion.Ver2004)
+                    {
+                        PlayerInactive.Checked = false;
+
+                        foreach (InactiveRecord ia in model.TableModels[EditorModel.INACTIVE_TABLE].GetRecords())
+                        {
+                            //InactiveRecord iar = (InactiveRecord)ia;
+                            if (ia.Deleted)
+                                continue;
+                            if (ia.PlayerID == record.PlayerId)
+                            {
+                                PlayerInactive.Checked = true;
+                                break;
+                            }
+                        }
+                    }
+                    #endregion
+                    InitStatsYear(record);
+                    LoadPlayerStats(record);
                 }
-                catch (Exception error)
+
+                #region 2004-2005
+                if (model.FileVersion <= MaddenFileVersion.Ver2005)
                 {
-                    error = error;
-                    playerDraftRound.Value = 15;
+                    playerEgo.Maximum = 127;
+                    playerEgo.Value = record.Pcel;
                 }
-                try
+                #endregion
+
+                #region 2005-2008
+                if (model.FileVersion >= MaddenFileVersion.Ver2005)
                 {
-                    playerDraftRoundIndex.Value = (decimal)record.DraftRoundIndex;
+                    playerNFLIcon.Checked = record.NFLIcon;
+                    PlayerHoldOut.Checked = record.Holdout;
+
+                    if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    {
+                        //Load the player tendancy and reinitialise the combo
+                        PlayerTendency.Enabled = true;
+                        PlayerTendency.Items.Clear();
+                        for (int i = 0; i < 3; i++)
+                        {
+                            PlayerTendency.Items.Add(DecodeTendancy((MaddenPositions)record.PositionId, i));
+                        }
+                        PlayerTendency.SelectedIndex = record.Tendency;
+
+                        playerMorale.Visible = true;
+                        MoraleLabel.Visible = true;
+                        playerMorale.Value = record.Morale;
+                    }
                 }
-                catch (Exception error)
+                #endregion
+
+                #region 2006-2008
+                if (model.FileVersion >= MaddenFileVersion.Ver2006)
                 {
-                    error = error;
-                    playerDraftRoundIndex.Value = 33;
+                    playerEgo.Value = record.Ego;
                 }
-                
-                //Set player Appearance
+                #endregion
+
+                #region 2007-2008 only
+                if (model.FileVersion >= MaddenFileVersion.Ver2007 && model.FileVersion <= MaddenFileVersion.Ver2008)
+                {
+                    RoleLabel.Visible = true;
+                    PlayerRolecomboBox.Visible = true;
+                    PlayerRolecomboBox.Text = model.PlayerRole[record.PlayerRole];
+
+                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    {
+                        WeaponLabel.Visible = true;
+                        PlayerWeaponcomboBox.Visible = true;
+                        PlayerWeaponcomboBox.Text = model.PlayerRole[record.PlayerWeapon];
+                    }
+                }
+                #endregion
+
+                #region Legacy only
+                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                {
+                    PlayerFaceId.Value = (int)record.FaceId;
+                    OriginalPosition_Combo.SelectedIndex = record.OriginalPositionId;
+
+                    #region Legacy Panel
+                    playerBodyOverall.Value = record.BodyOverall;
+                    playerBodyWeight.Value = record.BodyWeight;
+                    playerBodyMuscle.Value = record.BodyMuscle;
+                    playerBodyFat.Value = record.BodyFat;
+                    playerEquipmentThighPads.Value = record.LegsThighPads;
+                    playerEquipmentPadHeight.Value = record.EquipmentPadHeight;
+                    playerEquipmentPadWidth.Value = record.EquipmentPadWidth;
+                    playerEquipmentPadShelf.Value = record.EquipmentPadShelf;
+                    playerEquipmentFlakJacket.Value = record.EquipmentFlakJacket;
+
+                    playerArmsMuscle.Value = record.ArmsMuscle;
+                    playerArmsFat.Value = record.ArmsFat;
+                    playerLegsThighMuscle.Value = record.LegsThighMuscle;
+                    playerLegsThighFat.Value = record.LegsThighFat;
+                    playerLegsCalfMuscle.Value = record.LegsCalfMuscle;
+                    playerLegsCalfFat.Value = record.LegsCalfFat;
+
+                    playerRearMuscle.Value = record.RearRearFat;
+                    playerRearRearFat.Value = record.RearRearFat;
+                    playerRearShape.Value = record.RearShape;
+
+                    playerHairStyleCombo.SelectedIndex = record.HairStyle;
+                    playerNasalStripCombo.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.NasalStrip;
+                    Tattoo_Left.Value = record.LeftTattoo;
+                    Tattoo_Right.Value = record.RightTattoo;
+
+                    T_Sleeves_Combo.Text = model.PlayerModel.GetSleeve(model.PlayerModel.CurrentPlayerRecord.TempSleeves);
+                    T_LeftElbow_Combo.Text = model.PlayerModel.GetElbow(model.PlayerModel.CurrentPlayerRecord.TeamLeftElbow);
+                    T_RightElbow_Combo.Text = model.PlayerModel.GetElbow(model.PlayerModel.CurrentPlayerRecord.TeamRightElbow);
+                    T_LeftHand_Combo.Text = model.PlayerModel.GetGloves(model.PlayerModel.CurrentPlayerRecord.TeamLeftHand);
+                    T_RightHand_Combo.Text = model.PlayerModel.GetGloves(model.PlayerModel.CurrentPlayerRecord.TeamRightHand);
+                    T_LeftWrist_Combo.Text = model.PlayerModel.GetWrist(model.PlayerModel.CurrentPlayerRecord.TeamLeftWrist);
+                    T_RightWrist_Combo.Text = model.PlayerModel.GetWrist(model.PlayerModel.CurrentPlayerRecord.TeamRightWrist);
+                    #endregion
+                }
+                #endregion
+
+                #region 2019 only
                 if (model.FileVersion == MaddenFileVersion.Ver2019)
+                {
+                    PortraitID_Large.Value = record.PortraitId + 10000;
                     PlayerFaceId.Value = (int)record.FaceID_19;
-                else PlayerFaceId.Value = (int)record.FaceId;
+                    playerAsset.Text = record.Asset;
+                    playerHometown.Text = record.Hometown;
+                    playerStateCombo.SelectedIndex = record.HomeState;
+                    playerBirthday.Text = record.GetBirthday();
 
-                playerBodyWeight.Value = record.BodyWeight;
-                playerBodyMuscle.Value = record.BodyMuscle;
-                playerBodyFat.Value = record.BodyFat;
-                playerEquipmentShoes.Value = record.EquipmentShoes;
-                playerEquipmentPadHeight.Value = record.EquipmentPadHeight;
-                playerEquipmentPadWidth.Value = record.EquipmentPadWidth;
-                playerEquipmentPadShelf.Value = record.EquipmentPadShelf;
-                playerEquipmentFlakJacket.Value = record.EquipmentFlakJacket;
-                playerArmsMuscle.Value = record.ArmsMuscle;
-                playerArmsFat.Value = record.ArmsFat;
-                playerLegsThighMuscle.Value = record.LegsThighMuscle;
-                playerLegsThighFat.Value = record.LegsThighFat;
-                playerLegsCalfMuscle.Value = record.LegsCalfMuscle;
-                playerLegsCalfFat.Value = record.LegsCalfFat;
-                playerRearRearFat.Value = record.RearRearFat;
-                playerRearShape.Value = record.RearShape;
-                playerRearMuscle.Value = record.RearRearFat;
-                playerBodyOverall.Value = record.BodyOverall;
-                playerEquipmentThighPads.Value = (int)record.LegsThighPads;
-                Tattoo_Left.Value = record.LeftTattoo;
-                Tattoo_Right.Value = record.RightTattoo;
-
-                //Load Player equipment
-                playerHairStyleCombo.Text = playerHairStyleCombo.Items[record.HairStyle].ToString();
-                //playerSkinColorCombo.Text = playerSkinColorCombo.Items[record.SkinType].ToString();
-                playerHairColorCombo.Text = playerHairColorCombo.Items[record.HairColor].ToString();
-                playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
-                playerVisorCombo.Text = playerVisorCombo.Items[record.Visor].ToString();
-                playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();                
-                playerLeftKneeCombo.Text = playerLeftKneeCombo.Items[Convert.ToInt32(record.LeftKnee)].ToString();
-                playerRightKneeCombo.Text = playerRightKneeCombo.Items[Convert.ToInt32(record.RightKnee)].ToString();
-                                
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                {
-                    playerHelmetStyleCombo.Text = model.PlayerModel.GetHelmet(record.HelmetStyle);                    
-                    playerFaceMaskCombo.Text = model.PlayerModel.GetFaceMask(record.FaceMask);
-                    playerLeftShoeCombo.Text = model.PlayerModel.GetShoe(record.LeftShoe);
-                    playerRightShoeCombo.Text = model.PlayerModel.GetShoe(record.RightShoe);
-                    playerLeftHandCombo.Text = model.PlayerModel.GetGloves(record.LeftHand);
-                    playerRightHandCombo.Text = model.PlayerModel.GetGloves(record.RightHand);
-                    playerLeftWristCombo.Text = model.PlayerModel.GetWrist(record.LeftWrist);
-                    playerRightWristCombo.Text = model.PlayerModel.GetWrist(record.RightWrist);
-                    playerLeftSleeve.Text = model.PlayerModel.GetSleeve(record.SleevesLeft);
-                    playerRightSleeve.Text = model.PlayerModel.GetSleeve(record.SleevesRight);
-                    playerLeftElbowCombo.Text = model.PlayerModel.GetElbow(record.LeftElbow);
-                    playerRightElbowCombo.Text = model.PlayerModel.GetElbow(record.RightElbow);
-                    EyePaintLabel.Text = "Face Marks";
-                    EyePaintLabel.Location = new Point(327, 511);
-                    playerEyePaintCombo.Text = model.PlayerModel.GetFaceMark(record.EyePaint);                    
-                    playerLeftAnkleCombo.Text = model.PlayerModel.GetAnkle(record.AnkleLeft);
-                    playerRightAnkleCombo.Text = model.PlayerModel.GetAnkle(record.AnkleRight);
-                    playerEndPlay.Text = model.PlayerModel.GetEndPlay(record.EndPlay);
-                    playerQBStyle.Text = model.PlayerModel.GetQBStyle(record.QBStyle);
-                    playerJerseySleeves.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.Jersey;
+                    PlayerRolecomboBox.SelectedIndex = record.XPRate;
 
                     #region Archetypes
-                    playerArchetype.Items.Clear();
+                    #region Init Archetypes and set combos
                     int start = 0;
                     int end = 0;
+
+                    #region Get Start and End Types
                     switch (record.PositionId)
                     {
                         case (int)MaddenPositions.QB:
@@ -975,24 +1553,19 @@ namespace MaddenEditor.Forms
                             }
                             break;
                     }
+                    #endregion
 
+                    playerArchetype.Items.Clear();
                     playerOVRArchetypeCombo.Items.Clear();
-                    playerOVRArchetypeCombo.Enabled = false;
-                    playerOVRArchetype.Text = "";
                     for (int c = start; c <= end; c++)
                     {
                         playerArchetype.Items.Add(model.PlayerModel.ArchetypeList[c]);
                         if (record.PositionId <= 32)
                             playerOVRArchetypeCombo.Items.Add(model.PlayerModel.ArchetypeList[c]);
                     }
-                    
-                    playerArchetype.Text = model.PlayerModel.GetArchetype(record.PlayerType);                   
-
+                    playerOVRArchetype.Text = "";
                     #endregion
 
-                    PlayerRolecomboBox.SelectedIndex = record.PlayerRole;
-
-                    #region Archetype Overalls Madden 19
                     if (record.PositionId <= 32)
                     {
                         playerOVRArchetype.Text = playeroverall.GetOverall19(record, record.PositionId, record.PlayerType).ToString();
@@ -1001,134 +1574,10 @@ namespace MaddenEditor.Forms
                     }
 
                     #endregion
-                }
-                else
-                {
-                    playerHelmetStyleCombo.Text = playerHelmetStyleCombo.Items[record.HelmetStyle].ToString();
-                    playerFaceMaskCombo.Text = playerFaceMaskCombo.Items[record.FaceMask].ToString();
-                    playerLeftHandCombo.Text = playerLeftHandCombo.Items[record.LeftHand].ToString();
-                    playerRightHandCombo.Text = playerRightHandCombo.Items[record.RightHand].ToString();
-                    playerLeftWristCombo.Text = playerLeftWristCombo.Items[record.LeftWrist].ToString();
-                    playerRightWristCombo.Text = playerRightWristCombo.Items[record.RightWrist].ToString();
-                    playerSleevesCombo.Text = playerSleevesCombo.Items[record.SleevesLeft].ToString();
-                    playerLeftElbowCombo.Text = playerLeftElbowCombo.Items[record.LeftElbow].ToString();
-                    playerRightElbowCombo.Text = playerRightElbowCombo.Items[record.RightElbow].ToString();
-                    playerLeftAnkleCombo.Text = playerLeftAnkleCombo.Items[record.LeftShoe].ToString();
-                    playerRightAnkleCombo.Text = playerRightAnkleCombo.Items[record.RightShoe].ToString();
-                    playerEyePaintCombo.Text = playerEyePaintCombo.Items[record.EyePaint].ToString();
-                    playerNasalStripCombo.Text = playerNasalStripCombo.Items[record.NasalStrip].ToString();
-                    playerEndPlay.Text = "";
-                    playerEndPlay.Enabled = false;
-                    playerQBStyle.Text = "";
-                    playerQBStyle.Enabled = false;
-                    // not sure sleeves is legacy
-                    playerJerseySleeves.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.Jersey;
-                    playerArchetype.SelectedIndex = -1;
-                    playerArchetype.Enabled = false;
-                }
-                
 
-
-                #region Injury
-                InjuryRecord injury = model.PlayerModel.GetPlayersInjuryRecord(record.PlayerId);
-                playerInjurySevere.Value = 0;
-                playerInjurySevere.Enabled = false;
-                playerInjuryReturn.Value = 0;
-                playerInjuryReturn.Enabled = false;
-
-                if (injury == null)
-                {
-                    playerInjuryCombo.Enabled = false;
-                    playerInjuryCombo.Text = "";
-                    playerInjuryLength.Enabled = false;
-                    playerInjuryLength.Value = 0;
-                    playerRemoveInjuryButton.Enabled = false;
-                    playerInjuryReserve.Enabled = false;
-                    playerAddInjuryButton.Enabled = true;
-                    injuryLengthDescriptionTextBox.Enabled = false;
-                    injuryLengthDescriptionTextBox.Text = "";
-                    
-                }
-                else
-                {
-                    playerInjuryCombo.Enabled = true;
-                    playerInjuryLength.Enabled = true;
-                    playerRemoveInjuryButton.Enabled = true;
-                    playerInjuryReserve.Enabled = true;
-                    playerAddInjuryButton.Enabled = false;
-                    playerInjuryLength.Value = injury.InjuryLength;
-                    playerInjuryReserve.Checked = injury.IR;
-                    injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
-
-                    if (model.FileVersion < MaddenFileVersion.Ver2019)
-                    {
-                        playerInjuryCombo.Text = playerInjuryCombo.Items[injury.InjuryType].ToString();
-                    }
-                    else
-                    {
-                        playerInjuryCombo.Text = model.PlayerModel.GetInjury(injury.InjuryType);
-                        playerInjurySevere.Enabled = true;
-                        playerInjurySevere.Value = injury.InjurySeverity;
-                        playerInjuryReturn.Enabled = true;
-                        playerInjuryReturn.Value = injury.InjuryReturn;;
-                    }
-                }
-                #endregion
-
-                PLGL_Updown.Value = 0;
-                PPGA_Updown.Value = 0;
-                PPSP_Updown.Value = 0;
-
-                if (model.FileType == MaddenFileType.Franchise)
-                {
-                    InitStatsYear(record);
-                    LoadPlayerStats(record);
-                    PLGL_Updown.Value = record.Plpl;
-                    PPGA_Updown.Value = record.PlayedGames;
-                    PPSP_Updown.Value = record.Ppsp;
-
-                    PlayerInactive.Visible = false;
-                    if (model.FileVersion > MaddenFileVersion.Ver2004)
-                    {
-                        PlayerInactive.Visible = true;
-                        PlayerInactive.Checked = false;
-                        
-                        foreach (InactiveRecord ia in model.TableModels[EditorModel.INACTIVE_TABLE].GetRecords())
-                        {
-                            InactiveRecord iar = (InactiveRecord)ia;
-                            if (iar.Deleted)
-                                continue;
-                            if (iar.PlayerID == record.PlayerId)
-                            {
-                                PlayerInactive.Checked = true;
-                                break;
-                            }                            
-                        }                        
-                    }
-                }
-
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                {  
-                    playerImpactBlock.Value = (int)record.ImpactBlocking;
-                    playerLeadBlock.Value = (int)record.LeadBlock;
-                    playerRunBlockFinesse.Value = (int)record.RunBlockFootwork;
-                    playerZoneCoverage.Value = (int)record.ZoneCoverage;
-                    playerManCover.Value = (int)record.ManCoverage;
-                    playerPlayRecog.Value = (int)record.PlayRecognition;
-                    playerPursuit.Value = (int)record.Pursuit;
-                    playerBlockShed.Value = (int)record.BlockShedding;
-                    playerTrucking.Value = (int)record.Trucking;
-                    playerElusive.Value = (int)record.Elusive;
-                    playerRB_Vision.Value = (int)record.RB_Vision;
-                    playerStiffArm.Value = (int)record.StiffArm;
-                    playerSpinMove.Value = (int)record.SpinMove;
-                    playerJukeMove.Value = (int)record.JukeMove;
-                    playerShortRoute.Value = (int)record.ShortRoute;
-                    playerMediumRoute.Value = (int)record.MediumRoute;
-                    playerDeepRoute.Value = (int)record.DeepRoute;
-                    playerCatchTraffic.Value = (int)record.CatchTraffic;
-                    playerSpecCatch.Value = (int)record.SpecCatch;
-                    playerRelease.Value = (int)record.Release;
+                    #region Ratings 2019
+                    playerPotential.Value = (int)record.Potential;
+                    playerQBStance.Value = (int)record.Stance;
                     playerThrowShort.Value = (int)record.ThrowShort;
                     playerThrowMedium.Value = (int)record.ThrowMedium;
                     playerThrowDeep.Value = (int)record.ThrowDeep;
@@ -1136,152 +1585,96 @@ namespace MaddenEditor.Forms
                     playerThrowPressure.Value = (int)record.ThrowPressure;
                     playerBreakSack.Value = (int)record.BreakSack;
                     playerPlayAction.Value = (int)record.PlayAction;
-                    playerHitPower.Value = (int)record.HitPower;
+                    playerTrucking.Value = (int)record.Trucking;
+                    playerElusive.Value = (int)record.Elusive;
+                    playerRB_Vision.Value = (int)record.RB_Vision;
+                    playerStiffArm.Value = (int)record.StiffArm;
+                    playerSpinMove.Value = (int)record.SpinMove;
+                    playerJukeMove.Value = (int)record.JukeMove;
+                    playerImpactBlock.Value = (int)record.ImpactBlocking;
+                    playerLeadBlock.Value = (int)record.LeadBlock;
+                    playerRelease.Value = (int)record.Release;
                     playerPowerMoves.Value = (int)record.PowerMoves;
                     playerFinesseMoves.Value = (int)record.FinesseMoves;
-                    playerHometown.Text = record.Hometown;
-                    playerPressCover.Value = (int)record.PressCover;
-                    playerFightYards.Checked = record.FightYards;
-                    playerForcePass.SelectedIndex = record.ForcePasses;
+                    playerShortRoute.Value = (int)record.ShortRoute;
+                    playerMediumRoute.Value = (int)record.MediumRoute;
+                    playerDeepRoute.Value = (int)record.DeepRoute;
+                    playerCatchTraffic.Value = (int)record.CatchTraffic;
+                    playerSpecCatch.Value = (int)record.SpecCatch;
+                    playerRunBlockFinesse.Value = (int)record.RunBlockFootwork;
+                    playerRunBlockStrength.Value = (int)record.RunBlockStrength;
                     playerPassBlockFootwork.Value = (int)record.PassBlockFootwork;
                     playerPassBlockStr.Value = (int)record.PassBlockStrength;
-                    playerPlaysBall.SelectedIndex = record.PlaysBall;
-                    playerPotential.Value = (int)record.Potential;
-                    playerQBStance.Value = (int)record.Stance;
-                    playerRunBlockStrength.Value = (int)record.RunBlockStrength;
-                    playerSensePressure.SelectedIndex = record.SensePressure;
-                    if (record.SidelineCatch == 1)
-                        playerSidelineCatch.Checked = true;
-                    else playerSidelineCatch.Checked = false;
-                    playerThrowAway.Checked = record.ThrowAway;
-                    playerThrowSpiral.Checked = record.ThrowSpiral;
-                    playerTowel.Checked = record.PlayerTowel;
-                    playerBullrush.Checked = record.DLBullrush;
-                    playerDLSpin.Checked = record.DLSpinmove;
-                    playerDLSwim.Checked = record.DLSwim;
-                    playerHighMotor.Checked = record.HighMotor;
-                    playerHandWarmer.Checked = record.HandWarmer;
-                    playerDropsPasses.Checked = record.DropPasses;
-                    playerBigHitter.Checked = record.BigHitter;
-                    playerCoversBall.SelectedIndex = (int)record.CoversBall - 1;
-                    playerClutch.Checked = record.Clutch;
-                    playerStateCombo.SelectedIndex = record.HomeState;
-                    playerHometown.Text = record.Hometown;
-                    OriginalPosition_Combo.SelectedIndex = -1;
-                    OriginalPosition_Combo.Enabled = false;
-                    playerTuckRun.SelectedIndex = record.TuckRun;
-                    playerTackleLow.Checked = record.TackleLow;
-                    playerStripsBall.Checked = record.StripsBall;
-                    playerPressureMax.Value = record.PressureMax;
-                    playerPossCatch.Checked = record.PossessionCatch;
-                    playerFeetInBounds.Checked = record.FeetInBounds;
-                    playerPenalty.SelectedIndex = record.Penalty;
-                    playerAggressiveCatch.Checked = record.AggressiveCatch;
-                    playerRAC.Checked = record.RunAfterCatch;
-
-                    playerAsset.Enabled = true;
-                    playerAsset.Text = record.Asset;
-                    
-                    playerBirthday.Text = record.GetBirthday();
-                    playerSockHeight.SelectedIndex = record.SockHeight;
+                    playerPlayRecog.Value = (int)record.PlayRecognition;
+                    playerPursuit.Value = (int)record.Pursuit;
+                    playerBlockShed.Value = (int)record.BlockShedding;
+                    playerZoneCoverage.Value = (int)record.ZoneCoverage;
+                    playerManCover.Value = (int)record.ManCoverage;
+                    playerPressCover.Value = (int)record.PressCover;
+                    playerHitPower.Value = (int)record.HitPower;
                     playerConfidence.Value = record.Confidence;
+
+                    playerSensePressure.SelectedIndex = record.SensePressure;
+                    playerForcePass.SelectedIndex = record.ForcePasses;
+                    playerCoversBall.SelectedIndex = (int)record.CoversBall - 1;
+                    playerArchetype.Text = model.PlayerModel.GetArchetype(record.PlayerType);
+                    playerPlaysBall.SelectedIndex = record.PlaysBall;
+                    playerPenalty.SelectedIndex = record.Penalty;
+                    playerTuckRun.SelectedIndex = record.TuckRun;
+                    #endregion
+
+                    #region Traits
+                    playerAggressiveCatch.Checked = record.AggressiveCatch;
+                    playerFightYards.Checked = record.FightYards;
+                    playerClutch.Checked = record.Clutch;
+                    playerBullrush.Checked = record.DLBullrush;
+                    playerFeetInBounds.Checked = record.FeetInBounds;
+                    playerThrowSpiral.Checked = record.ThrowSpiral;
+                    playerHighMotor.Checked = record.HighMotor;
+                    playerBigHitter.Checked = record.BigHitter;
+                    playerDropsPasses.Checked = record.DropPasses;
+                    playerStripsBall.Checked = record.StripsBall;
+                    playerDLSwim.Checked = record.DLSwim;
+                    playerThrowAway.Checked = record.ThrowAway;
+                    playerPossCatch.Checked = record.PossessionCatch;
+                    playerRAC.Checked = record.RunAfterCatch;
+                    playerDLSpin.Checked = record.DLSpinmove;
+                    #endregion
+
+                    playerCaptain.Checked = record.IsCaptain;
+
+                    #region Appearance / Equipment
+
+                    #region NextGen Panel
+                    playerQBStyle.Text = model.PlayerModel.GetQBStyle(record.QBStyle);
+                    playerEndPlay.Text = model.PlayerModel.GetEndPlay(record.EndPlay);
+                    SidelineHeadGear_Combo.SelectedIndex = record.SidelineHeadgear;
                     playerFlakJacket.Checked = record.FlakJacket;
                     playerBackPlate.Checked = record.BackPlate;
-                    playerCaptain.Checked = record.IsCaptain;
+                    playerTowel.Checked = record.PlayerTowel;
+                    playerHandWarmer.Checked = record.HandWarmer;
+                    #endregion
+
                     playerUndershirt.SelectedIndex = record.UnderShirt;
+                    EyePaintLabel.Text = "Face Marks";
+                    EyePaintLabel.Location = new Point(327, 511);
+                    playerJerseySleeves.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.JerseySleeve;
+                    playerSockHeight.SelectedIndex = record.SockHeight;
 
+                    #endregion
                 }
-                else
-                {                    
-                    playerImpactBlock.Value = 0;
-                    playerLeadBlock.Value = 0;
-                    playerRunBlockFinesse.Value = 0;
-                    playerZoneCoverage.Value = 0;
-                    playerManCover.Value = 0;
-                    playerPlayRecog.Value = 0;
-                    playerPursuit.Value = 0;
-                    playerBlockShed.Value = 0;
-                    playerTrucking.Value = 0;
-                    playerElusive.Value = 0;
-                    playerRB_Vision.Value = 0;
-                    playerStiffArm.Value = 0;
-                    playerSpinMove.Value = 0;
-                    playerJukeMove.Value = 0;
-                    playerShortRoute.Value = 0;
-                    playerMediumRoute.Value = 0;
-                    playerDeepRoute.Value = 0;
-                    playerCatchTraffic.Value = 0;
-                    playerSpecCatch.Value = 0;
-                    playerRelease.Value = 0;
-                    playerThrowShort.Value = 0;
-                    playerThrowMedium.Value = 0;
-                    playerThrowDeep.Value = 0;
-                    playerThrowOnRun.Value = 0;
-                    playerThrowPressure.Value = 0;
-                    playerBreakSack.Value = 0;
-                    playerPlayAction.Value = 0;
-                    playerHitPower.Value = 0;
-                    playerPowerMoves.Value = 0;
-                    playerFinesseMoves.Value = 0;
-                    playerHometown.Text = "";
-                    playerPressCover.Value = 0;
-                    playerFightYards.Checked = false;
-                    playerForcePass.SelectedIndex = -1;
-                    playerPassBlockFootwork.Value = 0;
-                    playerPassBlockStr.Value = 0;
-                    playerPlaysBall.SelectedIndex = -1;
-                    playerPotential.Value = 0;
-                    playerQBStance.Value = 0;
-                    playerRunBlockStrength.Value = 0;
-                    playerSensePressure.SelectedIndex = -1;
-                    playerSidelineCatch.Checked = false;
-                    playerThrowAway.Checked = false;
-                    playerThrowSpiral.Checked = false;
-                    playerTowel.Checked = false;
-                    playerBullrush.Checked = false;
-                    playerDLSpin.Checked = false;
-                    playerDLSwim.Checked = false;
-                    playerHighMotor.Checked = false;
-                    playerHandWarmer.Checked = false;
-                    playerDropsPasses.Checked = false;
-                    playerBigHitter.Checked = false;
-                    playerCoversBall.SelectedIndex = -1;
-                    playerClutch.Checked = false;
-                    playerTackleLow.Checked = false;
-                    playerStripsBall.Checked = false;
-                    playerPressureMax.Value = 0;
-                    playerPossCatch.Checked = false;
-                    playerFeetInBounds.Checked = false;
-                    playerPenalty.SelectedIndex = -1;
-                    playerAggressiveCatch.Checked = false;
-                    playerRAC.Checked = false;
+                #endregion
 
-                    playerStateCombo.SelectedIndex = -1;
-                    playerHometown.Text = "";
-                    playerAsset.Text = "";
-                    playerAsset.Enabled = false;
-                    playerBirthday.Enabled = false;
-                    playerBirthday.Text = "";
-                    playerSockHeight.SelectedIndex = -1;
-                    playerSockHeight.Enabled = false;
-                    playerConfidence.Enabled = false;
-                    playerConfidence.Value = 0;
-                    playerBackPlate.Checked = false;
-                    playerBackPlate.Enabled = false;
-                    playerFlakJacket.Checked = false;
-                    playerFlakJacket.Enabled = false;
-                    playerCaptain.Checked = false;
-                    playerCaptain.Enabled = false;
-                    playerUndershirt.Enabled = false;
-                    playerUndershirt.SelectedIndex = -1;
-                }               
+                #endregion
 
-                LoadPlayerSalaries(record);                
+                LoadPlayerSalaries(record);
                 DisplayPlayerPort();
-                model.PlayerModel.SetProgressionRank();
 
+                #region Commented out
+                /*
                 if (model.FileType == MaddenFileType.Franchise)
                 {
+                    model.PlayerModel.SetProgressionRank();
                     TopForOVR_Updown.Value = model.PlayerModel.ProgRank[0];
                     TopForPhase_Updown.Value = model.PlayerModel.ProgRank[1];
                     TopAvgOvr_Updown.Value = model.PlayerModel.AvgOVR[0];
@@ -1296,6 +1689,8 @@ namespace MaddenEditor.Forms
 
                     Both_Updown.Value = model.PlayerModel.ProgRank[2];
                 }
+                 * */
+                #endregion
 
             }
             catch (Exception e)
@@ -1305,59 +1700,21 @@ namespace MaddenEditor.Forms
                 return;
             }
             finally
-            {                
-                ResumeLayout();                
+            {
+                ResumeLayout();
             }
 
             lastLoadedRecord = record;
-
-            if (holder)
-                isInitialising = true;
-            else isInitialising = false;
-        }
-        
-        public void DisplayPlayerPort()
-        {
-            if (PlayerPortBox.Image != null)
-                PlayerPortBox.Image = null;
-            PlayerPortBox.BackColor = Color.White;                      
-            PlayerPortBox.SizeMode = PictureBoxSizeMode.Zoom;
-
-            if (!manager.PlayerPortDAT.isterf)
-            {
-                return;
-            }
-
-            int portid = model.PlayerModel.CurrentPlayerRecord.PortraitId + 1;
-
-            if (manager.PlayerPortDAT.ParentTerf.files >= portid + 1)
-            {
-                if (manager.PlayerPortDAT.ParentTerf.Data.DataFiles[portid].filetype == "MMAP")
-                    PlayerPortBox.Image = manager.PlayerPortDAT.ParentTerf.Data.DataFiles[portid].mmap_data.GetPortraitDisplay();
-                else if (manager.PlayerPortDAT.ParentTerf.Data.DataFiles[portid].filetype == "COMP") PlayerPortBox.BackColor = Color.Green;
-                else PlayerPortBox.BackColor = Color.Red;
-                return;
-            }
-
-            PlayerPortBox.BackColor = Color.Black;           
-        }
-
-        public bool CheckPlayerUniqueness(int pgid, int poid)
-        {
-            isInitialising = true;
-            bool exists = model.PlayerModel.CheckIDExists(pgid,poid);
-            if (exists)
-            {
-                MessageBox.Show("IDs need to be unique", "IDs already exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
-            }
             isInitialising = false;
-            return exists;
         }
 
-        
-        #region Navigation Functions
-       
+
+        #region Controls
+
+        #region Player Ratings Page
+
+        #region Navigation Functions & Create/Delete
+
         private void filterTeamComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
@@ -1403,22 +1760,20 @@ namespace MaddenEditor.Forms
                     model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName
                         + " " + model.PlayerModel.CurrentPlayerRecord.LastName;
                 }
-                else 
-                {                    
+                else
+                {
                     model.PlayerModel.playernames.Add(model.PlayerModel.CurrentPlayerRecord.PlayerId, model.PlayerModel.CurrentPlayerRecord.FirstName
                         + " " + model.PlayerModel.CurrentPlayerRecord.LastName);
                 }
 
                 row.Cells[1].Value = model.PlayerModel.playernames[pgid];
             }
-           
+
             if (pgid != -1)
                 row.Cells[0].Value = pgid;
             int r = (int)row.Cells[0].Value;
-            LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(r));            
+            LoadPlayerInfo(model.PlayerModel.GetPlayerByPlayerId(r));
         }
-
-
 
         private void PlayerGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -1429,9 +1784,8 @@ namespace MaddenEditor.Forms
 
             PlayerGridViewChange(false, -1);
 
-            isInitialising = false;            
-        }    
-        
+            isInitialising = false;
+        }
 
         private void DraftClass_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
@@ -1444,15 +1798,397 @@ namespace MaddenEditor.Forms
             }
         }
 
+        private void deletePlayerButton_Click(object sender, EventArgs e)
+        {
+            isInitialising = true;
+
+            DialogResult result = MessageBox.Show("Are you sure you want to delete this player?\r\n\r\nAlthough this player will disappear from the editor\r\nchanges will not take effect until you save.", "About to Delete " + model.PlayerModel.CurrentPlayerRecord.FirstName + " " + model.PlayerModel.CurrentPlayerRecord.LastName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {                
+                int current = PlayerGridView.CurrentRow.Index;
+                model.PlayerModel.DeletePlayerRecord(model.PlayerModel.CurrentPlayerRecord);
+                PlayerGridView.Rows.RemoveAt(current);
+                if (PlayerGridView.Rows.Count > 0)
+                {
+                    PlayerGridViewChange(false, -1);
+                }
+                else
+                {
+                    // No players left to load, reset filters back to ALL
+                    LoadPlayerInfo(null);
+                }
+            }
+
+            isInitialising = false;
+        }
+
+        // TO DO : Fix CreatePlayer, need to set all player info to some sort of defaults
+        // before it is displayed.  Set player ID #  Need to reset everything to defaults
+        private void createPlayerButton_Click(object sender, EventArgs e)
+        {
+            PlayerRecord newRecord = model.PlayerModel.CreateNewPlayerRecord();
+            // Add the player to free agents
+            newRecord.TeamId = EditorModel.FREE_AGENT_TEAM_ID;
+            EditorModel.totalplayers++;
+            // Need to set unique PLAYER ID
+            newRecord.PlayerId = EditorModel.totalplayers;
+            // This sets unique POID
+            newRecord.NFLID = EditorModel.totalplayers;
+            newRecord.FirstName = "NA";
+            newRecord.LastName = "NA";
+            //Most variables start off at zero but some can't like height and weight so set them
+            newRecord.Height = 72; // 6'0"
+            newRecord.Weight = 40; // 200#
+            model.PlayerModel.CurrentPlayerRecord = newRecord;
+
+            isInitialising = true;
+            string newname = newRecord.FirstName + " " + newRecord.LastName;
+            model.PlayerModel.playernames.Add(newRecord.PlayerId, newname);
+            object[] entry = { newRecord.PlayerId, newname };
+            PlayerGridView.Rows.Add(entry);
+            PlayerGridView.CurrentCell = PlayerGridView.Rows[PlayerGridView.Rows.Count - 1].Cells[0];
+            PlayerGridViewChange(true, -1);
+            isInitialising = false;
+        }
+
+        private void ExportPlayerCSV_Button_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            Stream myStream = null;
+
+            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            fileDialog.RestoreDirectory = true;
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = fileDialog.OpenFile()) != null)
+                    {
+                        PlayerRecord rec = model.PlayerModel.CurrentPlayerRecord;
+                        TableModel table = model.TableModels["PLAY"];
+                        List<TdbFieldProperties> props = table.GetFieldList();
+                        StringBuilder hbuilder = new StringBuilder();
+                        StringBuilder builder = new StringBuilder();
+                        StreamWriter writer = new StreamWriter(myStream);
+                        hbuilder.Append("PLAY");
+                        hbuilder.Append(",");
+                        if (model.FileVersion == MaddenFileVersion.Ver2019)
+                            hbuilder.Append("2019");
+                        hbuilder.Append(",");
+                        hbuilder.Append("No");
+                        hbuilder.Append(",");
+                        writer.WriteLine(hbuilder);
+                        writer.Flush();
+
+                        hbuilder.Clear();
+                        foreach (TdbFieldProperties tdb in props)
+                        {
+                            hbuilder.Append(tdb.Name);
+                            hbuilder.Append(",");
+                        }
+                        writer.WriteLine(hbuilder.ToString());
+                        writer.Flush();
+
+                        foreach (TdbFieldProperties tdb in props)
+                        {
+                            if (tdb.FieldType == TdbFieldType.tdbString)
+                                builder.Append(rec.GetStringField(tdb.Name));
+                            else if (tdb.FieldType == TdbFieldType.tdbFloat)
+                                builder.Append(rec.GetFloatField(tdb.Name));
+                            else
+                            {
+                                int test = rec.GetIntField(tdb.Name);
+                                builder.Append(test);
+                            }
+                            builder.Append(",");
+                        }
+                        writer.WriteLine(builder.ToString());
+                        writer.Flush();
+                        writer.Close();
+                    }
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void ImportPlayerPort_Button_Click(object sender, EventArgs e)
+        {
+            isInitialising = true;
+            string custom = manager.PlayerPortDAT.grfx.GetLoadFile();
+            if (custom == "")
+                return;
+            manager.PlayerPortDAT.grfx = new CustomBitmap(custom, Color.White);
+            if (model.PlayerModel.CurrentPlayerRecord.PortraitId + 2 > manager.PlayerPortDAT.ParentTerf.files)
+                manager.PlayerPortDAT.ParentTerf.Expand(model.PlayerModel.CurrentPlayerRecord.PortraitId + 2);
+            manager.PlayerPortDAT.ParentTerf.Data.DataFiles[model.PlayerModel.CurrentPlayerRecord.PortraitId + 1].mmap_data.ImportGraphic(manager.PlayerPortDAT.grfx.fixed_dds);
+            manager.PlayerPortDAT.changed = true;
+            isInitialising = false;
+
+            DisplayPlayerPort();
+        }
+
+        private void PlayerPortraitExport_Button_Click(object sender, EventArgs e)
+        {
+            string savefilename = "";
+            SaveFileDialog portsavedialog = new SaveFileDialog();
+            portsavedialog.Title = "Save Player Portrait";
+            portsavedialog.Filter = "BMP Image | *.BMP";
+            portsavedialog.CheckPathExists = true;
+
+            if (portsavedialog.ShowDialog() == DialogResult.OK)
+                savefilename = portsavedialog.FileName;
+            if (savefilename == "")
+                return;
+
+            Image image = manager.PlayerPortDAT.ParentTerf.Data.DataFiles[model.PlayerModel.CurrentPlayerRecord.PortraitId + 1].mmap_data.GetPortraitDisplay();
+            image.Save(savefilename, ImageFormat.Bmp);
+        }
+
         #endregion
 
-        #region Player General Functions        
+        #region Player General Controls
+
+        private void firstNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (firstNameTextBox.Text != model.PlayerModel.CurrentPlayerRecord.FirstName)
+                {
+                    isInitialising = true;
+                    model.PlayerModel.CurrentPlayerRecord.FirstName = firstNameTextBox.Text;
+                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName +
+                        " " + model.PlayerModel.CurrentPlayerRecord.LastName;
+                    PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
+                    isInitialising = false;
+                }
+            }
+        }
+
+        private void lastNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (lastNameTextBox.Text != model.PlayerModel.CurrentPlayerRecord.LastName)
+                {
+                    isInitialising = true;
+                    model.PlayerModel.CurrentPlayerRecord.LastName = lastNameTextBox.Text;
+                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName +
+                        " " + model.PlayerModel.CurrentPlayerRecord.LastName;
+                    PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
+                    isInitialising = false;
+                }
+            }
+        }
+
+        private void PlayerID_Updown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (PlayerID_Updown.Value != model.PlayerModel.CurrentPlayerRecord.PlayerId)
+                {
+                    isInitialising = true;
+                    // changing to a new player id
+                    if (!CheckPlayerUniqueness((int)PlayerID_Updown.Value, -1))
+                    {
+                        int oldpgid = model.PlayerModel.CurrentPlayerRecord.PlayerId;
+                        string name = "";
+                        if (model.PlayerModel.playernames.ContainsKey(oldpgid))
+                        {
+                            // This should always happen, but name will be "unknown" if id doesnt exist
+                            name = model.PlayerModel.playernames[oldpgid];
+                            model.PlayerModel.playernames.Remove(oldpgid);
+                        }
+                        else name = "unknown";
+
+                        model.PlayerModel.playernames.Add((int)PlayerID_Updown.Value, name);
+                        model.PlayerModel.CurrentPlayerRecord.PlayerId = (int)PlayerID_Updown.Value;
+                        PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
+                    }
+                    isInitialising = false;
+                }
+            }
+        }
+
+        private void NFL_Updown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (NFL_Updown.Value != model.PlayerModel.CurrentPlayerRecord.NFLID)
+                {
+                    if (!CheckPlayerUniqueness(-1, (int)NFL_Updown.Value))
+                    {
+                        model.PlayerModel.CurrentPlayerRecord.NFLID = (int)NFL_Updown.Value;
+                    }
+                }
+            }
+        }
+
+        private void playerPortraitId_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (manager.PlayerPortDAT.isterf && manager.PlayerPortDAT.ParentTerf.files < playerPortraitId.Value + 1)
+                {
+                    playerPortraitId.Value = model.PlayerModel.CurrentPlayerRecord.PortraitId;
+                    return;
+                }
+
+                model.PlayerModel.CurrentPlayerRecord.PortraitId = (int)playerPortraitId.Value;
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    PortraitID_Large.Value = model.PlayerModel.CurrentPlayerRecord.PortraitId + 10000;
+
+                DisplayPlayerPort();
+            }
+        }
+
+        private void playerFaceID_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    model.PlayerModel.CurrentPlayerRecord.FaceID_19 = (int)PlayerFaceId.Value;
+                else model.PlayerModel.CurrentPlayerRecord.FaceId = (int)PlayerFaceId.Value;
+            }
+        }
+
+        private void playerComment_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlayerComment = (int)playerComment.Value;
+        }
 
         private void playerAge_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.Age = (int)playerAge.Value;
+            }
+        }
+
+        private void playerYearsPro_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.YearsPro = (int)playerYearsPro.Value;
+                //  Add more seasons to the players career
+                isInitialising = true;
+                if (model.FileVersion <= MaddenFileVersion.Ver2008)
+                    InitStatsYear(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void playerAsset_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Asset = playerAsset.Text;
+        }
+
+        private void playerHometown_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Hometown = playerHometown.Text;
+        }
+
+        private void playerStateCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.HomeState = (int)playerStateCombo.SelectedIndex;
+        }
+
+        private void playerBirthday_TextChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.SetBirthday(playerBirthday.Text);
+        }
+
+        private void playerDraftRound_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.DraftRound = (int)playerDraftRound.Value;
+            }
+        }
+
+        private void playerDraftRoundIndex_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.DraftRoundIndex = (int)playerDraftRoundIndex.Value;
+            }
+        }
+
+        private void CareerPhase_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.CareerPhase = CareerPhase_Combo.SelectedIndex;
+        }
+
+        private void PlayerHeight_Feet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                SetPlayerHeight();
+        }
+
+        private void PlayerHeight_Inches_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                SetPlayerHeight();
+        }
+
+        private void SetPlayerHeight()
+        {
+            int height = (int)PlayerHeight_Feet.SelectedIndex * 12 + (int)PlayerHeight_Inches.SelectedIndex;
+            if (height > 127)
+                height = 127;
+            else if (height == 0)
+                height = 1;
+            model.PlayerModel.CurrentPlayerRecord.Height = height;
+
+            PlayerHeight_Feet.SelectedIndex = (int)model.PlayerModel.CurrentPlayerRecord.Height / 12;
+            PlayerHeight_Inches.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.Height - (int)(PlayerHeight_Feet.SelectedIndex * 12);
+        }
+
+        private void playerWeight_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.Weight = (int)playerWeight.Value - 160;
+            }
+        }
+
+        private void playerJerseyNumber_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.JerseyNumber = (int)playerJerseyNumber.Value;
+            }
+        }
+
+        private void playerHairColorCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.HairColor = playerHairColorCombo.SelectedIndex;
+            }
+        }
+
+        private void CollegeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                foreach (KeyValuePair<int, college_entry> playcol in model.Colleges)
+                {
+                    if (playcol.Value.name == CollegeCombo.Text)
+                    {
+                        model.PlayerModel.CurrentPlayerRecord.CollegeId = playcol.Key;
+                    }
+                }
             }
         }
 
@@ -1482,6 +2218,7 @@ namespace MaddenEditor.Forms
                 isInitialising = true;
                 InitPlayerList();
                 isInitialising = false;
+
                 //s68 
                 //Salary cap penalty.  Not for free agents.  Not sure we really want to mess with this, going to comment out and leave it for roster
                 // makers to adjust manually
@@ -1496,23 +2233,6 @@ namespace MaddenEditor.Forms
 
                 //    model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.PreviousTeamId).SalaryCapPenalty1 = total;
                 //}
-            }
-        }
-        
-         
-        private void playerJerseyNumber_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.JerseyNumber = (int)playerJerseyNumber.Value;
-            }
-        }
-
-        private void playerDominantHand_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.DominantHand = playerDominantHand.Checked;
             }
         }
 
@@ -1531,39 +2251,20 @@ namespace MaddenEditor.Forms
                 model.PlayerModel.CurrentPlayerRecord.OriginalPositionId = (int)OriginalPosition_Combo.SelectedIndex;
             }
         }
-        
-        private void playerYearsPro_ValueChanged(object sender, EventArgs e)
+
+        private void playerThrowingStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.YearsPro = (int)playerYearsPro.Value;
-                //  Add more seasons to the players career
-                isInitialising = true;
-                if (model.FileVersion <= MaddenFileVersion.Ver2008)
-                    InitStatsYear(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
+                model.PlayerModel.CurrentPlayerRecord.ThrowStyle = (playerThrowingStyle.SelectedIndex == 1);
             }
         }
 
-        private void CollegeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private void playerTendency_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                foreach (KeyValuePair<int,college_entry> playcol in model.Colleges)
-                {
-                    if (playcol.Value.name == CollegeCombo.Text)
-                    {
-                        model.PlayerModel.CurrentPlayerRecord.CollegeId = playcol.Key;
-                    }
-                }
-            }
-        }
-
-        private void playerProBowl_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.ProBowl = playerProBowl.Checked;
+                model.PlayerModel.CurrentPlayerRecord.Tendency = PlayerTendency.SelectedIndex;
             }
         }
 
@@ -1604,104 +2305,74 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void deletePlayerButton_Click(object sender, EventArgs e)
+        private void playerDominantHand_CheckedChanged(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Are you sure you want to delete this player?\r\n\r\nAlthough this player will disappear from the editor\r\nchanges will not take effect until you save.", "About to Delete " + model.PlayerModel.CurrentPlayerRecord.FirstName + " " + model.PlayerModel.CurrentPlayerRecord.LastName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
+            if (!isInitialising)
             {
-                isInitialising = true;
-                int current = PlayerGridView.CurrentRow.Index;
-                model.PlayerModel.DeletePlayerRecord(model.PlayerModel.CurrentPlayerRecord);
-                PlayerGridView.Rows.RemoveAt(current);
-                if (PlayerGridView.Rows.Count > 0)
-                {
-                    PlayerGridViewChange(false, -1);                    
-                }
-                else
-                {
-                    // No players left to load, reset filters back to ALL
-                    LoadPlayerInfo(null);                                   
-                }
-
-                isInitialising = false;                
+                model.PlayerModel.CurrentPlayerRecord.DominantHand = playerDominantHand.Checked;
             }
         }
 
-        // TO DO : Fix CreatePlayer, need to set all player info to some sort of defaults
-        // before it is displayed.  Set player ID #  Need to reset everything to defaults
-        private void createPlayerButton_Click(object sender, EventArgs e)
+        private void playerNFLIcon_CheckedChanged(object sender, EventArgs e)
         {
-            PlayerRecord newRecord = model.PlayerModel.CreateNewPlayerRecord();
-            // Add the player to free agents
-            newRecord.TeamId = EditorModel.FREE_AGENT_TEAM_ID;
-            EditorModel.totalplayers++;
-            // Need to set unique PLAYER ID
-            newRecord.PlayerId = EditorModel.totalplayers;
-            // This sets unique POID
-            newRecord.NFLID = EditorModel.totalplayers;
-            newRecord.FirstName = "NA";
-            newRecord.LastName = "NA";
-            //Most variables start off at zero but some can't like height and weight so set them
-            newRecord.Height = 72; // 6'0"
-            newRecord.Weight = 40; // 200#
-            model.PlayerModel.CurrentPlayerRecord = newRecord;
-
-            isInitialising = true;
-            string newname = newRecord.FirstName + " " + newRecord.LastName;
-            model.PlayerModel.playernames.Add(newRecord.PlayerId, newname);
-            object[] entry = {newRecord.PlayerId, newname};
-            PlayerGridView.Rows.Add(entry);
-            PlayerGridView.CurrentCell = PlayerGridView.Rows[PlayerGridView.Rows.Count - 1].Cells[0];            
-            PlayerGridViewChange(true,-1);
-            isInitialising = false;
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.NFLIcon = playerNFLIcon.Checked;
+            }
         }
 
-        
+        private void playerCaptain_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.IsCaptain = playerCaptain.Checked;
+        }
+
+        private void playerProBowl_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.ProBowl = playerProBowl.Checked;
+            }
+        }
+
+        private void PlayerHoldOut_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.Holdout = PlayerHoldOut.Checked;
+            }
+        }
+
+        private void InactiveCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                List<InactiveRecord> remove = new List<InactiveRecord>();
+                if (!PlayerInactive.Checked)
+                {
+                    foreach (TableRecordModel iar in model.TableModels[EditorModel.INACTIVE_TABLE].GetRecords())
+                    {
+                        if (iar.Deleted)
+                            continue;
+                        InactiveRecord i = (InactiveRecord)iar;
+                        if (i.PlayerID == model.PlayerModel.CurrentPlayerRecord.PlayerId)
+                            remove.Add(i);
+                    }
+                    foreach (InactiveRecord test in remove)
+                        test.SetDeleteFlag(true);
+                }
+                else
+                {
+                    InactiveRecord record = (InactiveRecord)model.TableModels[EditorModel.INACTIVE_TABLE].CreateNewRecord(true);
+                    record.PlayerID = model.PlayerModel.CurrentPlayerRecord.PlayerId;
+                    record.TeamId = model.PlayerModel.CurrentPlayerRecord.TeamId;
+                }
+            }
+        }
+
         #endregion
 
-        #region Player Ratings Functions
-        
-        private void SetNumericUpDown(NumericUpDown control, int value, string fieldname)
-        {
-            try
-            {
-                control.Value = value;
-            }
-            catch
-            {
-                string message = "Player's " + fieldname + " (" + value + ") is outside of the allowed range.\n\n";
-
-                if (value > 120)
-                {
-                    message += "We recommend resetting the value to " + control.Minimum + ".";
-                }
-                else
-                {
-                    message += "We recommend resetting the value to " + control.Maximum + ".";
-                }
-
-                message += "\n\nHit \"Yes\" to reset to " + control.Maximum + "; hit \"No\" to reset to " + control.Minimum + ".";
-
-                DialogResult dr = MessageBox.Show(message, "Repair Value", MessageBoxButtons.YesNo);
-
-                isInitialising = false;
-                if (dr == DialogResult.Yes)
-                {
-                    control.Value = control.Maximum;
-                }
-                else
-                {
-                    control.Value = control.Minimum;
-                }
-                isInitialising = true;
-            }
-        }
-
-        public void CalcOverall()
-        {  
-            Overall.Value = model.PlayerModel.CurrentPlayerRecord.Overall;
-        }
-               
+        #region Player Overall
 
         private void calculateOverallButton_Click(object sender, EventArgs e)
         {
@@ -1719,6 +2390,20 @@ namespace MaddenEditor.Forms
                 model.PlayerModel.CurrentPlayerRecord.Overall = (int)Overall.Value;
             }
         }
+
+        private void playerOVRArchetypeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                int type = model.PlayerModel.GetArchetype(playerOVRArchetypeCombo.Text);
+                playerOVRArchetype.Text = playeroverall.GetOverall19(model.PlayerModel.CurrentPlayerRecord, model.PlayerModel.CurrentPlayerRecord.PositionId, type).ToString();
+            }
+
+        }
+
+        #endregion
+
+        #region Player Ratings
 
         private void playerSpeed_ValueChanged(object sender, EventArgs e)
         {
@@ -1883,13 +2568,6 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void playerNFLIcon_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.NFLIcon = playerNFLIcon.Checked;
-            }
-        }
 
         private void playerImportance_ValueChanged(object sender, EventArgs e)
         {
@@ -1922,23 +2600,8 @@ namespace MaddenEditor.Forms
 
 
 
-        private void cbTendancy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.Tendency = cbTendancy.SelectedIndex;
-            }
-        }
 
-        private void cbFaceId_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                    model.PlayerModel.CurrentPlayerRecord.FaceID_19 = (int)PlayerFaceId.Value;
-                else model.PlayerModel.CurrentPlayerRecord.FaceId = (int)PlayerFaceId.Value;
-            }
-        }
+
 
         private void playerEquipmentThighPads_ValueChanged(object sender, EventArgs e)
         {
@@ -1948,53 +2611,459 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void playerDraftRound_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.DraftRound = (int)playerDraftRound.Value;
-            }
-        }
 
-        private void playerDraftRoundIndex_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.DraftRoundIndex = (int)playerDraftRoundIndex.Value;
-            }
-        }
 
-        private void CareerPhase_Combo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.CareerPhase = CareerPhase_Combo.SelectedIndex;
-        }
 
-        
-        
-        
-        
-        
-        
+
+
+
+
         #endregion
 
-        #region Player Appearance Functions
+        #region 2019 Ratings and Traits
 
-        private void playerHairColorCombo_SelectedIndexChanged(object sender, EventArgs e)
+        #region 2019 Traits
+
+        private void playerThrowAway_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowAway = playerThrowAway.Checked;
+        }
+
+        private void playerThrowSpiral_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowSpiral = playerThrowSpiral.Checked;
+        }
+
+        private void playerForcePasses_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ForcePasses = playerForcePass.SelectedIndex;
+        }
+
+        private void playerFightYards_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.FightYards = playerFightYards.Checked;
+        }
+
+        private void playerPlaysBall_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlaysBall = playerPlaysBall.SelectedIndex;
+        }
+
+        private void playerHighMotor_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.HighMotor = playerHighMotor.Checked;
+        }
+
+        private void playerDLSwim_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.DLSwim = playerDLSwim.Checked;
+        }
+
+        private void playerBullrush_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.DLBullrush = playerBullrush.Checked;
+        }
+
+        private void playerDLSpin_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.DLSpinmove = playerDLSpin.Checked;
+        }
+
+        private void playerBigHitter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.BigHitter = playerBigHitter.Checked;
+        }
+
+        private void playerClutch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Clutch = playerClutch.Checked;
+        }
+
+        private void playerTuckRun_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TuckRun = (int)playerTuckRun.SelectedIndex;
+        }
+
+        private void playerStripsBall_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.StripsBall = playerStripsBall.Checked;
+        }
+
+        private void playerHighPointCatch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PossessionCatch = playerPossCatch.Checked;
+        }
+
+        private void playerTRFB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.FeetInBounds = playerFeetInBounds.Checked;
+        }
+
+        private void playerTRIC_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Penalty = playerPenalty.SelectedIndex;
+        }
+
+        private void playerTRJR_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.AggressiveCatch = playerAggressiveCatch.Checked;
+        }
+
+        private void playerRAC_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.RunAfterCatch = playerRAC.Checked;
+        }
+
+        private void playerDropsPasses_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.DropPasses = playerDropsPasses.Checked;
+        }
+
+        private void playerCoversBall_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.CoversBall = playerCoversBall.SelectedIndex + 1;
+        }
+
+        private void playerPlaysBall_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlaysBall = playerPlaysBall.SelectedIndex;
+        }
+
+        private void playerForcePass_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ForcePasses = playerForcePass.SelectedIndex;
+        }
+
+        private void playerSensePressure_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.SensePressure = playerSensePressure.SelectedIndex;
+        }
+
+        private void playerFightYards_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.FightYards = playerFightYards.Checked;
+        }
+
+        #endregion
+
+        #region 2019 Ratings
+
+        private void playerPotential_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Potential = (int)playerPotential.Value;
+        }
+
+        private void playerQBStance_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Stance = (int)playerQBStance.Value;
+        }
+
+        private void playerRelease_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Release = (int)playerRelease.Value;
+        }
+
+        private void playerThrowShort_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowShort = (int)playerThrowShort.Value;
+        }
+
+        private void playerThrowMedium_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowMedium = (int)playerThrowMedium.Value;
+        }
+
+        private void playerThrowDeep_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowDeep = (int)playerThrowDeep.Value;
+        }
+
+        private void playerThrowOnRun_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowOnRun = (int)playerThrowOnRun.Value;
+        }
+
+        private void playerThrowPressure_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThrowPressure = (int)playerThrowPressure.Value;
+        }
+
+        private void playerBreakSack_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.BreakSack = (int)playerBreakSack.Value;
+        }
+
+        private void playerPlayAction_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlayAction = (int)playerPlayAction.Value;
+        }
+
+        private void playerTrucking_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Trucking = (int)playerTrucking.Value;
+        }
+
+        private void playerElusive_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Elusive = (int)playerElusive.Value;
+        }
+
+        private void playerRB_Vision_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.RB_Vision = (int)playerRB_Vision.Value;
+        }
+
+        private void playerStiffArm_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.StiffArm = (int)playerStiffArm.Value;
+        }
+
+        private void playerSpinMove_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.SpinMove = (int)playerSpinMove.Value;
+        }
+
+        private void playerJukeMove_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.JukeMove = (int)playerJukeMove.Value;
+        }
+
+        private void playerImpactBlock_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ImpactBlocking = (int)playerImpactBlock.Value;
+        }
+
+        private void playerLeadBlock_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.LeadBlock = (int)playerLeadBlock.Value;
+        }
+
+        private void playerMoves_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PowerMoves = (int)playerPowerMoves.Value;
+        }
+
+        private void playerFinesseMoves_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.FinesseMoves = (int)playerFinesseMoves.Value;
+        }
+
+        private void playerShortRoute_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ShortRoute = (int)playerShortRoute.Value;
+        }
+
+        private void playerMediumRoute_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.MediumRoute = (int)playerMediumRoute.Value;
+        }
+
+        private void playerDeepRoute_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.DeepRoute = (int)playerDeepRoute.Value;
+        }
+
+        private void playerCatchTraffic_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.CatchTraffic = (int)playerCatchTraffic.Value;
+        }
+
+        private void playerSpecCatch_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.SpecCatch = (int)playerSpecCatch.Value;
+        }
+
+        private void playerRunBlockFinesse_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.RunBlockFootwork = (int)playerRunBlockFinesse.Value;
+        }
+
+        private void playerRunBlockStrength_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.RunBlockStrength = (int)playerRunBlockStrength.Value;
+        }
+
+        private void playerPassBlockFootwork_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PassBlockFootwork = (int)playerPassBlockFootwork.Value;
+        }
+
+        private void playerPassBlockStr_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PassBlockStrength = (int)playerPassBlockStr.Value;
+        }
+
+        private void playerPlayRecog_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlayRecognition = (int)playerPlayRecog.Value;
+        }
+
+        private void playerPursuit_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Pursuit = (int)playerPursuit.Value;
+        }
+
+        private void playerBlockShed_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.BlockShedding = (int)playerBlockShed.Value;
+        }
+
+        private void playerZoneCoverage_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ZoneCoverage = (int)playerZoneCoverage.Value;
+        }
+
+        private void playerManCover_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ManCoverage = (int)playerManCover.Value;
+        }
+
+        private void playerPressCover_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PressCover = (int)playerPressCover.Value;
+        }
+
+        private void playerHitPower_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.HitPower = (int)playerHitPower.Value;
+        }
+
+
+
+        private void playerConfidence_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Confidence = (int)playerConfidence.Value;
+        }
+
+        private void playerArchetype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlayerType = model.PlayerModel.GetArchetype(playerArchetype.Text);
+        }
+
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Player Appearance Equipment Misc
+
+        #region 2019 Equipment Misc
+
+        private void playerQBStyle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.QBStyle = model.PlayerModel.GetQBStyle(playerQBStyle.Text);
+        }
+
+        private void playerEndPlay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.EndPlay = model.PlayerModel.GetEndPlay(playerEndPlay.Text);
+        }
+
+        private void SidelineHeadGear_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.SidelineHeadgear = SidelineHeadGear_Combo.SelectedIndex;
+        }
+
+        private void playerFlakJacket_CheckedChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.HairColor = playerHairColorCombo.SelectedIndex;
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    model.PlayerModel.CurrentPlayerRecord.FlakJacket = playerFlakJacket.Checked;
             }
         }
 
-        private void playerWeight_ValueChanged(object sender, EventArgs e)
+        private void playerBackPlate_CheckedChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.Weight = (int)playerWeight.Value - 160;
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    model.PlayerModel.CurrentPlayerRecord.BackPlate = playerBackPlate.Checked;
             }
-        }        
+        }
+
+        private void playerTowel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.PlayerTowel = playerTowel.Checked;
+        }
+
+        private void playerHandWarmer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.HandWarmer = playerHandWarmer.Checked;
+        }
+
+        #endregion
+
+        #region Legacy appearance
 
         private void playerBodyOverall_ValueChanged(object sender, EventArgs e)
         {
@@ -2025,14 +3094,6 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.BodyFat = (int)playerBodyFat.Value;
-            }
-        }
-
-        private void playerEquipmentShoes_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.EquipmentShoes = (int)playerEquipmentShoes.Value;
             }
         }
 
@@ -2132,13 +3193,6 @@ namespace MaddenEditor.Forms
             }
         }
 
-        private void playerThrowingStyle_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.SideArmed = (playerThrowingStyle.SelectedIndex == 1);
-            }
-        }               
 
         private void playerHairStyleCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2147,7 +3201,7 @@ namespace MaddenEditor.Forms
                 model.PlayerModel.CurrentPlayerRecord.HairStyle = playerHairStyleCombo.SelectedIndex;
             }
         }
-        
+
         private void Tattoo_Left_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
@@ -2162,105 +3216,21 @@ namespace MaddenEditor.Forms
 
         #endregion
 
-        #region Player Equipment Injury Functions
+        #region Player Equipment Controls
 
-        #region misc
-        private void Overall_ValueChanged_1(object sender, EventArgs e)
+        #region Equipment
+
+        private void playerJerseySleeves_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.Overall = (int)Overall.Value;
-            }
-        }
-
-        private void NFL_Updown_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (NFL_Updown.Value != model.PlayerModel.CurrentPlayerRecord.NFLID)
-                {
-                    if (!CheckPlayerUniqueness(-1, (int)NFL_Updown.Value))
-                    {
-                        model.PlayerModel.CurrentPlayerRecord.NFLID = (int)NFL_Updown.Value;
-                    }
-                }                
-            }
-        }
-        private void playerAddInjuryButton_Click(object sender, EventArgs e)
-        {
-            InjuryRecord injRec = null;
-            try
-            {
-                injRec = model.PlayerModel.CreateNewInjuryRecord();
-            }
-            catch (ApplicationException err)
-            {
-                MessageBox.Show("Error adding Injury\r\n" + err.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            injRec.PlayerId = model.PlayerModel.CurrentPlayerRecord.PlayerId;
-            injRec.TeamId = model.PlayerModel.CurrentPlayerRecord.TeamId;
-            injRec.InjuryLength = 0;
-            injRec.IR = false;
-            injRec.InjuryType = 0;
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
-            {
-                injRec.InjurySeverity = 5;
-            }
-
-            isInitialising = true;
-            playerInjuryCombo.SelectedIndex = -1;
-            LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);            
-            isInitialising = false;
-        }
-
-        private void playerRemoveInjuryButton_Click(object sender, EventArgs e)
-        {
-            //Mark the record for deletion
-            model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).SetDeleteFlag(true);
-
-            isInitialising = true;
-            LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
-            isInitialising = false;
-        }
-
-        private void playerInjuryCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
-                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryType = playerInjuryCombo.SelectedIndex;
-                else
-                {
-                    int test = model.PlayerModel.GetInjury(playerInjuryCombo.Text);
-                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryType = test;
-                }
-            }
-        }
-
-        private void playerInjuryReserve_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).IR = playerInjuryReserve.Checked;
-            }
-        }
-
-        private void playerInjuryLength_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryLength = (int)playerInjuryLength.Value;
-                injuryLengthDescriptionTextBox.Text = model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).LengthDescription;
-            }
+                model.PlayerModel.CurrentPlayerRecord.JerseySleeve = playerJerseySleeves.SelectedIndex;
         }
 
         private void playerEyePaintCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.EyePaint = playerEyePaintCombo.SelectedIndex;
+                model.PlayerModel.CurrentPlayerRecord.EyePaint = model.PlayerModel.GetFaceMark(playerEyePaintCombo.Text);
             }
         }
 
@@ -2310,7 +3280,7 @@ namespace MaddenEditor.Forms
             {
                 model.PlayerModel.CurrentPlayerRecord.LeftWrist = model.PlayerModel.GetWrist(playerLeftWristCombo.Text);
                 if (model.FileVersion < MaddenFileVersion.Ver2019)
-                    model.PlayerModel.CurrentPlayerRecord.LeftWristB = model.PlayerModel.GetWrist(playerLeftWristCombo.Text);
+                    model.PlayerModel.CurrentPlayerRecord.TeamLeftWrist = model.PlayerModel.GetWrist(playerLeftWristCombo.Text);
             }
         }
 
@@ -2320,7 +3290,7 @@ namespace MaddenEditor.Forms
             {
                 model.PlayerModel.CurrentPlayerRecord.RightWrist = model.PlayerModel.GetWrist(playerRightWristCombo.Text);
                 if (model.FileVersion < MaddenFileVersion.Ver2019)
-                    model.PlayerModel.CurrentPlayerRecord.RightWristB = model.PlayerModel.GetWrist(playerRightWristCombo.Text);
+                    model.PlayerModel.CurrentPlayerRecord.TeamRightWrist = model.PlayerModel.GetWrist(playerRightWristCombo.Text);
             }
         }
 
@@ -2329,6 +3299,8 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.LeftHand = model.PlayerModel.GetGloves(playerLeftHandCombo.Text);
+                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    model.PlayerModel.CurrentPlayerRecord.TeamLeftHand = model.PlayerModel.GetGloves(playerLeftHandCombo.Text);
             }
         }
 
@@ -2337,18 +3309,8 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.RightHand = model.PlayerModel.GetGloves(playerRightHandCombo.Text);
-            }
-        }
-
-        private void playerSleevesCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
                 if (model.FileVersion < MaddenFileVersion.Ver2019)
-                {
-                    model.PlayerModel.CurrentPlayerRecord.SleevesLeft = playerSleevesCombo.SelectedIndex;
-                    model.PlayerModel.CurrentPlayerRecord.SleevesB = playerSleevesCombo.SelectedIndex;
-                }
+                    model.PlayerModel.CurrentPlayerRecord.TeamRightHand = model.PlayerModel.GetGloves(playerRightHandCombo.Text);
             }
         }
 
@@ -2372,7 +3334,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.LeftShoe = playerLeftAnkleCombo.SelectedIndex;
+                model.PlayerModel.CurrentPlayerRecord.AnkleLeft = model.PlayerModel.GetAnkle(playerLeftAnkleCombo.Text);
             }
         }
 
@@ -2380,7 +3342,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.RightShoe = playerRightAnkleCombo.SelectedIndex;
+                model.PlayerModel.CurrentPlayerRecord.AnkleRight = model.PlayerModel.GetAnkle(playerRightAnkleCombo.Text);
             }
         }
 
@@ -2394,166 +3356,238 @@ namespace MaddenEditor.Forms
 
         private void playerHelmetStyleCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!isInitialising)                
-                model.PlayerModel.CurrentPlayerRecord.HelmetStyle = model.PlayerModel.GetHelmet(playerHelmetStyleCombo.Text);
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.Helmet = model.PlayerModel.GetHelmet(playerHelmetStyleCombo.Text);
         }
 
         private void playerFaceMaskCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.FaceMask = model.PlayerModel.GetFaceMask(playerFaceMaskCombo.Text);                
+                model.PlayerModel.CurrentPlayerRecord.FaceMask = model.PlayerModel.GetFaceMask(playerFaceMaskCombo.Text);
             }
         }
 
-        #endregion
-               
-
-        private string DecodeTendancy(MaddenPositions pos, int type)
-        {
-            if (type == 2)
-            {
-                return "Balanced";
-            }
-
-            switch (pos)
-            {
-                case MaddenPositions.QB:
-                    return (type == 0 ? "Pocket" : "Scrambling");
-                case MaddenPositions.HB:
-                    return (type == 0 ? "Power" : "Speed");
-                case MaddenPositions.FB:
-                case MaddenPositions.TE:
-                    return (type == 0 ? "Blocking" : "Receiving");
-                case MaddenPositions.WR:
-                    return (type == 0 ? "Possession" : "Speed");
-                case MaddenPositions.LT:
-                case MaddenPositions.LG:
-                case MaddenPositions.C:
-                case MaddenPositions.RG:
-                case MaddenPositions.RT:
-                    return (type == 0 ? "Run Blocking" : "Pass Blocking");
-                case MaddenPositions.LE:
-                case MaddenPositions.RE:
-                case MaddenPositions.DT:
-                    {
-                        if (model.FileVersion >= MaddenFileVersion.Ver2019)
-                            return (type == 0 ? "Cover LB" : "Pass Rush");
-                        else return (type == 0 ? "Pass Rushing" : "Run Stopping");
-                    }
-                case MaddenPositions.LOLB:
-                case MaddenPositions.MLB:
-                case MaddenPositions.ROLB:
-                    return (type == 0 ? "Coverage" : "Run Stopping");
-                case MaddenPositions.CB:
-                case MaddenPositions.SS:
-                case MaddenPositions.FS:
-                    return (type == 0 ? "Coverage" : "Hard Hitting");
-                case MaddenPositions.K:
-                case MaddenPositions.P:
-                    return (type == 0 ? "Power" : "Accurate");
-            }
-
-            return "";
-        }
-
-                
-        public void FixCareerStats(PlayerRecord player)
-        {
-            int baseyear = 2003;
-            if (model.FileVersion == MaddenFileVersion.Ver2005)
-                baseyear = 2004;
-            if (model.FileVersion == MaddenFileVersion.Ver2006)
-                baseyear = 2005;
-            if (model.FileVersion == MaddenFileVersion.Ver2007)
-                baseyear = 2006;
-            if (model.FileVersion == MaddenFileVersion.Ver2008)
-                baseyear = 2007;
-
-            //  offense
-            int totalpassatt = 0;
-            int totalpasscomp = 0;
-
-
-            for (int count = 0; count < player.YearsPro; count++)
-            {
-                if ((string)statsyear.Items[count] == "Career")
-                    continue;
-                else
-                {
-                    int year = (int)statsyear.Items[0] - baseyear;
-
-                    SeasonStatsOffenseRecord off = model.PlayerModel.GetOffStats(player.PlayerId, year);
-                    if (off == null)
-                        continue;
-                    totalpassatt += off.SeaPassAtt;
-                    totalpasscomp += off.SeaComp;
-                }
-            }
-        }
-                 
-        private void playerPortraitId_ValueChanged(object sender, EventArgs e)
+        private void playerLeftShoeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
             {
-                if (manager.PlayerPortDAT.isterf && manager.PlayerPortDAT.ParentTerf.files < playerPortraitId.Value + 1)
-                {
-                    playerPortraitId.Value = model.PlayerModel.CurrentPlayerRecord.PortraitId;
-                    return;
-                }
-                
-                model.PlayerModel.CurrentPlayerRecord.PortraitId = (int)playerPortraitId.Value;
-                DisplayPlayerPort();
+                model.PlayerModel.CurrentPlayerRecord.LeftShoe = model.PlayerModel.GetShoe(playerLeftShoeCombo.Text);
             }
         }
 
-        private void ImportPlayerPort_Button_Click(object sender, EventArgs e)
+        private void playerRightShoeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isInitialising = true;
-            string custom = manager.PlayerPortDAT.grfx.GetLoadFile();
-            if (custom == "")
-                return;
-            manager.PlayerPortDAT.grfx = new CustomBitmap(custom, Color.White);
-            if (model.PlayerModel.CurrentPlayerRecord.PortraitId + 2 > manager.PlayerPortDAT.ParentTerf.files)
-                manager.PlayerPortDAT.ParentTerf.Expand(model.PlayerModel.CurrentPlayerRecord.PortraitId + 2);
-            manager.PlayerPortDAT.ParentTerf.Data.DataFiles[model.PlayerModel.CurrentPlayerRecord.PortraitId + 1].mmap_data.ImportGraphic(manager.PlayerPortDAT.grfx.fixed_dds);
-            manager.PlayerPortDAT.changed = true;
-            isInitialising = false;            
-            
-            DisplayPlayerPort();      
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.RightShoe = model.PlayerModel.GetShoe(playerRightShoeCombo.Text);
+            }
         }
 
-        private void PlayerPortraitExport_Button_Click(object sender, EventArgs e)
+        private void playerLeftSleeve_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string savefilename = "";
-            SaveFileDialog portsavedialog = new SaveFileDialog();
-            portsavedialog.Title = "Save Player Portrait";
-            portsavedialog.Filter = "BMP Image | *.BMP";
-            portsavedialog.CheckPathExists = true;            
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.SleevesLeft = model.PlayerModel.GetSleeve(playerLeftSleeve.Text);
+            }
+        }
 
-            if (portsavedialog.ShowDialog() == DialogResult.OK)            
-               savefilename = portsavedialog.FileName;
-            if (savefilename == "")
-                return;
+        private void playerRightSleeve_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    model.PlayerModel.CurrentPlayerRecord.SleevesRight = model.PlayerModel.GetSleeve(playerRightSleeve.Text);
+                else if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    model.PlayerModel.CurrentPlayerRecord.TempSleeves = model.PlayerModel.GetSleeve(playerRightSleeve.Text);
+            }
+        }
 
-            Image image = manager.PlayerPortDAT.ParentTerf.Data.DataFiles[model.PlayerModel.CurrentPlayerRecord.PortraitId + 1].mmap_data.GetPortraitDisplay();
-            image.Save(savefilename, ImageFormat.Bmp);
+        private void playerSockHeight_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.SockHeight = (int)playerSockHeight.SelectedIndex;
+        }
+
+        private void playerUndershirt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.UnderShirt = playerUndershirt.SelectedIndex;
         }
 
         #endregion
 
-        
-        
-        
-        #region Player Contract/Salary Functions
+        #region Legacy Specific Controls
+
+        private void T_Sleeves_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TempSleeves = model.PlayerModel.GetSleeve(T_Sleeves_Combo.Text);
+        }
+
+        private void T_LeftElbow_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TeamLeftElbow = model.PlayerModel.GetElbow(T_LeftElbow_Combo.Text);
+        }
+
+        private void T_RightElbow_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TeamRightElbow = model.PlayerModel.GetElbow(T_RightElbow_Combo.Text);
+        }
+
+        private void T_LeftHand_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TeamLeftHand = model.PlayerModel.GetGloves(T_LeftHand_Combo.Text);
+        }
+
+        private void T_RightHand_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TeamRightHand = model.PlayerModel.GetGloves(T_RightHand_Combo.Text);
+        }
+
+        private void T_LeftWrist_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TeamLeftWrist = model.PlayerModel.GetGloves(T_LeftWrist_Combo.Text);
+        }
+
+        private void T_RightWrist_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.TeamRightWrist = model.PlayerModel.GetGloves(T_RightWrist_Combo.Text);
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Injury
+
+        private void playerAddInjuryButton_Click(object sender, EventArgs e)
+        {
+            InjuryRecord injRec = null;
+            try
+            {
+                injRec = model.PlayerModel.CreateNewInjuryRecord();
+            }
+            catch (ApplicationException err)
+            {
+                MessageBox.Show("Error adding Injury\r\n" + err.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            injRec.PlayerId = model.PlayerModel.CurrentPlayerRecord.PlayerId;
+            injRec.TeamId = model.PlayerModel.CurrentPlayerRecord.TeamId;
+            injRec.InjuryLength = 0;
+            injRec.IR = false;
+            injRec.InjuryType = 0;
+            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            {
+                injRec.InjurySeverity = 5;
+            }
+
+            isInitialising = true;
+            playerInjuryCombo.SelectedIndex = -1;
+            LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+            isInitialising = false;
+        }
+
+        private void playerRemoveInjuryButton_Click(object sender, EventArgs e)
+        {
+            //Mark the record for deletion
+            model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).SetDeleteFlag(true);
+
+            isInitialising = true;
+            LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+            isInitialising = false;
+        }
+
+        private void playerInjuryCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryType = playerInjuryCombo.SelectedIndex;
+                else
+                {
+                    int test = model.PlayerModel.GetInjury(playerInjuryCombo.Text);
+                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryType = test;
+                }
+            }
+        }
+
+        private void playerInjuryReserve_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).IR = playerInjuryReserve.Checked;
+            }
+        }
+
+        private void playerInjuryLength_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryLength = (int)playerInjuryLength.Value;
+                injuryLengthDescriptionTextBox.Text = model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).LengthDescription;
+            }
+        }
+
+        private void playerInjurySevere_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                {
+                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjurySeverity = (int)playerInjurySevere.Value;
+                }
+        }
+
+        private void playerInjuryReturn_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                {
+                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryReturn = (int)playerInjuryReturn.Value;
+                }
+        }
+
+        #endregion
+
+        #region Player Contracts
+
+        #region Contract/Salary  Functions
 
         public void ClearPlayerSalaryDetails()
         {
+            PlayerContract_Panel.Enabled = false;
+            PlayerContractDetails_Panel.Enabled = false;
+            MiscSalary_Panel.Enabled = false;
+
             playerTotalSalary.Value = 0;
             playerTotalBonus.Value = 0;
             playerContractLength.Value = 0;
             playerContractYearsLeft.Value = 0;
-
+            for (int c = 0; c < 2; c++ )
+            {
+                string name = "Player";
+                if (c == 0)
+                    name += "Bonus";
+                else name += "Salary";
+                for (int m = 0; m < 7; m++)
+                {
+                    string newname = name + m;
+                    NumericUpDown updown = this.Controls.Find(newname, true).First() as NumericUpDown;
+                    updown.BackColor = SystemColors.Window;
+                    updown.Value = 0;
+                }
+            }
+            /*
             PlayerBonus0.Value = 0;
             PlayerBonus1.Value = 0;
             PlayerBonus2.Value = 0;
@@ -2568,95 +3602,37 @@ namespace MaddenEditor.Forms
             PlayerSalary4.Value = 0;
             PlayerSalary5.Value = 0;
             PlayerSalary6.Value = 0;
-        }
+            */
 
-        private void LoadPlayerSalaries(PlayerRecord record)
-        {
-            bool Madden19 = false;
-            if (model.FileVersion == MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster || model.FileType == MaddenFileType.DBTeam)
-                Madden19 = true;
-            double tempteamsalary = 0;
-
-            ClearPlayerSalaryDetails();
-
-            playerTotalSalary.Enabled = true;
-            playerTotalBonus.Enabled = true;
-            playerContractLength.Enabled = true;
-            playerContractYearsLeft.Enabled = true;
-            playerTotalSalary.Value = (decimal)record.TotalSalary / 100;
-            playerTotalBonus.Value = (decimal)record.BonusTotal / 100;
-            playerContractLength.Value = (int)record.ContractLength;
-            playerContractYearsLeft.Value = (int)record.ContractYearsLeft;
-            ContractIncrease.Enabled = false;
-
-            PlayerBonus0.Enabled = false;
-            PlayerBonus1.Enabled = false;
-            PlayerBonus2.Enabled = false;
-            PlayerBonus3.Enabled = false;
-            PlayerBonus4.Enabled = false;
-            PlayerBonus5.Enabled = false;
-            PlayerBonus6.Enabled = false;
-            PlayerSalary0.Enabled = false;
-            PlayerSalary1.Enabled = false;
-            PlayerSalary2.Enabled = false;
-            PlayerSalary3.Enabled = false;
-            PlayerSalary4.Enabled = false;
-            PlayerSalary5.Enabled = false;
-            PlayerSalary6.Enabled = false;
-
-            SalaryCap.Value = 0;
+            PlayerCapHit.Text = "";
             TeamSalary.Text = "";
             CalcTeamSalary.Text = "";
             TeamCapRoom.Text = "";
             TeamSalaryRank.Text = "";
-            SalaryRankCombo.SelectedIndex = -1;
             Top5.Value = 0;
             Top10.Value = 0;
             LeagueAVG.Value = 0;
             Top5AVG.Value = 0;
             Top10AVG.Value = 0;
             LeagueContAVG.Value = 0;
-            TeamSalary.Enabled = false;
-            CalcTeamSalary.Enabled = false;
-            TeamSalaryRank.Enabled = false;
-            SalaryRankCombo.Enabled = false;
-            Top5.Enabled = false;
-            Top10.Enabled = false;
-            LeagueAVG.Enabled = false;
-            Top5AVG.Enabled = false;
-            Top10AVG.Enabled = false;
-            LeagueContAVG.Enabled = false;
+        }
+
+        private void LoadPlayerSalaries(PlayerRecord record)
+        {
+            ClearPlayerSalaryDetails();
+            // Not on a current team so return
+            if (record.TeamId == 1009 || record.TeamId == 1010 || record.TeamId == 1014 || record.TeamId == 1015 || record.TeamId == 1023)
+                return;
+            PlayerContract_Panel.Enabled = true;
+            MiscSalary_Panel.Enabled = true;
+            TeamRecord teamRecord = model.TeamModel.GetTeamRecord(record.TeamId);
 
             if (model.FileType == MaddenFileType.Franchise || Madden19)
             {
-                ContractIncrease.Enabled = true;
-                if (record.YearsPro == 0)
-                    ContractIncrease.Value = 25;
-                else ContractIncrease.Value = 30;
-                if (Madden19)
-                {
-                    // Madden 19 specific settings
-                    CurrentYear.Value = 2019;
-                }
-                else
-                {
-                    UseLeagueMinimum.Enabled = true;
-                    YearlyMinimum.Enabled = true;
-                    foreach (TeamRecord rec in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
-                    {
-                        if (rec.Deleted)
-                            continue;
-                        if (rec.TeamId == record.TeamId)
-                        {
-                            Penalty0.Value = rec.SalaryCapPenalty0 / 100;
-                            Penalty1.Value = rec.SalaryCapPenalty1 / 100;
-                            break;
-                        }
-                    }
+                // Set total salary and total bonus from their yearly totals
+                record.FixYearlyContract();
 
-                    SalaryCap.Value = Math.Round((decimal)model.SalaryCapModel.SalaryCap / 1000000, 4);
-                }
-
+                PlayerContractDetails_Panel.Enabled = true;
                 PlayerBonus0.Value = (decimal)record.Bonus0 / 100;
                 PlayerBonus1.Value = (decimal)record.Bonus1 / 100;
                 PlayerBonus2.Value = (decimal)record.Bonus2 / 100;
@@ -2671,570 +3647,79 @@ namespace MaddenEditor.Forms
                 PlayerSalary4.Value = (decimal)record.Salary4 / 100;
                 PlayerSalary5.Value = (decimal)record.Salary5 / 100;
                 PlayerSalary6.Value = (decimal)record.Salary6 / 100;
-                PlayerBonus0.Enabled = true;
-                PlayerBonus1.Enabled = true;
-                PlayerBonus2.Enabled = true;
-                PlayerBonus3.Enabled = true;
-                PlayerBonus4.Enabled = true;
-                PlayerBonus5.Enabled = true;
-                PlayerBonus6.Enabled = true;
-                PlayerSalary0.Enabled = true;
-                PlayerSalary1.Enabled = true;
-                PlayerSalary2.Enabled = true;
-                PlayerSalary3.Enabled = true;
-                PlayerSalary4.Enabled = true;
-                PlayerSalary5.Enabled = true;
-                PlayerSalary6.Enabled = true;
-                PlayerCapHit.Text = "" + ((double)record.CurrentSalary / 100.0);
-                PlayerHoldOut.Enabled = true;
-                PlayerHoldOut.Checked = record.Holdout;
 
-                MiscSalary_Panel.Enabled = true;
+                if (!Madden19)
+                {
+                    UseLeagueMinimum_Checkbox.Enabled = true;
+                    LeagueMinimum.Enabled = true;
+                    Penalty0.Value = (decimal)teamRecord.SalaryCapPenalty0 / 100;
+                    Penalty1.Value = (decimal)teamRecord.SalaryCapPenalty1 / 100;                    
+                }
             }
             else
             {
-                salary = new int[7];
-                bonus = new int[7];
-                PlayerCapHit.Text = CalculateCapHit(record, 30, false).ToString();
-                PlayerBonus0.Value = (decimal)record.bonus[0] / 100;
-                PlayerBonus1.Value = (decimal)record.bonus[1] / 100;
-                PlayerBonus2.Value = (decimal)record.bonus[2] / 100;
-                PlayerBonus3.Value = (decimal)record.bonus[3] / 100;
-                PlayerBonus4.Value = (decimal)record.bonus[4] / 100;
-                PlayerBonus5.Value = (decimal)record.bonus[5] / 100;
-                PlayerBonus6.Value = (decimal)record.bonus[6] / 100;
-                PlayerSalary0.Value = (decimal)record.salary[0] / 100;
-                PlayerSalary1.Value = (decimal)record.salary[1] / 100;
-                PlayerSalary2.Value = (decimal)record.salary[2] / 100;
-                PlayerSalary3.Value = (decimal)record.salary[3] / 100;
-                PlayerSalary4.Value = (decimal)record.salary[4] / 100;
-                PlayerSalary5.Value = (decimal)record.salary[5] / 100;
-                PlayerSalary6.Value = (decimal)record.salary[6] / 100;
+                if (record.YearlySalary == null)
+                    record.SetContract(false, false, 30);
+                PlayerBonus0.Value = (decimal)record.YearlyBonus[0] / 100;
+                PlayerBonus1.Value = (decimal)record.YearlyBonus[1]/100;
+                PlayerBonus2.Value = (decimal)record.YearlyBonus[2]/100;
+                PlayerBonus3.Value = (decimal)record.YearlyBonus[3]/100;
+                PlayerBonus4.Value = (decimal)record.YearlyBonus[4]/100;
+                PlayerBonus5.Value = (decimal)record.YearlyBonus[5]/100;
+                PlayerBonus6.Value = (decimal)record.YearlyBonus[6]/100;
+                PlayerSalary0.Value = (decimal)record.YearlySalary[0] / 100;
+                PlayerSalary1.Value = (decimal)record.YearlySalary[1] / 100;
+                PlayerSalary2.Value = (decimal)record.YearlySalary[2] / 100;
+                PlayerSalary3.Value = (decimal)record.YearlySalary[3] / 100;
+                PlayerSalary4.Value = (decimal)record.YearlySalary[4] / 100;
+                PlayerSalary5.Value = (decimal)record.YearlySalary[5] / 100;
+                PlayerSalary6.Value = (decimal)record.YearlySalary[6] / 100;
             }
 
+            playerTotalSalary.Value = (decimal)record.TotalSalary / 100;
+            playerTotalBonus.Value = (decimal)record.TotalBonus / 100;
+            playerContractLength.Value = (int)record.ContractLength;
+            playerContractYearsLeft.Value = (int)record.ContractYearsLeft;
+            if (record.YearsPro == 0)
+                ContractYearlyIncrease.Value = 25;
+            else ContractYearlyIncrease.Value = 30;
+
+            playerPreviousCon.Value = record.PreviousContractLength;
+            playerPreviousTotal.Value = (decimal)record.PreviousTotalSalary / 100;
+            playerPreviousBonus.Value = (decimal)record.PreviousSigningBonus / 100;
+
+            if (record.ContractYearsLeft > 0)
+            {
+                int conyear = record.ContractLength - record.ContractYearsLeft;
+                string name = "Player";
+                for (int c = 0; c < 2; c++)
+                {
+                    string newname = "";
+                    if (c == 0)
+                        newname = name + "Salary" + conyear;
+                    else newname = name + "Bonus" + conyear;
+                    NumericUpDown updown = this.Controls.Find(newname, true).First() as NumericUpDown;
+                    updown.BackColor = Color.Yellow;
+                }
+            }
+
+            PlayerCapHit.Text = Math.Round((double)record.GetCurrentSalary() / 100, 2).ToString();
+
+            TeamSalary.Text = "" + ((double)teamRecord.Salary / 100.0).ToString();
+            if (CalcTeamSalary_Checkbox.Checked)
+            {
+                int teamcalc = GetTeamSalaryCap(record.TeamId);
+                CalcTeamSalary.Text = Math.Round((double)teamcalc / 100, 2).ToString();
+                TeamCapRoom.Text = (SalaryCap.Value - Convert.ToDecimal(CalcTeamSalary.Text)).ToString();
+            }
+            else TeamCapRoom.Text = Math.Round((double)SalaryCap.Value - (double)teamRecord.Salary / 100, 2).ToString();
             
-            if (UseActualNFLSalaryCap_Checkbox.Checked)
-            {
-                int curyear = (int)CurrentYear.Value;
-                if (model.LeagueCap.ContainsKey(curyear))
-                    SalaryCap.Value = (decimal)model.LeagueCap[curyear];
-                else
-                {
-                    // We don't have this year's actual Salary cap, so disable it and get value from franchise instead
-                    UseActualNFLSalaryCap_Checkbox.Checked = false;
-                }
-            }
-
-            if (!Madden19 && record.TeamId != 1009 && record.TeamId != 1010 && record.TeamId != 1014 && record.TeamId != 1015 && record.TeamId != 1023)
-            {
-                // We dont want to do team salary for NFC/AFC pro bowl teams, retired, draft class, or undefined
-                TeamRecord teamRecord = model.TeamModel.GetTeamRecord(record.TeamId);
-                TeamSalary.Text = "" + ((double)teamRecord.Salary / 100.0);
-                double penalty = (double)Penalty0.Value;
-                double cap = (double)SalaryCap.Value;
-
-                if (CalcTeamSalary_Checkbox.Checked)
-                {
-                    tempteamsalary = (double)GetTeamSalaryCap(record.TeamId) / 100;
-                    CalcTeamSalary.Text = "" + (decimal)tempteamsalary;
-                    model.TeamModel.GetTeamRecord(record.TeamId).Salary = (int)Math.Round(tempteamsalary*100, 2);
-                }               
-                else if (model.FileType == MaddenFileType.Franchise)
-                {                    
-                    tempteamsalary = (double)(model.TeamModel.GetTeamRecord(record.TeamId).Salary) / 100;                                        
-                }
-
-                if (SalaryCap.Value != 0)
-                    TeamCapRoom.Text = "" + Math.Round(cap - tempteamsalary - penalty, 2);
-
-                TeamNeeds(record);
-                LoadPositionSalaries(record);
-                LoadFreeAgents(record);
-                GetTeamSalaries();
-            }
-        } 
-        
-        private void playerContractLength_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                //Before we set it make sure its ok
-                if (playerContractLength.Value < playerContractYearsLeft.Value)
-                    playerContractYearsLeft.Value = playerContractLength.Value;
-
-                if (UseLeagueMinimum.Checked)
-                {
-                    int holder = (int)(YearlyMinimum.Value * playerContractLength.Value * 100);
-                    playerTotalSalary.Minimum = (decimal)holder / 100;
-                    if ((double)(YearlyMinimum.Value * playerContractLength.Value * 100) > holder)
-                        playerTotalSalary.Minimum += (decimal).01;
-                    if (playerTotalSalary.Value < playerTotalSalary.Minimum)
-                        playerTotalSalary.Value = playerTotalSalary.Minimum;
-                }
-            }
+            TeamNeeds(record);
+            LoadPositionSalaries(record);
+            LoadFreeAgents(record);
+            GetTeamSalaries();
         }
-
-        private void playerContractYearsLeft_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                //Before we set it make sure its ok
-                if (playerContractYearsLeft.Value > playerContractLength.Value)
-                {
-                    playerContractLength.Value = playerContractYearsLeft.Value;
-                }
-            }
-        }
-
-        private void playerSigningBonus_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.BonusTotal = (int)playerTotalBonus.Value * 100;
-            }
-        }
-
-        private void playerTotalSalary_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                playerTotalSalary.Minimum = 0;
-
-                if (playerTotalSalary.Value < playerTotalSalary.Minimum)                // dont need this but...             
-                    playerTotalSalary.Value = playerTotalSalary.Minimum;
-
-                decimal temp = playerTotalSalary.Value;
-                int holder = (int)(playerTotalSalary.Value * 100);
-                isInitialising = true;
-                playerTotalSalary.Value = (decimal)holder / 100;
-                if (temp * 100 > holder)
-                {
-                    playerTotalSalary.Value += (decimal).01;
-                }
-
-                if (UseLeagueMinimum.Checked)
-                {
-                    holder = (int)(YearlyMinimum.Value * playerContractLength.Value * 100);
-                    playerTotalSalary.Minimum = (decimal)holder / 100;
-                    if ((double)(YearlyMinimum.Value * playerContractLength.Value * 100) > holder)
-                        playerTotalSalary.Minimum += (decimal).01;
-                    if (playerTotalSalary.Value < playerTotalSalary.Minimum)
-                    {
-                        playerTotalSalary.Value = playerTotalSalary.Minimum;
-                    }
-                }
-                isInitialising = false;
-            }
-        }
-
-        public int GetTeamSalaryCap(int TeamId)
-        {           
-            int tempcap = 0;
-            List<int> PlayerIDs = new List<int>();
-
-            try
-            {
-                foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
-                {
-                    if (record.Deleted)
-                        continue;
-                    PlayerRecord rec = (PlayerRecord)record;
-
-                    if (rec.TeamId == TeamId)
-                    {
-                        bool valid = true;
-
-                        if (model.FileType == MaddenFileType.Franchise)
-                        {
-                            foreach (TableRecordModel injrec in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
-                            {
-                                InjuryRecord playerinjury = (InjuryRecord)injrec;
-                                if (playerinjury.PlayerId == rec.PlayerId)
-                                {
-                                    if (playerinjury.IR)
-                                        valid = false;
-                                }                                
-                            }
-                        }
-
-                        if (valid && !PlayerIDs.Contains(rec.PlayerId))
-                            PlayerIDs.Add(rec.PlayerId);
-                        // if player is not on injured reserve count his salary for total team salary
-                        if (model.FileType == MaddenFileType.Franchise && valid)
-                            tempcap += rec.CurrentSalary;
-                        else if (model.FileType == MaddenFileType.Roster)
-                        {
-                            int currentcap = (int)(CalculateCapHit(rec, 25, false) * 100);
-                            tempcap += currentcap;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                
-            }           
-
-            return tempcap;
-        }
-
-        public decimal CalculateCapHit(PlayerRecord rec, decimal rate, bool causeDirty)
-        {            
-            if (causeDirty)
-            {
-                rec.ContractLength = (int)playerContractLength.Value;
-                rec.ContractYearsLeft = (int)playerContractYearsLeft.Value;
-                rec.TotalSalary = (int)(playerTotalSalary.Value * 100);
-                rec.BonusTotal = (int)(playerTotalBonus.Value * 100);
-            }            
-
-            int totalsal = rec.TotalSalary;
-            int totalbonus = rec.BonusTotal;
-            int[] estYearlySalary = new int[7];
-            int[] estYearlyBonus = new int[7];
-            int runtotalsal = 0;
-            int runtotalbon = 0;
-
-            int minimum = (int)(YearlyMinimum.Value * 100);
-            double perc = 0;
-            double x = 0;
-            double tempsal = 0;
-
-            // Salaries are not supposed to increase more than 30% each year, for rookies this is 25%
-            // Salary and bonus money needs to be multiples of 10,000 which is .01 million, so we need
-            // to round all decimal results to 2 places.  We already fixed totalsalary to round up earlier.
-            // Will keep track of running totals and just fix it on the last year of the contract to be lazy            
-
-            // several things can happen here, the yearly increase rate can cause the yearly minimum salary to be too low.
-
-            int maxrate = 0;
-            if (rec.YearsPro == 0)
-                maxrate = 25;
-            else maxrate = 30;
-
-            List<double> year1 = new List<double>();
-            perc = 0;
-
-            for (int t = 0; t < rec.ContractLength; t++)
-            {
-                int r = maxrate;
-                x = 1 + (double)r / 100; perc += Math.Pow(x, t);
-                tempsal = (double)(totalsal - totalbonus) / perc;
-                year1.Add(tempsal);
-                if (year1[year1.Count - 1] + (double)totalbonus / rec.ContractLength >= minimum)
-                {
-                    maxrate = r;
-                    break;
-                }
-            }
-
-            if (maxrate < rate)
-            {
-                rate = maxrate;
-                ContractIncrease.Value = maxrate;
-            }
-
-            runtotalsal = 0;
-            runtotalbon = 0;
-            perc = 0;
-
-            for (int count = 0; count < 7; count++)
-            {
-                estYearlySalary[count] = 0;
-                estYearlyBonus[count] = 0;
-            }
-
-            x = 1 + (double)rate / 100;
-            for (int t = 0; t < rec.ContractLength; t++)
-                perc += Math.Pow(x, t);
-            tempsal = (double)(totalsal - totalbonus) / perc;
-
-            for (int i = 0; i < rec.ContractLength; i++)
-            {
-                if (i < rec.ContractLength - 1)
-                {
-                    estYearlySalary[i] = (int)(tempsal * Math.Pow(x, i));
-                    estYearlyBonus[i] = (int)(totalbonus / rec.ContractLength);
-                }
-                else
-                {
-                    estYearlySalary[i] = totalsal - totalbonus - runtotalsal;
-                    estYearlyBonus[i] = totalbonus - runtotalbon;
-                }
-                runtotalsal += estYearlySalary[i];
-                runtotalbon += estYearlyBonus[i];
-            }
-
-            if (rec.ContainsIntField("PSA0"))
-            {
-                //  save contract to player table
-                rec.Salary0 = (int)estYearlySalary[0];
-                rec.Salary1 = (int)estYearlySalary[1];
-                rec.Salary2 = (int)estYearlySalary[2];
-                rec.Salary3 = (int)estYearlySalary[3];
-                rec.Salary4 = (int)estYearlySalary[4];
-                rec.Salary5 = (int)estYearlySalary[5];
-                rec.Salary6 = (int)estYearlySalary[6];
-                rec.Bonus0 = (int)estYearlyBonus[0];
-                rec.Bonus1 = (int)estYearlyBonus[1];
-                rec.Bonus2 = (int)estYearlyBonus[2];
-                rec.Bonus3 = (int)estYearlyBonus[3];
-                rec.Bonus4 = (int)estYearlyBonus[4];
-                rec.Bonus5 = (int)estYearlyBonus[5];
-                rec.Bonus6 = (int)estYearlyBonus[6];
-            }
-            else
-            {               
-                rec.salary[0] = (int)estYearlySalary[0];
-                rec.salary[1] = (int)estYearlySalary[1];
-                rec.salary[2] = (int)estYearlySalary[2];
-                rec.salary[3] = (int)estYearlySalary[3];
-                rec.salary[4] = (int)estYearlySalary[4];
-                rec.salary[5] = (int)estYearlySalary[5];
-                rec.salary[6] = (int)estYearlySalary[6];
-                rec.bonus[0] = (int)estYearlyBonus[0];
-                rec.bonus[1] = (int)estYearlyBonus[1];
-                rec.bonus[2] = (int)estYearlyBonus[2];
-                rec.bonus[3] = (int)estYearlyBonus[3];
-                rec.bonus[4] = (int)estYearlyBonus[4];
-                rec.bonus[5] = (int)estYearlyBonus[5];
-                rec.bonus[6] = (int)estYearlyBonus[6];
-            }
-
-            if (causeDirty)
-                rec.FixCurrentSalary();
-
-            int currentyear = rec.ContractLength - rec.ContractYearsLeft;
-            int currentsalary = estYearlySalary[currentyear] + estYearlyBonus[currentyear];
-            return (decimal)currentsalary / 100;
-        }       
-
-        #region Specific Years Salary and Bonus
-        private void PlayerSalary0_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary0 = (int)(PlayerSalary0.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerSalary1_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary1 = (int)(PlayerSalary1.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerSalary2_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary2 = (int)(PlayerSalary2.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerSalary3_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary3 = (int)(PlayerSalary3.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerSalary4_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary4 = (int)(PlayerSalary4.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerSalary5_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary5 = (int)(PlayerSalary5.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerSalary6_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Salary6 = (int)(PlayerSalary6.Value * 100);
-               // LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus0_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus0 = (int)(PlayerBonus0.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus1_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus1 = (int)(PlayerBonus1.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus2_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus2 = (int)(PlayerBonus2.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus3_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus3 = (int)(PlayerBonus3.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus4_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus4 = (int)(PlayerBonus4.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus5_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus5 = (int)(PlayerBonus5.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-
-        private void PlayerBonus6_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                isInitialising = true;
-                model.PlayerModel.CurrentPlayerRecord.Bonus6 = (int)(PlayerBonus6.Value * 100);
-                //LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-        #endregion
-
-        private void SalaryCap_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {                
-                isInitialising = true;
-                model.SalaryCapModel.SalaryCap = (int)(SalaryCap.Value * 1000000);
-                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-                isInitialising = false;
-            }
-        }
-                
-        private void Penalty0_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).SalaryCapPenalty0 = (int)(Penalty0.Value * 100);
-            }
-        }
-
-        private void Penalty1_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).SalaryCapPenalty1 = (int)(Penalty1.Value * 100);
-            }
-        }
-             
-        private void SubmitContract_Click(object sender, EventArgs e)
-        {
-            isInitialising = true;
-            CalculateCapHit(model.PlayerModel.CurrentPlayerRecord, ContractIncrease.Value, true);            
-            LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
-            isInitialising = false;
-        }
-
-        private void PlayerHoldOut_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                model.PlayerModel.CurrentPlayerRecord.Holdout = PlayerHoldOut.Checked;
-            }
-        }
-
-        private void InactiveCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                List<InactiveRecord> remove = new List<InactiveRecord>();
-                if (!PlayerInactive.Checked)
-                {
-                    foreach (InactiveRecord iar in model.TableModels[EditorModel.INACTIVE_TABLE].GetRecords())
-                    {
-                        InactiveRecord i = (InactiveRecord)iar;
-                        if (i.PlayerID == model.PlayerModel.CurrentPlayerRecord.PlayerId)
-                            remove.Add(i);
-                    }
-                    foreach (InactiveRecord test in remove)
-                        test.SetDeleteFlag(true);
-                }
-                else
-                {
-                    InactiveRecord record = (InactiveRecord)model.TableModels[EditorModel.INACTIVE_TABLE].CreateNewRecord(true);
-                    record.PlayerID = model.PlayerModel.CurrentPlayerRecord.PlayerId;
-                    record.TeamId = model.PlayerModel.CurrentPlayerRecord.TeamId;
-                }
-            }
-        }
-
-        
-
+         
         private void GetTeamSalaries()
         {
             teamsalaries.Clear();
@@ -3243,6 +3728,8 @@ namespace MaddenEditor.Forms
 
             foreach (TeamRecord tr in model.TableModels[EditorModel.TEAM_TABLE].GetRecords())
             {
+                if (tr.Deleted)
+                    continue;
                 TeamRecord rec = (TeamRecord)tr;
                 if (rec.TeamId > 31)
                     continue;
@@ -3280,330 +3767,365 @@ namespace MaddenEditor.Forms
             TeamSalaryRank.Text = text;
         }
 
-        private void LoadFreeAgents(PlayerRecord record)
+        public int GetTeamSalaryCap(int TeamId)
         {
-            FreeAgents.DataBindings.Clear();
-            FreeAgents.RowHeadersVisible = false;
-            if (FreeAgents.Columns.Count == 0)
-            {
-                FreeAgents.Columns.Add("Name", "Name");
-                FreeAgents.Columns[0].Width = 80;
-                FreeAgents.Columns.Add("OVR", "Ovr");
-                FreeAgents.Columns[1].Width = 32;
-                FreeAgents.Columns.Add("Age", "Age");
-                FreeAgents.Columns[2].Width = 32;
-            }
-            List<PlayerRecord> fa = new List<PlayerRecord>();
-            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
-            {
-                PlayerRecord newplayer = (PlayerRecord)rec;
-                if (record.PositionId == newplayer.PositionId && newplayer.TeamId == 1009)
-                    fa.Add(newplayer);
-            }
+            int tempcap = 0;
+            List<int> PlayerIDs = new List<int>();
 
-            fa.Sort(delegate(PlayerRecord x, PlayerRecord y)
-            { return ((decimal)y.Overall).CompareTo(x.Overall); });
-
-            for (int c = 0; c < fa.Count; c++)
+            try
             {
-                FreeAgents.Rows.Add();
-                FreeAgents.Rows[c].Cells[0].Value = fa[c].FirstName[0] + "." + fa[c].LastName;
-                FreeAgents.Rows[c].Cells[1].Value = fa[c].Overall;
-                FreeAgents.Rows[c].Cells[2].Value = fa[c].Age;
-                FreeAgents.Rows[c].ReadOnly = true;
-            }
-        }
-
-        private void LoadPositionSalaries(PlayerRecord record)
-        {
-            PositionSalary.DataBindings.Clear();
-            PositionSalary.RowHeadersVisible = false;
-            if (PositionSalary.Columns.Count == 0 || PositionSalary.Columns.Count == 5 && IncludeOverall.Checked || PositionSalary.Columns.Count == 6 && !IncludeOverall.Checked)
-            {
-                PositionSalary.Columns.Clear();
-                PositionSalary.Columns.Add("Name", "Name");
-                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 80;
-                if (IncludeOverall.Checked)
+                foreach (TableRecordModel record in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
                 {
-                    PositionSalary.Columns.Add("OVR", "OVR");
-                    PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
-                }
-                PositionSalary.Columns.Add("Cur", "Cur");
-                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
-                PositionSalary.Columns.Add("Total", "Total");
-                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
-                PositionSalary.Columns.Add("Len", "Len");
-                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
-                PositionSalary.Columns.Add("Avg", "AVG");
-                PositionSalary.Columns[PositionSalary.ColumnCount - 1].Width = 40;
-            }
+                    if (record.Deleted)
+                        continue;
+                    PlayerRecord rec = (PlayerRecord)record;
 
-            List<PlayerRecord> top = new List<PlayerRecord>();
-            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
-            {
-                PlayerRecord newplayer = (PlayerRecord)rec;
-                if (record.PositionId == newplayer.PositionId && newplayer.TeamId >= 0 && newplayer.TeamId < 32 && newplayer.ContractLength != 0)
-                    top.Add(newplayer);
-            }
-            List<int> top10 = new List<int>();
-            int current = 0;
-            top.Sort(delegate(PlayerRecord x, PlayerRecord y)
-            { return ((decimal)y.CurrentSalary).CompareTo(x.CurrentSalary); });
-            for (int c = 0; c < top.Count; c++)
-            {
-                top10.Add(top[c].CurrentSalary);
-                current += top[c].CurrentSalary;
-                if (c == 4)
-                    Top5.Value = (decimal)current / 500;
-                if (c == 9)
-                    Top10.Value = current / 1000;
-            }
-            LeagueAVG.Value = current / (100 * top10.Count);
+                    if (rec.TeamId == TeamId)
+                    {
+                        bool valid = true;
 
-            for (int c = 0; c < top.Count; c++)
-            {
-                PositionSalary.Rows.Add();
-                PositionSalary.Rows[c].Cells[0].Value = top[c].FirstName[0] + "." + top[c].LastName;
-                if (IncludeOverall.Checked)
-                    PositionSalary.Rows[c].Cells[1].Value = top[c].Overall;
-                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 4].Value = (decimal)top[c].CurrentSalary / 100;
-                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 3].Value = (decimal)top[c].TotalSalary / 100;
-                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 2].Value = top[c].ContractLength;
-                PositionSalary.Rows[c].Cells[PositionSalary.Rows[c].Cells.Count - 1].Value = Math.Round((decimal)(top[c].TotalSalary / top[c].ContractLength) / 100, 2);
-                PositionSalary.Rows[c].ReadOnly = true;
-            }
+                        if (model.FileType == MaddenFileType.Franchise)
+                        {
+                            foreach (TableRecordModel injrec in model.TableModels[EditorModel.INJURY_TABLE].GetRecords())
+                            {
+                                InjuryRecord playerinjury = (InjuryRecord)injrec;
+                                if (playerinjury.PlayerId == rec.PlayerId)
+                                {
+                                    if (playerinjury.IR)
+                                        valid = false;
+                                }
+                            }
+                        }
 
-            // sort list highest avg salary per year
-            top.Sort(delegate(PlayerRecord x, PlayerRecord y)
-            { return ((decimal)y.TotalSalary / y.ContractLength).CompareTo((decimal)x.TotalSalary / x.ContractLength); });
-            List<decimal> topdec = new List<decimal>();
-            decimal currentdec = 0;
-            for (int c = 0; c < top.Count; c++)
-            {
-                topdec.Add((decimal)top[c].TotalSalary / top[c].ContractLength);
-                currentdec += topdec[c];
-                if (c == 4)
-                    Top5AVG.Value = currentdec / 500;
-                if (c == 9)
-                    Top10AVG.Value = currentdec / 1000;
-            }
-            LeagueContAVG.Value = currentdec / (top.Count * 100);
-
-            if (model.FileType == MaddenFileType.Franchise)
-            {
-                foreach (SalaryYearsPro pm in model.TableModels[EditorModel.PLAYER_MINIMUM_SALARY_TABLE].GetRecords())
-                {
-                    SalaryYearsPro min = (SalaryYearsPro)pm;
-                    if (min.YearsPro == record.YearsPro)
-                        YearlyMinimum.Value = (decimal)min.MinimumSalary / 1000000;
+                        if (valid && !PlayerIDs.Contains(rec.PlayerId))
+                            PlayerIDs.Add(rec.PlayerId);
+                        // if player is not on injured reserve count his salary for total team salary
+                        if (model.FileType == MaddenFileType.Franchise && valid)
+                            tempcap += rec.CurrentSalary;
+                        else if (model.FileType == MaddenFileType.Roster)
+                        {                            
+                            if (rec.ContractYearsLeft > 0)
+                            {
+                                if (rec.YearlySalary == null)
+                                    rec.SetContract(true, false, 30);
+                                tempcap += (int)rec.GetCurrentSalary();
+                            }                                
+                        }
+                    }
                 }
             }
+            catch
+            {
+
+            }
+
+            return tempcap;
+        }
+                
+        #endregion
+
+
+        #region Player Contract Controls
+
+        private void SubmitContract_Click(object sender, EventArgs e)
+        {
+            isInitialising = true;
+            //CalculateCapHit(model.PlayerModel.CurrentPlayerRecord, ContractYearlyIncrease.Value, true);
+            model.PlayerModel.CurrentPlayerRecord.ContractLength = (int)playerContractLength.Value;
+            model.PlayerModel.CurrentPlayerRecord.ContractYearsLeft = (int)playerContractYearsLeft.Value;
+            model.PlayerModel.CurrentPlayerRecord.TotalSalary = (int)(playerTotalSalary.Value * 100);
+            model.PlayerModel.CurrentPlayerRecord.TotalBonus = (int)(playerTotalBonus.Value * 100);
+            model.PlayerModel.CurrentPlayerRecord.SetContract(false, true, (double)ContractYearlyIncrease.Value);
+            LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+            isInitialising = false;
         }
 
-        private void TeamNeeds(PlayerRecord record)
+        private void UseActualNFLSalaryCap_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
-            List<int> roster = new List<int>();
-            for (int c = 0; c < 21; c++)
-                roster.Add(0);
-            int neededplayers = 0;
-            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            if (!isInitialising)
             {
-                PlayerRecord r = (PlayerRecord)rec;
-                if (r.TeamId == record.TeamId && r.ContractYearsLeft != 0)
-                    roster[r.PositionId]++;
-            }
-            // QB
-            ReqQB.Text = (Math.Abs(3 - roster[0])).ToString();
-            if (roster[0] < 3)
-            {
-                ReqQB.ForeColor = Color.Red;
-                neededplayers += 3 - roster[0];
-            }
-            else if (roster[0] > 3)
-                ReqQB.ForeColor = Color.Green;
-            else ReqQB.ForeColor = Color.Black;
-            ReqHB.Text = (Math.Abs(3 - roster[1])).ToString();
-            if (roster[1] < 3)
-            {
-                ReqHB.ForeColor = Color.Red;
-                neededplayers += 3 - roster[1];
-            }
-            else if (roster[1] > 3)
-                ReqHB.ForeColor = Color.Green;
-            else ReqHB.ForeColor = Color.Black;
-            ReqFB.Text = (Math.Abs(1 - roster[2])).ToString();
-            if (roster[2] < 1)
-            {
-                ReqFB.ForeColor = Color.Red;
-                neededplayers++;
-            }
-            else if (roster[2] > 1)
-                ReqFB.ForeColor = Color.Green;
-            else ReqFB.ForeColor = Color.Black;
-            ReqWR.Text = (Math.Abs(5 - roster[3])).ToString();
-            if (roster[3] < 5)
-            {
-                ReqWR.ForeColor = Color.Red;
-                neededplayers += 5 - roster[3];
-            }
-            else if (roster[3] > 5)
-                ReqWR.ForeColor = Color.Green;
-            else ReqWR.ForeColor = Color.Black;
-            ReqTE.Text = (Math.Abs(3 - roster[4])).ToString();
-            if (roster[4] < 3)
-            {
-                ReqTE.ForeColor = Color.Red;
-                neededplayers += 3 - roster[4];
-            }
-            else if (roster[4] > 3)
-                ReqTE.ForeColor = Color.Green;
-            else ReqTE.ForeColor = Color.Black;
-            ReqP.Text = (Math.Abs(1 - roster[20])).ToString();
-            if (roster[20] < 1)
-            {
-                ReqP.ForeColor = Color.Red;
-                neededplayers++;
-            }
-            else if (roster[20] > 1)
-                ReqP.ForeColor = Color.Green;
-            else ReqP.ForeColor = Color.Black;
-            ReqT.Text = (Math.Abs(4 - (roster[5] + roster[9]))).ToString();
-            if (roster[5] + roster[9] < 4)
-            {
-                ReqT.ForeColor = Color.Red;
-                neededplayers += 4 - (roster[5] + roster[9]);
-            }
-            else if (roster[5] + roster[9] > 4)
-                ReqT.ForeColor = Color.Green;
-            else ReqT.ForeColor = Color.Black;
-            ReqG.Text = (Math.Abs(4 - (roster[6] + roster[8]))).ToString();
-            if (roster[6] + roster[8] < 4)
-            {
-                ReqG.ForeColor = Color.Red;
-                neededplayers += 4 - (roster[6] + roster[8]);
-            }
-            else if (roster[6] + roster[8] > 4)
-                ReqG.ForeColor = Color.Green;
-            else ReqG.ForeColor = Color.Black;
-            ReqC.Text = (Math.Abs(2 - roster[7])).ToString();
-            if (roster[7] < 2)
-            {
-                ReqC.ForeColor = Color.Red;
-                neededplayers += 2 - roster[7];
-            }
-            else if (roster[7] > 2)
-                ReqC.ForeColor = Color.Green;
-            else ReqC.ForeColor = Color.Black;
-            ReqDE.Text = (Math.Abs(4 - (roster[10] + roster[11]))).ToString();
-            if (roster[10] + roster[11] < 4)
-            {
-                ReqDE.ForeColor = Color.Red;
-                neededplayers += 4 - (roster[10] + roster[11]);
-            }
-            else if (roster[10] + roster[11] > 4)
-                ReqDE.ForeColor = Color.Green;
-            else ReqDE.ForeColor = Color.Black;
-            ReqDT.Text = (Math.Abs(3 - roster[12])).ToString();
-            if (roster[12] < 3)
-            {
-                ReqDT.ForeColor = Color.Red;
-                neededplayers += 3 - roster[12];
-            }
-            else if (roster[12] > 3)
-                ReqDT.ForeColor = Color.Green;
-            else ReqDT.ForeColor = Color.Black;
-            ReqK.Text = (Math.Abs(1 - roster[19])).ToString();
-            if (roster[19] < 1)
-            {
-                ReqK.ForeColor = Color.Red;
-                neededplayers++;
-            }
-            else if (roster[19] > 1)
-                ReqK.ForeColor = Color.Green;
-            else ReqK.ForeColor = Color.Black;
-            ReqOLB.Text = (Math.Abs(4 - (roster[13] + roster[15]))).ToString();
-            if (roster[13] + roster[15] < 4)
-            {
-                ReqOLB.ForeColor = Color.Red;
-                neededplayers += 4 - (roster[13] + roster[15]);
-            }
-            else if (roster[13] + roster[15] > 4)
-                ReqOLB.ForeColor = Color.Green;
-            else ReqOLB.ForeColor = Color.Black;
-            ReqMLB.Text = (Math.Abs(2 - roster[14])).ToString();
-            if (roster[14] < 2)
-            {
-                ReqMLB.ForeColor = Color.Red;
-                neededplayers += 2 - roster[14];
-            }
-            else if (roster[14] > 2)
-                ReqMLB.ForeColor = Color.Green;
-            else ReqMLB.ForeColor = Color.Black;
-            ReqCB.Text = (Math.Abs(5 - roster[16])).ToString();
-            if (roster[16] < 5)
-            {
-                ReqCB.ForeColor = Color.Red;
-                neededplayers += 5 - roster[16];
-            }
-            else if (roster[16] > 5)
-                ReqCB.ForeColor = Color.Green;
-            else ReqCB.ForeColor = Color.Black;
-            ReqFS.Text = (Math.Abs(2 - roster[17])).ToString();
-            if (roster[17] < 2)
-            {
-                ReqFS.ForeColor = Color.Red;
-                neededplayers += 2 - roster[17];
-            }
-            else if (roster[17] > 2)
-                ReqFS.ForeColor = Color.Green;
-            else ReqFS.ForeColor = Color.Black;
-            ReqSS.Text = (Math.Abs(2 - roster[18])).ToString();
-            if (roster[18] < 2)
-            {
-                ReqSS.ForeColor = Color.Red;
-                neededplayers += 2 - roster[18];
-            }
-            else if (roster[18] > 2)
-                ReqSS.ForeColor = Color.Green;
-            else ReqSS.ForeColor = Color.Black;
-
-            int totalplayers = 0;
-            foreach (int x in roster)
-                totalplayers += x;
-            if (totalplayers < 49)
-            {
-                NeededPlayers_Label.Text = "Need to Sign";
-                NeededPlayers.Value = Math.Abs(49 - totalplayers);
-                NeededPlayers.ForeColor = Color.Red;
-            }
-            else if (totalplayers > 55)
-            {
-                NeededPlayers_Label.Text = "Need to Cut";
-                NeededPlayers.Value = Math.Abs(totalplayers - 55);
-                NeededPlayers.ForeColor = Color.Green;
-            }
-            else
-            {
-                if (neededplayers > 0)
+                isInitialising = true;
+                SalaryCap.Value = 0;
+                if (UseActualNFLSalaryCap_Checkbox.Checked)
                 {
-                    NeededPlayers_Label.Text = "Check Pos.";
-                    NeededPlayers.Value = neededplayers;
-                    NeededPlayers.ForeColor = Color.Red;
+                    int curyear = (int)CurrentYear.Value;
+                    if (model.LeagueCap.ContainsKey(curyear))
+                        SalaryCap.Value = (decimal)model.LeagueCap[curyear];                    
                 }
                 else
                 {
-                    NeededPlayers_Label.Text = "No needed";
-                    NeededPlayers.Value = 0;
-                    NeededPlayers.ForeColor = Color.Black;
+                    if (model.FileType == MaddenFileType.Franchise)
+                        SalaryCap.Value = Math.Round((decimal)model.SalaryCapModel.SalaryCap / 1000000, 2);
+                }
+                isInitialising = false;
+            }
+        }
+
+        private void playerContractLength_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                //Before we set it make sure its ok
+                if (playerContractLength.Value < playerContractYearsLeft.Value)
+                    playerContractYearsLeft.Value = playerContractLength.Value;
+
+                if (UseLeagueMinimum_Checkbox.Checked)
+                {
+                    int holder = (int)(LeagueMinimum.Value * playerContractLength.Value * 100);
+                    playerTotalSalary.Minimum = (decimal)holder / 100;
+                    if ((double)(LeagueMinimum.Value * playerContractLength.Value * 100) > holder)
+                        playerTotalSalary.Minimum += (decimal).01;
+                    if (playerTotalSalary.Value < playerTotalSalary.Minimum)
+                        playerTotalSalary.Value = playerTotalSalary.Minimum;
                 }
             }
-
         }
-        
+
+        private void playerContractYearsLeft_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                //Before we set it make sure its ok
+                if (playerContractYearsLeft.Value > playerContractLength.Value)
+                {
+                    playerContractLength.Value = playerContractYearsLeft.Value;
+                }
+            }
+        }
+
+        private void playerSigningBonus_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.TotalBonus = (int)playerTotalBonus.Value * 100;
+            }
+        }
+
+        private void playerTotalSalary_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                playerTotalSalary.Minimum = 0;
+
+                if (playerTotalSalary.Value < playerTotalSalary.Minimum)                // dont need this but...             
+                    playerTotalSalary.Value = playerTotalSalary.Minimum;
+
+                decimal temp = playerTotalSalary.Value;
+                int holder = (int)(playerTotalSalary.Value * 100);
+                isInitialising = true;
+                playerTotalSalary.Value = (decimal)holder / 100;
+                if (temp * 100 > holder)
+                {
+                    playerTotalSalary.Value += (decimal).01;
+                }
+
+                if (UseLeagueMinimum_Checkbox.Checked)
+                {
+                    holder = (int)(LeagueMinimum.Value * playerContractLength.Value * 100);
+                    playerTotalSalary.Minimum = (decimal)holder / 100;
+                    if ((double)(LeagueMinimum.Value * playerContractLength.Value * 100) > holder)
+                        playerTotalSalary.Minimum += (decimal).01;
+                    if (playerTotalSalary.Value < playerTotalSalary.Minimum)
+                    {
+                        playerTotalSalary.Value = playerTotalSalary.Minimum;
+                    }
+                }
+                isInitialising = false;
+            }
+        }
+
+        private void SalaryCap_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                if (model.FileType == MaddenFileType.Franchise)
+                    model.SalaryCapModel.SalaryCap = (int)(SalaryCap.Value * 1000000);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void Penalty0_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).SalaryCapPenalty0 = (int)(Penalty0.Value * 100);
+            }
+        }
+
+        private void Penalty1_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.TeamModel.GetTeamRecord(model.PlayerModel.CurrentPlayerRecord.TeamId).SalaryCapPenalty1 = (int)(Penalty1.Value * 100);
+            }
+        }
+
+        #region Specific Years Salary and Bonus
+
+        private void PlayerSalary0_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary0 = (int)(PlayerSalary0.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerSalary1_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary1 = (int)(PlayerSalary1.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerSalary2_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary2 = (int)(PlayerSalary2.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerSalary3_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary3 = (int)(PlayerSalary3.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerSalary4_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary4 = (int)(PlayerSalary4.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerSalary5_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary5 = (int)(PlayerSalary5.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerSalary6_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Salary6 = (int)(PlayerSalary6.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus0_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus0 = (int)(PlayerBonus0.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus1_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus1 = (int)(PlayerBonus1.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus2_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus2 = (int)(PlayerBonus2.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus3_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus3 = (int)(PlayerBonus3.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus4_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus4 = (int)(PlayerBonus4.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus5_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus5 = (int)(PlayerBonus5.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
+        private void PlayerBonus6_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                isInitialising = true;
+                model.PlayerModel.CurrentPlayerRecord.Bonus6 = (int)(PlayerBonus6.Value * 100);
+                LoadPlayerSalaries(model.PlayerModel.CurrentPlayerRecord);
+                isInitialising = false;
+            }
+        }
+
         #endregion
 
-        #region Player Stats
+        #endregion
+
+        #endregion
         
+        #region Player Stats
+
         public void InitStatsYear(PlayerRecord record)
         {
             if (!isInitialising)
@@ -3611,7 +4133,7 @@ namespace MaddenEditor.Forms
 
             //  Get current Season and week
             int currentyear = model.FranchiseTime.Year;
-            
+
             statsyear.Items.Clear();
             statsyear.Items.Add("Career");
             int endyear = currentyear + baseyear;
@@ -3620,12 +4142,12 @@ namespace MaddenEditor.Forms
                 statsyear.Items.Add(t);
 
             //  Set for last selected year if it is available
-            
+
             if (selectedyear != -1 && statsyear.Items.Contains(selectedyear))
                 statsyear.SelectedIndex = selectedyear - baseyear + 1;
             else statsyear.SelectedIndex = 0;
         }
-                
+
         public void LoadPlayerGamesPlayed(PlayerRecord record, int index, bool career)
         {
             CareerGamesPlayedRecord careergamesplayed = model.PlayerModel.GetPlayersGamesCareer(record.PlayerId);
@@ -3641,14 +4163,14 @@ namespace MaddenEditor.Forms
             if (model.FileVersion == MaddenFileVersion.Ver2004)
             {
                 gamesstarted.Enabled = false;
-                DownsPlayed.Enabled = false;                
+                DownsPlayed.Enabled = false;
             }
             else
-            {                
+            {
                 gamesstarted.Enabled = true;
-                DownsPlayed.Enabled = true;                
+                DownsPlayed.Enabled = true;
             }
-            
+
             if (career && careergamesplayed != null)
             {
                 GamesPlayedPanel.Enabled = true;
@@ -3675,14 +4197,14 @@ namespace MaddenEditor.Forms
                     gamesstarted.Value = seasongamesplayed.GamesStarted;
                     DownsPlayed.Value = seasongamesplayed.DownsPlayed;
                 }
-            }            
+            }
         }
 
         public void LoadPlayerPuntKick(PlayerRecord record, int index, bool career)
         {
             CareerPuntKickRecord careerpuntkick = model.PlayerModel.GetPlayersCareerPuntKick(record.PlayerId);
             SeasonPuntKickRecord seasonpuntkick = model.PlayerModel.GetPuntKick(record.PlayerId, year);
-            
+
             KickPuntPanel.Enabled = false;
 
             fga.Value = 0;
@@ -3774,19 +4296,19 @@ namespace MaddenEditor.Forms
         }
 
         public void LoadPlayerOffense(PlayerRecord record, int index, bool career)
-        { 
+        {
             CareerStatsOffenseRecord careeroffensestats = model.PlayerModel.GetPlayersOffenseCareer(record.PlayerId);
             SeasonStatsOffenseRecord seasonoffense = model.PlayerModel.GetOffStats(record.PlayerId, year);
 
             // Set controls
             OffensePanel.Enabled = false;
             if (model.FileVersion >= MaddenFileVersion.Ver2007)
-            {                
+            {
                 comebacks.Enabled = true;
-                Firstdowns.Enabled = true;                
+                Firstdowns.Enabled = true;
             }
             else
-            {                
+            {
                 comebacks.Enabled = false;
                 Firstdowns.Enabled = false;
             }
@@ -3841,17 +4363,17 @@ namespace MaddenEditor.Forms
                 rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
 
                 if (model.FileVersion >= MaddenFileVersion.Ver2007)
-                {                    
+                {
                     comebacks.Value = (int)careeroffensestats.Comebacks;
                     Firstdowns.Value = (int)careeroffensestats.FirstDowns;
-                }                
+                }
             }
 
             // Set season stats
             else if (seasonoffense != null && !career)
             {
-                OffensePanel.Enabled = true;                
-                
+                OffensePanel.Enabled = true;
+
                 pass_att.Value = (int)seasonoffense.SeaPassAtt;
                 pass_comp.Value = (int)seasonoffense.SeaComp;
                 pass_yds.Value = (int)seasonoffense.SeaPassYds;
@@ -3874,15 +4396,15 @@ namespace MaddenEditor.Forms
                 rushing_bt.Value = (int)seasonoffense.SeaRushBtk;
 
                 if (model.FileVersion >= MaddenFileVersion.Ver2007)
-                {                    
+                {
                     comebacks.Value = (int)seasonoffense.SeaComebacks;
                     Firstdowns.Value = (int)seasonoffense.SeaFirstDowns;
-                }                
+                }
             }
         }
 
         public void LoadPlayerDefense(PlayerRecord record, int index, bool career)
-        {           
+        {
             CareerStatsDefenseRecord careerdefensestats = model.PlayerModel.GetPlayersDefenseCareer(record.PlayerId);
             SeasonStatsDefenseRecord seasondefensestats = model.PlayerModel.GetDefenseStats(record.PlayerId, year);
 
@@ -3966,7 +4488,7 @@ namespace MaddenEditor.Forms
                     BigHits.Value = seasondefensestats.BigHits;
                     CatchesAllowed.Value = seasondefensestats.CatchesAllowed;
                 }
-            }           
+            }
         }
 
         public void LoadPlayerOL(PlayerRecord record, int index, bool career)
@@ -4010,7 +4532,7 @@ namespace MaddenEditor.Forms
 
             if (career && careerpkreturn != null)
             {
-                ReturnPanel.Enabled = true; 
+                ReturnPanel.Enabled = true;
 
                 kra.Value = careerpkreturn.Kra;
                 kryds.Value = careerpkreturn.Kryds;
@@ -4034,9 +4556,9 @@ namespace MaddenEditor.Forms
                 pryds.Value = seasonpkreturn.Pryds;
                 prl.Value = seasonpkreturn.Prl;
                 prtd.Value = seasonpkreturn.Prtd;
-            }           
+            }
         }
-        
+
         public void LoadPlayerStats(PlayerRecord record)
         {
             bool holder = isInitialising;
@@ -4048,7 +4570,7 @@ namespace MaddenEditor.Forms
 
             year = GetStatsYear();
 
-            LoadPlayerGamesPlayed(record, year, career);            
+            LoadPlayerGamesPlayed(record, year, career);
             LoadPlayerPuntKick(record, year, career);
             LoadPlayerOffense(record, year, career);
             LoadPlayerDefense(record, year, career);
@@ -4061,20 +4583,20 @@ namespace MaddenEditor.Forms
         }
 
         public int GetStatsYear()
-        { 
+        {
             if (statsyear.SelectedIndex > 0)
                 year = (int)statsyear.SelectedItem - baseyear;
 
             return year;
         }
-        
+
         #region Stats Functions
 
         private void AddStats_Combo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (AddStats_Combo.SelectedIndex == -1)
                 return;
-            
+
             if (!isInitialising)
             {
                 isInitialising = true;
@@ -4439,7 +4961,7 @@ namespace MaddenEditor.Forms
                     model.PlayerModel.GetPlayersOffenseCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).Comebacks = (int)comebacks.Value;
                 else model.PlayerModel.GetOffStats(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).SeaComebacks = (int)comebacks.Value;
             }
-        }  
+        }
 
         #endregion
 
@@ -4621,12 +5143,11 @@ namespace MaddenEditor.Forms
         #endregion
 
         #region Games Played
-        
+
         // fix
         private void gamesstarted_ValueChanged(object sender, EventArgs e)
         {
-            if (!isInitialising )
-            
+            if (!isInitialising)
             {
                 if (model.FileVersion != MaddenFileVersion.Ver2004 && statsyear.Text == "Career")
                     model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesStarted = (int)gamesstarted.Value;
@@ -4794,11 +5315,7 @@ namespace MaddenEditor.Forms
 
         private void kickoffs_ValueChanged(object sender, EventArgs e)
         {
-            if (!isInitialising)
-            {
-                if (statsyear.Text == "Career")
-                    model.PlayerModel.GetPlayersCareerPuntKick(model.PlayerModel.CurrentPlayerRecord.PlayerId).Kickoffs = (int)kickoffs.Value;
-            }
+
         }
 
         private void touchbacks_ValueChanged(object sender, EventArgs e)
@@ -4951,742 +5468,12 @@ namespace MaddenEditor.Forms
 
         #endregion
 
-        private void PlayerHeight_Feet_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                SetPlayerHeight();
-        }
-        private void PlayerHeight_Inches_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                SetPlayerHeight();
-        }
-
-        private void SetPlayerHeight()
-        {
-            int height = (int)PlayerHeight_Feet.SelectedIndex * 12 + (int)PlayerHeight_Inches.SelectedIndex;
-            if (height > 127)
-                height = 127;
-            else if (height == 0)
-                height = 1;
-            model.PlayerModel.CurrentPlayerRecord.Height = height;
-
-            PlayerHeight_Feet.SelectedIndex = (int)model.PlayerModel.CurrentPlayerRecord.Height / 12;
-            PlayerHeight_Inches.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.Height - (int)(PlayerHeight_Feet.SelectedIndex * 12);
-        }
+        #endregion
 
         #endregion
 
-        private void PLGL_Updown_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        
-
-
         #endregion
 
-        
-        private void UseActualNFLSalaryCap_Checkbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (UseActualNFLSalaryCap_Checkbox.Checked)
-                {
-                    SalaryCap.Value = (decimal)model.SalaryCapModel.LeagueCap[model.CurrentYear];                    
-                    model.SalaryCapModel.SalaryCap = (int)(SalaryCap.Value * 1000000);
-                }
-            }                
-        }
-
-         
-        #region Traits
-        
-
-        private void playerThrowAway_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowAway = playerThrowAway.Checked;
-        }        
-
-        private void playerThrowSpiral_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowSpiral = playerThrowSpiral.Checked;
-        }
-
-        private void playerForcePasses_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ForcePasses = playerForcePass.SelectedIndex;
-        }
-        private void playerFightYards_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.FightYards = playerFightYards.Checked;
-        }
-
-        private void playerPlaysBall_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlaysBall = playerPlaysBall.SelectedIndex;
-        }
-               
-
-        private void playerSidelineCatch_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (playerSidelineCatch.Checked)
-                    model.PlayerModel.CurrentPlayerRecord.SidelineCatch = 1;
-                else model.PlayerModel.CurrentPlayerRecord.SidelineCatch = 0;
-
-            }
-        }
-
-        private void playerHighMotor_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.HighMotor = playerHighMotor.Checked;
-        }
-
-        private void playerDLSwim_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.DLSwim = playerDLSwim.Checked;
-        }
-
-        private void playerBullrush_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.DLBullrush = playerBullrush.Checked;
-        }
-
-        private void playerDLSpin_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.DLSpinmove = playerDLSpin.Checked;
-        }
-
-        #endregion
-
-        private void playerPotential_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Potential = (int)playerPotential.Value;
-        }
-
-        private void playerQBStance_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Stance = (int)playerQBStance.Value;
-        }       
-
-        private void playerRelease_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Release = (int)playerRelease.Value;
-        }
-
-        private void playerThrowShort_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowShort = (int)playerThrowShort.Value;
-        }
-
-        private void playerThrowMedium_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowMedium = (int)playerThrowMedium.Value;
-        }
-
-        private void playerThrowDeep_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowDeep = (int)playerThrowDeep.Value;
-        }
-
-        private void playerThrowOnRun_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowOnRun = (int)playerThrowOnRun.Value;
-        }
-
-        private void playerThrowPressure_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ThrowPressure = (int)playerThrowPressure.Value;
-        }
-
-        private void playerBreakSack_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.BreakSack = (int)playerBreakSack.Value;
-        }
-
-        private void playerPlayAction_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlayAction = (int)playerPlayAction.Value;
-        }
-
-        private void playerTrucking_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Trucking = (int)playerTrucking.Value;
-        }
-
-        private void playerElusive_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Elusive = (int)playerElusive.Value;
-        }
-
-        private void playerRB_Vision_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.RB_Vision = (int)playerRB_Vision.Value;
-        }
-
-        private void playerStiffArm_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.StiffArm = (int)playerStiffArm.Value;
-        }
-
-        private void playerSpinMove_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.SpinMove = (int)playerSpinMove.Value;
-        }
-
-        private void playerJukeMove_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.JukeMove = (int)playerJukeMove.Value;
-        }
-
-        private void playerImpactBlock_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ImpactBlocking = (int)playerImpactBlock.Value;
-        }
-
-        private void playerLeadBlock_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.LeadBlock = (int)playerLeadBlock.Value;
-        }
-
-        private void playerMoves_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PowerMoves = (int)playerPowerMoves.Value;
-        }
-
-        private void playerFinesseMoves_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.FinesseMoves = (int)playerFinesseMoves.Value;
-        }       
-
-        private void playerShortRoute_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ShortRoute = (int)playerShortRoute.Value;
-        }
-
-        private void playerMediumRoute_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.MediumRoute = (int)playerMediumRoute.Value;
-        }
-
-        private void playerDeepRoute_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.DeepRoute = (int)playerDeepRoute.Value;
-        }
-
-        private void playerCatchTraffic_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.CatchTraffic = (int)playerCatchTraffic.Value;
-        }
-
-        private void playerSpecCatch_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.SpecCatch = (int)playerSpecCatch.Value;
-        }
-
-        private void playerRunBlockFinesse_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.RunBlockFootwork = (int)playerRunBlockFinesse.Value;
-        }
-
-        private void playerRunBlockStrength_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.RunBlockStrength = (int)playerRunBlockStrength.Value;
-        }
-
-        private void playerPassBlockFootwork_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PassBlockFootwork = (int)playerPassBlockFootwork.Value;
-        }
-
-        private void playerPassBlockStr_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PassBlockStrength = (int)playerPassBlockStr.Value;
-        }
-
-        private void playerPlayRecog_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlayRecognition = (int)playerPlayRecog.Value;
-        }
-
-        private void playerPursuit_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Pursuit = (int)playerPursuit.Value;
-        }
-
-        private void playerBlockShed_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.BlockShedding = (int)playerBlockShed.Value;
-        }
-
-        private void playerZoneCoverage_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ZoneCoverage = (int)playerZoneCoverage.Value;
-        }
-
-        private void playerManCover_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ManCoverage = (int)playerManCover.Value;
-        }
-
-        private void playerPressCover_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PressCover = (int)playerPressCover.Value;
-        }
-
-        private void playerHitPower_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.HitPower = (int)playerHitPower.Value;
-        }
-
-        private void playerStateCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.HomeState = (int)playerStateCombo.SelectedIndex;
-        }
-
-        private void playerHometown_TextChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Hometown = playerHometown.Text;
-        }
-
-        private void playerTowel_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlayerTowel = playerTowel.Checked;
-        }
-
-        private void playerHandWarmer_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.HandWarmer = playerHandWarmer.Checked;
-        }
-
-        private void playerBigHitter_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.BigHitter = playerBigHitter.Checked;
-        }
-
-       
-
-        private void playerClutch_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Clutch = playerClutch.Checked;
-        }
-
-        private void playerComment_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlayerComment = (int)playerComment.Value;
-        }
-
-        private void playerTuckRun_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.TuckRun = (int)playerTuckRun.SelectedIndex;
-        }              
-
-        private void playerPressureMax_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PressureMax = (int)playerPressureMax.Value;
-        }
-
-        private void playerTackleLow_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.TackleLow = playerTackleLow.Checked;
-        }
-
-        private void playerStripsBall_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.StripsBall = playerStripsBall.Checked;
-        }
-
-        private void playerAsset_TextChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Asset = playerAsset.Text;
-        }
-
-        private void playerHighPointCatch_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PossessionCatch = playerPossCatch.Checked;
-        }
-
-        private void playerTRFB_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.FeetInBounds = playerFeetInBounds.Checked;
-        }        
-
-        private void playerTRIC_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Penalty = playerPenalty.SelectedIndex;
-        }
-
-        private void playerTRJR_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.AggressiveCatch = playerAggressiveCatch.Checked;
-        }
-
-        private void playerRAC_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.RunAfterCatch = playerRAC.Checked;
-        }
-
-        private void playerDropsPasses_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.DropPasses = playerDropsPasses.Checked;
-        }
-
-        private void playerBirthday_TextChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.SetBirthday(playerBirthday.Text);
-        }
-
-        private void playerCoversBall_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.CoversBall = playerCoversBall.SelectedIndex + 1;
-        }
-
-        private void playerPlaysBall_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlaysBall = playerPlaysBall.SelectedIndex;
-        }
-
-        private void playerForcePass_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.ForcePasses = playerForcePass.SelectedIndex;
-        }
-
-        private void playerSensePressure_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.SensePressure = playerSensePressure.SelectedIndex;
-        }
-
-        private void playerFightYards_CheckedChanged_1(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.FightYards = playerFightYards.Checked;
-        }
-
-        private void playerLeftShoeCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(!isInitialising)
-                if (model.FileVersion > MaddenFileVersion.Ver2008)
-                {
-                    model.PlayerModel.CurrentPlayerRecord.LeftShoe = model.PlayerModel.GetShoe(playerLeftShoeCombo.Text);
-                }
-        }
-
-        private void playerRightShoeCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                if (model.FileVersion > MaddenFileVersion.Ver2008)
-                {
-                    model.PlayerModel.CurrentPlayerRecord.RightShoe = model.PlayerModel.GetShoe(playerRightShoeCombo.Text);
-                }
-        }
-
-        private void playerLeftSleeve_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                if (model.FileVersion > MaddenFileVersion.Ver2008)
-                {
-                    model.PlayerModel.CurrentPlayerRecord.SleevesLeft = model.PlayerModel.GetSleeve(playerLeftShoeCombo.Text);
-                }
-        }
-
-        private void playerRightSleeve_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                if (model.FileVersion > MaddenFileVersion.Ver2008)
-                {
-                    model.PlayerModel.CurrentPlayerRecord.SleevesRight = model.PlayerModel.GetSleeve(playerRightShoeCombo.Text);
-                }
-        }
-
-        private void playerSockHeight_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.SockHeight = (int)playerSockHeight.SelectedIndex;
-        }
-
-        private void playerQBStyle_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.QBStyle = model.PlayerModel.GetQBStyle(playerQBStyle.Text);
-        }
-
-        private void playerJerseySleeves_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Jersey = playerJerseySleeves.SelectedIndex;
-        }
-
-        private void playerConfidence_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.Confidence = (int)playerConfidence.Value;
-        }
-
-        private void playerFlakJacket_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                    model.PlayerModel.CurrentPlayerRecord.FlakJacket = playerFlakJacket.Checked;
-            }
-        }
-
-        private void playerBackPlate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                    model.PlayerModel.CurrentPlayerRecord.BackPlate = playerBackPlate.Checked;
-            }
-        }
-
-        private void playerArchetype_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.PlayerType = model.PlayerModel.GetArchetype(playerArchetype.Text);
-        }
-        
-        private void ExportPlayerCSV_Button_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog fileDialog = new SaveFileDialog();
-            Stream myStream = null;
-
-            fileDialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
-            fileDialog.RestoreDirectory = true;
-
-            if (fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    if ((myStream = fileDialog.OpenFile()) != null)
-                    {
-                        PlayerRecord rec = model.PlayerModel.CurrentPlayerRecord;
-                        TableModel table = model.TableModels["PLAY"];
-                        List<TdbFieldProperties> props = table.GetFieldList();
-                        StringBuilder hbuilder = new StringBuilder();
-                        StringBuilder builder = new StringBuilder();
-                        StreamWriter writer = new StreamWriter(myStream);
-                        hbuilder.Append("PLAY");
-                        hbuilder.Append(",");
-                        if (model.FileVersion == MaddenFileVersion.Ver2019)
-                            hbuilder.Append("2019");
-                        hbuilder.Append(",");
-                        hbuilder.Append("No");
-                        hbuilder.Append(",");
-                        writer.WriteLine(hbuilder);
-                        writer.Flush();
-
-                        hbuilder.Clear();
-                        foreach (TdbFieldProperties tdb in props)
-                        {
-                            hbuilder.Append(tdb.Name);
-                            hbuilder.Append(",");
-                        }
-                        writer.WriteLine(hbuilder.ToString());
-                        writer.Flush();
-                        
-                        foreach (TdbFieldProperties tdb in props)
-                        {
-                            if (tdb.FieldType == TdbFieldType.tdbString)
-                                builder.Append(rec.GetStringField(tdb.Name));
-                            else if (tdb.FieldType == TdbFieldType.tdbFloat)
-                                builder.Append(rec.GetFloatField(tdb.Name));
-                            else
-                            {
-                                int test = rec.GetIntField(tdb.Name);
-                                builder.Append(test);
-                            }
-                            builder.Append(",");
-                        }
-                        writer.WriteLine(builder.ToString());
-                        writer.Flush();
-                        writer.Close();
-                    }
-                }
-                catch (IOException err)
-                {
-                    err = err;
-                    MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void playerInjurySevere_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                {
-                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjurySeverity = (int)playerInjurySevere.Value;
-                }
-        }
-
-        private void playerInjuryReturn_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
-                {
-                    model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryReturn = (int)playerInjuryReturn.Value;
-                }
-        }
-
-        private void playerOVRArchetypeCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                int type =  model.PlayerModel.GetArchetype(playerOVRArchetypeCombo.Text);
-                playerOVRArchetype.Text = playeroverall.GetOverall19(model.PlayerModel.CurrentPlayerRecord, model.PlayerModel.CurrentPlayerRecord.PositionId, type).ToString();
-            }
-                
-        }
-
-        private void firstNameTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (firstNameTextBox.Text != model.PlayerModel.CurrentPlayerRecord.FirstName)
-                {
-                   isInitialising = true;
-                    model.PlayerModel.CurrentPlayerRecord.FirstName = firstNameTextBox.Text;
-                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName +
-                        " " + model.PlayerModel.CurrentPlayerRecord.LastName;
-                    PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
-                    isInitialising = false;
-                }
-            }
-        }
-
-        private void PlayerID_Updown_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {                
-                if (PlayerID_Updown.Value != model.PlayerModel.CurrentPlayerRecord.PlayerId)
-                {
-                    isInitialising = true;
-                    // changing to a new player id
-                    if (!CheckPlayerUniqueness((int)PlayerID_Updown.Value, -1))
-                    {
-                        int oldpgid = model.PlayerModel.CurrentPlayerRecord.PlayerId;
-                        string name = "";
-                        if (model.PlayerModel.playernames.ContainsKey(oldpgid))
-                        {
-                            // This should always happen, but name will be "unknown" if id doesnt exist
-                            name = model.PlayerModel.playernames[oldpgid];
-                            model.PlayerModel.playernames.Remove(oldpgid);
-                        }
-                        else name = "unknown";
-                        model.PlayerModel.playernames.Add((int)PlayerID_Updown.Value, name);
-                        model.PlayerModel.CurrentPlayerRecord.PlayerId = (int)PlayerID_Updown.Value;
-                        PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
-                    }
-                    isInitialising = false;
-                }
-            }
-        }
-
-        private void lastNameTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-            {
-                if (lastNameTextBox.Text != model.PlayerModel.CurrentPlayerRecord.LastName)
-                {
-                    isInitialising = true;
-                    model.PlayerModel.CurrentPlayerRecord.LastName = lastNameTextBox.Text;
-                    model.PlayerModel.playernames[model.PlayerModel.CurrentPlayerRecord.PlayerId] = model.PlayerModel.CurrentPlayerRecord.FirstName +
-                        " " + model.PlayerModel.CurrentPlayerRecord.LastName;
-                    PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
-                    isInitialising = false;
-                }
-            }
-        }
-
-        private void playerCaptain_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.IsCaptain = playerCaptain.Checked;
-        }
-
-        private void playerUndershirt_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.UnderShirt = playerUndershirt.SelectedIndex;
-        }
-                
-        private void playerEndPlay_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.EndPlay = model.PlayerModel.GetEndPlay(playerEndPlay.Text);
-        }
 
     }
 }

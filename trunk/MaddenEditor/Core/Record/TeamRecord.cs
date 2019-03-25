@@ -31,7 +31,7 @@ namespace MaddenEditor.Core.Record
 	{
 		// TEAM
 
-        public const string CUSTOM_ART_FILE = "CART";
+        public const string CUSTOM_ART_FILE = "CART";       //not in 2019
         public const string CONFERENCE_ID = "CGID";
         public const string CTHT = "CTHT";
         public const string CITY_ID = "CYID";

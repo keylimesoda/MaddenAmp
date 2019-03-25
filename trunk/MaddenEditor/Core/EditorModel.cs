@@ -603,7 +603,7 @@ namespace MaddenEditor.Core
         public Dictionary<int,string> PlayerRole = new Dictionary<int,string>();        
         public Dictionary<int, double> LeagueCap = new Dictionary<int, double>();
 
-        public Dictionary<MaddenFileVersion, Dictionary<string, tabledefs>> TableDefs = new Dictionary<MaddenFileVersion, Dictionary<string, tabledefs>>();
+        public Dictionary<MaddenFileVersion, Dictionary<string, tabledefs>> TableDefs = new Dictionary<MaddenFileVersion, Dictionary<string, tabledefs>>();        
 
         #endregion
         
@@ -1655,7 +1655,8 @@ namespace MaddenEditor.Core
             LeagueCap.Add(2015, 143.28);
             LeagueCap.Add(2016, 155.27);
             LeagueCap.Add(2017, 167.00);
-            LeagueCap.Add(2018, 177.20); 
+            LeagueCap.Add(2018, 177.20);
+            LeagueCap.Add(2019, 188.20);
         }
             
         public bool IsDraftStage()

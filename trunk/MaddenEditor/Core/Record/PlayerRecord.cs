@@ -29,6 +29,7 @@ using System.Windows.Forms;
 
 namespace MaddenEditor.Core.Record
 {
+    #region Enums
     public enum Rating
     {
         STR = 0,
@@ -86,7 +87,8 @@ namespace MaddenEditor.Core.Record
         ZON = 52, // zone cover
         KRR = 53, // kick return
     }
-    
+    #endregion
+
     public class PlayerRecord : TableRecordModel
 	{   
         // table name "PLAY"
@@ -163,11 +165,11 @@ namespace MaddenEditor.Core.Record
         public const string HELMET_STYLE = "PHLM";
         public const string HOMESTATE = "PHSN";                 //2019
         public const string HOMETOWN = "PHTN";                  //2019
-        public const string NFL_ICON = "PICN";
+        public const string NFL_ICON = "PICN";                  // 2005
         public const string IMPORTANCE = "PIMP";
         public const string INJURY = "PINJ";
         public const string JERSEY_NUMBER = "PJEN";
-        public const string JERSEY = "PJER";
+        public const string JERSEYSLEEVE = "PJER";
         public const string JUMPING = "PJMP";
         public const string PLAYER_JERSEY_INITIALS = "PJTY";
         public const string KICK_ACCURACY = "PKAC";
@@ -179,7 +181,7 @@ namespace MaddenEditor.Core.Record
         public const string CATCH_TRAFFIC = "PLCI";             //2019
         public const string LEFT_ELBOW = "PLEL";
         public const string PLFH = "PLFH";                      // ?
-        public const string LEFT_HAND_A = "PLHA";
+        public const string LEFT_HAND = "PLHA";
         public const string HIT_POWER = "PLHT";                 //2019
         public const string HAND_WARMER = "PLHW";               //2019
         public const string LAST_HEALTHY_YEAR = "PLHY";         // not sure about this one
@@ -216,6 +218,7 @@ namespace MaddenEditor.Core.Record
         public const string MEDIUM_ROUTE_RUN = "PMRR";          //2019
         public const string BODY_WEIGHT = "PMTS";
         public const string MUSCLE = "PMUS";
+        public const string PNEC = "PNEC";                      // 2019 something to do with generated portraits
         public const string NECK_ROLL = "PNEK";
         public const string NFL_ID = "POID";
         public const string ORIGINAL_POSITION_ID = "POPS";      // 2005+  not in 2019
@@ -235,9 +238,10 @@ namespace MaddenEditor.Core.Record
         public const string RUN_BLOCKING = "PRBK";
         public const string RUNBLOCK_STRENGTH = "PRBS";         //2019
         public const string RIGHT_ELBOW = "PREL";
-        public const string RIGHT_HAND_A = "PRHA";
+        public const string RIGHT_HAND = "PRHA";
         public const string KNEE_RIGHT = "PRKN";                //2019
-        public const string PLAYER_ROLE = "PROL";               // 2007 // 2019 This isXP Rate
+        public const string PLAYER_ROLE = "PROL";               // 2007 
+        public const string XP_RATE = "PROL";                   // 2019 This isXP Rate
         public const string PLAYER_WEAPON = "PRL2";             // 2008
         public const string REAR_SIZE = "PRSE";                 // 2019
         public const string RIGHT_SHOE = "PRSH";
@@ -259,6 +263,7 @@ namespace MaddenEditor.Core.Record
         public const string SIGNING_BONUS_YEAR_6 = "PSB6";
         public const string SIGNING_BONUS_TOTAL = "PSBO";
         public const string BODY_OVERALL = "PSBS";
+        public const string SIDELINE_HEADGEAR = "PSHG";         //2019
         public const string SOCK_HEIGHT = "PSKH";               //2019
         public const string PSKI = "PSKI";                      // ?
         public const string SPEED = "PSPD";
@@ -283,14 +288,14 @@ namespace MaddenEditor.Core.Record
         public const string THROW_ON_RUN = "PTOR";              //2019
         public const string LEGS_THIGH_PADS = "PTPS";           // 2004-2005
         public const string TOTAL_SALARY = "PTSA";              
-        public const string SLEEVES_B = "PTSL";
+        public const string TEMP_SLEEVES = "PTSL";
         public const string EQP_PAD_HEIGHT = "PTSS";
         public const string THROW_PRESSURE = "PTUP";            //2019
         public const string PUCL = "PUCL";                      // ?
         public const string UNDERSHIRT = "PUND";                //2019
         public const string BODY_MUSCLE = "PUTS";
         public const string PLAYER_VALUE = "PVAL";              // 2008, this is 0-7 values
-        public const string PVCO = "PVCO";                      // previous contract length?
+        public const string PREVIOUS_CONTRACT_LENGTH = "PVCO";  // previous contract length?
         public const string VISOR = "PVIS";
         public const string PREVIOUS_SIGNING_BONUS_TOTAL = "PVSB";
         public const string PREVIOUS_TOTAL_SALARY = "PVTS";
@@ -302,9 +307,9 @@ namespace MaddenEditor.Core.Record
         public const string YEARS_WITH_TEAM = "PYWT";
         public const string SHORT_ROUTE_RUN = "SRRN";           //2019
 		public const string TEAM_ID = "TGID";
-        public const string LEFT_ELBOW_B = "TLEL"; 
-        public const string LEFT_HAND_B = "TLHA";
-        public const string LEFT_WRIST_B = "TLWR";
+        public const string TEAM_LEFT_ELBOW = "TLEL";           // not in 2019
+        public const string TEAM_LEFT_HAND = "TLHA";            // not in 2019
+        public const string TEAM_LEFT_WRIST = "TLWR";           // not in 2019
         public const string BIG_HITTER = "TRBH";                //2019
         public const string DL_BULLRUSH = "TRBR";               //2019
         public const string COVERS_BALL = "TRCB";               //2019
@@ -313,12 +318,12 @@ namespace MaddenEditor.Core.Record
         public const string DROP_PASSES = "TRDO";               //2019
         public const string TRDP = "TRDP";                      //2019
         public const string DL_SPINMOVE = "TRDS";               //2019
-        public const string RIGHT_ELBOW_B = "TREL";
+        public const string TEAM_RIGHT_ELBOW = "TREL";
         public const string KEEP_FEET_IN_BOUNDS = "TRFB";       //2019
         public const string PUMP_FAKE = "TRFK";                 //2019 not sure this is being used
         public const string FORCE_PASSES = "TRFP";              //2019
         public const string FIGHT_FOR_YARDS = "TRFY";           //2019
-		public const string RIGHT_HAND_B = "TRHA";
+		public const string TEAM_RIGHT_HAND = "TRHA";
         public const string HIGH_MOTOR = "TRHM";                //2019
         public const string PENALTY = "TRIC";                   //2019
         public const string AGGRESSIVE_CATCH = "TRJR";          //2019 
@@ -328,10 +333,10 @@ namespace MaddenEditor.Core.Record
         public const string SENSE_PRESSURE = "TRSP";            //2019
         public const string DL_SWIM = "TRSW";                   //2019
         public const string THROW_AWAY = "TRTA";                //2019
-        public const string TACKLE_LOW = "TRTL";                //2019
+        public const string TACKLE_LOW = "TRTL";                //2019 ?  only a few players have this set in default roster
         public const string TUCK_AND_RUN = "TRTR";              //2019
         public const string THROW_SPIRAL = "TRTS";              //2019
-        public const string RIGHT_WRIST_B = "TRWR";             //  not in 2019
+        public const string TEAM_RIGHT_WRIST = "TRWR";          // not in 2019
         public const string RUN_AFTER_CATCH = "TRWU";           //2019 
         public const string PRESSURE_MAX = "TSPM";              //2019
 
@@ -342,40 +347,22 @@ namespace MaddenEditor.Core.Record
 		{
 
 		}
-
-        private bool calculatedCapHit = false;
-        private int capHit = 0;
-        private int capHitDifference = 0;
-        double[] estYearlySalary = new double[7];
-        double[] estSigningBonusArray = new double[7];
-        public bool Starter = false;
-        public int backupValue = 0;
+        
 		public override string ToString()
 		{
 			return FirstName + " " + LastName + " (" + Enum.GetNames(typeof(MaddenPositions))[PositionId].ToString() + ")";
 		}
-        public int[] salary = new int[7];
-        public int[] bonus = new int[7];
+
+        public int[] YearlySalary = null;
+        public int[] YearlyBonus = null;
 
 
         #region Get/SET
 
         public string FirstName
 		{
-			get
-			{
-				//The first time we access this record we should calculate this players cap hit
-                //this is wrong...fix
-				//if (!calculatedCapHit)
-				//{
-				//	CalculateCapHit(false);
-				//}
-				return GetStringField(FIRST_NAME);
-			}
-			set
-			{
-				SetField(FIRST_NAME, value);
-			}
+            get { return GetStringField(FIRST_NAME); }
+            set	{ SetField(FIRST_NAME, value); }
 		}
 
 		public string LastName
@@ -504,17 +491,11 @@ namespace MaddenEditor.Core.Record
 			}
 		}
 
-		public bool ProBowl
-		{
-			get
-			{
-				return (GetIntField(PRO_BOWL) == 1);
-			}
-			set
-			{
-				SetField(PRO_BOWL, Convert.ToInt32(value));
-			}
-		}
+        public bool ProBowl
+        {
+            get { return (GetIntField(PRO_BOWL) == 1); }
+            set { SetField(PRO_BOWL, Convert.ToInt32(value)); }
+        }
 
 		public bool DominantHand
 		{
@@ -906,7 +887,7 @@ namespace MaddenEditor.Core.Record
 			}
 		}
         		
-		public bool SideArmed
+		public bool ThrowStyle
 		{
 			get	{ return GetIntField(THROWING_STYLE) == 1; }
             set { SetField(THROWING_STYLE, Convert.ToInt32(value)); }
@@ -997,10 +978,10 @@ namespace MaddenEditor.Core.Record
             set { SetField(PCTS, value); }
         }
 
-        public int Jersey
+        public int JerseySleeve
         {
-            get { return GetIntField(JERSEY); }
-            set { SetField(JERSEY,value); }
+            get { return GetIntField(JERSEYSLEEVE); }
+            set { SetField(JERSEYSLEEVE,value); }
         }
 
         public bool Plfh
@@ -1036,10 +1017,7 @@ namespace MaddenEditor.Core.Record
         public int SigningBonus
         {
             get { return GetIntField(SIGNING_BONUS_TOTAL); }
-            set 
-            { 
-                SetField(SIGNING_BONUS_TOTAL, value);
-                CalculateCapHit(true);
+            set { SetField(SIGNING_BONUS_TOTAL, value);
             }
         }
 
@@ -1061,119 +1039,94 @@ namespace MaddenEditor.Core.Record
             set { SetField(PUCL, value); }
         }
 
-        public int Pvco
+        public int PreviousContractLength
         {
-            get { return GetIntField(PVCO); }
-            set { SetField(PVCO, value); }
+            get { return GetIntField(PREVIOUS_CONTRACT_LENGTH); }
+            set { SetField(PREVIOUS_CONTRACT_LENGTH, value); }
         }
-
 
         public int Salary0
         {
             get { return GetIntField(SALARY_YEAR_0); }
-            set { SetField(SALARY_YEAR_0, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SALARY_YEAR_0, value); }
         }
         public int Salary1
         {
             get { return GetIntField(SALARY_YEAR_1); }
-            set { SetField(SALARY_YEAR_1, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SALARY_YEAR_1, value); }
         }
         public int Salary2
         {
             get { return GetIntField(SALARY_YEAR_2); }
-            set { SetField(SALARY_YEAR_2, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SALARY_YEAR_2, value); }
         }
         public int Salary3
         {
             get { return GetIntField(SALARY_YEAR_3); }
-            set { SetField(SALARY_YEAR_3, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SALARY_YEAR_3, value); }
         }
         public int Salary4
         {
             get { return GetIntField(SALARY_YEAR_4); }
-            set { SetField(SALARY_YEAR_4, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SALARY_YEAR_4, value); }
         }
         public int Salary5
         {
             get { return GetIntField(SALARY_YEAR_5); }
-            set { SetField(SALARY_YEAR_5, value); 
-                FixCurrentSalary(); }
+            set { SetField(SALARY_YEAR_5, value); }                
         }
         public int Salary6
         {
             get { return GetIntField(SALARY_YEAR_6); }
-            set { SetField(SALARY_YEAR_6, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SALARY_YEAR_6, value); }
         }
         public int Bonus0
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_0); }
-            set { SetField(SIGNING_BONUS_YEAR_0, value);
-            FixCurrentSalary(); }
+            set { SetField(SIGNING_BONUS_YEAR_0, value); }
         }
         public int Bonus1
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_1); }
-            set { SetField(SIGNING_BONUS_YEAR_1, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_YEAR_1, value); }
         }
         public int Bonus2
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_2); }
-            set { SetField(SIGNING_BONUS_YEAR_2, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_YEAR_2, value); }
         }
         public int Bonus3
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_3); }
-            set { SetField(SIGNING_BONUS_YEAR_3, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_YEAR_3, value); }
         }
         public int Bonus4
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_4); }
-            set { SetField(SIGNING_BONUS_YEAR_4, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_YEAR_4, value); }
         }
         public int Bonus5
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_5); }
-            set { SetField(SIGNING_BONUS_YEAR_5, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_YEAR_5, value); }
         }
         public int Bonus6
         {
             get { return GetIntField(SIGNING_BONUS_YEAR_6); }
-            set { SetField(SIGNING_BONUS_YEAR_6, value);
-            FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_YEAR_6, value); }
         }
 
-        public int BonusTotal
+        public int TotalBonus
         {
             get { return GetIntField(SIGNING_BONUS_TOTAL); }
-            set
-            {
-                SetField(SIGNING_BONUS_TOTAL, value);
-                FixCurrentSalary();
-            }
+            set { SetField(SIGNING_BONUS_TOTAL, value); }
         }
+        public int PreviousTotalSalary
+        {
+            get { return GetIntField(PREVIOUS_TOTAL_SALARY); }
+            set { SetField(PREVIOUS_TOTAL_SALARY, value); }
+        }
+
 
         #region Appearance / Equipment
         public bool RightKnee
@@ -1182,10 +1135,10 @@ namespace MaddenEditor.Core.Record
             set { SetField(RIGHT_KNEE, Convert.ToInt32(value)); }
         }
 
-        public int SleevesB
+        public int TempSleeves
         {
-            get { return GetIntField(SLEEVES_B); }
-            set { SetField(SLEEVES_B, value); }
+            get { return GetIntField(TEMP_SLEEVES); }
+            set { SetField(TEMP_SLEEVES, value); }
         }
 
         public int LeftElbow
@@ -1212,6 +1165,18 @@ namespace MaddenEditor.Core.Record
             }
         }
 
+        public int TeamLeftElbow
+        {
+            get { return GetIntField(TEAM_LEFT_ELBOW); }
+            set { SetField(TEAM_LEFT_ELBOW, value); }
+        }
+        public int TeamRightElbow
+        {
+            get { return GetIntField(TEAM_RIGHT_ELBOW); }
+            set { SetField(TEAM_RIGHT_ELBOW, value); }
+        }
+
+
         public int SleevesLeft
         {
             get
@@ -1235,15 +1200,15 @@ namespace MaddenEditor.Core.Record
                 SetField(LEFT_WRIST, value);                
             }
         }
-        public int LeftWristB
+        public int TeamLeftWrist
         {
             get
             {
-                return GetIntField(LEFT_WRIST_B);
+                return GetIntField(TEAM_LEFT_WRIST);
             }
             set
             {
-                SetField(LEFT_WRIST_B, value);
+                SetField(TEAM_LEFT_WRIST, value);
             }
         }
         public int RightWrist
@@ -1257,15 +1222,15 @@ namespace MaddenEditor.Core.Record
                 SetField(RIGHT_WRIST, value);
             }
         }
-        public int RightWristB
+        public int TeamRightWrist
         {
             get
             {
-                return GetIntField(RIGHT_WRIST_B);
+                return GetIntField(TEAM_RIGHT_WRIST);
             }
             set
             {
-                SetField(RIGHT_WRIST_B, value);
+                SetField(TEAM_RIGHT_WRIST, value);
             }
         }
         public int NasalStrip
@@ -1352,7 +1317,7 @@ namespace MaddenEditor.Core.Record
             }
         }
 
-        public int HelmetStyle
+        public int Helmet
         {
             get
             {
@@ -1416,26 +1381,34 @@ namespace MaddenEditor.Core.Record
         {
             get
             {
-                return GetIntField(LEFT_HAND_A);
+                return GetIntField(LEFT_HAND);
             }
             set
             {
-                SetField(LEFT_HAND_A, value);
-                SetField(LEFT_HAND_B, value);
+                SetField(LEFT_HAND, value);
             }
+        }
+        public int TeamLeftHand
+        {
+            get { return GetIntField(TEAM_LEFT_HAND); }
+            set { SetField(TEAM_LEFT_HAND, value); }
         }
 
         public int RightHand
         {
             get
             {
-                return GetIntField(RIGHT_HAND_A);
+                return GetIntField(RIGHT_HAND);
             }
             set
             {
-                SetField(RIGHT_HAND_A, value);
-                SetField(RIGHT_HAND_B, value);
+                SetField(RIGHT_HAND, value);
             }
+        }
+        public int TeamRightHand
+        {
+            get { return GetIntField(TEAM_RIGHT_HAND); }
+            set { SetField(TEAM_RIGHT_HAND, value); }
         }
 
         public int LeftShoe
@@ -1679,11 +1652,7 @@ namespace MaddenEditor.Core.Record
         }
 
         #endregion
-        public int PreviousTotalSalary
-        {
-            get { return GetIntField(PREVIOUS_TOTAL_SALARY); }
-            set { SetField(PREVIOUS_TOTAL_SALARY, value); }
-        }
+        
         public int Pwin
         {
             get { return GetIntField(PWIN); }
@@ -2255,9 +2224,65 @@ namespace MaddenEditor.Core.Record
             get { return (GetIntField(PUMP_FAKE) == 1); }
             set { SetField(PUMP_FAKE, Convert.ToInt32(value)); }
         }
+        public int Pnec
+        {
+            get { return GetIntField(PNEC); }
+            set { SetField(PNEC, value); }
+        }
+        public int SidelineHeadgear
+        {
+            get { return GetIntField(SIDELINE_HEADGEAR); }
+            set { SetField(SIDELINE_HEADGEAR, value); }
+        }
+        public int XPRate
+        {
+            get { return GetIntField(XP_RATE); }
+            set { SetField(XP_RATE, value); }
+        }
+        public string GetBirthday()
+        {
+            // s68 - I find bit shifting confusing, got this formula from xananthol's madden 360 roster reader
+            // and adjusted the year.
+            string bd = "";
+            int month = ((this.Birthday & 0x00000780) >> 7) + 1;
+            int day = ((this.Birthday & 0x0000F800) >> 11);
+            int year = (this.Birthday & 0x0000007F) + 1940;
 
+            bd = month.ToString() + "/" + day.ToString() + "/" + year.ToString();
+            return bd;
+        }
+
+        public void SetBirthday(string bday)
+        {
+            // s68, Got this function from xanathol's xbox 360 roster editor, adjusted year
+            int bd = 0;
+            int temp = 0;
+            string[] arr = bday.ToString().Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (arr.Length != 3)
+                return;
+
+            temp = Convert.ToInt32(arr[1]);
+            if (temp < 1) temp = 1;
+            if (temp > 31) temp = 31;
+            bd |= ((0x0000001F & temp) << 11);
+
+            temp = Convert.ToInt32(arr[0]);
+            if (temp < 1) temp = 1;
+            if (temp > 12) temp = 12;
+            bd |= ((0x0000000F & (temp - 1)) << 7);
+
+            temp = Convert.ToInt32(arr[2]);
+            if (temp < 1956) temp = 1956;
+            temp -= 1940;
+            bd |= (0x0000007F & temp);
+
+            this.Birthday = bd;
+        }
 
         #endregion
+
+        #region Functions
 
         public int GetRating(int AttributeID)
         {
@@ -2375,47 +2400,8 @@ namespace MaddenEditor.Core.Record
 
             return 0;
         }
-             
-        public string GetBirthday()
-        {            
-            // s68 - I find bit shifting confusing, got this formula from xananthol's madden 360 roster reader
-            // and adjusted the year.
-            string bd = "";
-            int month = ((this.Birthday & 0x00000780) >> 7) + 1;
-            int day = ((this.Birthday & 0x0000F800) >> 11);
-            int year = (this.Birthday & 0x0000007F ) +1940;
-            
-            bd = month.ToString() + "/" + day.ToString() + "/" + year.ToString();
-            return bd;
-        }
-        
-        public void SetBirthday(string bday)
-        {
-            // s68, Got this function from xanathol's xbox 360 roster editor, adjusted year
-            int bd = 0;
-            int temp = 0;
-            string[] arr = bday.ToString().Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (arr.Length != 3)
-                return;
-
-            temp = Convert.ToInt32(arr[1]);
-            if (temp < 1) temp = 1;
-            if (temp > 31) temp = 31;
-            bd |= ((0x0000001F & temp) << 11);
-
-            temp = Convert.ToInt32(arr[0]);
-            if (temp < 1) temp = 1;
-            if (temp > 12) temp = 12;
-            bd |= ((0x0000000F & (temp - 1)) << 7);
-
-            temp = Convert.ToInt32(arr[2]);
-            if (temp < 1956) temp = 1956;
-            temp -= 1940;
-            bd |= (0x0000007F & temp);
-
-            this.Birthday = bd;
-        }
+        #endregion
 
 
         #region Madden Draft Edit
@@ -2841,7 +2827,7 @@ namespace MaddenEditor.Core.Record
         #endregion
         
         #region Salary Signing Bonus Functions
-
+        // fix all the salary cap functions
         
         public int GetSalaryAtYear(int year)
 		{
@@ -2853,7 +2839,7 @@ namespace MaddenEditor.Core.Record
 			}
 			else
 			{
-				return (int)estYearlySalary[year];
+				return (int)YearlySalary[year];
 			}
 		}
 
@@ -2867,81 +2853,96 @@ namespace MaddenEditor.Core.Record
 			}
 			else
 			{
-				return (int)estSigningBonusArray[year];
+				return (int)YearlyBonus[year];
 			}
 		}
+           
+        public int GetCurrentSalary()
+        {
+            int year = ContractLength - ContractYearsLeft;
+            int tempCurrentSalary = 0;
 
-		// fix all the salary cap functions
-
-        public int CapHit
-		{
-			get
-			{
-				return capHit;
-			}
-		}	
-
-        public void FixCurrentSalary()
-        {            
-            if (ContainsField(SALARY_YEAR_0))
+            if (ContractYearsLeft == 0)
             {
-                if (ContractYearsLeft == 0)
-                {
-                    CurrentSalary = 0;
-                    return;
-                }
-                int tempsal = CurrentSalary;
-                int year = ContractLength - ContractYearsLeft;
-                CurrentSalary = GetIntField("PSA" + year) + GetIntField("PSB" + year);                
+                CurrentSalary = 0;
+                return 0;
             }
+            else if (ContainsField(SALARY_YEAR_0))
+            {
+                tempCurrentSalary = GetIntField("PSA" + year) + GetIntField("PSB" + year);
+                if (tempCurrentSalary != CurrentSalary)
+                    CurrentSalary = (int)tempCurrentSalary;                
+            }
+            else
+            {
+                if (YearlySalary == null)
+                    SetContract(true, false, .30);
+                tempCurrentSalary = YearlySalary[year] + YearlyBonus[year];
+            }
+
+            return tempCurrentSalary;
         }
         		
-        private void CalculateCapHit(bool causeDirty)
+        public void SetContract(bool checkrookie, bool causeDirty, double perc)
         {
             if (ContractLength == 0 || ContractLength > 7)
-                return;
-            double perc = 1;
+                return;            
 
-            // Salaries are not allowed to increase more than 30% each year, for rookies this is 25%
-            double x = 1.30;
-            if (YearsPro == 0)
-                x = 1.25;
-            for (int t = 1; t < ContractLength; t++)
+            // Default Contracts are not supposed to increase more than 30% each year, 25% for rookies            
+            double x = perc/100 + 1;
+            if (checkrookie)
             {
-                perc += Math.Pow(x, t);
+                if (YearsPro == 0 || PreviousContractLength == 0 && ContractLength >= YearsPro)
+                    x = 1.25;
             }
-            double tempsal = (double)(TotalSalary - BonusTotal)/ (perc * 100);
 
-            //reset values
+            perc = 0;
+            for (int t = 0; t < ContractLength; t++)            
+                perc += Math.Pow(x, t);
+
+            double tempsal = (double)(TotalSalary - TotalBonus) / perc;
+
+            YearlySalary = new int[7];
+            YearlyBonus = new int[7];
             for (int i = 0; i < 7; i++)
             {
-                estYearlySalary[i] = 0;
-                estSigningBonusArray[i] = 0;
+                YearlySalary[i] = 0;
+                YearlyBonus[i] = 0;
             }
-            double last = 0;
+
+            int lastsal = 0;
+            int lastbon = 0;
             for (int i = 0; i < ContractLength; i++)
             {
                 if (i < ContractLength - 1)
-                    estYearlySalary[i] = Math.Round(tempsal * Math.Pow(x, i) * 100, 0);
-                else estYearlySalary[i] = TotalSalary - BonusTotal - last;
-                estSigningBonusArray[i] = (double)BonusTotal / ContractLength;
-                last += estYearlySalary[i];
+                {
+                    YearlySalary[i] = (int)Math.Round(tempsal * Math.Pow(x, i), 2);
+                    YearlyBonus[i] = (int)Math.Round((double)TotalBonus / ContractLength,0);
+                }
+                else
+                {
+                    YearlySalary[i] = TotalSalary - TotalBonus - lastsal;
+                    YearlyBonus[i] = TotalBonus - lastbon;
+                }
+                
+                lastsal += YearlySalary[i];
+                lastbon += YearlyBonus[i];
             }
 
-            if (ContainsField(SALARY_YEAR_0))
+            if (causeDirty && ContainsField(SALARY_YEAR_0))
             {
-                //We are a franchise file so save back our yearly stuff
+                // If updating is requested and yearly salary/bonus fields exist, save
                 for (int i = 0; i < 7; i++)
                 {
                     string key = "PSA" + i;
-                    SetField(key, (int)estYearlySalary[i], causeDirty);
+                    SetField(key, (int)YearlySalary[i], true);
                     key = "PSB" + i;
-                    SetField(key, (int)estSigningBonusArray[i], causeDirty);
+                    SetField(key, (int)YearlyBonus[i], true);
                 }
             }
 
             if (causeDirty)
-                FixCurrentSalary();
+                GetCurrentSalary();
         }
 
         public void ClearContract()
@@ -2950,8 +2951,8 @@ namespace MaddenEditor.Core.Record
                 ContractLength = 0;
             if (ContractYearsLeft != 0)
                 ContractYearsLeft = 0;
-            if (BonusTotal != 0)
-                BonusTotal = 0;
+            if (TotalBonus != 0)
+                TotalBonus = 0;
             if (TotalSalary != 0)
                 TotalSalary = 0;
 
@@ -2993,13 +2994,47 @@ namespace MaddenEditor.Core.Record
                 
             }
         }
-        
+
+        public void FixYearlyContract()
+        {
+            // Minimum is 10,000 so these are going to be off if EA used actual contract numbers
+            // and any year requires less than a multiple of 10,000
+            int sal = 0;
+            int bon = 0;
+            sal = Salary0 + Salary1 + Salary2 + Salary3 + Salary4 + Salary5 + Salary6;
+            bon = Bonus0 + Bonus1 + Bonus2 + Bonus3 + Bonus4 + Bonus5 + Bonus6;
+
+            if (bon < TotalBonus)
+            {
+                // Tack on any owed bonus on the final year
+                for (int c = 6; c >= 0; c--)
+                {
+                    if (GetIntField("PSB" + c.ToString()) > 0)
+                    {
+                        SetField("PSB" + c.ToString(), GetIntField("PSB" + c.ToString()) + TotalBonus - bon);
+                        break;
+                    }
+                }
+            }
+            else if (bon > TotalBonus)
+                TotalBonus = bon;
+
+            if (sal + TotalBonus < TotalSalary)
+            {
+                // Tack on any owed salary on the final year
+                for (int c = 6; c >= 0; c--)
+                {
+                    if (GetIntField("PSA" + c.ToString()) > 0)
+                    {
+                        SetField("PSA" + c.ToString(), GetIntField("PSA" + c.ToString()) + TotalSalary - (TotalBonus + sal));
+                        break;
+                    }
+                }
+            }
+            else if (sal > TotalSalary)
+                TotalSalary = sal + TotalBonus;
+        }
         
         #endregion
-
-		
-        
-
-
 	}
 }

@@ -138,6 +138,7 @@ namespace MaddenEditor.Core.Record
             LeagueCap.Add(2016, 155.27);
             LeagueCap.Add(2017, 167.00);
             LeagueCap.Add(2018, 177.20);
+            LeagueCap.Add(2019, 188.20);
             #endregion               
 
         }

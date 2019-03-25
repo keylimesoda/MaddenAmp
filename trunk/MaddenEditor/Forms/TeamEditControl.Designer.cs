@@ -2327,6 +2327,7 @@ namespace MaddenEditor.Forms
             this.TeamGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.TeamGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TeamGridView.Location = new System.Drawing.Point(6, 144);
+            this.TeamGridView.MultiSelect = false;
             this.TeamGridView.Name = "TeamGridView";
             this.TeamGridView.Size = new System.Drawing.Size(179, 481);
             this.TeamGridView.TabIndex = 93;
@@ -2398,6 +2399,7 @@ namespace MaddenEditor.Forms
             this.createTeamButton.Size = new System.Drawing.Size(50, 23);
             this.createTeamButton.TabIndex = 94;
             this.createTeamButton.Text = "Create";
+            this.createTeamButton.Visible = false;
             // 
             // deleteTeamButton
             // 
@@ -2407,6 +2409,7 @@ namespace MaddenEditor.Forms
             this.deleteTeamButton.Size = new System.Drawing.Size(50, 23);
             this.deleteTeamButton.TabIndex = 95;
             this.deleteTeamButton.Text = "Delete";
+            this.deleteTeamButton.Visible = false;
             // 
             // TeamEditControl
             // 

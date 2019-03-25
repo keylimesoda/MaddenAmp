@@ -1,0 +1,110 @@
+Madden AMP 4.41
+
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+Madden Amp is written in C# using Visual Studio 2013.
+Source Code is available through Sourceforge:
+https://svn.code.sf.net/p/maddenamp/code/trunk
+
+Subversion client (such as Tortoise SVN, https://tortoisesvn.net/)
+Checkout (Current Version) - svn://svn.code.sf.net/p/maddenamp/code/trunk 
+Checkout (Entire Project) - svn://svn.code.sf.net/p/maddenamp/code
+
+Submitting any changes to the source code requires a sourceforge account.
+Contact Stingray68 through sourceforge, or on the Football Idiot forums, to request write access.
+http://www.footballidiot.com/forum/
+
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file with Amp when finished editing in game in order to view those changes.
+
+Legacy
+------
+Training Camp & Weekly Maintenance are no longer being supported.
+
+
+Madden 2019
+-----------
+You CANNOT import/export/edit coaches in a Madden 19 roster file.
+There are NO coaches in a Madden 19 roster file.
+
+You CANNOT import/export a draft class from a Madden 19 roster file.  
+You can export rookies from a Madden 19 roster file, but that is not the same thing as a 
+Madden 19 draft class file.
+There is NOT a draft class in a Madden 19 roster file.  
+A Madden 19 Draft Class is a separate file.  Please refer to game documentation.
+
+
+For Madden 2019, ONLY Roster files are officially supported with Amp.
+You CANNOT edit a Madden 19 Franchise/CFM with this editor.
+
+
+
+
+v4.41 Changelog
+---------------
+
+
+******************************************************************************************
+***
+***  Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+***
+******************************************************************************************
+
+
+
+
+Various UI edits, mostly in player editor.
+Did a lot of version specific checks, there are a lot of differences between versions and
+there still may be a lot of inconsistencies/bugs.
+
+
+Removed some Madden 19 fields that were not being used or were never verified.
+
+Removed Create/Delete for various editing tabs.
+I was never able to reproduce the reported problems associated with these functions, and since this
+still seems to be an issue, removing the functions is the only way to solve the problem.
+
+
+Player Editor
+-------------
+
+Portrait ID - 
+Madden 19 specific - Portrait id is now limited to 0-9999, also added the player's larger portrait ID, which is not editable, for reference only.
+
+Hair Color - Added for Madden 19, but not verified for 2019 specific options.
+
+Contracts - Enabled more functionality and version specific options.
+
+NOTE : When loading a player, fixing mistakes of the total salary not being equal to the individual years' salary and bonus.  
+Contracts amounts are limited in Madden to a multiple of $10,000
+
+The Madden 19 Roster is riddled with contract inconsistencies.
+If a player has a 2 year 50,000 contract it would be stored in madden as year1 = 20,000 and year 2 = 20,000 because there is no way to save the extra 5,000 yearly.
+When a player is loaded in Amp this will now be fixed by automatically tacking on any owed salary to the final year.
+So from earlier example, this would then be corrected to year1 = 20,000 and year2 = 30,000
+
+For Rosters in Legacy versions, this info for reference only !  
+These yearly values are not saved anywhere in a legacy roster file.
+
+
+Creating or Editing a contract -
+Set Total (Total Salary + Total Bonus), Bonus (Total Bonus), Length (1-7 years) and Years left.
+Yearly % is the yearly increase per year.
+Clicking "Create" will then setup the yearly contract amounts.
+Legacy Franchise and Madden 19 Roster files will also have the option of adjusting the yearly amounts.
+You can then assign higher/lower amounts to individual years as desired.
+
+
+
+
+
+Legacy ONLY:
+Player Editor - Added another set of equipment options.
+These begin with "T" and are believed (read - 'not guaranteed') to be related to temperate and/or indoor stadium environments.
+
+
+
+
+

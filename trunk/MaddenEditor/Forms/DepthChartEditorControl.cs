@@ -65,7 +65,7 @@ namespace MaddenEditor.Forms
 
             if (model.FileVersion < MaddenFileVersion.Ver2019)
             {
-                for (int p = 0; p < 21; p++)
+                for (int p = 0; p < 26; p++)
                 {
                     string pos = Enum.GetName(typeof(MaddenPositions), p);
                     positionCombo.Items.Add(pos);
@@ -78,9 +78,10 @@ namespace MaddenEditor.Forms
                     string pos = Enum.GetName(typeof(MaddenPositions2019), p);
                     positionCombo.Items.Add(pos);
                 }
-
+                
                 playeroverall.InitRatings19();
             }
+            
             
             positionCombo.Text = positionCombo.Items[0].ToString();
             teamCombo.SelectedIndex = 0;

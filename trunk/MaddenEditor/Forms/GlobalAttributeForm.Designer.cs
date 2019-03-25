@@ -62,6 +62,14 @@ namespace MaddenEditor.Forms
             this.traitCombo = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TraitOFF = new System.Windows.Forms.CheckBox();
+            this.MiscCombo = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.MiscOptionsCombo = new System.Windows.Forms.ComboBox();
+            this.EquipOptions = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.EquipCombo = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudYearsProFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudAgeFilter)).BeginInit();
@@ -98,31 +106,6 @@ namespace MaddenEditor.Forms
             // attributeCombo
             // 
             this.attributeCombo.FormattingEnabled = true;
-            this.attributeCombo.Items.AddRange(new object[] {
-            "Age",
-            "Years Experience",
-            "Speed",
-            "Strength",
-            "Awareness",
-            "Agility",
-            "Acceleration",
-            "Catching",
-            "Carrying",
-            "Jumping",
-            "Break Tackle",
-            "Tackle",
-            "Throw Accuracy",
-            "Throw Power",
-            "Pass Blocking",
-            "Run Blocking",
-            "Kick Power",
-            "Kick Accuracy",
-            "Kick Return",
-            "Stamina",
-            "Injury",
-            "Toughness",
-            "Importance",
-            "Morale"});
             this.attributeCombo.Location = new System.Drawing.Point(93, 74);
             this.attributeCombo.Name = "attributeCombo";
             this.attributeCombo.Size = new System.Drawing.Size(121, 21);
@@ -147,9 +130,9 @@ namespace MaddenEditor.Forms
             this.groupBox1.Controls.Add(this.filterTeamComboBox);
             this.groupBox1.Controls.Add(this.chkPositionFilter);
             this.groupBox1.Controls.Add(this.chkTeamFilter);
-            this.groupBox1.Location = new System.Drawing.Point(268, 52);
+            this.groupBox1.Location = new System.Drawing.Point(288, 257);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(344, 144);
+            this.groupBox1.Size = new System.Drawing.Size(324, 144);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filter Settings";
@@ -251,7 +234,7 @@ namespace MaddenEditor.Forms
             this.filterPositionComboBox.FormattingEnabled = true;
             this.filterPositionComboBox.Location = new System.Drawing.Point(81, 52);
             this.filterPositionComboBox.Name = "filterPositionComboBox";
-            this.filterPositionComboBox.Size = new System.Drawing.Size(257, 21);
+            this.filterPositionComboBox.Size = new System.Drawing.Size(224, 21);
             this.filterPositionComboBox.TabIndex = 3;
             // 
             // filterTeamComboBox
@@ -261,7 +244,7 @@ namespace MaddenEditor.Forms
             this.filterTeamComboBox.FormattingEnabled = true;
             this.filterTeamComboBox.Location = new System.Drawing.Point(81, 22);
             this.filterTeamComboBox.Name = "filterTeamComboBox";
-            this.filterTeamComboBox.Size = new System.Drawing.Size(257, 21);
+            this.filterTeamComboBox.Size = new System.Drawing.Size(224, 21);
             this.filterTeamComboBox.TabIndex = 1;
             this.filterTeamComboBox.SelectedIndexChanged += new System.EventHandler(this.filterTeamComboBox_SelectedIndexChanged);
             // 
@@ -286,7 +269,7 @@ namespace MaddenEditor.Forms
             // applyButton
             // 
             this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.applyButton.Location = new System.Drawing.Point(465, 407);
+            this.applyButton.Location = new System.Drawing.Point(456, 411);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(75, 23);
             this.applyButton.TabIndex = 3;
@@ -296,7 +279,7 @@ namespace MaddenEditor.Forms
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(546, 407);
+            this.cancelButton.Location = new System.Drawing.Point(537, 411);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 4;
@@ -314,9 +297,9 @@ namespace MaddenEditor.Forms
             this.GlobalTraitOption.Controls.Add(this.incrementCheckBox);
             this.GlobalTraitOption.Controls.Add(this.decrementCheckBox);
             this.GlobalTraitOption.Controls.Add(this.setCheckBox);
-            this.GlobalTraitOption.Location = new System.Drawing.Point(12, 249);
+            this.GlobalTraitOption.Location = new System.Drawing.Point(12, 257);
             this.GlobalTraitOption.Name = "GlobalTraitOption";
-            this.GlobalTraitOption.Size = new System.Drawing.Size(600, 111);
+            this.GlobalTraitOption.Size = new System.Drawing.Size(252, 144);
             this.GlobalTraitOption.TabIndex = 2;
             this.GlobalTraitOption.TabStop = false;
             this.GlobalTraitOption.Text = "Change by";
@@ -400,7 +383,7 @@ namespace MaddenEditor.Forms
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(28, 170);
+            this.label4.Location = new System.Drawing.Point(232, 111);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 12;
@@ -410,9 +393,9 @@ namespace MaddenEditor.Forms
             // 
             this.TraitOptionsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TraitOptionsCombo.FormattingEnabled = true;
-            this.TraitOptionsCombo.Location = new System.Drawing.Point(93, 167);
+            this.TraitOptionsCombo.Location = new System.Drawing.Point(297, 108);
             this.TraitOptionsCombo.Name = "TraitOptionsCombo";
-            this.TraitOptionsCombo.Size = new System.Drawing.Size(121, 21);
+            this.TraitOptionsCombo.Size = new System.Drawing.Size(296, 21);
             this.TraitOptionsCombo.TabIndex = 11;
             this.TraitOptionsCombo.SelectedIndexChanged += new System.EventHandler(this.TraitOptionsCombo_SelectedIndexChanged);
             // 
@@ -445,11 +428,92 @@ namespace MaddenEditor.Forms
             this.TraitOFF.UseVisualStyleBackColor = true;
             this.TraitOFF.CheckedChanged += new System.EventHandler(this.TraitOFF_CheckedChanged);
             // 
+            // MiscCombo
+            // 
+            this.MiscCombo.FormattingEnabled = true;
+            this.MiscCombo.Location = new System.Drawing.Point(93, 174);
+            this.MiscCombo.Name = "MiscCombo";
+            this.MiscCombo.Size = new System.Drawing.Size(121, 21);
+            this.MiscCombo.TabIndex = 14;
+            this.MiscCombo.SelectedIndexChanged += new System.EventHandler(this.MiscCombo_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(231, 177);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Misc Option";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(60, 178);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Misc";
+            // 
+            // MiscOptionsCombo
+            // 
+            this.MiscOptionsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MiscOptionsCombo.FormattingEnabled = true;
+            this.MiscOptionsCombo.Location = new System.Drawing.Point(297, 174);
+            this.MiscOptionsCombo.Name = "MiscOptionsCombo";
+            this.MiscOptionsCombo.Size = new System.Drawing.Size(296, 21);
+            this.MiscOptionsCombo.TabIndex = 17;
+            this.MiscOptionsCombo.SelectedIndexChanged += new System.EventHandler(this.MiscOptionsCombo_SelectedIndexChanged);
+            // 
+            // EquipOptions
+            // 
+            this.EquipOptions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.EquipOptions.FormattingEnabled = true;
+            this.EquipOptions.Location = new System.Drawing.Point(297, 201);
+            this.EquipOptions.Name = "EquipOptions";
+            this.EquipOptions.Size = new System.Drawing.Size(296, 21);
+            this.EquipOptions.TabIndex = 21;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(32, 204);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Equipment";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(223, 204);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(71, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Equip. Option";
+            // 
+            // EquipCombo
+            // 
+            this.EquipCombo.FormattingEnabled = true;
+            this.EquipCombo.Location = new System.Drawing.Point(93, 201);
+            this.EquipCombo.Name = "EquipCombo";
+            this.EquipCombo.Size = new System.Drawing.Size(121, 21);
+            this.EquipCombo.TabIndex = 18;
+            this.EquipCombo.SelectedIndexChanged += new System.EventHandler(this.EquipCombo_SelectedIndexChanged);
+            // 
             // GlobalAttributeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
+            this.Controls.Add(this.EquipOptions);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.EquipCombo);
+            this.Controls.Add(this.MiscOptionsCombo);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.MiscCombo);
             this.Controls.Add(this.TraitOFF);
             this.Controls.Add(this.TraitON);
             this.Controls.Add(this.GlobalTraitOption);
@@ -516,5 +580,13 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ComboBox TraitOptionsCombo;
         private System.Windows.Forms.CheckBox TraitON;
         private System.Windows.Forms.CheckBox TraitOFF;
+        private System.Windows.Forms.ComboBox MiscCombo;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox MiscOptionsCombo;
+        private System.Windows.Forms.ComboBox EquipOptions;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox EquipCombo;
 	}
 }

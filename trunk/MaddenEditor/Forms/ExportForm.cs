@@ -1,6 +1,6 @@
 /******************************************************************************
  * MaddenAmp
- * Copyright (C) 2005 Colin Goudie
+ * Copyright (C) 2018 StingRay68
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -409,6 +409,8 @@ namespace MaddenEditor.Forms
                 filterTeamCombo.Text = filterTeamCombo.Items[0].ToString();
             }
             isInitializing = false;
+
+            ProcessRecords_Button.Enabled = false;
         }
 
         public void CleanUI()
@@ -499,6 +501,14 @@ namespace MaddenEditor.Forms
             foreach (string s in fields_export[name])
                 ExportFields_ListView.Items.Add(s);
         }
+
+        public void InitProcessButton()
+        {
+            if (UpdateRecs_Checkbox.Checked == false && DeleteCurrentRecs_Checkbox.Checked == false)
+                ProcessRecords_Button.Enabled = false;
+            else ProcessRecords_Button.Enabled = true;
+        }
+        
         #endregion
 
 
@@ -662,10 +672,15 @@ namespace MaddenEditor.Forms
                             {
                                 if (field == tdb.Name)
                                 {
-                                    if (tdb.FieldType == TdbFieldType.tdbString)
+                                    if (tdb.FieldType == TdbFieldType.tdbString )
                                     {
                                         string res = rec.GetStringField(tdb.Name);
                                         res = res.Replace(",", " ");
+                                        builder.Append(res);
+                                    }
+                                    else if (tdb.FieldType == TdbFieldType.tdbVarChar)
+                                    {
+                                        string res = "N/A";                                        
                                         builder.Append(res);
                                     }
                                     else if (tdb.FieldType == TdbFieldType.tdbFloat)
@@ -1168,8 +1183,7 @@ namespace MaddenEditor.Forms
                         }
 
                         sr.Close();
-                        //Done
-                        
+                        //Done                        
                         #endregion
 
                         ImportTableName_Textbox.Text = tablename;
@@ -1197,7 +1211,6 @@ namespace MaddenEditor.Forms
                         ImportSelected_ListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                         ImportSelected_ListView.Sorting = SortOrder.Ascending;
 
-
                         List<string> possible = new List<string>();
                         List<TdbFieldProperties> fplist = model.TableModels[tablename].GetFieldList();
                         foreach (TdbFieldProperties fp in fplist)
@@ -1223,43 +1236,23 @@ namespace MaddenEditor.Forms
                             ImportSelected_ListView.Items.Add(fld);                        
 
                         ImportFieldsCount_Textbox.Text = import_fields_avail.Count.ToString();
-                        NotImportableCount_Textbox.Text = WrongFields_ListView.Items.Count.ToString(); 
-
-                    }
-
-                    
+                        NotImportableCount_Textbox.Text = WrongFields_ListView.Items.Count.ToString();
+                    }                    
                 }
-
-
                 catch (IOException err)
                 {
                     err = err;
                     MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
+
             if (myStream != null)
                 myStream.Close();            
         }
 
         private void ProcessRecords_Button_Click(object sender, EventArgs e)
         {
-            /*
-            if (DeleteCurrentRecs_Checkbox.Checked)
-            {
-                int count = model.TableModels[currenttablename].RecordCount;
-                for (int c = count-1; c >= 0; c-- )
-                {
-                    TableRecordModel rec = model.TableModels[currenttablename].GetRecord(c);
-                    if (rec.Deleted)
-                        continue;
-                    else rec.SetDeleteFlag(true);
-                }
-
-                model.TableModels[currenttablename].Compact();
-            }
-            */
-           
+            currentrec = -1;
 
             foreach (List<string> record in CSVRecords)
             {
@@ -1293,12 +1286,13 @@ namespace MaddenEditor.Forms
                                 break;
                             }
                         }
-                    }
+                    }                    
                 }
-                // Not updating, so start replacing                    
-                else
+
+                // Not updating PLAY table, so start replacing                    
+                if (tablerecord == null)
                 {
-                    if (currentrec >= model.TableModels[currenttablename].capacity - 1)
+                    if (currentrec > model.TableModels[currenttablename].capacity - 1)
                         fail = true;
                     else if (currentrec > model.TableModels[currenttablename].RecordCount-1)
                         tablerecord = model.TableModels[currenttablename].CreateNewRecord(true);
@@ -1371,6 +1365,8 @@ namespace MaddenEditor.Forms
                     UpdateRecs_Checkbox.Enabled = true;                   
                 }
             }
+
+            InitProcessButton();
         }
 
         private void UpdateRecs_Checkbox_CheckedChanged(object sender, EventArgs e)
@@ -1387,6 +1383,8 @@ namespace MaddenEditor.Forms
                     DeleteCurrentRecs_Checkbox.Enabled = true;
                 }
             }
+
+            InitProcessButton();
         }
 
         private void LoadDraftClass_Button_Click(object sender, EventArgs e)
