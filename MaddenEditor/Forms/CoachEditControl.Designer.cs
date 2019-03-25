@@ -679,6 +679,7 @@ namespace MaddenEditor.Forms
             this.CoachGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.CoachGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CoachGridView.Location = new System.Drawing.Point(5, 232);
+            this.CoachGridView.MultiSelect = false;
             this.CoachGridView.Name = "CoachGridView";
             this.CoachGridView.Size = new System.Drawing.Size(150, 408);
             this.CoachGridView.TabIndex = 93;
@@ -799,6 +800,7 @@ namespace MaddenEditor.Forms
             this.AddCoach_Button.TabIndex = 138;
             this.AddCoach_Button.Text = "Add";
             this.AddCoach_Button.UseVisualStyleBackColor = true;
+            this.AddCoach_Button.Visible = false;
             // 
             // DeleteCoach_Button
             // 
@@ -809,6 +811,7 @@ namespace MaddenEditor.Forms
             this.DeleteCoach_Button.TabIndex = 137;
             this.DeleteCoach_Button.Text = "Delete";
             this.DeleteCoach_Button.UseVisualStyleBackColor = true;
+            this.DeleteCoach_Button.Visible = false;
             this.DeleteCoach_Button.Click += new System.EventHandler(this.DeleteCoach_Button_Click);
             // 
             // label75

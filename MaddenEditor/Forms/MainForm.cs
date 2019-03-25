@@ -645,7 +645,7 @@ namespace MaddenEditor.Forms
         private void depthChartEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DepthChartEditorForm form = new DepthChartEditorForm(model);
-
+            form.StartPosition = FormStartPosition.CenterScreen;
             form.InitialiseUI();
 
             form.Show(this);
@@ -1157,7 +1157,8 @@ namespace MaddenEditor.Forms
         private void fAQInstructionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FAQ form = new FAQ();
-            form.Show();
+            form.InitialiseUI();
+            this.Controls.Add(form);
         }
 
 

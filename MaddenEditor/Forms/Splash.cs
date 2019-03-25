@@ -60,6 +60,8 @@ namespace MaddenEditor.Forms
             tn.Name = "Revision";
             tn.Text = "Revisions";
             versions.Nodes.Add(tn);
+            versions.Nodes[0].Nodes.Add("v4.41");
+            versions.Nodes[0].Nodes.Add("v4.40");
             versions.Nodes[0].Nodes.Add("v4.39");
             versions.Nodes[0].Nodes.Add("v4.38");
             versions.Nodes[0].Nodes.Add("v4.37");
@@ -87,7 +89,7 @@ namespace MaddenEditor.Forms
             versions.NodeMouseClick += versions_NodeMouseClick;
             versions.Visible = true;
 
-            DisplayChangelog("MaddenEditor.Resources.v439.txt");
+            DisplayChangelog("MaddenEditor.Resources.v441.txt");
         }
 
         public void DisplayChangelog(string filename)
@@ -146,6 +148,10 @@ namespace MaddenEditor.Forms
                 file = "MaddenEditor.Resources.v438.txt";
             else if (e.Node.Text == "v4.39")
                 file = "MaddenEditor.Resources.v439.txt";
+            else if (e.Node.Text == "v4.40")
+                file = "MaddenEditor.Resources.v440.txt";
+            else if (e.Node.Text == "v4.41")
+                file = "MaddenEditor.Resources.v441.txt";
             else return;
 
             DisplayChangelog(file);

@@ -190,7 +190,7 @@ namespace MaddenEditor.Core.Manager
             POSITION_ID = rec.PositionId;
             TENDENCY = rec.Tendency;
             DOMINANT_HAND = rec.DominantHand;
-            THROWING_STYLE = rec.SideArmed;            
+            THROWING_STYLE = rec.ThrowStyle;            
             COLLEGE_ID = rec.CollegeId;
 
             if (model.FileVersion <= MaddenFileVersion.Ver2006)
@@ -1513,9 +1513,9 @@ namespace MaddenEditor.Core.Manager
             SLEEVES_A = rec.SleevesLeft;                    //"PGSL";
             HAIR_COLOR = rec.HairColor;                 //"PHCL";
             HAIR_STYLE = rec.HairStyle;                 //"PHED";        
-            HELMET_STYLE = rec.HelmetStyle;             //"PHLM";           
+            HELMET_STYLE = rec.Helmet;             //"PHLM";           
             JERSEY_NUMBER = rec.JerseyNumber;           //"PJEN";
-            JERSEY = rec.Jersey;                        //"PJER";       
+            JERSEY = rec.JerseySleeve;                        //"PJER";       
             JERSEY_INITIALS = rec.JerseyInitials;       //"PJTY";        
             LEFT_ELBOW_A = rec.LeftElbow;               //"PLEL";
             PLFH = rec.Plfh;                            //"PLFH";   // ?
@@ -1593,9 +1593,9 @@ namespace MaddenEditor.Core.Manager
             rec.SleevesLeft = SLEEVES_A;                                    //"PGSL";
             rec.HairColor = HAIR_COLOR;                                 //"PHCL";
             rec.HairStyle = HAIR_STYLE;                                 //"PHED";        
-            rec.HelmetStyle = HELMET_STYLE;                             //"PHLM";           
+            rec.Helmet = HELMET_STYLE;                             //"PHLM";           
             rec.JerseyNumber = JERSEY_NUMBER;                           //"PJEN";
-            rec.Jersey = JERSEY;                                        //"PJER";       
+            rec.JerseySleeve = JERSEY;                                        //"PJER";       
             rec.JerseyInitials = JERSEY_INITIALS;                       //"PJTY";        
             rec.LeftElbow = LEFT_ELBOW_A;                               //"PLEL";
             rec.Plfh = PLFH;                                            //"PLFH";   // ?
@@ -1917,7 +1917,7 @@ namespace MaddenEditor.Core.Manager
             PORTRAIT_ID = rec.PortraitId;
             TOTAL_SALARY = rec.TotalSalary;
             PVAL = rec.PlayerValue;
-            PREVIOUS_CONTRACT = rec.Pvco;
+            //PREVIOUS_CONTRACT = rec.Pvco;
             PREVIOUS_SIGNING_BONUS_TOTAL = rec.PreviousSigningBonus;
             PREVIOUS_SALARY = rec.PreviousTotalSalary;
             YRS_PRO = rec.YearsPro;
@@ -2091,7 +2091,7 @@ namespace MaddenEditor.Core.Manager
             rec.PositionId = this.Info.POSITION_ID;
             rec.Tendency = this.Info.TENDENCY;
             rec.DominantHand = this.Info.DOMINANT_HAND;
-            rec.SideArmed = this.Info.THROWING_STYLE;
+            rec.ThrowStyle = this.Info.THROWING_STYLE;
             rec.CollegeId = this.Info.COLLEGE_ID;
 
             rec.Acceleration = this.Current_Ratings.ACCELERATION;

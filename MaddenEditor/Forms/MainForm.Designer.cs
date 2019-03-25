@@ -85,7 +85,6 @@ namespace MaddenEditor.Forms
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.developerBiosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.fAQInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingCampFAQToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.developerBiosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -508,7 +507,6 @@ namespace MaddenEditor.Forms
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem,
             this.developerBiosToolStripMenuItem1,
-            this.fAQInstructionsToolStripMenuItem,
             this.trainingCampFAQToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -527,13 +525,6 @@ namespace MaddenEditor.Forms
             this.developerBiosToolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
             this.developerBiosToolStripMenuItem1.Text = "Developer Bio\'s ...";
             this.developerBiosToolStripMenuItem1.Click += new System.EventHandler(this.developerBiosToolStripMenuItem_Click);
-            // 
-            // fAQInstructionsToolStripMenuItem
-            // 
-            this.fAQInstructionsToolStripMenuItem.Name = "fAQInstructionsToolStripMenuItem";
-            this.fAQInstructionsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.fAQInstructionsToolStripMenuItem.Text = "FAQ - Instructions";
-            this.fAQInstructionsToolStripMenuItem.Click += new System.EventHandler(this.fAQInstructionsToolStripMenuItem_Click);
             // 
             // trainingCampFAQToolStripMenuItem
             // 
@@ -684,7 +675,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ToolStripMenuItem StadiumToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ErrorCheckMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fAQInstructionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FinancesMenu;

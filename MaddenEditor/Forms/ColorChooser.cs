@@ -32,7 +32,8 @@ namespace MaddenEditor.Forms
 {
 	public partial class ColorChooser : Form
 	{
-		private Color color;
+        private bool isInitializing;
+        private Color color;
 
 		public ColorChooser(Color color)
 		{
@@ -76,16 +77,27 @@ namespace MaddenEditor.Forms
 
 		private void nudHexadecimal_ValueChanged(object sender, EventArgs e)
 		{
-			vsRed.Value = 255 - (((int)nudHexadecimal.Value & 0x00FF0000) >> 16);
-			nudRed.Value = (((int)nudHexadecimal.Value & 0x00FF0000) >> 16);
-
-			vsGreen.Value = 255 - (((int)nudHexadecimal.Value & 0x0000FF00) >> 8);
-			nudGreen.Value = (((int)nudHexadecimal.Value & 0x0000FF00) >> 8);
-
-			vsBlue.Value = 255 - (((int)nudHexadecimal.Value & 0x000000FF));
-			nudBlue.Value = (((int)nudHexadecimal.Value & 0x000000FF));
-
-			constructColor();
+            if (!isInitializing)
+            {
+                // s68 blue channel wasn't setting and I'm not good with masking/shifting 
+                // so using another method
+                //vsRed.Value = 255 - (((int)nudHexadecimal.Value & 0x00FF0000) >> 16);
+                //nudRed.Value = (((int)nudHexadecimal.Value & 0x00FF0000) >> 16);
+                //vsGreen.Value = 255 - (((int)nudHexadecimal.Value & 0x0000FF00) >> 8);
+                //nudGreen.Value = (((int)nudHexadecimal.Value & 0x0000FF00) >> 8);
+                //vsBlue.Value = 255 - (((int)nudHexadecimal.Value & 0x000000FF));
+                //nudBlue.Value = (((int)nudHexadecimal.Value & 0x000000FF));
+                isInitializing = true;
+                byte[] col = BitConverter.GetBytes((int)nudHexadecimal.Value);
+                vsBlue.Value = 255-col[0];
+                nudBlue.Value = col[0];
+                vsGreen.Value = 255-col[1];
+                nudGreen.Value = col[1];
+                vsRed.Value = 255-col[2];
+                nudRed.Value = col[2];
+                isInitializing = false;
+                constructColor();
+            }
 		}
 
 		private void vsBlue_Scroll(object sender, ScrollEventArgs e)
@@ -126,6 +138,8 @@ namespace MaddenEditor.Forms
 		private void nudRed_ValueChanged(object sender, EventArgs e)
 		{
 			vsRed.Value = 255 - (int)nudRed.Value;
+
+            constructColor();
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)

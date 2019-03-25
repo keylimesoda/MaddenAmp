@@ -167,8 +167,7 @@ namespace MaddenEditor.Core
         public Single Body15 = 0;
         public Single ArmSize = 0;
         public Single Body17 = 0;
-        public Single Body18 = 0;       
-        
+        public Single Body18 = 0; 
 
         public int Unknown232 = 0;
         public int EyePaint = 0;
@@ -176,8 +175,7 @@ namespace MaddenEditor.Core
         public int Unknown235 = 0;
         public int FlakJacket = 0;
         public int Unknown237 = 0;
-        public int Unknown238 = 0;
-        public int Unknown239 = 0;
+        public UInt16 FaceID = 0;
 
         public int ElbowLeft = 0;
         public int HandLeft = 0;
@@ -201,9 +199,7 @@ namespace MaddenEditor.Core
         public int Unknown258 = 0;
         public int Unknown259 = 0;
 
-        public int SkinTone2 = 0;
-        public int Unknown260 = 0;
-        public int Unknown261 = 0;
+        public UInt16 PortraitID = 0;
         public int QBStyle = 0;
         public int Unknown263 = 0;
         public int Shoes = 0;
@@ -288,7 +284,6 @@ namespace MaddenEditor.Core
 
         public DraftPlayer()
         {
-
         }
         
         public void ReadPlayer(BinaryReader binreader)
@@ -471,14 +466,13 @@ namespace MaddenEditor.Core
             Unknown235 = binreader.ReadByte();      //235
             FlakJacket = binreader.ReadByte();      //236
             Unknown237 = binreader.ReadByte();      //237
-            Unknown238 = binreader.ReadByte();      //238
-            Unknown239 = binreader.ReadByte();      //239
+            FaceID = binreader.ReadUInt16();        //238-239
 
             ElbowLeft = binreader.ReadByte();       //240
             HandLeft = binreader.ReadByte();        //241
-            WristLeft = binreader.ReadByte();      //242
+            WristLeft = binreader.ReadByte();       //242
             ElbowRight = binreader.ReadByte();      //243
-            HandRight = binreader.ReadByte();      //244
+            HandRight = binreader.ReadByte();       //244
             WristRight = binreader.ReadByte();      //245
             LeftSleeve = binreader.ReadByte();      //246
             Unknown247 = binreader.ReadByte();      //247
@@ -496,8 +490,7 @@ namespace MaddenEditor.Core
             Unknown258 = binreader.ReadByte();      //258
             Unknown259 = binreader.ReadByte();      //259
 
-            Unknown260 = binreader.ReadByte();      //260
-            Unknown261 = binreader.ReadByte();      //261
+            PortraitID = binreader.ReadUInt16();    // 260-261
             QBStyle = binreader.ReadByte();         //262
             Unknown263 = binreader.ReadByte();      //263
             Shoes = binreader.ReadByte();           //264
@@ -736,8 +729,7 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)Unknown235);
             binwriter.Write((byte)FlakJacket);
             binwriter.Write((byte)Unknown237);
-            binwriter.Write((byte)Unknown238);
-            binwriter.Write((byte)Unknown239);
+            binwriter.Write(FaceID);
 
             binwriter.Write((byte)ElbowLeft);
             binwriter.Write((byte)HandLeft);
@@ -761,8 +753,7 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)Unknown258);
             binwriter.Write((byte)Unknown259);
 
-            binwriter.Write((byte)Unknown260);
-            binwriter.Write((byte)Unknown261);
+            binwriter.Write(PortraitID);            
             binwriter.Write((byte)QBStyle);
             binwriter.Write((byte)Unknown263);
             binwriter.Write((byte)Shoes);
@@ -1119,10 +1110,8 @@ namespace MaddenEditor.Core
                 return FlakJacket.ToString();
             else if (field == "U237")
                 return Unknown237.ToString();
-            else if (field == "U238")
-                return Unknown238.ToString();
-            else if (field == "U239")
-                return Unknown239.ToString();
+            else if (field == "PGHE")
+                return FaceID.ToString();
 
             else if (field == "PLEL")
                 return ElbowLeft.ToString();
@@ -1166,10 +1155,8 @@ namespace MaddenEditor.Core
             else if (field == "U259")
                 return Unknown259.ToString();
 
-            else if (field == "U260")
-                return Unknown260.ToString();
-            else if (field == "U261")
-                return Unknown261.ToString();
+            else if (field == "PSXP")
+                return PortraitID.ToString();
             else if (field == "PQBS")
                 return QBStyle.ToString();
             else if (field == "U263")
@@ -1624,10 +1611,8 @@ namespace MaddenEditor.Core
                 FlakJacket = Convert.ToInt32(val);
             else if (field == "U237")
                 Unknown237 = Convert.ToInt32(val);
-            else if (field == "U238")
-                Unknown238 = Convert.ToInt32(val);
-            else if (field == "U239")
-                Unknown239 = Convert.ToInt32(val);
+            else if (field == "PGHE")
+                FaceID = Convert.ToUInt16(val);
 
             else if (field == "PLEL")                   //240
                 ElbowLeft = Convert.ToInt32(val);
@@ -1671,10 +1656,8 @@ namespace MaddenEditor.Core
             else if (field == "U259")
                 Unknown259 = Convert.ToInt32(val);
 
-            else if (field == "U260")                   //260
-                Unknown260 = Convert.ToInt32(val);
-            else if (field == "U261")
-                Unknown261 = Convert.ToInt32(val);
+            else if (field == "PSXP") //260
+                PortraitID = Convert.ToUInt16(val);
             else if (field == "PQBS")
                 QBStyle = Convert.ToInt32(val);
             else if (field == "U263")
@@ -2037,8 +2020,7 @@ namespace MaddenEditor.Core
             RatingDefs.Add("U235", "Unknown235");
             RatingDefs.Add("PFLA", "Flak Jacket");   
             RatingDefs.Add("U237", "Unknown237");
-            RatingDefs.Add("U238", "Unknown238");
-            RatingDefs.Add("U239", "Unknown239");
+            RatingDefs.Add("PGHE", "FaceID");            
 
             RatingDefs.Add("PLEL", "Elbow Left");
             RatingDefs.Add("PLHA", "Hand Left");
@@ -2062,8 +2044,7 @@ namespace MaddenEditor.Core
             RatingDefs.Add("U258", "Unknown258");
             RatingDefs.Add("U259", "Unknown259");
 
-            RatingDefs.Add("U260", "Unknown260");
-            RatingDefs.Add("U261", "Unknown261");
+            RatingDefs.Add("PSXP", "PortID");            
             RatingDefs.Add("PQBS", "QB Style");
             RatingDefs.Add("U263", "Unknown263");
             RatingDefs.Add("U264", "Unknown264");
@@ -2254,8 +2235,6 @@ namespace MaddenEditor.Core
 
                 draftclassplayers[c].ImportCSVPlayer(fields, csvrecord, model);
             }
-
-            bool stop = true;
         }
     
     }

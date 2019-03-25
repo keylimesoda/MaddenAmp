@@ -31,11 +31,11 @@ namespace MaddenEditor.Forms
             this.ExportFilter_Panel = new System.Windows.Forms.GroupBox();
             this.MainSkillsOnly_Checkbox = new System.Windows.Forms.CheckBox();
             this.ExportButton = new System.Windows.Forms.Button();
+            this.filterDraftClassCheckbox = new System.Windows.Forms.CheckBox();
             this.filterPositionCombo = new System.Windows.Forms.ComboBox();
             this.filterTeamCombo = new System.Windows.Forms.ComboBox();
             this.filterTeamCheckbox = new System.Windows.Forms.CheckBox();
             this.filterPositionCheckbox = new System.Windows.Forms.CheckBox();
-            this.filterDraftClassCheckbox = new System.Windows.Forms.CheckBox();
             this.Export_Button = new System.Windows.Forms.Button();
             this.AvailTables_ListView = new System.Windows.Forms.ListView();
             this.ExportTables_ListView = new System.Windows.Forms.ListView();
@@ -58,7 +58,7 @@ namespace MaddenEditor.Forms
             this.label9 = new System.Windows.Forms.Label();
             this.ImportErrors_Listview = new System.Windows.Forms.ListView();
             this.DeleteCurrentRecs_Checkbox = new System.Windows.Forms.CheckBox();
-            this.ADDRecords_Button = new System.Windows.Forms.Button();
+            this.ProcessRecords_Button = new System.Windows.Forms.Button();
             this.NotImportableCount_Textbox = new System.Windows.Forms.TextBox();
             this.ImportFieldsCount_Textbox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -116,6 +116,15 @@ namespace MaddenEditor.Forms
             this.ExportButton.Text = "Export";
             this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
+            // filterDraftClassCheckbox
+            // 
+            this.filterDraftClassCheckbox.AutoSize = true;
+            this.filterDraftClassCheckbox.Location = new System.Drawing.Point(13, 52);
+            this.filterDraftClassCheckbox.Name = "filterDraftClassCheckbox";
+            this.filterDraftClassCheckbox.Size = new System.Drawing.Size(149, 17);
+            this.filterDraftClassCheckbox.TabIndex = 2;
+            this.filterDraftClassCheckbox.Text = "Madden 04-08 Draft Class";
+            // 
             // filterPositionCombo
             // 
             this.filterPositionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -153,15 +162,6 @@ namespace MaddenEditor.Forms
             this.filterPositionCheckbox.Size = new System.Drawing.Size(63, 17);
             this.filterPositionCheckbox.TabIndex = 3;
             this.filterPositionCheckbox.Text = "Position";
-            // 
-            // filterDraftClassCheckbox
-            // 
-            this.filterDraftClassCheckbox.AutoSize = true;
-            this.filterDraftClassCheckbox.Location = new System.Drawing.Point(13, 52);
-            this.filterDraftClassCheckbox.Name = "filterDraftClassCheckbox";
-            this.filterDraftClassCheckbox.Size = new System.Drawing.Size(149, 17);
-            this.filterDraftClassCheckbox.TabIndex = 2;
-            this.filterDraftClassCheckbox.Text = "Madden 04-08 Draft Class";
             // 
             // Export_Button
             // 
@@ -364,7 +364,7 @@ namespace MaddenEditor.Forms
             this.Import_Panel.Controls.Add(this.label9);
             this.Import_Panel.Controls.Add(this.ImportErrors_Listview);
             this.Import_Panel.Controls.Add(this.DeleteCurrentRecs_Checkbox);
-            this.Import_Panel.Controls.Add(this.ADDRecords_Button);
+            this.Import_Panel.Controls.Add(this.ProcessRecords_Button);
             this.Import_Panel.Controls.Add(this.NotImportableCount_Textbox);
             this.Import_Panel.Controls.Add(this.ImportFieldsCount_Textbox);
             this.Import_Panel.Controls.Add(this.label8);
@@ -412,15 +412,15 @@ namespace MaddenEditor.Forms
             this.DeleteCurrentRecs_Checkbox.UseVisualStyleBackColor = true;
             this.DeleteCurrentRecs_Checkbox.CheckedChanged += new System.EventHandler(this.DeleteCurrentRecs_Checkbox_CheckedChanged);
             // 
-            // ADDRecords_Button
+            // ProcessRecords_Button
             // 
-            this.ADDRecords_Button.Location = new System.Drawing.Point(398, 4);
-            this.ADDRecords_Button.Name = "ADDRecords_Button";
-            this.ADDRecords_Button.Size = new System.Drawing.Size(150, 23);
-            this.ADDRecords_Button.TabIndex = 24;
-            this.ADDRecords_Button.Text = "Process Records";
-            this.ADDRecords_Button.UseVisualStyleBackColor = true;
-            this.ADDRecords_Button.Click += new System.EventHandler(this.ProcessRecords_Button_Click);
+            this.ProcessRecords_Button.Location = new System.Drawing.Point(398, 4);
+            this.ProcessRecords_Button.Name = "ProcessRecords_Button";
+            this.ProcessRecords_Button.Size = new System.Drawing.Size(150, 23);
+            this.ProcessRecords_Button.TabIndex = 24;
+            this.ProcessRecords_Button.Text = "Process Records";
+            this.ProcessRecords_Button.UseVisualStyleBackColor = true;
+            this.ProcessRecords_Button.Click += new System.EventHandler(this.ProcessRecords_Button_Click);
             // 
             // NotImportableCount_Textbox
             // 
@@ -669,7 +669,7 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.ListView WrongFields_ListView;
         private System.Windows.Forms.TextBox ImportFieldsCount_Textbox;
         private System.Windows.Forms.TextBox NotImportableCount_Textbox;
-        private System.Windows.Forms.Button ADDRecords_Button;
+        private System.Windows.Forms.Button ProcessRecords_Button;
         private System.Windows.Forms.CheckBox DeleteCurrentRecs_Checkbox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ListView ImportErrors_Listview;

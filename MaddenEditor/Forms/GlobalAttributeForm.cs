@@ -39,6 +39,7 @@ namespace MaddenEditor.Forms
 
         private enum EditableAttributes
         {
+            NA,
             AGE,
             YEARS_EXP,
             SPEED,
@@ -62,7 +63,9 @@ namespace MaddenEditor.Forms
             INJURY,
             TOUGHNESS,
             IMPORTANCE,
-            MORALE
+            MORALE,
+            HEIGHT,
+            WEIGHT
         }
 
         private enum EditableTraits
@@ -87,9 +90,49 @@ namespace MaddenEditor.Forms
             SideLineCatch,
             Penalty,
             SensePressure,
-            TuckRun,
+            TuckRun
         }
 
+        private enum MiscGlobals
+        {
+            Celebrations
+        }
+
+        private enum EquipGlobals
+        {
+            Helmet,
+            FaceMask,
+            ShoeBoth,
+            ShoeLeft,
+            ShoeRight,
+            HandBoth,
+            HandLeft,
+            HandRight,
+            WristBoth,
+            WristLeft,
+            WristRight,
+            SleeveBoth,
+            SleeveLeft,
+            SleeveRight,
+            Undershirt,
+            ElbowBoth,
+            ElbowLeft,
+            ElbowRight,
+            KneeBoth,
+            KneeLeft,
+            KneeRight,
+            AnkleBoth,
+            AnkleLeft,
+            AnkleRight,
+            Neckpad,
+            Visor,
+            EyePaint,
+            MouthPiece,
+            Socks,
+            JerseySleeve
+        }
+        
+        
         private bool isInitializing = false;
         
         public GlobalAttributeForm(EditorModel model)
@@ -130,10 +173,8 @@ namespace MaddenEditor.Forms
             {
                 string pos = Enum.GetName(typeof(MaddenPositions), p);
                 filterPositionComboBox.Items.Add(pos);
-            }            
-
-            System.Diagnostics.Debug.Assert(attributeCombo.Items.Count == Enum.GetNames(typeof(EditableAttributes)).Length, "Attribute Combo and enum count don't match");
-
+            }
+            
             filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
             filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();            
 
@@ -148,8 +189,15 @@ namespace MaddenEditor.Forms
                 TraitON.Enabled = false;
                 TraitOFF.Enabled = false;
                 TraitOptionsCombo.Enabled = false;
+                foreach (string a in Enum.GetNames(typeof(EditableAttributes)))
+                    attributeCombo.Items.Add(a);
                 foreach (string t in Enum.GetNames(typeof(EditableTraits)))
                     traitCombo.Items.Add(t);
+                foreach (string m in Enum.GetNames(typeof(MiscGlobals)))
+                    MiscCombo.Items.Add(m);
+                foreach (string q in Enum.GetNames(typeof(EquipGlobals)))
+                    EquipCombo.Items.Add(q);
+
             }
             
 
@@ -169,7 +217,7 @@ namespace MaddenEditor.Forms
 
         private void applyButton_Click(object sender, EventArgs e)
         {
-            if (attributeCombo.SelectedIndex == -1 && traitCombo.SelectedIndex == -1)
+            if (attributeCombo.SelectedIndex <= 0 && traitCombo.SelectedIndex == -1 && MiscCombo.SelectedIndex == -1 && EquipCombo.SelectedIndex == -1)
                 return;
 
             this.Cursor = Cursors.WaitCursor;
@@ -261,11 +309,18 @@ namespace MaddenEditor.Forms
                     value = 0 - (int)decrementNumeric.Value;
                 }
 
-                if (attributeCombo.SelectedIndex != -1)
+                if (attributeCombo.SelectedIndex > 0)
                     ChangeAttribute(playerRecord, (EditableAttributes)attributeCombo.SelectedIndex, absoluteValue, value);
 
                 if (traitCombo.SelectedIndex != -1)
                     ChangeTrait(playerRecord, (EditableTraits)traitCombo.SelectedIndex);
+
+                if (MiscCombo.SelectedIndex != -1)
+                    ChangeMisc(playerRecord, (MiscGlobals)MiscCombo.SelectedIndex);
+
+                if (EquipCombo.SelectedIndex != -1)
+                    ChangeEquipment(playerRecord, (EquipGlobals)EquipCombo.SelectedIndex);
+
                 count++;
 
             }
@@ -276,6 +331,117 @@ namespace MaddenEditor.Forms
             MessageBox.Show(count + " players successfully updated", "Change OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void ChangeEquipment(PlayerRecord record, EquipGlobals equip)
+        {
+            switch (equip)
+            {
+                case EquipGlobals.Helmet:
+                    record.Helmet = model.PlayerModel.GetHelmet(EquipOptions.Text);
+                    break;
+                case EquipGlobals.FaceMask:
+                    record.FaceMask = model.PlayerModel.GetFaceMask(EquipOptions.Text);
+                    break;
+                case EquipGlobals.ShoeBoth:
+                    record.LeftShoe = model.PlayerModel.GetShoe(EquipOptions.Text);
+                    record.RightShoe = model.PlayerModel.GetShoe(EquipOptions.Text);
+                    break;
+                case EquipGlobals.ShoeLeft:
+                    record.LeftShoe = model.PlayerModel.GetShoe(EquipOptions.Text);
+                    break;
+                case EquipGlobals.ShoeRight:                    
+                    record.RightShoe = model.PlayerModel.GetShoe(EquipOptions.Text);
+                    break;
+                case EquipGlobals.HandBoth:
+                    record.LeftHand = model.PlayerModel.GetGloves(EquipOptions.Text);
+                    record.RightHand = model.PlayerModel.GetGloves(EquipOptions.Text);
+                    break;
+                case EquipGlobals.HandLeft:
+                    record.LeftHand = model.PlayerModel.GetGloves(EquipOptions.Text);
+                    break;
+                case EquipGlobals.HandRight:                    
+                    record.RightHand = model.PlayerModel.GetGloves(EquipOptions.Text);
+                    break;
+                case EquipGlobals.WristBoth:
+                    record.LeftWrist = model.PlayerModel.GetWrist(EquipOptions.Text);
+                    record.RightWrist = model.PlayerModel.GetWrist(EquipOptions.Text);
+                    break;
+                case EquipGlobals.WristLeft:
+                    record.LeftWrist = model.PlayerModel.GetWrist(EquipOptions.Text);
+                    break;
+                case EquipGlobals.WristRight:
+                    record.RightWrist = model.PlayerModel.GetWrist(EquipOptions.Text);
+                    break;
+                case EquipGlobals.SleeveBoth:
+                    record.SleevesLeft = model.PlayerModel.GetSleeve(EquipOptions.Text);
+                    record.SleevesRight = model.PlayerModel.GetSleeve(EquipOptions.Text);
+                    break;
+                case EquipGlobals.SleeveLeft:
+                    record.SleevesLeft = model.PlayerModel.GetSleeve(EquipOptions.Text);
+                    break;
+                case EquipGlobals.SleeveRight:
+                    record.SleevesRight = model.PlayerModel.GetSleeve(EquipOptions.Text);
+                    break;
+                case EquipGlobals.Undershirt:
+                    record.UnderShirt = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.ElbowBoth:
+                    record.LeftElbow = model.PlayerModel.GetElbow(EquipOptions.Text);
+                    record.RightElbow = model.PlayerModel.GetElbow(EquipOptions.Text);
+                    break;
+                case EquipGlobals.ElbowLeft:
+                    record.LeftElbow = model.PlayerModel.GetElbow(EquipOptions.Text);
+                    break;
+                case EquipGlobals.ElbowRight:
+                    record.RightElbow = model.PlayerModel.GetElbow(EquipOptions.Text);
+                    break;
+                case EquipGlobals.KneeBoth:
+                    record.KneeLeft = EquipOptions.SelectedIndex;
+                    record.KneeRight = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.KneeLeft:
+                    record.KneeLeft = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.KneeRight:
+                    record.KneeRight = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.AnkleBoth:
+                    record.AnkleLeft = model.PlayerModel.GetAnkle(EquipOptions.Text);
+                    record.AnkleRight = model.PlayerModel.GetAnkle(EquipOptions.Text);
+                    break;
+                case EquipGlobals.AnkleLeft:
+                    record.AnkleLeft = model.PlayerModel.GetAnkle(EquipOptions.Text);
+                    break;
+                case EquipGlobals.AnkleRight:
+                    record.AnkleRight = model.PlayerModel.GetAnkle(EquipOptions.Text);
+                    break;
+                case EquipGlobals.Visor:
+                    record.Visor = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.EyePaint:
+                    record.EyePaint = model.PlayerModel.GetFaceMark(EquipOptions.Text);
+                    break;
+                case EquipGlobals.MouthPiece:
+                    record.MouthPiece = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.Socks:
+                    if (model.FileVersion == MaddenFileVersion.Ver2019)
+                        record.SockHeight = EquipOptions.SelectedIndex;
+                    break;
+                case EquipGlobals.JerseySleeve:
+                    record.JerseySleeve = EquipOptions.SelectedIndex;
+                    break;
+            }
+        }
+        
+        private void ChangeMisc(PlayerRecord record, MiscGlobals misc)
+        {
+            switch(misc)
+            {
+                case MiscGlobals.Celebrations:
+                    record.EndPlay = model.PlayerModel.GetEndPlay(MiscOptionsCombo.Text);
+                    break;
+            }
+        }
 
         private void ChangeTrait(PlayerRecord record, EditableTraits trait)
         {
@@ -573,8 +739,20 @@ namespace MaddenEditor.Forms
                         record.YearsPro = record.YearsPro + value;
                     if (record.YearsPro < 0) record.YearsPro = 0;
                     break;
-
-
+                case EditableAttributes.HEIGHT:
+                    if (absolutevalue)
+                        record.Height = value;
+                    else
+                        record.Height = record.Height + value;
+                    if (record.Height < 0) record.Height = 0;
+                    break;
+                case EditableAttributes.WEIGHT:
+                    if (absolutevalue)
+                        record.Weight = value;
+                    else
+                        record.Weight = record.Weight + value;
+                    if (record.Weight < 0) record.Weight = 0;
+                    break;
             }
         }
 
@@ -586,7 +764,18 @@ namespace MaddenEditor.Forms
 
         private void attributeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (!isInitializing)
+            {
+                GlobalTraitOption.BackColor = SystemColors.Control;
+                attributeCombo.BackColor = SystemColors.Control;
+                if (attributeCombo.SelectedIndex <= 0)
+                    return;
+                else
+                {
+                    attributeCombo.BackColor = Color.LightBlue;
+                    GlobalTraitOption.BackColor = Color.LightBlue;
+                }
+            }        
         }
 
         private void traitCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -695,6 +884,151 @@ namespace MaddenEditor.Forms
                 else TraitON.Checked = true;
                 isInitializing = false;
             }
+        }
+
+        private void MiscCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+                InitMiscOptions();
+        }
+
+        public void InitMiscOptions()
+        {
+            if (MiscCombo.SelectedIndex < 0)
+                return;
+            else MiscOptionsCombo.Items.Clear();
+
+            if (MiscCombo.SelectedIndex == 0)
+            {
+                for (int c = 0; c < model.PlayerModel.EndPlayList.Count; c++)
+                    MiscOptionsCombo.Items.Add(model.PlayerModel.GetEndPlay(c));
+            }
+        }
+
+        public void InitEquipOptions()
+        {
+            if (EquipCombo.SelectedIndex < 0)
+                return;
+            else EquipOptions.Items.Clear();
+
+            if (EquipCombo.SelectedIndex == 0)
+            {
+                for (int c = 0; c < model.PlayerModel.HelmetStyleList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetHelmet(c));
+            }
+            else if (EquipCombo.SelectedIndex == 1)
+            {
+                for (int c = 0; c < model.PlayerModel.FacemaskList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetFaceMask(c));
+            }
+            else if (EquipCombo.SelectedIndex >= 2 && EquipCombo.SelectedIndex <=4)
+            {
+                for (int c = 0; c < model.PlayerModel.ShoeList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetShoe(c));
+            }
+            else if (EquipCombo.SelectedIndex >= 5 && EquipCombo.SelectedIndex <= 7)
+            {
+                for (int c = 0; c < model.PlayerModel.GloveList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetGloves(c));
+            }
+            else if (EquipCombo.SelectedIndex >= 8 && EquipCombo.SelectedIndex <= 10)
+            {
+                for (int c = 0; c < model.PlayerModel.WristBandList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetWrist(c));
+            }
+            else if (EquipCombo.SelectedIndex >= 11 && EquipCombo.SelectedIndex <= 13)
+            {
+                for (int c = 0; c < model.PlayerModel.SleeveList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetSleeve(c));
+            }
+            else if (EquipCombo.SelectedIndex == 14)
+            {
+                EquipOptions.Items.Add("None");
+                EquipOptions.Items.Add("White");
+                EquipOptions.Items.Add("Black");
+                EquipOptions.Items.Add("Team");
+            }
+            else if (EquipCombo.SelectedIndex >= 15 && EquipCombo.SelectedIndex <= 17)
+            {
+                for (int c = 0; c < model.PlayerModel.ElbowList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetElbow(c));
+            }
+            else if (EquipCombo.SelectedIndex >= 18 && EquipCombo.SelectedIndex <= 20)
+            {
+                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                {
+                    EquipOptions.Items.Add("Normal");
+                    EquipOptions.Items.Add("Brace");
+                }
+                else
+                {
+                    EquipOptions.Items.Add("Nike");
+                    EquipOptions.Items.Add("Regular");
+                }
+            }
+            else if (EquipCombo.SelectedIndex >= 21 && EquipCombo.SelectedIndex <= 23)
+            {
+                for (int c = 0; c < model.PlayerModel.AnkleList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetAnkle(c));
+            }
+            else if (EquipCombo.SelectedIndex == 24)
+            {
+                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                {
+                    EquipOptions.Items.Add("None");
+                    EquipOptions.Items.Add("Normal");
+                    EquipOptions.Items.Add("Extended");
+                }
+                else
+                {
+                    EquipOptions.Items.Add("None");
+                    EquipOptions.Items.Add("Vintage");
+                }
+            }
+            else if (EquipCombo.SelectedIndex == 25)
+            {
+                for (int c = 0; c < model.PlayerModel.VisorList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetVisor(c));
+            }
+            else if (EquipCombo.SelectedIndex == 26)
+            {
+                for (int c = 0; c < model.PlayerModel.FaceMarkList.Count; c++)
+                    EquipOptions.Items.Add(model.PlayerModel.GetFaceMark(c));
+            }
+            else if (EquipCombo.SelectedIndex == 27)
+            {
+                EquipOptions.Items.Add("None");
+                EquipOptions.Items.Add("White");
+                EquipOptions.Items.Add("Black");
+                EquipOptions.Items.Add("Team");
+            }
+            else if (EquipCombo.SelectedIndex == 28)
+            {
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                {
+                    EquipOptions.Items.Add("Standard");
+                    EquipOptions.Items.Add("Low");
+                    EquipOptions.Items.Add("High");
+                    EquipOptions.Items.Add("Tucked");
+                }
+            }
+            else if (EquipCombo.SelectedIndex == 29)
+            {
+                EquipOptions.Items.Add("Sleeveless");
+                EquipOptions.Items.Add("Standard");
+                EquipOptions.Items.Add("Long");
+            }
+        }
+
+        private void EquipCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitializing)
+                InitEquipOptions();
+        }
+
+        private void MiscOptionsCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
