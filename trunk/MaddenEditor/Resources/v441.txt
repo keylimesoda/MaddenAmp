@@ -93,10 +93,8 @@ Creating or Editing a contract -
 Set Total (Total Salary + Total Bonus), Bonus (Total Bonus), Length (1-7 years) and Years left.
 Yearly % is the yearly increase per year.
 Clicking "Create" will then setup the yearly contract amounts.
-Legacy Franchise and Madden 19 Roster files will also have the option of adjusting the yearly amounts.
-You can then assign higher/lower amounts to individual years as desired.
-
-
+Legacy Franchise and Madden 19 Roster files will also have the option of adjusting the yearly amounts,
+which can then assign higher/lower amounts to individual years as desired.
 
 
 
@@ -104,7 +102,8 @@ Legacy ONLY:
 Player Editor - Added another set of equipment options.
 These begin with "T" and are believed (read - 'not guaranteed') to be related to temperate and/or indoor stadium environments.
 
-
+Depth Chart : Added Special teams postitions for Legacy versions, the player overalls at these positions will not be calculated as there is no known overall formula for these positions.
+You should still be using the game's depth chart sorting to solve any issues.
 
 
 

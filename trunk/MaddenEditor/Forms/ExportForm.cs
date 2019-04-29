@@ -1311,7 +1311,7 @@ namespace MaddenEditor.Forms
                         if (fp.Name == import.Value)
                         {
                             try
-                            {
+                            {                                
                                 tablerecord.SetFieldCSV(fp.Name, record[import.Key]);
                             }
                             catch
@@ -1320,7 +1320,7 @@ namespace MaddenEditor.Forms
                             }
                         }
                     }
-                }                
+                }
             }
 
             // delete unwanted
@@ -1528,7 +1528,6 @@ namespace MaddenEditor.Forms
             
             
         }
-
 
     }
 }

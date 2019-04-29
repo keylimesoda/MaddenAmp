@@ -191,13 +191,17 @@ namespace MaddenEditor.Db
             DataFileLength = binreader.ReadUInt32();
             TotalLength = binreader.ReadUInt32();
             InfoYear = binreader.ReadUInt16();
+
             InfoMonth = binreader.ReadUInt16();
             InfoDay = binreader.ReadUInt16();
             InfoHour = binreader.ReadUInt16();
             InfoMin = binreader.ReadUInt16();
+
             InfoSec = binreader.ReadUInt16();
-            SerialVersion = binreader.ReadUInt32();
+            SerialVersion = binreader.ReadUInt32(); //@38 bytes
+
             Serial = binreader.ReadBytes(24);
+            //@62 bytes
 
             DataType = binreader.ReadUInt32();
             if (DataType == 2)

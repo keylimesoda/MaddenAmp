@@ -565,7 +565,7 @@ namespace MaddenEditor.Forms
             // 
             // CreateDraftClass_Button
             // 
-            this.CreateDraftClass_Button.Location = new System.Drawing.Point(173, 28);
+            this.CreateDraftClass_Button.Location = new System.Drawing.Point(171, 28);
             this.CreateDraftClass_Button.Name = "CreateDraftClass_Button";
             this.CreateDraftClass_Button.Size = new System.Drawing.Size(158, 23);
             this.CreateDraftClass_Button.TabIndex = 3;

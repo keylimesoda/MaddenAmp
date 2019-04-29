@@ -78,6 +78,7 @@ namespace MaddenEditor.Core
         public Dictionary<int, string> playernames = new Dictionary<int, string>();
         public Dictionary<int, string> duplicateplayers = new Dictionary<int, string>();
         public Dictionary<int, string> PlayerPositions = new Dictionary<int, string>();
+        public Dictionary<string,int> PlayerComments = new Dictionary<string,int>();
 
         public int filterteam = -1;
         public int filterposition = -1;
@@ -710,6 +711,7 @@ namespace MaddenEditor.Core
                 ImportInjuries();
                 ImportEndPlay();
                 ImportQBStyle();
+                ImportCommentIDS();
             }
             
         }
@@ -1147,6 +1149,47 @@ namespace MaddenEditor.Core
             }
         }
 
+        public void ImportCommentIDS()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filename = filedir + @"\res\2019COMMENTS.csv";
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(filename);
+                    string header = sr.ReadLine();
+                    string[] version = header.Split(',');
+                    if (version[0] == "PCMT" && version[1] == "2019")
+                    {
+                        string f = sr.ReadLine();
+                        if (version[2] == "Yes")
+                        {
+                            //read Field desciptions
+                            string desc = sr.ReadLine();
+                        }
+
+                        while (!sr.EndOfStream)
+                        {
+                            string line = sr.ReadLine();
+                            string[] fields = line.Split(',');
+                            string name = fields[0];
+                            int id = Convert.ToInt32(fields[1]);
+                            if (!PlayerComments.ContainsKey(name))
+                                PlayerComments.Add(name, id);
+                        }
+                    }
+                        
+                    sr.Close();
+                }
+                catch (IOException err)
+                {
+                    err = err;
+                }
+            }
+        }
+        
 
         #region Functions
         public void ExportDraftClass(string filename)
