@@ -111,6 +111,7 @@ namespace MaddenEditor.Forms
             playerBirthday.Enabled = false;
             playerDraftRound.Maximum = 15;
             playerDraftRoundIndex.Maximum = 63;
+            AudioCombobox.Enabled = false;
 
             #region Height
             string feet = " '";
@@ -276,6 +277,12 @@ namespace MaddenEditor.Forms
                 Ratings19_Panel.Visible = true;
                 playeroverall.InitRatings19();
                 TraitsPanel.Visible = true;
+
+                AudioCombobox.Enabled = true;
+                foreach (KeyValuePair<string,int> id in model.PlayerModel.PlayerComments)
+                {
+                    AudioCombobox.Items.Add(id.Key);
+                }
             }
 
             #region Portraits
@@ -419,6 +426,10 @@ namespace MaddenEditor.Forms
 
             #endregion
 
+            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            {
+                playerEquipmentThighPads.Enabled = true;
+            }
             if (model.FileVersion >= MaddenFileVersion.Ver2004 && model.FileVersion <= MaddenFileVersion.Ver2008)
             {
                 LegacyPanel.Visible = true;
@@ -479,10 +490,14 @@ namespace MaddenEditor.Forms
                 #region Knee
                 playerLeftKneeCombo.Items.Clear();
                 playerRightKneeCombo.Items.Clear();
+                playerLeftKneeCombo.Items.Add("None");
+                playerRightKneeCombo.Items.Add("None");
                 playerLeftKneeCombo.Items.Add("Nike");
                 playerRightKneeCombo.Items.Add("Nike");
                 playerLeftKneeCombo.Items.Add("Regular");
                 playerRightKneeCombo.Items.Add("Regular");
+                
+
                 #endregion
 
                 #region NeckRoll
@@ -580,6 +595,11 @@ namespace MaddenEditor.Forms
                     Penalty1.Visible = true;
                 }
             }
+
+            #endregion
+
+            #region Player Comments
+            
 
             #endregion
 
@@ -1291,8 +1311,8 @@ namespace MaddenEditor.Forms
                 playerRightSleeve.Text = model.PlayerModel.GetSleeve(record.SleevesRight);
                 playerLeftElbowCombo.Text = model.PlayerModel.GetElbow(record.LeftElbow);
                 playerRightElbowCombo.Text = model.PlayerModel.GetElbow(record.RightElbow);
-                playerLeftKneeCombo.Text = playerLeftKneeCombo.Items[Convert.ToInt32(record.LeftKnee)].ToString();
-                playerRightKneeCombo.Text = playerRightKneeCombo.Items[Convert.ToInt32(record.RightKnee)].ToString();
+                playerLeftKneeCombo.SelectedIndex = record.KneeLeft;
+                playerRightKneeCombo.SelectedIndex = record.KneeRight;
                 playerLeftAnkleCombo.Text = model.PlayerModel.GetAnkle(record.AnkleLeft);
                 playerRightAnkleCombo.Text = model.PlayerModel.GetAnkle(record.AnkleRight);
                 playerNeckRollCombo.Text = playerNeckRollCombo.Items[record.NeckRoll].ToString();
@@ -1300,6 +1320,8 @@ namespace MaddenEditor.Forms
                 playerEyePaintCombo.Text = model.PlayerModel.GetFaceMark(record.EyePaint);
                 playerMouthPieceCombo.Text = playerMouthPieceCombo.Items[record.MouthPiece].ToString();
                 playerJerseySleeves.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.JerseySleeve;
+                playerLeftThighCombo.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.ThighLeft;
+                playerRightThighCombo.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.ThighRight;
                 #endregion
 
                 #region Contracts
@@ -1345,6 +1367,7 @@ namespace MaddenEditor.Forms
                 {
                     playerEgo.Maximum = 127;
                     playerEgo.Value = record.Pcel;
+                    playerEquipmentThighPads.Value = record.LegsThighPads;
                 }
                 #endregion
 
@@ -1406,7 +1429,7 @@ namespace MaddenEditor.Forms
                     playerBodyWeight.Value = record.BodyWeight;
                     playerBodyMuscle.Value = record.BodyMuscle;
                     playerBodyFat.Value = record.BodyFat;
-                    playerEquipmentThighPads.Value = record.LegsThighPads;
+                    
                     playerEquipmentPadHeight.Value = record.EquipmentPadHeight;
                     playerEquipmentPadWidth.Value = record.EquipmentPadWidth;
                     playerEquipmentPadShelf.Value = record.EquipmentPadShelf;
@@ -1450,6 +1473,16 @@ namespace MaddenEditor.Forms
                     playerBirthday.Text = record.GetBirthday();
 
                     PlayerRolecomboBox.SelectedIndex = record.XPRate;
+
+                    foreach (KeyValuePair<string, int> id in model.PlayerModel.PlayerComments)
+                    {
+                        AudioCombobox.SelectedIndex = -1;
+                        if (id.Value == record.PlayerComment)
+                        {
+                            AudioCombobox.Text = id.Key;
+                            break;
+                        }
+                    }
 
                     #region Archetypes
                     #region Init Archetypes and set combos
@@ -1710,6 +1743,8 @@ namespace MaddenEditor.Forms
 
 
         #region Controls
+        
+        
 
         #region Player Ratings Page
 
@@ -1981,6 +2016,11 @@ namespace MaddenEditor.Forms
                         " " + model.PlayerModel.CurrentPlayerRecord.LastName;
                     PlayerGridViewChange(true, model.PlayerModel.CurrentPlayerRecord.PlayerId);
                     isInitialising = false;
+
+                    if (model.PlayerModel.PlayerComments.ContainsKey(model.PlayerModel.CurrentPlayerRecord.LastName))
+                    {                        
+                        playerComment.Value = model.PlayerModel.PlayerComments[model.PlayerModel.CurrentPlayerRecord.LastName];
+                    }                    
                 }
             }
         }
@@ -2059,9 +2099,34 @@ namespace MaddenEditor.Forms
         private void playerComment_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
+            {
                 model.PlayerModel.CurrentPlayerRecord.PlayerComment = (int)playerComment.Value;
+
+                isInitialising = true;
+                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                {
+                    foreach (KeyValuePair<string, int> id in model.PlayerModel.PlayerComments)
+                    {
+                        if (id.Value == playerComment.Value)
+                        {
+                            AudioCombobox.Text = id.Key;
+                            break;
+                        }
+                    }
+                }
+
+                isInitialising = false;
+            }
         }
 
+        private void AudioCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                playerComment.Value = model.PlayerModel.PlayerComments[AudioCombobox.Text];
+            }
+        }
+        
         private void playerAge_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
@@ -3318,7 +3383,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.LeftKnee = (playerLeftKneeCombo.SelectedIndex == 1);
+                model.PlayerModel.CurrentPlayerRecord.KneeLeft = playerLeftKneeCombo.SelectedIndex;
             }
         }
 
@@ -3326,7 +3391,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                model.PlayerModel.CurrentPlayerRecord.RightKnee = (playerRightKneeCombo.SelectedIndex == 1);
+                model.PlayerModel.CurrentPlayerRecord.KneeRight = playerRightKneeCombo.SelectedIndex;
             }
         }
 
@@ -3414,7 +3479,16 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
                 model.PlayerModel.CurrentPlayerRecord.UnderShirt = playerUndershirt.SelectedIndex;
         }
-
+        private void playerLeftThighCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThighLeft = playerLeftThighCombo.SelectedIndex;
+        }
+        private void playerRightThighCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.ThighRight = playerRightThighCombo.SelectedIndex;
+        }
         #endregion
 
         #region Legacy Specific Controls
@@ -3731,7 +3805,8 @@ namespace MaddenEditor.Forms
                 if (tr.Deleted)
                     continue;
                 TeamRecord rec = (TeamRecord)tr;
-                if (rec.TeamId > 31)
+
+                if (rec.TeamId == 1009 || rec.TeamId == 1010 || rec.TeamId == 1014 || rec.TeamId == 1015 || rec.TeamId == 1023)
                     continue;
                 else if (SalaryRankCombo.SelectedIndex == 2 && comp.DivisionId != rec.DivisionId)
                     continue;
@@ -5468,12 +5543,35 @@ namespace MaddenEditor.Forms
 
         #endregion
 
+        
+        
+
+        
+        #endregion
+
+       
+
         #endregion
 
         #endregion
 
-        #endregion
+        private void FixAudioID_Button_Click(object sender, EventArgs e)
+        {
+            isInitialising = true;
 
+            foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+            {
+                if (model.PlayerModel.PlayerComments.ContainsKey(rec.LastName))
+                {
+                    rec.PlayerComment = model.PlayerModel.PlayerComments[rec.LastName];
+                }
+                else rec.PlayerComment = 0;
+            }
 
+            LoadPlayerInfo(model.PlayerModel.CurrentPlayerRecord);
+            isInitialising = false;
+        }
+
+        
     }
 }

@@ -97,6 +97,8 @@ namespace MaddenEditor.Core.Record
         public const string ARM_SIZE = "BSAT";                  //2019
         public const string BUTT_DEFN = "BSBA";                 //2019
         public const string BUTT_SIZE = "BSBT";                 //2019
+        public const string CHEST_DEFN = "BSCA";                //2019
+        public const string CHEST_SIZE = "BSCT";                //2019
         public const string CALF_DEFN = "BSFA";                 //2019
         public const string CALF_SIZE = "BSFT";                 //2019
         public const string FOOT_DEFN = "BSFA";                 //2019
@@ -203,7 +205,7 @@ namespace MaddenEditor.Core.Record
         public const string LEFT_SHOE = "PLSH";
         public const string SPIN_MOVE = "PLSM";                 //2019
         public const string EQP_SHOES = "PLSS";
-        public const string LEFT_KNEE = "PLTH";
+        public const string THIGH_LEFT = "PLTH";
         public const string PLAYER_TOWEL = "PLTL";              //2019
         public const string PLAYER_TYPE = "PLTY";               //2019
         public const string LEFT_WRIST = "PLWR";
@@ -245,7 +247,7 @@ namespace MaddenEditor.Core.Record
         public const string PLAYER_WEAPON = "PRL2";             // 2008
         public const string REAR_SIZE = "PRSE";                 // 2019
         public const string RIGHT_SHOE = "PRSH";
-        public const string RIGHT_KNEE = "PRTH";
+        public const string THIGH_RIGHT = "PRTH";
         public const string RIGHT_WRIST = "PRWR";
         public const string SALARY_YEAR_0 = "PSA0";             
         public const string SALARY_YEAR_1 = "PSA1";
@@ -1129,10 +1131,10 @@ namespace MaddenEditor.Core.Record
 
 
         #region Appearance / Equipment
-        public bool RightKnee
+        public int ThighRight
         {
-            get { return GetIntField(RIGHT_KNEE) == 1; }
-            set { SetField(RIGHT_KNEE, Convert.ToInt32(value)); }
+            get { return GetIntField(THIGH_RIGHT); }
+            set { SetField(THIGH_RIGHT, value); }
         }
 
         public int TempSleeves
@@ -1435,10 +1437,10 @@ namespace MaddenEditor.Core.Record
             }
         }
 
-        public bool LeftKnee
+        public int ThighLeft
         {
-            get { return GetIntField(LEFT_KNEE) == 1; }
-            set { SetField(LEFT_KNEE, Convert.ToInt32(value)); }
+            get { return GetIntField(THIGH_LEFT); }
+            set { SetField(THIGH_LEFT, value); }
         }
 
         public int BodyMuscle
@@ -2129,6 +2131,16 @@ namespace MaddenEditor.Core.Record
             get { return GetFloatField(ARM_SIZE); }
             set { SetField(ARM_SIZE, value); }
         }
+        public float ChestDefn
+        {
+            get { return GetFloatField(CHEST_DEFN); }
+            set { SetField(CHEST_DEFN, value); }
+        }
+        public float ChestSize
+        {
+            get { return GetFloatField(CHEST_SIZE); }
+            set { SetField(CHEST_SIZE, value); }
+        }        
         public float ButtDefn
         {
             get { return GetFloatField(BUTT_DEFN); }

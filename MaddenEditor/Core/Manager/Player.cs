@@ -1523,7 +1523,7 @@ namespace MaddenEditor.Core.Manager
             PLPL = rec.Plpl;                            //"PLPL";   // ?
             LEFT_ANKLE = rec.LeftShoe;                 //"PLSH";
             EQP_SHOES = rec.EquipmentShoes;             //"PLSS";
-            LEFT_KNEE = rec.LeftKnee;                   //"PLTH";
+            //LEFT_KNEE = rec.KneeLeft;                   //"PLTH";
             LEFT_WRIST_A = rec.LeftWrist;               //"PLWR";
             ARMS_MUSCLE = rec.ArmsMuscle;               //"PMAS";
             LEGS_CALF_MUSCLE = rec.LegsCalfMuscle;      //"PMCS";
@@ -1543,7 +1543,7 @@ namespace MaddenEditor.Core.Manager
             RIGHT_ELBOW_A = rec.RightElbow;                         //"PREL";
             RIGHT_HAND_A = rec.RightHand;                           //"PRHA";        
             RIGHT_ANKLE = rec.RightShoe;               //"PRSH";
-            RIGHT_KNEE = rec.RightKnee;                 //"PRTH";
+            //RIGHT_KNEE = rec.ThighRight;                 //"PRTH";
             RIGHT_WRIST_A = rec.RightWrist;             //"PRWR";        
             BODY_OVERALL = rec.BodyOverall;             //"PSBS";
             PSKI = rec.Pski;                            //"PSKI";                               
@@ -1603,7 +1603,7 @@ namespace MaddenEditor.Core.Manager
             rec.Plpl = PLPL;                                            //"PLPL";   // ?
             rec.LeftShoe = LEFT_ANKLE;                                 //"PLSH";
             rec.EquipmentShoes = EQP_SHOES;                             //"PLSS";
-            rec.LeftKnee = LEFT_KNEE;                                   //"PLTH";
+            //rec.KneeLeft = LEFT_KNEE;                                   //"PLTH";
             rec.LeftWrist = LEFT_WRIST_A;                               //"PLWR";
             rec.ArmsMuscle = ARMS_MUSCLE;                               //"PMAS";
             rec.LegsCalfMuscle = LEGS_CALF_MUSCLE;                      //"PMCS";
@@ -1623,7 +1623,7 @@ namespace MaddenEditor.Core.Manager
             rec.RightElbow = RIGHT_ELBOW_A;                             //"PREL";
             rec.RightHand = RIGHT_HAND_A;                               //"PRHA";        
             rec.RightShoe = RIGHT_ANKLE;                               //"PRSH";
-            rec.RightKnee = RIGHT_KNEE;                                 //"PRTH";
+            //rec.ThighRight = RIGHT_KNEE;                                 //"PRTH";
             rec.RightWrist = RIGHT_WRIST_A;                             //"PRWR";        
             rec.BodyOverall = BODY_OVERALL;                             //"PSBS";
             rec.Pski = PSKI;                                            //"PSKI";                               

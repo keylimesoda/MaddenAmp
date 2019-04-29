@@ -59,7 +59,7 @@ namespace MaddenEditor.Core
         public int Position = 0;
         public int JerseyNum = 0;
         public int DraftPick = 0;
-        public int Unknown71 = 0;
+        public int Undrafted = 0;
         public int DraftRound = 0;
         public int Overall = 0;
         public int Awareness = 0;
@@ -150,24 +150,24 @@ namespace MaddenEditor.Core
         public int BackPlate = 0;
 
         // body parts
-        public Single Body01 = 0;
-        public Single Body02 = 0;
-        public Single Body03 = 0;
-        public Single Body04 = 0;
+        public Single ReadSize = 0;
+        public Single RearDef = 0;
+        public Single CalfSize = 0;
+        public Single CalfDef = 0;
         public Single ChestSize = 0;
-        public Single Body06 = 0;
-        public Single Body07 = 0;
-        public Single Body08 = 0;
-        public Single Body09 = 0;
-        public Single Body10 = 0;
-        public Single Body11 = 0;
-        public Single Body12 = 0;
-        public Single Body13 = 0;
-        public Single Body14 = 0;
-        public Single Body15 = 0;
+        public Single ChestDef = 0;
+        public Single WaistSize = 0;
+        public Single WaistDef = 0;
+        public Single GutSize = 0;
+        public Single GutDef = 0;
+        public Single PadDef = 0;
+        public Single PadSize = 0;
+        public Single ThighSize = 0;
+        public Single ThighDef = 0;
+        public Single ArmDef = 0;
         public Single ArmSize = 0;
-        public Single Body17 = 0;
-        public Single Body18 = 0; 
+        public Single FootDef = 0;
+        public Single FootSize = 0; 
 
         public int Unknown232 = 0;
         public int EyePaint = 0;
@@ -184,16 +184,16 @@ namespace MaddenEditor.Core
         public int HandRight = 0;
         public int WristRight = 0;
         public int LeftSleeve = 0;
-        public int Unknown247 = 0;
+        public int RightSleeve = 0;
         public int Unknown248 = 0;
         public int Handed = 0;
 
-        public int Unknown250 = 0;
+        public int HandWarmer = 0;
         public int Helmet = 0;
-        public int RightSleeve = 0;
+        public int Unknown252 = 0;
         public int Unknown253 = 0;
         public int Unknown254 = 0;
-        public int Unknown255 = 0;
+        public int LeftAnkle = 0;
         public int Unknown256 = 0;
         public int NeckRoll = 0;
         public int Unknown258 = 0;
@@ -201,20 +201,20 @@ namespace MaddenEditor.Core
 
         public UInt16 PortraitID = 0;
         public int QBStyle = 0;
-        public int Unknown263 = 0;
+        public int Knees = 0;
         public int Shoes = 0;
-        public int Unknown265 = 0;
-        public int Unknown266 = 0;
+        public int RightAnkle = 0;
+        public int Thighs = 0;
         public int Unknown267 = 0;
         public int Unknown268 = 0;
         public int Unknown269 = 0;
 
-        public int Unknown270 = 0;
+        public int SockHeight = 0;
         public int Unknown271 = 0;
-        public int Unknown272 = 0;
+        public int QBStance = 0;
         public int Unknown273 = 0;
         public int Unknown274 = 0;
-        public int Unknown275 = 0;
+        public int Towel = 0;
         public int Unknown276 = 0;
         public int Visor = 0;
         public int Unknown278 = 0;
@@ -222,8 +222,7 @@ namespace MaddenEditor.Core
 
         public int Unknown280 = 0;
         public int Unknown281 = 0;
-        public int Unknown282 = 0;
-        public int Unknown283 = 0;
+        public UInt16 Comment = 8191;   // Generic        
         public int Unknown284 = 0;
         public int Unknown285 = 0;
         public int Unknown286 = 0;
@@ -343,7 +342,7 @@ namespace MaddenEditor.Core
             JerseyNum = binreader.ReadByte();       //69
 
             DraftPick = binreader.ReadByte();       //70
-            Unknown71 = binreader.ReadByte();       //71
+            Undrafted = binreader.ReadByte();       //71
             DraftRound = binreader.ReadByte();      //72
             Overall = binreader.ReadByte();         //73
             Accel = binreader.ReadByte();           //74
@@ -441,24 +440,24 @@ namespace MaddenEditor.Core
             Predictable = binreader.ReadByte();     //158
             BackPlate = binreader.ReadByte();       //159            
 
-            Body01 = binreader.ReadSingle();        // 160-163
-            Body02 = binreader.ReadSingle();        // 164-167
-            Body03 = binreader.ReadSingle();        // 168-171
-            Body04 = binreader.ReadSingle();        // 172-175            
+            ReadSize = binreader.ReadSingle();        // 160-163
+            RearDef = binreader.ReadSingle();        // 164-167
+            CalfSize = binreader.ReadSingle();        // 168-171
+            CalfDef = binreader.ReadSingle();        // 172-175            
             ChestSize = binreader.ReadSingle();     // 176-179  chest              
-            Body06 = binreader.ReadSingle();        // 180-183
-            Body07 = binreader.ReadSingle();        // 184-187
-            Body08 = binreader.ReadSingle();        // 188-181
-            Body09 = binreader.ReadSingle();        // 192-195     
-            Body10 = binreader.ReadSingle();        // 196-199
-            Body11 = binreader.ReadSingle();        // 200-203
-            Body12 = binreader.ReadSingle();        // 204-207
-            Body13 = binreader.ReadSingle();        // 208-211    
-            Body14 = binreader.ReadSingle();        // 212-215
-            Body15 = binreader.ReadSingle();        // 216-219
+            ChestDef = binreader.ReadSingle();        // 180-183
+            WaistSize = binreader.ReadSingle();        // 184-187
+            WaistDef = binreader.ReadSingle();        // 188-181
+            GutSize = binreader.ReadSingle();        // 192-195     
+            GutDef = binreader.ReadSingle();        // 196-199
+            PadDef = binreader.ReadSingle();        // 200-203
+            PadSize = binreader.ReadSingle();        // 204-207
+            ThighSize = binreader.ReadSingle();        // 208-211    
+            ThighDef = binreader.ReadSingle();        // 212-215
+            ArmDef = binreader.ReadSingle();        // 216-219
             ArmSize = binreader.ReadSingle();       // 220-223
-            Body17 = binreader.ReadSingle();        // 224-227
-            Body18 = binreader.ReadSingle();        // 228-231            
+            FootDef = binreader.ReadSingle();        // 224-227
+            FootSize = binreader.ReadSingle();        // 228-231            
 
             Unknown232 = binreader.ReadByte();      //232
             EyePaint = binreader.ReadByte();        //233
@@ -475,16 +474,16 @@ namespace MaddenEditor.Core
             HandRight = binreader.ReadByte();       //244
             WristRight = binreader.ReadByte();      //245
             LeftSleeve = binreader.ReadByte();      //246
-            Unknown247 = binreader.ReadByte();      //247
+            RightSleeve = binreader.ReadByte();     //247
             Unknown248 = binreader.ReadByte();      //248            
             Handed = binreader.ReadByte();          //249
 
-            Unknown250 = binreader.ReadByte();      //250
+            HandWarmer = binreader.ReadByte();      //250
             Helmet = binreader.ReadByte();          //251
-            RightSleeve = binreader.ReadByte();     //252
+            Unknown252 = binreader.ReadByte();      //252
             Unknown253 = binreader.ReadByte();      //253
             Unknown254 = binreader.ReadByte();      //254
-            Unknown255 = binreader.ReadByte();      //255
+            LeftAnkle = binreader.ReadByte();       //255
             Unknown256 = binreader.ReadByte();      //256
             NeckRoll = binreader.ReadByte();        //257
             Unknown258 = binreader.ReadByte();      //258
@@ -492,20 +491,20 @@ namespace MaddenEditor.Core
 
             PortraitID = binreader.ReadUInt16();    // 260-261
             QBStyle = binreader.ReadByte();         //262
-            Unknown263 = binreader.ReadByte();      //263
+            Knees = binreader.ReadByte();           //263
             Shoes = binreader.ReadByte();           //264
-            Unknown265 = binreader.ReadByte();      //265
-            Unknown266 = binreader.ReadByte();      //266
+            RightAnkle = binreader.ReadByte();      //265
+            Thighs = binreader.ReadByte();       //266
             Unknown267 = binreader.ReadByte();      //267
             Unknown268 = binreader.ReadByte();      //268
             Unknown269 = binreader.ReadByte();      //269
 
-            Unknown270 = binreader.ReadByte();      //270
+            SockHeight = binreader.ReadByte();      //270
             Unknown271 = binreader.ReadByte();      //271
-            Unknown272 = binreader.ReadByte();      //272
+            QBStance = binreader.ReadByte();        //272
             Unknown273 = binreader.ReadByte();      //273
             Unknown274 = binreader.ReadByte();      //274
-            Unknown275 = binreader.ReadByte();      //275
+            Towel = binreader.ReadByte();           //275
             Unknown276 = binreader.ReadByte();      //276
             Visor = binreader.ReadByte();           //277
             Unknown278 = binreader.ReadByte();      //278
@@ -513,8 +512,7 @@ namespace MaddenEditor.Core
 
             Unknown280 = binreader.ReadByte();            
             Unknown281 = binreader.ReadByte();
-            Unknown282 = binreader.ReadByte();       //282
-            Unknown283 = binreader.ReadByte();
+            Comment = binreader.ReadUInt16();       //282-283            
             Unknown284 = binreader.ReadByte();
             Unknown285 = binreader.ReadByte();
             Unknown286 = binreader.ReadByte();
@@ -606,7 +604,7 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)JerseyNum);
 
             binwriter.Write((byte)DraftPick);   //70
-            binwriter.Write((byte)Unknown71);   //71
+            binwriter.Write((byte)Undrafted);   //71
             binwriter.Write((byte)DraftRound);   //72
             binwriter.Write((byte)Overall);     //73
             binwriter.Write((byte)Accel);
@@ -704,24 +702,24 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)Predictable);
             binwriter.Write((byte)BackPlate);
 
-            binwriter.Write(Body01);            // 160-163
-            binwriter.Write(Body02);            // 164-167
-            binwriter.Write(Body03);            // 168-171
-            binwriter.Write(Body04);            // 172-175            
-            binwriter.Write(ChestSize);         // 176-179  chest              
-            binwriter.Write(Body06);            // 180-183
-            binwriter.Write(Body07);            // 184-187
-            binwriter.Write(Body08);            // 188-181
-            binwriter.Write(Body09);            // 192-195     
-            binwriter.Write(Body10);            // 196-199
-            binwriter.Write(Body11);            // 200-203
-            binwriter.Write(Body12);            // 204-207
-            binwriter.Write(Body13);            // 208-211    
-            binwriter.Write(Body14);            // 212-215
-            binwriter.Write(Body15);            // 216-219
-            binwriter.Write(ArmSize);           // 220-223
-            binwriter.Write(Body17);            // 224-227
-            binwriter.Write(Body18);            // 228-231   
+            binwriter.Write(ReadSize);              // 160-163
+            binwriter.Write(RearDef);               // 164-167
+            binwriter.Write(CalfSize);              // 168-171
+            binwriter.Write(CalfDef);               // 172-175            
+            binwriter.Write(ChestSize);             // 176-179  chest              
+            binwriter.Write(ChestDef);              // 180-183
+            binwriter.Write(WaistSize);             // 184-187
+            binwriter.Write(WaistDef);              // 188-181
+            binwriter.Write(GutSize);               // 192-195     
+            binwriter.Write(GutDef);                // 196-199
+            binwriter.Write(PadDef);                // 200-203
+            binwriter.Write(PadSize);               // 204-207
+            binwriter.Write(ThighSize);             // 208-211    
+            binwriter.Write(ThighDef);              // 212-215
+            binwriter.Write(ArmDef);                // 216-219
+            binwriter.Write(ArmSize);               // 220-223
+            binwriter.Write(FootDef);               // 224-227
+            binwriter.Write(FootSize);              // 228-231   
 
             binwriter.Write((byte)Unknown232);
             binwriter.Write((byte)EyePaint);
@@ -738,16 +736,16 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)HandRight);
             binwriter.Write((byte)WristRight);
             binwriter.Write((byte)LeftSleeve);  //246
-            binwriter.Write((byte)Unknown247);
+            binwriter.Write((byte)RightSleeve);
             binwriter.Write((byte)Unknown248);
             binwriter.Write((byte)Handed);
 
-            binwriter.Write((byte)Unknown250);
+            binwriter.Write((byte)HandWarmer);
             binwriter.Write((byte)Helmet);
-            binwriter.Write((byte)RightSleeve);
+            binwriter.Write((byte)Unknown252);
             binwriter.Write((byte)Unknown253);
             binwriter.Write((byte)Unknown254);
-            binwriter.Write((byte)Unknown255);
+            binwriter.Write((byte)LeftAnkle);
             binwriter.Write((byte)Unknown256);
             binwriter.Write((byte)NeckRoll);
             binwriter.Write((byte)Unknown258);
@@ -755,20 +753,20 @@ namespace MaddenEditor.Core
 
             binwriter.Write(PortraitID);            
             binwriter.Write((byte)QBStyle);
-            binwriter.Write((byte)Unknown263);
+            binwriter.Write((byte)Knees);
             binwriter.Write((byte)Shoes);
-            binwriter.Write((byte)Unknown265);
-            binwriter.Write((byte)Unknown266);
+            binwriter.Write((byte)RightAnkle);
+            binwriter.Write((byte)Thighs);
             binwriter.Write((byte)Unknown267);
             binwriter.Write((byte)Unknown268);
             binwriter.Write((byte)Unknown269);
 
-            binwriter.Write((byte)Unknown270);
+            binwriter.Write((byte)SockHeight);
             binwriter.Write((byte)Unknown271);
-            binwriter.Write((byte)Unknown272);
+            binwriter.Write((byte)QBStance);
             binwriter.Write((byte)Unknown273);
             binwriter.Write((byte)Unknown274);
-            binwriter.Write((byte)Unknown275);
+            binwriter.Write((byte)Towel);
             binwriter.Write((byte)Unknown276);
             binwriter.Write((byte)Visor);
             binwriter.Write((byte)Unknown278);
@@ -776,8 +774,7 @@ namespace MaddenEditor.Core
 
             binwriter.Write((byte)Unknown280);
             binwriter.Write((byte)Unknown281);
-            binwriter.Write((byte)Unknown282);
-            binwriter.Write((byte)Unknown283);
+            binwriter.Write(Comment);
             binwriter.Write((byte)Unknown284);
             binwriter.Write((byte)Unknown285);
             binwriter.Write((byte)Unknown286);
@@ -874,8 +871,8 @@ namespace MaddenEditor.Core
 
             else if (field == "PDPI")
                 return DraftPick.ToString();
-            else if (field == "U071")
-                return Unknown71.ToString();
+            else if (field == "UDFA")
+                return Undrafted.ToString();
             else if (field == "PDRO")
                 return DraftRound.ToString();
             else if (field == "POVR")
@@ -1061,42 +1058,42 @@ namespace MaddenEditor.Core
             else if (field == "PLBP")
                 return BackPlate.ToString();
 
-            else if (field == "BD01")
-                return Body01.ToString();
-            else if (field == "BD02")
-                return Body02.ToString();
-            else if (field == "BD03")
-                return Body03.ToString();
-            else if (field == "BD04")
-                return Body04.ToString();
-            else if (field == "PCSZ")
+            else if (field == "BSBA")
+                return ReadSize.ToString();
+            else if (field == "BSBT")
+                return RearDef.ToString();
+            else if (field == "BSCT")
+                return CalfSize.ToString();
+            else if (field == "BSCA")
+                return CalfDef.ToString();
+            else if (field == "BSST")
                 return ChestSize.ToString();
-            else if (field == "BD06")
-                return Body06.ToString();
-            else if (field == "BD07")
-                return Body07.ToString();
-            else if (field == "BD08")
-                return Body08.ToString();
-            else if (field == "BD09")
-                return Body09.ToString();
-            else if (field == "BD10")
-                return Body10.ToString();
-            else if (field == "BD11")
-                return Body11.ToString();
-            else if (field == "BD12")
-                return Body12.ToString();
-            else if (field == "BD13")
-                return Body13.ToString();
-            else if (field == "BD14")
-                return Body14.ToString();
-            else if (field == "BD15")
-                return Body15.ToString();
-            else if (field == "PASZ")
+            else if (field == "BSSA")
+                return ChestDef.ToString();
+            else if (field == "BSWT")
+                return WaistSize.ToString();
+            else if (field == "BSWA")
+                return WaistDef.ToString();
+            else if (field == "BSGT")
+                return GutSize.ToString();
+            else if (field == "BSGA")
+                return GutDef.ToString();
+            else if (field == "BSPA")
+                return PadDef.ToString();
+            else if (field == "BSPT")
+                return PadSize.ToString();
+            else if (field == "BSTT")
+                return ThighSize.ToString();
+            else if (field == "BSTA")
+                return ThighDef.ToString();
+            else if (field == "BSAA")
+                return ArmDef.ToString();
+            else if (field == "BSAT")
                 return ArmSize.ToString();
-            else if (field == "BD17")
-                return Body17.ToString();
-            else if (field == "BD18")
-                return Body18.ToString();
+            else if (field == "BSFA")
+                return FootDef.ToString();
+            else if (field == "BSFT")
+                return FootSize.ToString();
 
             else if (field == "U232")
                 return Unknown232.ToString();
@@ -1127,25 +1124,25 @@ namespace MaddenEditor.Core
                 return WristRight.ToString();
             else if (field == "PGSL")
                 return LeftSleeve.ToString();
-            else if (field == "U247")
-                return Unknown247.ToString();
+            else if (field == "PMOR")
+                return RightSleeve.ToString();
             else if (field == "U248")
                 return Unknown248.ToString();
             else if (field == "PHAN")
                 return Handed.ToString();
 
-            else if (field == "U250")
-                return Unknown250.ToString();
+            else if (field == "PLHW")
+                return HandWarmer.ToString();
             else if (field == "PHLM")
                 return Helmet.ToString();
-            else if (field == "PMOR")
-                return RightSleeve.ToString();
+            else if (field == "U252")
+                return Unknown252.ToString();
             else if (field == "U253")
                 return Unknown253.ToString();
             else if (field == "U254")
                 return Unknown254.ToString();
-            else if (field == "U255")
-                return Unknown255.ToString();
+            else if (field == "PSPL")
+                return LeftAnkle.ToString();
             else if (field == "U256")
                 return Unknown256.ToString();
             else if (field == "PNEK")
@@ -1160,13 +1157,13 @@ namespace MaddenEditor.Core
             else if (field == "PQBS")
                 return QBStyle.ToString();
             else if (field == "U263")
-                return Unknown263.ToString();
+                return Knees.ToString();
             else if (field == "U264")
                 return Shoes.ToString();
-            else if (field == "U265")
-                return Unknown265.ToString();
+            else if (field == "PSPR")
+                return RightAnkle.ToString();
             else if (field == "U266")
-                return Unknown266.ToString();
+                return Thighs.ToString();
             else if (field == "U267")
                 return Unknown267.ToString();
             else if (field == "U268")
@@ -1175,17 +1172,17 @@ namespace MaddenEditor.Core
                 return Unknown269.ToString();
 
             else if (field == "U270")
-                return Unknown270.ToString();
+                return SockHeight.ToString();
             else if (field == "U271")
                 return Unknown271.ToString();
-            else if (field == "U272")
-                return Unknown272.ToString();
+            else if (field == "PSTN")
+                return QBStance.ToString();
             else if (field == "U273")
                 return Unknown273.ToString();
             else if (field == "U274")
                 return Unknown274.ToString();
-            else if (field == "U275")
-                return Unknown275.ToString();
+            else if (field == "PLTL")
+                return Towel.ToString();
             else if (field == "U276")
                 return Unknown276.ToString();
             else if (field == "PVIS")
@@ -1199,10 +1196,12 @@ namespace MaddenEditor.Core
                 return Unknown280.ToString();
             else if (field == "U281")
                 return Unknown281.ToString();
-            else if (field == "U282")
-                return Unknown282.ToString();
-            else if (field == "U283")
-                return Unknown283.ToString();
+            else if (field == "PCMT")
+                return Comment.ToString();
+            //else if (field == "U282")
+            //    return Unknown282.ToString();
+            //else if (field == "U283")
+            //    return Unknown283.ToString();
             else if (field == "U284")
                 return Unknown284.ToString();
             else if (field == "U285")
@@ -1375,8 +1374,8 @@ namespace MaddenEditor.Core
 
             else if (field == "PDPI")                   //70
                 DraftPick = Convert.ToInt32(val);
-            else if (field == "U071")
-                Unknown71 = Convert.ToInt32(val);
+            else if (field == "UDFA")
+                Undrafted = Convert.ToInt32(val);
             else if (field == "PDRO")
                 DraftRound = Convert.ToInt32(val);
             else if (field == "POVR")
@@ -1562,42 +1561,42 @@ namespace MaddenEditor.Core
             else if (field == "PLBP")
                 BackPlate = Convert.ToInt32(val);
 
-            else if (field == "BD01")               //160
-                Body01 = Convert.ToSingle(val);
-            else if (field == "BD02")
-                Body02 = Convert.ToSingle(val);
-            else if (field == "BD03")
-                Body03 = Convert.ToSingle(val);
-            else if (field == "BD04")
-                Body04 = Convert.ToSingle(val);
-            else if (field == "PCSZ")
+            else if (field == "BSBT")               //160
+                ReadSize = Convert.ToSingle(val);
+            else if (field == "BSBA")
+                RearDef = Convert.ToSingle(val);
+            else if (field == "BSCT")
+                CalfSize = Convert.ToSingle(val);
+            else if (field == "BSCA")
+                CalfDef = Convert.ToSingle(val);
+            else if (field == "BSST")
                 ChestSize = Convert.ToSingle(val);
-            else if (field == "BD06")
-                Body06 = Convert.ToSingle(val);
-            else if (field == "BD07")
-                Body07 = Convert.ToSingle(val);
-            else if (field == "BD08")
-                Body08 = Convert.ToSingle(val);
-            else if (field == "BD09")
-                Body09 = Convert.ToSingle(val);
-            else if (field == "BD10")
-                Body10 = Convert.ToSingle(val);
-            else if (field == "BD11")
-                Body11 = Convert.ToSingle(val);
-            else if (field == "BD12")
-                Body12 = Convert.ToSingle(val);
-            else if (field == "BD13")
-                Body13 = Convert.ToSingle(val);
-            else if (field == "BD14")
-                Body14 = Convert.ToSingle(val);
-            else if (field == "BD15")
-                Body15 = Convert.ToSingle(val);
-            else if (field == "PASZ")
+            else if (field == "BSSA")
+                ChestDef = Convert.ToSingle(val);
+            else if (field == "BSWT")
+                WaistSize = Convert.ToSingle(val);
+            else if (field == "BSWA")
+                WaistDef = Convert.ToSingle(val);
+            else if (field == "BSGT")
+                GutSize = Convert.ToSingle(val);
+            else if (field == "BSGA")
+                GutDef = Convert.ToSingle(val);
+            else if (field == "BSPA")
+                PadDef = Convert.ToSingle(val);
+            else if (field == "BSPT")
+                PadSize = Convert.ToSingle(val);
+            else if (field == "BSTT")
+                ThighSize = Convert.ToSingle(val);
+            else if (field == "BSTA")
+                ThighDef = Convert.ToSingle(val);
+            else if (field == "BSAA")
+                ArmDef = Convert.ToSingle(val);
+            else if (field == "BSAT")
                 ArmSize = Convert.ToSingle(val);
-            else if (field == "BD17")
-                Body17 = Convert.ToSingle(val);
-            else if (field == "BD18")
-                Body18 = Convert.ToSingle(val);
+            else if (field == "BSFA")
+                FootDef = Convert.ToSingle(val);
+            else if (field == "BSFT")
+                FootSize = Convert.ToSingle(val);
 
             else if (field == "U232")                   //232
                 Unknown232 = Convert.ToInt32(val);
@@ -1629,24 +1628,24 @@ namespace MaddenEditor.Core
             else if (field == "PGSL")
                 LeftSleeve = Convert.ToInt32(val);
             else if (field == "U247")
-                Unknown247 = Convert.ToInt32(val);
+                RightSleeve = Convert.ToInt32(val);
             else if (field == "U248")
                 Unknown248 = Convert.ToInt32(val);
             else if (field == "PHAN")
                 Handed = Convert.ToInt32(val);
 
-            else if (field == "U250")                   //250
-                Unknown250 = Convert.ToInt32(val);
+            else if (field == "PLHW")                   //250
+                HandWarmer = Convert.ToInt32(val);
             else if (field == "PHLM")
                 Helmet = Convert.ToInt32(val);
             else if (field == "PMOR")
-                RightSleeve = Convert.ToInt32(val);
+                Unknown252 = Convert.ToInt32(val);
             else if (field == "U253")
                 Unknown253 = Convert.ToInt32(val);
             else if (field == "U254")
                 Unknown254 = Convert.ToInt32(val);
-            else if (field == "U255")
-                Unknown255 = Convert.ToInt32(val);
+            else if (field == "PSPL")
+                LeftAnkle = Convert.ToInt32(val);
             else if (field == "U256")
                 Unknown256 = Convert.ToInt32(val);
             else if (field == "PNEK")
@@ -1661,13 +1660,13 @@ namespace MaddenEditor.Core
             else if (field == "PQBS")
                 QBStyle = Convert.ToInt32(val);
             else if (field == "U263")
-                Unknown263 = Convert.ToInt32(val);
+                Knees = Convert.ToInt32(val);
             else if (field == "U264")
                 Shoes = Convert.ToInt32(val);
-            else if (field == "U265")
-                Unknown265 = Convert.ToInt32(val);
+            else if (field == "PSPR")
+                RightAnkle = Convert.ToInt32(val);
             else if (field == "U266")
-                Unknown266 = Convert.ToInt32(val);
+                Thighs = Convert.ToInt32(val);
             else if (field == "U267")
                 Unknown267 = Convert.ToInt32(val);
             else if (field == "U268")
@@ -1676,17 +1675,17 @@ namespace MaddenEditor.Core
                 Unknown269 = Convert.ToInt32(val);
 
             else if (field == "U270")
-                Unknown270 = Convert.ToInt32(val);
+                SockHeight = Convert.ToInt32(val);
             else if (field == "U271")
                 Unknown271 = Convert.ToInt32(val);
-            else if (field == "U272")
-                Unknown272 = Convert.ToInt32(val);
+            else if (field == "PSTN")
+                QBStance = Convert.ToInt32(val);
             else if (field == "U273")
                 Unknown273 = Convert.ToInt32(val);
             else if (field == "U274")
                 Unknown274 = Convert.ToInt32(val);
-            else if (field == "U275")
-                Unknown275 = Convert.ToInt32(val);
+            else if (field == "PLTL")
+                Towel = Convert.ToInt32(val);
             else if (field == "U276")
                 Unknown276 = Convert.ToInt32(val);
             else if (field == "PVIS")
@@ -1700,10 +1699,11 @@ namespace MaddenEditor.Core
                 Unknown280 = Convert.ToInt32(val);
             else if (field == "U281")
                 Unknown281 = Convert.ToInt32(val);
-            else if (field == "U282")
-                Unknown282 = Convert.ToInt32(val);
-            else if (field == "U283")
-                Unknown283 = Convert.ToInt32(val);
+            else if (field == "PCMT")
+            {
+                Comment = Convert.ToUInt16(val);                
+            }
+
             else if (field == "U284")
                 Unknown284 = Convert.ToInt32(val);
             else if (field == "U285")
@@ -1857,30 +1857,7 @@ namespace MaddenEditor.Core
         }
         
         public void InitRatingDefs()
-        {
-            #region Bodyparts
-            /*
-            RatingDefs.Add("BSAA", "Arm Defn");
-            RatingDefs.Add("BSAT", "Arm Size");
-            RatingDefs.Add("BSBA", "Butt Defn");
-            RatingDefs.Add("BSBT", "Butt Size");
-            RatingDefs.Add("BSCA", "Calf Defn");
-            RatingDefs.Add("BSCT", "Calf Size");
-            RatingDefs.Add("BSFA", "Foot Defn");
-            RatingDefs.Add("BSFT", "Foot Size");
-            RatingDefs.Add("BSGA", "Gut Defn");
-            RatingDefs.Add("BSGT", "Gut Size");
-            RatingDefs.Add("BSPA", "Pad Defn");
-            RatingDefs.Add("BSPT", "Pad Size");
-            RatingDefs.Add("BSSA", "Shoulder Defn");
-            RatingDefs.Add("BSST", "Shoulder Size");
-            RatingDefs.Add("BSTA", "Thigh Defn");
-            RatingDefs.Add("BSTT", "Thigh Size");
-            RatingDefs.Add("BSWA", "Waist Defn");
-            RatingDefs.Add("BSWT", "Waist Size"); 
-          */
-            #endregion
-
+        { 
             RatingDefs.Add("PFNA", "First Name");
             RatingDefs.Add("PLNA", "Last Name");
             RatingDefs.Add("HOLD", "Placeholder");
@@ -1897,7 +1874,7 @@ namespace MaddenEditor.Core
             RatingDefs.Add("PJEN", "Jersey Num");
 
             RatingDefs.Add("PDPI", "Draft Pick");
-            RatingDefs.Add("U071", "Unknown71");
+            RatingDefs.Add("UDFA", "Undrafted");
             RatingDefs.Add("PDRO", "Draft Round");
             RatingDefs.Add("POVR", "Overall");
             RatingDefs.Add("PACC", "Acceleration");
@@ -1995,24 +1972,24 @@ namespace MaddenEditor.Core
             RatingDefs.Add("Pred", "Predictable");
             RatingDefs.Add("PLBP", "Back Plate");
 
-            RatingDefs.Add("BD01", "Body01");
-            RatingDefs.Add("BD02", "Body02");
-            RatingDefs.Add("BD03", "Body03");
-            RatingDefs.Add("BD04", "Body04");
-            RatingDefs.Add("PCSZ", "Chest Size");
-            RatingDefs.Add("BD06", "Body06");
-            RatingDefs.Add("BD07", "Body07");
-            RatingDefs.Add("BD08", "Body08");
-            RatingDefs.Add("BD09", "Body09");
-            RatingDefs.Add("BD10", "Body10");
-            RatingDefs.Add("BD11", "Body11");
-            RatingDefs.Add("BD12", "Body12");
-            RatingDefs.Add("BD13", "Body13");
-            RatingDefs.Add("BD14", "Body14");
-            RatingDefs.Add("BD15", "Body15");
-            RatingDefs.Add("PASZ", "Arm Size");            
-            RatingDefs.Add("BD17", "Body17");
-            RatingDefs.Add("BD18", "Body18");
+            RatingDefs.Add("BSBT", "Rear Size");
+            RatingDefs.Add("BSBA", "Rear Defn");
+            RatingDefs.Add("BSCT", "Calf Size");
+            RatingDefs.Add("BSCA", "Calf Defn");
+            RatingDefs.Add("BSWT", "Waist Size");
+            RatingDefs.Add("BSWA", "Waist Defn");
+            RatingDefs.Add("BSGT", "Gut Size");
+            RatingDefs.Add("BSGA", "Gut Defn");
+            RatingDefs.Add("BSPA", "Pad Defn");
+            RatingDefs.Add("BSPT", "Pad Size");
+            RatingDefs.Add("BSTT", "Thigh Size");
+            RatingDefs.Add("BSTA", "Thigh Defn");
+            RatingDefs.Add("BSAA", "Arm Defn");
+            RatingDefs.Add("BSAT", "Arm Size");            
+            RatingDefs.Add("BSSA", "Shoulder Def");
+            RatingDefs.Add("BSST", "Shoulder Size");
+            RatingDefs.Add("BSFA", "Foot Defn");
+            RatingDefs.Add("BSFT", "Foot Size");
 
             RatingDefs.Add("U232", "Unknown232");
             RatingDefs.Add("PEYE", "Eye Paint");
@@ -2029,16 +2006,16 @@ namespace MaddenEditor.Core
             RatingDefs.Add("PRHA", "Hand Right");
             RatingDefs.Add("PRWR", "Wrist Right");
             RatingDefs.Add("PGSL", "Sleeve Left");
-            RatingDefs.Add("U247", "Unknown247");
+            RatingDefs.Add("PMOR", "Sleeve Right");
             RatingDefs.Add("U248", "Unknown248");
             RatingDefs.Add("PHAN", "Handed");
 
-            RatingDefs.Add("U250", "Unknown250");
+            RatingDefs.Add("PLHW", "HandWarmer");
             RatingDefs.Add("PHLM", "Helmet");
-            RatingDefs.Add("PMOR", "Sleeve Right");
+            RatingDefs.Add("U252", "Unknown252");
             RatingDefs.Add("U253", "Unknown253");
             RatingDefs.Add("U254", "Unknown254");
-            RatingDefs.Add("U255", "Unknown255");
+            RatingDefs.Add("PSPL", "Ankle Left");
             RatingDefs.Add("U256", "Unknown256");
             RatingDefs.Add("PNEK", "Neck Roll");
             RatingDefs.Add("U258", "Unknown258");
@@ -2046,20 +2023,20 @@ namespace MaddenEditor.Core
 
             RatingDefs.Add("PSXP", "PortID");            
             RatingDefs.Add("PQBS", "QB Style");
-            RatingDefs.Add("U263", "Unknown263");
-            RatingDefs.Add("U264", "Unknown264");
-            RatingDefs.Add("U265", "Unknown265");
-            RatingDefs.Add("U266", "Unknown266");
+            RatingDefs.Add("PLKN", "Knee Left");
+            RatingDefs.Add("PLSH", "Shoe Left");
+            RatingDefs.Add("PSPR", "Ankle Right");
+            RatingDefs.Add("PLTH", "Thigh Left");
             RatingDefs.Add("U267", "Unknown267");
             RatingDefs.Add("U268", "Unknown268");
             RatingDefs.Add("U269", "Unknown269");
 
-            RatingDefs.Add("U270", "Unknown270");
+            RatingDefs.Add("PSKH", "Sock Height");
             RatingDefs.Add("U271", "Unknown271");
-            RatingDefs.Add("U272", "Unknown272");
+            RatingDefs.Add("PSTN", "Stance");
             RatingDefs.Add("U273", "Unknown273");
             RatingDefs.Add("U274", "Unknown274");
-            RatingDefs.Add("U275", "Unknown275");
+            RatingDefs.Add("PLTL", "Towel");
             RatingDefs.Add("U276", "Unknown276");
             RatingDefs.Add("PVIS", "Visor");
             RatingDefs.Add("U278", "Unknown278");
@@ -2067,8 +2044,7 @@ namespace MaddenEditor.Core
 
             RatingDefs.Add("U280", "Unknown280");
             RatingDefs.Add("U281", "Unknown281");
-            RatingDefs.Add("U282", "Unknown282");
-            RatingDefs.Add("U283", "Unknown283");
+            RatingDefs.Add("PCMT", "Comment");
             RatingDefs.Add("U284", "Unknown284");
             RatingDefs.Add("U285", "Unknown285");
             RatingDefs.Add("U286", "Unknown286");
@@ -2116,7 +2092,7 @@ namespace MaddenEditor.Core
             RatingDefs.Add("U324", "Unknown324");
             RatingDefs.Add("U325", "Unknown325");
             RatingDefs.Add("U326", "Unknown326");
-            RatingDefs.Add("U327", "Unknown326");
+            RatingDefs.Add("U327", "Unknown327");
             
         }
 
@@ -2234,6 +2210,11 @@ namespace MaddenEditor.Core
                 string[] csvrecord = records[c].Split(',');
 
                 draftclassplayers[c].ImportCSVPlayer(fields, csvrecord, model);
+                if (model.PlayerModel.PlayerComments.ContainsKey(draftclassplayers[c].NameLast))
+                {
+                    draftclassplayers[c].Comment = (UInt16)model.PlayerModel.PlayerComments[draftclassplayers[c].NameLast];
+                }
+                else draftclassplayers[c].Comment = 8191;
             }
         }
     
