@@ -92,7 +92,7 @@ namespace MaddenEditor.Forms
             isInitializing = true;
 
             
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 StreamControl.TabPages.Clear();
                 InitGameOptions();
@@ -109,14 +109,14 @@ namespace MaddenEditor.Forms
                 InitTeamEffectsUI();
 
                 StreamedFileName_Textbox.Text = manager.config.StreamFilename;
-                Streameddb_Autoload.Checked = manager.config.streamdb_autoload[(int)model.FileVersion];
+                Streameddb_Autoload.Checked = manager.config.streamdb_autoload[(int)model.MadVersion];
                 if (Streameddb_Autoload.Checked)
-                    StreamedFileName_Textbox.Text = manager.config.stream_names[(int)model.FileVersion];
+                    StreamedFileName_Textbox.Text = manager.config.stream_names[(int)model.MadVersion];
 
                 DB_Template_Name_Textbox.Text = manager.config.db_misc_filename;
-                DB_Misc_Autoload.Checked = manager.config.db_misc_autoload[(int)model.FileVersion];
+                DB_Misc_Autoload.Checked = manager.config.db_misc_autoload[(int)model.MadVersion];
                 if (DB_Misc_Autoload.Checked)
-                    DB_Template_Name_Textbox.Text = manager.config.db_misc_names[(int)model.FileVersion];
+                    DB_Template_Name_Textbox.Text = manager.config.db_misc_names[(int)model.MadVersion];
             }
             
 
@@ -138,7 +138,7 @@ namespace MaddenEditor.Forms
             {
                 StreamControl.TabPages.Add(Game);
                 Game.Controls.Clear();
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                 {
                     GameOptions form = new GameOptions();
                     form.Model = model;
@@ -187,7 +187,7 @@ namespace MaddenEditor.Forms
             if (StreamControl.TabPages.Contains(RegressionTab))
                 StreamControl.TabPages.Remove(RegressionTab);
 
-            if (manager.stream_model != null && model.FileVersion > MaddenFileVersion.Ver2004)
+            if (manager.stream_model != null && model.MadVersion > MaddenFileVersion.Ver2004)
             {
 
                 if (!StreamControl.TabPages.Contains(RegressionTab))
@@ -245,7 +245,7 @@ namespace MaddenEditor.Forms
             if (StreamControl.TabPages.Contains(RolesTab))            
                 StreamControl.TabPages.Remove(RolesTab);
 
-            if (manager.stream_model != null && model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (manager.stream_model != null && model.MadVersion >= MaddenFileVersion.Ver2007)
             {
                 RoleAddNew_Button.Enabled = false;
 
@@ -263,7 +263,7 @@ namespace MaddenEditor.Forms
         {
             if (StreamControl.TabPages.Contains(PlayerEffect))
                 StreamControl.TabPages.Remove(PlayerEffect);
-            if (manager.stream_model != null && model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (manager.stream_model != null && model.MadVersion >= MaddenFileVersion.Ver2007)
             {
                 if (!StreamControl.TabPages.Contains(PlayerEffect))
                     StreamControl.TabPages.Add(PlayerEffect);
@@ -305,7 +305,7 @@ namespace MaddenEditor.Forms
         {
             if (StreamControl.TabPages.Contains(TeamEffects))
                 StreamControl.TabPages.Remove(TeamEffects);
-            if (manager.stream_model != null && model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (manager.stream_model != null && model.MadVersion >= MaddenFileVersion.Ver2007)
             {
                 if (!StreamControl.TabPages.Contains(TeamEffects))
                     StreamControl.TabPages.Add(TeamEffects);
@@ -343,7 +343,7 @@ namespace MaddenEditor.Forms
        
         public void InitProgressionUI()
         {
-            if (model.FileType != MaddenFileType.Franchise || model.FileVersion == MaddenFileVersion.Ver2004 || manager.stream_model == null)
+            if (model.FileType != MaddenFileType.Franchise || model.MadVersion == MaddenFileVersion.Ver2004 || manager.stream_model == null)
             {                
                 if (StreamControl.TabPages.Contains(ProgressionTab))
                     StreamControl.TabPages.Remove(ProgressionTab);
@@ -381,7 +381,7 @@ namespace MaddenEditor.Forms
                 InitProgressionSchedule();                
             }
 
-            if (model.FileType != MaddenFileType.Franchise || model.FileVersion == MaddenFileVersion.Ver2004)
+            if (model.FileType != MaddenFileType.Franchise || model.MadVersion == MaddenFileVersion.Ver2004)
             {
                 if (model.PlayerModel != null && LinkPlayer_Checkbox.Checked && model.PlayerModel.CurrentPlayerRecord.FirstName != "New")
                 {
@@ -421,7 +421,7 @@ namespace MaddenEditor.Forms
         {
             if (e.TabPage == ProgressionTab)
             {
-                if (model.FileType == MaddenFileType.Franchise && model.FileVersion != MaddenFileVersion.Ver2004)
+                if (model.FileType == MaddenFileType.Franchise && model.MadVersion != MaddenFileVersion.Ver2004)
                 {
                     if (model.PlayerModel != null && LinkPlayer_Checkbox.Checked && model.PlayerModel.CurrentPlayerRecord.FirstName != "New")
                     {
@@ -455,7 +455,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitializing)
             {
-                manager.config.streamdb_autoload[(int)model.FileVersion] = Streameddb_Autoload.Checked;
+                manager.config.streamdb_autoload[(int)model.MadVersion] = Streameddb_Autoload.Checked;
                 manager.config.Write();
             }
         }
@@ -471,12 +471,12 @@ namespace MaddenEditor.Forms
             string filename = dialog.FileName;
             if (filename == "")
                 return;            
-            manager.stream_model = new EditorModel(filename, null,false,false);
+            manager.stream_model = new EditorModel(filename, null,false,null);
 
             if (manager.stream_model != null)
             {
                 manager.config.StreamFilename = filename;
-                manager.config.stream_names[(int)model.FileVersion] = manager.config.StreamFilename;
+                manager.config.stream_names[(int)model.MadVersion] = manager.config.StreamFilename;
                 StreamedFileName_Textbox.Text = manager.config.StreamFilename;
                 manager.config.Write();
                 InitialiseUI();
@@ -496,12 +496,12 @@ namespace MaddenEditor.Forms
             string filename = dialog.FileName;
             if (filename == "")
                 return;
-            manager.db_misc_model = new EditorModel(filename, null,false,false);
+            manager.db_misc_model = new EditorModel(filename, null,false,null);
 
             if (manager.db_misc_model != null)
             {
                 manager.config.db_misc_filename = filename;
-                manager.config.db_misc_names[(int)model.FileVersion] = manager.config.db_misc_filename;
+                manager.config.db_misc_names[(int)model.MadVersion] = manager.config.db_misc_filename;
                 DB_Template_Name_Textbox.Text = manager.config.db_misc_filename;
                 manager.config.Write();
                 InitOVRUI();                
@@ -514,7 +514,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitializing)
             {
-                manager.config.db_misc_autoload[(int)model.FileVersion] = DB_Misc_Autoload.Checked;                
+                manager.config.db_misc_autoload[(int)model.MadVersion] = DB_Misc_Autoload.Checked;                
                 manager.config.Write();
             }
         }
@@ -1200,7 +1200,7 @@ namespace MaddenEditor.Forms
             CollegeView.Bounds = new Rectangle(new Point(2, 2), new Size(900, 378));
             CollegeView.MultiSelect = false;
 
-            if (manager.stream_model.FileVersion >= MaddenFileVersion.Ver2006)
+            if (manager.stream_model.MadVersion >= MaddenFileVersion.Ver2006)
                 CollegeView.ColumnCount = 4;
             else CollegeView.ColumnCount = 3;
             CollegeView.Columns[0].Name = "ID";
@@ -1279,12 +1279,12 @@ namespace MaddenEditor.Forms
             record.CollegeTeamId = 0;
             record.CollegeName = CollegeName.Text;
 
-            if (manager.stream_model.FileVersion >= MaddenFileVersion.Ver2006)
+            if (manager.stream_model.MadVersion >= MaddenFileVersion.Ver2006)
             {
 
 
             }
-            if (manager.stream_model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (manager.stream_model.MadVersion >= MaddenFileVersion.Ver2007)
             {
 
             }
@@ -1383,12 +1383,12 @@ namespace MaddenEditor.Forms
 
         public void InitDatOptionsUI()
         {
-            CurrentPlayerPort_Textbox.Text = manager.config.PlayerPortFiles[(int)model.FileVersion];
-            CurrentCoachPort_Textbox.Text = manager.config.CoachPortFiles[(int)model.FileVersion];
-            AutoLoadPlayerPorts.Checked = manager.config.AutoLoad_PlayerPort[(int)model.FileVersion];
-            AutoLoadCoachPorts.Checked = manager.config.AutoLoad_CoachPort[(int)model.FileVersion];
-            AskForPlayerSave_Checkbox.Checked = manager.config.AskPlayerSave[(int)model.FileVersion];
-            AskForCoachSave_Checkbox.Checked = manager.config.AskCoachSave[(int)model.FileVersion];
+            CurrentPlayerPort_Textbox.Text = manager.config.PlayerPortFiles[(int)model.MadVersion];
+            CurrentCoachPort_Textbox.Text = manager.config.CoachPortFiles[(int)model.MadVersion];
+            AutoLoadPlayerPorts.Checked = manager.config.AutoLoad_PlayerPort[(int)model.MadVersion];
+            AutoLoadCoachPorts.Checked = manager.config.AutoLoad_CoachPort[(int)model.MadVersion];
+            AskForPlayerSave_Checkbox.Checked = manager.config.AskPlayerSave[(int)model.MadVersion];
+            AskForCoachSave_Checkbox.Checked = manager.config.AskCoachSave[(int)model.MadVersion];
 
             if (manager.PlayerPortDAT.isterf)
             {
@@ -1467,7 +1467,7 @@ namespace MaddenEditor.Forms
             manager.PlayerPortDAT.Load();
             if (manager.PlayerPortDAT.isterf)
             {
-                manager.config.PlayerPortFiles[(int)model.FileVersion] = manager.PlayerPortDAT.loadfile;
+                manager.config.PlayerPortFiles[(int)model.MadVersion] = manager.PlayerPortDAT.loadfile;
                 InitDatOptionsUI();
                 manager.config.changed = true;
             }
@@ -1478,7 +1478,7 @@ namespace MaddenEditor.Forms
             manager.CoachPortDAT.Load();
             if (manager.CoachPortDAT.isterf)
             {
-                manager.config.CoachPortFiles[(int)model.FileVersion] = manager.CoachPortDAT.loadfile;
+                manager.config.CoachPortFiles[(int)model.MadVersion] = manager.CoachPortDAT.loadfile;
                 InitDatOptionsUI();
                 manager.config.changed = true;
             }
@@ -1487,7 +1487,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitializing)
             {
-                manager.config.AutoLoad_PlayerPort[(int)model.FileVersion] = AutoLoadPlayerPorts.Checked;
+                manager.config.AutoLoad_PlayerPort[(int)model.MadVersion] = AutoLoadPlayerPorts.Checked;
                 manager.config.changed = true;
             }
         }
@@ -1495,7 +1495,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitializing)
             {
-                manager.config.AutoLoad_CoachPort[(int)model.FileVersion] = AutoLoadCoachPorts.Checked;
+                manager.config.AutoLoad_CoachPort[(int)model.MadVersion] = AutoLoadCoachPorts.Checked;
                 manager.config.changed = true;
             }
         }
@@ -1503,7 +1503,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitializing)
             {
-                manager.config.AskPlayerSave[(int)model.FileVersion] = AskForPlayerSave_Checkbox.Checked;
+                manager.config.AskPlayerSave[(int)model.MadVersion] = AskForPlayerSave_Checkbox.Checked;
                 manager.config.changed = true;
             }
         }
@@ -1511,7 +1511,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitializing)
             {
-                manager.config.AskCoachSave[(int)model.FileVersion] = AskForCoachSave_Checkbox.Checked;
+                manager.config.AskCoachSave[(int)model.MadVersion] = AskForCoachSave_Checkbox.Checked;
                 manager.config.changed = true;
             }
         }
@@ -2287,7 +2287,7 @@ namespace MaddenEditor.Forms
         #region Progression
         public void InitPlayerProgression()
         {
-            if (model.FileType == MaddenFileType.Franchise && model.FileVersion != MaddenFileVersion.Ver2004)
+            if (model.FileType == MaddenFileType.Franchise && model.MadVersion != MaddenFileVersion.Ver2004)
             {
                 if (model.PlayerModel != null && LinkPlayer_Checkbox.Checked)
                 {
@@ -2451,7 +2451,7 @@ namespace MaddenEditor.Forms
             ProgressionScoringView.AutoGenerateColumns = false;
             ProgressionScoringView.AllowUserToAddRows = false;
             ProgressionScoringView.RowHeadersVisible = false;
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
+            if (model.MadVersion <= MaddenFileVersion.Ver2006)
                 ProgressionScoringView.ColumnCount = 5;
             else ProgressionScoringView.ColumnCount = 4;
             int c = 0;
@@ -2459,7 +2459,7 @@ namespace MaddenEditor.Forms
             ProgressionScoringView.Columns[c].Width = 30;
             ProgressionScoringView.Columns[c].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             c++;
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
+            if (model.MadVersion <= MaddenFileVersion.Ver2006)
             {
                 ProgressionScoringView.Columns[c].Name = "Period";
                 ProgressionScoringView.Columns[c].Width = 50;
@@ -2493,7 +2493,7 @@ namespace MaddenEditor.Forms
                 bool add = false;
                 bool add2 = false;
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                 {
                     if (ScoringStat_Combobox.Items.Count > 0)
                     {
@@ -2527,7 +2527,7 @@ namespace MaddenEditor.Forms
 
             foreach (ProgressionTracking t in created)
             {
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                 {
                     object[] entry = { t.RecNo, t.ProgressionPeriod, t.Psit, t.Type, t.Points };
                     ProgressionScoringView.Rows.Add(entry);

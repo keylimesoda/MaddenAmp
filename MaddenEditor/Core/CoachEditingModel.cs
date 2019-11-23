@@ -72,7 +72,7 @@ namespace MaddenEditor.Core
             coachskincolor.Add(new GenericRecord("Light", 0));
             coachskincolor.Add(new GenericRecord("Medium", 1));
             coachskincolor.Add(new GenericRecord("Dark", 2));
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
             {
                 coachskincolor.Add(new GenericRecord("Medium Dark 1", 3));
                 coachskincolor.Add(new GenericRecord("Medium Dark 2", 4));
@@ -589,7 +589,7 @@ namespace MaddenEditor.Core
 
             if (!exists)
             {
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)                
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)                
                     changed = CheckCoachSliders();
                 changed = ChangeCoachControl(newPosition);                
                 CurrentCoachRecord.Position = newPosition;

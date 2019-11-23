@@ -48,7 +48,7 @@ namespace MaddenEditor.Forms
 	public partial class MainForm : Form
 	{
 		private const string TITLE_STRING = "Madden Amp";
-        private bool Mad19 = false;        
+        private bool MadFB = false;        
 		private EditorModel model = null;
         private EditorModel stream = null;
 		private string filePathToLoad;
@@ -142,14 +142,14 @@ namespace MaddenEditor.Forms
                 MaddenManager.Enabled = true;
                 manager.LoadDATs();
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                 {
                     //2004 version doesn't support Team Captain editing
                     setTeamCaptainsToolStripMenuItem.Enabled = false;
                 }
                 else setTeamCaptainsToolStripMenuItem.Enabled = true;
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2006)
+                if (model.MadVersion >= MaddenFileVersion.Ver2006)
                     setGameInjuriesToolStripMenuItem.Enabled = true;
                 else setGameInjuriesToolStripMenuItem.Enabled = false;
 
@@ -186,7 +186,7 @@ namespace MaddenEditor.Forms
             else
             {
                 //optionsToolStripMenuItem.Enabled = false;
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     
                     optionsToolStripMenuItem.Visible = false;
@@ -312,7 +312,7 @@ namespace MaddenEditor.Forms
         {
             try
             {
-                model = new EditorModel(filePathToLoad, this, bigendian, Mad19);                                
+                model = new EditorModel(filePathToLoad, this, bigendian, fb);                               
             }
             catch (ApplicationException err)
             {
@@ -392,15 +392,13 @@ namespace MaddenEditor.Forms
 		private void exportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ExportForm form = new ExportForm(model);
-            if (Mad19 && model.FileType == MaddenFileType.Roster)
+            if (MadFB && model.FileType == MaddenFileType.Roster)
             {
-                form.FB_Draft = new FB(fb, Frostbyte_type.Draft);
+                form.FB_Draft = new FB(fb, FBType.Draft, model.DraftClassModel.DraftClassVersion);
             }
 
-			form.InitialiseUI();
-            
+			form.InitialiseUI();            
 			form.ShowDialog(this);
-
 			form.CleanUI();
 			form = null;
 		}
@@ -426,7 +424,7 @@ namespace MaddenEditor.Forms
             {
                 CloseModel();
                 // Save the Madden 19 for frostbyte format
-                if (Mad19)
+                if (MadFB)
                 {
                     fb.Save();
                     fb.RemoveDB();
@@ -677,8 +675,10 @@ namespace MaddenEditor.Forms
             }
 
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            dialog.Filter = "Madden files (*.ros;*.fra;*.db;*.rdb)|*.ros;*.fra;*.db;*.rdb|All Files (*.*)|*.*";
+            dialog.RestoreDirectory = true;
+            dialog.Title = "Madden 04-08/19-20 PC Roster or Madden 04-08 PC Franchise";
+            //dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.Filter = "Madden Database Files (*.*)|*.*";
             dialog.FilterIndex = 1;
             dialog.Multiselect = false;
             dialog.ShowDialog();
@@ -695,24 +695,27 @@ namespace MaddenEditor.Forms
                 db = new BEDB();
 
                 fb.Extract(filename);
-                if (fb.FB_Type != Frostbyte_type.NA)
+                if (fb.FileType != FBType.NA)
                 {                    
-                    if (fb.FB_Type == Frostbyte_type.Franchise)
+                    if (fb.FileType == FBType.Franchise)
                     {
                         MessageBox.Show("Madden 19 Save Files Not Supported !", "Wrong Type", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         return;
                     }
-                    else if (fb.FB_Type == Frostbyte_type.Draft)
+                    else if (fb.FileType == FBType.Draft)
                     {
-                        MessageBox.Show("Please Load a valid Madden 19 Roster First !", "Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Please Load a valid Madden 19/20 Roster First !", "Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         return;
                     }
-                    else if (fb.FB_Type == Frostbyte_type.Roster)
+                    else if (fb.FileType == FBType.Roster)
                     {
-                        Mad19 = true;
+                        MadFB = true;
                         filename = fb.database;
                     }
-                    manager.config.Madden19Serial = fb.Serial;
+                    if (fb.FileVersion == FBVersion.Madden19)
+                        manager.config.Madden19Serial = fb.Serial;
+                    else if (fb.FileVersion == FBVersion.Madden20)
+                        manager.config.Madden20Serial = fb.Serial;
                     manager.config.Madden19UserSettingsFilename = manager.UserSettings.ReadUserSettings(manager.config.Madden19UserSettingsFilename);
                 }
                 else
@@ -759,7 +762,7 @@ namespace MaddenEditor.Forms
                 this.Cursor = Cursors.Default;
             }
 
-            if (Mad19)
+            if (MadFB)
                 fb.Save();
         }
 

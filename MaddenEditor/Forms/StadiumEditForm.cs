@@ -359,7 +359,7 @@ namespace MaddenEditor.Forms
                     }
 
                 SpecialLogoNumericUpDown.Enabled = false;
-                if (model.FileVersion >= MaddenFileVersion.Ver2006)
+                if (model.MadVersion >= MaddenFileVersion.Ver2006)
                 {
                     SpecialLogoNumericUpDown.Enabled = true;
                     SpecialLogoNumericUpDown.Value = record.SpecialLogo;

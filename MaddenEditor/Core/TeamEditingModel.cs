@@ -255,7 +255,7 @@ namespace MaddenEditor.Core
         {
             this.model = model;
 
-            if (model.FileVersion != MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
                 teamUniformModel = new TeamUniformModel(model);
 
             //Initialise the GenericRecord lists
@@ -294,7 +294,7 @@ namespace MaddenEditor.Core
             cityList = new List<GenericRecord>();
 
             
-            if (model.FileVersion < MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
             {
                 foreach (TableRecordModel rec in model.TableModels[EditorModel.CITY_TABLE].GetRecords())
                     cityList.Add(new GenericRecord(((CityRecord)rec).CityName, ((CityRecord)rec).CityId));
@@ -302,77 +302,77 @@ namespace MaddenEditor.Core
                 #region 04-08 Playbooks
                 offensivePlayBookList = new List<GenericRecord>();
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     AddOFFPB("CHI-D.Jauron");
                 else AddOFFPB("CHI-L.Smith");                
 
                 AddOFFPB("CIN-M.Lewis");
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     AddOFFPB("BUF-G.Williams");
-                else if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                else if (model.MadVersion >= MaddenFileVersion.Ver2007)
                     AddOFFPB("BUF-D.Jauron");
                 else AddOFFPB("BUF-M.Mularkey");
 
                 AddOFFPB("DEN-M.Shanahan");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                if (model.MadVersion <= MaddenFileVersion.Ver2005)
                     AddOFFPB("CLE-B.Davis");
                 else AddOFFPB("CLE-R.Crennel");
 
                 AddOFFPB("TB-J.Gruden");
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     AddOFFPB("ARI-D.McGinnis");
-                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                else if (model.MadVersion == MaddenFileVersion.Ver2008)
                     AddOFFPB("ARI-");
                 else AddOFFPB("ARI-D.Green");
 
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
+                if (model.MadVersion == MaddenFileVersion.Ver2008)
                     AddOFFPB("SD-N.Turner");
                 else AddOFFPB("SD-M.Schottenheimer");
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007)
                     AddOFFPB("KC-H.Edwards");
                 else AddOFFPB("KC-D.Vermeil");
 
                 AddOFFPB("IND-T.Dungy");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                if (model.MadVersion <= MaddenFileVersion.Ver2005)
                     AddOFFPB("DAL-M.Carthon");
-                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                else if (model.MadVersion == MaddenFileVersion.Ver2008)
                     AddOFFPB("DAL-W.Phillips");
                 else AddOFFPB("DAL-B.Parcells");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                if (model.MadVersion <= MaddenFileVersion.Ver2005)
                     AddOFFPB("MIA-D.Wannstedt");
-                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                else if (model.MadVersion == MaddenFileVersion.Ver2008)
                     AddOFFPB("MIA-C.Cameron");
                 else AddOFFPB("MIA-N.Saban");
 
                 AddOFFPB("PHI-A.Reid");                
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     AddOFFPB("ATL-D.Reeves");
-                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                else if (model.MadVersion == MaddenFileVersion.Ver2008)
                     AddOFFPB("ATL-B.Petrino");
                 else AddOFFPB("ATL-J.Mora Jr");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                if (model.MadVersion <= MaddenFileVersion.Ver2005)
                     AddOFFPB("SF-D.Erickson");
                 else AddOFFPB("SF-M.Nolan");
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     AddOFFPB("NYG-J.Fossil");
                 else AddOFFPB("NYG-T.Coughlin");
 
                 AddOFFPB("JAX-J.Del Rio");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     AddOFFPB("NYJ-H.Edwards");
                 else AddOFFPB("NYJ-E.Mangini");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     AddOFFPB("DET-S.Mariucci");
                 else AddOFFPB("DET-R.Marinelli");
 
@@ -380,41 +380,41 @@ namespace MaddenEditor.Core
                 AddOFFPB("CAR-J.Fox");
                 AddOFFPB("NE-B.Belichick");                
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2004)
+                if (model.MadVersion <= MaddenFileVersion.Ver2004)
                     AddOFFPB("OAK-B.Callahan");
-                else if (model.FileVersion == MaddenFileVersion.Ver2005 || model.FileVersion == MaddenFileVersion.Ver2006)
+                else if (model.MadVersion == MaddenFileVersion.Ver2005 || model.MadVersion == MaddenFileVersion.Ver2006)
                     AddOFFPB("OAK-N.Turner");
-                else if (model.FileVersion == MaddenFileVersion.Ver2007)
+                else if (model.MadVersion == MaddenFileVersion.Ver2007)
                     AddOFFPB("OAK-A.Shell");
                 else AddOFFPB("OAK-L.Kiffin");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     AddOFFPB("STL-M.Martz");
                 else AddOFFPB("STL-S.Linehan");
 
                 AddOFFPB("BAL-B.Billick");
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     AddOFFPB("WAS-S.Spurrier");
                 else AddOFFPB("WAS-J.Gibbs");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     AddOFFPB("NO-J.Hasslet");
                 else AddOFFPB("NO-S.Payton");
 
                 AddOFFPB("SEA-M.Holmgren");                               
 
-                if (model.FileVersion == MaddenFileVersion.Ver2007)
+                if (model.MadVersion == MaddenFileVersion.Ver2007)
                     AddOFFPB("PIT-B.Cowher");
                 else AddOFFPB("PIT-M.Tomlin");
 
                 AddOFFPB("TEN-J.Fisher");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     AddOFFPB("MIN-M.Tice");
                 else AddOFFPB("MIN-B.Childress");
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     AddOFFPB("HOU-D.Capers");
                 else AddOFFPB("HOU-G.Kubiak");
 
@@ -425,12 +425,12 @@ namespace MaddenEditor.Core
                 AddOFFPB("West Coast");
                 AddOFFPB("Run'n'Gun");
 
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
+                if (model.MadVersion == MaddenFileVersion.Ver2008)
                     AddOFFPB("Trick Plays");
 
                 defensivePlayBookList = new List<GenericRecord>();
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                 {                    
                     AddDEFPB("4-3");
                     AddDEFPB("3-4");
@@ -449,28 +449,28 @@ namespace MaddenEditor.Core
                     AddDEFPB("CLE-R.Crennel");
                     AddDEFPB("TB-J.Gruden");
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    if (model.MadVersion == MaddenFileVersion.Ver2008)
                         AddDEFPB("ARI-");
                     else AddDEFPB("ARI-D.Green");
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    if (model.MadVersion == MaddenFileVersion.Ver2008)
                         AddDEFPB("SD-N.Turner");
                     else AddDEFPB("SD-M.Schottenheimer");
 
                     AddDEFPB("KC-H.Edwards");
                     AddDEFPB("IND-T.Dungy");
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    if (model.MadVersion == MaddenFileVersion.Ver2008)
                         AddDEFPB("DAL-W.Phillips");
                     else AddDEFPB("DAL-B.Parcells");
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    if (model.MadVersion == MaddenFileVersion.Ver2008)
                         AddDEFPB("MIA-C.Cameron");
                     else AddDEFPB("MIA-N.Saban");
 
                     AddDEFPB("PHI-A.Reid");
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    if (model.MadVersion == MaddenFileVersion.Ver2008)
                         AddDEFPB("ATL-B.Petrino");
                     else AddDEFPB("ATL-J.Mora Jr");
 
@@ -483,7 +483,7 @@ namespace MaddenEditor.Core
                     AddDEFPB("CAR-J.Fox");
                     AddDEFPB("NE-B.Belichick");                    
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2007)
+                    if (model.MadVersion == MaddenFileVersion.Ver2007)
                         AddDEFPB("OAK-A.Shell");
                     else AddDEFPB("OAK-L.Kiffin");
 
@@ -493,7 +493,7 @@ namespace MaddenEditor.Core
                     AddDEFPB("NO-S.Payton");
                     AddDEFPB("SEA-M.Holmgren");                    
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2007)
+                    if (model.MadVersion == MaddenFileVersion.Ver2007)
                         AddDEFPB("PIT-B.Cowher");
                     else AddDEFPB("PIT-M.Tomlin");
 
@@ -524,7 +524,7 @@ namespace MaddenEditor.Core
         public void InitConfig(MGMT man)
         {
             manager = man;
-            if (model.FileVersion != MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
                 model.TeamModel.InitPlaybooks();
         }
 

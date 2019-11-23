@@ -99,7 +99,7 @@ namespace MaddenEditor.Forms
 			dm = draftmodel;
 			dm.df = this;
 
-			math = new LocalMath(dm.model.FileVersion);
+			math = new LocalMath(dm.model.MadVersion);
 
 			HumanTeamId = humanId;
 			secondsPerPick = seconds;

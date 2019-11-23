@@ -193,10 +193,10 @@ namespace MaddenEditor.Core.Manager
             THROWING_STYLE = rec.ThrowStyle;            
             COLLEGE_ID = rec.CollegeId;
 
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
+            if (model.MadVersion <= MaddenFileVersion.Ver2006 || model.MadVersion >= MaddenFileVersion.Ver2019)
                 EGO = rec.Pcel;
             else EGO = rec.Ego; 
-            if (model.FileVersion >= MaddenFileVersion.Ver2005)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 MORALE = rec.Morale;
             else MORALE = 80;
 
@@ -537,14 +537,14 @@ namespace MaddenEditor.Core.Manager
             rec.BreakTackle = (int)BREAK_TACKLE;
             rec.Carrying = (int)CARRYING;
             rec.Catching = (int)CATCHING;
-            if (model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 rec.Ego = (int)EGO;
             rec.Injury = (int)INJURY;
             rec.Jumping = (int)JUMPING;
             rec.KickAccuracy = (int)KICK_ACCURACY;
             rec.KickPower = (int)KICK_POWER;
             rec.KickReturn = (int)KICK_RETURN;
-            if (model.FileVersion >= MaddenFileVersion.Ver2005)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 rec.Morale = (int)MORALE;
             rec.PassBlocking = (int)PASS_BLOCKING;
             rec.RunBlocking = (int)RUN_BLOCKING;
@@ -1504,7 +1504,7 @@ namespace MaddenEditor.Core.Manager
             ARMS_FAT = rec.ArmsFat;                     //"PFAS";
             LEGS_CALF_FAT = rec.LegsCalfFat;                        //"PFCS";
             FACE_ID = rec.FaceId;                                   //"PFEx";
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 FACE_SHAPE = rec.FaceShape;                         //"PFGE";   // 2004-2005
             PFGS = rec.Pfgs;                            //"PFGS";          
             LEGS_THIGH_FAT = rec.LegsThighFat;          //"PFHS";
@@ -1535,7 +1535,7 @@ namespace MaddenEditor.Core.Manager
             NECK_ROLL = rec.NeckRoll;                               //"PNEK";
             PPGA = rec.PlayedGames;                                        //"PPGA";   // ?        
             PPSP = rec.Ppsp;                                        //"PPSP";
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
             {
                 REAR_SHAPE = rec.RearShape;                         //"PQGS";   //2004-2005
                 EQP_FLAK_JACKET = rec.EquipmentFlakJacket;          //"PQTS";   //2004-2005
@@ -1546,20 +1546,20 @@ namespace MaddenEditor.Core.Manager
             //RIGHT_KNEE = rec.ThighRight;                 //"PRTH";
             RIGHT_WRIST_A = rec.RightWrist;             //"PRWR";        
             BODY_OVERALL = rec.BodyOverall;             //"PSBS";
-            PSKI = rec.Pski;                            //"PSKI";                               
+            PSKI = rec.Skin;                            //"PSKI";                               
             PSTM = rec.Pstm;                            //"PSTM";       
             LEFT_TATTOO = rec.LeftTattoo;                           //"PTAL";
             RIGHT_TATTOO = rec.RightTattoo;                         //"PTAR";
-            if (model.FileVersion >= MaddenFileVersion.Ver2005)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 LEGS_THIGH_PADS = rec.LegsThighPads;                //"PTPS";   // 2004-2005        
             SLEEVES_B = rec.SleevesLeft;                                //"PTSL";
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 EQP_PAD_HEIGHT = rec.EquipmentPadHeight;            //"PTSS";
             PUCL = rec.Pucl;                                        //"PUCL";   // ?
             BODY_MUSCLE = rec.BodyMuscle;                           //"PUTS";                   
             VISOR = rec.Visor;                                      //"PVIS";                
             PWIN = rec.Pwin;                                        // PWIN
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 EQP_PAD_WIDTH = rec.EquipmentPadWidth;              //"PWSS";        
             LEFT_ELBOW_B = rec.LeftElbow;                           //"TLEL";
             LEFT_HAND_B = rec.LeftHand;                             //"TLHA";
@@ -1584,7 +1584,7 @@ namespace MaddenEditor.Core.Manager
             rec.ArmsFat = ARMS_FAT;                                     //"PFAS";
             rec.LegsCalfFat = LEGS_CALF_FAT;                            //"PFCS";
             rec.FaceId = FACE_ID;                                       //"PFEx";
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 rec.FaceShape = FACE_SHAPE;                             //"PFGE";   // 2004-2005
             rec.Pfgs = PFGS;                                            //"PFGS";          
             rec.LegsThighFat = LEGS_THIGH_FAT;                          //"PFHS";
@@ -1615,7 +1615,7 @@ namespace MaddenEditor.Core.Manager
             rec.NeckRoll = NECK_ROLL;                                   //"PNEK";
             rec.PlayedGames = PPGA;                                            //"PPGA";   // ?        
             rec.Ppsp = PPSP;                                            //"PPSP";
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
             {
                 rec.RearShape = REAR_SHAPE;                             //"PQGS";   //2004-2005
                 rec.EquipmentFlakJacket = EQP_FLAK_JACKET;              //"PQTS";   //2004-2005
@@ -1626,20 +1626,20 @@ namespace MaddenEditor.Core.Manager
             //rec.ThighRight = RIGHT_KNEE;                                 //"PRTH";
             rec.RightWrist = RIGHT_WRIST_A;                             //"PRWR";        
             rec.BodyOverall = BODY_OVERALL;                             //"PSBS";
-            rec.Pski = PSKI;                                            //"PSKI";                               
+            rec.Skin = PSKI;                                            //"PSKI";                               
             rec.Pstm = PSTM;                                            //"PSTM";       
             rec.LeftTattoo = LEFT_TATTOO;                               //"PTAL";
             rec.RightTattoo = RIGHT_TATTOO;                             //"PTAR";
-            if (model.FileVersion >= MaddenFileVersion.Ver2005)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 rec.LegsThighPads = LEGS_THIGH_PADS;                    //"PTPS";   // 2004-2005        
             rec.SleevesLeft = SLEEVES_B;                                    //"PTSL";
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 rec.EquipmentPadHeight = EQP_PAD_HEIGHT;                //"PTSS";   // 2004-2005
             rec.Pucl = PUCL;                                            //"PUCL";   // ?
             rec.BodyMuscle = BODY_MUSCLE;                               //"PUTS";                   
             rec.Visor = VISOR;                                          //"PVIS";                
             rec.Pwin = PWIN;                                            // PWIN
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 rec.EquipmentPadWidth = EQP_PAD_WIDTH;                  //"PWSS"; 
             rec.LeftElbow = LEFT_ELBOW_B;                               //"TLEL";
             rec.LeftHand = LEFT_HAND_B;                                 //"TLHA";
@@ -2099,17 +2099,17 @@ namespace MaddenEditor.Core.Manager
             rec.Awareness = this.Current_Ratings.AWARENESS;
             rec.BreakTackle = this.Current_Ratings.BREAK_TACKLE;
             rec.Carrying = this.Current_Ratings.CARRYING;
-            if (model.FileVersion <= MaddenFileVersion.Ver2006)
+            if (model.MadVersion <= MaddenFileVersion.Ver2006)
                 rec.Pcel = this.Info.EGO;
             rec.Catching = this.Current_Ratings.CATCHING;
-            if (model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 rec.Ego = this.Info.EGO;
             rec.Injury = this.Current_Ratings.INJURY;
             rec.Jumping = this.Current_Ratings.JUMPING;
             rec.KickAccuracy = this.Current_Ratings.KICK_ACCURACY;
             rec.KickPower = this.Current_Ratings.KICK_POWER;
             rec.KickReturn = this.Current_Ratings.KICK_RETURN;
-            if (model.FileVersion >= MaddenFileVersion.Ver2005)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 rec.Morale = this.Info.MORALE;
             rec.PassBlocking = this.Current_Ratings.PASS_BLOCKING;
             rec.RunBlocking = this.Current_Ratings.RUN_BLOCKING;

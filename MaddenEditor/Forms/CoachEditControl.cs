@@ -174,7 +174,7 @@ namespace MaddenEditor.Forms
 
             InitCoachList();
 
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 coachName.MaxLength = 17;
                 coachAsset.Enabled = true;
@@ -308,7 +308,7 @@ namespace MaddenEditor.Forms
                 threeFourButton.Checked = false;
                 fourThreeButton.Checked = false;
 
-                if (model.FileVersion != MaddenFileVersion.Ver2019)
+                if (model.MadVersion != MaddenFileVersion.Ver2019)
                 {
                     if (record.DefenseType == 95)
                         fourThreeButton.Checked = true;
@@ -356,7 +356,7 @@ namespace MaddenEditor.Forms
                     priorityTypeSliders[i].Enabled = false;
                 }
                 //Priorities (NOTE: Madden 2007-2008 don't have coach sliders)
-                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 {
                     if (tabcontrol.TabPages.Contains(tabPage2))
                         tabcontrol.TabPages.Remove(tabPage2);
@@ -372,7 +372,7 @@ namespace MaddenEditor.Forms
                     {
                         bool priorityMatches = false;
                         SortedList<int, CoachPrioritySliderRecord> priorites = null;
-                        if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                        if (model.MadVersion <= MaddenFileVersion.Ver2006)
                         {
                             priorites = model.CoachModel.GetCurrentCoachSliders();
                             int priorityCount = Enum.GetNames(typeof(PlayerDraftedPositions)).Length;
@@ -395,7 +395,7 @@ namespace MaddenEditor.Forms
                     }
                 }
 
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
                 {
                     coachAsset.Text = record.Asset;
                     coachFirstName.Text = record.FirstName;
@@ -864,7 +864,7 @@ namespace MaddenEditor.Forms
             {
                 model.CoachModel.CurrentCoachRecord.SkinColor = ((GenericRecord)cbSkinColor.SelectedItem).Id;
                 //  Anything greater than 2 is from 04/05 and is a medium tone, so set this to medium (1) for 06/07/08 values.
-                if (model.FileVersion >= MaddenFileVersion.Ver2006 && model.CoachModel.CurrentCoachRecord.SkinColor > 2)
+                if (model.MadVersion >= MaddenFileVersion.Ver2006 && model.CoachModel.CurrentCoachRecord.SkinColor > 2)
                     model.CoachModel.CurrentCoachRecord.SkinColor = 1;
             }
         }

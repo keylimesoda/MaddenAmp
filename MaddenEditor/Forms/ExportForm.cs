@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -358,12 +359,16 @@ namespace MaddenEditor.Forms
             isInitializing = true;
             InitTables();
 
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 ExportFilter_Panel.Visible = true;
                 filterDraftClassCheckbox.Enabled = false;
                 MainSkillsOnly_Checkbox.Enabled = false;
+                ExportVersion.SelectedIndex = 0;
+                if (model.MadVersion == MaddenFileVersion.Ver2020)
+                    ExportVersion.SelectedIndex = 1;
             }
+            
             else ExportFilter_Panel.Visible = true;
 
             ColumnHeader header = new ColumnHeader();
@@ -523,13 +528,13 @@ namespace MaddenEditor.Forms
 
         private void ExportPlay_Button_Click(object sender, EventArgs e)
         {
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
 
             if (tables_export.Count == 0)
                 return;
             string dir = "";
             if (ExtractByTableName.Checked)
                 dir = GetDirectory();
-
 
             foreach (string t in tables_export)
             {
@@ -561,17 +566,17 @@ namespace MaddenEditor.Forms
                     hbuilder.Append(t);
                     hbuilder.Append(",");
                     string version = "2008";
-                    if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    if (model.MadVersion == MaddenFileVersion.Ver2004)
                         version = "2004";
-                    else if (model.FileVersion == MaddenFileVersion.Ver2005)
+                    else if (model.MadVersion == MaddenFileVersion.Ver2005)
                         version = "2005";
-                    else if (model.FileVersion == MaddenFileVersion.Ver2006)
+                    else if (model.MadVersion == MaddenFileVersion.Ver2006)
                         version = "2006";
-                    else if (model.FileVersion == MaddenFileVersion.Ver2007)
+                    else if (model.MadVersion == MaddenFileVersion.Ver2007)
                         version = "2007";
-                    else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    else if (model.MadVersion == MaddenFileVersion.Ver2008)
                         version = "2008";
-                    else if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    else if (model.MadVersion == MaddenFileVersion.Ver2019)
                         version = "2019";
                     hbuilder.Append(version);
                     hbuilder.Append(",");
@@ -606,9 +611,9 @@ namespace MaddenEditor.Forms
 
                     if (Descriptions_Checkbox.Checked)
                     {
-                        if (model.TableDefs.ContainsKey(model.FileVersion))
+                        if (model.TableDefs.ContainsKey(model.MadVersion))
                         {
-                            Dictionary<string, tabledefs> currenttable = model.TableDefs[model.FileVersion];
+                            Dictionary<string, tabledefs> currenttable = model.TableDefs[model.MadVersion];
                             if (currenttable.ContainsKey(table.Name))
                             {
                                 tabledefs defs = currenttable[table.Name];
@@ -684,7 +689,10 @@ namespace MaddenEditor.Forms
                                         builder.Append(res);
                                     }
                                     else if (tdb.FieldType == TdbFieldType.tdbFloat)
-                                        builder.Append(rec.GetFloatField(tdb.Name));
+                                    {
+                                        
+                                        builder.Append(rec.GetFloatField(tdb.Name).ToString("G", culture));
+                                    }
                                     else
                                     {
                                         int test = rec.GetIntField(tdb.Name);
@@ -1174,12 +1182,17 @@ namespace MaddenEditor.Forms
 
                         while (!sr.EndOfStream)
                         {
-                            List<string> rec_line = new List<string>();
+                            List<string> rec_line = new List<string>();                            
                             string csvrecline = sr.ReadLine();
-                            string[] csvrec = csvrecline.Split(',');
-                            foreach (string s in csvrec)
-                                rec_line.Add(s);
-                            CSVRecords.Add(rec_line);
+                            if (csvrecline == "")
+                                continue;
+                            else
+                            {
+                                string[] csvrec = csvrecline.Split(',');
+                                foreach (string s in csvrec)
+                                    rec_line.Add(s);
+                                CSVRecords.Add(rec_line);
+                            }
                         }
 
                         sr.Close();
@@ -1253,13 +1266,14 @@ namespace MaddenEditor.Forms
         private void ProcessRecords_Button_Click(object sender, EventArgs e)
         {
             currentrec = -1;
-
+           
             foreach (List<string> record in CSVRecords)
             {
                 TableRecordModel tablerecord = null;
                 linenumber++;
                 currentrec++;
                 bool fail = false;
+                
 
                 if (currenttablename == "PLAY" && UpdateRecs_Checkbox.Checked)
                 {
@@ -1346,9 +1360,7 @@ namespace MaddenEditor.Forms
                 foreach (string error in errors)
                     ImportErrors_Listview.Items.Add(new ListViewItem(error));
             }
-            else ImportErrors_Listview.Items.Add(new ListViewItem(linenumber.ToString() + " Lines processed.  No errors"));
-
-           
+            else ImportErrors_Listview.Items.Add(new ListViewItem(linenumber.ToString() + " Lines processed.  No errors"));           
         }
 
         private void DeleteCurrentRecs_Checkbox_CheckedChanged(object sender, EventArgs e)
@@ -1388,13 +1400,9 @@ namespace MaddenEditor.Forms
         }
 
         private void LoadDraftClass_Button_Click(object sender, EventArgs e)
-        {
+        {            
             OpenFileDialog dialog = new OpenFileDialog();
-            string direct = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            direct += "\\Madden NFL 19\\settings";
-            if (Directory.Exists(direct))
-                dialog.InitialDirectory = direct;
-            else dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.RestoreDirectory = true;
             dialog.Filter = "Madden Draft Class (*.*)|*.*";
             dialog.FilterIndex = 1;
             dialog.Multiselect = false;
@@ -1408,7 +1416,7 @@ namespace MaddenEditor.Forms
             {
                 if (!model.DraftClassModel.ReadDraftClass(filename))
                 {
-                    MessageBox.Show("Not a valid Madden 2019 Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Not a valid Madden Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch
@@ -1477,7 +1485,7 @@ namespace MaddenEditor.Forms
                         string[] csvtable = csvtableinfo.Split(',');
                         if (csvtable[0] != "DRAFT")
                         {
-                            MessageBox.Show("Not a valid Madden 2019 Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Not a valid Madden Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             sr.Close();
                             return;
                         }
@@ -1510,13 +1518,8 @@ namespace MaddenEditor.Forms
                 this.Cursor = Cursors.Default;
             }
 
-
             SaveFileDialog savedialog = new SaveFileDialog();
-            string direct = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            direct += "\\Madden NFL 19\\settings";
-            if (Directory.Exists(direct))
-                dialog.InitialDirectory = direct;
-            else savedialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            savedialog.RestoreDirectory = true;
             savedialog.Filter = "Madden Draft Class (*.*)|*.*";
             savedialog.ShowDialog();
 
@@ -1524,10 +1527,131 @@ namespace MaddenEditor.Forms
             if (filename == "")
                 return;
 
-            model.DraftClassModel.SaveDraftClass(filename, FB_Draft);
-            
-            
+            model.DraftClassModel.SaveDraftClass(filename, FB_Draft, ExportVersion.SelectedIndex);
         }
+
+        private void CreateCommentID_Click(object sender, EventArgs e)
+        {
+            Dictionary<string,int> CommentIDs = new Dictionary<string,int>();
+
+            OpenFileDialog dialog = new OpenFileDialog();
+            Stream myStream = null;            
+            dialog.Filter = "All files (*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.Multiselect = false;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamReader sr = null;
+                this.Cursor = Cursors.WaitCursor;
+
+                try
+                {
+                    if ((myStream = dialog.OpenFile()) != null)
+                    {
+                        sr = new StreamReader(myStream);
+                        
+                        while (!sr.EndOfStream)
+                        {
+                            bool stop = false;
+                            string line = sr.ReadLine();
+                            if (line.Contains("SurnameToAudioStore"))
+                            {
+                                while (!stop)
+                                {
+                                    string line0 = sr.ReadLine();
+                                    if (!line0.Contains("SurnameToAudioID"))
+                                        stop = true;
+
+                                    int id = 0;
+                                    string name = "";
+                                    
+                                    string line1 = sr.ReadLine();
+                                    if (line1.Contains("value="))
+                                    { 
+                                        line1 = line1.Replace("\"", "");
+                                        string[] ids = line1.Split(' ');
+                                        foreach (string s in ids)
+                                        {
+                                            if (s.Contains("value="))
+                                            {
+                                                id = Convert.ToInt32(s.Replace("value=", ""));
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    string line2 = sr.ReadLine();
+                                    if (line2.Contains("Surname"))
+                                    {
+                                        line2 = line2.Replace("\"", "");
+                                        string[] ids = line2.Split(' ');
+                                        foreach (string s in ids)
+                                        {
+                                            if (s.Contains("value="))
+                                            {
+                                                name = s.Replace("value=", "");
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    string line3 = sr.ReadLine(); // </record>
+
+                                    if (name!="" && !CommentIDs.ContainsKey(name))
+                                        CommentIDs.Add(name,id);
+                                }
+                            }
+
+                        }
+
+                        
+                    }
+
+                }
+                catch
+                {
+
+                }
+
+                foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
+                {
+                    if (rec.LastName != "" && rec.LastName != "Player" && !CommentIDs.ContainsKey(rec.LastName))
+                        CommentIDs.Add(rec.LastName,rec.PlayerComment);
+                }
+
+
+                SaveFileDialog savedialog = new SaveFileDialog();
+                string direct = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                direct += "\\Madden NFL 19\\settings";
+                if (Directory.Exists(direct))
+                    dialog.InitialDirectory = direct;
+                else savedialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);                
+                savedialog.ShowDialog();
+
+                string filename = savedialog.FileName;
+                if (filename == "")
+                    return;
+
+                StreamWriter wText = new StreamWriter(filename);
+
+                foreach (KeyValuePair<string, int> id in CommentIDs)
+                {
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(id.Key);
+                    builder.Append(",");
+                    builder.Append(id.Value.ToString());
+
+                    wText.WriteLine(builder.ToString());                   
+                }
+
+                wText.Flush();
+                wText.Close();
+
+
+            }
+        }
+
 
     }
 }

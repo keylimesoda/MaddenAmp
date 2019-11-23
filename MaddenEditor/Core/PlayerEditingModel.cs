@@ -65,10 +65,11 @@ namespace MaddenEditor.Core
         private IList<GenericRecord> visorlist = null;
         private IList<GenericRecord> injurylist = null;
         private IList<GenericRecord> endplaylist = null;
-        private IList<GenericRecord> qbstylelist = null;
+        private IList<GenericRecord> stancelist = null;
         private IList<GenericRecord> archetypelist = null;
         public IList<GenericRecord> SidelineHeadGear = null;
         private IList<GenericRecord> SkinTone = null;
+        public List<string> HomeStates = null;
 
         private List<int> _playerlist = null;
         public List<int> playerlist
@@ -91,15 +92,74 @@ namespace MaddenEditor.Core
         {
             this.model = model;
 
+            #region HomeStates
+            HomeStates = new List<string>()
+            {
+            "Alabama",
+            "Alaska",
+            "Arizona",
+            "Arkansas",
+            "California",
+            "Colorado",
+            "Connecticut",
+            "Delaware",
+            "Florida",
+            "Georgia",
+            "Hawaii",
+            "Idaho",
+            "Illinois",
+            "Indiana",
+            "Iowa",
+            "Kansas",
+            "Kentucky",
+            "Louisiana",
+            "Maine",
+            "Maryland",
+            "Massachusetts",
+            "Michigan",
+            "Minnesota",
+            "Mississippi",
+            "Missouri",
+            "Montana",
+            "Nebraska",
+            "Nevada",
+            "New Hampshire",
+            "New Jersey",
+            "New Mexico",
+            "New York",
+            "North Carolina",
+            "North Dakota",
+            "Ohio",
+            "Oklahoma",
+            "Oregon",
+            "Pennsylvania",
+            "Rhode Island",
+            "South Carolina",
+            "South Dakota",
+            "Tennessee",
+            "Texas",
+            "Utah",
+            "Vermont",
+            "Virginia",
+            "Washington",
+            "West Virginia",
+            "Wisconsin",
+            "Wyoming",
+            "Non US"
+            };
+            #endregion
+
+
+
             #region Initialise the GenericRecord lists
 
             #region Helmets
             helmetlist = new List<GenericRecord>();
 
             #region 04-08
-            if (model.FileVersion < MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                 {
                     helmetlist.Add(new GenericRecord("Standard", 0));
                     helmetlist.Add(new GenericRecord("Adams", 1));
@@ -112,9 +172,9 @@ namespace MaddenEditor.Core
                     helmetlist.Add(new GenericRecord("Style 2", 1));
                     helmetlist.Add(new GenericRecord("Style 3", 2));
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2005)
+                    if (model.MadVersion == MaddenFileVersion.Ver2005)
                         helmetlist.Add(new GenericRecord("Revolution", 3));
-                    else if (model.FileVersion == MaddenFileVersion.Ver2006)
+                    else if (model.MadVersion == MaddenFileVersion.Ver2006)
                     {
                         helmetlist.Add(new GenericRecord("Schutt DNA", 3));
                         helmetlist.Add(new GenericRecord("Revolution", 4));
@@ -129,7 +189,7 @@ namespace MaddenEditor.Core
             #endregion
             
             #region 19
-            else if (model.FileVersion == MaddenFileVersion.Ver2019)
+            else if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 helmetlist.Add(new GenericRecord("Riddell VSR4", 0));
                 helmetlist.Add(new GenericRecord("Schutt Air Advantage", 1));
@@ -149,12 +209,33 @@ namespace MaddenEditor.Core
             }
             #endregion
 
+            #region 20
+            else if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                helmetlist.Add(new GenericRecord("Riddell VSR 4", 0));
+                helmetlist.Add(new GenericRecord("Schutt Air Advantage", 1));
+                helmetlist.Add(new GenericRecord("Schutt Air XP Pro VTD", 2));
+                helmetlist.Add(new GenericRecord("Vicis Zero1", 3));
+                helmetlist.Add(new GenericRecord("Riddell VSR4", 4));
+                helmetlist.Add(new GenericRecord("Schutt Vengeance Pro", 5));
+                helmetlist.Add(new GenericRecord("Riddell Revolution", 6));
+                helmetlist.Add(new GenericRecord("Riddell Revolution Speed", 7));
+                helmetlist.Add(new GenericRecord("Riddell Speed Flex", 8));
+                helmetlist.Add(new GenericRecord("Riddell 360", 9));
+                helmetlist.Add(new GenericRecord("Xenith X2E", 10));
+                helmetlist.Add(new GenericRecord("Riddell TK", 11));
+                helmetlist.Add(new GenericRecord("Xenith Epic", 12));
+                helmetlist.Add(new GenericRecord("Vengeance Z10", 13));
+                helmetlist.Add(new GenericRecord("Schutt F7", 14));
+            }
+            #endregion  
             #endregion
+           
 
             #region Facemask
             facemasklist = new List<GenericRecord>();
             #region 04-08
-            if (model.FileVersion < MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
             {
                 facemasklist.Add(new GenericRecord("2-Bar", 0));
                 facemasklist.Add(new GenericRecord("3-Bar", 1));
@@ -174,7 +255,7 @@ namespace MaddenEditor.Core
             #endregion
        
             #region 19
-            else if (model.FileVersion == MaddenFileVersion.Ver2019)
+            else if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 facemasklist.Add(new GenericRecord("2 Bar", 0));
                 facemasklist.Add(new GenericRecord("2 Bar Single", 1));
@@ -293,11 +374,155 @@ namespace MaddenEditor.Core
                 facemasklist.Add(new GenericRecord("Schutt F7 3 Full Cage", 104));
             }
             #endregion
+
+            #region 20
+            facemasklist.Add(new GenericRecord("2Bar" ,0));
+            facemasklist.Add(new GenericRecord("2BarSingle" ,1));
+            facemasklist.Add(new GenericRecord("3Bar" ,2));
+            facemasklist.Add(new GenericRecord("3BarSingle" ,3));
+            facemasklist.Add(new GenericRecord("3BarQB" ,4));
+            facemasklist.Add(new GenericRecord("3BarRBSingle" ,5));
+            facemasklist.Add(new GenericRecord("3BarRB" ,6));
+            facemasklist.Add(new GenericRecord("3BarRBJagged" ,7));
+            facemasklist.Add(new GenericRecord("BullRB" ,8));
+            facemasklist.Add(new GenericRecord("Robot" ,9));
+            facemasklist.Add(new GenericRecord("RobotRB" ,10));
+            facemasklist.Add(new GenericRecord("FullCageRobot" ,11));
+            facemasklist.Add(new GenericRecord("FullCageHook" ,12));
+            facemasklist.Add(new GenericRecord("FullCageSingle" ,13));
+            facemasklist.Add(new GenericRecord("FullCage2" ,14));
+            facemasklist.Add(new GenericRecord("HalfCage" ,15));
+            facemasklist.Add(new GenericRecord("HalfCage2" ,16));
+            facemasklist.Add(new GenericRecord("Kicker" ,17));
+            facemasklist.Add(new GenericRecord("Bulldog" ,18));
+            facemasklist.Add(new GenericRecord("Revo 2 Bar" ,19));
+            facemasklist.Add(new GenericRecord("Revo 3 Bar" ,20));
+            facemasklist.Add(new GenericRecord("Revo 3 Bar Single", 21));
+            facemasklist.Add(new GenericRecord("Revo3BarRB" ,22));
+            facemasklist.Add(new GenericRecord("Revo3BarLB" ,23));
+            facemasklist.Add(new GenericRecord("RevoRobot" ,24));
+            facemasklist.Add(new GenericRecord("RevoRobot2" ,25));
+            facemasklist.Add(new GenericRecord("RevoHalfCage" ,26));
+            facemasklist.Add(new GenericRecord("RevoFullCage" ,27));
+            facemasklist.Add(new GenericRecord("RevoFullCage2" ,28));
+            facemasklist.Add(new GenericRecord("RevoFullCage3" ,29));
+            facemasklist.Add(new GenericRecord("RevoKicker" ,30));
+            facemasklist.Add(new GenericRecord("RevoSpeed2Bar" ,31));
+            facemasklist.Add(new GenericRecord("RevoSpeed2BarSingle" ,32));
+            facemasklist.Add(new GenericRecord("RevoSpeed3Bar" ,33));
+            facemasklist.Add(new GenericRecord("RevoSpeed3BarSingle" ,34));
+            facemasklist.Add(new GenericRecord("RevoSpeed3BarStraight" ,35));
+            facemasklist.Add(new GenericRecord("RevoSpeed3BarLB" ,36));
+            facemasklist.Add(new GenericRecord("RevoSpeed3BarLBStraight" ,37));
+            facemasklist.Add(new GenericRecord("RevoSpeedRobot" ,38));
+            facemasklist.Add(new GenericRecord("RevoSpeedRobot2" ,39));
+            facemasklist.Add(new GenericRecord("RevoSpeedRobotRB" ,40));
+            facemasklist.Add(new GenericRecord("RevoSpeedFullCage" ,41));
+            facemasklist.Add(new GenericRecord("RevoSpeedFullCage2" ,42));
+            facemasklist.Add(new GenericRecord("RevoSpeedCage" ,43));
+            facemasklist.Add(new GenericRecord("RevoSpeedGrid" ,44));
+            facemasklist.Add(new GenericRecord("RevoSpeedKicker" ,45));
+            facemasklist.Add(new GenericRecord("Xenith2Bar" ,46));
+            facemasklist.Add(new GenericRecord("XenithRobot" ,47));
+            facemasklist.Add(new GenericRecord("Xenith3BarRB" ,48));
+            facemasklist.Add(new GenericRecord("XenithRobotRB" ,49));
+            facemasklist.Add(new GenericRecord("XenithFullCage" ,50));
+            facemasklist.Add(new GenericRecord("Veng2Bar" ,51));
+            facemasklist.Add(new GenericRecord("VengRobot" ,52));
+            facemasklist.Add(new GenericRecord("VengRobotRB" ,53));
+            facemasklist.Add(new GenericRecord("Veng3BarRB" ,54));
+            facemasklist.Add(new GenericRecord("VengFullCage" ,55));
+            facemasklist.Add(new GenericRecord("SpeedFlex2Bar" ,56));
+            facemasklist.Add(new GenericRecord("SpeedFlexRobot" ,57));
+            facemasklist.Add(new GenericRecord("SpeedFlexRobotRB" ,58));
+            facemasklist.Add(new GenericRecord("SpeedFlex3BarRB" ,59));
+            facemasklist.Add(new GenericRecord("SpeedFlex3BarLB" ,60));
+            facemasklist.Add(new GenericRecord("SpeedFlex3FullCage" ,61));
+            facemasklist.Add(new GenericRecord("Riddell360Robot" ,62));
+            facemasklist.Add(new GenericRecord("Riddell360Robot2" ,63));
+            facemasklist.Add(new GenericRecord("Riddell3603BarLB" ,64));
+            facemasklist.Add(new GenericRecord("Riddell360FullCage" ,65));
+            facemasklist.Add(new GenericRecord("None" ,66));
+            facemasklist.Add(new GenericRecord("VintageOneBar" ,67));
+            facemasklist.Add(new GenericRecord("VintageTwoBar" ,68));
+            facemasklist.Add(new GenericRecord("VintageStandard" ,69));
+            facemasklist.Add(new GenericRecord("VintageLong" ,70));
+            facemasklist.Add(new GenericRecord("VicisRobot" ,71));
+            facemasklist.Add(new GenericRecord("VicisRobotRB" ,72));
+            facemasklist.Add(new GenericRecord("Vicis3BarLB" ,73));
+            facemasklist.Add(new GenericRecord("Vicis2Bar" ,74));
+            facemasklist.Add(new GenericRecord("VicisFullCage" ,75));
+            facemasklist.Add(new GenericRecord("Vicis3BarRB" ,76));
+            facemasklist.Add(new GenericRecord("VicisBullRB" ,77));
+            facemasklist.Add(new GenericRecord("Vicis3Bar" ,78));
+            facemasklist.Add(new GenericRecord("XenithPredator" ,79));
+            facemasklist.Add(new GenericRecord("SpeedFlexCage" ,80));
+            facemasklist.Add(new GenericRecord("Speedflex2BarQB" ,81));
+            facemasklist.Add(new GenericRecord("Speedflex2BarSingle" ,82));
+            facemasklist.Add(new GenericRecord("SpeedflexRobotRBJagged" ,83));
+            facemasklist.Add(new GenericRecord("Speedflex3BarSingle" ,84));
+            facemasklist.Add(new GenericRecord("Speedflex3BarQB" ,85));
+            facemasklist.Add(new GenericRecord("Revospeed3BarQB" ,86));
+            facemasklist.Add(new GenericRecord("VengeanceFullCageBulldog" ,87));
+            facemasklist.Add(new GenericRecord("VengeanceZ10RobotRB" ,88));
+            facemasklist.Add(new GenericRecord("Revospeed808" ,89));
+            facemasklist.Add(new GenericRecord("Revospeed2BarWR" ,90));
+            facemasklist.Add(new GenericRecord("RevospeedFullcageHook" ,91));
+            facemasklist.Add(new GenericRecord("Standard2BarWR" ,92));
+            facemasklist.Add(new GenericRecord("VengeanceZ10Robot" ,93));
+            facemasklist.Add(new GenericRecord("VengeanceZ102Bar" ,94));
+            facemasklist.Add(new GenericRecord("VengeanceZ103BarLB" ,95));
+            facemasklist.Add(new GenericRecord("VengeanceZ10Cage" ,96));
+            facemasklist.Add(new GenericRecord("XenithPrism" ,97));
+            facemasklist.Add(new GenericRecord("VengeanceKicker" ,98));
+            facemasklist.Add(new GenericRecord("SchuttF72Bar" ,99));
+            facemasklist.Add(new GenericRecord("SchuttF73Bar" ,100));
+            facemasklist.Add(new GenericRecord("SchuttF7Robot" ,101));
+            facemasklist.Add(new GenericRecord("SchuttF7RobotRB" ,102));
+            facemasklist.Add(new GenericRecord("SchuttF73BarRB" ,103));
+            facemasklist.Add(new GenericRecord("SchuttF7Fullcage" ,104));
+            facemasklist.Add(new GenericRecord("RevospeedHalfCage" ,105));
+            facemasklist.Add(new GenericRecord("Vengeance3Bar" ,106));
+            facemasklist.Add(new GenericRecord("Vengeance2BarSingle" ,107));
+            facemasklist.Add(new GenericRecord("F7FullcageRobot" ,108));
+            facemasklist.Add(new GenericRecord("F7RobotRB2" ,109));
+            facemasklist.Add(new GenericRecord("F7Kicker" ,110));
+            facemasklist.Add(new GenericRecord("SpeedFlex808" ,111));
+            facemasklist.Add(new GenericRecord("Speedflex3Bar" ,112));
+            facemasklist.Add(new GenericRecord("SpeedFlexKicker" ,113));
+            facemasklist.Add(new GenericRecord("SpeedFlexRobotCage" ,114));
+            facemasklist.Add(new GenericRecord("SpeedFlex3BarRBSingle" ,115));
+            facemasklist.Add(new GenericRecord("SpeedflexHalfCage" ,116));
+            facemasklist.Add(new GenericRecord("SpeedflexFullcageRobot" ,117));
+            facemasklist.Add(new GenericRecord("SpeedflexFullcageHook" ,118));
+            facemasklist.Add(new GenericRecord("SpeedFlexCageHook" ,119));
+            facemasklist.Add(new GenericRecord("SpeedFlexBulldog" ,120));
+            facemasklist.Add(new GenericRecord("SpeedflexRBBull" ,121));
+            facemasklist.Add(new GenericRecord("SpeedFlex3BarLBGrid" ,122));
+            facemasklist.Add(new GenericRecord("Speedflex3BarJagged" ,123));
+            facemasklist.Add(new GenericRecord("Speedflex3BarRBJagged" ,124));
+            facemasklist.Add(new GenericRecord("XenithKicker" ,125));
+            facemasklist.Add(new GenericRecord("Standard3BarQBSingle" ,126));
+            facemasklist.Add(new GenericRecord("Standard2BarQBSingle" ,127));
+            facemasklist.Add(new GenericRecord("Standard2BarQBBull" ,128));
+            facemasklist.Add(new GenericRecord("StandardFlatHalfCage" ,129));
+            facemasklist.Add(new GenericRecord("StandardHalfCage3" ,130));
+            facemasklist.Add(new GenericRecord("Standard2BarNose" ,131));
+            facemasklist.Add(new GenericRecord("Standard3BarNose" ,132));
+            facemasklist.Add(new GenericRecord("VintageKicker" ,133));
+            facemasklist.Add(new GenericRecord("Vintage2BarBull" ,134));
+            facemasklist.Add(new GenericRecord("VintageHalfCage" ,135));
+            facemasklist.Add(new GenericRecord("Vintage2BarQBSingle" ,136));
+            facemasklist.Add(new GenericRecord("Vintage2BarNose" ,137));
+            facemasklist.Add(new GenericRecord("VintageHalfCage2" ,138));
+
+            #endregion 20
+
             #endregion
 
             #region Shoes
             shoelist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 shoelist.Add(new GenericRecord("Adidas Freak X Carbon", 0));
                 shoelist.Add(new GenericRecord("Adidas Adizero 7.0", 1));
@@ -324,9 +549,44 @@ namespace MaddenEditor.Core
                 shoelist.Add(new GenericRecord("99 Club Force Savage Elite", 22));
                 shoelist.Add(new GenericRecord("99 Club Alpha Menace Pro", 23));
             }
+            if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                shoelist.Add(new GenericRecord("Adidas Freak X Carbon", 0));
+                shoelist.Add(new GenericRecord("Adidas Adizero 8.0", 1));
+                shoelist.Add(new GenericRecord("Nike Alpha Pro 2 3/4 TD", 2));
+                shoelist.Add(new GenericRecord("Nike Vapor Untouchable", 3));
+                shoelist.Add(new GenericRecord("Nike Vapor Carbon Elite TD", 4));
+                shoelist.Add(new GenericRecord("Under Armour Spotlight", 5));
+                shoelist.Add(new GenericRecord("Nike Alpha Menace Elite", 6));
+                shoelist.Add(new GenericRecord("Nike Vapor Untouchable 2", 7));
+                shoelist.Add(new GenericRecord("Nike Vintage 70s-80s", 8));
+                shoelist.Add(new GenericRecord("Pintos", 9));
+                shoelist.Add(new GenericRecord("Nike Lunar Beast", 10));
+                shoelist.Add(new GenericRecord("Nike Zoom Code Elite", 11));
+                shoelist.Add(new GenericRecord("Under Armour Highlight", 12));
+                shoelist.Add(new GenericRecord("Under Armour Exclusive", 13));
+                shoelist.Add(new GenericRecord("Jordan Exclusive Retro", 14));
+                shoelist.Add(new GenericRecord("Nike Force Savage Elite", 15));
+                shoelist.Add(new GenericRecord("Nike Alpha Menace Pro", 16));
+                shoelist.Add(new GenericRecord("Nike Force Savage Pro", 17));
+                shoelist.Add(new GenericRecord("Nike Vapor Speed 3", 18));
+                shoelist.Add(new GenericRecord("Nike Vapor Untouchable Pro 3", 19));
+                shoelist.Add(new GenericRecord("Nike Field General", 20));
+                shoelist.Add(new GenericRecord("Nike Vapor Untouchable Pro", 21));
+                shoelist.Add(new GenericRecord("99C Force Savage Elite", 22));
+                shoelist.Add(new GenericRecord("99C Jordan Retro", 23));
+                shoelist.Add(new GenericRecord("Nike Alpha Menace Pro 2", 24));
+                shoelist.Add(new GenericRecord("Nike Force Savage Pro 2", 25));
+                shoelist.Add(new GenericRecord("Adidas Freak Ultra Cleat", 26));
+                shoelist.Add(new GenericRecord("Air Jordan Retro", 27));
+                shoelist.Add(new GenericRecord("Under Armour Taped Exclusive", 28));
+                shoelist.Add(new GenericRecord("Nike Force Savage Elite 2", 29));
+                shoelist.Add(new GenericRecord("NikeSuperBowl ???", 30));
+            }
+
             else
-            {                
-                shoelist.Add(new GenericRecord("White",0));
+            {
+                shoelist.Add(new GenericRecord("White", 0));
                 shoelist.Add(new GenericRecord("White/White Tape", 1));
                 shoelist.Add(new GenericRecord("White/Black Tape", 2));
                 shoelist.Add(new GenericRecord("White/Team Tape", 3));
@@ -343,7 +603,7 @@ namespace MaddenEditor.Core
 
             #region Gloves
             glovelist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 glovelist.Add(new GenericRecord("None", 0));
                 glovelist.Add(new GenericRecord("Nike Vapor Jet White", 1));
@@ -401,6 +661,77 @@ namespace MaddenEditor.Core
                 glovelist.Add(new GenericRecord("No Hand", 53));
                 glovelist.Add(new GenericRecord("99 Club Vapor Jet 5", 54));
             }
+            else if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                glovelist.Add(new GenericRecord("Normal", 0));
+                glovelist.Add(new GenericRecord("NikeVaporJetWhite", 1));
+                glovelist.Add(new GenericRecord("NikeVaporJetBlack", 2));
+                glovelist.Add(new GenericRecord("NikeVaporJetPrimary", 3));
+                glovelist.Add(new GenericRecord("AdidasAdizero8White", 4));
+                glovelist.Add(new GenericRecord("AdidasAdizero8Black", 5));
+                glovelist.Add(new GenericRecord("AdidasAdizero8Primary", 6));
+                glovelist.Add(new GenericRecord("NikeSuperbad3White", 7));
+                glovelist.Add(new GenericRecord("NikeSuperbad3Black", 8));
+                glovelist.Add(new GenericRecord("NikeSuperbad3Primary", 9));
+                glovelist.Add(new GenericRecord("NikeVaporKnitWhite", 10));
+                glovelist.Add(new GenericRecord("NikeVaporKnitBlack", 11));
+                glovelist.Add(new GenericRecord("NikeVaporKnitPrimary", 12));
+                glovelist.Add(new GenericRecord("NikeHyperBeastWhite", 13));
+                glovelist.Add(new GenericRecord("NikeHyperBeastBlack", 14));
+                glovelist.Add(new GenericRecord("TapedFingersWhite", 15));
+                glovelist.Add(new GenericRecord("TapedFingersBlack", 16));
+                glovelist.Add(new GenericRecord("TapedFingersTeamColor", 17));
+                glovelist.Add(new GenericRecord("TapedHands", 18));
+                glovelist.Add(new GenericRecord("TapedHandsMax", 19));
+                glovelist.Add(new GenericRecord("TapedHandsCombo", 20));
+                glovelist.Add(new GenericRecord("UnderArmourSpotlight2019Primary", 21));
+                glovelist.Add(new GenericRecord("UnderArmourF6Primary", 22));
+                glovelist.Add(new GenericRecord("NikeVaporJetSecondary", 23));
+                glovelist.Add(new GenericRecord("AdidasAdizero8Secondary", 24));
+                glovelist.Add(new GenericRecord("NikeSuperbad3Secondary", 25));
+                glovelist.Add(new GenericRecord("NikeVaporKnitSecondary", 26));
+                glovelist.Add(new GenericRecord("UnderArmourSpotlight2019Secondary", 27));
+                glovelist.Add(new GenericRecord("UnderArmourF6Secondary", 28));
+                glovelist.Add(new GenericRecord("NikeVaporJet4Black", 29));
+                glovelist.Add(new GenericRecord("NikeVaporJet4White", 30));
+                glovelist.Add(new GenericRecord("NikeVaporJet4Primary", 31));
+                glovelist.Add(new GenericRecord("NikeVaporJet4Secondary", 32));
+                glovelist.Add(new GenericRecord("NikeVaporJet5Black", 33));
+                glovelist.Add(new GenericRecord("NikeVaporJet5White", 34));
+                glovelist.Add(new GenericRecord("NikeVaporJet5Primary", 35));
+                glovelist.Add(new GenericRecord("NikeVaporJet5Secondary", 36));
+                glovelist.Add(new GenericRecord("NikeSuperBad5Black", 37));
+                glovelist.Add(new GenericRecord("NikeSuperBad5White", 38));
+                glovelist.Add(new GenericRecord("NikeSuperBad5Primary", 39));
+                glovelist.Add(new GenericRecord("NikeSuperBad5Secondary", 40));
+                glovelist.Add(new GenericRecord("NikeVaporKnit2Black", 41));
+                glovelist.Add(new GenericRecord("NikeVaporKnit2White", 42));
+                glovelist.Add(new GenericRecord("NikeVaporKnit2Primary", 43));
+                glovelist.Add(new GenericRecord("NikeVaporKnit2Secondary", 44));
+                glovelist.Add(new GenericRecord("GenericCutterBlack", 45));
+                glovelist.Add(new GenericRecord("GenericCutterWhite", 46));
+                glovelist.Add(new GenericRecord("GenericCutterPrimary", 47));
+                glovelist.Add(new GenericRecord("GenericCutterSecondary", 48));
+                glovelist.Add(new GenericRecord("UnderArmourSpotlight2019White", 49));
+                glovelist.Add(new GenericRecord("UnderArmourSpotlight2019Black", 50));
+                glovelist.Add(new GenericRecord("UnderArmourF6White", 51));
+                glovelist.Add(new GenericRecord("UnderArmourF6Black", 52));
+                glovelist.Add(new GenericRecord("HandAmputation", 53));
+                glovelist.Add(new GenericRecord("JordanVaporJet5Primary", 54));
+                glovelist.Add(new GenericRecord("JordanVaporJet5Secondary", 55));
+                glovelist.Add(new GenericRecord("NikeDTackBlack", 56));
+                glovelist.Add(new GenericRecord("NikeDTackWhite", 57));
+                glovelist.Add(new GenericRecord("NikeSuperbad52019Primary", 58));
+                glovelist.Add(new GenericRecord("NikeSuperbad52019Secondary", 59));
+                glovelist.Add(new GenericRecord("NikeSuperbad52019Black", 60));
+                glovelist.Add(new GenericRecord("NikeSuperbad52019White", 61));
+                glovelist.Add(new GenericRecord("NikeVaporKnit3Primary", 62));
+                glovelist.Add(new GenericRecord("NikeVaporKnit3Secondary", 63));
+                glovelist.Add(new GenericRecord("NikeVaporKnit3Black", 64));
+                glovelist.Add(new GenericRecord("NikeVaporKnit3White", 65));
+                glovelist.Add(new GenericRecord("JordanVaporJet5Black", 66));
+                glovelist.Add(new GenericRecord("JordanVaporJet5White", 67));
+            }
             else
             {
                 glovelist.Add(new GenericRecord("Normal", 0));
@@ -416,7 +747,7 @@ namespace MaddenEditor.Core
             
             #region Wristband
             wristbandlist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 wristbandlist.Add(new GenericRecord("None", 0));
                 wristbandlist.Add(new GenericRecord("Wristband White", 1));
@@ -447,17 +778,17 @@ namespace MaddenEditor.Core
                 wristbandlist.Add(new GenericRecord("Taped Wrists Lite Secondary", 26));
                 wristbandlist.Add(new GenericRecord("Taped Wrists Normal Secondary", 27));
                 wristbandlist.Add(new GenericRecord("Taped Wrist Max Secondary", 28));
-            }
+            }            
             else
             {
-                wristbandlist.Add(new GenericRecord("Normal",0));
-                wristbandlist.Add(new GenericRecord("QB Wrist",1));
-                wristbandlist.Add(new GenericRecord("White Wrist",2));
-                wristbandlist.Add(new GenericRecord("Black Wrist",3));
-                wristbandlist.Add(new GenericRecord("Team Wrist",4));
-                wristbandlist.Add(new GenericRecord("White Double",5));
-                wristbandlist.Add(new GenericRecord("Black Double",6));
-                wristbandlist.Add(new GenericRecord("Team Double",7));
+                wristbandlist.Add(new GenericRecord("Normal", 0));
+                wristbandlist.Add(new GenericRecord("QB Wrist", 1));
+                wristbandlist.Add(new GenericRecord("White Wrist", 2));
+                wristbandlist.Add(new GenericRecord("Black Wrist", 3));
+                wristbandlist.Add(new GenericRecord("Team Wrist", 4));
+                wristbandlist.Add(new GenericRecord("White Double", 5));
+                wristbandlist.Add(new GenericRecord("Black Double", 6));
+                wristbandlist.Add(new GenericRecord("Team Double", 7));
             }
 
 
@@ -465,7 +796,7 @@ namespace MaddenEditor.Core
 
             #region Sleeves
             sleeveslist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 sleeveslist.Add(new GenericRecord("None", 0));
                 sleeveslist.Add(new GenericRecord("Full Sleeve White", 1));
@@ -486,6 +817,14 @@ namespace MaddenEditor.Core
                 sleeveslist.Add(new GenericRecord("Shooter Sleeve Black", 16));
                 sleeveslist.Add(new GenericRecord("Shooter Sleeve Team", 17));
                 sleeveslist.Add(new GenericRecord("Shooter Sleeve Secondary", 18));
+                
+                if (model.MadVersion == MaddenFileVersion.Ver2020)
+                {
+                    sleeveslist.Add(new GenericRecord("ShortArmTape", 19));
+                    sleeveslist.Add(new GenericRecord("LongArmTape", 20));
+                    sleeveslist.Add(new GenericRecord("HalfSleeveSecondary", 21));
+                    sleeveslist.Add(new GenericRecord("UndershirtSecondary", 22));
+                }
             }
             else
             {
@@ -501,13 +840,27 @@ namespace MaddenEditor.Core
 
             #region Ankles
             anklelist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 anklelist.Add(new GenericRecord("None", 0));
-                anklelist.Add(new GenericRecord("White Half Splat", 1));
-                anklelist.Add(new GenericRecord("White Full Splat", 2));
-                anklelist.Add(new GenericRecord("Black Half Splat", 3));
-                anklelist.Add(new GenericRecord("Black Full Splat", 4));
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
+                {
+                    anklelist.Add(new GenericRecord("White Half Splat", 1));
+                    anklelist.Add(new GenericRecord("White Full Splat", 2));
+                    anklelist.Add(new GenericRecord("Black Half Splat", 3));
+                    anklelist.Add(new GenericRecord("Black Full Splat", 4));
+                }
+                else if (model.MadVersion == MaddenFileVersion.Ver2020)
+                {
+                    anklelist.Add(new GenericRecord("WhiteThin", 1));
+                    anklelist.Add(new GenericRecord("WhiteBulky", 2));
+                    anklelist.Add(new GenericRecord("BlackThin", 3));
+                    anklelist.Add(new GenericRecord("BlackBulky", 4));
+                    anklelist.Add(new GenericRecord("PrimaryThin", 5));
+                    anklelist.Add(new GenericRecord("PrimaryBulky", 6));
+                    anklelist.Add(new GenericRecord("SecondaryThin", 7));
+                    anklelist.Add(new GenericRecord("SecondaryBulky", 8));
+                }
             }
             else
             {
@@ -520,7 +873,7 @@ namespace MaddenEditor.Core
          
             #region Elbow
             elbowlist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 elbowlist.Add(new GenericRecord("None", 0));
                 elbowlist.Add(new GenericRecord("Padding White", 1));
@@ -539,31 +892,58 @@ namespace MaddenEditor.Core
                 elbowlist.Add(new GenericRecord("Med. Band Team", 14));
                 elbowlist.Add(new GenericRecord("Thin Band Team", 15));
                 elbowlist.Add(new GenericRecord("Elbow Brace Team", 16));
-                //elbowlist.Add(new GenericRecord("Full Sweat Team", 17));
+                elbowlist.Add(new GenericRecord("Elbow Wrap", 17));
                 elbowlist.Add(new GenericRecord("Full Sweat Secondary", 18));
                 elbowlist.Add(new GenericRecord("Med. Band Seconday", 19));
                 elbowlist.Add(new GenericRecord("Thin Band Secondary", 20));
+                elbowlist.Add(new GenericRecord("BeastArm", 21));
+            }
+            else if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                elbowlist.Add(new GenericRecord("Normal", 0));
+                elbowlist.Add(new GenericRecord("Padding White", 1));
+                elbowlist.Add(new GenericRecord("Padding Black", 2));
+                elbowlist.Add(new GenericRecord("Padding Team", 3));
+                elbowlist.Add(new GenericRecord("Padding Team White", 4));
+                elbowlist.Add(new GenericRecord("Padding Team Black", 5));
+                elbowlist.Add(new GenericRecord("Rubber Pad", 6));
+                elbowlist.Add(new GenericRecord("Full Sweat White", 7));
+                elbowlist.Add(new GenericRecord("Med Band White", 8));
+                elbowlist.Add(new GenericRecord("Thin Band White", 9));
+                elbowlist.Add(new GenericRecord("Full Sweat Black", 10));
+                elbowlist.Add(new GenericRecord("Med Band Black", 11));
+                elbowlist.Add(new GenericRecord("Thin Band Black", 12));
+                elbowlist.Add(new GenericRecord("Full Sweat Team", 13));
+                elbowlist.Add(new GenericRecord("Med Band Team", 14));
+                elbowlist.Add(new GenericRecord("Thin Band Team", 15));
+                elbowlist.Add(new GenericRecord("Elbow Brace Team", 16));
+                elbowlist.Add(new GenericRecord("Elbow Wrap ???", 17));
+                elbowlist.Add(new GenericRecord("FirstSecondaryColor_", 18));
+                elbowlist.Add(new GenericRecord("Full Sweat Secondary", 18));
+                elbowlist.Add(new GenericRecord("Med Sweat Secondary", 19));
+                elbowlist.Add(new GenericRecord("Thin Sweat Secondary", 20));
                 elbowlist.Add(new GenericRecord("Arm Wrap", 21));
+                elbowlist.Add(new GenericRecord("Arm Brace", 22));
             }
             else
             {
-                elbowlist.Add(new GenericRecord("Normal",0));
-                elbowlist.Add(new GenericRecord("Turf Tape",1));
-                elbowlist.Add(new GenericRecord("Rubber Pad",2));
-                elbowlist.Add(new GenericRecord("Black Pad",3));
-                elbowlist.Add(new GenericRecord("White Pad",4));
-                elbowlist.Add(new GenericRecord("Black Team Pad",5));
-                elbowlist.Add(new GenericRecord("White Team Pad",6));
-                elbowlist.Add(new GenericRecord("Black Wrist",7));
-                elbowlist.Add(new GenericRecord("White Wrist",8));
-                elbowlist.Add(new GenericRecord("Team Wrist",9));
+                elbowlist.Add(new GenericRecord("Normal", 0));
+                elbowlist.Add(new GenericRecord("Turf Tape", 1));
+                elbowlist.Add(new GenericRecord("Rubber Pad", 2));
+                elbowlist.Add(new GenericRecord("Black Pad", 3));
+                elbowlist.Add(new GenericRecord("White Pad", 4));
+                elbowlist.Add(new GenericRecord("Black Team Pad", 5));
+                elbowlist.Add(new GenericRecord("White Team Pad", 6));
+                elbowlist.Add(new GenericRecord("Black Wrist", 7));
+                elbowlist.Add(new GenericRecord("White Wrist", 8));
+                elbowlist.Add(new GenericRecord("Team Wrist", 9));
             }
 
             #endregion
             
             #region Face Marks
             facemarkslist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
                 facemarkslist.Add(new GenericRecord("None", 0));
                 facemarkslist.Add(new GenericRecord("Nose Tape", 1));
@@ -572,6 +952,20 @@ namespace MaddenEditor.Core
                 facemarkslist.Add(new GenericRecord("Eye Paint 2", 4));
                 facemarkslist.Add(new GenericRecord("Nose Tape + Eye Paint", 5));
                 facemarkslist.Add(new GenericRecord("Nose Tape + Eye Tape", 6));
+                facemarkslist.Add(new GenericRecord("Eye Paint Cross", 7));
+                facemarkslist.Add(new GenericRecord("Eye Paint 3", 8));
+                facemarkslist.Add(new GenericRecord("Eye Tape Left", 9));
+                facemarkslist.Add(new GenericRecord("Eye Tape Right", 10));
+            }
+            else if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                facemarkslist.Add(new GenericRecord("None", 0));
+                facemarkslist.Add(new GenericRecord("Nose Tape", 1));
+                facemarkslist.Add(new GenericRecord("Cheek Paint", 2));
+                facemarkslist.Add(new GenericRecord("Cheek Tape", 3));
+                facemarkslist.Add(new GenericRecord("Cheek Paint 2", 4));
+                facemarkslist.Add(new GenericRecord("Nose Tape + Cheek Paint", 5));
+                facemarkslist.Add(new GenericRecord("Nose Tape + Cheek Tape", 6));
                 facemarkslist.Add(new GenericRecord("Eye Paint Cross", 7));
                 facemarkslist.Add(new GenericRecord("Eye Paint 3", 8));
                 facemarkslist.Add(new GenericRecord("Eye Tape Left", 9));
@@ -586,7 +980,7 @@ namespace MaddenEditor.Core
 
             #region Visor
             visorlist = new List<GenericRecord>();
-            if (model.FileVersion < MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
             {
                 visorlist.Add(new GenericRecord("None", 0));
                 visorlist.Add(new GenericRecord("Clear", 1));
@@ -604,7 +998,7 @@ namespace MaddenEditor.Core
 
             #region Archetypes
             archetypelist = new List<GenericRecord>();
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 archetypelist.Add(new GenericRecord("Field General", 0));
                 archetypelist.Add(new GenericRecord("Strong Arm", 1));
@@ -652,6 +1046,12 @@ namespace MaddenEditor.Core
                 archetypelist.Add(new GenericRecord("Run Support S", 43));
                 archetypelist.Add(new GenericRecord("Accurate K", 44));
                 archetypelist.Add(new GenericRecord("Power K", 45));
+
+                if (model.MadVersion == MaddenFileVersion.Ver2020)
+                {
+                    archetypelist.Add(new GenericRecord("KR Balanced", 46));
+                    archetypelist.Add(new GenericRecord("PR Balanced", 47));
+                }
             }
 
             #endregion
@@ -670,17 +1070,33 @@ namespace MaddenEditor.Core
 
             #region Skintone
             SkinTone = new List<GenericRecord>();
-            SkinTone.Add(new GenericRecord("Lightest", 0));
-            SkinTone.Add(new GenericRecord("SkinTone1", 1));
-            SkinTone.Add(new GenericRecord("SkinTone2", 2));
-            SkinTone.Add(new GenericRecord("SkinTone3", 3));
-            SkinTone.Add(new GenericRecord("SkinTone4", 4));
-            SkinTone.Add(new GenericRecord("SkinTone5", 5));
-            SkinTone.Add(new GenericRecord("Darkest", 6));
-
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
+            {
+                SkinTone.Add(new GenericRecord("Lightest", 0));
+                SkinTone.Add(new GenericRecord("SkinTone1", 1));
+                SkinTone.Add(new GenericRecord("SkinTone2", 2));
+                SkinTone.Add(new GenericRecord("SkinTone3", 3));
+                SkinTone.Add(new GenericRecord("SkinTone4", 4));
+                SkinTone.Add(new GenericRecord("SkinTone5", 5));
+                SkinTone.Add(new GenericRecord("Darkest", 6));
+            }
+            else if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                SkinTone.Add(new GenericRecord("Lightest", 0));
+                SkinTone.Add(new GenericRecord("SkinTone2", 1));
+                SkinTone.Add(new GenericRecord("SkinTone3", 2));
+                SkinTone.Add(new GenericRecord("SkinTone4", 3));
+                SkinTone.Add(new GenericRecord("SkinTone5", 4));
+                SkinTone.Add(new GenericRecord("SkinTone6", 5));
+                SkinTone.Add(new GenericRecord("SkinTone7", 6));
+                SkinTone.Add(new GenericRecord("Darkest", 7));
+            }
 
             #endregion
 
+            #endregion 
+
+            #region Player Positions
             PlayerPositions.Clear();
             PlayerPositions.Add(0, "QB");
             PlayerPositions.Add(1, "HB");
@@ -703,14 +1119,14 @@ namespace MaddenEditor.Core
             PlayerPositions.Add(18, "SS");
             PlayerPositions.Add(19, "K");
             PlayerPositions.Add(20, "P");
-           
-            #endregion
+            #endregion Player Positions
 
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 ImportInjuries();
                 ImportEndPlay();
-                ImportQBStyle();
+                ImportStance();
                 ImportCommentIDS();
             }
             
@@ -781,7 +1197,7 @@ namespace MaddenEditor.Core
 
         public IList<GenericRecord> QBStyleList
         {
-            get { return qbstylelist; }
+            get { return stancelist; }
         }
 
         public IList<GenericRecord> ArchetypeList
@@ -969,16 +1385,16 @@ namespace MaddenEditor.Core
             return -1;
         }
 
-        public string GetQBStyle(int id)
+        public string GetStance(int id)
         {
-            foreach (GenericRecord rec in qbstylelist)
+            foreach (GenericRecord rec in stancelist)
                 if (rec.Id == id)
                     return rec.ToString();
             return "";
         }
-        public int GetQBStyle(string name)
+        public int GetStance(string name)
         {
-            foreach (GenericRecord rec in qbstylelist)
+            foreach (GenericRecord rec in stancelist)
                 if (name == rec.ToString())
                     return rec.Id;
             return -1;
@@ -998,60 +1414,143 @@ namespace MaddenEditor.Core
                     return rec.Id;
             return -1;
         }
-               
-        public void ImportQBStyle()
+
+        public void ImportStance()
         {
-            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string filename = filedir + @"\res\2019QBSS.csv";
-
-            if (File.Exists(filename))
+            stancelist = new List<GenericRecord>();
+            #region 19
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
             {
-                try
-                {
-                    StreamReader sr = new StreamReader(filename);
-                    string header = sr.ReadLine();
-                    string[] version = header.Split(',');
-                    if (version[0] == "QBSS" && version[1] == "2019")
-                    {
-                        if (version[2] == "Yes")
-                        {
-                            //read Field desciptions
-                        }
-
-                        qbstylelist = new List<GenericRecord>();
-                        int total = Convert.ToInt32(version[3]);
-                        string row = sr.ReadLine();
-                        string[] fields = row.Split(',');
-                        for (int c = 0; c < total; c++)
-                        {
-                            string e = sr.ReadLine();
-                            string[] entry = e.Split(',');
-                            int id = -1;
-                            string desc = "";
-                            string pn = "";
-
-                            if (fields[0] == "ABNK")
-                                pn = entry[0];
-                            if (fields[1] == "EDIS")
-                                desc = entry[1];
-                            if (fields[2] == "ENUV")
-                                id = Convert.ToInt32(entry[2]);
-
-                            pn = pn.Replace("PasserStyle_", "");
-                            string s = desc + " (" + pn + ")";
-
-                            qbstylelist.Add(new GenericRecord(s, id));
-                        }
-                    }
-
-                    sr.Close();
-                }
-                catch (IOException err)
-                {
-                    err = err;
-                }
+                stancelist.Add(new GenericRecord("Generic", 0));
+                stancelist.Add(new GenericRecord("TEdwards", 1));
+                stancelist.Add(new GenericRecord("Pennington", 2));
+                stancelist.Add(new GenericRecord("Favre", 3));
+                stancelist.Add(new GenericRecord("Brady", 4));
+                stancelist.Add(new GenericRecord("DAnderson", 5));
+                stancelist.Add(new GenericRecord("Garcia", 6));
+                stancelist.Add(new GenericRecord("Roethlisberger", 7));
+                stancelist.Add(new GenericRecord("PManning", 8));
+                stancelist.Add(new GenericRecord("Garrard", 9));
+                stancelist.Add(new GenericRecord("Orton", 10));
+                stancelist.Add(new GenericRecord("Young", 11));
+                stancelist.Add(new GenericRecord("Cutler", 12));
+                stancelist.Add(new GenericRecord("Rivers", 13));
+                stancelist.Add(new GenericRecord("Flacco", 14));
+                stancelist.Add(new GenericRecord("JRussell", 15));
+                stancelist.Add(new GenericRecord("Romo", 16));
+                stancelist.Add(new GenericRecord("McNabb", 17));
+                stancelist.Add(new GenericRecord("EManning", 18));
+                stancelist.Add(new GenericRecord("Campbell", 19));
+                stancelist.Add(new GenericRecord("Grossman", 20));
+                stancelist.Add(new GenericRecord("Kitna", 21));
+                stancelist.Add(new GenericRecord("Rodgers", 22));
+                stancelist.Add(new GenericRecord("Cassel", 23));
+                stancelist.Add(new GenericRecord("Stafford", 24));
+                stancelist.Add(new GenericRecord("Ryan", 25));
+                stancelist.Add(new GenericRecord("Delhomme", 26));
+                stancelist.Add(new GenericRecord("Brees", 27));
+                stancelist.Add(new GenericRecord("ASmith", 28));
+                stancelist.Add(new GenericRecord("Warner", 29));
+                stancelist.Add(new GenericRecord("Bulger", 30));
+                stancelist.Add(new GenericRecord("Hasselbeck", 31));
+                stancelist.Add(new GenericRecord("Palmer", 32));
+                stancelist.Add(new GenericRecord("Sanchez", 33));
+                stancelist.Add(new GenericRecord("Bradford", 34));
+                stancelist.Add(new GenericRecord("Clausen", 35));
+                stancelist.Add(new GenericRecord("Tebow", 36));
+                stancelist.Add(new GenericRecord("Vick", 37));
+                stancelist.Add(new GenericRecord("Freeman", 38));
+                stancelist.Add(new GenericRecord("Aikman", 39));
+                stancelist.Add(new GenericRecord("Blanda", 40));
+                stancelist.Add(new GenericRecord("Elway", 41));
+                stancelist.Add(new GenericRecord("Graham", 42));
+                stancelist.Add(new GenericRecord("Montana", 43));
+                stancelist.Add(new GenericRecord("Moon", 44));
+                stancelist.Add(new GenericRecord("SYoung", 45));
+                stancelist.Add(new GenericRecord("FirstK_", 46));
+                stancelist.Add(new GenericRecord("RBironas", 46));
+                stancelist.Add(new GenericRecord("SSuisham", 47));
+                stancelist.Add(new GenericRecord("JHanson", 48));
+                stancelist.Add(new GenericRecord("KBrown", 49));
+                stancelist.Add(new GenericRecord("JKasey", 50));
+                stancelist.Add(new GenericRecord("NRackers", 51));
+                stancelist.Add(new GenericRecord("SGraham", 52));
+                stancelist.Add(new GenericRecord("JElam", 53));
+                stancelist.Add(new GenericRecord("RGould", 54));
+                stancelist.Add(new GenericRecord("JScobee", 55));
+                stancelist.Add(new GenericRecord("JBrown", 56));
+                stancelist.Add(new GenericRecord("PDawson", 57));
+                stancelist.Add(new GenericRecord("SJanikowski", 58));
+                stancelist.Add(new GenericRecord("MStover", 59));
             }
+            #endregion 19
+            #region 20
+            if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                stancelist.Add(new GenericRecord("Generic", 0));
+                stancelist.Add(new GenericRecord("TEdwards", 1));
+                stancelist.Add(new GenericRecord("Pennington", 2));
+                stancelist.Add(new GenericRecord("Favre", 3));
+                stancelist.Add(new GenericRecord("Brady", 4));
+                stancelist.Add(new GenericRecord("DAnderson", 5));
+                stancelist.Add(new GenericRecord("Garcia", 6));
+                stancelist.Add(new GenericRecord("Roethlisberger", 7));
+                stancelist.Add(new GenericRecord("PManning", 8));
+                stancelist.Add(new GenericRecord("Garrard", 9));
+                stancelist.Add(new GenericRecord("Orton", 10));
+                stancelist.Add(new GenericRecord("Young", 11));
+                stancelist.Add(new GenericRecord("Cutler", 12));
+                stancelist.Add(new GenericRecord("Rivers", 13));
+                stancelist.Add(new GenericRecord("Flacco", 14));
+                stancelist.Add(new GenericRecord("JRussell", 15));
+                stancelist.Add(new GenericRecord("Romo", 16));
+                stancelist.Add(new GenericRecord("McNabb", 17));
+                stancelist.Add(new GenericRecord("EManning", 18));
+                stancelist.Add(new GenericRecord("Campbell", 19));
+                stancelist.Add(new GenericRecord("Grossman", 20));
+                stancelist.Add(new GenericRecord("Kitna", 21));
+                stancelist.Add(new GenericRecord("Rodgers", 22));
+                stancelist.Add(new GenericRecord("Cassel", 23));
+                stancelist.Add(new GenericRecord("Stafford", 24));
+                stancelist.Add(new GenericRecord("Ryan", 25));
+                stancelist.Add(new GenericRecord("Delhomme", 26));
+                stancelist.Add(new GenericRecord("Brees", 27));
+                stancelist.Add(new GenericRecord("ASmith", 28));
+                stancelist.Add(new GenericRecord("Warner", 29));
+                stancelist.Add(new GenericRecord("Bulger", 30));
+                stancelist.Add(new GenericRecord("Hasselbeck", 31));
+                stancelist.Add(new GenericRecord("Palmer", 32));
+                stancelist.Add(new GenericRecord("Sanchez", 33));
+                stancelist.Add(new GenericRecord("Bradford", 34));
+                stancelist.Add(new GenericRecord("Clausen", 35));
+                stancelist.Add(new GenericRecord("Tebow", 36));
+                stancelist.Add(new GenericRecord("Vick", 37));
+                stancelist.Add(new GenericRecord("Freeman", 38));
+                stancelist.Add(new GenericRecord("Aikman", 39));
+                stancelist.Add(new GenericRecord("Blanda", 40));
+                stancelist.Add(new GenericRecord("Elway", 41));
+                stancelist.Add(new GenericRecord("Graham", 42));
+                stancelist.Add(new GenericRecord("Montana", 43));
+                stancelist.Add(new GenericRecord("Moon", 44));
+                stancelist.Add(new GenericRecord("SYoung", 45));
+                stancelist.Add(new GenericRecord("RBironas", 46));
+                stancelist.Add(new GenericRecord("SSuisham", 47));
+                stancelist.Add(new GenericRecord("JHanson", 48));
+                stancelist.Add(new GenericRecord("KBrown", 49));
+                stancelist.Add(new GenericRecord("JKasey", 50));
+                stancelist.Add(new GenericRecord("NRackers", 51));
+                stancelist.Add(new GenericRecord("SGraham", 52));
+                stancelist.Add(new GenericRecord("JElam", 53));
+                stancelist.Add(new GenericRecord("RGould", 54));
+                stancelist.Add(new GenericRecord("JScobee", 55));
+                stancelist.Add(new GenericRecord("JBrown", 56));
+                stancelist.Add(new GenericRecord("PDawson", 57));
+                stancelist.Add(new GenericRecord("SJanikowski", 58));
+                stancelist.Add(new GenericRecord("MStover", 59));
+            }
+            #endregion
         }
+        
         
         public void ImportEndPlay()
         {
@@ -1100,6 +1599,7 @@ namespace MaddenEditor.Core
                     err = err;
                 }
             }
+
         }
         
         public void ImportInjuries()
@@ -1152,7 +1652,11 @@ namespace MaddenEditor.Core
         public void ImportCommentIDS()
         {
             string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string filename = filedir + @"\res\2019COMMENTS.csv";
+            string filename ="";
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
+                filename = filedir + @"\res\2019COMMENTS.csv";
+            else if (model.MadVersion == MaddenFileVersion.Ver2020)
+                filename = filedir + @"\res\2020COMMENTS.csv";
 
             if (File.Exists(filename))
             {
@@ -1161,7 +1665,8 @@ namespace MaddenEditor.Core
                     StreamReader sr = new StreamReader(filename);
                     string header = sr.ReadLine();
                     string[] version = header.Split(',');
-                    if (version[0] == "PCMT" && version[1] == "2019")
+                    if (model.MadVersion == MaddenFileVersion.Ver2019 && version[0] == "PCMT" && version[1] == "2019" ||
+                        model.MadVersion == MaddenFileVersion.Ver2020 && version[0] == "PCMT" && version[1] == "2020")
                     {
                         string f = sr.ReadLine();
                         if (version[2] == "Yes")
@@ -1203,7 +1708,10 @@ namespace MaddenEditor.Core
             {
                 PlayerRecord player = (PlayerRecord)rec;
 
-                if (player.YearsPro != 0 || player.Deleted == true || (player.FirstName == "New" && player.LastName == "Player")) { continue; }
+                if (player.YearsPro != 0 || player.Deleted == true || (player.FirstName == "New" && player.LastName == "Player"))
+                {
+                    continue;
+                }
 
                 foreach (string s in model.DraftClassFields[model.DraftClassFields.Count - 1])
                 {
@@ -2106,7 +2614,7 @@ namespace MaddenEditor.Core
                     rook.DraftPickTeam = 1023;
                     rook.PlayerWeightedRating = 0;
 
-                    if (model.FileVersion >= MaddenFileVersion.Ver2005)
+                    if (model.MadVersion >= MaddenFileVersion.Ver2005)
                     {
                         rook.DraftGeneralRating = 0;
                         rook.DraftGPO = 0;

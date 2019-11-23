@@ -178,7 +178,7 @@ namespace MaddenEditor.Forms
             filterPositionComboBox.Text = filterPositionComboBox.Items[0].ToString();
             filterTeamComboBox.Text = filterTeamComboBox.Items[0].ToString();            
 
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 label3.Visible = true;
                 label4.Visible = true;
@@ -424,7 +424,7 @@ namespace MaddenEditor.Forms
                     record.MouthPiece = EquipOptions.SelectedIndex;
                     break;
                 case EquipGlobals.Socks:
-                    if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    if (model.MadVersion == MaddenFileVersion.Ver2019)
                         record.SockHeight = EquipOptions.SelectedIndex;
                     break;
                 case EquipGlobals.JerseySleeve:
@@ -955,7 +955,7 @@ namespace MaddenEditor.Forms
             }
             else if (EquipCombo.SelectedIndex >= 18 && EquipCombo.SelectedIndex <= 20)
             {
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                 {
                     EquipOptions.Items.Add("Normal");
                     EquipOptions.Items.Add("Brace");
@@ -973,7 +973,7 @@ namespace MaddenEditor.Forms
             }
             else if (EquipCombo.SelectedIndex == 24)
             {
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                 {
                     EquipOptions.Items.Add("None");
                     EquipOptions.Items.Add("Normal");
@@ -1004,7 +1004,7 @@ namespace MaddenEditor.Forms
             }
             else if (EquipCombo.SelectedIndex == 28)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     EquipOptions.Items.Add("Standard");
                     EquipOptions.Items.Add("Low");

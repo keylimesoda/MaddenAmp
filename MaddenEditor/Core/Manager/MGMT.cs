@@ -346,15 +346,15 @@ namespace MaddenEditor.Core
         public void InitDB()
         {           
             #region Streamed Data
-            if (config.streamdb_autoload[(int)model.FileVersion])
+            if (config.streamdb_autoload[(int)model.MadVersion])
             {
-                config.StreamFilename = config.stream_names[(int)model.FileVersion];
+                config.StreamFilename = config.stream_names[(int)model.MadVersion];
             }
             if (config.StreamFilename != "")
             {
                 try
                 {
-                    stream_model = new EditorModel(config.StreamFilename, null, false, false);
+                    //stream_model = new EditorModel(config.StreamFilename, null, false, false);
                 }
                 catch (ApplicationException err)
                 {
@@ -365,16 +365,16 @@ namespace MaddenEditor.Core
             #endregion
 
             #region Misc DB Templates
-            if (config.db_misc_autoload[(int)model.FileVersion])
+            if (config.db_misc_autoload[(int)model.MadVersion])
             {
-                config.db_misc_filename = config.db_misc_names[(int)model.FileVersion];
+                config.db_misc_filename = config.db_misc_names[(int)model.MadVersion];
             }
 
             if (config.db_misc_filename != "")
             {
                 try
                 {
-                    db_misc_model = new EditorModel(config.db_misc_filename, null, false,false);
+                    db_misc_model = new EditorModel(config.db_misc_filename, null, false,null);
                 }
                 catch (ApplicationException err)
                 {
@@ -948,18 +948,18 @@ namespace MaddenEditor.Core
         {
             if (PlayerPortDAT.loadfile == "")
             {
-                if (config.AutoLoad_PlayerPort[(int)model.FileVersion])
+                if (config.AutoLoad_PlayerPort[(int)model.MadVersion])
                 {
-                    PlayerPortDAT.loadfile = config.PlayerPortFiles[(int)model.FileVersion];
+                    PlayerPortDAT.loadfile = config.PlayerPortFiles[(int)model.MadVersion];
                     PlayerPortDAT.Load();
                 }
             }
 
             if (CoachPortDAT.loadfile == "")
             {
-                if (config.AutoLoad_CoachPort[(int)model.FileVersion])
+                if (config.AutoLoad_CoachPort[(int)model.MadVersion])
                 {
-                    CoachPortDAT.loadfile = config.CoachPortFiles[(int)model.FileVersion];
+                    CoachPortDAT.loadfile = config.CoachPortFiles[(int)model.MadVersion];
                     CoachPortDAT.Load();
                 }
             }

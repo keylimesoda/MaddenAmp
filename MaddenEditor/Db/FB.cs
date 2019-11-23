@@ -28,6 +28,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using MaddenEditor.Core;
+
 namespace MaddenEditor.Db
 {
     public class BEDB
@@ -102,13 +104,20 @@ namespace MaddenEditor.Db
         
     }
         
-    public enum Frostbyte_type
+    public enum FBType
     {
         NA,
         Unknown,
         Roster,
         Franchise,
         Draft
+    }
+    
+    public enum FBVersion
+    {
+        NA,
+        Madden19,
+        Madden20
     }
     
     public class FB
@@ -121,7 +130,7 @@ namespace MaddenEditor.Db
         public UInt32 FB_InfoLength;
         public UInt32 DataFileLength;
         #endregion
-
+        //
         #region Info
         // 44 bytes
         public UInt32 TotalLength;
@@ -131,43 +140,61 @@ namespace MaddenEditor.Db
         public UInt16 InfoHour;
         public UInt16 InfoMin;
         public UInt16 InfoSec;
-
+        //
         public UInt32 SerialVersion;  // 'RL2-' or 'RL3-'
-        public byte[] Serial = new byte[24];
-        public UInt32 DataType;
+        public byte[] Serial = new byte[28];       
         public UInt32 DataEntries;
-
+        //
         public byte[] DB;        
         #endregion 
               
         public string database = "";
         string filename = "";
         public bool BigEndian = false;
-        public Frostbyte_type FB_Type = Frostbyte_type.NA;
+        public FBType FileType = FBType.NA;
+        public FBVersion FileVersion = FBVersion.NA;
         public BinaryReader binreader;
         public BinaryWriter binwriter;
         public UInt32 DraftClass = 2;
         public UInt32 DraftClassEntries = 450;
-
-
-
+        
         public FB()
         {
             database = "";
             filename = "";
         }
-        public FB(FB roster, Frostbyte_type fbtype)
+        public FB(FB roster, FBType fbtype, MaddenFileVersion version)
         {
-            if (fbtype == Frostbyte_type.Draft)
+            if (fbtype == FBType.Draft)
             {
                 this.filename = "DraftClass";
-                this.FB_InfoLength = 52;                
+                this.FB_InfoLength = 52;
+                if (version == MaddenFileVersion.Ver2019)
+                {
+                    this.DataFileLength = 149240;
+                    this.TotalLength = 149292;
+                }
+                else if (version == MaddenFileVersion.Ver2020)
+                {
+                    this.DataFileLength = 152880;
+                    this.TotalLength = 0x025564;
+                }
+                this.Serial = roster.Serial;
+                this.DataEntries = DraftClassEntries;
+            }
+        }
+
+        public void ChangeDraftClassVersion(MaddenFileVersion version)
+        {
+            if (version == MaddenFileVersion.Ver2019)
+            {
                 this.DataFileLength = 149240;
                 this.TotalLength = 149292;
-                this.SerialVersion = roster.SerialVersion;
-                this.Serial = roster.Serial;
-                this.DataType = DraftClass;
-                this.DataEntries = DraftClassEntries;
+            }
+            else if (version == MaddenFileVersion.Ver2020)
+            {
+                this.DataFileLength = 152880;
+                this.TotalLength = 152932;
             }
         }
 
@@ -176,8 +203,8 @@ namespace MaddenEditor.Db
             this.filename = filename;
             binreader = new BinaryReader(File.Open(filename, FileMode.Open));
             long size = binreader.BaseStream.Length;
-            UInt32 frostbyte = binreader.ReadUInt32();
-            
+
+            UInt32 frostbyte = binreader.ReadUInt32();            
             if (frostbyte != FBCH)
             {
                 // Not supported                
@@ -185,36 +212,33 @@ namespace MaddenEditor.Db
                 return false;
             }
             UNKS = binreader.ReadUInt32();
-
             FB_Version = binreader.ReadUInt16();
             FB_InfoLength = binreader.ReadUInt32();
             DataFileLength = binreader.ReadUInt32();
             TotalLength = binreader.ReadUInt32();
             InfoYear = binreader.ReadUInt16();
-
             InfoMonth = binreader.ReadUInt16();
             InfoDay = binreader.ReadUInt16();
             InfoHour = binreader.ReadUInt16();
             InfoMin = binreader.ReadUInt16();
-
             InfoSec = binreader.ReadUInt16();
-            SerialVersion = binreader.ReadUInt32(); //@38 bytes
+            // Now at offset 34
 
-            Serial = binreader.ReadBytes(24);
-            //@62 bytes
+            // Version specific Serial number
+            int serlength = 28;
+            UInt32 ver = binreader.ReadUInt32();
+            binreader.BaseStream.Position -= 4;
+           
+            if (ver == 0x5F30324D)
+                FileVersion = FBVersion.Madden20;
+            else FileVersion = FBVersion.Madden19;
 
-            DataType = binreader.ReadUInt32();
-            if (DataType == 2)
-                FB_Type = Frostbyte_type.Draft;
-            else if (DataType == 95)
-                FB_Type = Frostbyte_type.Franchise;
-            else if (DataType == 134234692)
-                FB_Type = Frostbyte_type.Roster;
-            else FB_Type = Frostbyte_type.Unknown;
+            Serial = binreader.ReadBytes(serlength);
 
-            DataEntries = binreader.ReadUInt32();
-
-            if (FB_Type != Frostbyte_type.Roster)
+            binreader.BaseStream.Position = 62;
+            if (binreader.ReadUInt32() == 0x08004244)
+                FileType = FBType.Roster;
+            else
             {
                 binreader.Close();
                 return false;
@@ -263,17 +287,6 @@ namespace MaddenEditor.Db
             binwriter.Write(TotalLength);
             
             #region Date/Time
-            DateTime date = DateTime.Today;
-
-            // Skipping updating the info to current date/time for now
-
-            //binwriter.Write((UInt16)date.Year);
-            //binwriter.Write((UInt16)date.Month);
-            //binwriter.Write((UInt16)date.Day);
-            //binwriter.Write((UInt16)date.Hour);
-            //binwriter.Write((UInt16)date.Minute);
-            //binwriter.Write((UInt16)date.Second);
-
             binwriter.Write((UInt16)InfoYear);
             binwriter.Write((UInt16)InfoMonth);
             binwriter.Write((UInt16)InfoDay);
@@ -282,7 +295,6 @@ namespace MaddenEditor.Db
             binwriter.Write((UInt16)InfoSec);
             #endregion
 
-            binwriter.Write(SerialVersion);
             binwriter.Write(Serial);
             binwriter.Write(db);
             binwriter.Close();                      

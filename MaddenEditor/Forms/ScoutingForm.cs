@@ -59,7 +59,7 @@ namespace MaddenEditor.Forms
 		public ScoutingForm(EditorModel em, int htId, int seconds, DraftModel dm, bool customClass)
 		{
 			this.dm = dm;
-			math = new LocalMath(em.FileVersion);
+			math = new LocalMath(em.MadVersion);
 			SecondsPerPick = seconds;
 			HumanTeamId = htId;
 			model = em;

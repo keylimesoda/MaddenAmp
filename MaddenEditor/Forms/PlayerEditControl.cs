@@ -180,22 +180,22 @@ namespace MaddenEditor.Forms
             Ratings19_Panel.Visible = false;
             TraitsPanel.Visible = false;
 
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
+            if (model.MadVersion == MaddenFileVersion.Ver2004)
             {
                 playerNFLIcon.Enabled = false;
             }
-            if (model.FileVersion >= MaddenFileVersion.Ver2005 && model.FileType == MaddenFileType.Franchise)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005 && model.FileType == MaddenFileType.Franchise)
             {
                 PlayerInactive.Visible = true;
                 playerCaptain.Visible = true;
             }
 
-            if (model.FileVersion >= MaddenFileVersion.Ver2005 && model.FileVersion < MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2005 && model.MadVersion < MaddenFileVersion.Ver2019)
             {
                 playerNFLIcon.Enabled = true;
             }
 
-            if (model.FileVersion == MaddenFileVersion.Ver2007 || model.FileVersion == MaddenFileVersion.Ver2008)
+            if (model.MadVersion == MaddenFileVersion.Ver2007 || model.MadVersion == MaddenFileVersion.Ver2008)
             {
                 RoleLabel.Visible = true;
                 PlayerRolecomboBox.Visible = true;
@@ -214,14 +214,14 @@ namespace MaddenEditor.Forms
                     PlayerWeaponcomboBox.Items.Add(model.PlayerRole[r]);
                 }
 
-                if (model.FileVersion == MaddenFileVersion.Ver2008)
+                if (model.MadVersion == MaddenFileVersion.Ver2008)
                 {
                     WeaponLabel.Visible = true;
                     PlayerWeaponcomboBox.Visible = true;
                 }
             }
 
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 calculateOverallButton.Enabled = false;
                 playerPortraitId.Maximum = 9999;
@@ -239,17 +239,89 @@ namespace MaddenEditor.Forms
                 PlayerHoldOut.Visible = false;
                 playerCaptain.Visible = true;
                 playerCaptain.Enabled = true;
+               
+                DevTrait.Items.Add("Normal");
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
+                {                                        
+                    DevTrait.Items.Add("Quick");
+                    DevTrait.Items.Add("Star");
+                    DevTrait.Items.Add("Superstar");
+                }
+                else if (model.MadVersion == MaddenFileVersion.Ver2020)
+                {
+                    DevTrait.Items.Add("Star");
+                    DevTrait.Items.Add("SuperStar");
+                    DevTrait.Items.Add("XFactor");
+                }
+               
+              
 
-                #region XP Rate - Changed from Player Role
-                RoleLabel.Visible = true;
-                RoleLabel.Text = "XP Rate";
-                RoleLabel.Location = new Point(180, 561);
-                PlayerRolecomboBox.Items.Clear();
-                PlayerRolecomboBox.Items.Add("Normal");
-                PlayerRolecomboBox.Items.Add("Quick");
-                PlayerRolecomboBox.Items.Add("Star");
-                PlayerRolecomboBox.Items.Add("Superstar");
-                PlayerRolecomboBox.Visible = true;
+                #region QB Style
+                QBStyle.Items.Clear();
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
+                {
+                    QBStyle.Items.Add("Generic");
+                    QBStyle.Items.Add("TEdwards");
+                    QBStyle.Items.Add("Pennington");
+                    QBStyle.Items.Add("Favre");
+                    QBStyle.Items.Add("Brady");
+                    QBStyle.Items.Add("DAnderson");
+                    QBStyle.Items.Add("Garcia");
+                    QBStyle.Items.Add("Roethlisberger");
+                    QBStyle.Items.Add("PManning");
+                    QBStyle.Items.Add("Garrard");
+                    QBStyle.Items.Add("Orton");
+                    QBStyle.Items.Add("Young");
+                    QBStyle.Items.Add("Cutler");
+                    QBStyle.Items.Add("Rivers");
+                    QBStyle.Items.Add("Flacco");
+                    QBStyle.Items.Add("JRussell");
+                    QBStyle.Items.Add("Romo");
+                    QBStyle.Items.Add("McNabb");
+                    QBStyle.Items.Add("EManning");
+                    QBStyle.Items.Add("Campbell");
+                    QBStyle.Items.Add("Grossman");
+                    QBStyle.Items.Add("Kitna");
+                    QBStyle.Items.Add("Rodgers");
+                    QBStyle.Items.Add("Cassel");
+                    QBStyle.Items.Add("Stafford");
+                    QBStyle.Items.Add("Ryan");
+                    QBStyle.Items.Add("Delhomme");
+                    QBStyle.Items.Add("Brees");
+                    QBStyle.Items.Add("ASmith");
+                    QBStyle.Items.Add("Warner");
+                    QBStyle.Items.Add("Bulger");
+                    QBStyle.Items.Add("Hasselbeck");
+                    QBStyle.Items.Add("Palmer");
+                    QBStyle.Items.Add("Sanchez");
+                    QBStyle.Items.Add("Bradford");
+                    QBStyle.Items.Add("Clausen");
+                    QBStyle.Items.Add("Tebow");
+                    QBStyle.Items.Add("Vick");
+                    QBStyle.Items.Add("Freeman");
+                    QBStyle.Items.Add("Aikman");
+                    QBStyle.Items.Add("Blanda");
+                    QBStyle.Items.Add("Elway");
+                    QBStyle.Items.Add("Graham");
+                    QBStyle.Items.Add("Montana");
+                    QBStyle.Items.Add("Moon");
+                    QBStyle.Items.Add("SYoung");
+                }
+                else if (model.MadVersion == MaddenFileVersion.Ver2020)
+                {
+                    QBStyle.Items.Add("Slow");
+                    QBStyle.Items.Add("Generic");
+                    QBStyle.Items.Add("Upgrade");
+                    QBStyle.Items.Add("Brady");
+                    QBStyle.Items.Add("Rivers");
+                    QBStyle.Items.Add("Brees");
+                    QBStyle.Items.Add("Roethlisberger");
+                    QBStyle.Items.Add("PManning");
+                    QBStyle.Items.Add("Rodgers");
+                    QBStyle.Items.Add("Mayfield");
+                    QBStyle.Items.Add("Mahomes");
+                }               
+
                 #endregion
 
                 #region Injuries
@@ -262,6 +334,22 @@ namespace MaddenEditor.Forms
                 {
                     foreach (GenericRecord rec in model.PlayerModel.InjuryList)
                         playerInjuryCombo.Items.Add(rec);
+                }
+                #endregion
+
+                #region MouthPiece
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
+                {
+                    playerMouthPieceCombo.Items.Clear();
+                    playerMouthPieceCombo.Items.Add("None");
+                    playerMouthPieceCombo.Items.Add("Pacifier White");
+                    playerMouthPieceCombo.Items.Add("Pacifier Black");
+                    playerMouthPieceCombo.Items.Add("Pacifier Team");
+                    if (model.MadVersion == MaddenFileVersion.Ver2020)
+                        playerMouthPieceCombo.Items.Add("Pacifier Secondary");
+                    playerMouthPieceCombo.Items.Add("Mouthguard White");
+                    playerMouthPieceCombo.Items.Add("Mouthguard Black");
+                    playerMouthPieceCombo.Items.Add("Mouthguard Team");
                 }
                 #endregion
 
@@ -426,21 +514,21 @@ namespace MaddenEditor.Forms
 
             #endregion
 
-            if (model.FileVersion <= MaddenFileVersion.Ver2005)
+            if (model.MadVersion <= MaddenFileVersion.Ver2005)
             {
                 playerEquipmentThighPads.Enabled = true;
             }
-            if (model.FileVersion >= MaddenFileVersion.Ver2004 && model.FileVersion <= MaddenFileVersion.Ver2008)
+            if (model.MadVersion >= MaddenFileVersion.Ver2004 && model.MadVersion <= MaddenFileVersion.Ver2008)
             {
                 LegacyPanel.Visible = true;
 
                 #region Tattoos
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                 {
                     Tattoo_Left.Maximum = 31;
                     Tattoo_Right.Maximum = 31;
                 }
-                else if (model.FileVersion == MaddenFileVersion.Ver2005)
+                else if (model.MadVersion == MaddenFileVersion.Ver2005)
                 {
                     Tattoo_Left.Maximum = 15;
                     Tattoo_Right.Maximum = 15;
@@ -456,16 +544,19 @@ namespace MaddenEditor.Forms
                 RightSleeveLabel.Visible = false;
                 playerRightSleeve.Visible = false;
             }
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
+                FixAudioID_Button.Visible = true;
                 NextGenPanel.Visible = true;
+                Madden20HairStyle_Label.Visible = false;
+                Madden20HairStyle.Visible = false;
 
                 #region QB Style
-                playerQBStyle.Items.Clear();
+                playerStance.Items.Clear();
                 if (model.PlayerModel.QBStyleList != null)
                 {
                     foreach (GenericRecord rec in model.PlayerModel.QBStyleList)
-                        playerQBStyle.Items.Add(rec);
+                        playerStance.Items.Add(rec);
                 }
                 #endregion
 
@@ -492,11 +583,20 @@ namespace MaddenEditor.Forms
                 playerRightKneeCombo.Items.Clear();
                 playerLeftKneeCombo.Items.Add("None");
                 playerRightKneeCombo.Items.Add("None");
-                playerLeftKneeCombo.Items.Add("Nike");
-                playerRightKneeCombo.Items.Add("Nike");
-                playerLeftKneeCombo.Items.Add("Regular");
-                playerRightKneeCombo.Items.Add("Regular");
-                
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
+                {
+                    playerLeftKneeCombo.Items.Add("Nike");
+                    playerRightKneeCombo.Items.Add("Nike");
+                    playerLeftKneeCombo.Items.Add("Regular");
+                    playerRightKneeCombo.Items.Add("Regular");
+                }
+                else if (model.MadVersion == MaddenFileVersion.Ver2020)
+                {
+                    playerLeftKneeCombo.Items.Add("Large");
+                    playerRightKneeCombo.Items.Add("Large");
+                    playerLeftKneeCombo.Items.Add("Small");
+                    playerRightKneeCombo.Items.Add("Small");
+                }                
 
                 #endregion
 
@@ -507,6 +607,45 @@ namespace MaddenEditor.Forms
                 #endregion
 
                 playerSockHeight.Enabled = true;
+
+                if (model.MadVersion >= MaddenFileVersion.Ver2020)
+                {
+                    Madden20HairStyle_Label.Visible = true;
+                    Madden20HairStyle.Visible = true;
+                    Madden20HairStyle.Items.Clear();
+                    Madden20HairStyle.Items.Add("None");
+                    Madden20HairStyle.Items.Add("AfroCleanShort");
+                    Madden20HairStyle.Items.Add("AfroMohawk");
+                    Madden20HairStyle.Items.Add("AfroShort1");
+                    Madden20HairStyle.Items.Add("AfroShort2");
+                    Madden20HairStyle.Items.Add("AfroShortReceding");
+                    Madden20HairStyle.Items.Add("AfroShortShavedSides");
+                    Madden20HairStyle.Items.Add("ShortStraight");
+                    Madden20HairStyle.Items.Add("Cornrows");
+                    Madden20HairStyle.Items.Add("DreadsLong");
+                    Madden20HairStyle.Items.Add("DreadsMessy");
+                    Madden20HairStyle.Items.Add("DreadsPonytail");
+                    Madden20HairStyle.Items.Add("LongCurly");
+                    Madden20HairStyle.Items.Add("LongStraight");
+                    Madden20HairStyle.Items.Add("LongWavy1");
+                    Madden20HairStyle.Items.Add("LongWavy2");
+                    Madden20HairStyle.Items.Add("MediumCurlyMullet");
+                    Madden20HairStyle.Items.Add("MediumSidewardsSpikey");
+                    Madden20HairStyle.Items.Add("ShavedBaldingTop");
+                    Madden20HairStyle.Items.Add("ShavedCurly");
+                    Madden20HairStyle.Items.Add("ShavedDesign");
+                    Madden20HairStyle.Items.Add("ShavedStraight");
+                    Madden20HairStyle.Items.Add("ShortCurly");
+                    Madden20HairStyle.Items.Add("ShortMessyWet");
+                    Madden20HairStyle.Items.Add("ShortMohawk");
+                    Madden20HairStyle.Items.Add("ShortMohawkShaved");
+                    Madden20HairStyle.Items.Add("ShortRecedingMessy");
+                    Madden20HairStyle.Items.Add("ShortSidewardsShaved");
+                    Madden20HairStyle.Items.Add("ShortSpikeyClean");
+                    Madden20HairStyle.Items.Add("ShortSlickedShaved");
+                    Madden20HairStyle.Items.Add("ShortSpikeyShavedSides");
+                    Madden20HairStyle.Items.Add("ShortWavy");
+                }
             }
 
             #endregion
@@ -565,7 +704,7 @@ namespace MaddenEditor.Forms
             SalaryRankCombo.SelectedIndex = -1;
             #endregion
 
-            if (model.FileType == MaddenFileType.Franchise || model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.FileType == MaddenFileType.Franchise || model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 PlayerContractDetails_Panel.Enabled = true;
 
@@ -625,22 +764,22 @@ namespace MaddenEditor.Forms
             set
             {
                 model = value;
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                     baseyear = 2003;
-                else if (model.FileVersion == MaddenFileVersion.Ver2005)
+                else if (model.MadVersion == MaddenFileVersion.Ver2005)
                     baseyear = 2004;
-                else if (model.FileVersion == MaddenFileVersion.Ver2006)
+                else if (model.MadVersion == MaddenFileVersion.Ver2006)
                     baseyear = 2005;
-                else if (model.FileVersion == MaddenFileVersion.Ver2007)
-                    baseyear = 2006;
-                else if (model.FileVersion == MaddenFileVersion.Ver2019)
-                    baseyear = 2018;
-                else if (model.FileVersion == MaddenFileVersion.Ver2008)
+                else if (model.MadVersion == MaddenFileVersion.Ver2007)
+                   baseyear = 2006;               
+                else if (model.MadVersion == MaddenFileVersion.Ver2008)
                     baseyear = 2007;
-                else if (model.FileVersion == MaddenFileVersion.Ver2019)
+                else if (model.MadVersion == MaddenFileVersion.Ver2019)
                     baseyear = 2018;
+                else if (model.MadVersion == MaddenFileVersion.Ver2020)
+                    baseyear = 2019;
 
-                if (model.FileVersion == MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster || model.FileType == MaddenFileType.DBTeam)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster || model.FileType == MaddenFileType.DBTeam)
                     Madden19 = true;
             }
         }
@@ -725,7 +864,7 @@ namespace MaddenEditor.Forms
                 case MaddenPositions.RE:
                 case MaddenPositions.DT:
                     {
-                        if (model.FileVersion >= MaddenFileVersion.Ver2019)
+                        if (model.MadVersion >= MaddenFileVersion.Ver2019)
                             return (type == 0 ? "Cover LB" : "Pass Rush");
                         else return (type == 0 ? "Pass Rushing" : "Run Stopping");
                     }
@@ -748,13 +887,13 @@ namespace MaddenEditor.Forms
         public void FixCareerStats(PlayerRecord player)
         {
             int baseyear = 2003;
-            if (model.FileVersion == MaddenFileVersion.Ver2005)
+            if (model.MadVersion == MaddenFileVersion.Ver2005)
                 baseyear = 2004;
-            if (model.FileVersion == MaddenFileVersion.Ver2006)
+            if (model.MadVersion == MaddenFileVersion.Ver2006)
                 baseyear = 2005;
-            if (model.FileVersion == MaddenFileVersion.Ver2007)
+            if (model.MadVersion == MaddenFileVersion.Ver2007)
                 baseyear = 2006;
-            if (model.FileVersion == MaddenFileVersion.Ver2008)
+            if (model.MadVersion == MaddenFileVersion.Ver2008)
                 baseyear = 2007;
 
             //  offense
@@ -883,7 +1022,7 @@ namespace MaddenEditor.Forms
                 if (record.PositionId == newplayer.PositionId && record.TeamId != 1009 && record.TeamId != 1010 && record.TeamId != 1014
                     && record.TeamId != 1015 && record.TeamId != 1023 && newplayer.ContractYearsLeft != 0)
                 {
-                    if (model.FileVersion < MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster)
+                    if (model.MadVersion < MaddenFileVersion.Ver2019 && model.FileType == MaddenFileType.Roster)
                     {
                         if (newplayer.YearlySalary == null)
                             newplayer.SetContract(false, false, 30);                        
@@ -955,7 +1094,7 @@ namespace MaddenEditor.Forms
                 roster.Add(0);
             int neededplayers = 0;
             int maxplayers = 55;
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 maxplayers = 75;
 
             foreach (PlayerRecord rec in model.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
@@ -1233,7 +1372,7 @@ namespace MaddenEditor.Forms
                 playerCatching.Value = record.Catching;
                 playerCarrying.Value = record.Carrying;
                 playerJumping.Value = record.Jumping;
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     playerBreakTackle.Value = record.BreakTackle19;
                 else playerBreakTackle.Value = record.BreakTackle;
                 playerTackle.Value = record.Tackle;
@@ -1264,7 +1403,7 @@ namespace MaddenEditor.Forms
                     injuryLengthDescriptionTextBox.Enabled = false;
                     injuryLengthDescriptionTextBox.Text = "";
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2019)
+                    if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     {
                         playerInjurySevere.Value = 0;
                         playerInjurySevere.Enabled = false;
@@ -1283,7 +1422,7 @@ namespace MaddenEditor.Forms
                     playerInjuryReserve.Checked = injury.IR;
                     injuryLengthDescriptionTextBox.Text = injury.LengthDescription;
 
-                    if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    if (model.MadVersion < MaddenFileVersion.Ver2019)
                     {
                         playerInjuryCombo.Text = playerInjuryCombo.Items[injury.InjuryType].ToString();
                     }
@@ -1341,7 +1480,7 @@ namespace MaddenEditor.Forms
                 if (model.FileType == MaddenFileType.Franchise)
                 {
                     #region Player Inactive
-                    if (model.FileVersion > MaddenFileVersion.Ver2004)
+                    if (model.MadVersion > MaddenFileVersion.Ver2004)
                     {
                         PlayerInactive.Checked = false;
 
@@ -1363,7 +1502,7 @@ namespace MaddenEditor.Forms
                 }
 
                 #region 2004-2005
-                if (model.FileVersion <= MaddenFileVersion.Ver2005)
+                if (model.MadVersion <= MaddenFileVersion.Ver2005)
                 {
                     playerEgo.Maximum = 127;
                     playerEgo.Value = record.Pcel;
@@ -1372,12 +1511,12 @@ namespace MaddenEditor.Forms
                 #endregion
 
                 #region 2005-2008
-                if (model.FileVersion >= MaddenFileVersion.Ver2005)
+                if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 {
                     playerNFLIcon.Checked = record.NFLIcon;
                     PlayerHoldOut.Checked = record.Holdout;
 
-                    if (model.FileVersion < MaddenFileVersion.Ver2019)
+                    if (model.MadVersion < MaddenFileVersion.Ver2019)
                     {
                         //Load the player tendancy and reinitialise the combo
                         PlayerTendency.Enabled = true;
@@ -1396,20 +1535,20 @@ namespace MaddenEditor.Forms
                 #endregion
 
                 #region 2006-2008
-                if (model.FileVersion >= MaddenFileVersion.Ver2006)
+                if (model.MadVersion >= MaddenFileVersion.Ver2006)
                 {
                     playerEgo.Value = record.Ego;
                 }
                 #endregion
 
                 #region 2007-2008 only
-                if (model.FileVersion >= MaddenFileVersion.Ver2007 && model.FileVersion <= MaddenFileVersion.Ver2008)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007 && model.MadVersion <= MaddenFileVersion.Ver2008)
                 {
                     RoleLabel.Visible = true;
                     PlayerRolecomboBox.Visible = true;
                     PlayerRolecomboBox.Text = model.PlayerRole[record.PlayerRole];
 
-                    if (model.FileVersion == MaddenFileVersion.Ver2008)
+                    if (model.MadVersion == MaddenFileVersion.Ver2008)
                     {
                         WeaponLabel.Visible = true;
                         PlayerWeaponcomboBox.Visible = true;
@@ -1419,7 +1558,7 @@ namespace MaddenEditor.Forms
                 #endregion
 
                 #region Legacy only
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                 {
                     PlayerFaceId.Value = (int)record.FaceId;
                     OriginalPosition_Combo.SelectedIndex = record.OriginalPositionId;
@@ -1462,8 +1601,8 @@ namespace MaddenEditor.Forms
                 }
                 #endregion
 
-                #region 2019 only
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                #region 2019 2020 only
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     PortraitID_Large.Value = record.PortraitId + 10000;
                     PlayerFaceId.Value = (int)record.FaceID_19;
@@ -1472,7 +1611,7 @@ namespace MaddenEditor.Forms
                     playerStateCombo.SelectedIndex = record.HomeState;
                     playerBirthday.Text = record.GetBirthday();
 
-                    PlayerRolecomboBox.SelectedIndex = record.XPRate;
+                    DevTrait.SelectedIndex = record.DevTrait;
 
                     foreach (KeyValuePair<string, int> id in model.PlayerModel.PlayerComments)
                     {
@@ -1679,7 +1818,7 @@ namespace MaddenEditor.Forms
                     #region Appearance / Equipment
 
                     #region NextGen Panel
-                    playerQBStyle.Text = model.PlayerModel.GetQBStyle(record.QBStyle);
+                    playerStance.Text = model.PlayerModel.GetStance(record.Stance);
                     playerEndPlay.Text = model.PlayerModel.GetEndPlay(record.EndPlay);
                     SidelineHeadGear_Combo.SelectedIndex = record.SidelineHeadgear;
                     playerFlakJacket.Checked = record.FlakJacket;
@@ -1690,11 +1829,16 @@ namespace MaddenEditor.Forms
 
                     playerUndershirt.SelectedIndex = record.UnderShirt;
                     EyePaintLabel.Text = "Face Marks";
-                    EyePaintLabel.Location = new Point(327, 511);
+                    EyePaintLabel.Location = new Point(327, 487);
                     playerJerseySleeves.SelectedIndex = model.PlayerModel.CurrentPlayerRecord.JerseySleeve;
                     playerSockHeight.SelectedIndex = record.SockHeight;
 
+                    
+                    QBStyle.SelectedIndex = record.QBStyle;
+                   
                     #endregion
+
+                    Madden20HairStyle.SelectedIndex = record.HairStyle20;
                 }
                 #endregion
 
@@ -1908,8 +2052,10 @@ namespace MaddenEditor.Forms
                         StreamWriter writer = new StreamWriter(myStream);
                         hbuilder.Append("PLAY");
                         hbuilder.Append(",");
-                        if (model.FileVersion == MaddenFileVersion.Ver2019)
+                        if (model.MadVersion == MaddenFileVersion.Ver2019)
                             hbuilder.Append("2019");
+                        if (model.MadVersion == MaddenFileVersion.Ver2020)
+                            hbuilder.Append("2020");
                         hbuilder.Append(",");
                         hbuilder.Append("No");
                         hbuilder.Append(",");
@@ -2079,7 +2225,7 @@ namespace MaddenEditor.Forms
                 }
 
                 model.PlayerModel.CurrentPlayerRecord.PortraitId = (int)playerPortraitId.Value;
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     PortraitID_Large.Value = model.PlayerModel.CurrentPlayerRecord.PortraitId + 10000;
 
                 DisplayPlayerPort();
@@ -2090,7 +2236,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.FaceID_19 = (int)PlayerFaceId.Value;
                 else model.PlayerModel.CurrentPlayerRecord.FaceId = (int)PlayerFaceId.Value;
             }
@@ -2103,7 +2249,7 @@ namespace MaddenEditor.Forms
                 model.PlayerModel.CurrentPlayerRecord.PlayerComment = (int)playerComment.Value;
 
                 isInitialising = true;
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     foreach (KeyValuePair<string, int> id in model.PlayerModel.PlayerComments)
                     {
@@ -2142,7 +2288,7 @@ namespace MaddenEditor.Forms
                 model.PlayerModel.CurrentPlayerRecord.YearsPro = (int)playerYearsPro.Value;
                 //  Add more seasons to the players career
                 isInitialising = true;
-                if (model.FileVersion <= MaddenFileVersion.Ver2008)
+                if (model.MadVersion <= MaddenFileVersion.Ver2008)
                     InitStatsYear(model.PlayerModel.CurrentPlayerRecord);
                 isInitialising = false;
             }
@@ -2337,12 +2483,8 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion < MaddenFileVersion.Ver2007)
-                    return;
-                else if (model.FileVersion == MaddenFileVersion.Ver2019)
-                {
-                    model.PlayerModel.CurrentPlayerRecord.PlayerRole = PlayerRolecomboBox.SelectedIndex;
-                }
+                if (model.MadVersion < MaddenFileVersion.Ver2007)
+                    return;               
                 else
                 {
                     int res = -1;
@@ -2359,7 +2501,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion > MaddenFileVersion.Ver2008)
+                if (model.MadVersion > MaddenFileVersion.Ver2008)
                     return;
                 int res = -1;
                 foreach (KeyValuePair<int, string> role in model.PlayerRole)
@@ -2441,7 +2583,7 @@ namespace MaddenEditor.Forms
 
         private void calculateOverallButton_Click(object sender, EventArgs e)
         {
-            if (model.FileVersion != MaddenFileVersion.Ver2019)
+            if (model.MadVersion != MaddenFileVersion.Ver2019)
             {
                 model.PlayerModel.CurrentPlayerRecord.Overall = model.PlayerModel.CurrentPlayerRecord.CalculateOverallRating(model.PlayerModel.CurrentPlayerRecord.PositionId);
                 Overall.Value = model.PlayerModel.CurrentPlayerRecord.Overall;
@@ -2538,7 +2680,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.BreakTackle19 = (int)playerBreakTackle.Value;
                 else
                     model.PlayerModel.CurrentPlayerRecord.BreakTackle = (int)playerBreakTackle.Value;
@@ -2647,7 +2789,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 // 2019 field isnt morale
-                if (model.FileVersion > MaddenFileVersion.Ver2008)
+                if (model.MadVersion > MaddenFileVersion.Ver2008)
                     return;
                 else model.PlayerModel.CurrentPlayerRecord.Morale = (int)playerMorale.Value;
             }
@@ -2657,7 +2799,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                     model.PlayerModel.CurrentPlayerRecord.Pcel = (int)playerEgo.Value;
                 else model.PlayerModel.CurrentPlayerRecord.Ego = (int)playerEgo.Value;
             }
@@ -3078,10 +3220,10 @@ namespace MaddenEditor.Forms
 
         #region 2019 Equipment Misc
 
-        private void playerQBStyle_SelectedIndexChanged(object sender, EventArgs e)
+        private void playerStance_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                model.PlayerModel.CurrentPlayerRecord.QBStyle = model.PlayerModel.GetQBStyle(playerQBStyle.Text);
+                model.PlayerModel.CurrentPlayerRecord.Stance = model.PlayerModel.GetStance(playerStance.Text);
         }
 
         private void playerEndPlay_SelectedIndexChanged(object sender, EventArgs e)
@@ -3100,7 +3242,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.FlakJacket = playerFlakJacket.Checked;
             }
         }
@@ -3109,7 +3251,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.BackPlate = playerBackPlate.Checked;
             }
         }
@@ -3344,7 +3486,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.LeftWrist = model.PlayerModel.GetWrist(playerLeftWristCombo.Text);
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.TeamLeftWrist = model.PlayerModel.GetWrist(playerLeftWristCombo.Text);
             }
         }
@@ -3354,7 +3496,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.RightWrist = model.PlayerModel.GetWrist(playerRightWristCombo.Text);
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.TeamRightWrist = model.PlayerModel.GetWrist(playerRightWristCombo.Text);
             }
         }
@@ -3364,7 +3506,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.LeftHand = model.PlayerModel.GetGloves(playerLeftHandCombo.Text);
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.TeamLeftHand = model.PlayerModel.GetGloves(playerLeftHandCombo.Text);
             }
         }
@@ -3374,7 +3516,7 @@ namespace MaddenEditor.Forms
             if (!isInitialising)
             {
                 model.PlayerModel.CurrentPlayerRecord.RightHand = model.PlayerModel.GetGloves(playerRightHandCombo.Text);
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.TeamRightHand = model.PlayerModel.GetGloves(playerRightHandCombo.Text);
             }
         }
@@ -3461,9 +3603,9 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.SleevesRight = model.PlayerModel.GetSleeve(playerRightSleeve.Text);
-                else if (model.FileVersion < MaddenFileVersion.Ver2019)
+                else if (model.MadVersion < MaddenFileVersion.Ver2019)
                     model.PlayerModel.CurrentPlayerRecord.TempSleeves = model.PlayerModel.GetSleeve(playerRightSleeve.Text);
             }
         }
@@ -3561,7 +3703,7 @@ namespace MaddenEditor.Forms
             injRec.InjuryLength = 0;
             injRec.IR = false;
             injRec.InjuryType = 0;
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 injRec.InjurySeverity = 5;
             }
@@ -3586,7 +3728,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion < MaddenFileVersion.Ver2019)
+                if (model.MadVersion < MaddenFileVersion.Ver2019)
                     model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryType = playerInjuryCombo.SelectedIndex;
                 else
                 {
@@ -3616,7 +3758,7 @@ namespace MaddenEditor.Forms
         private void playerInjurySevere_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjurySeverity = (int)playerInjurySevere.Value;
                 }
@@ -3625,7 +3767,7 @@ namespace MaddenEditor.Forms
         private void playerInjuryReturn_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     model.PlayerModel.GetPlayersInjuryRecord(model.PlayerModel.CurrentPlayerRecord.PlayerId).InjuryReturn = (int)playerInjuryReturn.Value;
                 }
@@ -4235,7 +4377,7 @@ namespace MaddenEditor.Forms
             gamesstarted.Value = 0;
             DownsPlayed.Value = 0;
 
-            if (model.FileVersion == MaddenFileVersion.Ver2004)
+            if (model.MadVersion == MaddenFileVersion.Ver2004)
             {
                 gamesstarted.Enabled = false;
                 DownsPlayed.Enabled = false;
@@ -4250,7 +4392,7 @@ namespace MaddenEditor.Forms
             {
                 GamesPlayedPanel.Enabled = true;
 
-                if (model.FileVersion == MaddenFileVersion.Ver2004)
+                if (model.MadVersion == MaddenFileVersion.Ver2004)
                 {
                     gamesplayed.Value = careergamesplayed.GamesPlayed04;
                 }
@@ -4267,7 +4409,7 @@ namespace MaddenEditor.Forms
 
                 gamesplayed.Value = seasongamesplayed.GamesPlayed;
 
-                if (model.FileVersion != MaddenFileVersion.Ver2004)
+                if (model.MadVersion != MaddenFileVersion.Ver2004)
                 {
                     gamesstarted.Value = seasongamesplayed.GamesStarted;
                     DownsPlayed.Value = seasongamesplayed.DownsPlayed;
@@ -4377,7 +4519,7 @@ namespace MaddenEditor.Forms
 
             // Set controls
             OffensePanel.Enabled = false;
-            if (model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (model.MadVersion >= MaddenFileVersion.Ver2007)
             {
                 comebacks.Enabled = true;
                 Firstdowns.Enabled = true;
@@ -4437,7 +4579,7 @@ namespace MaddenEditor.Forms
                 rushing_20.Value = (int)careeroffensestats.Rushing_20;
                 rushing_bt.Value = (int)careeroffensestats.Rushing_bt;
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 {
                     comebacks.Value = (int)careeroffensestats.Comebacks;
                     Firstdowns.Value = (int)careeroffensestats.FirstDowns;
@@ -4470,7 +4612,7 @@ namespace MaddenEditor.Forms
                 rushing_20.Value = (int)seasonoffense.SeaRush20;
                 rushing_bt.Value = (int)seasonoffense.SeaRushBtk;
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 {
                     comebacks.Value = (int)seasonoffense.SeaComebacks;
                     Firstdowns.Value = (int)seasonoffense.SeaFirstDowns;
@@ -4502,7 +4644,7 @@ namespace MaddenEditor.Forms
             CatchesAllowed.Value = 0;
             BigHits.Value = 0;
 
-            if (model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (model.MadVersion >= MaddenFileVersion.Ver2007)
             {
                 CatchesAllowed.Enabled = true;
                 BigHits.Enabled = true;
@@ -4532,7 +4674,7 @@ namespace MaddenEditor.Forms
                 int_td.Value = careerdefensestats.Int_td;
                 int_yards.Value = careerdefensestats.Int_yards;
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 {
                     BigHits.Value = careerdefensestats.BigHits;
                     CatchesAllowed.Value = careerdefensestats.CatchesAllowed;
@@ -4558,7 +4700,7 @@ namespace MaddenEditor.Forms
                 int_td.Value = seasondefensestats.InterceptionTDS;
                 int_yards.Value = seasondefensestats.InterceptionYards;
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2007)
+                if (model.MadVersion >= MaddenFileVersion.Ver2007)
                 {
                     BigHits.Value = seasondefensestats.BigHits;
                     CatchesAllowed.Value = seasondefensestats.CatchesAllowed;
@@ -5224,7 +5366,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion != MaddenFileVersion.Ver2004 && statsyear.Text == "Career")
+                if (model.MadVersion != MaddenFileVersion.Ver2004 && statsyear.Text == "Career")
                     model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesStarted = (int)gamesstarted.Value;
                 else model.PlayerModel.GetSeasonGames(model.PlayerModel.CurrentPlayerRecord.PlayerId, year).GamesStarted = (int)gamesstarted.Value;
             }
@@ -5236,7 +5378,7 @@ namespace MaddenEditor.Forms
             {
                 if (statsyear.Text == "Career")
                 {
-                    if (model.FileVersion == MaddenFileVersion.Ver2004)
+                    if (model.MadVersion == MaddenFileVersion.Ver2004)
                         model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed04 = (int)gamesplayed.Value;
                     else model.PlayerModel.GetPlayersGamesCareer(model.PlayerModel.CurrentPlayerRecord.PlayerId).GamesPlayed = (int)gamesplayed.Value;
                 }
@@ -5572,6 +5714,23 @@ namespace MaddenEditor.Forms
             isInitialising = false;
         }
 
+        private void QBStyle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+            {
+                model.PlayerModel.CurrentPlayerRecord.QBStyle = (int)QBStyle.SelectedIndex;
+            }
+        }
+
+        private void DevTrait_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitialising)
+                model.PlayerModel.CurrentPlayerRecord.DevTrait = (int)DevTrait.SelectedIndex;
+        } 
+       
+        // TO DO :
+        // qb player style is tendency
+        // LB style ?
         
     }
 }

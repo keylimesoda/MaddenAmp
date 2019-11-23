@@ -63,7 +63,7 @@ namespace MaddenEditor.Forms
                 teamCombo.Items.Add(team);
             }
 
-            if (model.FileVersion < MaddenFileVersion.Ver2019)
+            if (model.MadVersion < MaddenFileVersion.Ver2019)
             {
                 for (int p = 0; p < 26; p++)
                 {
@@ -142,7 +142,7 @@ namespace MaddenEditor.Forms
                 // for type we are going to have to use the players type, which isnt going to be accurate for
                 // determining an overall for a player out of his normal position
                 double overall = playeroverall.GetOverall19(record, positionId, -1);
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
                     availablePlayerDatagrid.Rows.Add(record.GetDataRow(positionId, (int)overall));
                 else availablePlayerDatagrid.Rows.Add(record.GetDataRow(positionId,-1));
 			}

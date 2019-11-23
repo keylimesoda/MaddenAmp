@@ -72,6 +72,7 @@ namespace MaddenEditor.Forms
             this.ImportAvailFields_ListView = new System.Windows.Forms.ListView();
             this.ImportSelected_ListView = new System.Windows.Forms.ListView();
             this.DraftClass_Panel = new System.Windows.Forms.Panel();
+            this.ExportVersion = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.DraftClassDescriptions_Checkbox = new System.Windows.Forms.CheckBox();
             this.CreateDraftClass_Button = new System.Windows.Forms.Button();
@@ -533,6 +534,7 @@ namespace MaddenEditor.Forms
             // DraftClass_Panel
             // 
             this.DraftClass_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DraftClass_Panel.Controls.Add(this.ExportVersion);
             this.DraftClass_Panel.Controls.Add(this.label12);
             this.DraftClass_Panel.Controls.Add(this.DraftClassDescriptions_Checkbox);
             this.DraftClass_Panel.Controls.Add(this.CreateDraftClass_Button);
@@ -544,10 +546,23 @@ namespace MaddenEditor.Forms
             this.DraftClass_Panel.Size = new System.Drawing.Size(368, 117);
             this.DraftClass_Panel.TabIndex = 9;
             // 
+            // ExportVersion
+            // 
+            this.ExportVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ExportVersion.Enabled = false;
+            this.ExportVersion.FormattingEnabled = true;
+            this.ExportVersion.Items.AddRange(new object[] {
+            "DraftClass for Madden 2019",
+            "DraftClass for Madden 2020"});
+            this.ExportVersion.Location = new System.Drawing.Point(183, 57);
+            this.ExportVersion.Name = "ExportVersion";
+            this.ExportVersion.Size = new System.Drawing.Size(173, 21);
+            this.ExportVersion.TabIndex = 17;
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(188, 55);
+            this.label12.Location = new System.Drawing.Point(203, 85);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(129, 13);
             this.label12.TabIndex = 16;
@@ -565,9 +580,9 @@ namespace MaddenEditor.Forms
             // 
             // CreateDraftClass_Button
             // 
-            this.CreateDraftClass_Button.Location = new System.Drawing.Point(171, 28);
+            this.CreateDraftClass_Button.Location = new System.Drawing.Point(183, 28);
             this.CreateDraftClass_Button.Name = "CreateDraftClass_Button";
-            this.CreateDraftClass_Button.Size = new System.Drawing.Size(158, 23);
+            this.CreateDraftClass_Button.Size = new System.Drawing.Size(173, 23);
             this.CreateDraftClass_Button.TabIndex = 3;
             this.CreateDraftClass_Button.Text = "Create Draft Class from CSV";
             this.CreateDraftClass_Button.UseVisualStyleBackColor = true;
@@ -577,7 +592,7 @@ namespace MaddenEditor.Forms
             // 
             this.ExportDraftClass_Button.Location = new System.Drawing.Point(9, 57);
             this.ExportDraftClass_Button.Name = "ExportDraftClass_Button";
-            this.ExportDraftClass_Button.Size = new System.Drawing.Size(158, 23);
+            this.ExportDraftClass_Button.Size = new System.Drawing.Size(146, 23);
             this.ExportDraftClass_Button.TabIndex = 2;
             this.ExportDraftClass_Button.Text = "Export to CSV";
             this.ExportDraftClass_Button.UseVisualStyleBackColor = true;
@@ -587,7 +602,7 @@ namespace MaddenEditor.Forms
             // 
             this.LoadDraftClass_Button.Location = new System.Drawing.Point(9, 28);
             this.LoadDraftClass_Button.Name = "LoadDraftClass_Button";
-            this.LoadDraftClass_Button.Size = new System.Drawing.Size(158, 23);
+            this.LoadDraftClass_Button.Size = new System.Drawing.Size(146, 23);
             this.LoadDraftClass_Button.TabIndex = 1;
             this.LoadDraftClass_Button.Text = "Load Draft Class";
             this.LoadDraftClass_Button.UseVisualStyleBackColor = true;
@@ -684,5 +699,6 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.CheckBox DraftClassDescriptions_Checkbox;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox ExtractByTableName;
+        private System.Windows.Forms.ComboBox ExportVersion;
 	}
 }

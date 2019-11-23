@@ -1315,7 +1315,7 @@ namespace MaddenEditor.Core.Record
         {
             PlayerRecord bestPlayer = null;
             double bestEOR = 0;
-            LocalMath lmath = new LocalMath(editorModel.FileVersion);
+            LocalMath lmath = new LocalMath(editorModel.MadVersion);
 
             foreach (TableRecordModel record in editorModel.TableModels[EditorModel.PLAYER_TABLE].GetRecords())
             {

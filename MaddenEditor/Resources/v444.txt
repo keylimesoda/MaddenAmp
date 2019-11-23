@@ -1,0 +1,91 @@
+Madden AMP 4.44
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  
+If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+Madden Amp is written in C# using Visual Studio 2013.
+Source Code is available through Sourceforge:
+https://svn.code.sf.net/p/maddenamp/code/trunk
+
+Subversion client (such as Tortoise SVN, https://tortoisesvn.net/)
+Checkout (Current Version) - svn://svn.code.sf.net/p/maddenamp/code/trunk 
+Checkout (Entire Project) - svn://svn.code.sf.net/p/maddenamp/code
+
+Submitting any changes to the source code requires a sourceforge account.
+Contact StingRay68 through sourceforge, or on the Football Idiot forums, to request write access.
+http://www.footballidiot.com/forum/
+
+DO NOT contact StingRay68 for the purposes of complaints, bug reports or feature requests.
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file with Amp when finished editing in game in order to view those changes.
+
+Legacy
+------
+Training Camp & Weekly Maintenance are no longer being supported.
+
+
+Madden 2019/2020
+-----------
+You CANNOT import/export/edit coaches in a Madden 19/20 roster file.
+There are NO coaches in a Madden 19/20 roster file.
+
+You CANNOT import/export a draft class from a Madden 19/20 roster file.
+There is NOT a draft class in a Madden 19/20 roster file.
+
+You can export rookies from a Madden 19/20 roster file, but that is not the same thing as a 
+Madden 19/20 draft class file.
+ 
+A Madden 19/20 Draft Class is a separate file.  Please refer to game documentation.
+
+
+For Madden 2019/2020, ONLY Roster files are officially supported with Amp.
+You CANNOT edit a Madden 19/20 Franchise/CFM with this editor.
+
+
+2020 Player Signature/Superstar Abilities are NOT contained in the roster file and cannot be edited with Madden AMP.
+
+
+v4.44 Changelog
+
+******************************************************************************************
+***
+***  Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+***
+******************************************************************************************
+
+
+Madden 19/20 options and values were taken from the schema files shortly after each version was released.
+Any subsequent game update/patch that is applied could cause options and values to be inconsistent with any changes that 
+applied due to the update/patch.
+Not all functions were updated specifically for use with Madden 2020, so some options are still using 2019 values.
+
+
+Player Editor - College list updated for 2020 according to streameddata contents.
+
+
+Import/Export CSV -
+There is a LOT of confusion about the csv format.  
+CSV stands for comma separated values.
+The ONLY time a comma should be included in the csv format is for separating the actual values.
+ie  1,2,3,4,The,Quick,Brown,Fox
+
+You CANNOT include a comma for instance in a player's hometown such as "Washington,DC" this would be interpreted as 2 separate values.  Instead use "Washington DC"
+
+
+Replacing a comma with any other symbol WILL NOT WORK for importing.
+
+
+Added code to specify United States culture for exporting decimal values, which are being used to store various player bodypart values in Madden 19 and 20.
+These values will now be specified to export with a decimal point.  
+Some countries use a decimal comma, which will break the csv format.
+ie "1 1/4" should be stored as "1.25" and NOT "1,25"
+
+Any software which creates or edits a csv file will need to comply with the stated csv formatting or it will not be compatible for importing.
+
+
+
+
+
+
+

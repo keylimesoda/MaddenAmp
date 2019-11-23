@@ -69,7 +69,7 @@ namespace MaddenEditor.Forms
 
             StadiumLabel.Visible = false;
             teamStadiumSelect.Visible = false;
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion >= MaddenFileVersion.Ver2019)
             {
                 TeamStadiumID.Enabled = false;
                 StadiumLabel.Visible = true;
@@ -137,7 +137,7 @@ namespace MaddenEditor.Forms
             teamOffensivePlaybookCombo.SelectedIndex = -1;
 
             //Madden 2007 Doesn't have shoe colors anymore
-            if (model.FileVersion >= MaddenFileVersion.Ver2007)
+            if (model.MadVersion >= MaddenFileVersion.Ver2007)
             {
                 gbShoeColor.Visible = false;
             }
@@ -289,7 +289,7 @@ namespace MaddenEditor.Forms
                 teamDefensiveRating.Value = record.DefensiveRating;
                 teamOverallRating.Value = record.OverallRating;
 
-                if (model.FileVersion <= MaddenFileVersion.Ver2006)
+                if (model.MadVersion <= MaddenFileVersion.Ver2006)
                 {
                     rbWhite.Checked = (record.ShoeColor == 0);
                     rbBlack.Checked = (record.ShoeColor == 1);
@@ -341,7 +341,7 @@ namespace MaddenEditor.Forms
                 teamDefensivePlaybookCombo.SelectedIndex = -1;
                 teamDefensivePlaybookCombo.Text = model.TeamModel.GetDEFPlaybook(record.DefensivePlaybook);
 
-                if (model.FileVersion < MaddenFileVersion.Ver2019 || model.FileType == MaddenFileType.DBTeam)
+                if (model.MadVersion < MaddenFileVersion.Ver2019 || model.FileType == MaddenFileType.DBTeam)
                 {
                     Uniforms_Panel.Visible = true;
                     InitTeamUniforms(record);
@@ -357,7 +357,7 @@ namespace MaddenEditor.Forms
                 teamReputation.Enabled = false;
                 nickNameTextBox.Enabled = false;
 
-                if (model.FileVersion >= MaddenFileVersion.Ver2005)
+                if (model.MadVersion >= MaddenFileVersion.Ver2005)
                 {
                     if (model.TeamModel.CurrentTeamRecord.TeamId != 1009 && model.TeamModel.CurrentTeamRecord.TeamId != 1010 && model.TeamModel.CurrentTeamRecord.TeamId != 1011)
                     {
@@ -386,7 +386,7 @@ namespace MaddenEditor.Forms
                     }
                 }
 
-                if (model.FileType == MaddenFileType.Franchise && model.FileVersion != MaddenFileVersion.Ver2019)
+                if (model.FileType == MaddenFileType.Franchise && model.MadVersion != MaddenFileVersion.Ver2019)
                 {
                     DraftPicks_Panel.Visible = true;
                     SetDraftPicks();
@@ -402,7 +402,7 @@ namespace MaddenEditor.Forms
 
 
                 #region 2019
-                if (model.FileVersion >= MaddenFileVersion.Ver2019)
+                if (model.MadVersion >= MaddenFileVersion.Ver2019)
                 {
                     teamDBName.Enabled = true;
                     teamDBName.Text = record.TeamDB;
@@ -1524,7 +1524,7 @@ namespace MaddenEditor.Forms
         {
             if (!isInitialising)
             {
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
                     model.TeamModel.CurrentTeamRecord.StadiumID = model.TeamModel.GetStadium(teamStadiumSelect.Text);
                 else model.TeamModel.CurrentTeamRecord.StadiumID = teamStadiumSelect.SelectedIndex;
             }
