@@ -243,7 +243,7 @@ namespace MaddenEditor.Core
 			model = em;
 			positionData = pd;
 
-			math = new LocalMath(model.FileVersion);
+			math = new LocalMath(model.MadVersion);
 
             InitializeDCGroups();
             InitializeAwarenessAdjust();

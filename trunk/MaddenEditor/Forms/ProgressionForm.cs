@@ -71,7 +71,7 @@ namespace MaddenEditor.Forms
             mainButton.Enabled = false;
             Cursor.Current = Cursors.WaitCursor;
 
-            LocalMath math = new LocalMath(model.FileVersion);
+            LocalMath math = new LocalMath(model.MadVersion);
             Random rand = new Random();
             DepthChartRepairer dcr = new DepthChartRepairer(model, null);
 

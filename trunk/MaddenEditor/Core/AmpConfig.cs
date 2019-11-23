@@ -58,7 +58,7 @@ namespace MaddenEditor.Core
         private string _db_misc_filename;
         private List<SliderSet> _amp_sliders;
         private int version = 0;        
-        private int currentversion = 18;
+       
         #endregion
 
         #region Public members
@@ -91,12 +91,15 @@ namespace MaddenEditor.Core
         public bool changed = false;
         public int versioncheck = 0;
         public int type = 0;
-
         
         public List<bool> db_misc_autoload;
         public List<string> db_misc_names;
         public byte[] Madden19Serial;
         public string Madden19UserSettingsFilename;
+        public byte[] Madden20Serial;
+        public string Madden20UserSettingsFilename;
+
+        private int currentversion = 22;
         #endregion
                
 
@@ -118,10 +121,12 @@ namespace MaddenEditor.Core
             db_misc_names = new List<string>();
             Madden19Serial = new byte[24];
             Madden19UserSettingsFilename = "";
+            Madden20Serial = new byte[24];
+            Madden20UserSettingsFilename = "";
             
             changed = false;
 
-            for (int c = 0; c < 6; c++)
+            for (int c = 0; c < 7; c++)
             {
                 stream_names.Add("");
                 streamdb_autoload.Add(false);
@@ -140,22 +145,22 @@ namespace MaddenEditor.Core
 
         public string GetPlayerPortName(EditorModel model)
         {
-            return PlayerPortFiles[(int)model.FileVersion];
+            return PlayerPortFiles[(int)model.MadVersion];
         }
         
         public string GetCoachPortName(EditorModel model)
         {
-            return CoachPortFiles[(int)model.FileVersion];
+            return CoachPortFiles[(int)model.MadVersion];
         }
 
         public string GetStreamedDBName(EditorModel model)
         {
-            return stream_names[(int)model.FileVersion];
+            return stream_names[(int)model.MadVersion];
         }
         
         public string GetDB_MiscName(EditorModel model)
         {
-            return db_misc_names[(int)model.FileVersion];
+            return db_misc_names[(int)model.MadVersion];
         }
                 
 
@@ -191,7 +196,6 @@ namespace MaddenEditor.Core
             int v = 6;
             if (binreader.ReadUInt32() != AmpHeader)
                 return false;
-
 
             versioncheck = binreader.ReadByte();
             SkipSplash = binreader.ReadBoolean();
@@ -238,6 +242,11 @@ namespace MaddenEditor.Core
                 Madden19Serial = binreader.ReadBytes(24);
                 Madden19UserSettingsFilename = binreader.ReadString();
             }
+            if (versioncheck >= 21)
+            {
+                Madden20Serial = binreader.ReadBytes(24);
+                Madden20UserSettingsFilename = binreader.ReadString();
+            }
 
             return true;
         }    
@@ -278,6 +287,8 @@ namespace MaddenEditor.Core
 
             binwriter.Write(Madden19Serial);
             binwriter.Write(Madden19UserSettingsFilename);
+            binwriter.Write(Madden20Serial);
+            binwriter.Write(Madden20UserSettingsFilename);
 
             changed = false;
             binwriter.Close();

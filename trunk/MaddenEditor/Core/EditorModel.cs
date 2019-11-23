@@ -70,7 +70,8 @@ namespace MaddenEditor.Core
 		Ver2006,	//Franchise contains 183 tables
 		Ver2007,    //Franchise contains 185 tables
         Ver2008,    //Franchise contains 191 tables
-        Ver2019
+        Ver2019,
+        Ver2020
 	}
 
 	/// <summary>
@@ -428,7 +429,6 @@ namespace MaddenEditor.Core
 		public const int MADDEN_ROS_2006_TABLE_COUNT = 11;
 		public const int MADDEN_ROS_2007_TABLE_COUNT = 10;
         public const int MADDEN_ROS_2008_TABLE_COUNT = 10;
-        public const int MADDEN_ROS_2019_TABLE_COUNT = 5;
 
 		public const int MADDEN_FRA_2004_TABLE_COUNT = 136;
 		public const int MADDEN_FRA_2005_TABLE_COUNT = 159;
@@ -442,6 +442,7 @@ namespace MaddenEditor.Core
 		public const int MADDEN_ROS_2007_PLAY_FIELD_COUNT = 110;
         public const int MADDEN_ROS_2008_PLAY_FIELD_COUNT = 110;
         public const int MADDEN_ROS_2019_PLAY_FIELD_COUNT = 208;
+        public const int MADDEN_ROS_2020_PLAY_FIELD_COUNT = 208;
 
         public const int MADDEN_2004_STREAMED_COUNT = 72;
         public const int MADDEN_2005_STREAMED_COUNT = 116;
@@ -449,15 +450,19 @@ namespace MaddenEditor.Core
         public const int MADDEN_2007_STREAMED_COUNT = 203;
         public const int MADDEN_2008_STREAMED_COUNT = 215;
         public const int MADDEN_2019_STREAMED_COUNT = 85;
+        public const int MADDEN_2020_STREAMED_COUNT = 106;
 
         public const int MADDEN_2019_USER_CONFIG_COUNT = 16;
         public const int MADDEN_2019_DATA_RAM = 23;
         public const int MADDEN_2019_STATIC_DATA = 16;
         public const int MADDEN_2019_GAMEMODE = 85;
-
+        public const int MADDEN_2020_DATA_RAM = 22;
         // New 2019 type
         public const int MADDEN_2019_DBTEAM_COUNT = 8;
         
+        //2020
+        public const int MADDEN_2020_DBTEAM_COUNT = 9;
+
         #region Franchise / Roster Table names
         public const string PLAYER_AWARDS_TABLE = "AYPL";
         public const string BOXSCORE_DEFENSE_TABLE = "BDEF";
@@ -579,8 +584,8 @@ namespace MaddenEditor.Core
 		private string fileName = "";
 		private MainForm view = null;
 		private TableModelDictionary tableModels = null;
-		private MaddenFileType fileType = MaddenFileType.Roster;
-        private MaddenFileVersion fileVersion = MaddenFileVersion.Ver2004;
+		private MaddenFileType madtype = MaddenFileType.Roster;
+        private MaddenFileVersion madversion = MaddenFileVersion.Ver2004;
 		private Dictionary<string, int> tableOrder = null;
         public Dictionary<string, int> TableNames = new Dictionary<string, int>();
 		
@@ -610,9 +615,20 @@ namespace MaddenEditor.Core
         
         #region Constructors
 
-        public EditorModel(string filename, MainForm form, bool be, bool ismad19)
+        public EditorModel(string filename, MainForm form, bool be, FB fb)
 		{
             this.BigEndian = be;
+            if (fb != null)
+            {
+                if (fb.FileType == FBType.Roster)
+                {
+                    madtype = MaddenFileType.Roster;
+                    if (fb.FileVersion == FBVersion.Madden19)
+                        MadVersion = MaddenFileVersion.Ver2019;
+                    else if (fb.FileVersion == FBVersion.Madden20)
+                        MadVersion = MaddenFileVersion.Ver2020;
+                }
+            }
             totalplayers = 0;
             view = form;
 			this.fileName = filename;            
@@ -624,8 +640,8 @@ namespace MaddenEditor.Core
 				"PSTR", "PAWR", "PAGI", "PACC", "PCTH", "PCAR", "PJMP",
 				"PBTK", "PTAK", "PTHP", "PTHA", "PPBK", "PRBK",	"PKPR",
 				"PKAC", "PKRT", "PSTA", "PINJ", "PTGH", "PSTY", "PMOR", 
-				"PSBS", /*"PTPS",*/ "PMTS", "PUTS", "PFTS", "PLSS", "PTSS",
-				"PWSS", "PCHS", "PQTS", "PMAS", "PFAS", "PMHS", "PFHS", 
+				"PSBS", /*"PTPS",*/ "PMTS", "PUTS", "PFTS", "PLSS", /*"PTSS",
+				"PWSS",*/ "PCHS", /*"PQTS",*/ "PMAS", "PFAS", "PMHS", "PFHS", 
 				"PMCS", "PFCS", /*"PMGS", "PQGS",*/ "PSKI", "PHCL", "PHED", 
 				"PEYE", "PNEK", "PVIS", "PMPC", "PLHA", "TLHA", "PRHA",
 				"TRHA", "PLSH", "PRSH", "PLTH", "PRTH", "PLEL", "TLEL",
@@ -666,37 +682,34 @@ namespace MaddenEditor.Core
             //Process the file
 			if (!ProcessFile())
 			{
-				//throw new ApplicationException("Error processing file: " + filename);
-                
+				//throw new ApplicationException("Error processing file: " + filename);                
 			}
 			
 			//Once we've processed the file create our editing models
-            if (this.FileType != MaddenFileType.Streameddata && this.fileType != MaddenFileType.Template)
+            if (this.FileType != MaddenFileType.Streameddata && this.madtype != MaddenFileType.Template)
             {
                 teamEditingModel = new TeamEditingModel(this);
                 playerEditingModel = new PlayerEditingModel(this);
                 draftclassmodel = new DraftClass(this);
 
-                if (fileVersion == MaddenFileVersion.Ver2019)
+                if (madversion >= MaddenFileVersion.Ver2019)
                 {
-                    if (fileType == MaddenFileType.DBTeam)
+                    if (madtype == MaddenFileType.DBTeam)
                     {
                         coachEditingModel = new CoachEditingModel(this);
                     }
-                    else if (fileType == MaddenFileType.UserConfig)
+                    else if (madtype == MaddenFileType.UserConfig)
                     {
                         gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
                         useroptions = (UserOptionRecord)TableModels[USER_OPTIONS_TABLE].GetRecord(0);
                         userinfo = (UserInfoRecord)TableModels[USER_INFO_TABLE].GetRecord(0);
                     }
-
                 }
-
                 else
                 {
                     coachEditingModel = new CoachEditingModel(this);
                     stadiumEditingModel = new StadiumEditingModel(this);
-                    if (fileType == MaddenFileType.Franchise)
+                    if (madtype == MaddenFileType.Franchise)
                     {
                         salaryCapRecord = (SalaryCapRecord)TableModels[SALARY_CAP_TABLE].GetRecord(0);
                         gameOptionsRecord = (GameOptionRecord)TableModels[GAME_OPTIONS_TABLE].GetRecord(0);
@@ -728,7 +741,7 @@ namespace MaddenEditor.Core
                  foreach (RoleInfo role in streamed.TableModels[EditorModel.ROLES_INFO].GetRecords())
                      PlayerRole.Add(role.PlayerRole, role.RoleName);
 
-                 if (FileVersion == MaddenFileVersion.Ver2007)
+                 if (MadVersion == MaddenFileVersion.Ver2007)
                  {
                      if (!PlayerRole.ContainsKey(31))
                          PlayerRole.Add(31, "None");
@@ -743,7 +756,7 @@ namespace MaddenEditor.Core
             
             PlayerRole.Add(0,"QBFuture");
 
-            if (FileVersion == MaddenFileVersion.Ver2007)
+            if (MadVersion == MaddenFileVersion.Ver2007)
             {
                 PlayerRole.Add(31, "None");
                 PlayerRole.Add(1, "Feature Back");
@@ -829,7 +842,7 @@ namespace MaddenEditor.Core
             if (man.stream_model == null)
             {
                 #region 04-08
-                if (fileVersion < MaddenFileVersion.Ver2019)
+                if (madversion < MaddenFileVersion.Ver2019)
                 {
                     Colleges.Add(0, new college_entry(CurrentYearIndex, 0, "Abilene Chr.", -1));
                     Colleges.Add(1, new college_entry(CurrentYearIndex, 1, "Air Force", -1));
@@ -1112,7 +1125,7 @@ namespace MaddenEditor.Core
                 #endregion
 
                 #region 2019
-                else if (fileVersion == MaddenFileVersion.Ver2019)
+                else if (madversion >= MaddenFileVersion.Ver2019)
                 {
                     Colleges.Add(0, new college_entry(CurrentYearIndex, 0, "NA", -1));
                     Colleges.Add(1, new college_entry(CurrentYearIndex, 1, "Abilene Chr.", -1));
@@ -1584,7 +1597,7 @@ namespace MaddenEditor.Core
                     Colleges.Add(422, new college_entry(CurrentYearIndex, 422, "Cal Lutheran", -1));
                     Colleges.Add(423, new college_entry(CurrentYearIndex, 423, "Charlotte", -1));
                     Colleges.Add(424, new college_entry(CurrentYearIndex, 424, "Marian", -1));
-                    //Colleges.Add(425, new college_entry(CurrentYearIndex, 425, "Northwestern St", -1));
+                    Colleges.Add(425, new college_entry(CurrentYearIndex, 425, "Wisconsin-Platteville", -1));
                     Colleges.Add(426, new college_entry(CurrentYearIndex, 426, "Southern Oregon", -1));
                     Colleges.Add(427, new college_entry(CurrentYearIndex, 427, "Faulkner", -1));
                     Colleges.Add(428, new college_entry(CurrentYearIndex, 428, "Globe Tech NY", -1));
@@ -1615,7 +1628,40 @@ namespace MaddenEditor.Core
                 
                 
                 #endregion
-                return;
+
+                if (madversion == MaddenFileVersion.Ver2020)
+                {
+                    Colleges.Add(450, new college_entry(CurrentYearIndex, 450, "Limestone", -1));
+                    Colleges.Add(451, new college_entry(CurrentYearIndex, 451, "SE Oklahoma State", -1));
+                    Colleges.Add(452, new college_entry(CurrentYearIndex, 452, "NE Mississippi Community", -1));
+                    Colleges.Add(453, new college_entry(CurrentYearIndex, 453, "Indianapolis", -1));
+                    Colleges.Add(454, new college_entry(CurrentYearIndex, 454, "Mines", -1));
+                    Colleges.Add(455, new college_entry(CurrentYearIndex, 455, "Gannon University", -1));
+                    Colleges.Add(456, new college_entry(CurrentYearIndex, 456, "Dakota State", -1));
+                    Colleges.Add(457, new college_entry(CurrentYearIndex, 457, "Pace University", -1));
+                    Colleges.Add(458, new college_entry(CurrentYearIndex, 458, "Edinboro", -1));
+                    Colleges.Add(459, new college_entry(CurrentYearIndex, 459, "Ohio Dominican", -1));
+
+                    Colleges.Add(460, new college_entry(CurrentYearIndex, 460, "St. Norbert", -1));
+                    Colleges.Add(461, new college_entry(CurrentYearIndex, 461, "Dickinson State", -1));
+                    Colleges.Add(462, new college_entry(CurrentYearIndex, 462, "Kennesaw State", -1));
+                    Colleges.Add(463, new college_entry(CurrentYearIndex, 463, "Missouri S&T", -1));
+                    Colleges.Add(464, new college_entry(CurrentYearIndex, 464, "Lenoir-Rhyne", -1));
+                    Colleges.Add(465, new college_entry(CurrentYearIndex, 465, "Mercyhurst University", -1));
+                    Colleges.Add(466, new college_entry(CurrentYearIndex, 466, "Texas A&M - Kingsville", -1));
+                    Colleges.Add(467, new college_entry(CurrentYearIndex, 467, "Concordia Univ.-St. Paul", -1));
+                    Colleges.Add(468, new college_entry(CurrentYearIndex, 468, "Adams State", -1));
+                    Colleges.Add(469, new college_entry(CurrentYearIndex, 469, "Univ of Minnesota Duluth", -1));
+
+                    Colleges.Add(470, new college_entry(CurrentYearIndex, 470, "West Liberty University", -1));
+                    Colleges.Add(471, new college_entry(CurrentYearIndex, 471, "Arizona Christian", -1));
+                    Colleges.Add(472, new college_entry(CurrentYearIndex, 472, "UW-Stout", -1));
+                    Colleges.Add(473, new college_entry(CurrentYearIndex, 473, "SW Assemblies of God", -1));
+                    Colleges.Add(474, new college_entry(CurrentYearIndex, 474, "Benedictine College", -1));
+                    Colleges.Add(475, new college_entry(CurrentYearIndex, 475, "Lindsey Wilson College", -1));
+                    Colleges.Add(476, new college_entry(CurrentYearIndex, 476, "Friends University", -1));
+                }
+               
             }
 
             List<CollegesRecord> deleteme = new List<CollegesRecord>();
@@ -1623,7 +1669,7 @@ namespace MaddenEditor.Core
             foreach (CollegesRecord record in man.stream_model.TableModels[EditorModel.COLLEGES_TABLE].GetRecords())
             {
                 int check = -1;
-                if (fileVersion >= MaddenFileVersion.Ver2006)
+                if (madversion >= MaddenFileVersion.Ver2006)
                     check = record.College_pxpc;
                 foreach (KeyValuePair<int, college_entry> pair in Colleges)
                 {
@@ -1664,15 +1710,15 @@ namespace MaddenEditor.Core
             bool draft = false;
             if (this.FileType == MaddenFileType.Franchise)
             {
-                if (this.FileVersion == MaddenFileVersion.Ver2004 && this.FranchiseStage.CurrentStage == 19)
+                if (this.MadVersion == MaddenFileVersion.Ver2004 && this.FranchiseStage.CurrentStage == 19)
                     draft = true;
-                else if (this.FileVersion == MaddenFileVersion.Ver2005 && this.FranchiseStage.CurrentStage == 20)
+                else if (this.MadVersion == MaddenFileVersion.Ver2005 && this.FranchiseStage.CurrentStage == 20)
                     draft = true;
-                else if (this.FileVersion == MaddenFileVersion.Ver2006 && this.FranchiseStage.CurrentStage == 20)
+                else if (this.MadVersion == MaddenFileVersion.Ver2006 && this.FranchiseStage.CurrentStage == 20)
                     draft = true;
-                else if (this.FileVersion == MaddenFileVersion.Ver2007 && this.FranchiseStage.CurrentStage == 23)
+                else if (this.MadVersion == MaddenFileVersion.Ver2007 && this.FranchiseStage.CurrentStage == 23)
                     draft = true;
-                else if (this.FileVersion == MaddenFileVersion.Ver2008 && this.FranchiseStage.CurrentStage == 22)
+                else if (this.MadVersion == MaddenFileVersion.Ver2008 && this.FranchiseStage.CurrentStage == 22)
                     draft = true;
             }
 
@@ -1901,16 +1947,16 @@ namespace MaddenEditor.Core
 		{
 			get
 			{
-				return fileType;
+				return madtype;
 			}
 		}
 		/// <summary>
 		/// The Enumerated FileVersion that is currently loaded
 		/// </summary>
-		public MaddenFileVersion FileVersion
+		public MaddenFileVersion MadVersion
 		{
-			get	{ return fileVersion; }
-            set { fileVersion = value; }
+			get	{ return madversion; }
+            set { madversion = value; }
 		}
 		/// <summary>
 		/// The PlayerEditingModel object to manipulate Player objects
@@ -2025,17 +2071,21 @@ namespace MaddenEditor.Core
         private bool ProcessFile()
         {
             bool result = true;
+           
             try
             {
                 tableCount = TDB.TDBDatabaseGetTableCount(dbIndex);
-                if (tableCount == MADDEN_2019_DBTEAM_COUNT)
+                if (tableCount == MADDEN_2019_DBTEAM_COUNT || tableCount == MADDEN_2020_DBTEAM_COUNT)
                 {
-                    fileVersion = MaddenFileVersion.Ver2019;
-                    fileType = MaddenFileType.DBTeam;
+                    madtype = MaddenFileType.DBTeam;
+                    if (tableCount == MADDEN_2019_DBTEAM_COUNT)
+                        madversion = MaddenFileVersion.Ver2019;
+                    else if (tableCount == MADDEN_2020_DBTEAM_COUNT)
+                        madversion = MaddenFileVersion.Ver2020;                    
                     BigEndian = true;
                 }  
                 
-                if (fileType != MaddenFileType.DBTeam)
+                if (madtype != MaddenFileType.DBTeam)
                 {
                     //  Adding a check for DB Templates first
                     for (int j = 0; j < tableCount; j++)
@@ -2046,29 +2096,30 @@ namespace MaddenEditor.Core
 
                         if (tableProps.Name == "PORC")
                         {
-                            fileType = MaddenFileType.Template;
+                            madtype = MaddenFileType.Template;
                             break;
                         }
                     }
 
                     Trace.WriteLine("Table count in " + fileName + " = " + tableCount);
                     //Set the file type of this loaded file
-                    if (fileType != MaddenFileType.Template)
+                    if (madtype != MaddenFileType.Template)
                     {
-                        if (tableCount == 23|| tableCount == 72 || tableCount == 85 || tableCount == 116 || tableCount == 168 || tableCount == 203 || tableCount == 215 )
+                        if (tableCount == 23|| tableCount == 72 || tableCount == 85 || tableCount == 116 || tableCount == 168 || tableCount == 203 || tableCount == 215 
+                            || tableCount ==106)
                         {
-                            fileType = MaddenFileType.Streameddata;
+                            madtype = MaddenFileType.Streameddata;
 
                             if (tableCount == MADDEN_2004_STREAMED_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2004;
+                                madversion = MaddenFileVersion.Ver2004;
                             else if (tableCount == MADDEN_2005_STREAMED_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2005;
+                                madversion = MaddenFileVersion.Ver2005;
                             else if (tableCount == MADDEN_2006_STREAMED_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2006;
+                                madversion = MaddenFileVersion.Ver2006;
                             else if (tableCount == MADDEN_2007_STREAMED_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2007;
+                                madversion = MaddenFileVersion.Ver2007;
                             else if (tableCount == MADDEN_2008_STREAMED_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2008;
+                                madversion = MaddenFileVersion.Ver2008;
                             else if (tableCount == MADDEN_2019_STREAMED_COUNT)
                             {
                                 for (int j = 0; j < tableCount; j++)
@@ -2079,33 +2130,33 @@ namespace MaddenEditor.Core
 
                                     if (tableProps.Name == "YTIC")
                                     {
-                                        fileType = MaddenFileType.GameMode;
+                                        madtype = MaddenFileType.GameMode;
                                         break;
                                     }
                                 }
                                 
-                                fileVersion = MaddenFileVersion.Ver2019;
+                                madversion = MaddenFileVersion.Ver2019;
                                 BigEndian = true;
                             }
-                            else if (tableCount == MADDEN_2019_DATA_RAM)
+                            else if (tableCount == MADDEN_2019_DATA_RAM || tableCount == MADDEN_2020_DATA_RAM)
                             {
-                                fileVersion = MaddenFileVersion.Ver2019;
-                                fileType = MaddenFileType.DataRam;
+                                madtype = MaddenFileType.DataRam;
+                                if (tableCount == MADDEN_2019_DATA_RAM)
+                                    madversion = MaddenFileVersion.Ver2019;
+                                else if (tableCount == MADDEN_2020_DATA_RAM)
+                                    madversion = MaddenFileVersion.Ver2020;                                
                                 BigEndian = true;
                             }
                         }
-                        else if (tableCount == 10 || tableCount == 11 || tableCount == 5 || tableCount == 8)
+                        else if (tableCount == 10 || tableCount == 11 || tableCount == 8)
                         {
-                            fileType = MaddenFileType.Roster;
+                            madtype = MaddenFileType.Roster;
                             if (tableCount == MADDEN_ROS_2007_TABLE_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2007;
-                            else if (tableCount == MADDEN_ROS_2019_TABLE_COUNT)
-                                fileVersion = MaddenFileVersion.Ver2019;
-
+                                madversion = MaddenFileVersion.Ver2007;
                         }
                         else if (tableCount == MADDEN_2019_USER_CONFIG_COUNT)
                         {
-                            fileVersion = MaddenFileVersion.Ver2019;
+                            madversion = MaddenFileVersion.Ver2019;
                             for (int j = 0; j < tableCount; j++)
                             {
                                 TdbTableProperties tableProps = new TdbTableProperties();
@@ -2114,38 +2165,38 @@ namespace MaddenEditor.Core
 
                                 if (tableProps.Name == "BALP")
                                 {
-                                    fileType = MaddenFileType.StaticData;
+                                    madtype = MaddenFileType.StaticData;
                                     BigEndian = true;
                                     break;
                                 }
                                 else if (tableProps.Name == "GOPT")
                                 {
-                                    fileType = MaddenFileType.UserConfig;
+                                    madtype = MaddenFileType.UserConfig;
                                     break;
                                 }
                                 
                             }
                         }
-                        else
+                        else if (madversion < MaddenFileVersion.Ver2019)
                         {
-                            fileType = MaddenFileType.Franchise;
+                            madtype = MaddenFileType.Franchise;
                             Trace.WriteLine("Franchise contains " + tableCount + " tables");
                             switch (tableCount)
                             {
                                 case MADDEN_FRA_2008_TABLE_COUNT:
-                                    fileVersion = MaddenFileVersion.Ver2008;
+                                    madversion = MaddenFileVersion.Ver2008;
                                     break;
                                 case MADDEN_FRA_2007_TABLE_COUNT:
-                                    fileVersion = MaddenFileVersion.Ver2007;
+                                    madversion = MaddenFileVersion.Ver2007;
                                     break;
                                 case MADDEN_FRA_2005_TABLE_COUNT:
-                                    fileVersion = MaddenFileVersion.Ver2005;
+                                    madversion = MaddenFileVersion.Ver2005;
                                     break;
                                 case MADDEN_FRA_2006_TABLE_COUNT:
-                                    fileVersion = MaddenFileVersion.Ver2006;
+                                    madversion = MaddenFileVersion.Ver2006;
                                     break;
                                 default:
-                                    fileVersion = MaddenFileVersion.Ver2004;
+                                    madversion = MaddenFileVersion.Ver2004;
                                     break;
                             }
                         }
@@ -2156,7 +2207,7 @@ namespace MaddenEditor.Core
                 //  10 or 11 tables based on version
                 if (FileType == MaddenFileType.Roster)
                 {
-                    if (fileVersion == MaddenFileVersion.Ver2019)
+                    if (madversion >= MaddenFileVersion.Ver2019)
                     {
                         tableOrder.Add(DEPTH_CHART_TABLE, -1);
                         tableOrder.Add(INJURY_TABLE, -1);
@@ -2166,7 +2217,7 @@ namespace MaddenEditor.Core
                     else
                     {
                         tableOrder.Add(CITY_TABLE, -1);
-                        if (fileVersion < MaddenFileVersion.Ver2007)
+                        if (madversion < MaddenFileVersion.Ver2007)
                             tableOrder.Add(COACH_SLIDER_TABLE, -1);
                         tableOrder.Add(COACH_TABLE, -1);
                         // CTMP
@@ -2183,10 +2234,10 @@ namespace MaddenEditor.Core
 
                 #region Franchise File
                 // Make sure we only load some tables if we are a franchise file
-                else if (fileType == MaddenFileType.Franchise)
+                else if (madtype == MaddenFileType.Franchise)
                 {
                     tableOrder.Add(CITY_TABLE, -1);
-                    if (fileVersion < MaddenFileVersion.Ver2007)
+                    if (madversion < MaddenFileVersion.Ver2007)
                         tableOrder.Add(COACH_SLIDER_TABLE, -1);
                     tableOrder.Add(COACH_TABLE, -1);
                     // CTMP
@@ -2233,7 +2284,7 @@ namespace MaddenEditor.Core
                     tableOrder.Add(COACHING_HISTORY_TABLE, -1);
                     tableOrder.Add(COACHES_EXPECTED_SALARY, -1);
 
-                    if (fileVersion > MaddenFileVersion.Ver2004)
+                    if (madversion > MaddenFileVersion.Ver2004)
                     {
                         tableOrder.Add(INACTIVE_TABLE, -1);
                         tableOrder.Add(RFA_STATE_TABLE, -1);
@@ -2252,7 +2303,7 @@ namespace MaddenEditor.Core
                     tableOrder.Add(GAME_OPTIONS_TABLE, -1);
                     tableOrder.Add(USER_OPTIONS_TABLE, -1);
 
-                    if (fileVersion < MaddenFileVersion.Ver2005)
+                    if (madversion < MaddenFileVersion.Ver2005)
                         tableOrder.Add(SALARY_CAP_INCREASE, -1);
 
                     tableOrder.Add(PLAYER_MINIMUM_SALARY_TABLE, -1);
@@ -2268,15 +2319,15 @@ namespace MaddenEditor.Core
                     tableOrder.Add(COLLEGES_TABLE, -1);
                     tableOrder.Add(DEPTH_CHART_SUBS, -1);
 
-                    if (fileVersion != MaddenFileVersion.Ver2019)
+                    if (madversion != MaddenFileVersion.Ver2019)
                         tableOrder.Add(POSITION_SUBS, -1);
 
                     tableOrder.Add(PLAYER_LAST_NAMES, -1);
                     tableOrder.Add(PLAYER_FIRST_NAMES, -1);
 
-                    if (fileVersion < MaddenFileVersion.Ver2019)
+                    if (madversion < MaddenFileVersion.Ver2019)
                     {
-                        if (fileVersion >= MaddenFileVersion.Ver2005)
+                        if (madversion >= MaddenFileVersion.Ver2005)
                         {
                             tableOrder.Add(PROGRESSION, -1);
                             tableOrder.Add(REGRESSION, -1);
@@ -2300,12 +2351,12 @@ namespace MaddenEditor.Core
                             tableOrder.Add(PTWR, -1);
                         }
 
-                        if (fileVersion >= MaddenFileVersion.Ver2006)
+                        if (madversion >= MaddenFileVersion.Ver2006)
                         {
                             tableOrder.Add(ROLES_DEFINE, -1);
                         }
 
-                        if (fileVersion >= MaddenFileVersion.Ver2007)
+                        if (madversion >= MaddenFileVersion.Ver2007)
                         {
                             tableOrder.Add(ROLES_INFO, -1);
                             tableOrder.Add(ROLES_PLAYER_EFFECTS, -1);
@@ -2323,7 +2374,7 @@ namespace MaddenEditor.Core
 
                 #region DB Templates
 
-                else if (fileType == MaddenFileType.Template)
+                else if (madtype == MaddenFileType.Template)
                 {
                     tableOrder.Add(PLAYER_OVERALL_CALC, -1);
                     tableOrder.Add(PLAYBOOK_TABLE, -1);
@@ -2332,7 +2383,7 @@ namespace MaddenEditor.Core
                 #endregion
 
                 #region DataRam
-                else if (fileType == MaddenFileType.DataRam)
+                else if (madtype == MaddenFileType.DataRam)
                 {
 
                 }
@@ -2351,7 +2402,7 @@ namespace MaddenEditor.Core
                     tableOrder.Add(UNIFORM_TABLE, -1);
                     tableOrder.Add(TEAM_TABLE, -1);
                 }
-                else if (fileType == MaddenFileType.UserConfig)
+                else if (madtype == MaddenFileType.UserConfig)
                 {
                     tableOrder.Add(GAME_OPTIONS_TABLE, -1);
                     tableOrder.Add(USER_OPTIONS_TABLE, -1);
@@ -2379,29 +2430,26 @@ namespace MaddenEditor.Core
                     #region Get Version from Playertable
 
                     // We use the player table to work out what version a roster file is.                   
-                    if (fileType == MaddenFileType.Roster && tableProps.Name.Equals(PLAYER_TABLE))
+                    if (madversion < MaddenFileVersion.Ver2019 && madtype == MaddenFileType.Roster && tableProps.Name.Equals(PLAYER_TABLE))
                     {
                         switch (tableProps.FieldCount)
                         {
                             case MADDEN_ROS_2004_PLAY_FIELD_COUNT:
-                                fileVersion = MaddenFileVersion.Ver2004;
+                                madversion = MaddenFileVersion.Ver2004;
                                 break;
                             case MADDEN_ROS_2005_PLAY_FIELD_COUNT:
-                                fileVersion = MaddenFileVersion.Ver2005;
+                                madversion = MaddenFileVersion.Ver2005;
                                 break;
                             case MADDEN_ROS_2006_PLAY_FIELD_COUNT:
-                                fileVersion = MaddenFileVersion.Ver2006;
-                                break;
-                            case MADDEN_ROS_2019_PLAY_FIELD_COUNT:
-                                fileVersion = MaddenFileVersion.Ver2019;
-                                break;
+                                madversion = MaddenFileVersion.Ver2006;
+                                break;                            
                             default:
-                                fileVersion = MaddenFileVersion.Ver2007;
+                                madversion = MaddenFileVersion.Ver2007;
                                 break;
                         }
 
                         // We check for field PRL2 (Player Weapon) which is new in v2008
-                        if (fileVersion < MaddenFileVersion.Ver2019)
+                        if (madversion < MaddenFileVersion.Ver2019)
                         {
                             for (int i = 0; i < tableProps.FieldCount; i++)
                             {
@@ -2410,11 +2458,10 @@ namespace MaddenEditor.Core
                                 TDB.TDBFieldGetProperties(dbIndex, tableProps.Name, i, ref fieldProps);
 
                                 if (fieldProps.Name == "PRL2")
-                                    fileVersion = MaddenFileVersion.Ver2008;
+                                    madversion = MaddenFileVersion.Ver2008;
                             }
                         }
                     }
-
 
                     #endregion
 
@@ -2429,24 +2476,26 @@ namespace MaddenEditor.Core
                 if (this.FileType == MaddenFileType.Franchise)
                 {
                     CurrentYearIndex += FranchiseTime.Year;
-                    CurrentYear = 2003 + (int)FileVersion + FranchiseTime.Year;
+                    CurrentYear = 2003 + (int)MadVersion + FranchiseTime.Year;
                     if (FranchiseTime.WeekType >= 175)
                         CurrentYear++;
                 }
                 else
                 {
-                    if (fileVersion == MaddenFileVersion.Ver2004)
+                    if (madversion == MaddenFileVersion.Ver2004)
                         CurrentYear = 2003;
-                    else if (fileVersion == MaddenFileVersion.Ver2005)
+                    else if (madversion == MaddenFileVersion.Ver2005)
                         CurrentYear = 2004;
-                    else if (fileVersion == MaddenFileVersion.Ver2006)
+                    else if (madversion == MaddenFileVersion.Ver2006)
                         CurrentYear = 2005;
-                    else if (fileVersion == MaddenFileVersion.Ver2007)
+                    else if (madversion == MaddenFileVersion.Ver2007)
                         CurrentYear = 2006;
-                    else if (fileVersion == MaddenFileVersion.Ver2008)
+                    else if (madversion == MaddenFileVersion.Ver2008)
                         CurrentYear = 2007;
-                    else if (fileVersion == MaddenFileVersion.Ver2019)
+                    else if (madversion == MaddenFileVersion.Ver2019)
                         CurrentYear = 2018;
+                    else if (madversion == MaddenFileVersion.Ver2020)
+                        CurrentYear = 2019;
                 }
             }
 
@@ -2470,11 +2519,11 @@ namespace MaddenEditor.Core
                 //result &= ProcessTable(pair.Value);
             }
 
-            if (unknown && fileType != MaddenFileType.DataRam)
-                fileType = MaddenFileType.Unknown;
+            if (unknown && madtype != MaddenFileType.DataRam)
+                madtype = MaddenFileType.Unknown;
 
 
-            Trace.WriteLine("File type is : " + fileType.ToString() + " and version is : " + fileVersion.ToString());
+            Trace.WriteLine("File type is : " + madtype.ToString() + " and version is : " + madversion.ToString());
             return result;
         }
 		/// <summary>
@@ -2602,7 +2651,7 @@ namespace MaddenEditor.Core
             if (tableModels.ContainsKey(table.Name))
             {   
                 // try this for now
-                fileType = MaddenFileType.Unknown;
+                madtype = MaddenFileType.Unknown;
             }
             else tableModels.Add(table.Name, table);
 			Trace.WriteLine("Finished processing Table: " + table.Name);

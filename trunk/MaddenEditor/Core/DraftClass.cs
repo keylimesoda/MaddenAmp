@@ -20,6 +20,7 @@
  * 
  *****************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -38,21 +39,19 @@ namespace MaddenEditor.Core
 {
     public class DraftPlayer
     {
-        // 328 bytes per Player record
-        // confidence, personality, size grade, durability grade, physical grade, intangible grade
-        // projected round & pick
-        //
+        // 2019 - 328 bytes  2020 - 336 bytes
+        // 2020 Adds HairStyle, MorphHead ?
 
         #region Members
         public string NameFirst = "";
         public string NameLast = "";
-        public int PHUN = 0;
-        public string PlaceHolder = "PLACEHOLDER";
+        public int HomeState = 0;
+        public string HomeTown = "PLACEHOLDER";
         public byte[] padding = new byte[16];
 
         public int College = 0;
-        public int Unknown62 = 0;
-        public int Unknown63 = 0;
+        public int PLBD = 0;
+        public string Birthday = "";
         public int Age = 0;
         public int Height = 0;
         public int Weight = 0;
@@ -100,7 +99,7 @@ namespace MaddenEditor.Core
         public int RunBlockFin = 0;
         public int RunBlockPow = 0;
         public int RunBlock = 0;
-        public int Unknown112 = 0;
+        public int Unknown01 = 0;
         public int SpecCatch = 0;
         public int Speed = 0;
         public int SpinMove = 0;
@@ -123,7 +122,7 @@ namespace MaddenEditor.Core
         public int PossCatch = 0;
         public int Clutch = 0;
         public int CoversBall = 0;
-        public int Unknown135 = 0;
+        public int DeepBall = 0;
         public int DLBull = 0;
         public int DLSpin = 0;
         public int DLSwim = 0;
@@ -135,12 +134,12 @@ namespace MaddenEditor.Core
         public int AggCatch = 0;
         public int Penalty = 0;
         public int PlaysBall = 0;
-        public int Unknown147 = 0;
+        public int Pumpfake = 0;
         public int LBStyle = 0;
         public int SensePressure = 0;
-        public int Unknown150 = 0;
+        public int Unknown02 = 0;
         public int StripsBall = 0;
-        public int Unknown152 = 0;
+        public int TackleLow = 0;
         public int ThrowAway = 0;
         public int ThrowSpiral = 0;
         public int QBTend = 0;
@@ -150,7 +149,7 @@ namespace MaddenEditor.Core
         public int BackPlate = 0;
 
         // body parts
-        public Single ReadSize = 0;
+        public Single RearSize = 0;
         public Single RearDef = 0;
         public Single CalfSize = 0;
         public Single CalfDef = 0;
@@ -160,7 +159,7 @@ namespace MaddenEditor.Core
         public Single WaistDef = 0;
         public Single GutSize = 0;
         public Single GutDef = 0;
-        public Single PadDef = 0;
+        public Single ShoulderHeight = 0;
         public Single PadSize = 0;
         public Single ThighSize = 0;
         public Single ThighDef = 0;
@@ -169,12 +168,12 @@ namespace MaddenEditor.Core
         public Single FootDef = 0;
         public Single FootSize = 0; 
 
-        public int Unknown232 = 0;
+        public int Unknown03 = 0;
         public int EyePaint = 0;
         public int Facemask = 0;
-        public int Unknown235 = 0;
+        public int Unknown04 = 0;
         public int FlakJacket = 0;
-        public int Unknown237 = 0;
+        public int Unknown05 = 0;
         public UInt16 FaceID = 0;
 
         public int ElbowLeft = 0;
@@ -185,114 +184,186 @@ namespace MaddenEditor.Core
         public int WristRight = 0;
         public int LeftSleeve = 0;
         public int RightSleeve = 0;
-        public int Unknown248 = 0;
+        public int HairColor = 0;       //2019 only
         public int Handed = 0;
 
         public int HandWarmer = 0;
         public int Helmet = 0;
-        public int Unknown252 = 0;
-        public int Unknown253 = 0;
-        public int Unknown254 = 0;
-        public int LeftAnkle = 0;
-        public int Unknown256 = 0;
+        public int JerseySleeve = 0;
+        public int Unknown06 = 0;
+        public int Unknown07 = 0;
+        public int Unknown08 = 0;
+        public int Unknown09 = 0;
         public int NeckRoll = 0;
-        public int Unknown258 = 0;
-        public int Unknown259 = 0;
+        public int NeckType = 0;
+        public int Unknown10 = 0;
 
         public UInt16 PortraitID = 0;
         public int QBStyle = 0;
-        public int Knees = 0;
-        public int Shoes = 0;
-        public int RightAnkle = 0;
-        public int Thighs = 0;
-        public int Unknown267 = 0;
-        public int Unknown268 = 0;
-        public int Unknown269 = 0;
+        public int LeftKnee = 0;
+        public int LeftShoe = 0;
+        public int LeftSpat = 0;
+        public int LeftThigh = 0;
+        public int Unknown11 = 0;
+        public int HeadGear = 0;
+        public int Unknown12 = 0;
 
         public int SockHeight = 0;
-        public int Unknown271 = 0;
+        public int Unknown13 = 0;
         public int QBStance = 0;
-        public int Unknown273 = 0;
-        public int Unknown274 = 0;
+        public int Unknown14 = 0;
+        public int Tendency = 0;
         public int Towel = 0;
-        public int Unknown276 = 0;
+        public int Unknown15 = 0;
         public int Visor = 0;
-        public int Unknown278 = 0;
-        public int Unknown279 = 0;
+        public int Unknown16 = 0;
+        public int Unknown17 = 0;
 
-        public int Unknown280 = 0;
-        public int Unknown281 = 0;
+        public int Unknown18 = 0;
+        public int Celebration = 0;
         public UInt16 Comment = 8191;   // Generic        
-        public int Unknown284 = 0;
-        public int Unknown285 = 0;
-        public int Unknown286 = 0;
-        public int Unknown287 = 0;
-        public int Unknown288 = 0;
-        public int Unknown289 = 0;
+        public int Unknown19 = 0;
+        public int Unknown20 = 0;
+        public int Unknown21 = 0;
+        public int Unknown22 = 0;
+        public int Unknown23 = 0;
+        public int Unknown24 = 0;
 
-        public int Unknown290 = 0;
-        public int Unknown291 = 0;
-        public int Unknown292 = 0;
-        public int Unknown293 = 0;
-        public int Unknown294 = 0;
-        public int Unknown295 = 0;
-        public int Unknown296 = 0;
-        public int Unknown297 = 0;
-        public int Unknown298 = 0;
-        public int Unknown299 = 0;
+        public int Unknown25 = 0;
+        public int Unknown26 = 0;
+        public int Unknown27 = 0;
+        public int Unknown28 = 0;
+        public int Unknown29 = 0;
+        public int Unknown30 = 0;
+        public int Unknown31 = 0;
+        public int Unknown32 = 0;
+        public int Unknown33 = 0;
+        public int Unknown34 = 0;
 
-        public int Unknown300 = 0;
-        public int Unknown301 = 0;
-        public int Unknown302 = 0;
-        public int Unknown303 = 0;
-        public int Unknown304 = 0;
-        public int Unknown305 = 0;
-        public int Unknown306 = 0;
-        public int Unknown307 = 0;
-        public int Unknown308 = 0;
-        public int Unknown309 = 0;
+        public int Unknown35 = 0;
+        public int Unknown36 = 0;
+        public int Unknown37 = 0;
+        public int Unknown38 = 0;
+        public int Unknown39 = 0;
+        public int Unknown40 = 0;
+        public int Unknown41 = 0;
+        public int Unknown42 = 0;
+        public int Unknown43 = 0;
+        public int Unknown44 = 0;
 
-        public int Unknown310 = 0;
-        public int Unknown311 = 0;
-        public int Unknown312 = 0;
-        public int Unknown313 = 0;
-        public int Unknown314 = 0;
-        public int Unknown315 = 0;
-        public int Unknown316 = 0;
-        public int Unknown317 = 0;
-        public int Unknown318 = 0;
-        public int Unknown319 = 0;
+        public int Unknown45 = 0;
+        public int Unknown46 = 0;
+        public int Unknown47 = 0;
+        public int Unknown48 = 0;
+        public int Unknown49 = 0;
+        public int Unknown50 = 0;
+        public int Unknown51 = 0;
+        public int Unknown52 = 0;
+        public int Unknown53 = 0;
+        public int Unknown54 = 0;
 
-        public int Unknown320 = 0;
-        public int Unknown321 = 0;
-        public int Unknown322 = 0;
-        public int Unknown323 = 0;
-        public int Unknown324 = 0;
-        public int Unknown325 = 0;
-        public int Unknown326 = 0;
-        public int Unknown327 = 0;
+        public int Unknown55 = 0;
+        public int Unknown56 = 0;
+        public int Unknown57 = 0;
+        public int Unknown58 = 0;
+        public int Unknown59 = 0;
+        public int Unknown60 = 0;
+        public int Unknown61 = 0;
+        public int Unknown62 = 0;
 
-        public int PlayerID = 0;
+        public int Unknown63 = 0;
+        public int Unknown64 = 0;
+        public int Unknown65 = 0;
+
         public int Archetype = 0;
+        public int HairStyle = 0;
         
         #endregion
-         
-        public List<UInt32> BodyParts = new List<UInt32>();
-        public List<UInt32> faces = new List<UInt32>();
-        public List<byte> unknowns = new List<byte>();
-
+      
         public DraftPlayer()
         {
         }
-        
-        public void ReadPlayer(BinaryReader binreader)
+
+        public UInt32 GetUnsignedValue(bool[] bits)
         {
+            UInt32 uval = 0;
+            for (int i = 0; i < bits.Length; i++)
+            {
+                if (bits[i])
+                    uval += (UInt32)1 << i;
+            }
+            return uval;
+        }
+
+        public string GetBirthday(Int32 val)
+        {
+            byte[] test = new byte[4];
+            test = BitConverter.GetBytes(val);
+            BitArray ba = new BitArray(test);
+            bool[] convert = new bool[16];
+            for (int c = 0; c < 16; c++)
+                convert[c] = ba[c];
+            convert.Reverse();
+
+            bool[] year = new bool[7];
+            Array.Copy(convert, 0, year, 0, 7);
+            
+            bool[] month = new bool[4];
+            Array.Copy(convert, 7, month, 0, 4);            
+            
+            bool[] day = new bool[5];
+            Array.Copy(convert, 11, day, 0, 5);
+
+            UInt32 m = 1 + GetUnsignedValue(month);
+            UInt32 y = 1940 + GetUnsignedValue(year);
+            UInt32 d = GetUnsignedValue(day);
+
+            return m.ToString() + "/" + d.ToString() + "/" + y.ToString();
+        }
+
+        public UInt16 SetBirthday(string dob)
+        {
+            string[] test = dob.Split('/');
+            int m = Convert.ToInt32(test[0]);
+            int d = Convert.ToInt32(test[1]);
+            int y = Convert.ToInt32(test[2]);
+            if (m > 12)
+                m = 12;
+            if (d > 31)
+                d = 31;
+            if (y < 1940)
+                y = 1940;
+            y -= 1940;
+
+            byte[] mon = BitConverter.GetBytes(m);
+            byte[] da = BitConverter.GetBytes(d);
+            byte[] yea = BitConverter.GetBytes(y);
+            BitArray month = new BitArray(mon);
+            BitArray day = new BitArray(da);
+            BitArray year = new BitArray(yea);            
+            bool[] res = new bool[16];
+            for (int c = 0; c < 7; c++)
+                res[c] = year[c];
+            for (int c = 0; c < 4; c++)
+                res[7 + c] = month[c];
+            for (int c = 0; c < 5; c++)
+                res[11 + c] = year[c];
+            UInt32 playerbirthday = GetUnsignedValue(res);
+            return (UInt16)playerbirthday;
+        }
+
+        public void ReadPlayer19(BinaryReader binreader)
+        {
+            // 2019 328 bytes
+           
             long start = binreader.BaseStream.Position;
 
             #region First Name
+            int firstlen = 14;
+            
             ASCIIEncoding enc = new ASCIIEncoding();
             List<byte> bytename = new List<byte>();
-            for (int c = 0; c < 14; c++)
+            for (int c = 0; c < firstlen; c++)
             {
                 byte b = binreader.ReadByte();
                 if (b != 0)
@@ -302,9 +373,11 @@ namespace MaddenEditor.Core
             #endregion
 
             #region Last Name
+            int lastlen = 18;
+           
             ASCIIEncoding enc2 = new ASCIIEncoding();
             List<byte> bytename2 = new List<byte>();
-            for (int c = 0; c < 18; c++)
+            for (int c = 0; c < lastlen; c++)
             {
                 byte b = binreader.ReadByte();
                 if (b != 0)
@@ -313,27 +386,25 @@ namespace MaddenEditor.Core
             NameLast = enc2.GetString(bytename2.ToArray());
             #endregion
 
-            PHUN = binreader.ReadByte();
+            HomeState = binreader.ReadByte();
 
-            #region Placeholder
-            // Not sure if placeholder will ever be used so let's read it anyway
-            bool stop = false;
-            bytename.Clear();
-            enc = new ASCIIEncoding();
-            while (!stop)
+            #region Hometown
+            // Not sure if hometown will be used but let's read it anyway                        
+            ASCIIEncoding enc3 = new ASCIIEncoding();
+            List<byte> bytename3 = new List<byte>();
+            for (int c = 0; c < 27; c++)
             {
                 byte b = binreader.ReadByte();
                 if (b != 0)
-                    bytename.Add(b);
-                else stop = true;
-            }
-            PlaceHolder = enc.GetString(bytename.ToArray());
+                    bytename3.Add(b);
+            }            
+            HomeTown = enc3.GetString(bytename3.ToArray());
             #endregion
-
+           
             binreader.BaseStream.Position = start + 60;
+           
             College = binreader.ReadUInt16();       //60
-            Unknown62 = binreader.ReadByte();       //62
-            Unknown63 = binreader.ReadByte();       //63
+            PLBD = binreader.ReadUInt16();          //62-63            
             Age = binreader.ReadByte();             //64
             Height = binreader.ReadByte();          //65
             Weight = 160 + binreader.ReadByte();    //66 + 160 pounds            
@@ -387,7 +458,7 @@ namespace MaddenEditor.Core
 
             RunBlockPow = binreader.ReadByte();     //110
             RunBlock = binreader.ReadByte();        //111
-            Unknown112 = binreader.ReadByte();      //112            
+            Unknown01 = binreader.ReadByte();      //112            
             SpecCatch = binreader.ReadByte();       //113
             Speed = binreader.ReadByte();           //114
             SpinMove = binreader.ReadByte();        //115
@@ -412,7 +483,7 @@ namespace MaddenEditor.Core
             PossCatch = binreader.ReadByte();       //132
             Clutch = binreader.ReadByte();          //133
             CoversBall = binreader.ReadByte();      //134
-            Unknown135 = binreader.ReadByte();      //135            
+            DeepBall = binreader.ReadByte();       //135            
             DLBull = binreader.ReadByte();          //136
             DLSpin = binreader.ReadByte();          //137
             DLSwim = binreader.ReadByte();          //138
@@ -425,13 +496,13 @@ namespace MaddenEditor.Core
             AggCatch = binreader.ReadByte();        //144
             Penalty = binreader.ReadByte();         //145
             PlaysBall = binreader.ReadByte();       //146
-            Unknown147 = binreader.ReadByte();      //147
+            Pumpfake = binreader.ReadByte();        //147
             LBStyle = binreader.ReadByte();         //148
             SensePressure = binreader.ReadByte();   //149
 
-            Unknown150 = binreader.ReadByte();      //150            
+            Unknown02 = binreader.ReadByte();       //150       //finesse moves? 2020           
             StripsBall = binreader.ReadByte();      //151
-            Unknown152 = binreader.ReadByte();      //152            
+            TackleLow = binreader.ReadByte();       //152            
             ThrowAway = binreader.ReadByte();       //153
             ThrowSpiral = binreader.ReadByte();     //154
             QBTend = binreader.ReadByte();          //155
@@ -439,32 +510,34 @@ namespace MaddenEditor.Core
             Development = binreader.ReadByte();     //157
             Predictable = binreader.ReadByte();     //158
             BackPlate = binreader.ReadByte();       //159            
-
-            ReadSize = binreader.ReadSingle();        // 160-163
-            RearDef = binreader.ReadSingle();        // 164-167
-            CalfSize = binreader.ReadSingle();        // 168-171
-            CalfDef = binreader.ReadSingle();        // 172-175            
+            
+            binreader.BaseStream.Position = start + 160;
+            
+            RearSize = binreader.ReadSingle();      // 160-163  
+            RearDef = binreader.ReadSingle();       // 164-167
+            CalfSize = binreader.ReadSingle();      // 168-171
+            CalfDef = binreader.ReadSingle();       // 172-175            
             ChestSize = binreader.ReadSingle();     // 176-179  chest              
-            ChestDef = binreader.ReadSingle();        // 180-183
-            WaistSize = binreader.ReadSingle();        // 184-187
-            WaistDef = binreader.ReadSingle();        // 188-181
-            GutSize = binreader.ReadSingle();        // 192-195     
+            ChestDef = binreader.ReadSingle();      // 180-183
+            WaistSize = binreader.ReadSingle();     // 184-187
+            WaistDef = binreader.ReadSingle();      // 188-191
+            GutSize = binreader.ReadSingle();       // 192-195     
             GutDef = binreader.ReadSingle();        // 196-199
-            PadDef = binreader.ReadSingle();        // 200-203
-            PadSize = binreader.ReadSingle();        // 204-207
-            ThighSize = binreader.ReadSingle();        // 208-211    
-            ThighDef = binreader.ReadSingle();        // 212-215
+            ShoulderHeight = binreader.ReadSingle();// 200-203
+            PadSize = binreader.ReadSingle();       // 204-207
+            ThighSize = binreader.ReadSingle();     // 208-211    
+            ThighDef = binreader.ReadSingle();      // 212-215
             ArmDef = binreader.ReadSingle();        // 216-219
             ArmSize = binreader.ReadSingle();       // 220-223
-            FootDef = binreader.ReadSingle();        // 224-227
-            FootSize = binreader.ReadSingle();        // 228-231            
-
-            Unknown232 = binreader.ReadByte();      //232
+            FootDef = binreader.ReadSingle();       // 224-227
+            FootSize = binreader.ReadSingle();      // 228-231            
+            //
+            Unknown03 = binreader.ReadByte();       //232
             EyePaint = binreader.ReadByte();        //233
             Facemask = binreader.ReadByte();        //234
-            Unknown235 = binreader.ReadByte();      //235
+            Unknown04 = binreader.ReadByte();       //235
             FlakJacket = binreader.ReadByte();      //236
-            Unknown237 = binreader.ReadByte();      //237
+            Unknown05 = binreader.ReadByte();       //237
             FaceID = binreader.ReadUInt16();        //238-239
 
             ElbowLeft = binreader.ReadByte();       //240
@@ -475,146 +548,681 @@ namespace MaddenEditor.Core
             WristRight = binreader.ReadByte();      //245
             LeftSleeve = binreader.ReadByte();      //246
             RightSleeve = binreader.ReadByte();     //247
-            Unknown248 = binreader.ReadByte();      //248            
+            HairColor = binreader.ReadByte();       //248 
             Handed = binreader.ReadByte();          //249
 
             HandWarmer = binreader.ReadByte();      //250
             Helmet = binreader.ReadByte();          //251
-            Unknown252 = binreader.ReadByte();      //252
-            Unknown253 = binreader.ReadByte();      //253
-            Unknown254 = binreader.ReadByte();      //254
-            LeftAnkle = binreader.ReadByte();       //255
-            Unknown256 = binreader.ReadByte();      //256
+            JerseySleeve = binreader.ReadByte();    //252
+            Unknown06 = binreader.ReadByte();       //253
+            Unknown07 = binreader.ReadByte();       //254
+            Unknown08 = binreader.ReadByte();       //255
+            Unknown09 = binreader.ReadByte();       //256
             NeckRoll = binreader.ReadByte();        //257
-            Unknown258 = binreader.ReadByte();      //258
-            Unknown259 = binreader.ReadByte();      //259
+            NeckType = binreader.ReadByte();        //258
+            Unknown10 = binreader.ReadByte();       //259
 
-            PortraitID = binreader.ReadUInt16();    // 260-261
+            PortraitID = binreader.ReadUInt16();    //260-261
             QBStyle = binreader.ReadByte();         //262
-            Knees = binreader.ReadByte();           //263
-            Shoes = binreader.ReadByte();           //264
-            RightAnkle = binreader.ReadByte();      //265
-            Thighs = binreader.ReadByte();       //266
-            Unknown267 = binreader.ReadByte();      //267
-            Unknown268 = binreader.ReadByte();      //268
-            Unknown269 = binreader.ReadByte();      //269
+            LeftKnee = binreader.ReadByte();        //263
+            LeftShoe = binreader.ReadByte();        //264
+            LeftSpat = binreader.ReadByte();        //265
+            LeftThigh = binreader.ReadByte();       //266
+            Unknown11 = binreader.ReadByte();       //267
+            HeadGear = binreader.ReadByte();        //268
+            Unknown12 = binreader.ReadByte();       //269
 
             SockHeight = binreader.ReadByte();      //270
-            Unknown271 = binreader.ReadByte();      //271
+            Unknown13 = binreader.ReadByte();       //271
             QBStance = binreader.ReadByte();        //272
-            Unknown273 = binreader.ReadByte();      //273
-            Unknown274 = binreader.ReadByte();      //274
+            Unknown14 = binreader.ReadByte();       //273
+            Tendency = binreader.ReadByte();        //274
             Towel = binreader.ReadByte();           //275
-            Unknown276 = binreader.ReadByte();      //276
+            Unknown15 = binreader.ReadByte();       //276
             Visor = binreader.ReadByte();           //277
-            Unknown278 = binreader.ReadByte();      //278
-            Unknown279 = binreader.ReadByte();      //279
+            Unknown16 = binreader.ReadByte();       //278
+            Unknown17 = binreader.ReadByte();       //279
 
-            Unknown280 = binreader.ReadByte();            
-            Unknown281 = binreader.ReadByte();
+            Unknown18 = binreader.ReadByte();            
+            Celebration = binreader.ReadByte();
             Comment = binreader.ReadUInt16();       //282-283            
-            Unknown284 = binreader.ReadByte();
-            Unknown285 = binreader.ReadByte();
-            Unknown286 = binreader.ReadByte();
-            Unknown287 = binreader.ReadByte();
-            Unknown288 = binreader.ReadByte();
-            Unknown289 = binreader.ReadByte();
+            Unknown19 = binreader.ReadByte();
+            Unknown20 = binreader.ReadByte();
+            Unknown21 = binreader.ReadByte();
+            Unknown22 = binreader.ReadByte();
+            Unknown23 = binreader.ReadByte();
+            Unknown24 = binreader.ReadByte();
 
-            Unknown290 = binreader.ReadByte();
-            Unknown291 = binreader.ReadByte();
-            Unknown292 = binreader.ReadByte();
-            Unknown293 = binreader.ReadByte();
-            Unknown294 = binreader.ReadByte();
-            Unknown295 = binreader.ReadByte();
-            Unknown296 = binreader.ReadByte();
-            Unknown297 = binreader.ReadByte();
-            Unknown298 = binreader.ReadByte();
-            Unknown299 = binreader.ReadByte();
+            Unknown25 = binreader.ReadByte();
+            Unknown26 = binreader.ReadByte();
+            Unknown27 = binreader.ReadByte();
+            Unknown28 = binreader.ReadByte();
+            Unknown29 = binreader.ReadByte();
+            Unknown30 = binreader.ReadByte();
+            Unknown31 = binreader.ReadByte();
+            Unknown32 = binreader.ReadByte();
+            Unknown33 = binreader.ReadByte();
+            Unknown34 = binreader.ReadByte();
 
-            Unknown300 = binreader.ReadByte();
-            Unknown301 = binreader.ReadByte();
-            Unknown302 = binreader.ReadByte();
-            Unknown303 = binreader.ReadByte();
-            Unknown304 = binreader.ReadByte();
-            Unknown305 = binreader.ReadByte();
-            Unknown306 = binreader.ReadByte();
-            Unknown307 = binreader.ReadByte();
-            Unknown308 = binreader.ReadByte();
-            Unknown309 = binreader.ReadByte();
+            Unknown35 = binreader.ReadByte();
+            Unknown36 = binreader.ReadByte();
+            Unknown37 = binreader.ReadByte();
+            Unknown38 = binreader.ReadByte();
+            Unknown39 = binreader.ReadByte();
+            Unknown40 = binreader.ReadByte();
+            Unknown41 = binreader.ReadByte();
+            Unknown42 = binreader.ReadByte();
+            Unknown43 = binreader.ReadByte();
+            Unknown44 = binreader.ReadByte();
 
-            Unknown310 = binreader.ReadByte();
-            Unknown311 = binreader.ReadByte();
-            Unknown312 = binreader.ReadByte();
-            Unknown313 = binreader.ReadByte();
-            Unknown314 = binreader.ReadByte();
-            Unknown315 = binreader.ReadByte();
-            Unknown316 = binreader.ReadByte();
-            Unknown317 = binreader.ReadByte();
-            Unknown318 = binreader.ReadByte();
-            Unknown319 = binreader.ReadByte();
+            Unknown45 = binreader.ReadByte();
+            Unknown46 = binreader.ReadByte();
+            Unknown47 = binreader.ReadByte();
+            Unknown48 = binreader.ReadByte();
+            Unknown49 = binreader.ReadByte();
+            Unknown50 = binreader.ReadByte();
+            Unknown51 = binreader.ReadByte();
+            Unknown52 = binreader.ReadByte();
+            Unknown53 = binreader.ReadByte();
+            Unknown54 = binreader.ReadByte();
 
-            Unknown320 = binreader.ReadByte();
-            Unknown321 = binreader.ReadByte();
-            Unknown322 = binreader.ReadByte();
-            Unknown323 = binreader.ReadByte();
-            Unknown324 = binreader.ReadByte();
-            Unknown325 = binreader.ReadByte();
-            Unknown326 = binreader.ReadByte();
-            Unknown327 = binreader.ReadByte();
-
-
+            Unknown55 = binreader.ReadByte();
+            Unknown56 = binreader.ReadByte();
+            Unknown57 = binreader.ReadByte();
+            Unknown58 = binreader.ReadByte();
+            Unknown59 = binreader.ReadByte();
+            Unknown60 = binreader.ReadByte();
+            Unknown61 = binreader.ReadByte();
+            Unknown62 = binreader.ReadByte();
         }
 
-        public void WritePlayer(BinaryWriter binwriter)
+        public void ReadPlayer20(BinaryReader binreader)
+        {
+            // 2020 336 bytes
+
+            long start = binreader.BaseStream.Position;
+
+            #region First Name
+            int firstlen = 17;
+            ASCIIEncoding enc = new ASCIIEncoding();
+            List<byte> bytename = new List<byte>();
+            for (int c = 0; c < firstlen; c++)
+            {
+                byte b = binreader.ReadByte();
+                if (b != 0)
+                    bytename.Add(b);
+            }
+            NameFirst = enc.GetString(bytename.ToArray());
+            #endregion
+
+            #region Last Name
+            int lastlen = 21;
+            ASCIIEncoding enc2 = new ASCIIEncoding();
+            List<byte> bytename2 = new List<byte>();
+            for (int c = 0; c < lastlen; c++)
+            {
+                byte b = binreader.ReadByte();
+                if (b != 0)
+                    bytename2.Add(b);
+            }
+            NameLast = enc2.GetString(bytename2.ToArray());
+            #endregion
+
+            HomeState = binreader.ReadByte();
+
+            #region Hometown
+            // Not sure if hometown will be used but let's read it anyway                        
+            ASCIIEncoding enc3 = new ASCIIEncoding();
+            List<byte> bytename3 = new List<byte>();
+            for (int c = 0; c < 27; c++)
+            {
+                byte b = binreader.ReadByte();
+                if (b != 0)
+                    bytename3.Add(b);
+            }
+            HomeTown = enc3.GetString(bytename3.ToArray());
+            #endregion
+
+            binreader.BaseStream.Position = start + 66;
+            
+            College = binreader.ReadUInt16();       //66
+            PLBD = binreader.ReadUInt16();          //68-69            
+            Age = binreader.ReadByte();             //70            
+            Height = binreader.ReadByte();          //71
+            Weight = 160 + binreader.ReadByte();    //72 + 160 pounds            
+            Position = binreader.ReadByte();        //73
+            Archetype = binreader.ReadByte();       //74            
+            JerseyNum = binreader.ReadByte();       //75
+            DraftPick = binreader.ReadByte();       //76
+            Undrafted = binreader.ReadByte();       //77
+            DraftRound = binreader.ReadByte();      //78
+            Overall = binreader.ReadByte();         //79
+            Accel = binreader.ReadByte();           //80            
+            Agility = binreader.ReadByte();         //81
+            Awareness = binreader.ReadByte();       //82
+            BCVision = binreader.ReadByte();        //83
+            BlockShed = binreader.ReadByte();       //84
+            BreakSack = binreader.ReadByte();       //85
+            BreakTackle = binreader.ReadByte();     //86
+            Carry = binreader.ReadByte();           //87
+            Catching = binreader.ReadByte();        //88
+            CatchTraffic = binreader.ReadByte();    //89
+            Elusive = binreader.ReadByte();         //90
+            MovesFinesse = binreader.ReadByte();    //91
+            HitPower = binreader.ReadByte();        //92
+            ImpactBlock = binreader.ReadByte();     //93
+            Injury = binreader.ReadByte();          //94
+            JukeMove = binreader.ReadByte();        //95
+            Jumping = binreader.ReadByte();         //96
+            KickAccuracy = binreader.ReadByte();    //97
+            KickPower = binreader.ReadByte();       //98
+            KickReturn = binreader.ReadByte();      //99
+            LeadBlock = binreader.ReadByte();       //100
+            CoverMan = binreader.ReadByte();        //101
+            PassBlockFin = binreader.ReadByte();    //102
+            PassBlockPow = binreader.ReadByte();    //103
+            PassBlock = binreader.ReadByte();       //104
+            Personality = binreader.ReadByte();     //105
+            PlayAction = binreader.ReadByte();      //106
+            PlayRecog = binreader.ReadByte();       //107
+            MovesPower = binreader.ReadByte();      //108
+            CoverPress = binreader.ReadByte();      //109
+            Pursuit = binreader.ReadByte();         //110
+            Release = binreader.ReadByte();         //111
+            RouteDeep = binreader.ReadByte();       //112
+            RouteMed = binreader.ReadByte();        //113
+            RouteShort = binreader.ReadByte();      //114
+            RunBlockFin = binreader.ReadByte();     //115
+            RunBlockPow = binreader.ReadByte();     //116
+            RunBlock = binreader.ReadByte();        //117
+            Unknown01 = binreader.ReadByte();       //118            
+            SpecCatch = binreader.ReadByte();       //119
+            Speed = binreader.ReadByte();           //120
+            SpinMove = binreader.ReadByte();        //121
+            Stamina = binreader.ReadByte();         //122
+            StiffArm = binreader.ReadByte();        //123
+            Strength = binreader.ReadByte();        //124
+            Tackling = binreader.ReadByte();        //125
+            AccuracyDeep = binreader.ReadByte();    //126
+            AccuracyMed = binreader.ReadByte();     //127
+            ThrowAccuracy = binreader.ReadByte();   //128
+            AccuracyShort = binreader.ReadByte();   //129
+            ThrowOnRun = binreader.ReadByte();      //130
+            ThrowPower = binreader.ReadByte();      //131
+            ThrowPressure = binreader.ReadByte();   //132
+            Toughness = binreader.ReadByte();       //133
+            Trucking = binreader.ReadByte();        //134
+            CoverZone = binreader.ReadByte();       //135
+            Confidence = binreader.ReadByte();      //136            
+            BigHitter = binreader.ReadByte();       //137
+            PossCatch = binreader.ReadByte();       //138
+            Clutch = binreader.ReadByte();          //139
+            CoversBall = binreader.ReadByte();      //140
+            DeepBall = binreader.ReadByte();       //141           
+            DLBull = binreader.ReadByte();          //142
+            DLSpin = binreader.ReadByte();          //143
+            DLSwim = binreader.ReadByte();          //144
+            DropsOpen = binreader.ReadByte();       //145
+            SideLineCatch = binreader.ReadByte();   //146
+            FightYards = binreader.ReadByte();      //147
+            ForcePass = binreader.ReadByte();       //148
+            HighMotor = binreader.ReadByte();       //149
+            AggCatch = binreader.ReadByte();        //150
+            Penalty = binreader.ReadByte();         //151
+            PlaysBall = binreader.ReadByte();       //152
+            Pumpfake = binreader.ReadByte();        //153
+            LBStyle = binreader.ReadByte();         //154
+            SensePressure = binreader.ReadByte();   //155
+            Unknown02 = binreader.ReadByte();       //156 
+            StripsBall = binreader.ReadByte();      //157
+            TackleLow = binreader.ReadByte();       //158            
+            ThrowAway = binreader.ReadByte();       //159
+            ThrowSpiral = binreader.ReadByte();     //160
+            QBTend = binreader.ReadByte();          //161
+            RAC = binreader.ReadByte();             //162
+            Development = binreader.ReadByte();     //163
+            Predictable = binreader.ReadByte();     //164
+            BackPlate = binreader.ReadByte();       //165 
+            Unknown63 = binreader.ReadByte();       //165
+            Unknown64 = binreader.ReadByte();       //167
+            binreader.BaseStream.Position = start + 168;
+            RearSize = binreader.ReadSingle();      // 168
+            RearDef = binreader.ReadSingle();       // 172
+            CalfSize = binreader.ReadSingle();      // 176
+            CalfDef = binreader.ReadSingle();       // 180            
+            ChestSize = binreader.ReadSingle();     // 184              
+            ChestDef = binreader.ReadSingle();      // 188
+            WaistSize = binreader.ReadSingle();     // 192
+            WaistDef = binreader.ReadSingle();      // 196
+            GutSize = binreader.ReadSingle();       // 200
+            GutDef = binreader.ReadSingle();        // 204
+            ShoulderHeight = binreader.ReadSingle();// 208
+            PadSize = binreader.ReadSingle();       // 212
+            ThighSize = binreader.ReadSingle();     // 216    
+            ThighDef = binreader.ReadSingle();      // 220
+            ArmDef = binreader.ReadSingle();        // 224
+            ArmSize = binreader.ReadSingle();       // 228
+            FootDef = binreader.ReadSingle();       // 232
+            FootSize = binreader.ReadSingle();      // 236
+            Unknown03 = binreader.ReadByte();       //240
+            EyePaint = binreader.ReadByte();        //241
+            Facemask = binreader.ReadByte();        //242
+            Unknown04 = binreader.ReadByte();       //243
+            FlakJacket = binreader.ReadByte();      //244
+            Unknown05 = binreader.ReadByte();       //245
+            FaceID = binreader.ReadUInt16();        //246            
+            ElbowLeft = binreader.ReadByte();       //248
+            HandLeft = binreader.ReadByte();        //249
+            WristLeft = binreader.ReadByte();       //250
+            ElbowRight = binreader.ReadByte();      //251
+            HandRight = binreader.ReadByte();       //252
+            WristRight = binreader.ReadByte();      //253
+
+            Unknown65 = binreader.ReadByte();       //254
+            LeftSleeve = binreader.ReadByte();      //255
+            RightSleeve = binreader.ReadByte();     //256
+            HairColor = binreader.ReadByte();       //257
+            Handed = binreader.ReadByte();          //258
+            HandWarmer = binreader.ReadByte();      //259
+            Helmet = binreader.ReadByte();          //260
+            JerseySleeve = binreader.ReadByte();    //261
+            Unknown06 = binreader.ReadByte();       //262
+            Unknown07 = binreader.ReadByte();       //263
+            Unknown08 = binreader.ReadByte();       //264
+            Unknown09 = binreader.ReadByte();       //265
+            NeckRoll = binreader.ReadByte();        //266
+            NeckType = binreader.ReadByte();        //267
+
+            PortraitID = binreader.ReadUInt16();    //268-269
+            QBStyle = binreader.ReadByte();         //270
+            LeftKnee = binreader.ReadByte();        //271
+            LeftShoe = binreader.ReadByte();        //272
+            LeftSpat = binreader.ReadByte();        //273
+            LeftThigh = binreader.ReadByte();       //274
+            Unknown11 = binreader.ReadByte();      //275
+            HeadGear = binreader.ReadByte();       //276
+            Unknown12 = binreader.ReadByte();      //277
+            SockHeight = binreader.ReadByte();     //278
+            Unknown13 = binreader.ReadByte();      //279
+            QBStance = binreader.ReadByte();       //280
+            Unknown14 = binreader.ReadByte();      //281
+            Tendency = binreader.ReadByte();       //282
+            Towel = binreader.ReadByte();          //283
+            Unknown15 = binreader.ReadByte();      //283
+            Visor = binreader.ReadByte();          //284
+            Unknown16 = binreader.ReadByte();      //285
+            Unknown17 = binreader.ReadByte();      //286
+            Unknown18 = binreader.ReadByte();      //287
+            Celebration = binreader.ReadByte();    //288
+            Comment = binreader.ReadUInt16();      //289-290
+            Unknown19 = binreader.ReadByte();      //291
+            Unknown20 = binreader.ReadByte();      //292
+            Unknown21 = binreader.ReadByte();      //293
+            Unknown22 = binreader.ReadByte();      //294
+            Unknown23 = binreader.ReadByte();      //295
+            Unknown24 = binreader.ReadByte();      //296
+            Unknown25 = binreader.ReadByte();      //297
+            Unknown26 = binreader.ReadByte();      //298
+            Unknown27 = binreader.ReadByte();      //299
+            Unknown28 = binreader.ReadByte();      //300
+            Unknown29 = binreader.ReadByte();      //301
+            Unknown30 = binreader.ReadByte();      //302
+            Unknown31 = binreader.ReadByte();      //303
+            Unknown32 = binreader.ReadByte();      //304
+            Unknown33 = binreader.ReadByte();      //305
+            Unknown34 = binreader.ReadByte();      //306
+            Unknown35 = binreader.ReadByte();      //307
+            Unknown36 = binreader.ReadByte();      //308
+            Unknown37 = binreader.ReadByte();      //309
+            Unknown38 = binreader.ReadByte();      //310
+            Unknown39 = binreader.ReadByte();      //311
+            Unknown40 = binreader.ReadByte();      //312
+            Unknown41 = binreader.ReadByte();      //313
+            Unknown42 = binreader.ReadByte();      //314
+            Unknown43 = binreader.ReadByte();      //315
+            Unknown44 = binreader.ReadByte();      //316
+            Unknown45 = binreader.ReadByte();      //317
+            Unknown46 = binreader.ReadByte();      //318
+            Unknown47 = binreader.ReadByte();      //319
+            Unknown48 = binreader.ReadByte();      //320
+            Unknown49 = binreader.ReadByte();      //321
+            Unknown50 = binreader.ReadByte();      //322
+            Unknown51 = binreader.ReadByte();      //323
+            Unknown52 = binreader.ReadByte();      //324
+            Unknown53 = binreader.ReadByte();      //325
+            Unknown54 = binreader.ReadByte();      //326
+            Unknown55 = binreader.ReadByte();      //327
+            Unknown56 = binreader.ReadByte();      //328
+            Unknown57 = binreader.ReadByte();      //329
+            Unknown58 = binreader.ReadByte();      //330
+            Unknown59 = binreader.ReadByte();      //331
+            Unknown60 = binreader.ReadByte();      //332
+            Unknown61 = binreader.ReadByte();      //333
+            Unknown62 = binreader.ReadByte();      //334
+        }
+
+        public void ReadPlayer(BinaryReader binreader, MaddenFileVersion version)
+        {            
+            long start = binreader.BaseStream.Position;
+            int firstlen = 14;
+            int lastlen = 18;
+            int homelen = 27;
+            if (version == MaddenFileVersion.Ver2020)
+            {
+                firstlen = 17;
+                lastlen = 21;
+            }
+            #region First Name
+            ASCIIEncoding enc = new ASCIIEncoding();
+            List<byte> bytename = new List<byte>();
+            for (int c = 0; c < firstlen; c++)
+            {
+                byte b = binreader.ReadByte();
+                if (b != 0)
+                    bytename.Add(b);
+            }
+            NameFirst = enc.GetString(bytename.ToArray());
+            #endregion
+
+            #region Last Name
+           
+            ASCIIEncoding enc2 = new ASCIIEncoding();
+            List<byte> bytename2 = new List<byte>();
+            for (int c = 0; c < lastlen; c++)
+            {
+                byte b = binreader.ReadByte();
+                if (b != 0)
+                    bytename2.Add(b);
+            }
+            NameLast = enc2.GetString(bytename2.ToArray());
+            #endregion
+
+            HomeState = binreader.ReadByte();
+
+            #region Hometown
+            // Not sure if hometown will be used but let's read it anyway                        
+            ASCIIEncoding enc3 = new ASCIIEncoding();
+            List<byte> bytename3 = new List<byte>();
+            for (int c = 0; c < homelen; c++)
+            {
+                byte b = binreader.ReadByte();
+                if (b != 0)
+                    bytename3.Add(b);
+            }
+            HomeTown = enc3.GetString(bytename3.ToArray());
+            #endregion
+  
+            College = binreader.ReadUInt16();       //66
+            PLBD = binreader.ReadUInt16();          //68-69            
+            Age = binreader.ReadByte();             //70            
+            Height = binreader.ReadByte();          //71
+            Weight = 160 + binreader.ReadByte();    //72 + 160 pounds            
+            Position = binreader.ReadByte();        //73
+            Archetype = binreader.ReadByte();       //74            
+            JerseyNum = binreader.ReadByte();       //75
+            DraftPick = binreader.ReadByte();       //76
+            Undrafted = binreader.ReadByte();       //77
+            DraftRound = binreader.ReadByte();      //78
+            Overall = binreader.ReadByte();         //79
+            Accel = binreader.ReadByte();           //80            
+            Agility = binreader.ReadByte();         //81
+            Awareness = binreader.ReadByte();       //82
+            BCVision = binreader.ReadByte();        //83
+            BlockShed = binreader.ReadByte();       //84
+            BreakSack = binreader.ReadByte();       //85
+            BreakTackle = binreader.ReadByte();     //86
+            Carry = binreader.ReadByte();           //87
+            Catching = binreader.ReadByte();        //88
+            CatchTraffic = binreader.ReadByte();    //89
+            Elusive = binreader.ReadByte();         //90
+            MovesFinesse = binreader.ReadByte();    //91
+            HitPower = binreader.ReadByte();        //92
+            ImpactBlock = binreader.ReadByte();     //93
+            Injury = binreader.ReadByte();          //94
+            JukeMove = binreader.ReadByte();        //95
+            Jumping = binreader.ReadByte();         //96
+            KickAccuracy = binreader.ReadByte();    //97
+            KickPower = binreader.ReadByte();       //98
+            KickReturn = binreader.ReadByte();      //99
+            LeadBlock = binreader.ReadByte();       //100
+            CoverMan = binreader.ReadByte();        //101
+            PassBlockFin = binreader.ReadByte();    //102
+            PassBlockPow = binreader.ReadByte();    //103
+            PassBlock = binreader.ReadByte();       //104
+            Personality = binreader.ReadByte();     //105
+            PlayAction = binreader.ReadByte();      //106
+            PlayRecog = binreader.ReadByte();       //107
+            MovesPower = binreader.ReadByte();      //108
+            CoverPress = binreader.ReadByte();      //109
+            Pursuit = binreader.ReadByte();         //110
+            Release = binreader.ReadByte();         //111
+            RouteDeep = binreader.ReadByte();       //112
+            RouteMed = binreader.ReadByte();        //113
+            RouteShort = binreader.ReadByte();      //114
+            RunBlockFin = binreader.ReadByte();     //115
+            RunBlockPow = binreader.ReadByte();     //116
+            RunBlock = binreader.ReadByte();        //117
+            Unknown01 = binreader.ReadByte();       //118            
+            SpecCatch = binreader.ReadByte();       //119
+            Speed = binreader.ReadByte();           //120
+            SpinMove = binreader.ReadByte();        //121
+            Stamina = binreader.ReadByte();         //122
+            StiffArm = binreader.ReadByte();        //123
+            Strength = binreader.ReadByte();        //124
+            Tackling = binreader.ReadByte();        //125
+            AccuracyDeep = binreader.ReadByte();    //126
+            AccuracyMed = binreader.ReadByte();     //127
+            ThrowAccuracy = binreader.ReadByte();   //128
+            AccuracyShort = binreader.ReadByte();   //129
+            ThrowOnRun = binreader.ReadByte();      //130
+            ThrowPower = binreader.ReadByte();      //131
+            ThrowPressure = binreader.ReadByte();   //132
+            Toughness = binreader.ReadByte();       //133
+            Trucking = binreader.ReadByte();        //134
+            CoverZone = binreader.ReadByte();       //135
+            Confidence = binreader.ReadByte();      //136            
+            BigHitter = binreader.ReadByte();       //137
+            PossCatch = binreader.ReadByte();       //138
+            Clutch = binreader.ReadByte();          //139
+            CoversBall = binreader.ReadByte();      //140
+            DeepBall = binreader.ReadByte();        //141           
+            DLBull = binreader.ReadByte();          //142
+            DLSpin = binreader.ReadByte();          //143
+            DLSwim = binreader.ReadByte();          //144
+            DropsOpen = binreader.ReadByte();       //145
+            SideLineCatch = binreader.ReadByte();   //146
+            FightYards = binreader.ReadByte();      //147
+            ForcePass = binreader.ReadByte();       //148
+            HighMotor = binreader.ReadByte();       //149
+            AggCatch = binreader.ReadByte();        //150
+            Penalty = binreader.ReadByte();         //151
+            PlaysBall = binreader.ReadByte();       //152
+            Pumpfake = binreader.ReadByte();        //153
+            LBStyle = binreader.ReadByte();         //154
+            SensePressure = binreader.ReadByte();   //155
+            Unknown02 = binreader.ReadByte();       //156 
+            StripsBall = binreader.ReadByte();      //157
+            TackleLow = binreader.ReadByte();       //158            
+            ThrowAway = binreader.ReadByte();       //159
+            ThrowSpiral = binreader.ReadByte();     //160
+            QBTend = binreader.ReadByte();          //161
+            RAC = binreader.ReadByte();             //162
+            Development = binreader.ReadByte();     //163
+            Predictable = binreader.ReadByte();     //164
+            BackPlate = binreader.ReadByte();       //165 
+            Unknown63 = binreader.ReadByte();       //165
+            Unknown64 = binreader.ReadByte();       //167
+            binreader.BaseStream.Position = start + 168;
+            RearSize = binreader.ReadSingle();      // 168
+            RearDef = binreader.ReadSingle();       // 172
+            CalfSize = binreader.ReadSingle();      // 176
+            CalfDef = binreader.ReadSingle();       // 180            
+            ChestSize = binreader.ReadSingle();     // 184              
+            ChestDef = binreader.ReadSingle();      // 188
+            WaistSize = binreader.ReadSingle();     // 192
+            WaistDef = binreader.ReadSingle();      // 196
+            GutSize = binreader.ReadSingle();       // 200
+            GutDef = binreader.ReadSingle();        // 204
+            ShoulderHeight = binreader.ReadSingle();// 208
+            PadSize = binreader.ReadSingle();       // 212
+            ThighSize = binreader.ReadSingle();     // 216    
+            ThighDef = binreader.ReadSingle();      // 220
+            ArmDef = binreader.ReadSingle();        // 224
+            ArmSize = binreader.ReadSingle();       // 228
+            FootDef = binreader.ReadSingle();       // 232
+            FootSize = binreader.ReadSingle();      // 236
+            Unknown03 = binreader.ReadByte();       //240
+            EyePaint = binreader.ReadByte();        //241
+            Facemask = binreader.ReadByte();        //242
+            Unknown04 = binreader.ReadByte();       //243
+            FlakJacket = binreader.ReadByte();      //244
+            Unknown05 = binreader.ReadByte();       //245
+            FaceID = binreader.ReadUInt16();        //246            
+            ElbowLeft = binreader.ReadByte();       //248
+            HandLeft = binreader.ReadByte();        //249
+            WristLeft = binreader.ReadByte();       //250
+            ElbowRight = binreader.ReadByte();      //251
+            HandRight = binreader.ReadByte();       //252
+            WristRight = binreader.ReadByte();      //253
+            Unknown65 = binreader.ReadByte();       //254
+            LeftSleeve = binreader.ReadByte();      //255
+            RightSleeve = binreader.ReadByte();     //256
+            HairColor = binreader.ReadByte();       //257
+            Handed = binreader.ReadByte();          //258
+            HandWarmer = binreader.ReadByte();      //259
+            Helmet = binreader.ReadByte();          //260
+            JerseySleeve = binreader.ReadByte();    //261
+            Unknown06 = binreader.ReadByte();       //262
+            Unknown07 = binreader.ReadByte();       //263
+            Unknown08 = binreader.ReadByte();       //264
+            Unknown09 = binreader.ReadByte();       //265
+            NeckRoll = binreader.ReadByte();        //266
+            NeckType = binreader.ReadByte();        //267
+            PortraitID = binreader.ReadUInt16();    //268-269
+            QBStyle = binreader.ReadByte();         //270
+            LeftKnee = binreader.ReadByte();        //271
+            LeftShoe = binreader.ReadByte();        //272
+            LeftSpat = binreader.ReadByte();        //273
+            LeftThigh = binreader.ReadByte();       //274
+            Unknown11 = binreader.ReadByte();      //275
+            HeadGear = binreader.ReadByte();       //276
+            Unknown12 = binreader.ReadByte();      //277
+            SockHeight = binreader.ReadByte();     //278
+            Unknown13 = binreader.ReadByte();      //279
+            QBStance = binreader.ReadByte();       //280
+            Unknown14 = binreader.ReadByte();      //281
+            Tendency = binreader.ReadByte();       //282
+            Towel = binreader.ReadByte();          //283
+            Unknown15 = binreader.ReadByte();      //283
+            Visor = binreader.ReadByte();          //284
+            Unknown16 = binreader.ReadByte();      //285
+            Unknown17 = binreader.ReadByte();      //286
+            Unknown18 = binreader.ReadByte();      //287
+            Celebration = binreader.ReadByte();    //288
+            Comment = binreader.ReadUInt16();      //289-290
+            Unknown19 = binreader.ReadByte();      //291
+            Unknown20 = binreader.ReadByte();      //292
+            Unknown21 = binreader.ReadByte();      //293
+            Unknown22 = binreader.ReadByte();      //294
+            Unknown23 = binreader.ReadByte();      //295
+            Unknown24 = binreader.ReadByte();      //296
+            Unknown25 = binreader.ReadByte();      //297
+            Unknown26 = binreader.ReadByte();      //298
+            Unknown27 = binreader.ReadByte();      //299
+            Unknown28 = binreader.ReadByte();      //300
+            Unknown29 = binreader.ReadByte();      //301
+            Unknown30 = binreader.ReadByte();      //302
+            Unknown31 = binreader.ReadByte();      //303
+            Unknown32 = binreader.ReadByte();      //304
+            Unknown33 = binreader.ReadByte();      //305
+            Unknown34 = binreader.ReadByte();      //306
+            Unknown35 = binreader.ReadByte();      //307
+            Unknown36 = binreader.ReadByte();      //308
+            Unknown37 = binreader.ReadByte();      //309
+            Unknown38 = binreader.ReadByte();      //310
+            Unknown39 = binreader.ReadByte();      //311
+            Unknown40 = binreader.ReadByte();      //312
+            Unknown41 = binreader.ReadByte();      //313
+            Unknown42 = binreader.ReadByte();      //314
+            Unknown43 = binreader.ReadByte();      //315
+            Unknown44 = binreader.ReadByte();      //316
+            Unknown45 = binreader.ReadByte();      //317
+            Unknown46 = binreader.ReadByte();      //318
+            Unknown47 = binreader.ReadByte();      //319
+            Unknown48 = binreader.ReadByte();      //320
+            Unknown49 = binreader.ReadByte();      //321
+            Unknown50 = binreader.ReadByte();      //322
+            Unknown51 = binreader.ReadByte();      //323
+            Unknown52 = binreader.ReadByte();      //324
+            Unknown53 = binreader.ReadByte();      //325
+            Unknown54 = binreader.ReadByte();      //326
+            Unknown55 = binreader.ReadByte();      //327
+            Unknown56 = binreader.ReadByte();      //328
+            Unknown57 = binreader.ReadByte();      //329
+            Unknown58 = binreader.ReadByte();      //330
+            Unknown59 = binreader.ReadByte();      //331
+            Unknown60 = binreader.ReadByte();      //332
+            Unknown61 = binreader.ReadByte();      //333
+            Unknown62 = binreader.ReadByte();      //334
+        }
+        
+        public void WritePlayer(BinaryWriter binwriter, MaddenFileVersion version)
         {
             #region First/Last Name
+            int firstlen = 14;
+            if (version == MaddenFileVersion.Ver2020)
+                firstlen = 17;
             byte[] ascii = System.Text.Encoding.ASCII.GetBytes(NameFirst);
-            for (int c = 0; c < 14; c++)
+            for (int c = 0; c < firstlen; c++)
             {
-                if (ascii.Length > c)
+                if (c < ascii.Length)
                     binwriter.Write(ascii[c]);
                 else binwriter.Write((byte)0);
             }
+            int lastlen = 18;
+            if (version == MaddenFileVersion.Ver2020)
+                lastlen = 21;
             byte[] ascii2 = System.Text.Encoding.ASCII.GetBytes(NameLast);
-            for (int c = 0; c < 18; c++)
+            for (int c = 0; c < lastlen; c++)
             {
-                if (ascii2.Length > c)
+                if (c < ascii2.Length)
                     binwriter.Write(ascii2[c]);
                 else binwriter.Write((byte)0);
             }
             #endregion
 
-            binwriter.Write((byte)PHUN);
-            byte[] ph = System.Text.Encoding.ASCII.GetBytes(PlaceHolder);
-            for (int c = 0; c < ph.Length; c++)
+            binwriter.Write((byte)HomeState);
+
+            #region Hometown
+            byte[] ascii3 = System.Text.Encoding.ASCII.GetBytes(HomeTown);
+            byte[] ph = System.Text.Encoding.ASCII.GetBytes(HomeTown);
+            for (int c = 0; c < 27; c++)
             {
-                binwriter.Write(ph[c]);
+                if (c < ascii3.Length)
+                    binwriter.Write(ascii3[c]);
+                else binwriter.Write((byte)0);
             }
-            for (int c = 0; c < 16; c++)    // padding
-                binwriter.Write((byte)0);
+            #endregion
 
             binwriter.Write((UInt16)College);
-            binwriter.Write((byte)Unknown62);
-            binwriter.Write((byte)Unknown63);
+            binwriter.Write((UInt16)PLBD);
             binwriter.Write((byte)Age);
             binwriter.Write((byte)Height);
             binwriter.Write((byte)(Weight - 160));
             binwriter.Write((byte)Position);
             binwriter.Write((byte)Archetype);
             binwriter.Write((byte)JerseyNum);
-
-            binwriter.Write((byte)DraftPick);   //70
-            binwriter.Write((byte)Undrafted);   //71
-            binwriter.Write((byte)DraftRound);   //72
-            binwriter.Write((byte)Overall);     //73
+            binwriter.Write((byte)DraftPick);       //70
+            binwriter.Write((byte)Undrafted);       //71
+            binwriter.Write((byte)DraftRound);      //72
+            binwriter.Write((byte)Overall);         //73
             binwriter.Write((byte)Accel);
             binwriter.Write((byte)Agility);
             binwriter.Write((byte)Awareness);
             binwriter.Write((byte)BCVision);
             binwriter.Write((byte)BlockShed);
             binwriter.Write((byte)BreakSack);
-
-            binwriter.Write((byte)BreakTackle); //80
+            binwriter.Write((byte)BreakTackle);     //80
             binwriter.Write((byte)Carry);
             binwriter.Write((byte)Catching);
             binwriter.Write((byte)CatchTraffic);
@@ -625,7 +1233,7 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)Injury);
             binwriter.Write((byte)JukeMove);
 
-            binwriter.Write((byte)Jumping);     //90
+            binwriter.Write((byte)Jumping);         //90
             binwriter.Write((byte)KickAccuracy);
             binwriter.Write((byte)KickPower);
             binwriter.Write((byte)KickReturn);
@@ -649,7 +1257,7 @@ namespace MaddenEditor.Core
 
             binwriter.Write((byte)RunBlockPow); //110
             binwriter.Write((byte)RunBlock);
-            binwriter.Write((byte)Unknown112);
+            binwriter.Write((byte)Unknown01);
             binwriter.Write((byte)SpecCatch);
             binwriter.Write((byte)Speed);
             binwriter.Write((byte)SpinMove);
@@ -674,7 +1282,7 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)PossCatch);
             binwriter.Write((byte)Clutch);
             binwriter.Write((byte)CoversBall);
-            binwriter.Write((byte)Unknown135);
+            binwriter.Write((byte)DeepBall);
             binwriter.Write((byte)DLBull);
             binwriter.Write((byte)DLSpin);
             binwriter.Write((byte)DLSwim);
@@ -686,14 +1294,14 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)HighMotor);
             binwriter.Write((byte)AggCatch);
             binwriter.Write((byte)Penalty);
-            binwriter.Write((byte)PlaysBall);
-            binwriter.Write((byte)Unknown147);
+            binwriter.Write((byte)PlaysBall);       //146
+            binwriter.Write((byte)Pumpfake);
             binwriter.Write((byte)LBStyle);
             binwriter.Write((byte)SensePressure);
 
-            binwriter.Write((byte)Unknown150);
+            binwriter.Write((byte)Unknown02);
             binwriter.Write((byte)StripsBall);
-            binwriter.Write((byte)Unknown152);
+            binwriter.Write((byte)TackleLow);
             binwriter.Write((byte)ThrowAway);
             binwriter.Write((byte)ThrowSpiral);
             binwriter.Write((byte)QBTend);
@@ -701,8 +1309,12 @@ namespace MaddenEditor.Core
             binwriter.Write((byte)Development);
             binwriter.Write((byte)Predictable);
             binwriter.Write((byte)BackPlate);
-
-            binwriter.Write(ReadSize);              // 160-163
+            if (version == MaddenFileVersion.Ver2020)
+            {
+                binwriter.Write((byte)Unknown63);
+                binwriter.Write((byte)Unknown64);
+            }
+            binwriter.Write(RearSize);              // 160-163
             binwriter.Write(RearDef);               // 164-167
             binwriter.Write(CalfSize);              // 168-171
             binwriter.Write(CalfDef);               // 172-175            
@@ -712,129 +1324,138 @@ namespace MaddenEditor.Core
             binwriter.Write(WaistDef);              // 188-181
             binwriter.Write(GutSize);               // 192-195     
             binwriter.Write(GutDef);                // 196-199
-            binwriter.Write(PadDef);                // 200-203
+            binwriter.Write(ShoulderHeight);        // 200-203
             binwriter.Write(PadSize);               // 204-207
             binwriter.Write(ThighSize);             // 208-211    
             binwriter.Write(ThighDef);              // 212-215
             binwriter.Write(ArmDef);                // 216-219
             binwriter.Write(ArmSize);               // 220-223
             binwriter.Write(FootDef);               // 224-227
-            binwriter.Write(FootSize);              // 228-231   
-
-            binwriter.Write((byte)Unknown232);
+            binwriter.Write(FootSize);              // 228-231
+            binwriter.Write((byte)Unknown03);
             binwriter.Write((byte)EyePaint);
             binwriter.Write((byte)Facemask);
-            binwriter.Write((byte)Unknown235);
+            binwriter.Write((byte)Unknown04);
             binwriter.Write((byte)FlakJacket);
-            binwriter.Write((byte)Unknown237);
+            binwriter.Write((byte)Unknown05);
             binwriter.Write(FaceID);
-
             binwriter.Write((byte)ElbowLeft);
             binwriter.Write((byte)HandLeft);
             binwriter.Write((byte)WristLeft);
             binwriter.Write((byte)ElbowRight);
             binwriter.Write((byte)HandRight);
             binwriter.Write((byte)WristRight);
-            binwriter.Write((byte)LeftSleeve);  //246
-            binwriter.Write((byte)RightSleeve);
-            binwriter.Write((byte)Unknown248);
-            binwriter.Write((byte)Handed);
 
+            if (version == MaddenFileVersion.Ver2020)               
+                binwriter.Write((byte)Unknown65);
+            
+            binwriter.Write((byte)LeftSleeve);
+            binwriter.Write((byte)RightSleeve);
+            binwriter.Write((byte)HairColor);
+            binwriter.Write((byte)Handed);
             binwriter.Write((byte)HandWarmer);
             binwriter.Write((byte)Helmet);
-            binwriter.Write((byte)Unknown252);
-            binwriter.Write((byte)Unknown253);
-            binwriter.Write((byte)Unknown254);
-            binwriter.Write((byte)LeftAnkle);
-            binwriter.Write((byte)Unknown256);
+            binwriter.Write((byte)JerseySleeve);
+            binwriter.Write((byte)Unknown06);
+            binwriter.Write((byte)Unknown07);
+            binwriter.Write((byte)Unknown08);
+            binwriter.Write((byte)Unknown09);
             binwriter.Write((byte)NeckRoll);
-            binwriter.Write((byte)Unknown258);
-            binwriter.Write((byte)Unknown259);
+            binwriter.Write((byte)NeckType);
+
+            if (version == MaddenFileVersion.Ver2019)
+                binwriter.Write((byte)Unknown10);
 
             binwriter.Write(PortraitID);            
             binwriter.Write((byte)QBStyle);
-            binwriter.Write((byte)Knees);
-            binwriter.Write((byte)Shoes);
-            binwriter.Write((byte)RightAnkle);
-            binwriter.Write((byte)Thighs);
-            binwriter.Write((byte)Unknown267);
-            binwriter.Write((byte)Unknown268);
-            binwriter.Write((byte)Unknown269);
+            binwriter.Write((byte)LeftKnee);
+            binwriter.Write((byte)LeftShoe);
+            binwriter.Write((byte)LeftSpat);
+            binwriter.Write((byte)LeftThigh);
+            binwriter.Write((byte)Unknown11);
+            binwriter.Write((byte)HeadGear);
+            binwriter.Write((byte)Unknown12);
 
             binwriter.Write((byte)SockHeight);
-            binwriter.Write((byte)Unknown271);
+            binwriter.Write((byte)Unknown13);
             binwriter.Write((byte)QBStance);
-            binwriter.Write((byte)Unknown273);
-            binwriter.Write((byte)Unknown274);
+            binwriter.Write((byte)Unknown14);
+            binwriter.Write((byte)Tendency);
             binwriter.Write((byte)Towel);
-            binwriter.Write((byte)Unknown276);
+            binwriter.Write((byte)Unknown15);
             binwriter.Write((byte)Visor);
-            binwriter.Write((byte)Unknown278);
-            binwriter.Write((byte)Unknown279);
+            binwriter.Write((byte)Unknown16);
+            binwriter.Write((byte)Unknown17);
 
-            binwriter.Write((byte)Unknown280);
-            binwriter.Write((byte)Unknown281);
+            binwriter.Write((byte)Unknown18);
+            binwriter.Write((byte)Celebration);
             binwriter.Write(Comment);
-            binwriter.Write((byte)Unknown284);
-            binwriter.Write((byte)Unknown285);
-            binwriter.Write((byte)Unknown286);
-            binwriter.Write((byte)Unknown287);
-            binwriter.Write((byte)Unknown288);
-            binwriter.Write((byte)Unknown289);
+            binwriter.Write((byte)Unknown19);
+            binwriter.Write((byte)Unknown20);
+            binwriter.Write((byte)Unknown21);
+            binwriter.Write((byte)Unknown22);
+            binwriter.Write((byte)Unknown23);
+            binwriter.Write((byte)Unknown24);
 
-            binwriter.Write((byte)Unknown290);
-            binwriter.Write((byte)Unknown291);
-            binwriter.Write((byte)Unknown292);
-            binwriter.Write((byte)Unknown293);
-            binwriter.Write((byte)Unknown294);
-            binwriter.Write((byte)Unknown295);
-            binwriter.Write((byte)Unknown296);
-            binwriter.Write((byte)Unknown297);
-            binwriter.Write((byte)Unknown298);
-            binwriter.Write((byte)Unknown299);
+            binwriter.Write((byte)Unknown25);
+            binwriter.Write((byte)Unknown26);
+            binwriter.Write((byte)Unknown27);
+            binwriter.Write((byte)Unknown28);
+            binwriter.Write((byte)Unknown29);
+            binwriter.Write((byte)Unknown30);
+            binwriter.Write((byte)Unknown31);
+            binwriter.Write((byte)Unknown32);
+            binwriter.Write((byte)Unknown33);
+            binwriter.Write((byte)Unknown34);
 
-            binwriter.Write((byte)Unknown300);
-            binwriter.Write((byte)Unknown301);
-            binwriter.Write((byte)Unknown302);
-            binwriter.Write((byte)Unknown303);
-            binwriter.Write((byte)Unknown304);
-            binwriter.Write((byte)Unknown305);
-            binwriter.Write((byte)Unknown306);
-            binwriter.Write((byte)Unknown307);
-            binwriter.Write((byte)Unknown308);
-            binwriter.Write((byte)Unknown309);
+            binwriter.Write((byte)Unknown35);
+            binwriter.Write((byte)Unknown36);
+            binwriter.Write((byte)Unknown37);
+            binwriter.Write((byte)Unknown38);
+            binwriter.Write((byte)Unknown39);
+            binwriter.Write((byte)Unknown40);
+            binwriter.Write((byte)Unknown41);
+            binwriter.Write((byte)Unknown42);
+            binwriter.Write((byte)Unknown43);
+            binwriter.Write((byte)Unknown44);
 
-            binwriter.Write((byte)Unknown310);
-            binwriter.Write((byte)Unknown311);
-            binwriter.Write((byte)Unknown312);
-            binwriter.Write((byte)Unknown313);
-            binwriter.Write((byte)Unknown314);
-            binwriter.Write((byte)Unknown315);
-            binwriter.Write((byte)Unknown316);
-            binwriter.Write((byte)Unknown317);
-            binwriter.Write((byte)Unknown318);
-            binwriter.Write((byte)Unknown319);
+            binwriter.Write((byte)Unknown45);
+            binwriter.Write((byte)Unknown46);
+            binwriter.Write((byte)Unknown47);
+            binwriter.Write((byte)Unknown48);
+            binwriter.Write((byte)Unknown49);
+            binwriter.Write((byte)Unknown50);
+            binwriter.Write((byte)Unknown51);
+            binwriter.Write((byte)Unknown52);
+            binwriter.Write((byte)Unknown53);
+            binwriter.Write((byte)Unknown54);
 
-            binwriter.Write((byte)Unknown320);
-            binwriter.Write((byte)Unknown321);
-            binwriter.Write((byte)Unknown322);
-            binwriter.Write((byte)Unknown323);
-            binwriter.Write((byte)Unknown324);
-            binwriter.Write((byte)Unknown325);
-            binwriter.Write((byte)Unknown326);
-            binwriter.Write((byte)Unknown327);
+            binwriter.Write((byte)Unknown55);
+            binwriter.Write((byte)Unknown56);
+            binwriter.Write((byte)Unknown57);
+            binwriter.Write((byte)Unknown58);
+            binwriter.Write((byte)Unknown59);
+            binwriter.Write((byte)Unknown60);
+            binwriter.Write((byte)Unknown61);
+            binwriter.Write((byte)Unknown62);                        
         }
 
         public string GetCSVAttribute(string field, EditorModel emodel, bool desc)
         {
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+
             if (field == "PFNA")
                 return NameFirst;
             else if (field == "PLNA")
                 return NameLast;
-            else if (field == "PHUN")
-                return PHUN.ToString();
-            else if (field == "HOLD")
-                return PlaceHolder;
+            else if (field == "PHSN")
+            {
+                if (emodel.PlayerModel.HomeStates.Count > HomeState)
+                    return emodel.PlayerModel.HomeStates[HomeState];
+                else return "NA";
+            }
+            else if (field == "PHTN")
+                return HomeTown;
             else if (field == "PCOL")
             {
                 if (desc)
@@ -844,10 +1465,12 @@ namespace MaddenEditor.Core
                 }
                 else return College.ToString();
             }
-            else if (field == "U062")
-                return Unknown62.ToString();
-            else if (field == "U063")
-                return Unknown63.ToString();
+            else if (field == "PLBD")
+            {
+                Birthday = GetBirthday(PLBD);
+                return Birthday.ToString();
+                //return PLBD.ToString();
+            }
             else if (field == "PAGE")
                 return Age.ToString();
             else if (field == "PHGT")
@@ -957,8 +1580,8 @@ namespace MaddenEditor.Core
                 return RunBlockPow.ToString();
             else if (field == "PRBK")
                 return RunBlock.ToString();
-            else if (field == "U112")
-                return Unknown112.ToString();
+            else if (field == "U01")
+                return Unknown01.ToString();
             else if (field == "PLSC")
                 return SpecCatch.ToString();
             else if (field == "PSPD")
@@ -1005,8 +1628,6 @@ namespace MaddenEditor.Core
                 return Clutch.ToString();
             else if (field == "TRCB")
                 return CoversBall.ToString();
-            else if (field == "U135")
-                return Unknown135.ToString();
             else if (field == "TRBR")
                 return DLBull.ToString();
             else if (field == "TRDS")
@@ -1030,19 +1651,19 @@ namespace MaddenEditor.Core
                 return Penalty.ToString();
             else if (field == "TRPB")
                 return PlaysBall.ToString();
-            else if (field == "U147")
-                return Unknown147.ToString();
+            else if (field == "TRFK")
+                return Pumpfake.ToString();
             else if (field == "LBST")
                 return LBStyle.ToString();
             else if (field == "TRSP")
                 return SensePressure.ToString();
 
-            else if (field == "U150")
-                return Unknown150.ToString();
+            else if (field == "U02")
+                return Unknown02.ToString();
             else if (field == "TRSB")
                 return StripsBall.ToString();
-            else if (field == "U152")
-                return Unknown152.ToString();
+            else if (field == "TRTL")
+                return TackleLow.ToString();
             else if (field == "TRTA")
                 return ThrowAway.ToString();
             else if (field == "TRTS")
@@ -1059,54 +1680,54 @@ namespace MaddenEditor.Core
                 return BackPlate.ToString();
 
             else if (field == "BSBA")
-                return ReadSize.ToString();
+                return RearSize.ToString("G", culture);
             else if (field == "BSBT")
-                return RearDef.ToString();
+                return RearDef.ToString("G", culture);
             else if (field == "BSCT")
-                return CalfSize.ToString();
+                return CalfSize.ToString("G", culture);
             else if (field == "BSCA")
-                return CalfDef.ToString();
+                return CalfDef.ToString("G", culture);
             else if (field == "BSST")
-                return ChestSize.ToString();
+                return ChestSize.ToString("G", culture);
             else if (field == "BSSA")
-                return ChestDef.ToString();
+                return ChestDef.ToString("G", culture);
             else if (field == "BSWT")
-                return WaistSize.ToString();
+                return WaistSize.ToString("G", culture);
             else if (field == "BSWA")
-                return WaistDef.ToString();
+                return WaistDef.ToString("G", culture);
             else if (field == "BSGT")
-                return GutSize.ToString();
+                return GutSize.ToString("G", culture);
             else if (field == "BSGA")
-                return GutDef.ToString();
+                return GutDef.ToString("G", culture);
             else if (field == "BSPA")
-                return PadDef.ToString();
+                return ShoulderHeight.ToString("G", culture);
             else if (field == "BSPT")
-                return PadSize.ToString();
+                return PadSize.ToString("G", culture);
             else if (field == "BSTT")
-                return ThighSize.ToString();
+                return ThighSize.ToString("G", culture);
             else if (field == "BSTA")
-                return ThighDef.ToString();
+                return ThighDef.ToString("G", culture);
             else if (field == "BSAA")
-                return ArmDef.ToString();
+                return ArmDef.ToString("G", culture);
             else if (field == "BSAT")
-                return ArmSize.ToString();
+                return ArmSize.ToString("G", culture);
             else if (field == "BSFA")
-                return FootDef.ToString();
+                return FootDef.ToString("G", culture);
             else if (field == "BSFT")
-                return FootSize.ToString();
+                return FootSize.ToString("G", culture);
 
-            else if (field == "U232")
-                return Unknown232.ToString();
+            else if (field == "U03")
+                return Unknown03.ToString();
             else if (field == "PEYE")
                 return EyePaint.ToString();
             else if (field == "PFMK")
                 return Facemask.ToString();
-            else if (field == "U235")
-                return Unknown235.ToString();
+            else if (field == "U04")
+                return Unknown04.ToString();
             else if (field == "PFLA")
                 return FlakJacket.ToString();
-            else if (field == "U237")
-                return Unknown237.ToString();
+            else if (field == "U05")
+                return Unknown05.ToString();
             else if (field == "PGHE")
                 return FaceID.ToString();
 
@@ -1126,8 +1747,10 @@ namespace MaddenEditor.Core
                 return LeftSleeve.ToString();
             else if (field == "PMOR")
                 return RightSleeve.ToString();
-            else if (field == "U248")
-                return Unknown248.ToString();
+            else if (field == "PHCL")
+                return HairColor.ToString();
+            else if (field == "PLHS")
+                return HairStyle.ToString();
             else if (field == "PHAN")
                 return Handed.ToString();
 
@@ -1135,165 +1758,173 @@ namespace MaddenEditor.Core
                 return HandWarmer.ToString();
             else if (field == "PHLM")
                 return Helmet.ToString();
-            else if (field == "U252")
-                return Unknown252.ToString();
-            else if (field == "U253")
-                return Unknown253.ToString();
-            else if (field == "U254")
-                return Unknown254.ToString();
-            else if (field == "PSPL")
-                return LeftAnkle.ToString();
-            else if (field == "U256")
-                return Unknown256.ToString();
+            else if (field == "PJER")
+                return JerseySleeve.ToString();
+            else if (field == "U06")
+                return Unknown06.ToString();
+            else if (field == "U07")
+                return Unknown07.ToString();
+            else if (field == "U08")
+                return Unknown08.ToString();
+            else if (field == "U09")
+                return Unknown09.ToString();
             else if (field == "PNEK")
                 return NeckRoll.ToString();
-            else if (field == "U258")
-                return Unknown258.ToString();
-            else if (field == "U259")
-                return Unknown259.ToString();
+            else if (field == "PNEC")
+                return NeckType.ToString();
+            else if (field == "U10")
+                return Unknown10.ToString();
 
             else if (field == "PSXP")
                 return PortraitID.ToString();
             else if (field == "PQBS")
                 return QBStyle.ToString();
-            else if (field == "U263")
-                return Knees.ToString();
-            else if (field == "U264")
-                return Shoes.ToString();
-            else if (field == "PSPR")
-                return RightAnkle.ToString();
-            else if (field == "U266")
-                return Thighs.ToString();
-            else if (field == "U267")
-                return Unknown267.ToString();
-            else if (field == "U268")
-                return Unknown268.ToString();
-            else if (field == "U269")
-                return Unknown269.ToString();
+            else if (field == "PLKN")
+                return LeftKnee.ToString();
+            else if (field == "PLSH")
+                return LeftShoe.ToString();
+            else if (field == "PSPL")
+                return LeftSpat.ToString();
+            else if (field == "PLTH")
+                return LeftThigh.ToString();
+            else if (field == "U11")
+                return Unknown11.ToString();
+            else if (field == "PSHG")
+                return HeadGear.ToString();
+            else if (field == "U12")
+                return Unknown12.ToString();
 
-            else if (field == "U270")
+            else if (field == "PSKH")
                 return SockHeight.ToString();
-            else if (field == "U271")
-                return Unknown271.ToString();
+            else if (field == "U13")
+                return Unknown13.ToString();
             else if (field == "PSTN")
                 return QBStance.ToString();
-            else if (field == "U273")
-                return Unknown273.ToString();
-            else if (field == "U274")
-                return Unknown274.ToString();
+            else if (field == "U14")
+                return Unknown14.ToString();
+            else if (field == "PTEN")
+                return Tendency.ToString();
             else if (field == "PLTL")
                 return Towel.ToString();
-            else if (field == "U276")
-                return Unknown276.ToString();
+            else if (field == "U15")
+                return Unknown15.ToString();
             else if (field == "PVIS")
                 return Visor.ToString();
-            else if (field == "U278")
-                return Unknown278.ToString();
-            else if (field == "U279")
-                return Unknown279.ToString();
+            else if (field == "U16")
+                return Unknown16.ToString();
+            else if (field == "U17")
+                return Unknown17.ToString();
 
-            else if (field == "U280")
-                return Unknown280.ToString();
-            else if (field == "U281")
-                return Unknown281.ToString();
+            else if (field == "U18")
+                return Unknown18.ToString();
+            else if (field == "PCEL")
+                return Celebration.ToString();
             else if (field == "PCMT")
                 return Comment.ToString();
-            //else if (field == "U282")
-            //    return Unknown282.ToString();
-            //else if (field == "U283")
-            //    return Unknown283.ToString();
-            else if (field == "U284")
-                return Unknown284.ToString();
-            else if (field == "U285")
-                return Unknown285.ToString();
-            else if (field == "U286")
-                return Unknown286.ToString();
-            else if (field == "U287")
-                return Unknown287.ToString();
-            else if (field == "U288")
-                return Unknown288.ToString();
-            else if (field == "U289")
-                return Unknown289.ToString();
+            else if (field == "U19")
+                return Unknown19.ToString();
+            else if (field == "U20")
+                return Unknown20.ToString();
+            else if (field == "U21")
+                return Unknown21.ToString();
+            else if (field == "U22")
+                return Unknown22.ToString();
+            else if (field == "U23")
+                return Unknown23.ToString();
+            else if (field == "U24")
+                return Unknown24.ToString();
 
-            else if (field == "U290")
-                return Unknown290.ToString();
-            else if (field == "U291")
-                return Unknown291.ToString();
-            else if (field == "U292")
-                return Unknown292.ToString();
-            else if (field == "U293")
-                return Unknown293.ToString();
-            else if (field == "U294")
-                return Unknown294.ToString();
-            else if (field == "U295")
-                return Unknown295.ToString();
-            else if (field == "U296")
-                return Unknown296.ToString();
-            else if (field == "U297")
-                return Unknown297.ToString();
-            else if (field == "U298")
-                return Unknown298.ToString();
-            else if (field == "U299")
-                return Unknown299.ToString();
+            else if (field == "U25")
+                return Unknown25.ToString();
+            else if (field == "U26")
+                return Unknown26.ToString();
+            else if (field == "U27")
+                return Unknown27.ToString();
+            else if (field == "U28")
+                return Unknown28.ToString();
+            else if (field == "U29")
+                return Unknown29.ToString();
+            else if (field == "U30")
+                return Unknown30.ToString();
+            else if (field == "U31")
+                return Unknown31.ToString();
+            else if (field == "U32")
+                return Unknown32.ToString();
+            else if (field == "U33")
+                return Unknown33.ToString();
+            else if (field == "U34")
+                return Unknown34.ToString();
 
-            else if (field == "U300")
-                return Unknown300.ToString();
-            else if (field == "U301")
-                return Unknown301.ToString();
-            else if (field == "U302")
-                return Unknown302.ToString();
-            else if (field == "U303")
-                return Unknown303.ToString();
-            else if (field == "U304")
-                return Unknown304.ToString();
-            else if (field == "U305")
-                return Unknown305.ToString();
-            else if (field == "U306")
-                return Unknown306.ToString();
-            else if (field == "U307")
-                return Unknown307.ToString();
-            else if (field == "U308")
-                return Unknown308.ToString();
-            else if (field == "U309")
-                return Unknown309.ToString();
+            else if (field == "U35")
+                return Unknown35.ToString();
+            else if (field == "U36")
+                return Unknown36.ToString();
+            else if (field == "U37")
+                return Unknown37.ToString();
+            else if (field == "U38")
+                return Unknown38.ToString();
+            else if (field == "U39")
+                return Unknown39.ToString();
+            else if (field == "U40")
+                return Unknown40.ToString();
+            else if (field == "U41")
+                return Unknown41.ToString();
+            else if (field == "U42")
+                return Unknown42.ToString();
+            else if (field == "U43")
+                return Unknown43.ToString();
+            else if (field == "U44")
+                return Unknown44.ToString();
 
-            else if (field == "U310")
-                return Unknown310.ToString();
-            else if (field == "U311")
-                return Unknown311.ToString();
-            else if (field == "U312")
-                return Unknown312.ToString();
-            else if (field == "U313")
-                return Unknown313.ToString();
-            else if (field == "U314")
-                return Unknown314.ToString();
-            else if (field == "U315")
-                return Unknown315.ToString();
-            else if (field == "U316")
-                return Unknown316.ToString();
-            else if (field == "U317")
-                return Unknown317.ToString();
-            else if (field == "U318")
-                return Unknown318.ToString();
-            else if (field == "U319")
-                return Unknown319.ToString();
+            else if (field == "U45")
+                return Unknown45.ToString();
+            else if (field == "U46")
+                return Unknown46.ToString();
+            else if (field == "U47")
+                return Unknown47.ToString();
+            else if (field == "U48")
+                return Unknown48.ToString();
+            else if (field == "U49")
+                return Unknown49.ToString();
+            else if (field == "U50")
+                return Unknown50.ToString();
+            else if (field == "U51")
+                return Unknown51.ToString();
+            else if (field == "U52")
+                return Unknown52.ToString();
+            else if (field == "U53")
+                return Unknown53.ToString();
+            else if (field == "U54")
+                return Unknown54.ToString();
 
-            else if (field == "U320")
-                return Unknown320.ToString();
-            else if (field == "U321")
-                return Unknown321.ToString();
-            else if (field == "U322")
-                return Unknown322.ToString();
-            else if (field == "U323")
-                return Unknown323.ToString();
-            else if (field == "U324")
-                return Unknown324.ToString();
-            else if (field == "U325")
-                return Unknown325.ToString();
-            else if (field == "U326")
-                return Unknown326.ToString();
-            else if (field == "U327")
-                return Unknown327.ToString();
+            else if (field == "U55")
+                return Unknown55.ToString();
+            else if (field == "U56")
+                return Unknown56.ToString();
+            else if (field == "U57")
+                return Unknown57.ToString();
+            else if (field == "U58")
+                return Unknown58.ToString();
+            else if (field == "U59")
+                return Unknown59.ToString();
+            else if (field == "U60")
+                return Unknown60.ToString();
+            else if (field == "U61")
+                return Unknown61.ToString();
+            else if (field == "U62")
+                return Unknown62.ToString();
+            // Madden 2020
+            else if (field == "U63")
+                return Unknown63.ToString();
+            else if (field == "U64")
+                return Unknown64.ToString();
+            else if (field == "U64")
+                return Unknown64.ToString();
+            else if (field == "U65")
+                return Unknown65.ToString();
+
+            else if (field == "TRDB")
+                return DeepBall.ToString();
 
             else
             {
@@ -1307,10 +1938,26 @@ namespace MaddenEditor.Core
                 NameFirst = val;
             else if (field == "PLNA")
                 NameLast = val;
-            else if (field == "HOLD")
-                PlaceHolder = val;
-            else if (field == "PHUN")
-                PHUN = Convert.ToInt32(val);
+            else if (field == "PHTN")
+                HomeTown = val;
+            else if (field == "PHSN")
+            {
+                try
+                {
+                    HomeState = Convert.ToInt32(val);
+                }
+                catch (FormatException)
+                {
+                    for (int c = 0; c < emodel.PlayerModel.HomeStates.Count; c++)
+                    {
+                        if (val == emodel.PlayerModel.HomeStates[c])
+                        {
+                            HomeState = c;
+                            break;
+                        }
+                    }
+                }
+            }
             else if (field == "PCOL")
             {
                 try
@@ -1329,10 +1976,18 @@ namespace MaddenEditor.Core
                     }
                 }
             }
-            else if (field == "U062")
-                Unknown62 = Convert.ToInt32(val);
-            else if (field == "U063")
-                Unknown63 = Convert.ToInt32(val);
+            else if (field == "PLBD")
+            {
+                try
+                {
+                    PLBD = Convert.ToInt32(val);
+                }
+                catch (FormatException)
+                {
+                    PLBD = SetBirthday(val);
+                }
+            }
+
             else if (field == "PAGE")
                 Age = Convert.ToInt32(val);
             else if (field == "PHGT")
@@ -1460,8 +2115,8 @@ namespace MaddenEditor.Core
                 RunBlockPow = Convert.ToInt32(val);
             else if (field == "PRBK")
                 RunBlock = Convert.ToInt32(val);
-            else if (field == "U112")
-                Unknown112 = Convert.ToInt32(val);
+            else if (field == "U01")
+                Unknown01 = Convert.ToInt32(val);
             else if (field == "PLSC")
                 SpecCatch = Convert.ToInt32(val);
             else if (field == "PSPD")
@@ -1508,8 +2163,6 @@ namespace MaddenEditor.Core
                 Clutch = Convert.ToInt32(val);
             else if (field == "TRCB")
                 CoversBall = Convert.ToInt32(val);
-            else if (field == "U135")
-                Unknown135 = Convert.ToInt32(val);
             else if (field == "TRBR")
                 DLBull = Convert.ToInt32(val);
             else if (field == "TRDS")
@@ -1533,19 +2186,19 @@ namespace MaddenEditor.Core
                 Penalty = Convert.ToInt32(val);
             else if (field == "TRPB")
                 PlaysBall = Convert.ToInt32(val);
-            else if (field == "U147")
-                Unknown147 = Convert.ToInt32(val);
+            else if (field == "TRFK")
+                Pumpfake = Convert.ToInt32(val);
             else if (field == "LBST")
                 LBStyle = Convert.ToInt32(val);
             else if (field == "TRSP")
                 SensePressure = Convert.ToInt32(val);
 
-            else if (field == "U150")                   //150
-                Unknown150 = Convert.ToInt32(val);
+            else if (field == "U02")                   //150
+                Unknown02 = Convert.ToInt32(val);
             else if (field == "TRSB")
                 StripsBall = Convert.ToInt32(val);
-            else if (field == "U152")
-                Unknown152 = Convert.ToInt32(val);
+            else if (field == "TRTL")
+                TackleLow = Convert.ToInt32(val);
             else if (field == "TRTA")
                 ThrowAway = Convert.ToInt32(val);
             else if (field == "TRTS")
@@ -1562,7 +2215,7 @@ namespace MaddenEditor.Core
                 BackPlate = Convert.ToInt32(val);
 
             else if (field == "BSBT")               //160
-                ReadSize = Convert.ToSingle(val);
+                RearSize = Convert.ToSingle(val);
             else if (field == "BSBA")
                 RearDef = Convert.ToSingle(val);
             else if (field == "BSCT")
@@ -1582,7 +2235,7 @@ namespace MaddenEditor.Core
             else if (field == "BSGA")
                 GutDef = Convert.ToSingle(val);
             else if (field == "BSPA")
-                PadDef = Convert.ToSingle(val);
+                ShoulderHeight = Convert.ToSingle(val);
             else if (field == "BSPT")
                 PadSize = Convert.ToSingle(val);
             else if (field == "BSTT")
@@ -1598,18 +2251,18 @@ namespace MaddenEditor.Core
             else if (field == "BSFT")
                 FootSize = Convert.ToSingle(val);
 
-            else if (field == "U232")                   //232
-                Unknown232 = Convert.ToInt32(val);
+            else if (field == "U03")                   //232
+                Unknown03 = Convert.ToInt32(val);
             else if (field == "PEYE")
                 EyePaint = Convert.ToInt32(val);
             else if (field == "PFMK")
                 Facemask = Convert.ToInt32(val);
-            else if (field == "U235")
-                Unknown235 = Convert.ToInt32(val);
+            else if (field == "U04")
+                Unknown04 = Convert.ToInt32(val);
             else if (field == "PFLA")
                 FlakJacket = Convert.ToInt32(val);
-            else if (field == "U237")
-                Unknown237 = Convert.ToInt32(val);
+            else if (field == "U05")
+                Unknown05 = Convert.ToInt32(val);
             else if (field == "PGHE")
                 FaceID = Convert.ToUInt16(val);
 
@@ -1629,8 +2282,10 @@ namespace MaddenEditor.Core
                 LeftSleeve = Convert.ToInt32(val);
             else if (field == "U247")
                 RightSleeve = Convert.ToInt32(val);
-            else if (field == "U248")
-                Unknown248 = Convert.ToInt32(val);
+            else if (field == "PHCL")
+                HairColor = Convert.ToInt32(val);
+            else if (field == "PLHS")
+                HairStyle = Convert.ToInt32(val);
             else if (field == "PHAN")
                 Handed = Convert.ToInt32(val);
 
@@ -1638,165 +2293,175 @@ namespace MaddenEditor.Core
                 HandWarmer = Convert.ToInt32(val);
             else if (field == "PHLM")
                 Helmet = Convert.ToInt32(val);
-            else if (field == "PMOR")
-                Unknown252 = Convert.ToInt32(val);
-            else if (field == "U253")
-                Unknown253 = Convert.ToInt32(val);
-            else if (field == "U254")
-                Unknown254 = Convert.ToInt32(val);
-            else if (field == "PSPL")
-                LeftAnkle = Convert.ToInt32(val);
-            else if (field == "U256")
-                Unknown256 = Convert.ToInt32(val);
+            else if (field == "PJER")
+                JerseySleeve = Convert.ToInt32(val);
+            else if (field == "U06")
+                Unknown06 = Convert.ToInt32(val);
+            else if (field == "U07")
+                Unknown07 = Convert.ToInt32(val);
+            else if (field == "U08")
+                Unknown08 = Convert.ToInt32(val);
+            else if (field == "U09")
+                Unknown09 = Convert.ToInt32(val);
             else if (field == "PNEK")
                 NeckRoll = Convert.ToInt32(val);
-            else if (field == "U258")
-                Unknown258 = Convert.ToInt32(val);
-            else if (field == "U259")
-                Unknown259 = Convert.ToInt32(val);
+            else if (field == "PNEC")
+                NeckType = Convert.ToInt32(val);
+            else if (field == "U10")
+                Unknown10 = Convert.ToInt32(val);
 
             else if (field == "PSXP") //260
                 PortraitID = Convert.ToUInt16(val);
             else if (field == "PQBS")
                 QBStyle = Convert.ToInt32(val);
-            else if (field == "U263")
-                Knees = Convert.ToInt32(val);
-            else if (field == "U264")
-                Shoes = Convert.ToInt32(val);
-            else if (field == "PSPR")
-                RightAnkle = Convert.ToInt32(val);
-            else if (field == "U266")
-                Thighs = Convert.ToInt32(val);
-            else if (field == "U267")
-                Unknown267 = Convert.ToInt32(val);
-            else if (field == "U268")
-                Unknown268 = Convert.ToInt32(val);
-            else if (field == "U269")
-                Unknown269 = Convert.ToInt32(val);
+            else if (field == "PLKN")
+                LeftKnee = Convert.ToInt32(val);
+            else if (field == "PLSH")
+                LeftShoe = Convert.ToInt32(val);
+            else if (field == "PSPL")
+                LeftSpat = Convert.ToInt32(val);
+            else if (field == "PLTH")
+                LeftThigh = Convert.ToInt32(val);
+            else if (field == "U11")
+                Unknown11 = Convert.ToInt32(val);
+            else if (field == "PSHG")
+                HeadGear = Convert.ToInt32(val);
+            else if (field == "U12")
+                Unknown12 = Convert.ToInt32(val);
 
-            else if (field == "U270")
+            else if (field == "PSKH")
                 SockHeight = Convert.ToInt32(val);
-            else if (field == "U271")
-                Unknown271 = Convert.ToInt32(val);
+            else if (field == "U13")
+                Unknown13 = Convert.ToInt32(val);
             else if (field == "PSTN")
                 QBStance = Convert.ToInt32(val);
-            else if (field == "U273")
-                Unknown273 = Convert.ToInt32(val);
-            else if (field == "U274")
-                Unknown274 = Convert.ToInt32(val);
+            else if (field == "U14")
+                Unknown14 = Convert.ToInt32(val);
+            else if (field == "PTEN")
+                Tendency = Convert.ToInt32(val);
             else if (field == "PLTL")
                 Towel = Convert.ToInt32(val);
-            else if (field == "U276")
-                Unknown276 = Convert.ToInt32(val);
+            else if (field == "U15")
+                Unknown15 = Convert.ToInt32(val);
             else if (field == "PVIS")
                 Visor = Convert.ToInt32(val);
-            else if (field == "U278")
-                Unknown278 = Convert.ToInt32(val);
-            else if (field == "U279")
-                Unknown279 = Convert.ToInt32(val);
+            else if (field == "U16")
+                Unknown16 = Convert.ToInt32(val);
+            else if (field == "U17")
+                Unknown17 = Convert.ToInt32(val);
 
-            else if (field == "U280")
-                Unknown280 = Convert.ToInt32(val);
-            else if (field == "U281")
-                Unknown281 = Convert.ToInt32(val);
+            else if (field == "U18")
+                Unknown18 = Convert.ToInt32(val);
+            else if (field == "PCEL")
+                Celebration = Convert.ToInt32(val);
             else if (field == "PCMT")
             {
-                Comment = Convert.ToUInt16(val);                
+                Comment = Convert.ToUInt16(val);
             }
 
-            else if (field == "U284")
-                Unknown284 = Convert.ToInt32(val);
-            else if (field == "U285")
-                Unknown285 = Convert.ToInt32(val);
-            else if (field == "U286")
-                Unknown286 = Convert.ToInt32(val);
-            else if (field == "U287")
-                Unknown287 = Convert.ToInt32(val);
-            else if (field == "U288")
-                Unknown288 = Convert.ToInt32(val);
-            else if (field == "U289")
-                Unknown289 = Convert.ToInt32(val);
+            else if (field == "U19")
+                Unknown19 = Convert.ToInt32(val);
+            else if (field == "U20")
+                Unknown20 = Convert.ToInt32(val);
+            else if (field == "U21")
+                Unknown21 = Convert.ToInt32(val);
+            else if (field == "U22")
+                Unknown22 = Convert.ToInt32(val);
+            else if (field == "U23")
+                Unknown23 = Convert.ToInt32(val);
+            else if (field == "U24")
+                Unknown24 = Convert.ToInt32(val);
 
-            else if (field == "U290")
-                Unknown290 = Convert.ToInt32(val);
-            else if (field == "U291")
-                Unknown291 = Convert.ToInt32(val);
-            else if (field == "U292")
-                Unknown292 = Convert.ToInt32(val);
-            else if (field == "U293")
-                Unknown293 = Convert.ToInt32(val);
-            else if (field == "U294")
-                Unknown294 = Convert.ToInt32(val);
-            else if (field == "U295")
-                Unknown295 = Convert.ToInt32(val);
-            else if (field == "U296")
-                Unknown296 = Convert.ToInt32(val);
-            else if (field == "U297")
-                Unknown297 = Convert.ToInt32(val);
-            else if (field == "U298")
-                Unknown298 = Convert.ToInt32(val);
-            else if (field == "U299")
-                Unknown299 = Convert.ToInt32(val);
+            else if (field == "U25")
+                Unknown25 = Convert.ToInt32(val);
+            else if (field == "U26")
+                Unknown26 = Convert.ToInt32(val);
+            else if (field == "U27")
+                Unknown27 = Convert.ToInt32(val);
+            else if (field == "U28")
+                Unknown28 = Convert.ToInt32(val);
+            else if (field == "U29")
+                Unknown29 = Convert.ToInt32(val);
+            else if (field == "U30")
+                Unknown30 = Convert.ToInt32(val);
+            else if (field == "U31")
+                Unknown31 = Convert.ToInt32(val);
+            else if (field == "U32")
+                Unknown32 = Convert.ToInt32(val);
+            else if (field == "U33")
+                Unknown33 = Convert.ToInt32(val);
+            else if (field == "U34")
+                Unknown34 = Convert.ToInt32(val);
 
-            else if (field == "U300")
-                Unknown300 = Convert.ToInt32(val);
-            else if (field == "U301")
-                Unknown301 = Convert.ToInt32(val);
-            else if (field == "U302")
-                Unknown302 = Convert.ToInt32(val);
-            else if (field == "U303")
-                Unknown303 = Convert.ToInt32(val);
-            else if (field == "U304")
-                Unknown304 = Convert.ToInt32(val);
-            else if (field == "U305")
-                Unknown305 = Convert.ToInt32(val);
-            else if (field == "U306")
-                Unknown306 = Convert.ToInt32(val);
-            else if (field == "U307")
-                Unknown307 = Convert.ToInt32(val);
-            else if (field == "U308")
-                Unknown308 = Convert.ToInt32(val);
-            else if (field == "U309")
-                Unknown309 = Convert.ToInt32(val);
+            else if (field == "U35")
+                Unknown35 = Convert.ToInt32(val);
+            else if (field == "U36")
+                Unknown36 = Convert.ToInt32(val);
+            else if (field == "U37")
+                Unknown37 = Convert.ToInt32(val);
+            else if (field == "U38")
+                Unknown38 = Convert.ToInt32(val);
+            else if (field == "U39")
+                Unknown39 = Convert.ToInt32(val);
+            else if (field == "U40")
+                Unknown40 = Convert.ToInt32(val);
+            else if (field == "U41")
+                Unknown41 = Convert.ToInt32(val);
+            else if (field == "U42")
+                Unknown42 = Convert.ToInt32(val);
+            else if (field == "U43")
+                Unknown43 = Convert.ToInt32(val);
+            else if (field == "U44")
+                Unknown44 = Convert.ToInt32(val);
 
-            else if (field == "U310")
-                Unknown310 = Convert.ToInt32(val);
-            else if (field == "U311")
-                Unknown311 = Convert.ToInt32(val);
-            else if (field == "U312")
-                Unknown312 = Convert.ToInt32(val);
-            else if (field == "U313")
-                Unknown313 = Convert.ToInt32(val);
-            else if (field == "U314")
-                Unknown314 = Convert.ToInt32(val);
-            else if (field == "U315")
-                Unknown315 = Convert.ToInt32(val);
-            else if (field == "U316")
-                Unknown316 = Convert.ToInt32(val);
-            else if (field == "U317")
-                Unknown317 = Convert.ToInt32(val);
-            else if (field == "U318")
-                Unknown318 = Convert.ToInt32(val);
-            else if (field == "U319")
-                Unknown319 = Convert.ToInt32(val);
+            else if (field == "U45")
+                Unknown45 = Convert.ToInt32(val);
+            else if (field == "U46")
+                Unknown46 = Convert.ToInt32(val);
+            else if (field == "U47")
+                Unknown47 = Convert.ToInt32(val);
+            else if (field == "U48")
+                Unknown48 = Convert.ToInt32(val);
+            else if (field == "U49")
+                Unknown49 = Convert.ToInt32(val);
+            else if (field == "U50")
+                Unknown50 = Convert.ToInt32(val);
+            else if (field == "U51")
+                Unknown51 = Convert.ToInt32(val);
+            else if (field == "U52")
+                Unknown52 = Convert.ToInt32(val);
+            else if (field == "U53")
+                Unknown53 = Convert.ToInt32(val);
+            else if (field == "U54")
+                Unknown54 = Convert.ToInt32(val);
 
-            else if (field == "U320")
-                Unknown320 = Convert.ToInt32(val);
-            else if (field == "U321")
-                Unknown321 = Convert.ToInt32(val);
-            else if (field == "U322")
-                Unknown322 = Convert.ToInt32(val);
-            else if (field == "U323")
-                Unknown323 = Convert.ToInt32(val);
-            else if (field == "U324")
-                Unknown324 = Convert.ToInt32(val);
-            else if (field == "U325")
-                Unknown325 = Convert.ToInt32(val);
-            else if (field == "U326")
-                Unknown326 = Convert.ToInt32(val);
-            else if (field == "U327")
-                Unknown327 = Convert.ToInt32(val);
+            else if (field == "U55")
+                Unknown55 = Convert.ToInt32(val);
+            else if (field == "U56")
+                Unknown56 = Convert.ToInt32(val);
+            else if (field == "U57")
+                Unknown57 = Convert.ToInt32(val);
+            else if (field == "U58")
+                Unknown58 = Convert.ToInt32(val);
+            else if (field == "U59")
+                Unknown59 = Convert.ToInt32(val);
+            else if (field == "U60")
+                Unknown60 = Convert.ToInt32(val);
+            else if (field == "U61")
+                Unknown61 = Convert.ToInt32(val);
+            else if (field == "U62")
+                Unknown62 = Convert.ToInt32(val);
+            else if (field == "U63")
+                Unknown63 = Convert.ToInt32(val);
+            else if (field == "U64")
+                Unknown64 = Convert.ToInt32(val);
+            else if (field == "U65")
+                Unknown65 = Convert.ToInt32(val);
 
+            else if (field == "TRDB")
+                DeepBall = Convert.ToInt32(val);
+            else if (field == "PMOR")
+                RightSleeve = Convert.ToInt32(val);
             else
             {
                 bool stop = true;
@@ -1821,6 +2486,8 @@ namespace MaddenEditor.Core
         {
             for (int f = 0; f < fields.Count(); f++)
             {
+                if (fields[f] == "")
+                    continue;
                 try
                 {
                     SetAttribute(fields[f], record[f], emodel);
@@ -1839,9 +2506,10 @@ namespace MaddenEditor.Core
         public Dictionary<int, string> playerfields = new Dictionary<int, string>();
         public List<string> records = new List<string>();
         public Dictionary<string, string> RatingDefs = new Dictionary<string, string>();
-
+        public MaddenFileVersion DraftClassVersion;
         private EditorModel model;
         private FB _Frostbyte;
+
 
         public FB fb
         {
@@ -1852,20 +2520,18 @@ namespace MaddenEditor.Core
         public DraftClass(EditorModel Model)
         {
             model = Model;
-            InitRatingDefs();
             fb = new FB();
         }
-        
-        public void InitRatingDefs()
-        { 
+
+        public void InitRatingDefs(MaddenFileVersion version)
+        {
             RatingDefs.Add("PFNA", "First Name");
             RatingDefs.Add("PLNA", "Last Name");
-            RatingDefs.Add("HOLD", "Placeholder");
-            RatingDefs.Add("PHUN", "PH Unknown");
+            RatingDefs.Add("PHTN", "HomeTown");                        
             // Placeholder
+            RatingDefs.Add("PHSN", "HomeState");
             RatingDefs.Add("PCOL", "College");
-            RatingDefs.Add("U062", "Unknown62");
-            RatingDefs.Add("U063", "Unknown63");
+            RatingDefs.Add("PLBD", "Birthday");;
             RatingDefs.Add("PAGE", "Age");
             RatingDefs.Add("PHGT", "Height");
             RatingDefs.Add("PWGT", "Weight");
@@ -1888,7 +2554,7 @@ namespace MaddenEditor.Core
             RatingDefs.Add("PCAR", "Carry");
             RatingDefs.Add("PCTH", "Catch");
             RatingDefs.Add("PLCI", "Catch in Traffic");
-            RatingDefs.Add("PELU", "Elusive");            
+            RatingDefs.Add("PELU", "Elusive");
             RatingDefs.Add("PFMS", "Finesse Moves");
             RatingDefs.Add("PLHT", "Hit Power");
             RatingDefs.Add("PLIB", "Impact Block");
@@ -1919,7 +2585,6 @@ namespace MaddenEditor.Core
 
             RatingDefs.Add("PRBS", "Run Block Str");
             RatingDefs.Add("PRBK", "Run Block");
-            RatingDefs.Add("U112", "Unknown112");
             RatingDefs.Add("PLSC", "Catch Spec");
             RatingDefs.Add("PSPD", "Speed");
             RatingDefs.Add("PLSM", "DL Spin Move");
@@ -1944,7 +2609,7 @@ namespace MaddenEditor.Core
             RatingDefs.Add("TRCT", "Poss Catch");
             RatingDefs.Add("TRCL", "Clutch");
             RatingDefs.Add("TRCB", "Covers Ball");
-            RatingDefs.Add("U135", "Unknown135");
+            RatingDefs.Add("TRPB", "PlaysBall");
             RatingDefs.Add("TRBR", "Bull Rush");
             RatingDefs.Add("TRDS", "DL Spin Move");
             RatingDefs.Add("TRSW", "DL Swim Move");
@@ -1955,15 +2620,15 @@ namespace MaddenEditor.Core
             RatingDefs.Add("TRFP", "Forces Pass");
             RatingDefs.Add("TRHM", "High Motor");
             RatingDefs.Add("TRJR", "Agg. Catch");
+            // playertype
             RatingDefs.Add("TRIC", "Penalty");
-            RatingDefs.Add("TRPB", "Plays Ball");
-            RatingDefs.Add("U147", "Unknown147");
-            RatingDefs.Add("LBST", "LB Style");            
+            RatingDefs.Add("TRFK", "Pumpfake");
+            RatingDefs.Add("LBST", "LB Style");
             RatingDefs.Add("TRSP", "Sense Pressure");
 
-            RatingDefs.Add("U150", "Unknown150");
+            
             RatingDefs.Add("TRSB", "Strips Ball");
-            RatingDefs.Add("U152", "Unknown152");
+            RatingDefs.Add("TRTL", "TackleLow");
             RatingDefs.Add("TRTA", "Throw Away");
             RatingDefs.Add("TRTS", "Throw Spiral");
             RatingDefs.Add("QTEN", "QB Tend.");
@@ -1985,19 +2650,17 @@ namespace MaddenEditor.Core
             RatingDefs.Add("BSTT", "Thigh Size");
             RatingDefs.Add("BSTA", "Thigh Defn");
             RatingDefs.Add("BSAA", "Arm Defn");
-            RatingDefs.Add("BSAT", "Arm Size");            
+            RatingDefs.Add("BSAT", "Arm Size");
             RatingDefs.Add("BSSA", "Shoulder Def");
             RatingDefs.Add("BSST", "Shoulder Size");
             RatingDefs.Add("BSFA", "Foot Defn");
             RatingDefs.Add("BSFT", "Foot Size");
 
-            RatingDefs.Add("U232", "Unknown232");
+            
             RatingDefs.Add("PEYE", "Eye Paint");
             RatingDefs.Add("PFMK", "Face Mask");
-            RatingDefs.Add("U235", "Unknown235");
-            RatingDefs.Add("PFLA", "Flak Jacket");   
-            RatingDefs.Add("U237", "Unknown237");
-            RatingDefs.Add("PGHE", "FaceID");            
+            RatingDefs.Add("PFLA", "Flak Jacket");
+            RatingDefs.Add("PGHE", "FaceID");
 
             RatingDefs.Add("PLEL", "Elbow Left");
             RatingDefs.Add("PLHA", "Hand Left");
@@ -2006,123 +2669,156 @@ namespace MaddenEditor.Core
             RatingDefs.Add("PRHA", "Hand Right");
             RatingDefs.Add("PRWR", "Wrist Right");
             RatingDefs.Add("PGSL", "Sleeve Left");
-            RatingDefs.Add("PMOR", "Sleeve Right");
-            RatingDefs.Add("U248", "Unknown248");
+            RatingDefs.Add("PMOR", "Sleeve Right");            
+            RatingDefs.Add("PHCL", "HairColor");            
             RatingDefs.Add("PHAN", "Handed");
 
             RatingDefs.Add("PLHW", "HandWarmer");
             RatingDefs.Add("PHLM", "Helmet");
-            RatingDefs.Add("U252", "Unknown252");
-            RatingDefs.Add("U253", "Unknown253");
-            RatingDefs.Add("U254", "Unknown254");
-            RatingDefs.Add("PSPL", "Ankle Left");
-            RatingDefs.Add("U256", "Unknown256");
+            RatingDefs.Add("PJER", "JerseySlv");
             RatingDefs.Add("PNEK", "Neck Roll");
-            RatingDefs.Add("U258", "Unknown258");
-            RatingDefs.Add("U259", "Unknown259");
+            RatingDefs.Add("PNEC", "NeckType");
 
-            RatingDefs.Add("PSXP", "PortID");            
+            RatingDefs.Add("PSXP", "PortID");
             RatingDefs.Add("PQBS", "QB Style");
             RatingDefs.Add("PLKN", "Knee Left");
             RatingDefs.Add("PLSH", "Shoe Left");
-            RatingDefs.Add("PSPR", "Ankle Right");
+            RatingDefs.Add("PSPL", "Spat Left");
             RatingDefs.Add("PLTH", "Thigh Left");
-            RatingDefs.Add("U267", "Unknown267");
-            RatingDefs.Add("U268", "Unknown268");
-            RatingDefs.Add("U269", "Unknown269");
+            RatingDefs.Add("PSHG", "HeadGear");
 
-            RatingDefs.Add("PSKH", "Sock Height");
-            RatingDefs.Add("U271", "Unknown271");
+            RatingDefs.Add("PSKH", "SockHeight");
             RatingDefs.Add("PSTN", "Stance");
-            RatingDefs.Add("U273", "Unknown273");
-            RatingDefs.Add("U274", "Unknown274");
+            RatingDefs.Add("PTEN", "Tendency");
             RatingDefs.Add("PLTL", "Towel");
-            RatingDefs.Add("U276", "Unknown276");
             RatingDefs.Add("PVIS", "Visor");
-            RatingDefs.Add("U278", "Unknown278");
-            RatingDefs.Add("U279", "Unknown279");
 
-            RatingDefs.Add("U280", "Unknown280");
-            RatingDefs.Add("U281", "Unknown281");
-            RatingDefs.Add("PCMT", "Comment");
-            RatingDefs.Add("U284", "Unknown284");
-            RatingDefs.Add("U285", "Unknown285");
-            RatingDefs.Add("U286", "Unknown286");
-            RatingDefs.Add("U287", "Unknown286");
-            RatingDefs.Add("U288", "Unknown287");
-            RatingDefs.Add("U289", "Unknown289");
-
-            RatingDefs.Add("U290", "Unknown290");
-            RatingDefs.Add("U291", "Unknown291");
-            RatingDefs.Add("U292", "Unknown292");
-            RatingDefs.Add("U293", "Unknown293");
-            RatingDefs.Add("U294", "Unknown294");
-            RatingDefs.Add("U295", "Unknown295");
-            RatingDefs.Add("U296", "Unknown296");
-            RatingDefs.Add("U297", "Unknown296");
-            RatingDefs.Add("U298", "Unknown297");
-            RatingDefs.Add("U299", "Unknown299");
-
-            RatingDefs.Add("U300", "Unknown300");
-            RatingDefs.Add("U301", "Unknown301");
-            RatingDefs.Add("U302", "Unknown302");
-            RatingDefs.Add("U303", "Unknown303");
-            RatingDefs.Add("U304", "Unknown304");
-            RatingDefs.Add("U305", "Unknown305");
-            RatingDefs.Add("U306", "Unknown306");
-            RatingDefs.Add("U307", "Unknown306");
-            RatingDefs.Add("U308", "Unknown307");
-            RatingDefs.Add("U309", "Unknown309");
-
-            RatingDefs.Add("U310", "Unknown310");
-            RatingDefs.Add("U311", "Unknown311");
-            RatingDefs.Add("U312", "Unknown312");
-            RatingDefs.Add("U313", "Unknown313");
-            RatingDefs.Add("U314", "Unknown314");
-            RatingDefs.Add("U315", "Unknown315");
-            RatingDefs.Add("U316", "Unknown316");
-            RatingDefs.Add("U317", "Unknown316");
-            RatingDefs.Add("U318", "Unknown317");
-            RatingDefs.Add("U319", "Unknown319");
-
-            RatingDefs.Add("U320", "Unknown320");
-            RatingDefs.Add("U321", "Unknown321");
-            RatingDefs.Add("U322", "Unknown322");
-            RatingDefs.Add("U323", "Unknown323");
-            RatingDefs.Add("U324", "Unknown324");
-            RatingDefs.Add("U325", "Unknown325");
-            RatingDefs.Add("U326", "Unknown326");
-            RatingDefs.Add("U327", "Unknown327");
             
+            RatingDefs.Add("PCEL", "Celebration");
+            RatingDefs.Add("PCMT", "Comment");
+
+            RatingDefs.Add("U01", "Unknown1");
+            RatingDefs.Add("U02", "Unknown2");
+            RatingDefs.Add("U03", "Unknown3");
+            RatingDefs.Add("U04", "Unknown4");
+            RatingDefs.Add("U05", "Unknown5");
+            RatingDefs.Add("U06", "Unknown6");
+            RatingDefs.Add("U07", "Unknown7");
+            RatingDefs.Add("U08", "Unknown8");
+            RatingDefs.Add("U09", "Unknown9");
+            RatingDefs.Add("U10", "Unknown10");
+            RatingDefs.Add("U11", "Unknown11");
+            RatingDefs.Add("U12", "Unknown12");
+            RatingDefs.Add("U13", "Unknown13");
+            RatingDefs.Add("U14", "Unknown14");
+            RatingDefs.Add("U15", "Unknown15");
+            RatingDefs.Add("U16", "Unknown16");
+            RatingDefs.Add("U17", "Unknown17");
+            RatingDefs.Add("U18", "Unknown18");
+            RatingDefs.Add("U19", "Unknown19");
+            RatingDefs.Add("U20", "Unknown20");
+            RatingDefs.Add("U21", "Unknown21");
+            RatingDefs.Add("U22", "Unknown22");
+            RatingDefs.Add("U23", "Unknown23");
+            RatingDefs.Add("U24", "Unknown24");
+            RatingDefs.Add("U25", "Unknown25");
+            RatingDefs.Add("U26", "Unknown26");
+            RatingDefs.Add("U27", "Unknown27");
+            RatingDefs.Add("U28", "Unknown28");
+            RatingDefs.Add("U29", "Unknown29");
+            RatingDefs.Add("U30", "Unknown30");
+            RatingDefs.Add("U31", "Unknown31");
+            RatingDefs.Add("U32", "Unknown32");
+            RatingDefs.Add("U33", "Unknown33");
+            RatingDefs.Add("U34", "Unknown34");
+            RatingDefs.Add("U35", "Unknown35");
+            RatingDefs.Add("U36", "Unknown36");
+            RatingDefs.Add("U37", "Unknown37");
+            RatingDefs.Add("U38", "Unknown38");
+            RatingDefs.Add("U39", "Unknown39");
+            RatingDefs.Add("U40", "Unknown40");
+            RatingDefs.Add("U41", "Unknown41");
+            RatingDefs.Add("U42", "Unknown42");
+            RatingDefs.Add("U43", "Unknown43");
+            RatingDefs.Add("U44", "Unknown44");
+            RatingDefs.Add("U45", "Unknown45");
+            RatingDefs.Add("U46", "Unknown46");
+            RatingDefs.Add("U47", "Unknown47");
+            RatingDefs.Add("U48", "Unknown48");
+            RatingDefs.Add("U49", "Unknown49");
+            RatingDefs.Add("U50", "Unknown50");
+            RatingDefs.Add("U51", "Unknown51");
+            RatingDefs.Add("U52", "Unknown52");
+            RatingDefs.Add("U53", "Unknown53");
+            RatingDefs.Add("U54", "Unknown54");
+            RatingDefs.Add("U55", "Unknown55");
+            RatingDefs.Add("U56", "Unknown56");
+            RatingDefs.Add("U57", "Unknown57");
+            RatingDefs.Add("U58", "Unknown58");
+            RatingDefs.Add("U59", "Unknown59");
+            RatingDefs.Add("U60", "Unknown60");
+            RatingDefs.Add("U61", "Unknown61");
+            RatingDefs.Add("U62", "Unknown62");
+            RatingDefs.Add("U63", "Unknown63");
+            RatingDefs.Add("U64", "Unknown64");
+            RatingDefs.Add("U65", "Unknown65");
+
+            RatingDefs.Add("TRDB", "DeepBall");
         }
 
         public bool ReadDraftClass(string filename)
         {
+            //fb = new FB();
             fb.Extract(filename);
-            if (fb.FB_Type != Frostbyte_type.Draft)
-                return false;
 
-            if (fb.FB_Type == Frostbyte_type.Draft)
+            fb.binreader = new BinaryReader(File.Open(filename, FileMode.Open));
+            if (fb.binreader.BaseStream.Length == 152950)
             {
-                draftclassplayers.Clear();
-
-                fb.binreader = new BinaryReader(File.Open(filename, FileMode.Open));
-
-                for (int p = 0; p < fb.DataEntries; p++)
-                {
-                    DraftPlayer player = new DraftPlayer();
-                    fb.binreader.BaseStream.Position = 70 + (p * 328);
-                    player.ReadPlayer(fb.binreader);
-                    draftclassplayers.Add(player);
-                }
-
-                fb.binreader.Close();
+                DraftClassVersion = MaddenFileVersion.Ver2020;
             }
+            else if (fb.binreader.BaseStream.Length == 149310)
+            {
+                DraftClassVersion = MaddenFileVersion.Ver2019;
+            }
+            else return false;
+
+            fb.binreader.BaseStream.Position = 66;
+            fb.DataEntries = fb.binreader.ReadUInt32();
+
+            if (RatingDefs.Count ==0)
+                InitRatingDefs(DraftClassVersion);
+            draftclassplayers.Clear();
+
+            for (int p = 0; p < fb.DataEntries; p++)
+            {
+                DraftPlayer player = new DraftPlayer();
+                if (DraftClassVersion == MaddenFileVersion.Ver2019)
+                    fb.binreader.BaseStream.Position = 70 + (p * 328);
+                else if (DraftClassVersion == MaddenFileVersion.Ver2020)
+                    fb.binreader.BaseStream.Position = 70 + (p * 336);
+
+                if (DraftClassVersion == MaddenFileVersion.Ver2019)
+                    player.ReadPlayer19(fb.binreader);
+                else if (DraftClassVersion == MaddenFileVersion.Ver2020)
+                    player.ReadPlayer20(fb.binreader);
+                draftclassplayers.Add(player);
+            }
+
+            fb.binreader.Close();
+
             return true;
         }
 
-        public void SaveDraftClass(string filename, FB draftfb)
+        public void SaveDraftClass(string filename, FB draftfb, int ver)
         {
+            MaddenFileVersion version = DraftClassVersion;
+            if (ver == 0)
+                version = MaddenFileVersion.Ver2019;               
+            else if (ver == 1)
+                version = MaddenFileVersion.Ver2020;            
+
+            draftfb.ChangeDraftClassVersion(version);
+            
             string draftname = Path.GetDirectoryName(filename);
 
             string name = Path.GetFileName(filename);
@@ -2147,19 +2843,23 @@ namespace MaddenEditor.Core
             binwriter.Write((UInt16)date.Second);
             #endregion
 
-            binwriter.Write(draftfb.SerialVersion);
             binwriter.Write(draftfb.Serial);
-            binwriter.Write(draftfb.DataType);
+            binwriter.Write((UInt32)2);
             binwriter.Write(draftfb.DataEntries);
 
             for (int p = 0; p < draftclassplayers.Count; p++)
             {
-                draftclassplayers[p].WritePlayer(binwriter);
+                draftclassplayers[p].WritePlayer(binwriter, version);
             }
 
             //padding
-            for (int c = 0; c < 1640; c++)
-                binwriter.Write((byte)0);
+            if (binwriter.BaseStream.Position < draftfb.TotalLength)
+            {
+                while (binwriter.BaseStream.Position < draftfb.TotalLength + 18)
+                {
+                    binwriter.Write((byte)0);
+                }
+            }
 
             binwriter.Close();     
         }
@@ -2168,10 +2868,13 @@ namespace MaddenEditor.Core
         {
             StringBuilder hbuilder = new StringBuilder();
             hbuilder.Append("DRAFT,");
-            hbuilder.Append("2019,");
+            if (DraftClassVersion == MaddenFileVersion.Ver2019)
+                hbuilder.Append("2019,");
+            else if (DraftClassVersion == MaddenFileVersion.Ver2020)
+                hbuilder.Append("2020,");
             if (desc)
-                hbuilder.Append("Yes");
-            else hbuilder.Append("No");
+                hbuilder.Append("Yes,");
+            else hbuilder.Append("No,");
             wText.WriteLine(hbuilder.ToString());
             hbuilder.Clear();
 
@@ -2217,6 +2920,7 @@ namespace MaddenEditor.Core
                 else draftclassplayers[c].Comment = 8191;
             }
         }
+
     
     }
 

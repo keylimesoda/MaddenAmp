@@ -94,11 +94,11 @@ namespace MaddenEditor.Forms
             RelocateUnknown.Value = currentcity.Orot;
 
             // Customize the min,max values for relocation year            
-            RelocateYear.Minimum = model.CurrentYearIndex + (int)model.FileVersion + currentcity.Owry;
-            RelocateYear.Maximum = model.CurrentYearIndex + (int)model.FileVersion + currentcity.Owry + 15;
-            RelocateYear.Value = model.CurrentYearIndex + (int)model.FileVersion + currentcity.Owry;
+            RelocateYear.Minimum = model.CurrentYearIndex + (int)model.MadVersion + currentcity.Owry;
+            RelocateYear.Maximum = model.CurrentYearIndex + (int)model.MadVersion + currentcity.Owry + 15;
+            RelocateYear.Value = model.CurrentYearIndex + (int)model.MadVersion + currentcity.Owry;
 
-            if (model.FileVersion > MaddenFileVersion.Ver2004)
+            if (model.MadVersion > MaddenFileVersion.Ver2004)
             {
                 Timezone_Combobox.Enabled = true;
                 Timezone_Combobox.SelectedIndex = currentcity.Timezone;
@@ -146,7 +146,7 @@ namespace MaddenEditor.Forms
         private void RelocateYear_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitialising)
-                currentcity.Owry = (int)RelocateYear.Value - model.CurrentYearIndex - (int)model.FileVersion;
+                currentcity.Owry = (int)RelocateYear.Value - model.CurrentYearIndex - (int)model.MadVersion;
         }
 
         private void RelocateUnknown_ValueChanged(object sender, EventArgs e)

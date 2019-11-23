@@ -54,8 +54,8 @@ namespace MaddenEditor.Forms
         {
             isInitializing = true;
 
-            AutoLoadPlayerPorts.Checked = manager.config.AutoLoad_PlayerPort[(int)model.FileVersion];
-            PlayerPortLocation_Textbox.Text = manager.config.PlayerPortFiles[(int)model.FileVersion];
+            AutoLoadPlayerPorts.Checked = manager.config.AutoLoad_PlayerPort[(int)model.MadVersion];
+            PlayerPortLocation_Textbox.Text = manager.config.PlayerPortFiles[(int)model.MadVersion];
             CurrentPlayerPort_Textbox.Text = manager.PlayerPortDAT.loadfile;
             
             if (CurrentPlayerPort_Textbox.Text == "")
@@ -72,8 +72,8 @@ namespace MaddenEditor.Forms
                 PlayerPack_Panel.Visible = true;
             }
 
-            DefaultCoachPort_Checkbox.Checked = manager.config.AutoLoad_CoachPort[(int)model.FileVersion];
-            CoachPortLocation_Textbox.Text = manager.config.CoachPortFiles[(int)model.FileVersion];
+            DefaultCoachPort_Checkbox.Checked = manager.config.AutoLoad_CoachPort[(int)model.MadVersion];
+            CoachPortLocation_Textbox.Text = manager.config.CoachPortFiles[(int)model.MadVersion];
             CurrentCoachPort_Textbox.Text = manager.CoachPortDAT.loadfile;
             if (CurrentCoachPort_Textbox.Text == "")
             {
@@ -88,8 +88,8 @@ namespace MaddenEditor.Forms
                 CoachPack_Panel.Visible = true;
             }
 
-            AskForPlayerSave_Checkbox.Checked = manager.config.AskPlayerSave[(int)model.FileVersion];
-            AskForCoachSave_Checkbox.Checked = manager.config.AskCoachSave[(int)model.FileVersion];
+            AskForPlayerSave_Checkbox.Checked = manager.config.AskPlayerSave[(int)model.MadVersion];
+            AskForCoachSave_Checkbox.Checked = manager.config.AskCoachSave[(int)model.MadVersion];
 
             isInitializing = false;
         }
@@ -146,26 +146,26 @@ namespace MaddenEditor.Forms
 
                         if (filename != "")
                         {
-                            manager.config.PlayerPortFiles[(int)model.FileVersion] = filename;
-                            manager.config.AutoLoad_PlayerPort[(int)model.FileVersion] = true;                            
+                            manager.config.PlayerPortFiles[(int)model.MadVersion] = filename;
+                            manager.config.AutoLoad_PlayerPort[(int)model.MadVersion] = true;                            
                         }
                     }
                     else
                     {
-                        manager.config.PlayerPortFiles[(int)model.FileVersion] = PlayerPortLocation_Textbox.Text;
-                        manager.config.AutoLoad_PlayerPort[(int)model.FileVersion] = AutoLoadPlayerPorts.Checked;
+                        manager.config.PlayerPortFiles[(int)model.MadVersion] = PlayerPortLocation_Textbox.Text;
+                        manager.config.AutoLoad_PlayerPort[(int)model.MadVersion] = AutoLoadPlayerPorts.Checked;
                     }
                 }
                 else
                 {
-                    manager.config.AutoLoad_PlayerPort[(int)model.FileVersion] = false;
+                    manager.config.AutoLoad_PlayerPort[(int)model.MadVersion] = false;
                 }
 
                 manager.config.changed = true;
 
                 if (!manager.PlayerPortDAT.isterf)
                 {
-                    manager.PlayerPortDAT.loadfile = manager.config.PlayerPortFiles[(int)model.FileVersion];
+                    manager.PlayerPortDAT.loadfile = manager.config.PlayerPortFiles[(int)model.MadVersion];
                     manager.PlayerPortDAT.Load();
                 }
                 Init();
@@ -195,24 +195,24 @@ namespace MaddenEditor.Forms
 
                         if (filename != "")
                         {
-                            manager.config.CoachPortFiles[(int)model.FileVersion] = filename;
+                            manager.config.CoachPortFiles[(int)model.MadVersion] = filename;
                         }
                     }
                     else
                     {
-                        manager.config.CoachPortFiles[(int)model.FileVersion] = CoachPortLocation_Textbox.Text;                        
+                        manager.config.CoachPortFiles[(int)model.MadVersion] = CoachPortLocation_Textbox.Text;                        
                     }
-                    manager.config.AutoLoad_CoachPort[(int)model.FileVersion] = true;
+                    manager.config.AutoLoad_CoachPort[(int)model.MadVersion] = true;
                 }
                 else
                 {
-                    manager.config.AutoLoad_CoachPort[(int)model.FileVersion] = false;
+                    manager.config.AutoLoad_CoachPort[(int)model.MadVersion] = false;
                 }
 
                 manager.config.changed = true;
                 if (!manager.CoachPortDAT.isterf)
                 {
-                    manager.CoachPortDAT.loadfile = manager.config.CoachPortFiles[(int)model.FileVersion];
+                    manager.CoachPortDAT.loadfile = manager.config.CoachPortFiles[(int)model.MadVersion];
                     manager.CoachPortDAT.Load();
                 }
 
@@ -541,13 +541,13 @@ namespace MaddenEditor.Forms
 
         private void AskForPlayerSave_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
-            manager.config.AskPlayerSave[(int)model.FileVersion] = AskForPlayerSave_Checkbox.Checked;
+            manager.config.AskPlayerSave[(int)model.MadVersion] = AskForPlayerSave_Checkbox.Checked;
             manager.PlayerPortDAT.changed = true;
         }
 
         private void AskForCoachSave_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
-            manager.config.AskCoachSave[(int)model.FileVersion] = AskForCoachSave_Checkbox.Checked;
+            manager.config.AskCoachSave[(int)model.MadVersion] = AskForCoachSave_Checkbox.Checked;
             manager.config.changed = true;
         }
 
@@ -581,14 +581,14 @@ namespace MaddenEditor.Forms
 
         private void PlayerMakeDefault_Button_Click(object sender, EventArgs e)
         {
-            manager.config.PlayerPortFiles[(int)model.FileVersion] = CurrentPlayerPort_Textbox.Text;
+            manager.config.PlayerPortFiles[(int)model.MadVersion] = CurrentPlayerPort_Textbox.Text;
             manager.config.changed = true;
             Init();
         }
 
         private void CoachMakeDefault_Button_Click(object sender, EventArgs e)
         {
-            manager.config.CoachPortFiles[(int)model.FileVersion] = CurrentCoachPort_Textbox.Text;            
+            manager.config.CoachPortFiles[(int)model.MadVersion] = CurrentCoachPort_Textbox.Text;            
             manager.config.changed = true;
             Init();
         }

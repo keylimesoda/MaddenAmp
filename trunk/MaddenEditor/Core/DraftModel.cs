@@ -609,7 +609,7 @@ namespace MaddenEditor.Core
         public DraftModel(EditorModel model)
         {
             this.model = model;
-            math = new LocalMath(model.FileVersion);
+            math = new LocalMath(model.MadVersion);
         }
 
         

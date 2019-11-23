@@ -1,0 +1,101 @@
+Madden AMP 4.43
+
+By using this editor, users are responsible for understanding and adhering to any EULA from EA that they agreed to.  If unsure whether a particular edit is going to be allowed, do not publish/share it with any online community.
+
+Madden Amp is written in C# using Visual Studio 2013.
+Source Code is available through Sourceforge:
+https://svn.code.sf.net/p/maddenamp/code/trunk
+
+Subversion client (such as Tortoise SVN, https://tortoisesvn.net/)
+Checkout (Current Version) - svn://svn.code.sf.net/p/maddenamp/code/trunk 
+Checkout (Entire Project) - svn://svn.code.sf.net/p/maddenamp/code
+
+Submitting any changes to the source code requires a sourceforge account.
+Contact Stingray68 through sourceforge, or on the Football Idiot forums, to request write access.
+http://www.footballidiot.com/forum/
+
+
+Do not edit files while the game is running.
+Making edits in game requires reloading the roster file with Amp when finished editing in game in order to view those changes.
+
+Legacy
+------
+Training Camp & Weekly Maintenance are no longer being supported.
+
+
+Madden 2019/2020
+-----------
+You CANNOT import/export/edit coaches in a Madden 19/20 roster file.
+There are NO coaches in a Madden 19/20 roster file.
+
+You CANNOT import/export a draft class from a Madden 19/20 roster file.  
+You can export rookies from a Madden 19/20 roster file, but that is not the same thing as a 
+Madden 19/20 draft class file.
+There is NOT a draft class in a Madden 19 roster file.  
+A Madden 19/20 Draft Class is a separate file.  Please refer to game documentation.
+
+
+For Madden 2019/2020, ONLY Roster files are officially supported with Amp.
+You CANNOT edit a Madden 19/20 Franchise/CFM with this editor.
+
+
+
+
+v4.43 Changelog
+
+******************************************************************************************
+***
+***  Reminder to BACK UP ALL FILES BEFORE EDITING ! ***
+***
+******************************************************************************************
+
+
+DO NOT contact StingRay68 directly with complaints, bug reports or feature requests.
+
+
+
+2020 Player Signature/Superstar Abilities are NOT contained in the roster file and cannot be edited with Madden AMP.
+
+
+Main
+Open File - Changed initial filter to all files.  
+Note : Supported filetypes remains unchanged.
+
+
+- Import/Export 
+Draft Class updated to handle Madden 20 files.
+
+
+- Player Editor
+
+Audio ID - This is the last name audio file that is associated with the player.
+Note : This is based on the spelling on a given player's last name.  
+There may be more than one selection that will give the correct pronunciation in game.
+
+Fix Audio IDs - This will go through every player and attempt to assign the correct audio id based on the spelling of the player's last name.  
+Spelling/Capitalization matters.  Double check your work.
+Could be useful for roster makers that import via csv and don't want to spend time correcting audio/comment ids by hand.
+
+
+
+QB Style - Updated for 19/20
+Stance - Updated for 19/20
+Home State - added Non U.S.
+XP Rate - Updated for 20
+
+
+Equipment lists updated for Madden20 : 
+Most Equipment changes were made from 2020 schema file and may not match the actual in game choices.
+
+Hair Style - No other available space in which to put this.  Editing this may not do anything, the field is the same for every player in default roster.
+
+Knee
+Helmet
+Facemask
+Shoes
+Gloves
+Wristband
+Sleeve
+Ankles
+Endplay
+Mouthpiece

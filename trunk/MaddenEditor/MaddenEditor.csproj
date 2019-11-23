@@ -642,6 +642,9 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Resources\v444.txt" />
+    <EmbeddedResource Include="Resources\v443.txt" />
+    <EmbeddedResource Include="Resources\v442.txt" />
     <EmbeddedResource Include="Resources\v441.txt" />
     <EmbeddedResource Include="Resources\v440.txt" />
     <EmbeddedResource Include="Resources\v439.txt" />

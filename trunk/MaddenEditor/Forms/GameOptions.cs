@@ -210,12 +210,12 @@ namespace MaddenEditor.Forms
         {
             if (model.FileType != MaddenFileType.Franchise && model.FileType != MaddenFileType.UserConfig)
                 return;
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
                 panel1.Visible = true;
 
             isInitializing = true;
 
-            CUR_Version_Textbox.Text = model.FileVersion.ToString();
+            CUR_Version_Textbox.Text = model.MadVersion.ToString();
             CUR_GameMode_Combo.SelectedIndex = model.GameOptionModel.Playmode;
             CUR_Skill_Combo.SelectedIndex = model.GameOptionModel.SkillLevel;
             CUR_Qtr_Updown.Value = model.GameOptionModel.QuarterLength;
@@ -224,7 +224,7 @@ namespace MaddenEditor.Forms
             else CUR_AcceClock_Checkbox.Checked = false;
             #region CPU AI
             CUR_CPU_QBAcc.Value = model.GameOptionModel.CPU_QB_Accuracy;
-            if (model.FileVersion == MaddenFileVersion.Ver2019)
+            if (model.MadVersion == MaddenFileVersion.Ver2019)
                 CUR_CPU_PassBlock.Value = model.GameOptionModel.CPU_PassBlocking_19;
             else CUR_CPU_PassBlock.Value = model.GameOptionModel.CPU_PassBlocking;
             
@@ -363,7 +363,7 @@ namespace MaddenEditor.Forms
             CUR_AutoReplay.Checked = model.GameOptionModel.AutoReplay;
             CUR_Fatigue.Checked = (model.GameOptionModel.Fatigue == 1);
 
-            if (model.FileVersion >= MaddenFileVersion.Ver2006)
+            if (model.MadVersion >= MaddenFileVersion.Ver2006)
             {
                 CUR_FairPlay.Enabled = true;
                 CUR_FairPlay.Checked = model.GameOptionModel.FairPlay;
@@ -1125,7 +1125,7 @@ namespace MaddenEditor.Forms
         private void CUR_CPU_PassBlock_ValueChanged(object sender, EventArgs e)
         {
             if (!isInitializing)
-                if (model.FileVersion == MaddenFileVersion.Ver2019)
+                if (model.MadVersion == MaddenFileVersion.Ver2019)
                     model.GameOptionModel.CPU_PassBlocking_19 = (int)CUR_CPU_PassBlock.Value;
                 else model.GameOptionModel.CPU_PassBlocking = (int)CUR_CPU_PassBlock.Value;
         }

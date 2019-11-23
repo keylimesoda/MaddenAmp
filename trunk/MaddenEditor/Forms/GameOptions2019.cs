@@ -65,7 +65,7 @@ namespace MaddenEditor.Forms
         {
             isInitializing = true;
 
-            CUR_Version_Textbox.Text = model.FileVersion.ToString();
+            CUR_Version_Textbox.Text = model.MadVersion.ToString();
             CUR_GameMode_Combo.SelectedIndex = model.GameOptionModel.GameStyle;
             CUR_Skill_Combo.SelectedIndex = model.UserOptionModel.SkillLevel;
             if (model.UserInfo.PlaybookOFF == 255)

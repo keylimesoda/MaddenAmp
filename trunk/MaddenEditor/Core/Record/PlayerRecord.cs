@@ -21,6 +21,7 @@
  * 
  *****************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -105,7 +106,7 @@ namespace MaddenEditor.Core.Record
         public const string FOOT_SIZE = "BSFT";                 //2019
         public const string GUT_DEFN = "BSGA";                  //2019
         public const string GUT_SIZE = "BSGT";                  //2019
-        public const string PAD_DEFN = "BSPA";                  //2019
+        public const string SHOULDER_HEIGHT = "BSPA";                  //2019
         public const string PAD_SIZE = "BSPT";                  //2019
         public const string SHOULDER_DEFN = "BSSA";             //2019
         public const string SHOULDER_SIZE = "BSST";             //2019
@@ -127,7 +128,7 @@ namespace MaddenEditor.Core.Record
         public const string BREAK_SACK = "PBSK";                //2019
         public const string BREAK_TACKLE = "PBTK";
         public const string CARRYING = "PCAR";
-        public const string PCEL = "PCEL";                      // 2004-2006 celebration?  replaced by ego 2007-2008
+        public const string PCEL = "PCEL";                      // 2004-2006 celebration?  replaced by ego 2007-2008 // back in 2019
         public const string EQP_PAD_SHELF = "PCHS";
         public const string PLAYER_COMMENT = "PCMT";
         public const string COLLEGE_ID = "PCOL";
@@ -161,13 +162,13 @@ namespace MaddenEditor.Core.Record
         public const string PLAYER_ID = "PGID";
         public const string SLEEVES_LEFT = "PGSL";
         public const string DOMINANT_HAND = "PHAN";
-        public const string HAIR_COLOR = "PHCL";
+        public const string HAIR_COLOR = "PHCL";                // not in 2020
         public const string HAIR_STYLE = "PHED";
         public const string HEIGHT = "PHGT";
         public const string HELMET_STYLE = "PHLM";
         public const string HOMESTATE = "PHSN";                 //2019
         public const string HOMETOWN = "PHTN";                  //2019
-        public const string NFL_ICON = "PICN";                  // 2005
+        public const string NFL_ICON = "PICN";                  //2005
         public const string IMPORTANCE = "PIMP";
         public const string INJURY = "PINJ";
         public const string JERSEY_NUMBER = "PJEN";
@@ -184,6 +185,7 @@ namespace MaddenEditor.Core.Record
         public const string LEFT_ELBOW = "PLEL";
         public const string PLFH = "PLFH";                      // ?
         public const string LEFT_HAND = "PLHA";
+        public const string HAIRSTYLE20 = "PLHS";               //2020
         public const string HIT_POWER = "PLHT";                 //2019
         public const string HAND_WARMER = "PLHW";               //2019
         public const string LAST_HEALTHY_YEAR = "PLHY";         // not sure about this one
@@ -238,12 +240,12 @@ namespace MaddenEditor.Core.Record
         public const string EQP_FLAK_JACKET = "PQTS";           // 04-06
         public const string RUN_BLOCK_FINESSE = "PRBF";         // 2019
         public const string RUN_BLOCKING = "PRBK";
-        public const string RUNBLOCK_STRENGTH = "PRBS";         //2019
+        public const string RUNBLOCK_STRENGTH = "PRBS";         // 2019
         public const string RIGHT_ELBOW = "PREL";
         public const string RIGHT_HAND = "PRHA";
         public const string KNEE_RIGHT = "PRKN";                //2019
         public const string PLAYER_ROLE = "PROL";               // 2007 
-        public const string XP_RATE = "PROL";                   // 2019 This isXP Rate
+        public const string DEV_TRAIT = "PROL";                   // 2019 This isXP Rate
         public const string PLAYER_WEAPON = "PRL2";             // 2008
         public const string REAR_SIZE = "PRSE";                 // 2019
         public const string RIGHT_SHOE = "PRSH";
@@ -267,7 +269,7 @@ namespace MaddenEditor.Core.Record
         public const string BODY_OVERALL = "PSBS";
         public const string SIDELINE_HEADGEAR = "PSHG";         //2019
         public const string SOCK_HEIGHT = "PSKH";               //2019
-        public const string PSKI = "PSKI";                      // ?
+        public const string PSKI = "PSKI";                      // ? 2019 skin
         public const string SPEED = "PSPD";
         public const string ANKLE_LEFT = "PSPL";                //2019
         public const string ANKLE_RIGHT = "PSPR";               //2019
@@ -290,8 +292,8 @@ namespace MaddenEditor.Core.Record
         public const string THROW_ON_RUN = "PTOR";              //2019
         public const string LEGS_THIGH_PADS = "PTPS";           // 2004-2005
         public const string TOTAL_SALARY = "PTSA";              
-        public const string TEMP_SLEEVES = "PTSL";
-        public const string EQP_PAD_HEIGHT = "PTSS";
+        public const string TEMP_SLEEVES = "PTSL";               
+        public const string EQP_PAD_HEIGHT = "PTSS";            // not in 2008
         public const string THROW_PRESSURE = "PTUP";            //2019
         public const string PUCL = "PUCL";                      // ?
         public const string UNDERSHIRT = "PUND";                //2019
@@ -329,7 +331,7 @@ namespace MaddenEditor.Core.Record
         public const string HIGH_MOTOR = "TRHM";                //2019
         public const string PENALTY = "TRIC";                   //2019
         public const string AGGRESSIVE_CATCH = "TRJR";          //2019 
-        public const string PLAYS_BALL = "TRPB";                //2019
+        public const string PLAYS_BALL = "TRPB";                //2019 this is deep ball ?
         public const string STRIPS_BALL = "TRSB";               //2019
         public const string SIDELINE_CATCH = "TRSC";            //2019
         public const string SENSE_PRESSURE = "TRSP";            //2019
@@ -1023,7 +1025,7 @@ namespace MaddenEditor.Core.Record
             }
         }
 
-        public int Pski
+        public int Skin
         {
             get { return GetIntField(PSKI); }
             set { SetField(PSKI, value); }
@@ -2181,10 +2183,10 @@ namespace MaddenEditor.Core.Record
             get { return GetFloatField(GUT_SIZE); }
             set { SetField(GUT_SIZE, value); }
         }
-        public float PadDefn
+        public float ShoulderHeight
         {
-            get { return GetFloatField(PAD_DEFN); }
-            set { SetField(PAD_DEFN, value); }
+            get { return GetFloatField(SHOULDER_HEIGHT); }
+            set { SetField(SHOULDER_HEIGHT, value); }
         }
         public float PadSize
         {
@@ -2246,24 +2248,47 @@ namespace MaddenEditor.Core.Record
             get { return GetIntField(SIDELINE_HEADGEAR); }
             set { SetField(SIDELINE_HEADGEAR, value); }
         }
-        public int XPRate
+        public int DevTrait
         {
-            get { return GetIntField(XP_RATE); }
-            set { SetField(XP_RATE, value); }
+            get { return GetIntField(DEV_TRAIT); }
+            set { SetField(DEV_TRAIT, value); }
         }
+        
+        public UInt32 GetUnsignedValue(bool[] bits)
+        {
+            UInt32 uval = 0;
+            for (int i = 0; i < bits.Length; i++)
+            {
+                if (bits[i])
+                    uval += (UInt32)1 << i;
+            }
+            return uval;
+        }
+
         public string GetBirthday()
         {
-            // s68 - I find bit shifting confusing, got this formula from xananthol's madden 360 roster reader
-            // and adjusted the year.
-            string bd = "";
-            int month = ((this.Birthday & 0x00000780) >> 7) + 1;
-            int day = ((this.Birthday & 0x0000F800) >> 11);
-            int year = (this.Birthday & 0x0000007F) + 1940;
+            byte[] test = new byte[4];
+            test = BitConverter.GetBytes(this.Birthday);
+            BitArray ba = new BitArray(test);
+            bool[] convert = new bool[16];
+            for (int c = 0; c < 16; c++)
+                convert[c] = ba[c];            
 
-            bd = month.ToString() + "/" + day.ToString() + "/" + year.ToString();
-            return bd;
+            bool[] year = new bool[7];
+            Array.Copy(convert, 0, year, 0, 7);
+
+            bool[] month = new bool[4];
+            Array.Copy(convert, 7, month, 0, 4);
+
+            bool[] day = new bool[5];
+            Array.Copy(convert, 11, day, 0, 5);
+
+            UInt32 m = 1 + GetUnsignedValue(month);
+            UInt32 y = 1940 + GetUnsignedValue(year);
+            UInt32 d = GetUnsignedValue(day);
+
+            return m.ToString() + "/" + d.ToString() + "/" + y.ToString();
         }
-
         public void SetBirthday(string bday)
         {
             // s68, Got this function from xanathol's xbox 360 roster editor, adjusted year
@@ -2292,6 +2317,12 @@ namespace MaddenEditor.Core.Record
             this.Birthday = bd;
         }
 
+        public int HairStyle20
+        {
+            get { return GetIntField(HAIRSTYLE20); }
+            set { SetField(HAIRSTYLE20, value); }
+        }
+        
         #endregion
 
         #region Functions
