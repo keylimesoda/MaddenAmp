@@ -1,4 +1,4 @@
-## MADDEN AMP 4.49
+## MADDEN AMP 4.44
 
 *The power to Amplify your Franchise*
 
@@ -37,8 +37,8 @@ This can be downloaded from:  https://www.microsoft.com/en-us/download/details.a
 * Supports to most extent, Madden 2004, 2005 & 2006
 
 **4. KNOWN ISSUES**
-* Editing players salary doesn’t seem to edit teams total salary correctly in franchise mode
-* Tabbing between settings doesn’t work correctly
+* Editing players salary doesnâ€™t seem to edit teams total salary correctly in franchise mode
+* Tabbing between settings doesnâ€™t work correctly
 * Probably more issues that are not listed here
 
 NOTE: Please, if you get a crash, post the details of the crash (Found in the details section of the crash box) to a new issue on http://github.com/keylimesoda/MaddenAMP
