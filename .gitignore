@@ -3,3 +3,9 @@
 ################################################################################
 
 /LumenWorks.Framework.IO/bin/Debug
+/LumenWorks.Framework.IO/obj/Debug
+/LumenWorks.Framework.IO/obj/Release/TempPE/Csv.Resources.ExceptionMessage.Designer.cs.dll
+/MaddenEditor/bin/Release/Conditioning/TrainingCamp/tune.txt
+/MaddenEditor/bin/Release
+/MaddenEditor/obj
+/.vs/MaddenEditor/v16/Server/sqlite3
