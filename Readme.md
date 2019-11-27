@@ -1,5 +1,3 @@
-**
-
 ## MADDEN AMP 4.49
 
 *The power to Amplify your Franchise*
