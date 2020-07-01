@@ -2903,6 +2903,26 @@ namespace MaddenEditor.Core
             wText.WriteLine(hbuilder.ToString());
         }
 
+        public DraftReport OutputDraftClassStats()
+        {
+            return new DraftReport()
+            {
+                HighestRated = draftclassplayers.OrderByDescending(d => d.Overall).First().Overall,
+                LowestRated = draftclassplayers.OrderBy(d => d.Overall).First().Overall,
+                Ovr80plus = draftclassplayers.Where(d => d.Overall >= 80).Count(),
+                Ovr70to79 = draftclassplayers.Where(d => d.Overall >= 70 && d.Overall < 80).Count(),
+                Ovr60to69 = draftclassplayers.Where(d => d.Overall >= 60 && d.Overall < 70).Count(),
+                Ovr50to59 = draftclassplayers.Where(d => d.Overall >= 50 && d.Overall < 60).Count(),
+                Ovr40to49 = draftclassplayers.Where(d => d.Overall >= 40 && d.Overall < 50).Count(),
+                OvrSub40 = draftclassplayers.Where(d => d.Overall < 40).Count(),
+                XFactors = draftclassplayers.Where(d => d.Development == 3).Count(),
+                Superstars = draftclassplayers.Where(d => d.Development == 2).Count(),
+                Stars = draftclassplayers.Where(d => d.Development == 1).Count(),
+                Normals = draftclassplayers.Where(d => d.Development == 0).Count(),
+                DraftSize = draftclassplayers.Count()
+            };
+        }
+
         public void ImportCSVDraftClass(List<string> records, string[] fields)
         {
             for (int c = 0; c < records.Count(); c++)

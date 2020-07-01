@@ -34,6 +34,7 @@ using System.IO;
 using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
 using MaddenEditor.Db;
+using Microsoft.Office.Interop.Excel;
 
 namespace MaddenEditor.Forms
 {
@@ -1648,11 +1649,116 @@ namespace MaddenEditor.Forms
                 wText.Flush();
                 wText.Close();
 
-
             }
         }
 
+        private void loadDraftgenXlsx_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("This operation will load an XLSX file, run the calculations, and then pull the data from a tab named \"Output\", which should match the Draft Import Format.", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if (res == DialogResult.OK)
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.RestoreDirectory = true;
+                dialog.Title = "Madden 20 Draft Generator XLSX";
+                dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                dialog.Filter = "XLSX Files (*.xlsx)|*.xlsx";
+                dialog.FilterIndex = 1;
+                dialog.Multiselect = false;
+                dialog.ShowDialog();
 
+                if (dialog.FileNames.Length > 0)
+                {
+                    DialogResult res3 = MessageBox.Show("This will take some time and your application may appear to freeze. On an older/slower computer this could take up to five minutes. Are you sure you want to continue?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+                    if (res3 == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                    this.Cursor = Cursors.WaitCursor;
+                    string filename = dialog.FileNames[0];
+                    var excel = new Microsoft.Office.Interop.Excel.Application();
+                    Workbook wb = excel.Workbooks.Open(filename);
+                    var foundSheet = false;
+                    var s = wb.Sheets;
+                    foreach (Worksheet sheet in wb.Sheets)
+                    {
+                        if (sheet.Name.Equals("Output"))
+                        {
+                            foundSheet = true;
+                            // excel.Calculate();
+                            var preparingDraftClassForm = new PreparingDraftClassForm(excel);
+                            preparingDraftClassForm.ShowDialog(this);
+                            preparingDraftClassForm.Dispose();
+
+                            sheet.Select(Type.Missing);
+                            var saveFile = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                            wb.SaveAs(saveFile, Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange);
+                            wb.Close(false);
+
+                            using (StreamReader sr = new StreamReader(saveFile))
+                            {
+
+                                try
+                                {
+                                    string csvtableinfo = sr.ReadLine();
+                                    string[] csvtable = csvtableinfo.Split(',');
+                                    if (csvtable[0] != "DRAFT")
+                                    {
+                                        MessageBox.Show("Not a valid Madden Draft Class", "Not a Draft Class", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return;
+                                    }
+                                    string csvfieldline = sr.ReadLine();
+                                    string[] csvfields = csvfieldline.Split(',');
+
+                                    if (csvtable[2].ToUpper().Contains("Y"))
+                                    {
+                                        sr.ReadLine();
+                                    }
+
+                                    List<string> records = new List<string>();
+                                    while (!sr.EndOfStream)
+                                    {
+                                        string csvrecordline = sr.ReadLine();
+                                        records.Add(csvrecordline);
+                                    }
+
+                                    model.DraftClassModel.ImportCSVDraftClass(records, csvfields);
+                                }
+                                catch (Exception err)
+                                {
+                                    MessageBox.Show("ERR: " + err.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                            }
+
+                            this.Cursor = Cursors.Default;
+
+
+                            SaveFileDialog savedialog = new SaveFileDialog();
+                            savedialog.RestoreDirectory = true;
+                            savedialog.Filter = "Madden Draft Class (*.*)|*.*";
+                            savedialog.ShowDialog();
+
+                            string saveFilename = savedialog.FileName;
+                            if (saveFilename == "")
+                                return;
+
+                            model.DraftClassModel.SaveDraftClass(saveFilename, FB_Draft, ExportVersion.SelectedIndex);
+                            var draftResult = model.DraftClassModel.OutputDraftClassStats();
+
+                            var draftResultForm = new DraftReportForm(draftResult);
+                            draftResultForm.ShowDialog(this);
+                            draftResultForm.Dispose();
+                        }
+                    }
+                    this.Cursor = Cursors.Default;
+                    if (foundSheet == false)
+                    {
+                        DialogResult res2 = MessageBox.Show("No sheet named \"Output\" found in " + filename, "Bad Worksheet Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
     }
 }
         

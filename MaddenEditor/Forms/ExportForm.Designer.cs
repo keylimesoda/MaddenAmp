@@ -79,11 +79,15 @@ namespace MaddenEditor.Forms
             this.ExportDraftClass_Button = new System.Windows.Forms.Button();
             this.LoadDraftClass_Button = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.loadDraftgenXlsx = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.ExportFilter_Panel.SuspendLayout();
             this.Export_Panel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.Import_Panel.SuspendLayout();
             this.DraftClass_Panel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExportFilter_Panel
@@ -91,9 +95,9 @@ namespace MaddenEditor.Forms
             this.ExportFilter_Panel.Controls.Add(this.MainSkillsOnly_Checkbox);
             this.ExportFilter_Panel.Controls.Add(this.ExportButton);
             this.ExportFilter_Panel.Controls.Add(this.filterDraftClassCheckbox);
-            this.ExportFilter_Panel.Location = new System.Drawing.Point(379, 5);
+            this.ExportFilter_Panel.Location = new System.Drawing.Point(628, 5);
             this.ExportFilter_Panel.Name = "ExportFilter_Panel";
-            this.ExportFilter_Panel.Size = new System.Drawing.Size(287, 117);
+            this.ExportFilter_Panel.Size = new System.Drawing.Size(245, 117);
             this.ExportFilter_Panel.TabIndex = 0;
             this.ExportFilter_Panel.TabStop = false;
             this.ExportFilter_Panel.Text = "Madden 04-08 Player Exports";
@@ -177,6 +181,7 @@ namespace MaddenEditor.Forms
             // AvailTables_ListView
             // 
             this.AvailTables_ListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.AvailTables_ListView.HideSelection = false;
             this.AvailTables_ListView.Location = new System.Drawing.Point(5, 29);
             this.AvailTables_ListView.Name = "AvailTables_ListView";
             this.AvailTables_ListView.Size = new System.Drawing.Size(150, 232);
@@ -187,6 +192,7 @@ namespace MaddenEditor.Forms
             // ExportTables_ListView
             // 
             this.ExportTables_ListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.ExportTables_ListView.HideSelection = false;
             this.ExportTables_ListView.Location = new System.Drawing.Point(217, 29);
             this.ExportTables_ListView.Name = "ExportTables_ListView";
             this.ExportTables_ListView.Size = new System.Drawing.Size(150, 232);
@@ -227,6 +233,7 @@ namespace MaddenEditor.Forms
             // 
             // ExportFields_ListView
             // 
+            this.ExportFields_ListView.HideSelection = false;
             this.ExportFields_ListView.Location = new System.Drawing.Point(591, 29);
             this.ExportFields_ListView.Name = "ExportFields_ListView";
             this.ExportFields_ListView.Size = new System.Drawing.Size(146, 232);
@@ -236,6 +243,7 @@ namespace MaddenEditor.Forms
             // 
             // AvailFields_ListView
             // 
+            this.AvailFields_ListView.HideSelection = false;
             this.AvailFields_ListView.Location = new System.Drawing.Point(386, 29);
             this.AvailFields_ListView.Name = "AvailFields_ListView";
             this.AvailFields_ListView.Size = new System.Drawing.Size(143, 232);
@@ -334,7 +342,7 @@ namespace MaddenEditor.Forms
             this.panel1.Controls.Add(this.filterPositionCheckbox);
             this.panel1.Controls.Add(this.filterTeamCombo);
             this.panel1.Controls.Add(this.filterTeamCheckbox);
-            this.panel1.Location = new System.Drawing.Point(773, 12);
+            this.panel1.Location = new System.Drawing.Point(879, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(227, 393);
             this.panel1.TabIndex = 14;
@@ -380,7 +388,7 @@ namespace MaddenEditor.Forms
             this.Import_Panel.Controls.Add(this.ImportSelected_ListView);
             this.Import_Panel.Location = new System.Drawing.Point(5, 411);
             this.Import_Panel.Name = "Import_Panel";
-            this.Import_Panel.Size = new System.Drawing.Size(995, 309);
+            this.Import_Panel.Size = new System.Drawing.Size(1101, 309);
             this.Import_Panel.TabIndex = 8;
             // 
             // label9
@@ -395,9 +403,10 @@ namespace MaddenEditor.Forms
             // 
             // ImportErrors_Listview
             // 
+            this.ImportErrors_Listview.HideSelection = false;
             this.ImportErrors_Listview.Location = new System.Drawing.Point(591, 73);
             this.ImportErrors_Listview.Name = "ImportErrors_Listview";
-            this.ImportErrors_Listview.Size = new System.Drawing.Size(394, 220);
+            this.ImportErrors_Listview.Size = new System.Drawing.Size(489, 220);
             this.ImportErrors_Listview.TabIndex = 26;
             this.ImportErrors_Listview.UseCompatibleStateImageBehavior = false;
             this.ImportErrors_Listview.View = System.Windows.Forms.View.Details;
@@ -449,6 +458,7 @@ namespace MaddenEditor.Forms
             // 
             // WrongFields_ListView
             // 
+            this.WrongFields_ListView.HideSelection = false;
             this.WrongFields_ListView.Location = new System.Drawing.Point(398, 73);
             this.WrongFields_ListView.Name = "WrongFields_ListView";
             this.WrongFields_ListView.Size = new System.Drawing.Size(150, 220);
@@ -515,6 +525,7 @@ namespace MaddenEditor.Forms
             // 
             // ImportAvailFields_ListView
             // 
+            this.ImportAvailFields_ListView.HideSelection = false;
             this.ImportAvailFields_ListView.Location = new System.Drawing.Point(17, 73);
             this.ImportAvailFields_ListView.Name = "ImportAvailFields_ListView";
             this.ImportAvailFields_ListView.Size = new System.Drawing.Size(150, 220);
@@ -524,6 +535,7 @@ namespace MaddenEditor.Forms
             // 
             // ImportSelected_ListView
             // 
+            this.ImportSelected_ListView.HideSelection = false;
             this.ImportSelected_ListView.Location = new System.Drawing.Point(229, 73);
             this.ImportSelected_ListView.Name = "ImportSelected_ListView";
             this.ImportSelected_ListView.Size = new System.Drawing.Size(150, 220);
@@ -543,7 +555,7 @@ namespace MaddenEditor.Forms
             this.DraftClass_Panel.Controls.Add(this.label10);
             this.DraftClass_Panel.Location = new System.Drawing.Point(5, 5);
             this.DraftClass_Panel.Name = "DraftClass_Panel";
-            this.DraftClass_Panel.Size = new System.Drawing.Size(368, 117);
+            this.DraftClass_Panel.Size = new System.Drawing.Size(388, 117);
             this.DraftClass_Panel.TabIndex = 9;
             // 
             // ExportVersion
@@ -554,15 +566,15 @@ namespace MaddenEditor.Forms
             this.ExportVersion.Items.AddRange(new object[] {
             "DraftClass for Madden 2019",
             "DraftClass for Madden 2020"});
-            this.ExportVersion.Location = new System.Drawing.Point(183, 57);
+            this.ExportVersion.Location = new System.Drawing.Point(191, 57);
             this.ExportVersion.Name = "ExportVersion";
-            this.ExportVersion.Size = new System.Drawing.Size(173, 21);
+            this.ExportVersion.Size = new System.Drawing.Size(188, 21);
             this.ExportVersion.TabIndex = 17;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(203, 85);
+            this.label12.Location = new System.Drawing.Point(221, 85);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(129, 13);
             this.label12.TabIndex = 16;
@@ -580,9 +592,9 @@ namespace MaddenEditor.Forms
             // 
             // CreateDraftClass_Button
             // 
-            this.CreateDraftClass_Button.Location = new System.Drawing.Point(183, 28);
+            this.CreateDraftClass_Button.Location = new System.Drawing.Point(191, 28);
             this.CreateDraftClass_Button.Name = "CreateDraftClass_Button";
-            this.CreateDraftClass_Button.Size = new System.Drawing.Size(173, 23);
+            this.CreateDraftClass_Button.Size = new System.Drawing.Size(189, 23);
             this.CreateDraftClass_Button.TabIndex = 3;
             this.CreateDraftClass_Button.Text = "Create Draft Class from CSV";
             this.CreateDraftClass_Button.UseVisualStyleBackColor = true;
@@ -592,7 +604,7 @@ namespace MaddenEditor.Forms
             // 
             this.ExportDraftClass_Button.Location = new System.Drawing.Point(9, 57);
             this.ExportDraftClass_Button.Name = "ExportDraftClass_Button";
-            this.ExportDraftClass_Button.Size = new System.Drawing.Size(146, 23);
+            this.ExportDraftClass_Button.Size = new System.Drawing.Size(176, 23);
             this.ExportDraftClass_Button.TabIndex = 2;
             this.ExportDraftClass_Button.Text = "Export to CSV";
             this.ExportDraftClass_Button.UseVisualStyleBackColor = true;
@@ -602,7 +614,7 @@ namespace MaddenEditor.Forms
             // 
             this.LoadDraftClass_Button.Location = new System.Drawing.Point(9, 28);
             this.LoadDraftClass_Button.Name = "LoadDraftClass_Button";
-            this.LoadDraftClass_Button.Size = new System.Drawing.Size(146, 23);
+            this.LoadDraftClass_Button.Size = new System.Drawing.Size(176, 23);
             this.LoadDraftClass_Button.TabIndex = 1;
             this.LoadDraftClass_Button.Text = "Load Draft Class";
             this.LoadDraftClass_Button.UseVisualStyleBackColor = true;
@@ -618,11 +630,43 @@ namespace MaddenEditor.Forms
             this.label10.TabIndex = 0;
             this.label10.Text = "Madden v2019 Draft Class";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.loadDraftgenXlsx);
+            this.groupBox1.Location = new System.Drawing.Point(404, 5);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(214, 117);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Madden 20 XLSX DraftGen";
+            // 
+            // loadDraftgenXlsx
+            // 
+            this.loadDraftgenXlsx.Location = new System.Drawing.Point(13, 81);
+            this.loadDraftgenXlsx.Name = "loadDraftgenXlsx";
+            this.loadDraftgenXlsx.Size = new System.Drawing.Size(80, 23);
+            this.loadDraftgenXlsx.TabIndex = 1;
+            this.loadDraftgenXlsx.Text = "Load XLSX";
+            this.loadDraftgenXlsx.Click += new System.EventHandler(this.loadDraftgenXlsx_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(15, 24);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(169, 52);
+            this.label13.TabIndex = 2;
+            this.label13.Text = "This loads a calculated XLSX and\r\nprocesses it. Expects a tab named\r\n\"Output\". Ca" +
+    "n take a long time!\r\nRequires Excel to be installed.\r\n";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // ExportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 732);
+            this.ClientSize = new System.Drawing.Size(1118, 732);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.DraftClass_Panel);
             this.Controls.Add(this.Import_Panel);
@@ -643,6 +687,8 @@ namespace MaddenEditor.Forms
             this.Import_Panel.PerformLayout();
             this.DraftClass_Panel.ResumeLayout(false);
             this.DraftClass_Panel.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -700,5 +746,8 @@ namespace MaddenEditor.Forms
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox ExtractByTableName;
         private System.Windows.Forms.ComboBox ExportVersion;
-	}
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button loadDraftgenXlsx;
+        private System.Windows.Forms.Label label13;
+    }
 }

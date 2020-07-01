@@ -64,7 +64,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -74,6 +76,7 @@
       <HintPath>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.XML.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\AmpConfig.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="Core\DatEditor\MMAP.cs" />
     <Compile Include="Core\DatEditor\TERF.cs" />
     <Compile Include="Core\DraftClass.cs" />
+    <Compile Include="Core\DraftReport.cs" />
     <Compile Include="Core\Manager\Coach.cs" />
     <Compile Include="Core\Manager\DraftClass.cs" />
     <Compile Include="Core\Manager\DraftConfig.cs" />
@@ -131,6 +135,12 @@
     <Compile Include="Core\Record\WeeklyAward.cs" />
     <Compile Include="Core\UserSettingsModel.cs" />
     <Compile Include="Db\FB.cs" />
+    <Compile Include="Forms\DraftReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DraftReportForm.Designer.cs">
+      <DependentUpon>DraftReportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OptionsForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -178,6 +188,12 @@
     </Compile>
     <Compile Include="Forms\OwnerFinances.Designer.cs">
       <DependentUpon>OwnerFinances.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PreparingDraftClassForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PreparingDraftClassForm.Designer.cs">
+      <DependentUpon>PreparingDraftClassForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Splash.cs">
       <SubType>Form</SubType>
@@ -481,6 +497,9 @@
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DraftReportForm.resx">
+      <DependentUpon>DraftReportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameOptions2019.resx">
       <DependentUpon>GameOptions2019.cs</DependentUpon>
     </EmbeddedResource>
@@ -548,6 +567,9 @@
     <EmbeddedResource Include="Forms\PlayerEditControl.resx">
       <DependentUpon>PlayerEditControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PreparingDraftClassForm.resx">
+      <DependentUpon>PreparingDraftClassForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ProfileDialog.cs</DependentUpon>
@@ -606,7 +628,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -715,7 +736,9 @@
     <EmbeddedResource Include="Resources\ColinBio.txt" />
     <EmbeddedResource Include="Resources\DavidBio.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)Libs\tdbaccess.dll" "$(ProjectDir)$(OutDir)"

@@ -1,14 +1,14 @@
-Madden AMP 4.45 Beta 1
+Madden AMP 4.45 Beta 2
 Updated by https://github.com/RobCubed
 
-Bug Fixes:
-	- Fixed double window popping up when selecting Madden 20 files
+Beta 2:
+	Implemented XLSX Draft Class Generator for single-click draft class creation. Compatible with Cursive138's Draft Class Generator, but should work with ANY XLSX that outputs a proper Draft CSV formate to a tab called "Output" on Calculate.
 
-Updates:
-	- Implemented parsing of Madden Frosty Schema Export for Madden 20
-
-To Do:
-	- Refactor Schema Parsable PlayerEditControl fields into PlayerEditingModel
+Beta 1:
+	Bug Fixes:
+		- Fixed double window popping up when selecting Madden 20 files
+	Updates:
+		- Implemented parsing of Madden Frosty Schema Export for Madden 20
 
 ---------------
 

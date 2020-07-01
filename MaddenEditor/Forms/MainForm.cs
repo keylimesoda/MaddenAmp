@@ -32,10 +32,9 @@ using System.Windows.Forms;
 //using MaddenEditor.ConSole;
 
 using MaddenEditor.Core;
-using MaddenEditor.Core.DatEditor;
 using MaddenEditor.Core.Record;
-using MaddenEditor.Core.Manager;
 using MaddenEditor.Db;
+using Microsoft.Office.Interop.Excel;
 
 namespace MaddenEditor.Forms
 {
@@ -411,7 +410,7 @@ namespace MaddenEditor.Forms
             if (CheckSave())
             {
                 CloseModel();
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
             }
         }
 
@@ -430,7 +429,7 @@ namespace MaddenEditor.Forms
                     fb.RemoveDB();
                 }
 
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
             }
             else
             {
@@ -1307,8 +1306,8 @@ namespace MaddenEditor.Forms
                     MessageBox.Show("Error opening file\r\n\r\n Check that the file is not already opened", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }       
-               
+        }
+
         
     }
 }
