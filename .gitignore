@@ -2,6 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/LumenWorks.Framework.IO/bin
 /LumenWorks.Framework.IO/bin/Debug
 /LumenWorks.Framework.IO/obj/Debug
 /LumenWorks.Framework.IO/obj/Release/TempPE/Csv.Resources.ExceptionMessage.Designer.cs.dll
