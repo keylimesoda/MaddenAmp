@@ -12,8 +12,7 @@
     <AssemblyName>MaddenEditor</AssemblyName>
     <Win32Resource>
     </Win32Resource>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>football.ico</ApplicationIcon>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

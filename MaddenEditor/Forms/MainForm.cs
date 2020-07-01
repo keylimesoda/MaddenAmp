@@ -682,6 +682,7 @@ namespace MaddenEditor.Forms
             dialog.Multiselect = false;
             dialog.ShowDialog();
 
+
             if (dialog.FileNames.Length > 0)
             {
                 // If they saved above, then reverting does nothing.
@@ -712,9 +713,14 @@ namespace MaddenEditor.Forms
                         filename = fb.database;
                     }
                     if (fb.FileVersion == FBVersion.Madden19)
+                    {
                         manager.config.Madden19Serial = fb.Serial;
+                    }
                     else if (fb.FileVersion == FBVersion.Madden20)
+                    {
                         manager.config.Madden20Serial = fb.Serial;
+                    }
+
                     manager.config.Madden19UserSettingsFilename = manager.UserSettings.ReadUserSettings(manager.config.Madden19UserSettingsFilename, fb.FileVersion);
                 }
                 else
@@ -729,6 +735,7 @@ namespace MaddenEditor.Forms
                 
                 filePathToLoad = filename;
                 // Insert code here to process the files.
+
                 try
                 {
                     this.Cursor = Cursors.WaitCursor;
