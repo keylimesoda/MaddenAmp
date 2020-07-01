@@ -12,7 +12,8 @@
     <AssemblyName>MaddenEditor</AssemblyName>
     <Win32Resource>
     </Win32Resource>
-    <ApplicationIcon>football.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -63,6 +64,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -71,6 +73,7 @@
     <Reference Include="System.Xml">
       <HintPath>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.XML.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\AmpConfig.cs" />
@@ -603,6 +606,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -642,6 +646,7 @@
     <Content Include="draft.txt" />
     <Content Include="GUI.txt" />
     <Content Include="How to Add a Table.txt" />
+    <EmbeddedResource Include="Resources\v445b1.txt" />
     <EmbeddedResource Include="Resources\v444.txt" />
     <EmbeddedResource Include="Resources\v443.txt" />
     <EmbeddedResource Include="Resources\v442.txt" />
@@ -718,7 +723,7 @@ mkdir "Conditioning\TrainingCamp"
 copy "$(ProjectDir)tune.txt" "$(ProjectDir)$(OutDir)Conditioning\TrainingCamp\tune.txt"
 mkdir "res"
 xcopy "$(ProjectDir)Resources\*.csv*" "$(ProjectDir)$(OutDir)\res\" /Y
-
+xcopy "$(ProjectDir)Resources\Madden20*.xml" "$(ProjectDir)$(OutDir)\res\" /Y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

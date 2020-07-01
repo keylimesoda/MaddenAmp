@@ -29,6 +29,8 @@ using MaddenEditor.Core;
 using MaddenEditor.Core.Record;
 using MaddenEditor.Core.Record.Stats;
 using MaddenEditor.Core.DatEditor;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace MaddenEditor.Core
 {
@@ -230,7 +232,6 @@ namespace MaddenEditor.Core
             }
             #endregion  
             #endregion
-           
 
             #region Facemask
             facemasklist = new List<GenericRecord>();
@@ -1129,6 +1130,11 @@ namespace MaddenEditor.Core
                 ImportStance();
                 ImportCommentIDS();
             }
+
+            if (model.MadVersion == MaddenFileVersion.Ver2020)
+            {
+                ImportLatestSchemaFile();
+            }
             
         }
 
@@ -1647,6 +1653,89 @@ namespace MaddenEditor.Core
                     err = err;
                 }                
             }
+        }
+
+        public void ImportLatestSchemaFile()
+        {
+            string filedir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var maddenSchema = Directory.GetFiles(
+                filedir + @"\res",
+                "Madden20*.xml").ToList().OrderByDescending(x => x).First();
+
+            if (!String.IsNullOrEmpty(maddenSchema))
+            {
+                XDocument doc = XDocument.Load(maddenSchema);
+
+                HashSet<string> AttributeList = new HashSet<string>();
+
+                foreach (XElement el in doc.Descendants("enum"))
+                {
+                    switch (el.Attribute("name").Value.ToString())
+                    {
+                        case "Helmet":
+                            helmetlist = GenerateGenericRecordList(el);
+                            break;
+                        case "FaceMask":
+                            facemasklist = GenerateGenericRecordList(el);
+                            break;
+                        case "Shoe":
+                            shoelist = GenerateGenericRecordList(el);
+                            break;
+                        case "HandGear":
+                            glovelist = GenerateGenericRecordList(el);
+                            break;
+                        case "WristGear":
+                            wristbandlist = GenerateGenericRecordList(el);
+                            break;
+                        case "Sleeve":
+                            sleeveslist = GenerateGenericRecordList(el);
+                            break;
+                        case "Spat":
+                            anklelist = GenerateGenericRecordList(el);
+                            break;
+                        case "ElbowGear":
+                            elbowlist = GenerateGenericRecordList(el);
+                            break;
+                        case "EyePaintOptions":
+                            facemarkslist = GenerateGenericRecordList(el);
+                            break;
+                        case "Visor":
+                            visorlist = GenerateGenericRecordList(el);
+                            break;
+                        case "Stance":
+                            stancelist = GenerateGenericRecordList(el);
+                            break;
+                        case "PlayerType":
+                            archetypelist = GenerateGenericRecordList(el);
+                            break;
+                        case "SidelineHeadGear":
+                            SidelineHeadGear = GenerateGenericRecordList(el);
+                            break;
+                        case "SkinTone":
+                            SkinTone = GenerateGenericRecordList(el);
+                            break;
+                        default:
+                            break;
+                    }
+                };
+
+            }
+        }
+
+        private IList<GenericRecord> GenerateGenericRecordList(XElement el)
+        {
+            var newGenericRecordList = new List<GenericRecord>();
+            foreach (XElement attr in el.Descendants("attribute"))
+            {
+                var name = attr.Attribute("name").Value.ToString();
+                if (name.ToLowerInvariant().StartsWith("reserved") || name.ToLowerInvariant().EndsWith("_"))
+                {
+                    continue;
+                }
+                var value = Convert.ToInt32(attr.Attribute("value").Value);
+                newGenericRecordList.Add(new GenericRecord(name, value));
+            }
+            return newGenericRecordList;
         }
 
         public void ImportCommentIDS()

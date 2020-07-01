@@ -1,0 +1,98 @@
+;A;Jogging Hills;You want to win in the 4th quarter? Try this drill. Just be prepared for icy stares from your players;|-15|0|0|0|-4|25|0|0|-5|0|0|0|6|0|0|0|0|0|0|0|0|0|4
+;A;StairClimber;Gruelling cardio workout designed to loose weight and muscle mass in a hurry;|-10|0|0|0|-4|20|10|0|-4|0|0|0|2|0|0|0|0|0|0|0|0|0|-2
+;A;Wind Sprints;Speed kills.Build your players speed w/ this morale killer...;|-2|15|8|3|-1|7|0|0|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;A;Shuttle Runs;Sharp burst drill focusing on speed,acceleration and agility but too many reps can sour the mood;|-1|2|15|20|-1|10|0|0|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;A;Stationary Bike;Loose weight,increase cardio and injury prevention but slight cost to muscle mass;|-5|0|0|0|-2|17|10|0|-1|0|0|0|0|0|0|0|0|0|0|0|0|0|-2
+;A;Treadmill;Build your cardio with a more aggresive workout than the stationary bike;|-8|0|0|0|-4|13|10|0|-1|0|0|0|0|0|0|0|0|0|0|0|0|0|-2
+;A;Biking;Strong focus on stamina improvement, slight increase to injury prevention;|-6|0|0|0|-1|11|0|0|0|0|0|0|2|0|0|0|0|0|0|0|0|0|-2
+;A;X-Country Skiing;Great cardio workout plus slight strength increase;|-1|0|0|0|-1|11|0|0|0|0|0|0|0|0|0|5|0|0|0|0|0|0|-1
+;A;Swim Laps;Excellent excercise with a focus on endurance and injury prevention;|-2|0|0|0|7|11|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|-1
+;D;Counting Calories;Put player on a fixed calorie diet plan. i.e. 1200, 1500 or 1800 calorie diets.;|-9|0|0|0|-7|-2|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
+;D;Low Carb Diet;Steer clear of carbs in this low carb diet.;|-8|0|0|0|-6|-3|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
+;D;Weight Gain Diet;Start eating six meals per day (spaced out to about once every three hours);|7|0|0|0|4|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
+;D;High Protein Diet;Your body needs protein, and lots of it. It is the building block of muscle, which is why eating a high protein diet with high protein foods is EXTREMELY important for anyone looking to increase muscle;|5|0|0|0|7|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
+;D;Balanced Diet;A balanced diet contains carbohydrates, protein, fat, vitamins, mineral salts and fibre. It must contain these things in the correct proportions.;|-2|0|0|0|1|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0
+;DB-P;Dive/Layout Drill;++CAT  Two defensive backs will align 5 yards form the coach with 5 yards separation between. On direction, backs will sprint laterally and plant on outside foot and sprint in opposite direction. When ball is tossed in the air, backs will call ;|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|0|0|0|0|0|3
+;DB-P;Open field tackling drill;++TKL  2 players stand 2-3 yards from each other, square. One of them is the ball carrier and the other one is the defender. Have the ball carrier try to juke the defender. Constantly stress to the defender to move with him and stay broken down (knees bent and ready for him to try to run him over).;|0|1|1|1|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|0|4
+;DB-P;Backpeddle and Weave;++ACC  On signal DB will backpedal then push off opposite foot from the desired direction, turning hips toward desired direction.;|0|0|15|5|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;DB-P;Zig-Zag drill;+AGI +ACC  Four defenders will align 5 yards from the coach and side by side 5 yards apart. On command backs will back pedal and drive off at 45 angle concentrating on QB's shoulders and changing directions, push off opposite foot and elongate stride in changing directions.;|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;DB-P;Bump + Run;+STR  Force your cover men to hold strong at the LOS;|0|2|0|0|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1
+;DB-P;Pursuit;+SPD +TKL Players practice pursuit angles while chasing a ball carrier ;|0|10|6|2|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|0|4
+;DB-P;Jump Ball;+JMP + CAT  Throw it up and let them go get it;|0|0|0|0|0|0|0|0|0|0|10|0|15|0|0|0|0|0|0|0|0|0|3
+;DL-P;Get off Ball Drill;++ACC  Players line up and respond to the coach moving the ball. Coach should call out different signals trying to pull the players off. Players must move on the snap only.;|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;DL-P;Pass Rush Technique Drill;++AGI  Players pair off and take turns as blocker and rusher. Rushers execute pass rush moves such as swims and rips, with emphasis on proper technique.;|0|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;DL-P;Tackling Progression Drill;++TKL  With a partner, players execute a step by step form tackle. Emphasis on technique.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|0|2
+;DL-P;Swim/Rip Drill;+STR +AGI Build upper body strength and focus on block shedding techniques ;|0|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;DL-P;Pursuit;+SPD +TKL  Players practice pursuit angles while chasing a ball carrier;|0|10|6|2|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|0|4
+;FB-P;Stance and Start Drill;++ACC  Backs go rapidly through a series of starts and stops and various angles to develop explosiveness off the snap.;|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;FB-P;Ballbreaker;++BTK +CAR Strong chance of injury  Three linemen and 1 back vs. 3 linebackers and 3 defensive linemen in a 5 yard wide space. The backs goal is to gain 3 yards. Good luck.;|0|0|0|0|0|0|0|0|0|0|0|0|10|15|0|0|0|0|0|0|0|0|10
+;FB-P;Blaster;+BTK +CAT  Backs catch variety of patterns and turn up field into the blaster. Backs not using proper running technique will get stuck.;|0|0|0|0|0|0|0|0|0|0|0|10|0|10|0|0|0|0|0|0|0|0|2
+;FB-P;Rope Drill;++AGI  Backs run over a rope grid in a 2x8 pattern with a focus on high legs and foot speed.;|0|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;FB-P;Blitz Pickup;++PBK  Three opponents line up opposite tackling dummies. On the snap, the back reads inside to outside while a random opponent is sent on the blitz.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|1
+;FB-P;Gauntlet;++CAR +BTK  Focus on ball security and leg power;|0|0|0|0|0|0|0|0|0|0|0|15|0|10|0|0|0|0|0|0|0|0|2
+;FB-P;Relay Drill;+ACC +AGI Quick burst drill that improves quickness ;|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;FB-P;Pass Paterns; +CAT +AWR  Run pass routes and catch balls;|0|0|0|0|0|0|0|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|1
+;FB-P;Run Blocking;+RBK  Work on leg power and drive blocking ;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|0|0|0|1
+;HB-P;Stance and Start Drill;++ACC  Backs go rapidly through a series of starts and stops and various angles to develop explosiveness off the snap.;|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;HB-P;Ballbreaker;++BTK +CAR Strong chance of injury  Three linemen and 1 back vs. 3 linebackers and 3 defensive linemen in a 5 yard wide space. The backs goal is to gain 3 yards. Good luck.;|0|0|0|0|0|0|0|0|0|0|0|10|0|15|0|0|0|0|0|0|0|0|10
+;HB-P;Blaster;+BTK +CAT  Backs catch variety of patterns and turn up field into the blaster. Backs not using proper running technique will get stuck.;|0|0|0|0|0|0|0|0|0|0|10|0|0|10|0|0|0|0|0|0|0|0|1
+;HB-P;Rope Drill;++AGI  Backs run over a rope grid in a 2x8 pattern with a focus on high legs and foot speed.;|0|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;HB-P;Blitz Pickup;++PBK  Three opponents line up opposite tackling dummies. On the snap, the back reads inside to outside while a random opponent is sent on the blitz.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|1
+;HB-P;Gauntlet;+CAR +BTK  Focus on ball security and leg power.;|0|0|0|0|0|0|0|0|0|0|0|15|0|10|0|0|0|0|0|0|0|0|2
+;HB-P;Relay Drill; +ACC +AGI  Quick burst drill that improves quickness.;|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;HB-P;Pass Paterns; +CAT +AWR  Run pass routes and catch balls.;|0|0|0|0|0|0|0|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|1
+;HB-P;Kick/Punt Returns;+KR  Work on the players ability to field kicks/punts.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|5
+;KP-P;Horseshoe Drill;++KA  General warmup work, taking shots at various angles.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|2
+;KP-P;High Kicks;++KP  Running with a high knee kick to develop leg strength.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|2
+;KP-P;Upright Drill;+KP +KA The kicker places the football on the tee, or the holder places the football on the tee 7 yards from the goal post upright. The football is placed on the same line as the goal posts. The kicker kicks the football down the line and at the goal post upright. The kicker's main objective is to get the ball up over the height of the cross bar and to either hit the upright with the football or land the ball in a 4 yards sector (marked with cones) forty to forty five yards down field.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|10|0|1
+;KP-P;Drop Consistancy Drill;++PA  The Punter aligns himself on a yardline. He takes his normal stride into the ball and drop the ball on the line without kicking it. The proper drop should have the nose of the football slightly in and down. This will cause the ball to bounce back and slightly outside of the line the punter is working on, indicating a good drop.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|1
+;LB-P;Get off Ball Drill; +ACC  Build reaction time and ball snap quickness;|0|0|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1
+;LB-P;Pass Rush Technique Drill;++AGI  Players pair off and take turns as blocker and rusher. Rushers execute pass rush moves such as swims and rips, with emphasis on proper technique.;|0|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;LB-P;Angle Tackling Drill;++TKL  On command, tackler is in good football position, feet moving. Second command ball carrier takes two steps forward and breaks at 45 angle. Tackler moves when ball carrier does and drives through outside number and gets his number across ball carriers outside number. Tackler drives feet and ball carrier back 2 yards.;|0|2|2|2|1|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|0|5
+;LB-P;Pursuit;+SPD +TKL  Players practice pursuit angles while chasing a ball carrier;|0|10|6|2|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|0|4
+;LB-P;Tip Drill;+CAT +AWR  Two linebackers run toward the QB/Coach. QB throws the ball over the 1st linebackers head just low enough to reach. Linebacker jumps and taps it back, the second makes the catch. Both sprint past the QB.;|0|0|0|0|0|0|0|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|2
+;OL-P;Crossover;++ACC  This drill walks linemen through the proper pulling and trap blocking techniques to ensure a smooth pull.;|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;OL-P;Sled Drill;++RBK  Using the heavy sled improves run blocking technique.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|3
+;OL-P;Group Pass Pro;++PBK  Players defend a point by maintaining a pocket and shifting players toward the tackles.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|3
+;OL-P;Pull/Sweep Drill;+ACC +AGI Focus on building linemen quickness;|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;OL-P;Blocking Sled;+STR +RBK +PBK  Individual blocking sled to build blocking skills;|0|0|0|0|10|2|0|0|0|0|0|0|0|0|0|0|0|10|10|0|0|0|6
+;OL-P;Blitz Pickup;+AWR +PBK  Several players wearing different colored jerseys rush the lineman. A color is called out at the last minute ;|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|0|10|0|0|0|0|1
+;OL-P;Run Blocking;+++Rbk  Slayer. High chance of injury as player pushes an old tractor up an incline;|0|0|0|0|0|0|0|0|-5|0|0|0|0|0|0|0|0|0|25|0|0|0|10
+;OL-P;Pass Blocking; +PBK  Work on protecting the QB;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|2
+;QB-P;Burnout Drill;+++THP Strong chance of injury  Quarterback pairs with an assistant at the longest depth at which the quarterback can throw a pass on-a-line. He continually throws passes to his receiver until he can no longer make the throw, then the distance is reduced to a manageable depth and the process is repeated. This is done until the quarterbacks arm is exhausted.;|0|0|0|0|0|0|0|0|-5|0|0|0|0|0|0|35|2|0|0|0|0|0|15
+;QB-P;Dropback Square Drill; ++ACC  A series of pylons lined up as a square. Starting inside the square at one corner, the Quarterback takes a presnap stance and takes a standard dropback, then resets at the next pylon behind him and repeats. This can be run at the depth of any normal drop;|0|0|15|10|6|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|3
+;QB-P;Rollout Drill;+AGI +SPD  Cones are used to mark the location of the offensive line, another set of cones are set 6 yards behind the tackles. Quarterback simulates a snap and rolls out around the cone, making a throwing motion without throwing about 1 yard behind the LOS. He should continue about 5 yards beyond the LOS.;|0|15|0|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;QB-P;Scrambling Triangle;+AGI +ACC  Quarterback takes a 5 step drop. Keeping the ball in the passing position, he runs forward and to the right and a 45 degree angle, then side shuffles to the left. He then drops back at a 45 degree angle to end up where he started.;|0|0|15|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;QB-P;Grip Drop Drill;++CAR  Quarterback holds the ball with 1 hand at waste level, then brings it up 6-8 inches. He releases the ball completely, then regrips it, alternating hands each rep.;|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|0|0|0|0|1
+;QB-P;One Knee Drill; +THP +THA  Quarterbacks play catch on their knees 10 yards apart, requiring proper throwing technique rather than reliance on legs and weight.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|8|8|0|0|0|0|0|3
+;QB-P;Crossbar Drill;++THA  Quarterbacks pair off at 12 yards apart on either side of the goal posts. They play catch, trying to throw the ball as close to the crossbar without going under it or hitting it as possible.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2|10|0|0|0|0|0|2
+;QB-P;Down the Line;+THA +STM  Keeping a constant distance of 10 yards, two quarterbacks run the length of the field throwing the ball back and forth. Time is kept in order to measure progress over time.;|0|0|0|0|0|15|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|3
+;QB-P;Routes + Progression;++AWR +THA  Work on progressing through your routes.;|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|7|0|0|0|0|0|1
+;QB-P;Deep Patterns;+THP +THA  Build arm strength and accuracy on deep balls by throwing deep routes.;|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|9|7|0|0|0|0|0|5
+;TE-P;Side to Side;+CAT +STM  Two players shuffle side to side from one endzone to the other tossing the ball back and forth with both hands.;|0|0|0|0|0|10|0|0|0|0|8|0|0|0|0|0|0|0|0|0|0|0|2
+;TE-P;Mirror;++RBK  Receivers pair off between cones about 5-8 yards apart. The receiver playing the DB then does whatever he must to get past the receiver while staying within the cones.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|3
+;TE-P;Grip Drop Drill;+CAR +CAT  Like the Quarterback version of the drill, except that the receiver holds the ball at his knees, bent over. Ball must be caught before reaching the ground.;|0|0|0|0|0|0|0|0|0|0|8|10|0|0|0|0|0|0|0|0|0|0|2
+;TE-P;Find the Quarterback;+CAT +AGI  The receiver stands in the center of a circle formed by passers. The coach calls out the name of one of the passers, who then throws the ball to the receiver. The receiver must face the right direction and catch the ball.;|0|0|0|10|0|0|0|0|0|0|8|0|0|0|0|0|0|0|0|0|0|0|2
+;TE-P;Net Drill;+AWR +CAT  Ball is thrown at a net, and bounces out at random angles. The receivers catch the ball off the net while side stepping past it.;|0|0|0|0|0|0|0|0|0|10|8|0|0|0|0|0|0|0|0|0|0|0|2
+;TE-P;TE Release;+ACC +AGI  Stress ball snap reaction time ;|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2
+;TE-P;Pass Patterns;+CAT +AWR Run pass routes and catch balls ;|0|0|0|0|0|0|0|0|0|10|8|0|0|0|0|0|0|0|0|0|0|0|2
+;TE-P;Gauntlet;+CAR +BTK  Focus on ball security and leg power;|0|0|0|0|0|0|0|0|0|0|0|10|0|10|0|0|0|0|0|0|0|0|1
+;TE-P;Run Blocking;+RBK  Work on leg power and drive blocking ;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|0|0|0|1
+;TE-P;Pass Blocking;+PBK  Work on protecting the QB;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|1
+;WR-P;Side to Side;+CAT +STM  Two players shuffle side to side from one endzone to the other tossing the ball back and forth with both hands.;|0|0|0|0|0|10|0|0|0|0|8|0|0|0|0|0|0|0|0|0|0|0|2
+;WR-P;Mirror;++RBK  Receivers pair off between cones about 5-8 yards apart. The receiver playing the DB then does whatever he must to get past the receiver while staying within the cones.;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|2
+;WR-P;Grip Drop Drill;+CAR +CAT  Like the Quarterback version of the drill, except that the receiver holds the ball at his knees, bent over. Ball must be caught before reaching the ground.;|0|0|0|0|0|0|0|0|0|0|8|0|0|0|0|0|0|0|15|0|0|0|2
+;WR-P;Find the Quarterback;+CAT +AGI  The receiver stands in the center of a circle formed by passers. The coach calls out the name of one of the passers, who then throws the ball to the receiver. The receiver must face the right direction and catch the ball.;|0|0|0|10|0|0|0|0|0|0|8|0|0|0|0|0|0|0|0|0|0|0|1
+;WR-P;Net Drill;+AWR +CAT  Ball is thrown at a net, and bounces out at random angles. The receivers catch the ball off the net while side stepping past it.;|0|0|0|0|0|0|0|0|0|10|8|0|0|0|0|0|0|0|0|0|0|0|1
+;WR-P;WR Release;+ACC +AGI  Stress ball snap reaction time ;|0|0|10|10|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1
+;WR-P;Route Running;+AWR  Dry run through your pass patterns;|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|0|0|0|0|0|0|2
+;WR-P;Gauntlet;+CAR +BTK  Focus on ball security and leg power;|0|0|0|0|0|0|0|0|0|0|0|10|0|10|0|0|0|0|0|0|0|0|1
+;WR-P;Jump Balls;+JMP +CAT  Throw it up and let them go get it;|0|0|0|0|0|0|0|0|0|0|8|0|10|0|0|0|0|0|0|0|0|0|1
+;WR-P;Pass Patterns;+CAT +AWR Run pass routes and catch balls ;|0|0|0|0|0|0|0|0|0|10|8|0|0|0|0|0|0|0|0|0|0|0|1
+;WR-P;Run Blocking;+RBK  Work on leg power and drive blocking;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|0|0|0|1
+;WR-P;Kick/Punt Returns;+KR  Work on the players ability to field kicks/punts;|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|3
+;W;Calves;+JMP +TKL  Focus is on a players calves. Will increse jumping ability.;|0|0|0|0|5|0|0|0|0|0|0|0|10|0|10|0|0|0|0|0|0|0|1
+;W;Quads + Hamstrings;+STR +TKL +BTK  Great for helping shed tacklers as well as kicking strength. Increases tackling power.;|0|0|0|0|10|0|0|0|0|0|0|0|0|10|10|0|0|0|0|0|0|0|1
+;W;Shoulders;+THP  Key excercise for QBs looking to increase their throwing power, and also benefits blocking strength.;|0|0|0|0|5|0|0|0|0|0|0|0|0|0|0|10|0|0|0|0|0|0|1
+;W;Chest;+STR +PBK +BTK  Excellent excecise for OL looking to become more powerful blockers. Also aids in breaking blocks.;|0|0|0|0|10|0|0|0|0|0|0|0|0|10|0|0|0|10|0|0|0|0|1
+;W;Arms;+CAR +TKL  Improves ball security, throwing power and blocking as well as tackling ability.;|0|0|0|0|0|0|0|0|0|0|0|10|0|0|10|0|0|0|0|0|0|0|1

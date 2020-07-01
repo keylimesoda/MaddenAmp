@@ -1,0 +1,100 @@
+INJC,INJD,INJE,INJH,INJN,INJP,INJS,INJT,INSC
+65,Achilles Sprain,3,0,5,0,1,0,2010_Inj_Severe_Leg
+50,Ankle Bruise,5,0,2,0,0,1,2010_Inj_Mod_Leg
+75,Ankle Sprain,3,0,3,0,1,2,2010_Inj_Severe_Leg
+65,High Ankle Sprain,3,0,97,0,2,3,2010_Inj_Severe_Leg
+100,Broken Ankle,5,0,97,0,5,4,2010_Inj_Intense_Leg
+100,Achilles Tear,5,0,97,0,5,5,2010_Inj_Intense_Leg
+71,Dislocated Ankle,5,0,4,0,3,6,2010_Inj_Intense_Leg
+71,Dislocated Ankle,5,0,4,0,4,7,2010_Inj_Intense_Leg
+20,Bruised Forearm,5,0,9,1,0,8,2010_Inj_Mod_Arm_Shoulder
+10,Strained Forearm,5,0,97,1,1,9,2010_Inj_Mod_Arm_Shoulder
+45,Strained Bicep,5,0,13,1,1,10,2010_Inj_Mod_Arm_Shoulder
+45,Strained Tricep,5,0,14,1,2,11,2010_Inj_Severe_Arm_Shoulder
+66,Forearm Fracture,5,0,97,1,4,12,2010_Inj_Intense_Arm_Shoulder
+61,Torn Bicep,5,0,97,1,4,13,2010_Inj_Intense_Arm_Shoulder
+75,Torn Tricep,5,0,97,1,5,14,2010_Inj_Intense_Arm_Shoulder
+20,Upper Arm Bruise,5,0,16,1,0,15,2010_Inj_Mod_Arm_Shoulder
+65,Upper Arm Fracture,5,0,97,1,3,16,2010_Inj_Intense_Arm_Shoulder
+45,Low Back Strain,5,0,18,2,2,17,2010_Inj_Severe_MidSection
+70,Ruptured Disk,5,0,20,2,4,18,2010_Inj_Intense_MidSection
+55,Ruptured Disk,5,0,20,2,4,19,2010_Inj_Intense_MidSection
+100,Low Back Strain,5,0,97,2,6,20,2010_Inj_Intense_MidSection
+35,Back Spasms,5,0,17,2,0,21,2010_Inj_Mod_MidSection
+45,Bruised Elbow,0,0,25,3,0,22,2010_Inj_Mod_Elbow
+65,Dislocated Elbow,0,0,25,3,3,23,2010_Inj_Intense_Arm_Shoulder
+55,Dislocated Elbow,5,0,25,3,4,24,2010_Inj_Intense_Arm_Shoulder
+65,Fractured Elbow,0,0,97,3,5,25,2010_Inj_Intense_Arm_Shoulder
+40,Elbow Bursitis ,0,0,27,3,0,26,2010_Inj_Mod_Elbow
+30,Elbow Sprain,0,0,23,3,1,27,2010_Inj_Mod_Elbow
+65,Foot Sprain,3,0,31,4,0,28,2010_Inj_Mod_Leg
+65,Fractured Toe,5,0,97,4,4,29,2010_Inj_Mod_Leg
+55,Foot Fracture,5,0,34,4,3,30,2010_Inj_Severe_Leg
+66,Foot Fracture,3,0,34,4,4,31,2010_Inj_Severe_Leg
+75,Turf Toe,5,0,29,4,2,32,2010_Inj_Mod_Leg
+65,Foot Contusion,5,0,28,4,0,33,2010_Inj_Mod_Leg
+65,Compound Fracture,3,0,97,4,5,34,2010_Inj_Severe_Leg
+20,Bruised Hand,5,0,39,5,0,35,2010_Inj_Mod_Wrist
+55,Broken Finger,5,0,97,5,2,36,2010_Inj_Mod_Wrist
+65,Dislocated Finger,5,0,36,5,0,37,2010_Inj_Mod_Wrist
+61,Broken Thumb,5,0,97,5,3,38,2010_Inj_Mod_Wrist
+65,Broken Hand,5,0,97,5,4,39,2010_Inj_Mod_Wrist
+45,Dislocated Thumb,2,0,38,5,1,40,2010_Inj_Mod_Wrist
+65,Dislocated Wrist,2,0,42,5,2,41,2010_Inj_Intense_Arm_Shoulder
+61,Broken Wrist,2,0,97,5,4,42,2010_Inj_Severe_Arm_Shoulder
+55,Sprained Wrist,2,0,41,5,0,43,2010_Inj_Mod_Wrist
+85,Concussion,5,0,97,11,2,44,2010_Inj_Mod_Head
+65,Broken Jaw,5,0,97,11,3,45,2010_Inj_Severe_Head
+20,Pinched Nerve,5,0,18,11,1,46,2010_Inj_Intense_Arm_Shoulder
+55,Hip Bursitis,5,0,50,6,0,47,2010_Inj_Mod_MidSection
+61,Dislocated Hip,5,0,51,6,4,48,2010_Inj_Severe_MidSection
+55,Dislocated Hip,5,0,97,6,3,49,2010_Inj_Intense_MidSection
+65,Hip Pointer,5,0,97,6,2,50,2010_Inj_Intense_MidSection
+90,Fractured Hip,5,0,97,6,5,51,2010_Inj_Intense_MidSection
+90,Broken Tailbone,5,0,97,6,5,52,2010_Inj_Intense_MidSection
+60,Bruised Knee,5,0,55,7,0,53,2010_Inj_Mod_Leg
+50,ACL Sprain,1,0,57,7,2,54,2010_Inj_Mod_Leg
+55,Bruised Knee,5,0,58,7,1,55,2010_Inj_Mod_Leg
+50,MCL Sprain,1,0,60,7,1,56,2010_Inj_Mod_Leg
+75,Partial ACL Tear,1,0,61,7,4,57,2010_Inj_Intense_Leg
+70,Knee Cartilage Tear,5,0,97,7,3,58,2010_Inj_Intense_Leg
+61,Dislocated Knee,1,0,64,7,3,59,2010_Inj_Intense_Leg
+65,Partial MCL Tear,1,0,65,7,4,60,2010_Inj_Intense_Leg
+100,Complete ACL Tear,5,0,97,7,5,61,2010_Inj_Intense_Leg
+65,Partial PCL Tear,1,0,66,7,4,62,2010_Inj_Intense_Leg
+50,PCL Sprain,1,0,62,7,2,63,2010_Inj_Mod_Leg
+61,Fractured Kneecap,1,0,97,7,5,64,2010_Inj_Intense_Leg
+100,Complete MCL Tear,5,0,97,7,5,65,2010_Inj_Intense_Leg
+100,Complete PCL Tear,5,0,97,7,5,66,2010_Inj_Intense_Leg
+70,Strained Knee,1,0,58,7,1,67,2010_Inj_Mod_Leg
+45,Calf Strain,5,0,0,8,0,68,2010_Inj_Mod_Leg
+65,Leg Cramps,5,0,76,8,0,69,2010_Inj_Mod_Leg
+75,Pulled Hamstring,5,0,75,8,0,70,2010_Inj_Mod_Leg
+40,Bruised Quad ,5,0,76,8,0,71,2010_Inj_Severe_Leg
+65,Pulled Groin,5,0,74,8,3,72,2010_Inj_Severe_Leg
+61,Broken Fibula  ,5,0,97,8,5,73,2010_Inj_Intense_Leg
+65,Groin Tear,5,0,97,8,5,74,2010_Inj_Severe_Leg
+65,Hamstring Tear,5,0,97,8,4,75,2010_Inj_Severe_Leg
+30,Quadricep Strain,5,0,77,8,2,76,2010_Inj_Severe_Leg
+70,Torn Quadricep,5,0,97,8,4,77,2010_Inj_Severe_Leg
+61,Broken Femur ,5,0,97,8,5,78,2010_Inj_Intense_Leg
+61,Broken Tibia ,5,0,97,8,5,79,2010_Inj_Intense_Leg
+65,Bruised Ribs,5,0,85,9,1,80,2010_Inj_Mod_MidSection
+65,Bruised Ribs,5,0,85,9,0,80,2010_Inj_Mod_MidSection
+40,Abdominal Strain,5,0,84,9,1,81,2010_Inj_Mod_MidSection
+40,Bruised Sternum,5,0,86,9,2,82,2010_Inj_Severe_MidSection
+40,Pectoral Strain,5,0,87,9,1,83,2010_Inj_Mod_MidSection
+40,Pectoral Strain,5,0,87,9,0,83,2010_Inj_Mod_MidSection
+65,Abdominal Tear,5,0,97,9,3,84,2010_Inj_Intense_MidSection
+65,Broken Ribs,5,0,97,9,3,85,2010_Inj_Intense_MidSection
+61,Broken Collarbone,5,0,97,9,4,86,2010_Inj_Intense_Arm_Shoulder
+61,Torn Pectoral ,5,0,97,9,5,87,2010_Inj_Severe_Arm_Shoulder
+40,Muscle Cramps,5,0,97,9,1,88,2010_Inj_Mod_MidSection
+45,Muscle Cramps,5,0,76,9,0,88,2010_Inj_Mod_MidSection
+45,Bruised Shoulder,5,0,91,10,0,89,2010_Inj_Mod_Arm_Shoulder
+65,Dislocated Shoulder,5,0,93,10,2,90,2010_Inj_Intense_Arm_Shoulder
+45,Shoulder Strain,5,0,92,10,2,91,2010_Inj_Severe_Arm_Shoulder
+85,Shoulder Tear,5,0,94,10,3,92,2010_Inj_Severe_Arm_Shoulder
+61,Fractured Shoulder Blade,5,0,97,10,5,93,2010_Inj_Severe_Arm_Shoulder
+90,Torn Rotator Cuff,5,0,97,10,5,94,2010_Inj_Severe_Arm_Shoulder
+55,Shoulder Tear,5,0,94,10,4,95,2010_Inj_Severe_Arm_Shoulder

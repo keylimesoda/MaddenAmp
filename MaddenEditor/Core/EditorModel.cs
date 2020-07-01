@@ -1666,18 +1666,21 @@ namespace MaddenEditor.Core
 
             List<CollegesRecord> deleteme = new List<CollegesRecord>();
 
-            foreach (CollegesRecord record in man.stream_model.TableModels[EditorModel.COLLEGES_TABLE].GetRecords())
+            if (madversion != MaddenFileVersion.Ver2020)
             {
-                int check = -1;
-                if (madversion >= MaddenFileVersion.Ver2006)
-                    check = record.College_pxpc;
-                foreach (KeyValuePair<int, college_entry> pair in Colleges)
+                foreach (CollegesRecord record in man.stream_model.TableModels[EditorModel.COLLEGES_TABLE].GetRecords())
                 {
-                    if (pair.Value.name == record.CollegeName || pair.Key == record.CollegeId)                    
-                        deleteme.Add(record);                    
+                    int check = -1;
+                    if (madversion >= MaddenFileVersion.Ver2006)
+                        check = record.College_pxpc;
+                    foreach (KeyValuePair<int, college_entry> pair in Colleges)
+                    {
+                        if (pair.Value.name == record.CollegeName || pair.Key == record.CollegeId)
+                            deleteme.Add(record);
+                    }
+                    if (!deleteme.Contains(record))
+                        Colleges.Add(record.CollegeId, new college_entry(CurrentYearIndex, record.CollegeTeamId, record.CollegeName, check));
                 }
-                if (!deleteme.Contains(record))
-                    Colleges.Add(record.CollegeId, new college_entry(CurrentYearIndex, record.CollegeTeamId, record.CollegeName, check));
             }
 
             for (int c = 0; c < deleteme.Count; c++)

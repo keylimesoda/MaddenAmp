@@ -45,13 +45,14 @@ namespace MaddenEditor.Core
 
         }
 
-        public string ReadUserSettings(string filename)
+        public string ReadUserSettings(string filename, FBVersion fbVersion)
         {
             if (filename == "")
             {
                 filename = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                filename += @"\Madden NFL 19\UserSettings.dat";
-            }                            
+                if (fbVersion == FBVersion.Madden19) filename += @"\Madden NFL 19\UserSettings.dat";
+                if (fbVersion == FBVersion.Madden20) filename += @"\Madden NFL 20\UserSettings.dat";
+            }
 
             if (!File.Exists(filename))
             {
