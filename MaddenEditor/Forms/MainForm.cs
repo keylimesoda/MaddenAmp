@@ -715,13 +715,14 @@ namespace MaddenEditor.Forms
                     if (fb.FileVersion == FBVersion.Madden19)
                     {
                         manager.config.Madden19Serial = fb.Serial;
+                        manager.config.Madden19UserSettingsFilename = manager.UserSettings.ReadUserSettings(manager.config.Madden19UserSettingsFilename, fb.FileVersion);
                     }
                     else if (fb.FileVersion == FBVersion.Madden20)
                     {
                         manager.config.Madden20Serial = fb.Serial;
+                        manager.config.Madden20UserSettingsFilename = manager.UserSettings.ReadUserSettings(manager.config.Madden20UserSettingsFilename, fb.FileVersion);
                     }
 
-                    manager.config.Madden19UserSettingsFilename = manager.UserSettings.ReadUserSettings(manager.config.Madden19UserSettingsFilename, fb.FileVersion);
                 }
                 else
                 {

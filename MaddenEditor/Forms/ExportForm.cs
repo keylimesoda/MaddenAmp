@@ -1733,8 +1733,10 @@ namespace MaddenEditor.Forms
 
                             this.Cursor = Cursors.Default;
 
+                            var madden20SettingsLocation = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Madden NFL 20\settings";
 
                             SaveFileDialog savedialog = new SaveFileDialog();
+                            savedialog.InitialDirectory = madden20SettingsLocation;
                             savedialog.RestoreDirectory = true;
                             savedialog.Filter = "Madden Draft Class (*.*)|*.*";
                             savedialog.ShowDialog();
