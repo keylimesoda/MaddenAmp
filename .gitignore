@@ -6,8 +6,6 @@
 /LumenWorks.Framework.IO/bin/Debug
 /LumenWorks.Framework.IO/obj/Debug
 /LumenWorks.Framework.IO/obj/Release
-/MaddenEditor/bin/Release/Conditioning/TrainingCamp/tune.txt
-/MaddenEditor/bin/Release
-/MaddenEditor/bin/Debug
+/MaddenEditor/bin
 /MaddenEditor/obj
 /.vs/MaddenEditor/v16/Server/sqlite3
