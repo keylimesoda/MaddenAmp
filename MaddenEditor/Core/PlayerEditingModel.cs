@@ -1002,7 +1002,7 @@ namespace MaddenEditor.Core
             {
                 archetypelist.Add(new GenericRecord("Field General", 0));
                 archetypelist.Add(new GenericRecord("Strong Arm", 1));
-                archetypelist.Add(new GenericRecord("West Coast", 2));
+                archetypelist.Add(new GenericRecord("Improviser", 2));
                 archetypelist.Add(new GenericRecord("Scrambler", 3));
                 archetypelist.Add(new GenericRecord("Power Back", 4));
                 archetypelist.Add(new GenericRecord("Elusive Back", 5));
@@ -1010,8 +1010,8 @@ namespace MaddenEditor.Core
                 archetypelist.Add(new GenericRecord("Blocking FB", 7));
                 archetypelist.Add(new GenericRecord("Utility FB", 8));
                 archetypelist.Add(new GenericRecord("Deep Threat", 9));
-                archetypelist.Add(new GenericRecord("Possession", 10));
-                archetypelist.Add(new GenericRecord("Redzone Threat", 11));
+                archetypelist.Add(new GenericRecord("Route Runner", 10));
+                archetypelist.Add(new GenericRecord("Physical", 11));
                 archetypelist.Add(new GenericRecord("Slot", 12));
                 archetypelist.Add(new GenericRecord("Blocking TE", 13));
                 archetypelist.Add(new GenericRecord("Vertical Threat TE", 14));
@@ -1033,8 +1033,8 @@ namespace MaddenEditor.Core
                 archetypelist.Add(new GenericRecord("Power Rusher DT ", 30));
                 archetypelist.Add(new GenericRecord("Speed Rusher LB", 31));
                 archetypelist.Add(new GenericRecord("Power Rusher LB", 32));
-                archetypelist.Add(new GenericRecord("Run Stopper LB", 33));
-                archetypelist.Add(new GenericRecord("Pass Coverage LB", 34));
+                archetypelist.Add(new GenericRecord("Pass Coverage LB", 33));
+                archetypelist.Add(new GenericRecord("Run Stopper LB", 34));
                 archetypelist.Add(new GenericRecord("Field General MLB", 35));
                 archetypelist.Add(new GenericRecord("Pass Coverage MLB", 36));
                 archetypelist.Add(new GenericRecord("Run Stopper MLB", 37));
